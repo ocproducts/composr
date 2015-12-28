@@ -60,7 +60,8 @@ You can delete an award type from the bottom of its edit form.
 
 When we add a new award type linked with a particular content type, adding or editing an item of that content type will have an option to assign award to it as current holder.
 
-If you wanted to choose a different yacht to display every week, for example, then you can just:[list="1"]
+If you wanted to choose a different yacht to display every week, for example, then you can just:
+[list="1"]
 [*] Create a catalogue award via:
 Admin Zone > Setup > Top content (Awards) > Add award type
 [*] Place the award block on the front page, setting it to refer to the award you just made (the block construction assistant makes it very easy, providing a drop-down of award types for you to select from)

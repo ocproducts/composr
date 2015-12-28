@@ -109,7 +109,8 @@ http://cheeso.members.winisp.net/IIRF.aspx
 
 [i]The developers cannot take responsibility or provide support for this feature. We're happy to answer questions, but fiddling with your web server is only for those in the know. It is best you try things out on a test website before your live one.[/i]
 
-To install IIRF:[list="1"]
+To install IIRF:
+[list="1"]
 [*] Copy [tt]IIRF.dll[/tt] into your [tt]Inetpub[/tt] folder
 [*] In IIS manager add the dll as an ISAPI filter, but only to the website that runs Composr. This means that the IIRF plugin will only affect the Composr website, which is important because the IIRF configuration file is not modular -- if it were applied to all websites on the server, it could cause serious problems.
 [*] Make an [tt]IirfGlobal.ini[/tt] file in your [tt]Inetpub[/tt] folder containing the following:

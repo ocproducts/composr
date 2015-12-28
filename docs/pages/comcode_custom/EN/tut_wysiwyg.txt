@@ -89,7 +89,8 @@ There are currently 6 ways to get images (and other files) into the WYSIWYG edit
 
 [title="3"]Attachments[/title]
 
-Composr has its own system for making attachments. If the WYSIWYG editor is for a 'Post area' then there will be either:[list="a"]
+Composr has its own system for making attachments. If the WYSIWYG editor is for a 'Post area' then there will be either:
+[list="a"]
 [*] an attachment facility beneath it
 [*] attachment upload via the WYSIWYG's image button (if the "Simplified attachments UI" option is on, which is the default)
 [/list]

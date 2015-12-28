@@ -25,16 +25,16 @@ Your options are:
 
 Before you install Composr:
 [list="1"]
-[*]Ensure that your host covers our [page="_SEARCH:tut_web_hosting"]minimum requirements[/page].
-[*]Consider getting a general knowledge of [page="_SEARCH:tut_webapp"]web applications[/page]. This is not required but it will give you some overall understanding of what kind of web systems there are and how they work.
-[*]Make yourself familiar with the 'Web hosting control panel' your web host has provided. Common ones include Plesk and cPanel. Your host may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, possibly subdomains, possibly SFTP/FTP accounts, e-mail accounts.
-[*]You also need the following information from your web host:
+[*] Ensure that your host covers our [page="_SEARCH:tut_web_hosting"]minimum requirements[/page].
+[*] Consider getting a general knowledge of [page="_SEARCH:tut_webapp"]web applications[/page]. This is not required but it will give you some overall understanding of what kind of web systems there are and how they work.
+[*] Make yourself familiar with the 'Web hosting control panel' your web host has provided. Common ones include Plesk and cPanel. Your host may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, possibly subdomains, possibly SFTP/FTP accounts, e-mail accounts.
+[*] You also need the following information from your web host:
  - SFTP/FTP hostname
  - SFTP/FTP username
  - SFTP/FTP password
 Usually SFTP/FTP details are instead e-mailed to you when you sign up for hosting. Sometimes you need to set themselves up yourself in the control panel, particularly if you are installing to a subdomain.
 [/*]
-[*]You need to set up a database, and note down these details:
+[*] You need to set up a database, and note down these details:
  - MySQL hostname
  - MySQL username
  - MySQL password

@@ -188,10 +188,11 @@ The following escaping filters are provided ([color="green"]green[/color] indica
 		</tr>
 		<tr style="background-color: #FFDDDD">
 			<td>[tt]+[/tt]</td>
-			<td colspan="3">Must be used as the only escaping character. This indicates that something:[list]
-[*]should not be escaped
-[*]definitely is passed into the template (no user-friendly warnings will be given if it is not)
-[*]should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
+			<td colspan="3">Must be used as the only escaping character. This indicates that something:
+[list]
+[*] should not be escaped
+[*] definitely is passed into the template (no user-friendly warnings will be given if it is not)
+[*] should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
 [/list]
 This is substantially faster in terms of the amount of memory, CPU time, and storage. However, it should only really be used by programmers knowing exactly what they are doing.
 </td>
@@ -212,7 +213,8 @@ Templates are composed together into a tree structure, and then the tree structu
 
 Tempcode is quite different from other templating languages, and it's worth covering that.
 
-Most templating languages will try to either:[list="a"]
+Most templating languages will try to either:
+[list="a"]
 [*] use XML, to add programming constructs into the mark-up itself
 [*] allow PHP code, or an abstraction of PHP code, to run within the templates
 [/list]

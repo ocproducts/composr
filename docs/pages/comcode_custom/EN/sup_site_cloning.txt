@@ -67,7 +67,8 @@ Also, if your main site is based on [tt]recommended.htaccess[/tt] then [tt].htac
 
 [b][i]Congratulations!!![/i][/b], you should now have a working clone of your main site!
 
-A few things to note about the cloned site:[list]
+A few things to note about the cloned site:
+[list]
 [*] It's live, so anyone who has access to your main site has access to your clone site. If you don't want them to see the clone and the things under development you can either close the clone site (so only admins will be able to log in) or password protect the CLONE_SITE_DIR directory using cPanel's Password Protect Directories feature.
 [*] Although the bulk of the clone site uses dynamically generated URLs which will automatically adjust to the new location and URLs, any URLs you have hard coded or that appear in content will still point to the main site. The classic examples of this are the URLs in spacer posts. This has never been an issue for me.
 [*] Because the clone looks identical to the main site you might want to consider making some small but obvious change to the look of the clone so that it is easily distinguishable from your main site. 

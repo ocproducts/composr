@@ -9,30 +9,31 @@ You may intend to implement your website yourself, in which case this tutorial i
 
 I'll be as frank and blunt as possible, because this stuff is not talked about nearly enough and that leads to many misconceptions and thus poor decisions, which everyone wants to avoid. A lot of misunderstanding is for the following reasons:
 [list]
-[*]most things on the Internet are free to users (because Internet companies have relatively low variable costs and prioritise international dominance above getting their investment back). This makes it look like online things are free to provide.[/*]
-[*]it's hard to really get a 'feel' for where the money is spent (like you can with a building).[/*]
-[*]there are a lot of DIY tools and open discussions between experienced people using them.[/*]
-[*]a lot of people purchasing websites don't have business experience and know how much things cost when done individually to order (the gap between these kinds of things, and the other things you normally purchase in life, is absolutely huge).[/*]
-[*]some really high quality tools (such as Composr) are free, and they do a lot, so therefore making new functionality to a similar level of sophistication must be very cheap. The reality is that these tools have had huge amounts of time and money invested in them but are put out for free due to the developer's desire to share their creations as broadly as possible.[/*]
-[*]web hosting is cheap.[/*]
-[*]technology is always changing very quickly, and prices change to reflect expectations &ndash; costs have risen a lot over time.[/*]
-[*]people who do have experience with website commissioning are usually too busy, so what they do know has not disseminated. You couldn't go and buy a book on website pricing like you could do on the pricing within other engineering disciplines.[/*]
+[*] most things on the Internet are free to users (because Internet companies have relatively low variable costs and prioritise international dominance above getting their investment back). This makes it look like online things are free to provide.[/*]
+[*] it's hard to really get a 'feel' for where the money is spent (like you can with a building).[/*]
+[*] there are a lot of DIY tools and open discussions between experienced people using them.[/*]
+[*] a lot of people purchasing websites don't have business experience and know how much things cost when done individually to order (the gap between these kinds of things, and the other things you normally purchase in life, is absolutely huge).[/*]
+[*] some really high quality tools (such as Composr) are free, and they do a lot, so therefore making new functionality to a similar level of sophistication must be very cheap. The reality is that these tools have had huge amounts of time and money invested in them but are put out for free due to the developer's desire to share their creations as broadly as possible.[/*]
+[*] web hosting is cheap.[/*]
+[*] technology is always changing very quickly, and prices change to reflect expectations &ndash; costs have risen a lot over time.[/*]
+[*] people who do have experience with website commissioning are usually too busy, so what they do know has not disseminated. You couldn't go and buy a book on website pricing like you could do on the pricing within other engineering disciplines.[/*]
 [/list]
 
 The market for websites is highly distorted for many reasons:
 [list]
-[*]a lot of individual programmers pose as mature businesses, to the point where they actually intentionally deceive. Because work is often not conducted in person, it is not obvious whether you are dealing with an established company with an established processes and mature team or not. Most web developers are inexperienced in quality engineering or business pricing so will under-budget your development and then run into problems when this becomes apparent.[/*]
-[*]many companies intentionally advertise very low prices to appear competitive. You probably expect your web site to have a unique design and functionality determined by a proper consultation process. However computer technology allows work to be copied very easily, so these low quotes usually reflect a very basic and inflexible off-the-shelf kind of approach. Also bear in mind that many companies actually don't have experienced programmers, just web designers, so may rely on using an off-the-shelf approach. It is often the case that companies can't customise how systems work even if you want to pay them to.[/*]
-[*]off-shoring (e.g. to India) creates substantial problems in project management, but the lower prices banded-around muddy the water of expectations. A team culturally-closer to you (assumin you aren't in a developing country) will almost certainly cost more in terms of the initial quote, but likely will provide better value (and considerably fewer headaches) by the time you have something ready to launch.[/*]
-[*]there is huge disparity between the level of design fidelity between different websites, as well as the uniqueness or complexity of functionality. Two websites can have the same basic outline but cost very different amounts to build, so it is very important to look beyond rhetoric and establish exactly what fidelity/sophistication you are going to get on a project. You probably have expectations in line with the kinds of websites you regularly visit, but these successful websites are likely to be some of the best websites around -- an average quote will get an average website, so consider how many awful and mediocre websites that are out there. Consider that website implementations matching your requirements can range from quick and cheap, to more expensive than your business model can budget for, so we recommend you consider the fidelity issue very carefully by providing agencies links to example sites of the fidelity you want.[/*]
-[*]there are often requirements that aren't design or technical, such as for consultancy, support, and so on -- whether these are included or not always varies between companies. So check whether you are getting quotes for a full solution, just for the requirements you've mentioned explicitly, or somewhere in-between. [/*]
-[*]language barriers, time constraints, budget constraints (that can't stretch to a full requirement documentation process), or competitive processes between lots of companies can result in rushed proposals. It's a good idea to make sure that your project starts off on good footing and that all the quotes you've reviewed are written to equivalent requirements or that the discrepancies are otherwise taken into account. Sometimes big and expensive requirements can be hidden within a single word of a briefing or a single square centimetre of a design, and it is very easy for agencies to miss them; we call these situations 'implied functionality' and they have a habit of coming up throughout the website production process.[/*]
+[*] a lot of individual programmers pose as mature businesses, to the point where they actually intentionally deceive. Because work is often not conducted in person, it is not obvious whether you are dealing with an established company with an established processes and mature team or not. Most web developers are inexperienced in quality engineering or business pricing so will under-budget your development and then run into problems when this becomes apparent.[/*]
+[*] many companies intentionally advertise very low prices to appear competitive. You probably expect your web site to have a unique design and functionality determined by a proper consultation process. However computer technology allows work to be copied very easily, so these low quotes usually reflect a very basic and inflexible off-the-shelf kind of approach. Also bear in mind that many companies actually don't have experienced programmers, just web designers, so may rely on using an off-the-shelf approach. It is often the case that companies can't customise how systems work even if you want to pay them to.[/*]
+[*] off-shoring (e.g. to India) creates substantial problems in project management, but the lower prices banded-around muddy the water of expectations. A team culturally-closer to you (assumin you aren't in a developing country) will almost certainly cost more in terms of the initial quote, but likely will provide better value (and considerably fewer headaches) by the time you have something ready to launch.[/*]
+[*] there is huge disparity between the level of design fidelity between different websites, as well as the uniqueness or complexity of functionality. Two websites can have the same basic outline but cost very different amounts to build, so it is very important to look beyond rhetoric and establish exactly what fidelity/sophistication you are going to get on a project. You probably have expectations in line with the kinds of websites you regularly visit, but these successful websites are likely to be some of the best websites around -- an average quote will get an average website, so consider how many awful and mediocre websites that are out there. Consider that website implementations matching your requirements can range from quick and cheap, to more expensive than your business model can budget for, so we recommend you consider the fidelity issue very carefully by providing agencies links to example sites of the fidelity you want.[/*]
+[*] there are often requirements that aren't design or technical, such as for consultancy, support, and so on -- whether these are included or not always varies between companies. So check whether you are getting quotes for a full solution, just for the requirements you've mentioned explicitly, or somewhere in-between. [/*]
+[*] language barriers, time constraints, budget constraints (that can't stretch to a full requirement documentation process), or competitive processes between lots of companies can result in rushed proposals. It's a good idea to make sure that your project starts off on good footing and that all the quotes you've reviewed are written to equivalent requirements or that the discrepancies are otherwise taken into account. Sometimes big and expensive requirements can be hidden within a single word of a briefing or a single square centimetre of a design, and it is very easy for agencies to miss them; we call these situations 'implied functionality' and they have a habit of coming up throughout the website production process.[/*]
 [/list]
 
 [title="2"]Kinds of company[/title]
 
 [media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_pricing/image3.jpg[/media]
-There are eight main kinds of web design company, ordered roughly by price:[list]
+There are eight main kinds of web design company, ordered roughly by price:
+[list]
 [*][b]Offshore[/b]: an individual or team working offshore for low rates, usually as virtual employees.[/*]
 [*][b]Individuals[/b]:[list]
 [*][b]Freelancer[/b]: an individual skilled in at least one particular area of web design who will work for you on a temporary contract.[/*]
@@ -63,20 +64,23 @@ Don't put yourself in a situation where you either:
  - choose the right developer but don't budget for extras you had forgotten to ask for, and run out of money. This is why contingency budgeting is so important and is used across all engineering disciplines.
 i.e. be very careful.
 
-Often companies needing a website will avoid web design companies entirely and go for one of the following approaches:[list]
-[*]Set something quick and simple up on a service like Google Sites.[/*]
-[*]Build internally using a CMS and a template. This tends to happen when there's an internal stakeholder in the client company who has a particular technical flair, so it's a bit of an exception.[/*]
-[*]Set up a CMS internally, then use support services to get the more complex stuff done. Truth be told, it's fairly rare for this to happen because usually a client makes an upfront decision on whether to do something entirely themselves, or to hire someone else to do it all; people rarely go half and half.[/*]
-[*]Build something with a skilled in-house team[/*]
+Often companies needing a website will avoid web design companies entirely and go for one of the following approaches:
+[list]
+[*] Set something quick and simple up on a service like Google Sites.[/*]
+[*] Build internally using a CMS and a template. This tends to happen when there's an internal stakeholder in the client company who has a particular technical flair, so it's a bit of an exception.[/*]
+[*] Set up a CMS internally, then use support services to get the more complex stuff done. Truth be told, it's fairly rare for this to happen because usually a client makes an upfront decision on whether to do something entirely themselves, or to hire someone else to do it all; people rarely go half and half.[/*]
+[*] Build something with a skilled in-house team[/*]
 [/list]
 
 [title="2"]Project tiers[/title]
 
 Getting complex? All this is before we even consider project tiering.
 
-You can break the industry down into three tiers:[list="1"][*]Low end[/*]
-[*]Mid-market[/*]
-[*]High end[/*]
+You can break the industry down into three tiers:
+[list="1"]
+[*] Low end[/*]
+[*] Mid-market[/*]
+[*] High end[/*]
 [/list]
 Each of these tiers operates with a fundamentally different set of rules, because they work with different kinds of clients on different kinds of project.
 
@@ -91,12 +95,13 @@ Most people go for a happy balance of quality that puts the price around the ave
 [title="3"]The low end ($500-$5,000)[/title]
 
 [media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_pricing/image5.jpg[/media]
-The low end of the web design market works with a very "street smart" kind of attitude. It is price-sensitive, with a high focus on driving straight-forward sale conversions, to build straight-forward websites. There tends to only be basic design focus, enough to make things tidy, and very little focus on branding; sometimes use of templates can make this a bit harder to detect. However, there is a great focus on SEO, and providing websites that (like the web designer themselves) work via driving straight-forward sales conversions. In other words, the web design company and the client typically have a similar kind of mindset:[list]
-[*]keep things simple[/*]
-[*]concentrate on SEO[/*]
-[*]drive sales hard[/*]
-[*]keep the price low[/*]
-[*]because cost is low, and also the earning potential is quite low due to the low-end quality of the built websites, all involved in the market tend to operate quite low on the earning pyramid (with an aspiration to raise higher of course)[/*]
+The low end of the web design market works with a very "street smart" kind of attitude. It is price-sensitive, with a high focus on driving straight-forward sale conversions, to build straight-forward websites. There tends to only be basic design focus, enough to make things tidy, and very little focus on branding; sometimes use of templates can make this a bit harder to detect. However, there is a great focus on SEO, and providing websites that (like the web designer themselves) work via driving straight-forward sales conversions. In other words, the web design company and the client typically have a similar kind of mindset:
+[list]
+[*] keep things simple[/*]
+[*] concentrate on SEO[/*]
+[*] drive sales hard[/*]
+[*] keep the price low[/*]
+[*] because cost is low, and also the earning potential is quite low due to the low-end quality of the built websites, all involved in the market tend to operate quite low on the earning pyramid (with an aspiration to raise higher of course)[/*]
 [/list]
 For some companies, this works very well. Companies employing tradesmen that do not have a need to particularly focus on brand, and where the website only needs to be pretty simple.
 
@@ -192,10 +197,9 @@ There is a very fast pace of competition, but I would say that design really acc
 We now live in "the age of experience". Respect Apple or not, the immaculately designed product lines Apple put out many years ago now (iMac, iPhone, iPad, etc) has forced the web industry to completely change how it operates. You can no longer just slap stuff together in the quickest way and put it out because "it works". Consumers are far more discerning / far less tolerant. For many projects you may not just need a designer, you might need many kinds of designer -- brand design, graphic design, interaction design, user experience design, copywriting, and possibly more things.
 
 It needs to be clearly understood that there is huge cost behind the raising design standards, and this affects you particularly if you are creating an online business (where the level of fancy interaction required will likely be quite vast). Companies make huge investments to cover design requirements because unfortunately it is not not something CMSs like Composr can provide automatically like they can with functionality. There are two reasons for this:
-[list="1"][*]It's extremely costly. A good programmer can use smart techniques to create a system like Composr at a much more efficient cost compared to what might come out of a corporate, but smarts won't make great design cheap -- it requires intricate consideration in a human (i.e. non-abstract) context for each and every specific interface element. Also, great design is hard to crowdsource, so even the community-developed CMSs can't make this happen by distributing out the costs.
-[/*]
-[*]Great design is not a generic pluggable thing like functionality can be. It has to be done individually for each particular case, applied cohesively to create a unique and appropriate brand impression that ties a particular arrangement of elements together correctly. It's not modular, and it's not "out of the box" (things like discussion forums, or shopping carts, are an exception, as these are generics and can be designed accordingly).
-[/*]
+[list="1"]
+[*] It's extremely costly. A good programmer can use smart techniques to create a system like Composr at a much more efficient cost compared to what might come out of a corporate, but smarts won't make great design cheap -- it requires intricate consideration in a human (i.e. non-abstract) context for each and every specific interface element. Also, great design is hard to crowdsource, so even the community-developed CMSs can't make this happen by distributing out the costs.[/*]
+[*] Great design is not a generic pluggable thing like functionality can be. It has to be done individually for each particular case, applied cohesively to create a unique and appropriate brand impression that ties a particular arrangement of elements together correctly. It's not modular, and it's not "out of the box" (things like discussion forums, or shopping carts, are an exception, as these are generics and can be designed accordingly).[/*]
 [/list]
 
 There are 4 main costs to consider when pricing a project:
@@ -205,6 +209,10 @@ There are 4 main costs to consider when pricing a project:
 4) Contingency budget
 
 [i]Very[/i] roughly these will be equal ratios. So if the development cost is $X, the overall budget should be quadruple that.
+
+[title="2"]Getting a third opinion[/title]
+
+I strongly advise that you consult with someone who has been involved in the development of at least one modern and [i]successful[/i] website to get a third-party opinion from them for how much your site should cost (make sure they include the value of your time too).
 
 [title="2"]My company (the Composr company, ocProducts)[/title]
 
@@ -226,19 +234,19 @@ However, in actual reality, very skilled core developers with world-class skills
 
 Here are some links I've collected over the years that talk about website quotation, to help you get a balanced perspective:
 [list]
-[*]http://www.howmuchdoesawebsitecost.com/
-[*]https://web.archive.org/web/20100113014342/http://www.vestadigital.com/173/section.aspx/30/post/how-much-should-a-web-design-cost
-[*]http://www.bigclick.com.au/blog/2009/04/05/is-web-development-expensive/
-[*]http://stackoverflow.com/questions/209170/how-much-does-it-cost-to-develop-an-iphone-application
-[*]http://ezinearticles.com/?iPhone-App-Development&mdash;How-Long-Should-It-Take-to-Build-an-App?&id=5009146
-[*]http://www.ukbusinessforums.co.uk/forums/showthread.php?t=189357
-[*]https://moz.com/blog/seo-pricing-costs-of-services
-[*]http://www.atilus.com/webpost/what_does_a_website_cost//?what-does-a-website-cost/
-[*]http://www.outofwebsite.com/web-design-tips/tips/archives/planning-budget.html[/url]
-[*]http://www.pearsonified.com/2006/06/how_much_should_a_design_cost.php
-[*]http://www.executionists.com/blog/cost-to-build-websites-2014/
-[*]http://www.creativebloq.com/app-design/how-much-make-app-9134501
-[*]https://news.ycombinator.com/item?id=4505112
+[*] http://www.howmuchdoesawebsitecost.com/
+[*] https://web.archive.org/web/20100113014342/http://www.vestadigital.com/173/section.aspx/30/post/how-much-should-a-web-design-cost
+[*] http://www.bigclick.com.au/blog/2009/04/05/is-web-development-expensive/
+[*] http://stackoverflow.com/questions/209170/how-much-does-it-cost-to-develop-an-iphone-application
+[*] http://ezinearticles.com/?iPhone-App-Development&mdash;How-Long-Should-It-Take-to-Build-an-App?&id=5009146
+[*] http://www.ukbusinessforums.co.uk/forums/showthread.php?t=189357
+[*] https://moz.com/blog/seo-pricing-costs-of-services
+[*] http://www.atilus.com/webpost/what_does_a_website_cost//?what-does-a-website-cost/
+[*] http://www.outofwebsite.com/web-design-tips/tips/archives/planning-budget.html[/url]
+[*] http://www.pearsonified.com/2006/06/how_much_should_a_design_cost.php
+[*] http://www.executionists.com/blog/cost-to-build-websites-2014/
+[*] http://www.creativebloq.com/app-design/how-much-make-app-9134501
+[*] https://news.ycombinator.com/item?id=4505112
 [/list]
 Note that some of these may be out-dated by now.
 

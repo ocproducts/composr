@@ -131,7 +131,8 @@ If a tag is referenced that does not actually exist (e.g. [tt]I am writing some 
 
 [title="4"]The tag contents and wrapping[/title]
 
-The text between the tags (the contents) is either:[list="a"]
+The text between the tags (the contents) is either:
+[list="a"]
 [*] something the tags modify -- for example, for the [tt]b[/tt] tag it is the text to make bold
 [*] an otherwise critical parameter for the tags --- for example, for the [tt]block[/tt] tag it is the name of the block
 [/list]

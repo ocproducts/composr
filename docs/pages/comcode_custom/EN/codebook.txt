@@ -18,10 +18,10 @@ Major core contributors to Composr can get a free license to aid development.
 
 Composr's file system is basically split up into:
 [list]
-[*]Zones (the root directory itself, the [tt]site[/tt] directory, the [tt]adminzone[/tt] directory, the [tt]cms[/tt] directory, the [tt]forum[/tt] directory, and in a way the [tt]data[/tt] directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
-[*]Modules ([tt].php[/tt] files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the [tt]downloads[/tt] addon are in the [tt]downloads[/tt] module.
-[*]Comcode ([tt].txt[/tt] files)
-[*]HTML ([tt].htm[/tt] files)[/list]
+[*] Zones (the root directory itself, the [tt]site[/tt] directory, the [tt]adminzone[/tt] directory, the [tt]cms[/tt] directory, the [tt]forum[/tt] directory, and in a way the [tt]data[/tt] directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
+[*] Modules ([tt].php[/tt] files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the [tt]downloads[/tt] addon are in the [tt]downloads[/tt] module.
+[*] Comcode ([tt].txt[/tt] files)
+[*] HTML ([tt].htm[/tt] files)[/list]
 [*][tt]sources[/tt] which contain code to be included
 [*][tt]sources/hooks[/tt] which contain hooks that tie addons together so they can interoperate
 [*][tt]sources/blocks[/tt] and [tt]sources/miniblocks[/tt] which contain block files. Blocks are pluggable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.

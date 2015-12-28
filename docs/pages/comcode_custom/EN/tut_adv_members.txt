@@ -183,7 +183,8 @@ The privileges are:
  - Bypass filling-in date of birth account options
  - Bypass filling-in date of birth account options on existing accounts
 
-Note that there are effectively two sets of privileges:[list="a"]
+Note that there are effectively two sets of privileges:
+[list="a"]
 [*] Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
 [*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
 [/list]

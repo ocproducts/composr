@@ -1,6 +1,7 @@
 [title sub="Recommending {$SITE_NAME}"]Help[/title]
 
-When you recommend our site or a piece of content on our site, you can either:[list="a"]
+When you recommend our site or a piece of content on our site, you can either:
+[list="a"]
 [*] type in the details of your contacts manually
 [*] upload a [abbr="comma-separated Values"]CSV[/abbr] file of contact details
 [/list]

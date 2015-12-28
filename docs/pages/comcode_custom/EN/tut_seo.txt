@@ -50,6 +50,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Make a lot of good written content, so search engines have more to index against. Of course, this will also add to the quality of your site
  - Use the URL Schemes feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
+ - Set aside time for regular testing; test the right pages show up when doing searches, and the wrong ones don't
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
 
@@ -130,25 +131,28 @@ There's just one catch: it won't be for the term you want.
 
 [b]Anybody can get a Google top result for something particularly obscure.[/b]
 
-For example, we are top on Google for the following terms:[list]
-[*]web design sheffield "world class" functionality[/*]
-[*]composr web development[/*]
-[*]tired of partial solutions[/*]
-[*]cms web development "projects partnerships"[/*]
+For example, we are top on Google for the following terms:
+[list]
+[*] web design sheffield "world class" functionality[/*]
+[*] composr web development[/*]
+[*] tired of partial solutions[/*]
+[*] cms web development "projects partnerships"[/*]
 [/list]
-Unfortunately nobody will actually search these terms. The kinds of terms we want are far more competitive, like:[list]
-[*]best CMS[/*]
-[*]web design sheffield[/*]
-[*]reliable web developer[/*]
+Unfortunately nobody will actually search these terms. The kinds of terms we want are far more competitive, like:
+[list]
+[*] best CMS[/*]
+[*] web design sheffield[/*]
+[*] reliable web developer[/*]
 [/list]
 It takes huge popular appeal, and often forms of incentivisation campaign, to get high on these results.
 
 So, if you are shopping for web design and someone is telling you that you'll get a top Google result, don't expect it for "London carpenter" or "best chauffeur, expect it will be something far more obscure. It may well still be a term that does get a modest stream of searches though (Google's [url="https://adwords.google.com/select/KeywordToolExternal" target="_blank"]keyword suggestion tool[/url] is great for finding 'long tail' searches that people actually do but aren't particularly competitive).
 
-Some companies do actually say they can get you a top Google result for any search term of your choice. Thinking logically, the only ways they could do this are:[list]
-[*]Doing it only if you have an infinite budget (with infinite resources, you could incentise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
-[*]Bribing or Hacking Google (seems very unlikely)[/*]
-[*]Calling a paid Google ad a top Google result (likely very common)[/*]
+Some companies do actually say they can get you a top Google result for any search term of your choice. Thinking logically, the only ways they could do this are:
+[list]
+[*] Doing it only if you have an infinite budget (with infinite resources, you could incentise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
+[*] Bribing or Hacking Google (seems very unlikely)[/*]
+[*] Calling a paid Google ad a top Google result (likely very common)[/*]
 [/list]
 One final wheeze I imagine is that the companies are just hiding behind the law. They probably guide you in your choice of keywords before you sign up, and for the small percentage of customers who still insist on something, they won't agree to sign them up, so nobody can sue them for false advertising (only a customer can really sue someone for that).
 
@@ -156,9 +160,10 @@ So to summarise, do not take the stupid claims many web companies make on face v
 
 [title="2"]A little closing advice[/title]
 
-SEO is certainly a strong possible marketing route for many websites. Two scenarios are particularly strong:[list]
-[*]for small businesses that serve a local community. These businesses can actually work off their local-nature to great advantage (imagine a query involving the name of their trade, with the town they operate in appended on the end).[/*]
-[*]for websites with a lot of community-generated or database-generated content. These sites will naturally end up targeting a large volume (a 'long tail') of less common terms that people do search for but aren't so competitive. A bit of work exposing the appropriate terms automatically and you can have a very effective strategy.[/*]
+SEO is certainly a strong possible marketing route for many websites. Two scenarios are particularly strong:
+[list]
+[*] for small businesses that serve a local community. These businesses can actually work off their local-nature to great advantage (imagine a query involving the name of their trade, with the town they operate in appended on the end).[/*]
+[*] for websites with a lot of community-generated or database-generated content. These sites will naturally end up targeting a large volume (a 'long tail') of less common terms that people do search for but aren't so competitive. A bit of work exposing the appropriate terms automatically and you can have a very effective strategy.[/*]
 [/list]
 If you are going to go down the SEO route, make sure that you have someone who will do 'white-hat' techniques rather than 'black-hat' ones. If you hire the wrong company you might find that they are trying to make your website rank highly by exchanging or buying a lot of links, and Google will likely find out very soon and get you banned.
 

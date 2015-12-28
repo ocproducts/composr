@@ -103,8 +103,8 @@ If you run a website with particularly privileged information, or security is cr
 
 The main issue with shared hosting, is that, unless either:
 [list="1"]
-[*]the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
-[*]or, the server is set to run web scripts on different hosting accounts using the account holder usernames (suEXEC)
+[*] the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
+[*] or, the server is set to run web scripts on different hosting accounts using the account holder usernames (suEXEC)
 [/list]
 then every web-server-created/writable file, and your database, is fully writable to by any other account holder.
 
@@ -267,7 +267,8 @@ It is generally a good idea to not given untrusted users this privilege, as the 
 
 There are many privileges relating to Comcode filtering. These are detailed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode tutorial[/page].
 
-We also have of internal checks that always run, many related to "Alert types" (see above), including:[list="a"]
+We also have of internal checks that always run, many related to "Alert types" (see above), including:
+[list="a"]
 [*] Constraining of input parameters for filename-only scenarios ([tt]filter_naughty[/tt], [tt]PATH_HACK[/tt])
 [*] Constraining of input parameters for codename-only scenarios ([tt]filter_naughty_harsh[/tt], [tt]EVAL_HACK[/tt])
 [*] Checks for URL fields, e.g. making sure "data:" URLs are not submitted, or special characters that could allow interference with HTTP headers ([tt]DODGY_GET_HACK[/tt])

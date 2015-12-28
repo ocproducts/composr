@@ -125,7 +125,8 @@ Compatibility notes:
 
 When merging with another copy of Composr, you should make sure the other copy must be running the same major version. While other versions may merge successfully, Composr does not support this officially.
 
-The 'cms merge' importer can merge multiple Composr websites together that either:[list="a"]
+The 'cms merge' importer can merge multiple Composr websites together that either:
+[list="a"]
 [*] each run on Conversr (and thus, Conversr data gets merged)
 [*] or, each share a forum database (what we call a "multi-site-network" situation)
 [/list]

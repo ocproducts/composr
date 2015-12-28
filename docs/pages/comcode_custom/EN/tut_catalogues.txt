@@ -115,7 +115,8 @@ Templates:
 This is probably the most attractive display, and works well if you only really need to show a title and a thumbnail on the category screen.
 
 The default template ([tt]CATALOGUE_DEFAULT_GRID_ENTRY_WRAP.tpl[/tt]) assumes the first field is the title and the second field is the picture.
-You therefore need to either:[list="a"]
+You therefore need to either:
+[list="a"]
 [*] Follow this convention
 [*] Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
 [/list]

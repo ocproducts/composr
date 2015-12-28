@@ -92,7 +92,8 @@ At no point do you reference raw content IDs. The repository does not use them (
 
 [title="3"]More detail on subpaths[/title]
 
-If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:[list="a"]
+If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:
+[list="a"]
 [*] Making an entry for a content type that does not have categories at all.
 [*] Making a new folder (a category) for a content type that doesn't have hierarchical categories.
 [/list]

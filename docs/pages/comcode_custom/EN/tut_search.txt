@@ -112,7 +112,8 @@ This is a problem that MySQL has with fulltext search. It is not specific to Com
 
 The problem happens particularly when Composr has to combine the fulltext search with other search constraints.
 
-The inherent technical problem is that if you:[list="a"]
+The inherent technical problem is that if you:
+[list="a"]
 [*] run the fulltext first -- you have to spend a lot of time limiting those hits down to those that match other constraints. The time taken doing this can be extreme if only a small percentage (or even 0%) match your other search constraints, especially for a broad match that has potentially 10's of thousands of fulltext hits -- it will basically go on for ever because it never hits a maximum and thus never ends the query.
 [*] run the fulltext last -- MySQL can't use the fulltext index effectively, having to throw away large numbers of matches while intersecting against the huge pool of possible rows that matched the other search constraints.
 [/list]

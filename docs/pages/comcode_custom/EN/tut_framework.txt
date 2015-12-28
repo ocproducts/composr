@@ -196,7 +196,8 @@ The Composr API guide does actually include a PHP reference that defines a subse
 [title="2"]Other advantages to our framework[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
-If you still are not convinced that Composr is the right choice for you, consider some of these:[list]
+If you still are not convinced that Composr is the right choice for you, consider some of these:
+[list]
  [*] There are many frameworks for creating web applications available (such as Typo3 or Ruby-On-Rails), but few true frameworks like Composr are also 'out of the box' systems.
  [*] In addition to the above, few pure frameworks provide the dimensions of functionality that Composr can provide.
  [*] Composr's framework has excellent security. For example,[list]
@@ -211,7 +212,7 @@ If you still are not convinced that Composr is the right choice for you, conside
   [*] a large number of agents to contact for different kinds of problem;
   [*] no central authority for you to agree licensing with, should you need to do so (and this is not unlikely, as many projects flower to unexpected ends);
   [*] orphaned projects that die
-[/list]
+ [/list]
 [/list]
 
 [concepts

@@ -87,7 +87,8 @@ Composr recommends:
   - XML
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server
 
-If you do not have the PHP FTP extension, then you will need either:[list="a"]
+If you do not have the PHP FTP extension, then you will need either:
+[list="a"]
 [*] an environment where the web server user has recursive write access over the web directories (most Windows servers)
 [*] an environment where the web server user is the same as the virtual hosting login user (suEXEC)
 [/list]
@@ -206,9 +207,9 @@ In addition, from your main FTP account, the same file would likely be '/httpdoc
 
 In other words, three views of the file system exist, according to context:
 [list="1"]
-[*]The full file system view, which is usually completely hidden from you, but which is what Composr actually itself uses
-[*]The FTP view, which branches off from the base of your account directory in the full file system view
-[*]The URL view, which branches off from the httpdocs directory in your account directory
+[*] The full file system view, which is usually completely hidden from you, but which is what Composr actually itself uses
+[*] The FTP view, which branches off from the base of your account directory in the full file system view
+[*] The URL view, which branches off from the httpdocs directory in your account directory
 [/list]
 
 As previously mentioned, this file system is merely illustrative. Different servers use different conventions; for example [tt]httpdocs[/tt] is often [tt]public_html[/tt] or [tt]www[/tt].

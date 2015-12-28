@@ -47,14 +47,14 @@ For this, I am assuming that you are using [concept]Conversr[/concept]. If you a
 [media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_2.png[/media]
 [media width="150" description="Select to browse the f_members table" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_1.png[/media]
 [list="1"]
-[*]Enter phpMyAdmin
-[*]Browse the contents of the Composr f_members table (named [tt]cms_f_members[/tt] if you used the default table prefix).
-[*]You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
-[*]There are numerous fields, but we only need to change three:[list]
+[*] Enter phpMyAdmin
+[*] Browse the contents of the Composr f_members table (named [tt]cms_f_members[/tt] if you used the default table prefix).
+[*] You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
+[*] There are numerous fields, but we only need to change three:[list]
 [*][tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
 [*][tt]m_pass_salt[/tt] should be blanked out.
 [*][tt]m_password_compat_scheme[/tt] should be set to the literal value 'md5'.[/list]
-[*]Scroll to the bottom of the form and click 'Go'.
+[*] Scroll to the bottom of the form and click 'Go'.
 [/list]
 
 You should now be able to log in to Composr using your new password.

@@ -217,7 +217,8 @@ This can be done in two ways:
 1) Using the Admin Zone, the theme image editing screen
 2) Manually managing files, FTP / Hosting File manager
 
-To actual get rid of the existing default avatars you will need to remove the addons that they are bundled with:[list="a"]
+To actual get rid of the existing default avatars you will need to remove the addons that they are bundled with:
+[list="a"]
 [*][tt]cns_avatars[/tt]
 [*][tt]cns_cartoon_avatars[/tt]
 [*][tt]cns_thematic_avatars[/tt]

@@ -5,6 +5,10 @@ This tutorial explains how to choose a developer.
 
 It's really important to select a company that does much more than just tell you what they know you expect to hear as an outside buyer.
 
+Computer programmers are extremely skilled employees who have to go through degree-level education before they can even truly start the process of becoming experts in the dozens of technologies they work with on a day-to-day basis. It is analogous to solicitors needing to go through law school and doctors having to go through medical school.
+
+This tutorial has a bias towards fixed-bid (fixed price) projects. Ideally you should actually go with an agile project, where you have an ongoing commitment to paying for the project to be tuned and maintained on an ongoing basis. In this scenario there wouldn't usually be a separate maintenance contract or contingency budget, and much of the fine-tuning and testing could be carried on over a longer term. Agile takes into account that no amount of planning can ever be enough, given that lessons are learnt and situations change. However also of course to some it is not feasible to be able to have a project without a fixed budget and guaranteed specification, hence why many clients won't accept a true agile approach. See the [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products tutorial[/page] for more details on agile processes.
+
 [title="2"]Terminology[/title]
 
 There are many terms you can use to describe a developer of websites (either companies or individuals), such as:
@@ -29,14 +33,21 @@ You may also hear terms like "web designer". A designer typically is closer to t
 At ocProducts we often find that prospective clients don't know how to evaluate a software company. It's understandable: a lot of web businesses are first-time-businesses, and they are often started by people who are expert in the subject matter, but not web technology. People can't know everything.
 
 It becomes a problem in two particular scenarios:
-[list="1"][*]when people think shopping for a software company is like shopping for a loaf of bread: find the cheapest thing that looks like it fits the bill (okay, I'm aware some of you like your fancy breads, full of garlic and strawberrys, but I'm going to ignore you lot)[/*]
-[*]when people decide based on the fancy sales pitch that appeared to hit their needs and possibly also came with a low price. This can be very dangerous: it is very easy for a company to invest in sales rather than design or technology, and make strong claims that are actually true but are tied only to very superficial offerings. It is cheaper to sell well than to design and innovate well, and it leads to a wildly successful business model of dealing on volume with a false air of quality that undercuts the actual professionals in the market.[/*]
+[list="1"]
+[*] when people think shopping for a software company is like shopping for a loaf of bread: find the cheapest thing that looks like it fits the bill (okay, I'm aware some of you like your fancy breads, full of garlic and strawberrys, but I'm going to ignore you lot)[/*]
+[*] when people decide based on the fancy sales pitch that appeared to hit their needs and possibly also came with a low price. This can be very dangerous: it is very easy for a company to invest in sales rather than design or technology, and make strong claims that are actually true but are tied only to very superficial offerings. It is cheaper to sell well than to design and innovate well, and it leads to a wildly successful business model of dealing on volume with a false air of quality that undercuts the actual professionals in the market.[/*]
 [/list]
-As you can imagine, these scenarios are a particular bug-bear for any development company focused around serious engineering -- hence why I feel the need to explain how to properly evaluate a software company.
+As you can imagine, these scenarios are particular bug-bears for any development company focused around serious engineering -- hence why I feel the need to explain how to properly evaluate a software company.
 
 The rest of this section consists of a number of points we believe you should challenge your web design company on, and how to test them. To make your evaluation fair, don't tell the company you're reading this tutorial or tell them the expected touch points from your queries, because that would spoil the test.
 
 Of course, not all projects are the same, so use some judgement to determine what particular points affect you.
+
+[title="3"]Evaluting the Requirements Analysis Process[/title]
+
+A provider should be able to describe the formal design documents that would be delivered prior to development. Whether these will be delivered as a paid phase, or as part of the bid phase, varies.
+
+You will need to make sure important details aren't missed. Imagine if you were buying a house -- you couldn't be confident that you'll get what you want without having a professional discussion beyond your original list of rooms. Never underestimating the importance of planning: failing to plan is planning to fail.
 
 [title="3"]Evaluating Design[/title]
 
@@ -48,7 +59,7 @@ Ask about how they will make the design reflect your brand principles. You shoul
 
 [title="3"]Evaluating Programming[/title]
 
-Ask what CMS will be used (maybe you want Composr CMS, but this tutorial is non-partisan), and what experience they have writing custom code for that CMS. If they just mention a third party CMS and say they use third party plugins for it, and your project isn't just a very off-the-shelf kind of thing, run for the hills. You need someone who can actually make things, not just plug them together.
+Ask what CMS will be used (maybe you want Composr CMS, but this tutorial is non-partisan), and what experience they have writing custom code for that CMS or very similar systems. If they just mention a third party CMS and say they use third party plugins for it, and your project isn't just a very off-the-shelf kind of thing, run for the hills. You need someone who can actually make things, not just plug them together.
 
 You should ask to see examples of specific new functionality they have implemented themselves.
 
@@ -71,7 +82,7 @@ If you are doing credit card processing, ask them what you need on the server fo
 
 [title="3"]Evaluating Project management[/title]
 
-Ask what process will be used for managing the product. Ideally they should be able to send you a diagram, because a good web design company will have something in place already as a 'default' process. Of course, every project is different, so they may tune it for you, but you should expect more than just words.
+Ask what process will be used for managing the project. Ideally they should be able to send you a diagram, because a good web design company will have something in place already as a 'default' process. Of course, every project is different, so they may tune it for you, but you should expect more than just words.
 
 The process should clearly show at what point you may ask for revisions, when things are 'signed off' and it should reference charging models for scope changes and how this may impact schedule.
 
@@ -83,6 +94,10 @@ You should expect an ongoing relationship with the web designer, as you can't re
 
 You should explain you require ongoing service from your web designer, and ask them to propose how they will charge for testing of new browsers. Mention you need to ensure that the site stays secure and ask them what they suggest -- they really should mention to you a way of them rolling out security updates to you if vulnerabilities are found in the software. Expect to pay for it, but expect it to be offered too!
 
+[title="3"]Evaluating Price[/title]
+
+The [page="_SEARCH:sup_pricing"]pricing tutorial[/page] provides some detail on what are typical prices to expect. If a provider is quoting significantly less than expected for the kind of company than they are, try and assess whether they can sustain their pricing. They might have underestimated complexity, be charging less than they are worth due to naivety, just trying to make some money on a side-gig, or just trying to win your work so they can do a quick and dirty job on it for you. On the other hand, they may have some particular process or approach, or personal drive, that makes them able to compete particularly well. Do a probing analysis rather than just comparing quotes.
+
 [title="3"]Evaluating other factors[/title]
 
 Here are 10 more things to consider:
@@ -92,10 +107,10 @@ Here are 10 more things to consider:
 4) What is the policy for out-of-hours support? (weekends, evenings, the middle of the night)
 5) Is there a documented off-site backup policy already in place, including regular testing of backup integrity?
 6) Are all developers based in (home country), and if not, quantify the cost saving this will give me?
-7) What is the change management process, for changes in specification during implementation of a contract?
-8) Describe the formal design documents that would be delivered prior to development.
-9) What contingency budget should the customer retain for unexpected development costs?
-10) How much should the customer set aside for marketing the project, outside of development?
+7) What contingency budget should the customer retain for unexpected development costs?
+9) How much should the customer set aside for marketing the project, outside of development?
+9) Is the developer working full-time for you, or do they have other commitments and distractions?
+10) Is the developer committed for the long term and able to sustain their operation?
 
 [title="3"]Evaluating [i]yourself[/i][/title]
 
@@ -112,18 +127,20 @@ Plan defensively and strategically! And, budget accordingly.
 
 Budgets are always limited, so to fit your budget a web designer probably will not suggest all the things that would be a good idea for you. Can you blame them, they don't want to hear a thump as you fall onto the floor in shock? Besides, it takes time for them to make suggestions, and it is futile for a web designer to suggest what they think you can't afford. It's pretty common for web designers to have future clients coming in for a project that costs ten times more than the client thinks even in it's most basic implementation, because web pricing really isn't that well understood (see my [page="_SEARCH:sup_pricing"]pricing tutorial[/page]).
 
-Here are a few things I would not expect a web designer to suggest, but if you can provide a large enough budget are quite possibly worth having included:
-
+Here are a few things I would not necessarily expect a web designer to suggest, but if you can provide a large enough budget are quite possibly worth having included:
 [list]
-[*]Production of a high quality introduction video for your front page[/*]
-[*]A print stylesheet, so your pages look good when printed[/*]
-[*]A favicon (that's the little icon for your website that shows in the address bar and bookmarks)[/*]
-[*]Testing across a whole range of different smartphone and tablet sizes[/*]
-[*]Usability testing ([i]highly[/i] recommended, but potentially relatively costly)[/*]
-[*]A staging site, so that you can test and experiment with your CMS[/*]
-[*]Ongoing study of analytics to find weaknesses, and propose improvements[/*]
-[*]Ongoing Internet Marketing support, such as social media campaigning and sending of nicely designed newsletters[/*]
-[*]Ongoing SEO for link building and tuning position on some applicable search terms[/*]
+[*] Production of a high quality introduction video for your front page[/*]
+[*] A print stylesheet, so your pages look good when printed[/*]
+[*] A favicon (that's the little icon for your website that shows in the address bar and bookmarks)[/*]
+[*] Testing across a whole range of different smartphone and tablet sizes[/*]
+[*] Usability testing ([i]highly[/i] recommended, but potentially relatively costly)[/*]
+[*] A staging site, so that you can test and experiment with your CMS[/*]
+[*] Ongoing study of analytics to find weaknesses, and propose improvements[/*]
+[*] Ongoing Internet Marketing support, such as social media campaigning and sending of nicely designed newsletters[/*]
+[*] Ongoing SEO for link building and tuning position on some applicable search terms[/*]
+[*] Accessibility testing with a screen reader, and automatic testing tools, to ensure blind users can use the website effectively[/*]
+[*] A full code review by a senior engineer[/*]
+[*] A proper training course for any site administrators to go through[/*]
 [/list]
 
 [title="2"]Offshoring[/title]
@@ -135,10 +152,11 @@ There's a huge advantage to offshoring PHP development: cost. The numbers seem e
 
 In this tutorial I will try and explain when offshoring PHP development works, and when it does not.
 
-First, let's discuss a bit of context. When a company says their rate is xxx per hour, you need to consider what that actually means. Comparing to a serious Open Source engineering company like my company ocProducts:[list]
-[*]We work on an Open Source model, so the customer is essentially paying for the maintenance of the ecosystem they are working in within the hourly rate, but as a result there is a bit of a monopoly of expertise: you're paying the people who created the ecosystem, so there'll be a huge efficiency from that.[/*]
-[*]In our case, often there is a certain lead of project management time that doesn't get counted in the hours. A project will be spec'd up, and we do try and charge for it in project management, but it is rarely equal to the amount actually spent setting up a job. When offshoring you typically do absolutely everything on the clock, because there's no lower service tier that the offshoring companies need to differentiate themselves against.[/*]
-[*]When we use our hourly rate, it is almost always on a fixed-quote basis. The reality is we usually spend 2 or 3 times longer than we actually account for, because the hours estimated are usually quite optimistic, and in reality there are always things that come up, like bugs in third party code to workaround.[/*]
+First, let's discuss a bit of context. When a company says their rate is xxx per hour, you need to consider what that actually means. Comparing to a serious Open Source engineering company like my company ocProducts:
+[list]
+[*] We work on an Open Source model, so the customer is essentially paying for the maintenance of the ecosystem they are working in within the hourly rate, but as a result there is a bit of a monopoly of expertise: you're paying the people who created the ecosystem, so there'll be a huge efficiency from that.[/*]
+[*] In our case, often there is a certain lead of project management time that doesn't get counted in the hours. A project will be spec'd up, and we do try and charge for it in project management, but it is rarely equal to the amount actually spent setting up a job. When offshoring you typically do absolutely everything on the clock, because there's no lower service tier that the offshoring companies need to differentiate themselves against.[/*]
+[*] When we use our hourly rate, it is almost always on a fixed-quote basis. The reality is we usually spend 2 or 3 times longer than we actually account for, because the hours estimated are usually quite optimistic, and in reality there are always things that come up, like bugs in third party code to workaround.[/*]
 [/list]
 So after all that, when comparing like to like, we are probably talking about more like $15 per hour versus $20 per hour (assuming our efficiency saving made us get 50% more done per hour).
 
@@ -147,37 +165,40 @@ That's a big drop, but it's still cheaper to offshore, and when you run a busine
 People in India (or Pakistan, or Russia, or any other country) are not inherently any more or less smart than people in, say, America or the UK. To say that is pure xenophobia and I find it highly distasteful.
 
 [media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image7.jpg[/media]
-So, where can offshoring go wrong? Here's a list from my own experience:[list]
-[*]An issue called [url="power difference"]http://www.lessonsoffailure.com/developers/real-reason-outsourcing-fails/[/url] comes into play. Developing countries usually have a culture where it is considered highly unprofessional to ever question someone who is a superior. Managers in Western countries usually thrive on feedback from people under them, and ask for all their decisions to be questioned, and I think this is vital to success. You really don't want people to be "yes men". Don't underestimate the seriousness of this problem, a manager never has the time and perspective needed to perfectly explain a task, but if employees don't ask questions when they start to explore out the task in it's full detail, those tasks don't get done right. This kind of culture is inherent to countries where labour is very cheap, because it's more about power structures than cost.[/*]
-[*]Time-zone differences: either you need to wait for a developer to come on-shift, or the developer is asked to work horrible hours and then sleep in a noisy city during day time (Indian cities are notoriously noisy).[/*]
-[*]You can't look over someone's shoulder to see how people are doing. A manager has to find a balance between high-level management and micromanagement (the balance is different for different employees), and looking over people's shoulders occasionally is a great technique that is completely impossible with staff who are not in the office. Of course, this problem also applies to freelancers and people working from home. Don't think that Skype or desktop sharing will make up for this, it is far harder to get an accurate check using these things, and it takes a certain amount of negotiation and time each time you want to do it. I can say from experience that just walking around the office (maybe while walking to the door to go to the loo -- i.e. taking out virtually no time for it) and checking everyone at once is infinitely better. Never assume people will pro-actively bring problems to you, because developers are all to at least some small extent 'shy', they try not to bother you, and they often do not realise how they could be working more efficiently.[/*]
-[*]People are less likely to ask questions if they have to type them out.[/*]
-[*]I have good Indian friends who know English far better than me, but the average Indian developer will make a lot of grammatical mistakes that need to all be reported or fixed in-house.[/*]
-[*]There are differences in quality standards between developed and developing countries. This may sound controversial, but it cannot be denied, ask any Indian and they will say how their country is organised chaos. People in the West have grown up with an expectation of beautiful refined media, not things that are hammered together, and you often see this difference in the quality of online work too. It sounds prejudiced, and perhaps it is, but I think it is true [i]for many cases[/i] (of course, you should never generalise and stereotype, it's a thin line to walk!).[/*]
-[*]Offshore developers don't feel compelled to compete so hard to justify their rates, because there is nobody significantly cheaper for you to run to. Of course, many people have better reasons to compete than just based on rate justification, but I think to some degree the basic feeling of "you're paying peanuts, just how hard should I bust my ass for you" is sometimes there. Again, I don't want to generalise, because I have seen some extremely diligent Indian developers.[/*]
-[*]The demand for offshoring PHP development exceeds the supply of developers, yet the price ceiling cannot rise due to the nature of the market, hence breaking normal rules of supply and demand -- hence kind of tying up the industry in a certain mediocrity.[/*]
-[*]The more experienced developers usually either leave the country, or they get tied up in large corporates that work for companies like Microsoft, or they take themselves out of the talent pool by starting their own businesses.[/*]
-[*]You cannot doubt that there will be cultural-based and language-based communication problems. To take a common example, pink in India is often a favourite colour for men, which is actually the natural case because it is a dangerous blood-like colour which goes hand in hand with your stereotypical male aggression -- but a few hundred years ago that changed in Western cultures and it became female-associated.[/*]
-[*]It is very hard to explain some things in writing, compared to demonstrating something on screen and using your finger to point.[/*]
-[*]Most offshoring companies will not let you interview developers yet also don't have the same level of written programming standards a Western company would have.[/*]
+So, where can offshoring go wrong? Here's a list from my own experience:
+[list]
+[*] An issue called [url="power difference"]http://www.lessonsoffailure.com/developers/real-reason-outsourcing-fails/[/url] comes into play. Developing countries usually have a culture where it is considered highly unprofessional to ever question someone who is a superior. Managers in Western countries usually thrive on feedback from people under them, and ask for all their decisions to be questioned, and I think this is vital to success. You really don't want people to be "yes men". Don't underestimate the seriousness of this problem, a manager never has the time and perspective needed to perfectly explain a task, but if employees don't ask questions when they start to explore out the task in it's full detail, those tasks don't get done right. This kind of culture is inherent to countries where labour is very cheap, because it's more about power structures than cost.[/*]
+[*] Time-zone differences: either you need to wait for a developer to come on-shift, or the developer is asked to work horrible hours and then sleep in a noisy city during day time (Indian cities are notoriously noisy).[/*]
+[*] You can't look over someone's shoulder to see how people are doing. A manager has to find a balance between high-level management and micromanagement (the balance is different for different employees), and looking over people's shoulders occasionally is a great technique that is completely impossible with staff who are not in the office. Of course, this problem also applies to freelancers and people working from home. Don't think that Skype or desktop sharing will make up for this, it is far harder to get an accurate check using these things, and it takes a certain amount of negotiation and time each time you want to do it. I can say from experience that just walking around the office (maybe while walking to the door to go to the loo -- i.e. taking out virtually no time for it) and checking everyone at once is infinitely better. Never assume people will pro-actively bring problems to you, because developers are all to at least some small extent 'shy', they try not to bother you, and they often do not realise how they could be working more efficiently.[/*]
+[*] People are less likely to ask questions if they have to type them out.[/*]
+[*] I have good Indian friends who know English far better than me, but the average Indian developer will make a lot of grammatical mistakes that need to all be reported or fixed in-house.[/*]
+[*] There are differences in quality standards between developed and developing countries. This may sound controversial, but it cannot be denied, ask any Indian and they will say how their country is organised chaos. People in the West have grown up with an expectation of beautiful refined media, not things that are hammered together, and you often see this difference in the quality of online work too. It sounds prejudiced, and perhaps it is, but I think it is true [i]for many cases[/i] (of course, you should never generalise and stereotype, it's a thin line to walk!).[/*]
+[*] Offshore developers don't feel compelled to compete so hard to justify their rates, because there is nobody significantly cheaper for you to run to. Of course, many people have better reasons to compete than just based on rate justification, but I think to some degree the basic feeling of "you're paying peanuts, just how hard should I bust my ass for you" is sometimes there. Again, I don't want to generalise, because I have seen some extremely diligent Indian developers.[/*]
+[*] The demand for offshoring PHP development exceeds the supply of developers, yet the price ceiling cannot rise due to the nature of the market, hence breaking normal rules of supply and demand -- hence kind of tying up the industry in a certain mediocrity.[/*]
+[*] The more experienced developers usually either leave the country, or they get tied up in large corporates that work for companies like Microsoft, or they take themselves out of the talent pool by starting their own businesses.[/*]
+[*] You cannot doubt that there will be cultural-based and language-based communication problems. To take a common example, pink in India is often a favourite colour for men, which is actually the natural case because it is a dangerous blood-like colour which goes hand in hand with your stereotypical male aggression -- but a few hundred years ago that changed in Western cultures and it became female-associated.[/*]
+[*] It is very hard to explain some things in writing, compared to demonstrating something on screen and using your finger to point.[/*]
+[*] Most offshoring companies will not let you interview developers yet also don't have the same level of written programming standards a Western company would have.[/*]
 [/list]
 
 As you can see, the situation is far more complex than just the "communication issues" clich&eacute;, and it is not an issue with core skill.
 
 [media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image6.jpg[/media]
-But even after all this, you cannot deny the difference in price, it still often works out cheaper when you take everything into account. Consider these counter-arguments:[list]
-[*]It is cheaper per-hour regardless of the above factors[/*]
-[*]The great Western developer you hire may not be available to you either. I mentioned $100/hr above, but you could find that the developers you really need charge $200/hr because the $100/hr are fully booked or don't have the decade of practical experience you need. There is a significant shortage of skilled software developers and salaries have gotten very high.[/*]
-[*]To retain developers, you need to maintain a relationship where you give them regular work. Even if there are efficiency problems with offshore developers, being able to keep them permanently on salary is a huge advantage.[/*]
-[*]Having people in different timezones can be useful. You can pick up work in your country, after it was finished in another -- or get things done conveniently over-night so they are waiting for you in the morning.[/*]
-[*]You may be able to find a really good offshore developer who doesn't have many of the common problematic traits above, especially if you pay them over-the-odds. There are stand-out geniuses in every country.[/*]
+But even after all this, you cannot deny the difference in price, it still often works out cheaper when you take everything into account. Consider these counter-arguments:
+[list]
+[*] It is cheaper per-hour regardless of the above factors[/*]
+[*] The great Western developer you hire may not be available to you either. I mentioned $100/hr above, but you could find that the developers you really need charge $200/hr because the $100/hr are fully booked or don't have the decade of practical experience you need. There is a significant shortage of skilled software developers and salaries have gotten very high.[/*]
+[*] To retain developers, you need to maintain a relationship where you give them regular work. Even if there are efficiency problems with offshore developers, being able to keep them permanently on salary is a huge advantage.[/*]
+[*] Having people in different timezones can be useful. You can pick up work in your country, after it was finished in another -- or get things done conveniently over-night so they are waiting for you in the morning.[/*]
+[*] You may be able to find a really good offshore developer who doesn't have many of the common problematic traits above, especially if you pay them over-the-odds. There are stand-out geniuses in every country.[/*]
 [/list]
 
-I have a lot of personal experience offshoring to India. For most of the life-time of my company I have kept at least some offshore developers on-staff, and continue to do so. Always work has had to be heavily scrutinised before releasing it to clients, but having a balance of onshore and offshore skills has always worked well for me, even though it is often very stressful to manage it. My opinion is that you use offshoring PHP development if you have a task that meets the following criteria:[list]
-[*]It doesn't need much explanation[/*]
-[*]It is quite long[/*]
-[*]It involves standard skills[/*]
-[*]It is not particularly cultural[/*]
+I have a lot of personal experience offshoring to India. For most of the life-time of my company I have kept at least some offshore developers on-staff, and continue to do so. Always work has had to be heavily scrutinised before releasing it to clients, but having a balance of onshore and offshore skills has always worked well for me, even though it is often very stressful to manage it. My opinion is that you use offshoring PHP development if you have a task that meets the following criteria:
+[list]
+[*] It doesn't need much explanation[/*]
+[*] It is quite long[/*]
+[*] It involves standard skills[/*]
+[*] It is not particularly cultural[/*]
 [/list]
 
 I hope you find all this useful, and balanced. I have considered these issues for years, and it's hard to get past the stereotypes, clich&eacute;s, and biased points of view.

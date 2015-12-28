@@ -36,7 +36,8 @@ This simplicity is key to the flexibility of the system -- it is a system of con
 
 [title="2"]Setting up the structure[/title]
 
-The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an ad hoc basis, by either:[list="a"]
+The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an ad hoc basis, by either:
+[list="a"]
 [*] referencing them in the child-list for a page,
 [*] or, by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
 [/list]

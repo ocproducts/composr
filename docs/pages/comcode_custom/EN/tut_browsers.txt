@@ -57,7 +57,8 @@ Browser testing presents the following difficulties:
 4) Internet Explorer only works on Windows, so you need a Windows install.
 5) On browsers such as Google Chrome operating system font rendering differences may mean things lay out slightly differently on different operating systems.
 
-There are a number of approaches that can help you with the above problems:[list]
+There are a number of approaches that can help you with the above problems:
+[list]
 [*] Google Chrome has excellent device emulation, for quick/earlier testing for different mobile devices (not a substitute for proper testing).
 [*] Internet Explorer lets you run in compatibility modes to test on earlier versions of their engines (imperfect, but useful).
 [*] [url="IETester"]http://www.my-debugbar.com/wiki/IETester/HomePage[/url] lets you test much older Internet Explorer versions (imperfect/unstable, but useful).
@@ -89,7 +90,8 @@ There are 3 approaches to solving this problem that work together:
 2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
 3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
 
-The Composr [tt]wide_print[/tt] parameter is activated from either:[list="a"]
+The Composr [tt]wide_print[/tt] parameter is activated from either:
+[list="a"]
 [*] The link from the [tt]side_printer_friendly[/tt] block
 [*] The link from the [tt]main_screen_actions[/tt] block
 [*] [i]Or, a link you've put together yourself[/i]

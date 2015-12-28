@@ -9,7 +9,8 @@ Composr can be customized to disable joining, but this is not a directly configu
 [surround]
 [media width="150" description="See now it does show guests cannot join" float="right"]data_custom/images/docs/sup_join_disabling/pte_guests.png[/media]
 [media width="150" description="Setting permissions in the Permissions Tree Editor" float="right"]data_custom/images/docs/sup_join_disabling/permissions.png[/media]
-Follow these steps to set the permissions:[list="1"]
+Follow these steps to set the permissions:
+[list="1"]
 [*] Go to Admin Zone > Security > Permissions Tree Editor.
 [*] Select "Join". You can see a green circle next to "Module: join" since the list reflects Guests' permissions.
 [*] Then you can change the permission for each usergroup for this [tt]:join[/tt] page in the box given. Use the "+/-" button to select/deselect all the check boxes. Deselect all the check boxes.
@@ -22,7 +23,8 @@ Follow these steps to set the permissions:[list="1"]
 [surround]
 [media width="150" description="The error message" float="right"]data_custom/images/docs/sup_join_disabling/join_disabled.png[/media]
 [media width="150" description="Setting a custom error message" float="right"]data_custom/images/docs/sup_join_disabling/matchkey_denied.png[/media]
-Follow these steps to set a custom error message:[list="1"]
+Follow these steps to set a custom error message:
+[list="1"]
 [*] We can customise the access-denied error message displayed in the join page by going to:
 Admin Zone > Security > Match-key page restrictions.
 [*] Enter the page name ([tt]:join[/tt] in our case) in the "Match-key" box and a custom message in the "Message" box under the "Match-key permission-denied messages" heading.

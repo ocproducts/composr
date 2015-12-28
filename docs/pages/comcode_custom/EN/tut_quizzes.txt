@@ -93,7 +93,8 @@ You can mark which answers are correct (not applicable to surveys), and write ou
 
 You can reward members with points for passing a test.
 
-Questions that aren't multi-choice will be either:[list="a"]
+Questions that aren't multi-choice will be either:
+[list="a"]
 [*] manually-marked
 [*] unmarked
 [/list]

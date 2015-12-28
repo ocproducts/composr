@@ -183,14 +183,14 @@ You should use 'CDATA' for your [tt]<script>[/tt] tag, like:
 
 It is important that:
 [list]
-[*]You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
-[*]You should actually use CDATA so the document does conform as XHTML.
-[*]You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
-[*]Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
+[*] You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
+[*] You should actually use CDATA so the document does conform as XHTML.
+[*] You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
+[*] Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
 [code="JavaScript"]
 add_event_listener_abstract(window,'load',function() { ... });
 [/code]
-[*]This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
+[*] This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
 [/list]
 
 [title="4"]Example: mixing event handlers, inline JavaScript, and a library[/title]

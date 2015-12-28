@@ -71,12 +71,13 @@ Go to http://mysql.com and download and install the latest stable Windows releas
 
 Depending on your PHP installation, you may need to enable the [tt]mysql[/tt] PHP extension in the php.ini file, and then to restart your web server. Also enable GD2 if it is not already enabled.
 
-You will need to create a database for Composr. To do this you may either:[list]
-[*]simply create a sub-directory in the MySQL [tt]data[/tt] directory
-[*]do it using the mysql Windows tools, if you installed them
-[*]install [url="phpMyAdmin"]http://www.phpmyadmin.net/[/url] on-to your web server and use that
-[*]install a nice SQL manager such as [url="HeidiSQL"]http://www.heidisql.com/[/url]
-[*]use the [tt]mysql.exe[/tt] command line program:
+You will need to create a database for Composr. To do this you may either:
+[list]
+[*] simply create a sub-directory in the MySQL [tt]data[/tt] directory
+[*] do it using the mysql Windows tools, if you installed them
+[*] install [url="phpMyAdmin"]http://www.phpmyadmin.net/[/url] on-to your web server and use that
+[*] install a nice SQL manager such as [url="HeidiSQL"]http://www.heidisql.com/[/url]
+[*] use the [tt]mysql.exe[/tt] command line program:
 
 (open a command prompt in the mysql bin directory)
 [code="Bash"]

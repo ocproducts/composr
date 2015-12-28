@@ -77,7 +77,8 @@ Editing the CSS is one of the most trivial, but most important, of Composr's the
 
 The other CSS files are used in specific areas of the system.
 
-To edit a CSS file:[list="1"]
+To edit a CSS file:
+[list="1"]
 [*] click it from the list
 [*] click the "Edit" button
 [*] change the CSS. For example, adding:
@@ -197,7 +198,8 @@ You can delete a theme image from the bottom of its edit form, if it's not a def
 
 To add a theme image, go to Admin Zone > Style > Themes, then choose the "Edit theme images" icon for the theme of your choice, as before. There is a button at the bottom, "Add theme image", which will take you to a screen allowing you to create a new theme image.
 
-You need to fill these fields:[list]
+You need to fill these fields:
+[list]
 [*] [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "sortablefield_asc" image in the folder [tt]themes/themename/images/results[/tt], is currently titled [tt]results/sortablefield_asc[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what group of images it belongs in.
 [*] [b]Upload[/b] or [b]URL[/b]: Choose one of these options to upload your image to your website. Use the upload field for files that currently exist on your computer, or use the URL option for an image that is already online somewhere.
 [*] [b]Use for all themes[/b]...

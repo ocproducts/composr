@@ -48,7 +48,8 @@ To integrate this page as [tt]site:mypage[/tt], the following steps would need t
 
 [title="3"]The magical way[/title]
 
-Composr can actually handle most things for you if you want to defer control to it:[list="1"]
+Composr can actually handle most things for you if you want to defer control to it:
+[list="1"]
 [*] Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)[list]
  [*][i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:[list]
   [*] For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named [tt]example[/tt]. Put the file in [tt]example/pages/html_custom/EN/[/tt]
