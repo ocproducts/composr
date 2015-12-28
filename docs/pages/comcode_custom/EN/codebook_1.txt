@@ -8,6 +8,7 @@
 
 [title="3"]Bootstrapping[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/1.jpg[/media]
 The basic interaction chain for a request is the same as pretty much any PHP system:
 
 Web browser > HTTP request (URL, GET/POST) > Web server > Web server configuration > PHP > Composr > HTTP response > Web browser
@@ -68,6 +69,7 @@ Composr initialisation can be controlled by a few global variables in the entry-
 
 [title="3"]Addons[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/2.jpg[/media]
 Composr is split into addons. Some addons are core, some are optional. Optional addons may be removed, and the removal results in file-deletion. Composr has inbuilt addon import and export support, that allows a user to use and distribute packaged addons for Composr.
 
 Addons contain module-pages (and blocks), and it is these modules (and blocks) that define things like database structure. Actually addons may define this too directly in their registry file, but it is rare for us to do it this way. Modules (and blocks) are independently versioned, but the versions of individual modules (and blocks) are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
@@ -92,6 +94,7 @@ A user should upgrade an addon by installing it on top of itself. i.e. don't uni
 
 [title="4"]What is a module?[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/3.jpg[/media]
 In Composr terminology 'modules' are dynamic 'pages' .
 
 Example: [tt]index.php?page=<module_name>[/tt]
@@ -418,18 +421,9 @@ The following object methods are not actually called as methods, but actually as
 This means that you cannot use [tt]$this[/tt] inside the code.
 Architecturally this is not ideal, but for practical reasons it was necessary because of the PHP memory limit. Upon installation, or module querying (e.g. to build the site map), instantiating all objects fully would use a lot more memory than the PHP memory limit would allow.
 
-[title="5"]Config options[/title]
-
-Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
-1) A language string codename that identifies a human-readable name for the configuration option.
-2) The codename for the configuration option.
-3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
-4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
-5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
-6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.
-
 [title="5"]Screen conventions[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/4.jpg[/media]
 Modules functionality is subdivided by 'screen'. 'Screens' are segregated by their unique expected output -- individual error messages don't run from separate screen functions, because error messages aren't expected in advance, they're incidental.
 
 As an example, if a module was designed to add a resource, it would need at least two screens:
@@ -439,6 +433,16 @@ As an example, if a module was designed to add a resource, it would need at leas
 The function names of screens do not need to mirror the names of the [tt]type[/tt] parameter, but usually it is clearer this way.
 
 All modules must also define the default screen, which is almost always identified by [tt]type=browse[/tt] or by there being no [tt]type[/tt] parameter given. The role of the default screen depends on the module, but usually it either acts to display a category browser or a menu. Usually all other screens in a module will be reachable by navigating starting from the default screen of that module.
+
+[title="3"]Config options[/title]
+
+Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
+1) A language string codename that identifies a human-readable name for the configuration option.
+2) The codename for the configuration option.
+3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
+4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
+5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
+6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.
 
 [title="3"]Templates and Tempcode[/title]
 
@@ -946,6 +950,7 @@ In Composr content types are implemented via a lot of different files. The best 
 
 [title="3"]Installation code[/title]
 
+[media description="" width="280" float="right" framed="0"]data_custom/images/docs/codebook_1/5.jpg[/media]
 In Composr we need to program modules so that they auto-create database structure and database contents. Even if working direct for a single client, it is best that modules be constructed like this as it eases development (it's easy to set up different development sites for example).
 
 If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default [tt]catalogues[/tt] module does a similar thing, with its creation of some default catalogues.
@@ -1059,6 +1064,7 @@ We don't normally bother defining a descriptions section, but I included it here
 
 [title="3"]Error handling[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/6.jpg[/media]
 Error handling in PHP is very inconsistent.
 
 There are four main ways to get an error message:
@@ -1118,6 +1124,7 @@ Parameters in URLs are separated by '&'. Keys and values and separated by '='. A
 
 [title="3"]Security[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/7.jpg[/media]
 Security is treated very seriously by the developers. We have implemented a number of abstractions and policies to keep Composr as secure as possible and it is crucial that developers understand security issues and our policies.
 
 Even admin-only sections should not have unintended exploitable behaviour. If a user is hosted in a restricted Composr-only environment, their software should not allow circumvention of current environment. Also, if a user exploits their way into somewhere they shouldn't be, it is best that that somewhere shouldn't allow them to exploit themselves into somewhere even worse... for example, if Composr's Admin Zone gets hacked, a user should not be able to get full PHP code execution access on a hosting account.
@@ -1149,6 +1156,7 @@ Another common logic error is passing in secondary ID values from a form, for ed
 
 Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/8.jpg[/media]
 XSS is short-hand for "cross-site-scripting", and essentially poisons a user's HTML output. There are two common ways this can occur:
 1) through URLs
 2) through submitted data
@@ -1199,6 +1207,7 @@ There are many important programming considerations that need to be applied in m
 
 [title="3"]Type strictness[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/9.jpg[/media]
 Type strictness comes naturally in most traditional programming languages, but languages like PHP and JavaScript are 'weak typed' and automatically perform conversions on the fly. For simple systems this is good as it makes things quicker and easier, but for complex systems like Composr it poses a problem.
 
 As a strict rule we always use strict typing. The custom version of PHP the developers use enforces this.

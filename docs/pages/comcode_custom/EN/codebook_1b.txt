@@ -8,6 +8,7 @@
 
 [title="3"]The persistent cache[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/2.jpg[/media]
 Only read this section if you feel you need an explanation for this.
 
 Composr supports a "persistent cache" that can store any arbitrary PHP data (e.g. query results) between page views. This is faster than the database: although one would think databases are made very fast, they do not know how to directly access the actual data structures used, and have an overhead in their interprocess connection system, so will never be as fast as a persistent cache.
@@ -551,6 +552,7 @@ I have just explained the history of Tempcode so I can make an important point -
 
 [title="3"]Development mode[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/1.jpg[/media]
 If Composr is running out of a git repository, or with our own custom version of PHP, it will automatically run inside 'development mode'. Development mode involves a number of intentionally quirky and strict changes to how Composr runs, including:
  - You will get error messages if you use too many queries, unless [tt]$GLOBALS['NO_QUERY_LIMIT'][/tt] is set to true.
  - Cookies will be disabled, forcing use of [tt]keep_session[/tt] for session propagating. This helps us make sure Composr doesn't need cookies to run.
@@ -739,6 +741,7 @@ Always test a new importer and keep backups before actually running it on your d
 
 [title="3"]eCommerce[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/4.jpg[/media]
 For technical information about how eCommerce is achieved in Composr, including how products work, see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
 
 For reference, the described eCommerce hooks have the following methods:
@@ -992,11 +995,11 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 (in this example the CRUD module adds one extra entry-point, [tt]browse[/tt]).
 
 The standard entry-points defined by an CRUD module are:
- - add, The UI to add a resource.
- - _add, The actualiser to add a resource.
- - edit, To choose a resource to edit/delete.
- - _edit, The UI to edit/delete a resource.
- - __edit, The actualiser to edit/delete a resource.
+ - [tt]add[/tt], The UI to add a resource.
+ - [tt]_add[/tt], The actualiser to add a resource.
+ - [tt]edit[/tt], To choose a resource to edit/delete.
+ - [tt]_edit[/tt], The UI to edit/delete a resource.
+ - [tt]__edit[/tt], The actualiser to edit/delete a resource.
 (additional sets if a category or alternate CRUD module has been chained on, via cat_crud_module [add_category, _add_category, edit_category, _edit_category, __edit_category]/alt_crud_module [add_other, _add_other, edit_other, _edit_other, __edit_other]).
 
 CRUD modules define the following standard methods:
@@ -1041,8 +1044,8 @@ Often the following are overridden at run-time, from the run_start method:
 
 [title="3"]Attachment-supporting fields: Language lookup, Comcode, and attachments[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/3.jpg[/media]
 The following steps are required for correct use of Composr's language/Comcode/attachment system:
-
 1) Define your tables correctly -- human language should almost always be defined using a '*_TRANS' field type.
 2) To input Comcode data, use the Comcode versions of the field input functions (e.g. [tt]field_input_comcode[/tt]). To allow new attachments to be added, you need to use a posting form.
 3) insert/update/delete your data using the correct Comcode/language/attachment functions. When used correctly, the special functions in Composr's API automatically handle Comcode parsing, and attachment uploading. For example, to add some Comcode, you use the [tt]insert_lang_comcode[/tt] function as a filter to convert between Comcode-format string, to translate-table ID number (if multi-language content is enabled -- otherwise it's a null-op) -- and this ID number is then inserted using the normal [tt]query_insert[/tt] function. See how the news addon code does it all for a better example -- it is best understood by copying how existing addons do it.

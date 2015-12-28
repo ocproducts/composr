@@ -138,6 +138,7 @@ Regarding '3', OOP-heavy architectures try to abstract away details to make thin
 
 '6' is something OOP-heavy systems do very well, but read on.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_3/4.jpg[/media]
 As you can see, simpler designs solve the most important concerns best, and then remaining concerns are well served by OOP-heavy designs. However, our Composr design is not actually a naive simple design at all -- it's actually very carefully structured, and has a high degree of strictness/discipline in many areas. Composr is definitely not anti-OOP by any means, it is only anti-over-engineering -- we actually rely on the strengths of OOP in many key areas of the system. Here's how our approach works to achieve the commonly-cited OOP-heavy advantages (flexibility, maintainability, clarity, and stability) without slowing development, complicating code, or hurting performance:
  - We can achieve the equivalence to dependency injection as our output and execution context states support a stack-based switching mechanism, allowing us to create sandboxes very effectively for those few cases where it is useful. The critical difference is we achieve it in far less code, with better performance, in a way that is easier to understand, and where the burden for it is only felt when you actually need this advanced functionality, rather every time you use any component of the system.
  - We can achieve inheritance via our code overrides system, which also provides the ability for users to override components without having to get down and dirty with coding. Different versions of code can be placed and tested as overrides, and new functionality can be placed using overrides. This does not suffer from the same problems as copy and paste coding, as overrides are designed to work on the function level, via some clever code we have in place, and we can even make line-by-line changes should we need to, or extend individual functions.
@@ -322,6 +323,7 @@ Never install the testing platform on a live site, or at least if you do block p
 
 [title="3"]Debugging[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/3.jpg[/media]
 When programming bear in mind that it is human to make lots of mistakes. Don't blame yourself for errors. The key is having a rigorous practices to identify and deal with them.
 
 If you are stuck with a problem you haven't been able to quickly resolve, consider these logical steps for resolving it:
@@ -600,6 +602,7 @@ in [tt]_config.php[/tt] will disable emails. This is useful on a development ser
 
 [title="3"]Hints for making websites for other people[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/2.jpg[/media]
 Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seemingly-bespoke sites such as property directories.
 
 However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
@@ -730,6 +733,7 @@ If you are considering overriding a file just so that you can add some new funct
 
 [title="3"]Composr version naming[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/1.jpg[/media]
 In order to have a consistent upgrade system, Composr versions are named according to a rigid scheme. This is best shown by example...
 
 The following are examples of valid names:

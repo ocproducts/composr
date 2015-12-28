@@ -1,14 +1,15 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, contents and introduction[/title]
 
-The Code Book contains documentation to teach experienced developers how to program for Composr.
+[box float="right" width="250px"]
+Our official IDE is PhpStorm:
+[url="https://www.jetbrains.com/phpstorm/"][img]https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png[/img][/url]
+Major core contributors to Composr can get a free license to aid development.
+[/box]
+The Code Book contains documentation to teach experienced developers how to program for Composr. This page of the Codebook is mostly for sign-posting to the deeper pages of the book.
 
 This guide is not a substitute for learning PHP, HTML, CSS, or other languages. Some introductory material for learning web development is available in our [page="docs:"]main set of tutorials[/page]. There is an excellent PHP book available for free online.
 
 To learn Composr's API, see the phpdoc comments in the source files. The source files are logically named, so it should be relatively easy to get a handle on it all. Alternatively, view the [url="auto-generated documentation"]{$BRAND_BASE_URL}/docs/api/[/url].
-
-Our official IDE is PhpStorm:
-[url="https://www.jetbrains.com/phpstorm/"][img]https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png[/img][/url]
-Major core contributors to Composr can get a free license to aid development.
 
 [contents][/contents]
 
@@ -154,6 +155,7 @@ Composr contains many "cross-cutting" features that are often present in differe
 
 [title="2"]General approach to coding standards[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook/1.jpg[/media]
 If you bought a watch, and the watch wasn't quite a perfect circle, this would impact your perception of its quality, even if the watch worked perfectly. Or, if you opened it up to do some maintenance, and it looked messy inside, you'd lose your respect for the skills of the watchmaker.
 
 This is why we insist that core Composr programmers make everything (attainably close-to / within-reason) perfect, even at the code level. That is, applying sufficient care and attention to detail when coding such that your code looks almost poetic, guided by an inbuilt sense for quality, tidiness, and consistency. It doesn't really have to take any longer to code like this -- it's more that if you wrote something that didn't have and continue beauty, you'd be instinctively repulsed by that code you wrote.

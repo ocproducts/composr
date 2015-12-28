@@ -86,17 +86,16 @@ If you are adding features to the standard Composr, you must make use of Theme W
 
 [title="3"]PNG images[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_2/png.png[/media]
 As a standard Composr uses 32-bit PNG files over other image types, unless:
  - animation is required ([tt].gif[/tt] used instead)
- - background image transparency is required (8-bit [tt].png[/tt] used instead)
- - where the image needs to be given a size different to its natural dimensions ([tt].gif[/tt] used instead)
 
-We use PNG files as they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
+We use PNG files because they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
 
 GIF files are:
  - limited to 256 colours
  - only have "binary transparency". so for smooth blending the image itself needs to be "pre-compiled" against the background colour of your website (which may be edited in the CSS, or be different in different areas of the site, so you really don't want pre-compilation assumptions).
- - can not be created by most versions of PHP, which rules out the Composr Theme Wizard from being able to modify them
+ - can not be created by some versions of PHP, which rules out the Composr Theme Wizard from being able to modify them
 
 JPEG files do not support transparency, and as we prefer to not assume any particular image won't be edited to have transparency, we opt to not use them. Also JPEG has serious problems when images are re-saved, which is a standard event when editing default images. Otherwise we acknowledge JPEG provides superior compression in most normal circumstances.
 
@@ -374,6 +373,7 @@ Some people might wonder why entry viewing isn't done via blocks, or really any 
 
 [title="3"]Making theme changes outside Composr[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_2/1.jpg[/media]
 When you add/edit theme images inside Composr, it makes up a filename. But instead if you make the [tt]themes/<theme>/images_custom[/tt] naming structure match that of [tt]themes/default/images[/tt], then Composr automatically finds them. This is better when working collaboratively with git, or if synching development and live sites, because a new database record is not needed to track the theme image reference.
 
 Generally you should rarely use the Composr inbuilt theming tools when acting as a programmer. Just put the files in the right place and use your text editor to alter the CSS and templates. This makes for a more integrated, programmer-friendly, workflow.

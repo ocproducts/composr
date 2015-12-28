@@ -27,7 +27,7 @@ Composr offers many powerful features that aren't to be found built-in to any co
  - powerful social networking capabilities.
  - enterprise functionality for integrating third-party systems.
 
-To read more about Composr's extensive features, see our [page="site:features"]features page[/page].
+To read more about Composr's extensive features, see our [page="site:features"]features page[/page]. To read more about our USPs see our [page="site:our_difference"]Why we're different[/page] page and our [page="_SEARCH:tut_webapp"]Web-applications, Composr, and PHP[/page] tutorial.
 
 More importantly, however, is how we integrate functionality. If you look at other CMSs you may be surprised how difficult simple things can be. For example, take any popular CMS, and look to see how you would implement gallery functionality with support for discussing videos on an integrated forum -- you are likely to find there is no way to do it without programming.
 
