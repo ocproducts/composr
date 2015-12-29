@@ -2,6 +2,8 @@
 
 This tutorial will provide some background into the different kinds of solutions that are out there for creating websites. It is not only specific to Composr -- we hope to explain the inherent advantages of using a CMS such as our own -- as well as what makes Composr special.
 
+To read more about Composr's extensive features, see the [page="site:features"]Features page[/page]. To read more about the USPs see the [page="site:compare"]Why we're different[/page] page .
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]What a website is[/title]
@@ -607,6 +609,8 @@ Open Source: Systems tend to be more light-weight, focused on the core behaviour
 
 [title="2"]See also[/title]
 
+ - [page="site:features"]Features page[/page]
+ - [page="site:compare"]Why we're different[/page]
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
  - [page="_SEARCH:sup_glossary"]Web design glossary[/page]
 
