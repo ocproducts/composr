@@ -127,8 +127,10 @@ class Hook_fields_upload
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if (strpos($actual_value, '::') !== false) {
-            list($actual_value,) = explode('::', $actual_value);
+        if (!is_null($actual_value)) {
+            if (strpos($actual_value, '::') !== false) {
+                list($actual_value,) = explode('::', $actual_value);
+            }
         }
 
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));

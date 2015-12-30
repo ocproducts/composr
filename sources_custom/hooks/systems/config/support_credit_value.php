@@ -29,7 +29,7 @@ class Hook_config_support_credit_value
             'human_name' => 'SUPPORT_CREDIT_VALUE',
             'type' => 'float',
             'category' => 'FEATURE',
-            'group' => 'SECTION_CUSTOMERS',
+            'group' => 'CUSTOMERS',
             'explanation' => 'CONFIG_OPTION_support_credit_value',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

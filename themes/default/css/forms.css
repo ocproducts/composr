@@ -211,8 +211,10 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 }
 
 .form_table .filledin .required {
+	/*	Style rather extreme, but re-enable if you wish
 	background-color: {$GET,area_background} !important;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,required_2_background}\, {$GET,required_background}) !important;}
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background}) !important;}
+	*/
 }
 
 /* Field sets */

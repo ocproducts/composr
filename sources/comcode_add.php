@@ -97,7 +97,7 @@ function _get_details_comcode_tags()
         'url' => array('param', 'title', 'target', 'rel'),
         'email' => array('param', 'title', 'subject', 'body'),
         'reference' => array('type', 'param'),
-        'page' => array('param'),
+        'page' => array('param', 'external'),
         'snapback' => array('param', 'forum'),
         'post' => array('param', 'forum'),
         'topic' => array('param', 'forum'),

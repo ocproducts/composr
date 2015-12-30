@@ -167,9 +167,9 @@ class Module_tickets
         if ($type == 'browse') {
             if (!is_guest()) {
                 // Our tickets
-                $ticket_type_id = get_param_integer('ticket_type_id', null);
-                if (!is_null($ticket_type_id)) {
-                    set_feed_url('?mode=tickets&select=' . strval($ticket_type_id));
+                $default_ticket_type = $this->get_ticket_type_id();
+                if (!is_null($default_ticket_type)) {
+                    set_feed_url('?mode=tickets&select=' . strval($default_ticket_type));
                 }
                 $this->ticket_type_id = $ticket_type_id;
             }
@@ -283,6 +283,26 @@ class Module_tickets
     }
 
     /**
+     * Find the selected ticket type ID.
+     *
+     * @return ?AUTO_LINK The ticket type ID (NULL: none specified)
+     */
+    private function get_ticket_type_id()
+    {
+        $default_ticket_type = either_param_integer('ticket_type_id', null);
+        if (is_null($default_ticket_type)) {
+            $_default_ticket_type = either_param_string('ticket_type', null);
+            if (!is_null($_default_ticket_type)) {
+                $default_ticket_type = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $_default_ticket_type));
+                if (is_null($default_ticket_type)) {
+                    warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html($_default_ticket_type), 'ticket_type'));
+                }
+            }
+        }
+        return $default_ticket_type;
+    }
+
+    /**
      * The UI to show support tickets we may view.
      *
      * @return Tempcode The UI
@@ -340,12 +360,20 @@ class Module_tickets
         }
 
         $map = array('page' => '_SELF', 'type' => 'ticket');
-        if (get_param_string('default', '') != '') {
-            $map['default'] = get_param_string('default');
+        $default_ticket_type = $this->get_ticket_type_id();
+        if ($default_ticket_type !== null) {
+            $map['ticket_type_id'] = $default_ticket_type;
         }
         $add_ticket_url = build_url($map, '_SELF');
 
-        $tpl = do_template('SUPPORT_TICKETS_SCREEN', array('_GUID' => 'b208a9f1504d6b8a76400d89a8265d91', 'TITLE' => $this->title, 'MESSAGE' => $message, 'LINKS' => $links, 'ADD_TICKET_URL' => $add_ticket_url, 'TYPES' => build_types_list(get_param_integer('ticket_type_id', null))));
+        $tpl = do_template('SUPPORT_TICKETS_SCREEN', array(
+            '_GUID' => 'b208a9f1504d6b8a76400d89a8265d91',
+            'TITLE' => $this->title,
+            'MESSAGE' => $message,
+            'LINKS' => $links,
+            'ADD_TICKET_URL' => $add_ticket_url,
+            'TYPES' => build_types_list($default_ticket_type),
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl, 30, $tickets);
@@ -507,7 +535,8 @@ class Module_tickets
             $ticket_page_text = comcode_to_tempcode(get_option('ticket_text'), null, true);
 
             // Selection of ticket type
-            $types = build_types_list(get_param_integer('default', null));
+            $default_ticket_type = $this->get_ticket_type_id();
+            $types = build_types_list($default_ticket_type);
 
             // Render existing posts/info
             $pagination = null;
@@ -650,14 +679,15 @@ class Module_tickets
                 $toggle_ticket_closed_url = build_url(array('page' => '_SELF', 'type' => 'toggle_ticket_closed', 'id' => $id), '_SELF');
             }
             if ($closed) {
-                $new_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'default' => $ticket_type_id), '_SELF');
+                $new_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $ticket_type_id), '_SELF');
                 attach_message(do_lang_tempcode('TICKET_IS_CLOSED', $new_ticket_url), 'notice');
             }
 
             // URL To add a new ticket
             $map = array('page' => '_SELF', 'type' => 'ticket');
-            if (get_param_string('default', '') != '') {
-                $map['default'] = get_param_string('default');
+            $default_ticket_type = $this->get_ticket_type_id();
+            if ($default_ticket_type !== null) {
+                $map['ticket_type_id'] = $default_ticket_type;
             }
             $add_ticket_url = build_url($map, '_SELF');
 
@@ -789,15 +819,27 @@ class Module_tickets
     {
         @ignore_user_abort(true); // Must keep going till completion
 
-        $id = get_param_string('id');
+        $id = get_param_string('id', strval(get_member()) . '_' . uniqid('', false)/*random new ticket ID*/);
+        check_ticket_access($id);
+
         $_title = post_param_string('title');
-        $post = post_param_string('post');
+
+        $post = post_param_string('post', '');
         if ($post == '') {
-            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'post'));
+            // Maybe we are relaying data into the ticket from elsewhere?
+            require_code('mail');
+            $details = _form_to_email(array('title', 'ticket_type_id', 'ticket_type', 'staff_only', 'faq_searched', 'email', 'close'));
+            list(, $post) = $details;
+
+            if ($post == '') {
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'post'));
+            }
         }
 
-        $ticket_type_id = post_param_integer('ticket_type_id', null);
-        check_ticket_access($id);
+        $ticket_type_id = $this->get_ticket_type_id();
+        if (is_null($ticket_type_id)) {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'ticket_type_id'));
+        }
 
         $staff_only = post_param_integer('staff_only', 0) == 1;
 

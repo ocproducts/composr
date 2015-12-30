@@ -28,17 +28,20 @@ Each screen details has:
  - title (string) REQUIRED
  - expects_parameters (list of parameters that must be set on this screen, so that you can't have leakiness by jumping deep in). Goes back to start screen if missing
  - text (string)
- - notices (array of notices to give on this screen)
- - warnings (array of warnings to give on this screen)
+ - inform (array of informational notices to give on this screen)
+ - notice (array of notices to give on this screen)
+ - warn (array of warnings to give on this screen)
+ - hidden (map between keys and values)
  - questions (map between named question name [=parameter name] and question details)
- - next (array of tuples, each being parameter, value, and next screen to go OR string just the name of a screen) OR Tempcode/string for the URL to go to
+ - next (array of tuples, each being parameter, value, and string of next screen to go OR Tempcode/string of URL) OR Tempcode/string for the URL to go to
  - previous (where the back button goes, if there is one)
  - form_method (string = get|post). Default is post. Use get if you want screens to be bookmarkable
 
-If 'next' is a string:
- Submitting the form takes you directly to '<next>'
+Submitting the form takes you to '_<screen>' which decides where to take you to next via a value analysis, using an instant redirect
+If 'next' is a string or Tempcode:
+ A simple redirect happens (detects whether it is a URL or a name of a screen)
 If 'next' is an array:
- Submitting the form takes you to '_<screen>' which decides where to take you to next via a value analysis, using an instant redirect
+ A redirect is determined based upon the values submitted
 
 If 'questions' is non-empty then 'next' must be set also. If 'questions' is empty and 'next' is set, it will be an empty form. If neither are set it will be an info-screen.
 
@@ -46,10 +49,14 @@ Each question details has:
  - label (string) REQUIRED
  - description (string)
  - required (boolean). Default is false
- - type (string = <field hook>). Default is short_text. Only works with hooks that send over a direct string, not complex multi-part inputs or uploads
+ - type (string = <field hook>). Default is short_text
  - default (string, passed to hook)
  - default_list (array, passed to hook)
  - options (string, passed to hook)
+ - comcode_prepend and comcode_append
+
+Other features
+ - Actually 'inform'/'notice'/'warn' can take a 'next'-style array, in which case the messages are shown using JavaScript upon option selection
 */
 
 /**
@@ -116,14 +123,15 @@ class DecisionTree
     /**
      * Start the decision tree process, returning Tempcode for the screen currently on.
      *
+     * @param  boolean $recurse Whether we are running recursively, after just processing a prior result
      * @return Tempcode Screen output
      */
-    public function run()
+    public function run($recurse = false)
     {
         $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
 
         $tree_position = get_param_string('type', 'browse');
-        if ($tree_position[0] == '_') {
+        if ($tree_position != '' && $tree_position[0] == '_') {
             $tree_position = substr($tree_position, 1);
             $submit = true;
         } else {
@@ -149,8 +157,30 @@ class DecisionTree
 
         // Handle a jump?
         if ($submit) {
+            $redirect_to = mixed();
             $redirect_to = $this->process_input($tree_position);
-            $url = $this->build_url($redirect_to);
+            if (is_object($redirect_to) || looks_like_url($redirect_to)) {
+                $url = $redirect_to;
+            } else {
+                if ($redirect_to == $tree_position) { // Looped back
+                    // Do this screen
+                    return $this->render($tree_position);
+                }
+
+                // Optimisation
+                $_GET['type'] = $redirect_to;
+                return $this->run(true);
+
+                $url = $this->build_url($redirect_to);
+            }
+
+            if (count($_POST) > 0) {
+                $post = build_keep_post_fields();
+                $refresh = do_template('JS_REFRESH', array('FORM_NAME' => 'redir_form'));
+
+                return do_template('LOGIN_REDIRECT_SCREEN', array('REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
+            }
+
             return redirect_screen($title, $url);
         }
 
@@ -170,19 +200,26 @@ class DecisionTree
     }
 
     /**
-     * Process a step within the decision tree needing value checks.
+     * Process a step within the decision tree, making decisions and substitions based on the past step's input.
      *
      * @param  ID_TEXT $tree_position Tree position coming from
-     * @return ID_TEXT Tree position going to
+     * @return mixed Tree position going to or Tempcode URL
      */
     private function process_input($tree_position)
     {
         $details = $this->decision_tree[$tree_position];
 
-        foreach ($details['next'] as $next) {
-            if (either_param_string($next[0], null) === $next[1]) {
-                $redirect_to = $next[2];
-                return $redirect_to;
+        if (isset($details['next'])) {
+            if (is_array($details['next'])) {
+                foreach ($details['next'] as $next) {
+                    $given = either_param_string($next[0], null);
+                    if ($given === $next[1]) {
+                        $redirect_to = $next[2];
+                        return $redirect_to;
+                    }
+                }
+            } else {
+                return $details['next'];
             }
         }
 
@@ -201,17 +238,16 @@ class DecisionTree
 
         $title = get_screen_title($details['title'], false);
 
-        $text = isset($details['text']) ? $details['text'] : '';
+        $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
         // Screen messages
-        if (isset($details['notices'])) {
-            foreach ($details['notices'] as $notice) {
-                attach_message($notice, 'inform');
-            }
-        }
-        if (isset($details['warnings'])) {
-            foreach ($details['warnings'] as $warning) {
-                attach_message($warning, 'warn');
+        foreach (array('inform', 'notice', 'warn') as $notice_type) {
+            if (isset($details[$notice_type])) {
+                foreach ($details[$notice_type] as $warn) {
+                    if (!is_array($warn)) {
+                        attach_message($warn, $notice_type);
+                    }
+                }
             }
         }
 
@@ -239,7 +275,7 @@ class DecisionTree
 
             foreach ($details['questions'] as $question_name => $question_details) {
                 $label = $question_details['label'];
-                $description = isset($question_details['description']) ? $question_details['description'] : '';
+                $description = comcode_to_tempcode(isset($question_details['description']) ? $question_details['description'] : '', null, true);
 
                 $default = either_param_string($question_name, isset($question_details['default']) ? $question_details['default'] : '');
                 $default_list = isset($question_details['default_list']) ? $question_details['default_list'] : array($default);
@@ -260,24 +296,30 @@ class DecisionTree
                     'cf_required' => $required ? 1 : 0,
                     'cf_options' => $options,
                 );
-                $fields->attach($hook_ob->get_field_inputter($label, $description, $field, $default, true));
+
+                $temp = $hook_ob->get_field_inputter($label, $description, $field, empty($default) ? null : $default, true);
+                if (is_array($temp)) {
+                    $field_details = $temp[0];
+                    $hidden->attach($temp[1]);
+                } else {
+                    $field_details = $temp;
+                }
+                $fields->attach($field_details);
 
                 $i++;
             }
         }
 
+        if (isset($details['hidden'])) {
+            foreach ($details['hidden'] as $key => $val) {
+                $hidden->attach(form_input_hidden($key, $val));
+            }
+        }
+
         $form_method = empty($details['form_method']) ? 'POST' : $details['form_method'];
 
-        if ((is_object($details['next'])) || ((is_string($details['next'])) && (looks_like_url($details['next'])))) {
-            $next_url = $details['next'];
-        } else {
-            if (is_array($details['next'])) {
-                $next_tree_position = '_' . $tree_position; // Needs complex processing
-            } else {
-                $next_tree_position = $details['next'];
-            }
-            $next_url = $this->build_url($next_tree_position);
-        }
+        $next_tree_position = '_' . $tree_position; // Needs complex processing
+        $next_url = $this->build_url($next_tree_position);
 
         return do_template('FORM_SCREEN', array(
             'SKIP_WEBSTANDARDS' => true,

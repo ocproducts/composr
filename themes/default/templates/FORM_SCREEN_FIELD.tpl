@@ -42,11 +42,22 @@
 			{COMCODE}
 		{+END}{+END}
 
-		{INPUT}
+		{$SET,input,{INPUT}}
 
-		{+START,IF,{$NOT,{$MOBILE}}}
-			{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
+		{+START,IF,{$GET,early_description}}
+			{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}RIGHT=1{+END}
+			{+END}
 		{+END}
+
+		{$GET,input}
+
+		{+START,IF,{$NOT,{$GET,early_description}}}
+			{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
+			{+END}
+		{+END}
+		{$SET,early_description,0}
 
 		<div id="error_{$GET,randomised_id}" style="display: none" class="input_error_here"{+START,IF_PASSED,PATTERN_ERROR} data-errorRegexp="{PATTERN_ERROR*}"{+END}></div>
 

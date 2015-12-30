@@ -1687,8 +1687,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $zone = '';
                 }
             }
+            $external = (array_key_exists('external', $attributes) && $attributes['external'] == '1');
             $pl_url = build_url($attributes, $zone, null, false, false, false, $hash);
-            $temp_tpl = hyperlink($pl_url, $caption, false, true);
+            $temp_tpl = hyperlink($pl_url, $caption, $external, true);
             $page = $attributes['page'];
 
             if ($page != '') {

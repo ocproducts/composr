@@ -29,7 +29,7 @@ class Hook_config_support_day_priority
             'human_name' => 'SUPPORT_PRIORITY_DAY_MINUTES',
             'type' => 'float',
             'category' => 'FEATURE',
-            'group' => 'SECTION_CUSTOMERS',
+            'group' => 'CUSTOMERS',
             'explanation' => 'CONFIG_OPTION_support_day_priority',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
