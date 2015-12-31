@@ -205,12 +205,12 @@ class Hook_fields_list
         switch ($widget) {
             case 'radio':
                 $list_tpl = new Tempcode();
-                if (($field['cf_required'] == 0) || (!$selected) && (!array_key_exists('', $list))) {
+                if (($field['cf_required'] == 0) && (!array_key_exists('', $list))) {
                     $list_tpl->attach(form_input_radio_entry($input_name, '', !$selected, do_lang_tempcode('NA_EM')));
                 }
 
                 foreach ($list as $l => $l_nice) {
-                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, escape_html($l_nice)));
+                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                 }
 
                 if ($custom_values == 'on') {
@@ -236,7 +236,7 @@ class Hook_fields_list
                     }
 
                     foreach ($list as $l => $l_nice) {
-                        $list_tpl->attach(form_input_list_entry($l, false, $l_nice));
+                        $list_tpl->attach(form_input_list_entry($l, false, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     $required = $field['cf_required'] == 1;
@@ -251,7 +251,7 @@ class Hook_fields_list
 
                     foreach ($list as $l => $l_nice) {
                         $selected = ($l === $actual_value || is_null($actual_value) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
-                        $list_tpl->attach(form_input_list_entry($l, $selected, $l_nice));
+                        $list_tpl->attach(form_input_list_entry($l, $selected, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     if ($widget == 'dropdown_huge' || $widget == 'inline_huge') {

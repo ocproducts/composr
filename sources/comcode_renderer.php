@@ -1673,24 +1673,23 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             global $OVERRIDE_SELF_ZONE;
             $page_link = $attributes['param'];
-            list($zone, $attributes, $hash) = page_link_decode($page_link);
-            if (!array_key_exists('page', $attributes)) {
-                $attributes['page'] = '';
+            list($zone, $_attributes, $hash) = page_link_decode($page_link);
+            if (!array_key_exists('page', $_attributes)) {
+                $_attributes['page'] = '';
             }
             if (($zone == '_SELF') && (!is_null($OVERRIDE_SELF_ZONE))) {
                 $zone = $OVERRIDE_SELF_ZONE;
             }
-            unset($attributes['param']);
             if ($zone == '_SEARCH') {
-                $zone = get_page_zone($attributes['page'], false);
+                $zone = get_page_zone($_attributes['page'], false);
                 if (is_null($zone)) {
                     $zone = '';
                 }
             }
             $external = (array_key_exists('external', $attributes) && $attributes['external'] == '1');
-            $pl_url = build_url($attributes, $zone, null, false, false, false, $hash);
+            $pl_url = build_url($_attributes, $zone, null, false, false, false, $hash);
             $temp_tpl = hyperlink($pl_url, $caption, $external, true);
-            $page = $attributes['page'];
+            $page = $_attributes['page'];
 
             if ($page != '') {
                 if ($zone == '_SELF') {
@@ -1704,12 +1703,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
                 $ptest = _request_page($page, $zone);
                 if ($ptest !== false) {
-                    if (($page == 'topicview') && (array_key_exists('id', $attributes))) {
-                        if (!is_numeric($attributes['id'])) {
-                            $attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $attributes['id']));
+                    if (($page == 'topicview') && (array_key_exists('id', $_attributes))) {
+                        if (!is_numeric($_attributes['id'])) {
+                            $_attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $_attributes['id']));
                         }
-                        if (!is_null($attributes['id'])) {
-                            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $attributes['id']));
+                        if (!is_null($_attributes['id'])) {
+                            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $_attributes['id']));
                             if (is_null($test)) {
                                 $ptest = false;
                             }

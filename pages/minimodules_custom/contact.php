@@ -78,17 +78,15 @@ $decision_tree = array(
 
     'free' => array(
         'title' => 'Free options',
-        'text' => 'We\'re glad you want to get in touch. We are able to respond to the following kinds of request without requiring support credits. We take user feedback very earnestly.',
+        'text' => 'We\'re glad you want to get in touch. We are able to respond to the following kinds of request without requiring support credits. We take user feedback very earnestly.' . "\n\n" . 'We regret we cannot provide generally free official 1-on-1 support or informal consultancy on capabilities/usage, due to the free nature of the product. For informal support (i.e. no guarantees, honour system) you can go to the forum and/or chatroom. For formal support, we have paid professional support and can quote on and refer projects (to access this, go back then make that selection). For feedback reports we\'ll usually find time to reply (and really do appreciate them), but regretfully with only a few words due to time constraints.',
         'notice' => array(
-            'We regret we cannot provide generally free official 1-on-1 support or informal consultancy on capabilities/usage, due to the free nature of the product. For informal support (i.e. no guarantees, honour system) you can go to the forum and/or chatroom. For formal support, we have paid professional support and can quote on and refer projects (to access this, go back then make that selection). For feedback reports we\'ll usually find time to reply (and really do appreciate them), but regretfully with only a few words due to time constraints.',
-
             //    Parameter             Value                       Warning
-            array('service_type',       'Report a bug',             'Usually we get bugs fixed within a couple of days. Please only report bugs that look to be genuine bugs in the Composr CMS code. You will be taken through to the tracker where you\'ll also see a link to read additional advice about how to make a good bug report.' . "\n\n" . 'If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
+            array('free_service_type',  'Report a bug',             'Usually we get bugs fixed within a couple of days. Please only report bugs that look to be genuine bugs in the Composr CMS code. You will be taken through to the tracker where you\'ll also see a link to read additional advice about how to make a good bug report.' . "\n\n" . 'If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
         ),
         'previous' => 'start',
         'form_method' => 'GET',
         'questions' => array(
-            'service_type' => array(
+            'free_service_type' => array(
                 'label' => 'Service',
                 'description' => 'What would you like to do?',
                 'type' => 'list',
@@ -111,18 +109,18 @@ $decision_tree = array(
             ),
         ),
         'next' => array(
-            //    Parameter         Value                                   Target
-            array('service_type',   'Go to the community chatroom',         build_url(array('page' => 'chat'), '_SEARCH')),
-            array('service_type',   'Go to the community forum',            build_url(array('page' => ''), 'forum')),
-            array('service_type',   'Report a bug',                         get_base_url() . '/tracker/bug_report_page.php?severity=50'),
-            array('service_type',   'Report a usability/UX issue',          get_base_url() . '/tracker/bug_report_page.php?severity=50'),
-            array('service_type',   'Report a security hole',               get_base_url() . '/tracker/bug_report_page.php?view_state=50&severity=80'),
-            array('service_type',   'Request a feature',                    get_base_url() . '/tracker/bug_report_page.php?severity=10'),
-            array('service_type',   'Send some documentation feedback',     get_base_url() . '/tracker/set_project.php?project_id=7'),
-            array('service_type',   'Send some general/other feedback',     build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), '_SEARCH')),
-            array('service_type',   'Contribute some code',                 'contribute_code'),
-            array('service_type',   'Make a partnership enquiry',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Partnership'), '_SEARCH')),
-            array('service_type',   'Apply for a job with ocProducts Ltd',  'job'),
+            //    Parameter             Value                                   Target
+            array('free_service_type',  'Go to the community chatroom',         build_url(array('page' => 'chat'), '_SEARCH')),
+            array('free_service_type',  'Go to the community forum',            build_url(array('page' => ''), 'forum')),
+            array('free_service_type',  'Report a bug',                         get_base_url() . '/tracker/bug_report_page.php?severity=50'),
+            array('free_service_type',  'Report a usability/UX issue',          get_base_url() . '/tracker/bug_report_page.php?severity=50'),
+            array('free_service_type',  'Report a security hole',               get_base_url() . '/tracker/bug_report_page.php?view_state=50&severity=80'),
+            array('free_service_type',  'Request a feature',                    get_base_url() . '/tracker/bug_report_page.php?severity=10'),
+            array('free_service_type',  'Send some documentation feedback',     get_base_url() . '/tracker/set_project.php?project_id=7'),
+            array('free_service_type',  'Send some general/other feedback',     build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), '_SEARCH')),
+            array('free_service_type',  'Contribute some code',                 'contribute_code'),
+            array('free_service_type',  'Make a partnership enquiry',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Partnership'), '_SEARCH')),
+            array('free_service_type',  'Apply for a job with ocProducts Ltd',  'job'),
         ),
     ),
 
@@ -173,9 +171,9 @@ $decision_tree = array(
         'title' => 'Professional services',
         'text' => 'We have a few different ways of doing business, depending on your needs.',
         'previous' => 'start',
-        'form_method' => 'POST',
+        'form_method' => 'GET',
         'questions' => array(
-            'service_type' => array(
+            'commercial_service_type' => array(
                 'label' => 'Service',
                 'description' => 'What would you like to do?',
                 'type' => 'list',
@@ -193,19 +191,19 @@ $decision_tree = array(
             ),
         ),
         'next' => array(
-            //    Parameter         Value                                                                   Target
-            array('service_type',   'Request an installation',                                              'installation'),
-            array('service_type',   'Hire for a project',                                                   'project'),
-            array('service_type',   'Hire a developer for ongoing work (secondment)',                       'secondment'),
-            array('service_type',   'Technical support (single question support / very quick jobs)',        'support'),
-            array('service_type',   'Sponsor Composr enhancements',                                         'sponsor'),
-            array('service_type',   'Request a website upgrade',                                            'upgrade'),
+            //    Parameter                     Value                                                                   Target
+            array('commercial_service_type',    'Request an installation',                                              'installation'),
+            array('commercial_service_type',    'Hire for a project',                                                   'project'),
+            array('commercial_service_type',    'Hire a developer for ongoing work (secondment)',                       'secondment'),
+            array('commercial_service_type',    'Technical support (single question support / very quick jobs)',        'support'),
+            array('commercial_service_type',    'Sponsor Composr enhancements',                                         'sponsor'),
+            array('commercial_service_type',    'Request a website upgrade',                                            'upgrade'),
         ),
     ),
 
     'project' => array(
         'title' => 'Hire for a project - step 1 of 6',
-        'text' => 'Exciting :). We will now be asking a lot of questions to try and get a good picture for what you\'re looking for. Apologies if things don\'t quite apply (e.g. if the project is not a full website implementation). Rest assured that a real human with common sense will read over whatever you fill in.',
+        'text' => 'Exciting! We will now be asking a lot of questions to try and get a clear picture for what you\'re looking for.' . "\n\n" . 'Apologies if the questions don\'t quite apply (e.g. if the project is not a full website implementation). Rest assured that a real human with common sense will read over whatever you fill in.',
         'notice' => array(
             //    Parameter             Value                                                                                       Warning
             array('ideal_developer',    'ocProducts (the Composr CMS sponsoring company)',                                          'That\'s cool. ocProducts is run by founding developer(s) of Composr CMS, with work done to a very high standard by foremost Composr experts. Communication is generally done via e-mail due to the balancing we need to do between Composr CMS stewardship, and commercial work. You should expect we will charge around the same as a high-quality established UK/US agency. If you need lower costs, or physical meetings, it may be best to choose a local agency or freelancer, especially if you are not based in a &ldquo;Western&rdquo; country.'),
@@ -217,7 +215,7 @@ $decision_tree = array(
         'form_method' => 'POST',
         'questions' => array(
             'title' => array(
-                'label' => 'Project title / domain name',
+                'label' => 'Project&nbsp;title / domain&nbsp;name',
                 'description' => 'The title for your project. Include the domain name if you have one already.',
                 'type' => 'short_text',
                 'default' => '',
@@ -365,7 +363,7 @@ $decision_tree = array(
                 'required' => false,
             ),
             'response_time' => array(
-                'label' => 'Expected response time',
+                'label' => 'Expected response time to e-mails',
                 'description' => 'What is your expected response time by the developer to your e-mails?',
                 'type' => 'list',
                 'default' => 'Within 2-3 business days',
@@ -479,14 +477,14 @@ $decision_tree = array(
                     'Significant custom programming for tailored functionality',
                     'Scalable architecture for ultra-high usage',
                     'Integration with existing digital systems',
-                    'Support for multiple languages (e.g. English & French & German), including site translation and ongoing content translation support',
+                    'Support for multiple languages, including site and content translation',
                     'Basic eCommerce support (selling things online)',
-                    'Advanced eCommerce support (direct on-site credit card processing, requiring PCI audit of infrastructure and consultation)',
+                    'Advanced eCommerce support: self-hosted credit card processing',
                     'Usergroup subscriptions (selling access to parts/features of the website)',
-                    'Let your users host their own sites under yours, with various possible feature and customisation options',
+                    'Let your users host their own customised sites under yours',
                     'Advanced intranet support (e.g. LDAP login or automatic Kerberos login)',
                     'Bookings system (e.g. events, hotels, taxis, ...)',
-                    'Automatic video transcoding (so people can upload videos in any format, and it is automatically converted to an appropriate web-friendly format)',
+                    'Automatic video transcoding (take videos in any format and make them web-friendly)',
                 ),
                 'options' => 'widget=vertical_checkboxes',
                 'required' => false,
@@ -879,11 +877,7 @@ $decision_tree = array(
 
     'installation' => array(
         'title' => 'Request an installation',
-        'text' => 'We will install Composr for you by setting up the databases, uploading the files, and so on. We will not charge credits for more than an hours time if your server is not faulty, meets our minimum requirements, and the given access details work.',
-        'notice' => array(
-            'Please be aware that this isn\'t a site build service (building a complete website), just a Composr CMS installation service.',
-            'We cannot guarantee we can complete installation on servers that do not meet our [page="docs:tut_web_hosting"]minimum requirements[/page], but we may still need to charge for any such failed installation attempts. In such a case we will mention why we cannot complete an installation.',
-        ),
+        'text' => 'We will install Composr for you by setting up the databases, uploading the files, and so on. We will not charge credits for more than an hours time if your server is not faulty, meets our [page="docs:tut_web_hosting" external="1"]minimum requirements[/page], and the given access details work.' . "\n\n" . 'Please be aware that this isn\'t a full site build service, just a Composr CMS installation service.',
         'inform' => array(
             'Did you know that some webhosts can install Composr CMS for you, automatically and free? Composr is published via Installatron, Softaculous, Bitnami, Microsoft Web Platform, and APS. Many hosts have one of these installation systems.',
         ),
@@ -995,15 +989,8 @@ $decision_tree = array(
 
     'support' => array(
         'title' => 'Technical support (single question support / very quick jobs)',
-        'text' => 'Great, let\'s get to it!',
-        'inform' => array_merge($extra_support_inform, array(
-            'A professional ticket usually will be charged/due-for-payment only if you agree to the quote we give. Exceptions are if you tell us to work immediately without a quote, or if the quote would be the minimum for the ticket priority selected.',
-            'If you sometimes need things more urgent than the reply times available, you will need to go back and look into our secondment option so that you have someone permanently and directly assigned to you (as we don\'t always have someone available to jump on very urgent tickets; we need ongoing commitments to guarantee staffing of very skilled developers).',
-        )),
+        'text' => 'Great, let\'s get to it!' . "\n\n" . 'Please do make sure you are entering single-questions only (or at least related-questions); we need to be able to assign the ticket to a particular person with particular experience in the area you are asking about.' . "\n\n" . 'Please make sure your ticket needs to be completely self-explanatory. If it is necessary to reference another ticket please ensure that the exact title/URL of the ticket is given. Different members of staff may work on different tickets so we won\'t necessarily know the details relating to other tickets.' . "\n\n" . 'A professional ticket usually will be charged/due-for-payment only if you agree to the quote we give. Exceptions are if you tell us to work immediately without a quote, or if the quote would be the minimum for the ticket priority selected.' . "\n\n" . 'If you sometimes need things more urgent than the reply times available, you will need to go back and look into our secondment option so that you have someone permanently and directly assigned to you (as we don\'t always have someone available to jump on very urgent tickets; we need ongoing commitments to guarantee staffing of very skilled developers).' . "\n\n" . 'If you already have a ticket for this work/issue please don\'t create a new ticket. It is important to stay within one ticket to ensure the assigned staff member is aware of past progress on that ticket.',
         'notice' => array_merge($extra_support_notice, array(
-            'Please do make sure you are entering single-questions only (or at least related-questions); we need to be able to assign the ticket to a particular person with particular experience in the area you are asking about.',
-            'Please make sure your ticket needs to be completely self-explanatory. If it is necessary to reference another ticket please ensure that the exact title/URL of the ticket is given. Different members of staff may work on different tickets so we won\'t necessarily know the details relating to other tickets.',
-            'If you already have a ticket for this work/issue please don\'t create a new ticket. It is important to stay within one ticket to ensure the assigned staff member is aware of past progress on that ticket.',
             //    Parameter         Value                                                   Warning
             array('response_time',  'Back-burner reply (approximately two-business-weeks)', 'Be aware that all follow-ups in the support ticket will only be read on back-burner basis, no matter the urgency of them. This means a ticket with follow-ups will often take an even longer time to process, and if you do mention urgent things in your replies, we may not see it until too late.'),
         )),
@@ -1058,12 +1045,7 @@ $decision_tree = array(
 
     'sponsor' => array(
         'title' => 'Sponsor Composr enhancements',
-        'text' => 'Wow, thanks! To sponsor something you should go to the [url="tracker"]' . get_base_url() . '/tracker[/url], find the feature you want to sponsor, fill in the sponsor form on that issue, and [page="_SEARCH:commercial_support" external="1"]purchase some support credits[/page] to back up the amount. If the issue is not yet on the tracker, you\'ll need to add it, mention that you\'ll sponsor it, and wait for the hours field to be updated. If it is on the tracker already but has no hours set yet, similarly reply to say that you\'d like to sponsor it and wait. Thanks again.',
-        'notice' => array(
-            'Please be aware that not all sponsorships can be accepted. The developers/community needs to feel a feature is right for Composr before we can add it, regardless of sponsorship.',
-            'Sponsorships aren\'t usually acted on immediately, as a developer has to be free. If time is critical, please discuss it on the tracker issue. Sponsorships can be removed if you want to (assuming work has not already started).',
-            'Sponsored code goes into the next version of Composr, and may not be compatible with your existing site without it being upgraded (which can\'t happen until the next version is out). If this is a concern then discuss it in the tracker issue; sometimes it can be arranged to provide a patch for a particular existing version also &ndash; or, the work can be done as a project instead, and merged into Composr later. Note also though that patches can be incompatible with each other.',
-        ),
+        'text' => 'Wow, thanks! To sponsor something you should go to the [url="tracker"]' . get_base_url() . '/tracker[/url], find the feature you want to sponsor, fill in the sponsor form on that issue, and [page="_SEARCH:commercial_support" external="1"]purchase some support credits[/page] to back up the amount. If the issue is not yet on the tracker, you\'ll need to add it, mention that you\'ll sponsor it, and wait for the hours field to be updated. If it is on the tracker already but has no hours set yet, similarly reply to say that you\'d like to sponsor it and wait. Thanks again.' . "\n\n" . 'Please be aware that not all sponsorships can be accepted. The developers/community needs to feel a feature is right for Composr before we can add it, regardless of sponsorship.' . "\n\n" . 'Sponsorships aren\'t usually acted on immediately, as a developer has to be free. If time is critical, please discuss it on the tracker issue. Sponsorships can be removed if you want to (assuming work has not already started).' . "\n\n" . 'Sponsored code goes into the next version of Composr, and may not be compatible with your existing site without it being upgraded (which can\'t happen until the next version is out). If this is a concern then discuss it in the tracker issue; sometimes it can be arranged to provide a patch for a particular existing version also &ndash; or, the work can be done as a project instead, and merged into Composr later. Note also though that patches can be incompatible with each other.',
         'previous' => 'paid',
     ),
 

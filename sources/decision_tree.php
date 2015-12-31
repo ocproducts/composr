@@ -310,7 +310,7 @@ class DecisionTree
 
                 list($hook_ob, $field, $default) = $this->get_question_field_details($question_name, $question_details, $i);
 
-                $temp = $hook_ob->get_field_inputter($label, $description, $field, empty($default) ? null : $default, true);
+                $temp = $hook_ob->get_field_inputter(protect_from_escaping(comcode_to_tempcode($label, null, true)), $description, $field, empty($default) ? null : $default, true);
                 if (is_array($temp)) {
                     $field_details = $temp[0];
                     $hidden->attach($temp[1]);
