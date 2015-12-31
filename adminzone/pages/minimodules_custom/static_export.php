@@ -247,7 +247,7 @@ $post=post_param_string("post","");
 $fields=array();
 foreach (array_diff(array_keys($_POST),array("MAX_FILE_SIZE","perform_webstandards_check","_validated","posting_ref_id","f_face","f_colour","f_size","x","y","name","subject","email","to_members_email","to_written_name","redirect","http_referer","session_id")) as $key)
 {
-    $is_hidden=(strpos($key,"hour")!==false) || (strpos($key,"access_")!==false) || (strpos($key,"minute")!==false) || (strpos($key,"confirm")!==false) || (strpos($key,"pre_f_")!==false) || (strpos($key,"label_for__")!==false) || (strpos($key,"description_for__")!==false) || (strpos($key,"wysiwyg_version_of_")!==false) || (strpos($key,"is_wysiwyg")!==false) || (strpos($key,"require__")!==false) || (strpos($key,"tempcodecss__")!==false) || (strpos($key,"comcode__")!==false) || (strpos($key,"_parsed")!==false) || (substr($key,0,1)=="_") || (substr($key,0,9)=="hidFileID") || (substr($key,0,11)=="hidFileName");
+    $is_hidden=(strpos($key,"hour")!==false) || (strpos($key,"access_")!==false) || (strpos($key,"minute")!==false) || (strpos($key,"confirm")!==false) || (strpos($key,"pre_f_")!==false) || (strpos($key,"tick_on_form__")!==false) || (strpos($key,"label_for__")!==false) || (strpos($key,"description_for__")!==false) || (strpos($key,"wysiwyg_version_of_")!==false) || (strpos($key,"is_wysiwyg")!==false) || (strpos($key,"require__")!==false) || (strpos($key,"tempcodecss__")!==false) || (strpos($key,"comcode__")!==false) || (strpos($key,"_parsed")!==false) || (substr($key,0,1)=="_") || (substr($key,0,9)=="hidFileID") || (substr($key,0,11)=="hidFileName");
     if ($is_hidden) continue;
 
     if (substr($key,0,1)!="_")

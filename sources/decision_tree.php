@@ -429,15 +429,17 @@ class DecisionTree
                 if (!empty($_POST[$question_name])) {
                     $val = $_POST[$question_name];
 
-                    if ((!empty($question_details['comcode_prepend'])) && (substr($val, 0, strlen($question_details['comcode_prepend'])) != $question_details['comcode_prepend'])) {
-                        $val = $question_details['comcode_prepend'] . $val;
-                    }
+                    if (substr($val, 0, 1) != '(' || substr($val, -1) != ')') {
+                        if ((!empty($question_details['comcode_prepend'])) && (substr($val, 0, strlen($question_details['comcode_prepend'])) != $question_details['comcode_prepend'])) {
+                            $val = $question_details['comcode_prepend'] . $val;
+                        }
 
-                    if ((!empty($question_details['comcode_append'])) && (substr($val, -strlen($question_details['comcode_append'])) != $question_details['comcode_append'])) {
-                        $val = $val . $question_details['comcode_append'];
-                    }
+                        if ((!empty($question_details['comcode_append'])) && (substr($val, -strlen($question_details['comcode_append'])) != $question_details['comcode_append'])) {
+                            $val = $val . $question_details['comcode_append'];
+                        }
 
-                    $_POST[$question_name] = $val;
+                        $_POST[$question_name] = $val;
+                    }
                 }
             }
         }

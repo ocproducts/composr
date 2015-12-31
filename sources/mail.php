@@ -1419,6 +1419,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
                 (strpos($key, 'minute') !== false) || 
                 (strpos($key, 'confirm') !== false) || 
                 (strpos($key, 'pre_f_') !== false) || 
+                (strpos($key, 'tick_on_form__') !== false) || 
                 (strpos($key, 'label_for__') !== false) || 
                 (strpos($key, 'description_for__') !== false) || 
                 (strpos($key, 'wysiwyg_version_of_') !== false) || 
@@ -1459,7 +1460,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         foreach ($fields as $field_name => $field_title) {
             $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, $field_title, $field_val);
+                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
 
                 if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
@@ -1469,7 +1470,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, $field_title, $field_val);
+                _append_form_to_email($message_raw, false, $field_title, $field_val);
             }
         }
     }
@@ -1506,18 +1507,37 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
  * Append a value to a text e-mail.
  *
  * @param  string $message_raw Text-email (altered by reference).
+ * @param  string $is_tick Whether it is a tick field.
  * @param  string $field_title Field title.
  * @param  string $field_val Field value.
  *
  * @ignore
  */
-function _append_form_to_email(&$message_raw, $field_title, $field_val)
+function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val)
 {
-    $message_raw .= $field_title . ':';
-    if (strpos($message_raw, "\n") !== false || strpos($field_title, ' (') !== false) {
-        $message_raw .= "\n";
+    $prefix = '';
+    $prefix .= '[b]' . $field_title . '[/b]:';
+    if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
+        $prefix .= "\n";
     } else {
-        $message_raw .= " ";
+        $prefix .= " ";
     }
-    $message_raw .= $field_val . "\n\n";
+
+    if ($is_tick && in_array($field_val, array('', '0', '1'))) {
+        $message_raw .= $prefix;
+        $message_raw .= ($field_val == '1') ? do_lang('YES') : do_lang('NO');
+    } else {
+        if ($field_val == '') {
+            return; // We won't show blank values, gets long
+        }
+
+        $message_raw .= $prefix;
+        if ($field_val == '') {
+            $message_raw .= '(' . do_lang('EMPTY') . ')';
+        } else {
+            $message_raw .= $field_val;
+        }
+    }
+
+    $message_raw .= "\n\n";
 }
