@@ -778,7 +778,7 @@ class Hook_addon_registry_core
             'themes/default/templates/BLOCK_TOP_LOGIN.tpl',
             'themes/default/templates/BLOCK_TOP_PERSONAL_STATS.tpl',
             'themes/default/templates/BLOCK_MAIN_CONTENT_FILTERING.tpl',
-            'themes/default/templates/LOGIN_REDIRECT_SCREEN.tpl',
+            'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
             'themes/default/templates/CSS_NEED.tpl',
@@ -1424,7 +1424,7 @@ class Hook_addon_registry_core
             'templates/ACTIONLOGS_SCREEN.tpl' => 'administrative__actionlogs_screen',
             'templates/ACTIONLOGS_TOGGLE_LINK.tpl' => 'administrative__actionlogs_toggle_link',
             'templates/LOGIN_SCREEN.tpl' => 'login_screen',
-            'templates/LOGIN_REDIRECT_SCREEN.tpl' => 'login_redirect_screen',
+            'templates/REDIRECT_POST_METHOD_SCREEN.tpl' => 'redirect_post_method_screen',
             'templates/FORUMS_EMBED.tpl' => 'forums_embed',
             'templates/JS_BLOCK.tpl' => 'js_block',
             'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
@@ -1614,10 +1614,10 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__login_redirect_screen()
+    public function tpl_preview__redirect_post_method_screen()
     {
         return array(
-            lorem_globalise(do_lorem_template('LOGIN_REDIRECT_SCREEN', array(
+            lorem_globalise(do_lorem_template('REDIRECT_POST_METHOD_SCREEN', array(
                 'REFRESH' => '',
                 'TITLE' => lorem_title(),
                 'TEXT' => lorem_sentence_html(),

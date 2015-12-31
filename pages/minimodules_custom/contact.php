@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+require_code('encryption');
+$encryption = is_encryption_enabled();
+$encrypted = $encryption ? ' The details you enter here will be encrypted automatically.' : '';
+
 /*
 Notes:
  - Lists are ordered in cost order where applicable
@@ -785,11 +789,11 @@ $decision_tree = array(
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you already have hosting and think we might need these details. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page]. The details you enter here will be encrypted automatically.',
+                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you already have hosting and think we might need these details. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
                 'type' => 'long_text',
                 'default' => '(I do not yet have hosting, provide advice or hosting for me.)',
-                'comcode_prepend' => '[encrypt]',
-                'comcode_append' => '[/encrypt]',
+                'comcode_prepend' => $encryption ? '[encrypt]' : '',
+                'comcode_append' => $encryption ? '[/encrypt]' : '',
                 'options' => '',
                 'required' => false,
             ),
@@ -892,11 +896,11 @@ $decision_tree = array(
         'questions' => array(
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page]. The details you enter here will be encrypted automatically.',
+                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
                 'type' => 'long_text',
                 'default' => '',
-                'comcode_prepend' => '[encrypt]',
-                'comcode_append' => '[/encrypt]',
+                'comcode_prepend' => $encryption ? '[encrypt]' : '',
+                'comcode_append' => $encryption ? '[/encrypt]' : '',
                 'options' => '',
                 'required' => true,
             ),
@@ -910,11 +914,11 @@ $decision_tree = array(
             ),
             'password' => array(
                 'label' => 'Password to use',
-                'description' => 'What would you like your admin password to be set to? The details you enter here will be encrypted automatically.',
+                'description' => 'What would you like your admin password to be set to?' . $encrypted,
                 'type' => 'short_text',
                 'default' => '',
-                'comcode_prepend' => '[encrypt]',
-                'comcode_append' => '[/encrypt]',
+                'comcode_prepend' => $encryption ? '[encrypt]' : '',
+                'comcode_append' => $encryption ? '[/encrypt]' : '',
                 'options' => '',
                 'required' => true,
             ),
@@ -1034,11 +1038,11 @@ $decision_tree = array(
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you think we might. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page]. The details you enter here will be encrypted automatically.',
+                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you think we might. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
                 'type' => 'long_text',
                 'default' => '',
-                'comcode_prepend' => '[encrypt]',
-                'comcode_append' => '[/encrypt]',
+                'comcode_prepend' => $encryption ? '[encrypt]' : '',
+                'comcode_append' => $encryption ? '[/encrypt]' : '',
                 'options' => '',
                 'required' => false,
             ),
@@ -1079,11 +1083,11 @@ $decision_tree = array(
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page]. The details you enter here will be encrypted automatically.',
+                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
                 'type' => 'long_text',
                 'default' => '',
-                'comcode_prepend' => '[encrypt]',
-                'comcode_append' => '[/encrypt]',
+                'comcode_prepend' => $encryption ? '[encrypt]' : '',
+                'comcode_append' => $encryption ? '[/encrypt]' : '',
                 'options' => '',
                 'required' => false,
             ),

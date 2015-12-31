@@ -933,7 +933,7 @@ function do_site()
             set_value('last_space_check', strval(time()));
         }
 
-        if (function_exists('disk_free_space')) {
+        if (php_function_allowed('disk_free_space')) {
             $low_space_check = intval(get_option('low_space_check')) * 1024 * 1024;
             $disk_space = @disk_free_space(get_file_base());
             if ((is_integer($disk_space)) && ($disk_space < $low_space_check)) {

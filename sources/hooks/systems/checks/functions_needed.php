@@ -37,7 +37,7 @@ class Hook_check_functions_needed
             array_intersect array_merge array_pop array_push array_reverse array_search array_shift
             array_slice array_splice array_unique array_values arsort asort base64_decode base64_encode
             call_user_func ceil chdir checkdate chmod chr chunk_split class_exists clearstatcache closedir
-            constant copy cos count crypt current date dechex decoct define defined dirname disk_free_space
+            constant copy cos count crypt current date dechex decoct define defined dirname
             deg2rad error_log error_reporting eval exit explode fclose feof fgets file file_exists
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell

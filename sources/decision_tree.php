@@ -180,7 +180,7 @@ class DecisionTree
                 $post = build_keep_post_fields(null, true);
                 $refresh = do_template('JS_REFRESH', array('FORM_NAME' => 'redir_form'));
 
-                return do_template('LOGIN_REDIRECT_SCREEN', array('REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
+                return do_template('REDIRECT_POST_METHOD_SCREEN', array('REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
             }
 
             return redirect_screen($title, $url);
