@@ -59,13 +59,13 @@ function init__global3()
     global $MSN_DB;
     $MSN_DB = null;
 
-    // This is like NULL, but is a higher-precedence NULL that can also survive string layers (such as HTML forms). It should only be used when:
-    //  - 'NULL' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
+    // This is like null, but is a higher-precedence null that can also survive string layers (such as HTML forms). It should only be used when:
+    //  - 'null' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
     //  - OR, as the standard "ignore this field" indicator for query_update (so that "fractional edits" can happen without requiring a secondary API set or a messed up primary API)
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when NULL and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -209,15 +209,15 @@ function fix_permissions($path, $perms = 0666)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -1617,7 +1617,7 @@ function is_valid_ip($ip)
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
  * @set    1 2 3 4
- * @param  ?IP $ip IP address to use, normally left NULL (null: current user's)
+ * @param  ?IP $ip IP address to use, normally left null (null: current user's)
  * @return IP The users IP address (blank: could not find a valid one)
  */
 function get_ip_address($amount = 4, $ip = null)
@@ -1838,7 +1838,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return NULL, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -2375,7 +2375,7 @@ function is_mobile($user_agent = null, $truth = false)
 }
 
 /**
- * Get the name of a webcrawler bot, or NULL if no bot detected
+ * Get the name of a webcrawler bot, or null if no bot detected
  *
  * @return ?string Webcrawling bot name (null: not a bot)
  */
@@ -2538,7 +2538,7 @@ function wordfilter_text($text)
 }
 
 /**
- * Assign this to explicitly declare that a variable may be of mixed type, and initialise to NULL.
+ * Assign this to explicitly declare that a variable may be of mixed type, and initialise to null.
  *
  * @return ?mixed Of mixed type (null: default)
  */

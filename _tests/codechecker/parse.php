@@ -1259,7 +1259,7 @@ function _parse_assignment_operator()
 
 function _parse_literal()
 {
-    // Choice{"SUBTRACT" literal | "integer_literal" | "float_literal" | "string_literal" | "true" | "false" | "NULL" | "IDENTIFIER"}
+    // Choice{"SUBTRACT" literal | "integer_literal" | "float_literal" | "string_literal" | "true" | "false" | "null" | "IDENTIFIER"}
 
     $next = pparse__parser_peek();
     switch ($next) {
@@ -1482,13 +1482,11 @@ function _parse_parameter()
                 // Variable with type hint
                 $var = pparse__parser_expect('variable');
                 if (pparse__parser_peek() == 'EQUAL') {
-                    // Variable with type hint and default value. This can only be
-                    // NULL
+                    // Variable with type hint and default value. This can only be null
                     pparse__parser_next();        // Consume the EQUAL
                     if (pparse__parser_peek() == 'null') {
-                        // If the default value is NULL, the hint is extended to allow
-                        // NULL
-                        pparse__parser_next();        // Consume the NULL
+                        // If the default value is null, the hint is extended to allow null
+                        pparse__parser_next();        // Consume the null
                         // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                         $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
                         $parameter['HINT'] = '?' . $hint;
@@ -1508,13 +1506,11 @@ function _parse_parameter()
             $variable = pparse__parser_expect('variable');
             // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
             if (pparse__parser_peek() == 'EQUAL') {
-                // Variable with type hint and default value. This can only be
-                // NULL
+                // Variable with type hint and default value. This can only be null
                 pparse__parser_next();        // Consume the EQUAL
                 if (pparse__parser_peek() == 'null') {
-                    // If the default value is NULL, the hint is extended to allow
-                    // NULL
-                    pparse__parser_next();        // Consume the NULL
+                    // If the default value is null, the hint is extended to allow null
+                    pparse__parser_next();        // Consume the null
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
                     $parameter['HINT'] = '?' . $hint;

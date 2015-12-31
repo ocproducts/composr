@@ -93,14 +93,14 @@ class Module_calendar
             $GLOBALS['SITE_DB']->create_table('calendar_events', array(
                 'id' => '*AUTO',
                 'e_submitter' => 'MEMBER',
-                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if NULL, it shows globally
+                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if null, it shows globally
                 'e_views' => 'INTEGER',
                 'e_title' => 'SHORT_TRANS__COMCODE',
                 'e_content' => 'LONG_TRANS__COMCODE',
                 'e_add_date' => 'TIME',
                 'e_edit_date' => '?TIME',
                 'e_recurrence' => 'ID_TEXT', // [none, daily, weekly, monthly, yearly, xth_dotw_of_monthly] X [fractional-occurrence]. e.g. "daily yyyyynn" for weekdays
-                'e_recurrences' => '?SHORT_INTEGER', // NULL means none/infinite
+                'e_recurrences' => '?SHORT_INTEGER', // null means none/infinite
                 'e_seg_recurrences' => 'BINARY',
                 'e_start_year' => 'INTEGER',
                 'e_start_month' => 'SHORT_INTEGER',
@@ -242,7 +242,7 @@ class Module_calendar
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)

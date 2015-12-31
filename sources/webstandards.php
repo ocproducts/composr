@@ -784,7 +784,7 @@ function fix_entities($in)
 /**
  * Get the next tag in the current XHTML document.
  *
- * @return ?mixed Either an array of error details, a string of the tag, or NULL for finished (null: no next tag)
+ * @return ?mixed Either an array of error details, a string of the tag, or null for finished (null: no next tag)
  * @ignore
  */
 function _get_next_tag()

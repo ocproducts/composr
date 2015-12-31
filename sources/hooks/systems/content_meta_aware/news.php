@@ -78,7 +78,7 @@ class Hook_content_meta_aware_news
 
             'feedback_type_code' => 'news',
 
-            'permissions_type_code' => 'news', // NULL if has no permissions
+            'permissions_type_code' => 'news', // null if has no permissions
 
             'search_hook' => 'news',
             'rss_hook' => 'news',

@@ -78,7 +78,7 @@ class Hook_content_meta_aware_download_category
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'downloads', // NULL if has no permissions
+            'permissions_type_code' => 'downloads', // null if has no permissions
 
             'search_hook' => 'download_categories',
             'rss_hook' => null,

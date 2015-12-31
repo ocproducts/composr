@@ -60,8 +60,8 @@ VARIABLE KEY:
 version: complete minimal version string intended for humans
 long_version: maximal dotted version number
 intended: minimal dotted version number
-qualifier: NULL or alpha or beta or RC
-qualifier_number: NULL or integer
+qualifier: null or alpha or beta or RC
+qualifier_number: null or integer
 */
 
 // Find our version

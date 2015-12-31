@@ -810,8 +810,6 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         } else {
             $field_groups[$field_cat]->attach($result);
         }
-
-        $hidden->attach(form_input_hidden('label_for__field_' . strval($custom_field['id']), $custom_field['trans_name']));
     }
     if (array_key_exists('', $field_groups)) { // Blank prefix must go first
         $field_groups_blank = $field_groups[''];

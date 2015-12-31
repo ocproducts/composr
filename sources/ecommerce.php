@@ -327,7 +327,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  * @param  ID_TEXT $search The product codename/item name
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the formal product name (both will be NULL if not found).
+ * @return array A pair: The product-class map, and the formal product name (both will be null if not found).
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {

@@ -2312,7 +2312,7 @@ function single_field__end()
 }
 
 /**
- * Used to create a NULL option for field sets.
+ * Used to create a null option for field sets.
  *
  * @param  mixed $pretty_name The human-readable name for this field
  * @param  ?integer $tabindex The tab index (null: none specified)

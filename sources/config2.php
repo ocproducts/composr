@@ -106,7 +106,7 @@ function get_default_option($name)
 
     $value = $ob->get_default();
     if (is_null($value)) {
-        $value = ''; // Cannot save a NULL. We don't need to save as NULL anyway, options are only disabled when they wouldn't have been used anyway
+        $value = ''; // Cannot save a null. We don't need to save as null anyway, options are only disabled when they wouldn't have been used anyway
     }
 
     return $value;

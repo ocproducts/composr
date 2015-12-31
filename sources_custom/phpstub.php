@@ -3425,7 +3425,7 @@ function strstr($haystack, $needle)
 /**
  * Tokenize string.
  *
- * @param  string $subject String to tokenise. EXCEPT if $deliminators=NULL, then this has actual deliminators.
+ * @param  string $subject String to tokenise. EXCEPT if $deliminators=null, then this has actual deliminators.
  * @param  ?string $deliminators Deliminators (null: continue with previous tokenisation).
  * @return ~string Next token (false: could not return a token, no more tokens to return).
  */

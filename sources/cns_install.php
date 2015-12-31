@@ -753,7 +753,7 @@ function install_cns($upgrade_from = null)
             'id' => '*AUTO',
             'pv_poll_id' => 'AUTO_LINK',
             'pv_member_id' => 'MEMBER',
-            'pv_answer_id' => 'AUTO_LINK', // -1 means "forfeited". We'd use NULL, but we aren't allowed NULL fragments in keys
+            'pv_answer_id' => 'AUTO_LINK', // -1 means "forfeited". We'd use null, but we aren't allowed null fragments in keys
             'pv_ip' => 'IP'
         ));
 

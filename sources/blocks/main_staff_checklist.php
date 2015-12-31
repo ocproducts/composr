@@ -214,7 +214,7 @@ class Block_main_staff_checklist
 /**
  * Work out when an action should happen, and last happened.
  *
- * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is NULL then the number of seconds until it happens (null: won't happen)
+ * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is null then the number of seconds until it happens (null: won't happen)
  * @param  ?integer $recur_hours It should be done every this many hours (null: never happened)
  * @return array A pair: Tempcode to display, and the number of seconds to go until the action should happen
  */

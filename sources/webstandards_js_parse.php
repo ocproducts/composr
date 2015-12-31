@@ -1408,7 +1408,7 @@ function parser_next($all = false)
  * Give a parse error.
  *
  * @param  string $message The error
- * @return ?boolean Always NULL (null: exit)
+ * @return ?boolean Always null (null: exit)
  */
 function webstandards_js_parser_error($message)
 {

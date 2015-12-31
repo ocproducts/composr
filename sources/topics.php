@@ -55,7 +55,7 @@ class CMS_Topic
     // Will be filled up during processing
     public $all_posts_ordered = null;
     public $is_threaded = null;
-    public $topic_id = null; // May need setting, if posts were loaded in manually rather than letting the class load them; may be left as NULL but functionality degrades somewhat
+    public $topic_id = null; // May need setting, if posts were loaded in manually rather than letting the class load them; may be left as null but functionality degrades somewhat
     public $topic_last_read = null;
     public $reverse = false;
 
@@ -914,7 +914,7 @@ class CMS_Topic
             }
 
             // Child posts
-            $children = mixed(); // NULL
+            $children = mixed(); // null
             $other_ids = array();
             if (array_key_exists('children', $post)) {
                 foreach ($post['children'][1] as $u) {

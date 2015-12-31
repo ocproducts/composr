@@ -467,11 +467,11 @@ function send_rss_ping($show_errors = true)
  * @param  LONG_TEXT $meta_description Meta description
  * @param  ?URLPATH $image URL to the image for the news entry (blank: use cat image) (null: don't delete existing)
  * @param  ?TIME $add_time Add time (null: do not change)
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
 function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {

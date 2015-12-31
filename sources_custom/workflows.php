@@ -100,7 +100,7 @@ function get_all_workflows()
 /**
  * Get the system's default workflow. If there is only one workflow this
  * will return it, otherwise (multiple with no default specified, or no
- * workflows at all) it will give NULL.
+ * workflows at all) it will give null.
  *
  * @return ?AUTO_LINK The ID of the default workflow. (null: if none set)
  */
@@ -792,7 +792,7 @@ function get_all_approval_points($workflow_id)
 function get_usergroups_for_approval_point($approval_id)
 {
     if (is_null($approval_id)) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'NULL approval'));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'null approval'));
     }
     $groups = $GLOBALS['SITE_DB']->query_select('workflow_permissions', array('usergroup'), array('workflow_approval_point_id' => $approval_id));
     $raw_names = array();

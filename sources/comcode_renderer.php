@@ -310,7 +310,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
  * Show a Comcode parser error.
  *
  * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion.
- * @param  array $_message Error message details to pass to do_lang, or if the first in the list is NULL, use directly
+ * @param  array $_message Error message details to pass to do_lang, or if the first in the list is null, use directly
  * @param  integer $pos The position during parsing that the error occurred at
  * @param  LONG_TEXT $comcode The Comcode the parser error occurred in
  * @param  boolean $check_only Whether to only check the Comcode.

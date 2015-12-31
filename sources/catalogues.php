@@ -47,7 +47,7 @@ function init__catalogues()
  * Get a catalogue row.
  *
  * @param  ID_TEXT $catalogue_name The catalogue name
- * @param  boolean $fail_ok Whether to return NULL if we can't find it (as opposed to a fatal error)
+ * @param  boolean $fail_ok Whether to return null if we can't find it (as opposed to a fatal error)
  * @return ?array Catalogue row (null: could not find it, and $fail_ok was set to true)
  */
 function load_catalogue_row($catalogue_name, $fail_ok = false)
@@ -621,8 +621,8 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  *
  * @param  ID_TEXT $catalogue_name Name of the catalogue
  * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)
- * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not NULL) (null: all)
- * @param  ?integer $start The entry number to start at (ignored if $filter is not NULL) (null: all)
+ * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not null) (null: all)
+ * @param  ?integer $start The entry number to start at (ignored if $filter is not null) (null: all)
  * @param  ?mixed $filter The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $filtercode List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value

@@ -588,8 +588,8 @@ function load_minimodule_page($string, &$out = null)
         $PAGE_STRING = $string;
     }
 
-    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out!==NULL))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
-        $out->evaluate_echo(NULL,true);*/
+    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
+        $out->evaluate_echo(null, true);*/
 
     return _load_mini_code($string);
 }
@@ -1616,7 +1616,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             if (is_string($param)) {
                 $_params .= '\'' . str_replace('\'', '\\\'', $param) . '\'';
             } elseif ($param === null) {
-                $_params .= 'NULL';
+                $_params .= 'null';
             } elseif (is_bool($param)) {
                 $_params .= $param ? 'true' : 'false';
             } else {

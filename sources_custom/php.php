@@ -318,7 +318,7 @@ function get_php_file_api($filename, $include_code = true)
                 // Check that null is fully specified
                 if ($return['type'][0] == '?') {
                     if (strpos($return['description'], '(null: ') === false) {
-                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('NULL'))), 'warn');
+                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('null'))), 'warn');
                     }
                 }
                 if ($return['type'][0] == '~') {
@@ -801,7 +801,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
             break;
         case 'AUTO_LINK':
             if ((!is_integer($value)) || ($value < -1)) {
-                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to NULL
+                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to null
             }
             break;
         case 'BINARY':

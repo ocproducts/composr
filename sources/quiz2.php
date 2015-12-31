@@ -426,7 +426,7 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
  * @param  BINARY $shuffle_answers Whether to shuffle multiple-choice answers, to make cheating a bit harder
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
 function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail, $notes, $percentage, $open_time, $close_time, $num_winners, $redo_time, $type, $validated, $text, $meta_keywords, $meta_description, $points_for_passing = 0, $tied_newsletter = null, $reveal_answers = 0, $shuffle_questions = 0, $shuffle_answers = 0, $add_time = null, $submitter = null, $null_is_literal = false)
 {

@@ -19,7 +19,7 @@
  */
 
 /**
- * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+ * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
  * All authorisation, cookies, and form-logins, are passed through this function.
  * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
  *
@@ -29,7 +29,7 @@
  * @param  SHORT_TEXT $password_hashed The md5-hashed password
  * @param  string $password_raw The raw password
  * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
- * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+ * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
  *
  * @ignore
  */

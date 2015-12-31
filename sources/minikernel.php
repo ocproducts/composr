@@ -606,7 +606,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function either_param_string($name, $default = null)
 {
@@ -619,7 +619,7 @@ function either_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function post_param_string($name, $default = null)
 {
@@ -632,7 +632,7 @@ function post_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function get_param_string($name, $default = null)
 {
@@ -648,7 +648,7 @@ function get_param_string($name, $default = null)
  * @param  ?mixed $default The default value to use for the parameter (null: no default)
  * @param  boolean $must_integer Whether the parameter has to be an integer
  * @param  boolean $is_post Whether the parameter is a POST parameter
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  * @ignore
  */
 function __param($array, $name, $default, $must_integer = false, $is_post = false)
@@ -821,7 +821,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {

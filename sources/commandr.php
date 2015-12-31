@@ -1137,7 +1137,7 @@ class Virtual_shell
             if (is_array($value)) {
                 $value = protect_from_escaping($this->_array_to_html($value));
             }
-            $output->attach(do_template('COMMANDR_ARRAY_ELEMENT', array('_GUID' => '18c9700c05fbe9c8b45f454376deda05', 'KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'NULL' : (is_object($value) ? $value : strval($value))))));
+            $output->attach(do_template('COMMANDR_ARRAY_ELEMENT', array('_GUID' => '18c9700c05fbe9c8b45f454376deda05', 'KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'null' : (is_object($value) ? $value : strval($value))))));
         }
         return do_template('COMMANDR_ARRAY', array('_GUID' => 'ab75cdb77fa797d2e42185b51e34d857', 'ELEMENTS' => $output));
     }

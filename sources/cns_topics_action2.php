@@ -34,7 +34,7 @@
  * @param  ?SHORT_TEXT $description_link Link related to the topic (e.g. link to view a ticket) (null: do not change).
  * @param  boolean $check_perms Whether to check permissions.
  * @param  ?integer $views Number of views (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
 function cns_edit_topic($topic_id, $description = null, $emoticon = null, $validated = null, $open = null, $pinned = null, $sunk = null, $cascading = null, $reason = '', $title = null, $description_link = null, $check_perms = true, $views = null, $null_is_literal = false)
 {

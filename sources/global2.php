@@ -630,7 +630,7 @@ function get_charset()
  */
 function load_user_stuff()
 {
-    if ((!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null)) { // Second clause is for Quercus, as it pre-NULLs referenced variables
+    if ((!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null)) { // Second clause is for Quercus, as it pre-nulls referenced variables
         global $SITE_INFO, $FORUM_DRIVER, $SITE_DB, $FORUM_DB;
 
         require_code('forum_stub');
@@ -1302,6 +1302,10 @@ function either_param_string($name, $default = false)
     }
 
     if ($ret === $default) {
+        if ($default === null) {
+            return null;
+        }
+
         return $ret;
     }
 
@@ -1333,6 +1337,10 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         return null;
     }
     if ((trim($ret) == '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] != '0')) {
+        if ($default === null) {
+            return null;
+        }
+
         require_code('failure');
         improperly_filled_in_post($name);
     }
@@ -1496,7 +1504,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function either_param_integer($name, $default = false)
 {
@@ -1521,7 +1529,7 @@ function either_param_integer($name, $default = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function post_param_integer($name, $default = false)
 {
@@ -1564,7 +1572,7 @@ function post_param_integer($name, $default = false)
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $not_string_ok If a string is given, use the default parameter rather than giving an error (only use this if you are suffering from a parameter conflict situation between different parts of Composr)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function get_param_integer($name, $default = false, $not_string_ok = false)
 {
@@ -1719,7 +1727,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
  * Get Tempcode to tie in (to the HTML, in <head>) all the JavaScript files that have been required.
  *
  * @param  ?string $position Position to get JavaScript for (null: all positions)
- * @set NULL header footer
+ * @set null header footer
  * @return Tempcode The Tempcode to tie in the JavaScript files
  */
 function javascript_tempcode($position = null)

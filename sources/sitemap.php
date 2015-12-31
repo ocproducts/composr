@@ -256,7 +256,7 @@ abstract class Hook_sitemap_base
             return true;
         }
 
-        // Note that other things are disabled via get_entry_points returning NULL
+        // Note that other things are disabled via get_entry_points returning null
 
         return false;
     }

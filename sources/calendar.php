@@ -951,11 +951,11 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER:
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL:
                     if ($member_calendar !== $event['e_member_calendar']) {
-                        continue 2; // we know one is not global, so we can do a direct compare, knowing NULL will not equal any member value
+                        continue 2; // we know one is not global, so we can do a direct compare, knowing null will not equal any member value
                     }
                     break;
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE:
-                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/*we know we don't need to consider a NULL to NULL match separately as it can't happen in this branch*/)) {
+                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/*we know we don't need to consider a null to null match separately as it can't happen in this branch*/)) {
                         continue 2;
                     }
                     break;
@@ -1069,7 +1069,7 @@ function find_timezone_end_minute_in_utc($timezone, $year, $month, $day, $monthl
 /**
  * Get the UTC start time for a specified UTC time event.
  *
- * @param  ID_TEXT $timezone The timezone it is in; used to derive $hour and $minute if those are NULL, such that they start the day correctly for this timezone
+ * @param  ID_TEXT $timezone The timezone it is in; used to derive $hour and $minute if those are null, such that they start the day correctly for this timezone
  * @param  integer $year Year
  * @param  integer $month Month
  * @param  integer $day Day

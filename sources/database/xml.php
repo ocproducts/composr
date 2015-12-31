@@ -384,7 +384,7 @@ class Database_Static_xml
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
@@ -3295,7 +3295,7 @@ class Database_Static_xml
      * @param  integer $at Our offset counter
      * @param  array $tokens Tokens
      * @param  string $query Query that was executed
-     * @param  boolean $fail_ok Whether it can return NULL if we're out of output (otherwise fails)
+     * @param  boolean $fail_ok Whether it can return null if we're out of output (otherwise fails)
      * @return ?string Token read (null: error, read too far)
      */
     protected function _parsing_read(&$at, $tokens, $query, $fail_ok = false)

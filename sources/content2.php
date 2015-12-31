@@ -238,7 +238,7 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
  * @param  ?ID_TEXT $content_id The old ID of the resource (null: adding)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
  * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
- * @return array A map of standard meta data fields (name to value). If adding, this map is accurate for adding. If editing, NULLs mean do-not-edit or non-editable.
+ * @return array A map of standard meta data fields (name to value). If adding, this map is accurate for adding. If editing, nulls mean do-not-edit or non-editable.
  */
 function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
 {
@@ -254,7 +254,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             'submitter' => INTEGER_MAGIC_NULL,
             'add_time' => INTEGER_MAGIC_NULL,
             'edit_time' => INTEGER_MAGIC_NULL,
-            /*'url_moniker'=>NULL,, was handled internally*/
+            /*'url_moniker' => null, was handled internally*/
         );
     }
 
@@ -264,7 +264,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             'submitter' => is_null($content_id) ? get_member() : INTEGER_MAGIC_NULL,
             'add_time' => is_null($content_id) ? time() : INTEGER_MAGIC_NULL,
             'edit_time' => time(),
-            /*'url_moniker'=>NULL,, was handled internally*/
+            /*'url_moniker' => null, was handled internally*/
         );
     }
 

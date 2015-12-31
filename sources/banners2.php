@@ -401,9 +401,9 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
  * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */

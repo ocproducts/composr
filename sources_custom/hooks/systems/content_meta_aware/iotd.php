@@ -74,7 +74,7 @@ class Hook_content_meta_aware_iotd
 
             'feedback_type_code' => 'iotds',
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'iotd',
             'rss_hook' => 'iotds',

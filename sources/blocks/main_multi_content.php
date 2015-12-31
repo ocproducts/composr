@@ -75,7 +75,7 @@ class Block_main_multi_content
         $info['cache_on'] = '
             (preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)
             ?
-            NULL
+            null
             :
             array(
                 array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,
@@ -86,13 +86,13 @@ class Block_main_multi_content
                 get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),
                 get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),
                 ((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),
-                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',NULL),
+                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',null),
                 (array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',
                 (array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',
                 array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',
                 array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,
-                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):NULL,
-                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):NULL,
+                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):null,
+                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):null,
                 ((array_key_exists(\'pinned\',$map)) && ($map[\'pinned\']!=\'\'))?explode(\',\',$map[\'pinned\']):array(),
                 array_key_exists(\'title\',$map)?$map[\'title\']:\'\',
                 array_key_exists(\'param\',$map)?$map[\'param\']:\'download\',

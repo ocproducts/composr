@@ -1377,6 +1377,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  * @param  ?string $to_email Email address to send to (null: look from post environment / staff address).
  * @param  string $outro The outro text to the mail (blank: none).
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
+ * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments
  *
  * @ignore
  */
@@ -1385,9 +1386,10 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     if (is_null($subject)) {
         $subject = post_param_string('subject', get_site_name());
     }
+
     if (is_null($fields)) {
         $fields = array();
-        $boring_fields = array(
+        $boring_fields = array( // NB: Keep in sync with static_export.php
             'MAX_FILE_SIZE',
             'perform_webstandards_check',
             '_validated',
@@ -1411,13 +1413,37 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             $boring_fields = array_merge($boring_fields, $extra_boring_fields);
         }
         foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
-            $is_hidden = (strpos($key, 'hour') !== false) || (strpos($key, 'access_') !== false) || (strpos($key, 'minute') !== false) || (strpos($key, 'confirm') !== false) || (strpos($key, 'pre_f_') !== false) || (strpos($key, 'label_for__') !== false) || (strpos($key, 'wysiwyg_version_of_') !== false) || (strpos($key, 'is_wysiwyg') !== false) || (strpos($key, 'require__') !== false) || (strpos($key, 'tempcodecss__') !== false) || (strpos($key, 'comcode__') !== false) || (strpos($key, '_parsed') !== false) || (substr($key, 0, 1) == '_') || (substr($key, 0, 9) == 'hidFileID') || (substr($key, 0, 11) == 'hidFileName');
+            $is_hidden =  // NB: Keep in sync with static_export.php
+                (strpos($key, 'hour') !== false) || 
+                (strpos($key, 'access_') !== false) || 
+                (strpos($key, 'minute') !== false) || 
+                (strpos($key, 'confirm') !== false) || 
+                (strpos($key, 'pre_f_') !== false) || 
+                (strpos($key, 'label_for__') !== false) || 
+                (strpos($key, 'description_for__') !== false) || 
+                (strpos($key, 'wysiwyg_version_of_') !== false) || 
+                (strpos($key, 'is_wysiwyg') !== false) || 
+                (strpos($key, 'require__') !== false) || 
+                (strpos($key, 'tempcodecss__') !== false) || 
+                (strpos($key, 'comcode__') !== false) || 
+                (strpos($key, '_parsed') !== false) || 
+                (substr($key, 0, 1) == '_') || 
+                (substr($key, 0, 9) == 'hidFileID') || 
+                (substr($key, 0, 11) == 'hidFileName');
             if ($is_hidden) {
                 continue;
             }
 
             if (substr($key, 0, 1) != '_') {
-                $fields[$key] = post_param_string('label_for__' . $key, titleify($key));
+                $label = post_param_string('label_for__' . $key, titleify($key));
+                $description = post_param_string('description_for__' . $key, '');
+                $_label = $label . (($description == '') ? '' : (' (' . $description . ')'));
+
+                if ($is_via_post) {
+                    $fields[$key] = $_label;
+                } else {
+                    $fields[$label] = post_param_string($key, null);
+                }
             }
         }
     }
@@ -1430,12 +1456,12 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     }
 
     if ($is_via_post) {
-        foreach ($fields as $field => $field_title) {
-            $field_val = post_param_string($field, null);
+        foreach ($fields as $field_name => $field_title) {
+            $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ' . $field_val . "\n\n";
+                _append_form_to_email($message_raw, $field_title, $field_val);
 
-                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field, '') == 'email')) {
+                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
                 }
             }
@@ -1443,11 +1469,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ';
-                if (strpos($message_raw, "\n") !== false) {
-                    $message_raw .= "\n";
-                }
-                $message_raw .= $field_val . "\n\n";
+                _append_form_to_email($message_raw, $field_title, $field_val);
             }
         }
     }
@@ -1478,4 +1500,24 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     }
 
     return array($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments);
+}
+
+/**
+ * Append a value to a text e-mail.
+ *
+ * @param  string $message_raw Text-email (altered by reference).
+ * @param  string $field_title Field title.
+ * @param  string $field_val Field value.
+ *
+ * @ignore
+ */
+function _append_form_to_email(&$message_raw, $field_title, $field_val)
+{
+    $message_raw .= $field_title . ':';
+    if (strpos($message_raw, "\n") !== false || strpos($field_title, ' (') !== false) {
+        $message_raw .= "\n";
+    } else {
+        $message_raw .= " ";
+    }
+    $message_raw .= $field_val . "\n\n";
 }

@@ -65,7 +65,7 @@ function tar_open($path, $mode)
  * Return the root directory from the specified TAR file. Note that there are folders in here, and they will end '/'.
  *
  * @param  array $resource The TAR file handle
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @return ?array A list of maps that stores 'path', 'mode', 'size' and 'mtime', for each file in the archive (null: error)
  */
 function tar_get_directory(&$resource, $tolerate_errors = false)
@@ -435,7 +435,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
  *
  * @param  array $resource The TAR file handle
  * @param  PATH $path The full path to the file we want to get
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @param  ?PATH $write_data_to Write data to here (null: return within array)
  * @return ?array A map, containing 'data' (the file), 'size' (the filesize), 'mtime' (the modification timestamp), and 'mode' (the permissions) (null: not found / TAR possibly corrupt if we turned tolerate errors on)
  */

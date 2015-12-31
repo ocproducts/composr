@@ -314,9 +314,9 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
  * @param  boolean $headers Whether to output CSV headers
  * @param  boolean $output_and_exit Whether to output/exit when we're done instead of return
  * @param  ?PATH $outfile_path File to spool into (null: none)
- * @param  ?mixed $callback Callback for dynamic row insertion (null: none). Only implemented for the excel_support addon. Is passed: row just done, next row (or NULL), returns rows to insert
+ * @param  ?mixed $callback Callback for dynamic row insertion (null: none). Only implemented for the excel_support addon. Is passed: row just done, next row (or null), returns rows to insert
  * @param  ?array $meta_data List of maps, each map representing meta-data of a row; supports 'url' (null: none)
- * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not NULL, this will be blank)
+ * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not null, this will be blank)
  */
 function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $meta_data = null)
 {
@@ -748,15 +748,15 @@ function check_shared_space_usage($extra)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none). If $raw_post is set, it should be array($data)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)

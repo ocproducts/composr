@@ -173,8 +173,6 @@ class Block_main_contact_catalogues
                 $field_groups[$field_cat]->attach($result);
             }
 
-            $hidden->attach(form_input_hidden('label_for__field_' . strval($field['id']), $_cf_name));
-
             if (($field['cf_type'] == 'email') && (!$found_email)) {
                 $hidden->attach(form_input_hidden('field_tagged__field_' . strval($field['id']), 'email'));
                 $found_email = true;

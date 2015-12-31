@@ -393,7 +393,7 @@ function gallery_has_content($name)
  *
  * @param  ID_TEXT $gallery_name The name of the gallery
  * @param  ?array $row Gallery row (null: look it up)
- * @param  boolean $only_if_personal_gallery Only non-NULL if it is a personal gallery
+ * @param  boolean $only_if_personal_gallery Only non-null if it is a personal gallery
  * @return ?MEMBER The owner of the gallery (null: not a member owned gallery)
  */
 function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_personal_gallery = false)

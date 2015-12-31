@@ -97,10 +97,10 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * @param  boolean $mark_as_unread Whether to mark the topic as unread by those previous having read this post.
  * @param  LONG_TEXT $reason The reason for this action.
  * @param  boolean $check_perms Whether to check permissions.
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $run_checks Whether to run checks
  * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */

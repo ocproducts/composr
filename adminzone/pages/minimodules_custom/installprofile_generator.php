@@ -227,7 +227,7 @@ foreach ($config_options as $option) {
     }
     $_name = php_addslashes($name);
     $_value = php_addslashes($value);
-    $profile .= "\t\tif (get_option(\"{$_name}\",true)!==NULL) set_option(\"{$_name}\",\"{$_value}\");\n";
+    $profile .= "\t\tif (get_option(\"{$_name}\", true) !== null) set_option(\"{$_name}\", \"{$_value}\");\n";
 }
 $profile .= <<<END
     }

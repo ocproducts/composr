@@ -83,7 +83,7 @@ $decision_tree = array(
             'We regret we cannot provide generally free official 1-on-1 support or informal consultancy on capabilities/usage, due to the free nature of the product. For informal support (i.e. no guarantees, honour system) you can go to the forum and/or chatroom. For formal support, we have paid professional support and can quote on and refer projects (to access this, go back then make that selection). For feedback reports we\'ll usually find time to reply (and really do appreciate them), but regretfully with only a few words due to time constraints.',
 
             //    Parameter             Value                       Warning
-            array('service_type',       'Report a bug',             'Please report only genuine bugs in the Composr CMS code, not just problems on your own web hosting. If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
+            array('service_type',       'Report a bug',             'Usually we get bugs fixed within a couple of days. Please only report bugs that look to be genuine bugs in the Composr CMS code. You will be taken through to the tracker where you\'ll also see a link to read additional advice about how to make a good bug report.' . "\n\n" . 'If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
         ),
         'previous' => 'start',
         'form_method' => 'GET',

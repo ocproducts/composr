@@ -14,7 +14,7 @@
  * @package    composr_homesite
  */
 
-/* Returns triple: PATH or NULL if critical error, NULL or error string if error */
+/* Returns triple: PATH or null if critical error, null or error string if error */
 function make_upgrade_get_path($from_version, $to_version)
 {
     $err = null;

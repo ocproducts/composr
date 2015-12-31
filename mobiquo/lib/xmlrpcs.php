@@ -921,7 +921,7 @@ class xmlrpc_server
 		$req_encoding=guess_encoding(isset($_SERVER['CONTENT_TYPE'])?$_SERVER['CONTENT_TYPE']:'',
 			$data);
 
-		return NULL;
+		return null;
 	}
 
 	/**

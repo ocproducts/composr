@@ -169,14 +169,14 @@ function load_value_options()
  * Find the value of the specified configuration option.
  *
  * @param  ID_TEXT $name The name of the option
- * @param  boolean $missing_ok Where to accept a missing option (and return NULL)
+ * @param  boolean $missing_ok Where to accept a missing option (and return null)
  * @return ?SHORT_TEXT The value (null: either null value, or no option found while $missing_ok set)
  */
 function get_option($name, $missing_ok = false)
 {
     global $CONFIG_OPTIONS_CACHE, $CONFIG_OPTIONS_FULLY_LOADED, $SMART_CACHE;
 
-    // Maybe missing a DB row, or has an old NULL one, so we need to auto-create from hook
+    // Maybe missing a DB row, or has an old null one, so we need to auto-create from hook
     if (!isset($CONFIG_OPTIONS_CACHE[$name]['c_value'])) {
         if ((!$CONFIG_OPTIONS_FULLY_LOADED) && (!array_key_exists($name, $CONFIG_OPTIONS_CACHE))) {
             load_config_options();
@@ -264,10 +264,10 @@ function get_option($name, $missing_ok = false)
  * Find a specified value. Values are set with set_value.
  *
  * @param  ID_TEXT $name The name of the value
- * @param  ?ID_TEXT $default Value to return if value not found (null: return NULL)
+ * @param  ?ID_TEXT $default Value to return if value not found (null: return null)
  * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
  * @param  boolean $env_also Whether to also check server environmental variables. Only use if $elective_or_lengthy is set to false
- * @return ?SHORT_TEXT The value (null: value not found and default is NULL)
+ * @return ?SHORT_TEXT The value (null: value not found and default is null)
  */
 function get_value($name, $default = null, $elective_or_lengthy = false, $env_also = false)
 {

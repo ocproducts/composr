@@ -214,7 +214,7 @@ function update_ticket_type_lead_times()
  * @param  AUTO_LINK $member_id The member ID
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: all ticket types)
  * @param  boolean $override_view_others_tickets Don't view others' tickets, even if the member has permission to
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning NULL instead
+ * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
  * @param  boolean $open_only Open tickets only
  * @param  boolean $include_first_posts Whether to include first posts
  * @return array Array of tickets, empty on failure

@@ -1926,7 +1926,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('attachments', array(
         'id' => '*AUTO',
         'a_member_id' => 'MEMBER',
-        'a_file_size' => '?INTEGER', // NULL means non-local. Doesn't count to quota
+        'a_file_size' => '?INTEGER', // null means non-local. Doesn't count to quota
         'a_url' => 'SHORT_TEXT',
         'a_description' => 'SHORT_TEXT',
         'a_thumb_url' => 'SHORT_TEXT',

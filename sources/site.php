@@ -1077,7 +1077,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * Take the specified parameters, and try to find the corresponding page, then execute a function to load the page (load_html_page/load_comcode_page).
  *
  * @param  ID_TEXT $codename The codename of the page to load
- * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return NULL
+ * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return null
  * @param  ?ID_TEXT $zone The zone the page is being loaded in (null: as shown by access URL)
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  boolean $being_included Whether the page is being included from another

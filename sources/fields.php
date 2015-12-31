@@ -456,8 +456,6 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
             $field_groups[$field_cat]->attach($result);
         }
 
-        $hidden->attach(form_input_hidden('label_for__field_' . strval($field['id']), $_cf_name));
-
         unset($result);
         unset($ob);
     }

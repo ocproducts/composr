@@ -144,7 +144,7 @@ function rain_get_country_image($ip_address)
 }
 
 /**
- * Returns a map with an icon and multiplicity parameter (that may be NULL).
+ * Returns a map with an icon and multiplicity parameter (that may be null).
  *
  * @param  ?IP $ip_address An IP address (used to check against bots) (null: no IP).
  * @param  TIME $timestamp A timestamp (used to check for logged sent emails).

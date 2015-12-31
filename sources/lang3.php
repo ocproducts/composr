@@ -33,7 +33,7 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
         return user_lang();
     }
 
-    $lang = either_param_string('lang', /*get_param_string('keep_lang',NULL)*/
+    $lang = either_param_string('lang', /*get_param_string('keep_lang', null)*/
         null);
     if ($lang !== null) {
         return filter_naughty($lang);
@@ -280,7 +280,7 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
             $connection->query_insert('translate', array('id' => $id, 'source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), false, false, $save_as_volatile);
         }
     }
-    if (($id === null) || ($id === 0)) { //==0 because unless MySQL NO_AUTO_VALUE_ON_ZERO is on, 0 insertion is same as NULL is same as "use autoincrement"
+    if (($id === null) || ($id === 0)) { //==0 because unless MySQL NO_AUTO_VALUE_ON_ZERO is on, 0 insertion is same as null is same as "use autoincrement"
         $id = $connection->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => $text, 'text_parsed' => $text_parsed, 'language' => $lang), true, false, $save_as_volatile);
     } else {
         $connection->query_insert('translate', array('id' => $id, 'source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => $text, 'text_parsed' => $text_parsed, 'language' => $lang), false, false, $save_as_volatile);

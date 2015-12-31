@@ -24,10 +24,10 @@ Notes about hook info...
  - id_field may be array (which means that ":" works as a delimiter) (if so, the first one is the main ID, while the second one is assumed to be a qualifier)
   - unless, parent_spec__table_name!=table, where we require a single id_field, knowing it is a join field in all tables
  - category_field may be array of two (if so, the second one is assumed the main category, while the first is assumed to be for supplemental permission checking)
- - category_field may be NULL
+ - category_field may be null
  - category_type may be array
  - category_type may be '<page>' or '<zone>' (meaning "use page/zone permissions instead")
- - category_type may be NULL
+ - category_type may be null
  - category_type may be missing
  - add_url may contain '!' (meaning "parent category ID goes here")
  - submitter_field may be a field:regexp

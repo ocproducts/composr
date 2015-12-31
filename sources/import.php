@@ -77,7 +77,7 @@ function cns_over_msn()
 }
 
 /**
- * Returns the NEW ID of an imported old ID, for the specified importation type. Whether it returns NULL or gives an error message depends on $fail_ok.
+ * Returns the NEW ID of an imported old ID, for the specified importation type. Whether it returns null or gives an error message depends on $fail_ok.
  *
  * @param  ID_TEXT $type An importation type code, from those Composr has defined (E.g. 'download', 'news', ...)
  * @param  string $id_old The source (old, original) ID of the mapping

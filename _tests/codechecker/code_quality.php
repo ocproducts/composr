@@ -760,7 +760,7 @@ function check($structure)
 function check_function($function)
 {
     global $GLOBAL_VARIABLES, $LOCAL_VARIABLES, $CURRENT_CLASS;
-    $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and NULL types: boolean_false is when we KNOW a boolean is false, so it might map to ~
+    $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and null types: boolean_false is when we KNOW a boolean is false, so it might map to ~
 
     //if (isset($GLOBALS['PEDANTIC'])) if (strlen(serialize($function)) > 30000) log_warning('Function ' . $function['name'] . ' is too big', $function['offset']);
 
@@ -1788,7 +1788,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         }
         if (strpos($e[0], 'IDENTICAL') === false) {
             if ($type_b == 'null') {
-                log_warning('Comparing to NULL is considered bad', $c_pos);
+                log_warning('Comparing to null is considered bad', $c_pos);
             }
             $passes = ensure_type(array($type_a), $type_b, $c_pos, 'Comparators must have type symmetric operands (' . $type_a . ' vs ' . $type_b . ')');
             if ($passes) {

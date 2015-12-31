@@ -306,7 +306,7 @@ function can_try_mod_rewrite($avoid_remap = false)
  * Build and return a proper URL, from the $vars array.
  * Note: URL parameters should always be in lower case (one of the coding standards)
  *
- * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or NULL. NULL indicates "skip this". 'page' cannot be NULL.
+ * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are true. (null: don't skip any)
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
@@ -372,7 +372,7 @@ function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avo
  * Build and return a proper page-link, from the $vars array.
  * Note: URL parameters should always be in lower case (one of the coding standards)
  *
- * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or NULL. NULL indicates "skip this". 'page' cannot be NULL.
+ * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
@@ -465,7 +465,7 @@ function url_monikers_enabled()
  * Build and return a proper URL, from the $vars array.
  * Note: URL parameters should always be in lower case (one of the coding standards)
  *
- * @param  array $vars A map of parameter names to parameter values. Values may be strings or integers, or NULL. NULL indicates "skip this". 'page' cannot be NULL.
+ * @param  array $vars A map of parameter names to parameter values. Values may be strings or integers, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
@@ -627,7 +627,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         $symbol = '?';
         foreach ($vars as $key => $val) {
             if ($val === null) {
-                continue; // NULL means skip
+                continue; // null means skip
             }
 
             if (!isset($key[0]/*Faster than is_string*/) && $key !== '') {
@@ -900,12 +900,13 @@ function build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
+ * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
  * @return Tempcode The builtup hidden form fields
  */
-function build_keep_post_fields($exclude = null)
+function build_keep_post_fields($exclude = null, $force_everything = false)
 {
     require_code('urls2');
-    return _build_keep_post_fields($exclude);
+    return _build_keep_post_fields($exclude, $force_everything);
 }
 
 /**
@@ -1173,7 +1174,7 @@ function find_id_moniker($url_parts, $zone)
             $url_parts['type'] = 'browse';
         }
         if ($url_parts['type'] === null) {
-            $url_parts['type'] = 'browse'; // NULL means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
+            $url_parts['type'] = 'browse'; // null means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
         }
 
         if (array_key_exists('id', $url_parts)) {

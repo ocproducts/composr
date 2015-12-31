@@ -90,7 +90,7 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
  * @param  ?TIME $time_post The post time (null: use current time)
  * @param  ?MEMBER $spacer_post_member_id Owner of comment topic (null: Guest)
- * @return array Topic ID (may be NULL), and whether a hidden post has been made
+ * @return array Topic ID (may be null), and whether a hidden post has been made
  *
  * @ignore
  */

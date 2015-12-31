@@ -21,7 +21,7 @@
 /**
  * Find broken filedump links, and try and find how to fix it.
  *
- * @return array Filedump broken links, to replacement path (or NULL).
+ * @return array Filedump broken links, to replacement path (or null).
  */
 function find_broken_filedump_links()
 {

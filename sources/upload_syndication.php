@@ -38,7 +38,7 @@ function init__upload_syndication()
  * Get details for what upload syndication we can do for particular filtered upload types.
  *
  * @param  integer $file_handling_types The kind of files we are going to be handling.
- * @return array A pair: JSON data describing what upload syndication we can do (may be NULL), a filetype filter.
+ * @return array A pair: JSON data describing what upload syndication we can do (may be null), a filetype filter.
  */
 function get_upload_syndication_json($file_handling_types)
 {

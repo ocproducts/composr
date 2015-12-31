@@ -48,7 +48,7 @@ class Persistent_caching_apccache
      *
      * @param  string $key Key
      * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
-     * @return ?mixed The data (null: not found / NULL entry)
+     * @return ?mixed The data (null: not found / null entry)
      */
     public function get($key, $min_cache_date = null)
     {

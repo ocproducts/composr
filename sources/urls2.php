@@ -186,11 +186,12 @@ function _fixed_post_parser($key, $value)
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
+ * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
  * @return Tempcode The builtup hidden form fields
  *
  * @ignore
  */
-function _build_keep_post_fields($exclude = null)
+function _build_keep_post_fields($exclude = null, $force_everything = false)
 {
     $out = '';
     foreach ($_POST as $key => $val) {
@@ -202,7 +203,7 @@ function _build_keep_post_fields($exclude = null)
             continue;
         }
 
-        if (count($_POST) > 80) {
+        if (count($_POST) > 80 && !$force_everything) {
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }

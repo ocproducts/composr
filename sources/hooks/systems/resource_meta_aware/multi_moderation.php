@@ -78,7 +78,7 @@ class Hook_resource_meta_aware_multi_moderation
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
             'rss_hook' => null,
