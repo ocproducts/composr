@@ -62,7 +62,7 @@ $decision_tree = array(
                 'type' => 'list',
                 'default' => 'Professional services',
                 'default_list' => array(
-                    'Free services',
+                    'Free options',
                     'Professional services',
                 ),
                 'options' => 'widget=radio',
@@ -71,13 +71,13 @@ $decision_tree = array(
         ),
         'next' => array(
             //    Parameter         Value                                   Target
-            array('service_class',  'Free services',                        'free'),
+            array('service_class',  'Free options',                         'free'),
             array('service_class',  'Professional services',                'paid'),
         ),
     ),
 
     'free' => array(
-        'title' => 'Free services',
+        'title' => 'Free options',
         'text' => 'We\'re glad you want to get in touch. We are able to respond to the following kinds of request without requiring support credits. We take user feedback very earnestly.',
         'notice' => array(
             'We regret we cannot provide generally free official 1-on-1 support or informal consultancy on capabilities/usage, due to the free nature of the product. For informal support (i.e. no guarantees, honour system) you can go to the forum and/or chatroom. For formal support, we have paid professional support and can quote on and refer projects (to access this, go back then make that selection). For feedback reports we\'ll usually find time to reply (and really do appreciate them), but regretfully with only a few words due to time constraints.',
@@ -128,7 +128,7 @@ $decision_tree = array(
 
     'contribute_code' => array(
         'title' => 'Contribute code',
-        'text' => 'Thanks, that\'s fantastic! The way to contribute code is via a [url="pull request"]https://help.github.com/articles/using-pull-requests/[/url] on [url="github"]https://github.com/ocproducts/composr[/url]. It is also a good idea to [url="create an issue on the tracker"]' . get_base_url() . '/tracker/bug_report_page.php?severity=10[/url] to reference your changes and pull request. It is just the standard modern Open Source work flow.',
+        'text' => 'Thanks, that\'s fantastic!' . "\n\n" . 'The way to contribute code is via a [url="pull request" target="_blank"]https://help.github.com/articles/using-pull-requests/[/url] on [url="github" target="_blank"]https://github.com/ocproducts/composr[/url].' . "\n\n" . 'It is also a good idea to [url="create an issue on the tracker" target="_blank"]' . get_base_url() . '/tracker/bug_report_page.php?severity=10[/url] to reference your changes and pull request.',
         'previous' => 'free',
     ),
 
@@ -194,8 +194,8 @@ $decision_tree = array(
         ),
         'next' => array(
             //    Parameter         Value                                                                   Target
-            array('service_type',   'Hire for a project',                                                   'project'),
             array('service_type',   'Request an installation',                                              'installation'),
+            array('service_type',   'Hire for a project',                                                   'project'),
             array('service_type',   'Hire a developer for ongoing work (secondment)',                       'secondment'),
             array('service_type',   'Technical support (single question support / very quick jobs)',        'support'),
             array('service_type',   'Sponsor Composr enhancements',                                         'sponsor'),

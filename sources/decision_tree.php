@@ -270,7 +270,7 @@ class DecisionTree
 
         // What if no questions and no next? No form.
         if ((empty($details['questions'])) && (empty($details['next']))) {
-            return inform_screen($title, $text, false, $back_url, build_keep_post_fields(null, true));
+            return inform_screen($title, protect_from_escaping($text), false, $back_url, build_keep_post_fields(null, true));
         }
 
         // Form...
@@ -397,7 +397,7 @@ class DecisionTree
         $details = $this->decision_tree[$tree_position];
 
         // Field inputters for less-basic field inputting (only supported for POST fields)
-        if (isset($details['questions'])) {
+        if ((isset($details['questions'])) && (cms_srv('REQUEST_METHOD') == 'POST')) {
             $i = 0;
             foreach ($details['questions'] as $question_name => $question_details) {
                 if (post_param_integer('_processed__' . $question_name, 0) == 0) {
@@ -424,7 +424,7 @@ class DecisionTree
         }
 
         // Comcode prepend/append (only supported for POST fields)
-        if (isset($details['questions'])) {
+        if ((isset($details['questions'])) && (cms_srv('REQUEST_METHOD') == 'POST')) {
             foreach ($details['questions'] as $question_name => $question_details) {
                 if (!empty($_POST[$question_name])) {
                     $val = $_POST[$question_name];
