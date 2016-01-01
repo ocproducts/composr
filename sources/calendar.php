@@ -531,8 +531,8 @@ function regenerate_event_reminder_jobs($id, $force = false)
                 'j_event_id' => $id
             ));
         } else {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $start = 0;
@@ -1356,17 +1356,9 @@ function find_concrete_day_of_month($year, $month, $day, $monthly_spec_type, $ho
             if (strtotime('+0 Tuesday', mktime(0, 0, 0, 1, 1, 2013)) != mktime(0, 0, 0, 1, 1, 2013)) {
                 $month_start -= 1; // This "-1" is needed on SOME PHP versions, to set the window 1 second before where we're looking to make it find something right at the start of the actual window
             }
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set($timezone);
-            } else {
-                safe_ini_set('date.timezone', $timezone);
-            }
+            date_default_timezone_set($timezone);
             $timestamp = strtotime('+' . strval($nth) . ' ' . ($days[$day % 7]), $month_start);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set('UTC');
-            } else {
-                safe_ini_set('date.timezone', 'UTC');
-            }
+            date_default_timezone_set('UTC');
             // Load these up in UTC (where we want them, where $hour and $minute already are)
             $day_of_month = intval(date('d', $timestamp));
             $month = intval(date('m', $timestamp));
@@ -1380,17 +1372,9 @@ function find_concrete_day_of_month($year, $month, $day, $monthly_spec_type, $ho
             $nth = intval(1.0 + floatval($day) / 7.0);
 
             $month_end = mktime(0, 0, 0, $month + 1, 0, $year);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set($timezone);
-            } else {
-                safe_ini_set('date.timezone', $timezone);
-            }
+            date_default_timezone_set($timezone);
             $timestamp = strtotime('-' . strval($nth) . ' ' . ($days[$day % 7]), $month_end + 1);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set('UTC');
-            } else {
-                safe_ini_set('date.timezone', 'UTC');
-            }
+            date_default_timezone_set('UTC');
             // Load these up in UTC (where we want them, where $hour and $minute already are)
             $day_of_month = intval(date('d', $timestamp));
             $month = intval(date('m', $timestamp));

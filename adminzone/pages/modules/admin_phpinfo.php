@@ -98,7 +98,7 @@ class Module_admin_phpinfo
         set_helper_panel_text(comcode_lang_string('DOC_PHPINFO'));
 
         ob_start();
-        if ((function_exists('phpinfo')) && (strpos(@ini_get('disable_functions'), 'phpinfo') === false)) {
+        if (php_function_allowed('phpinfo')) {
             phpinfo();
         } else {
             var_dump(PHP_VERSION);
@@ -139,15 +139,15 @@ class Module_admin_phpinfo
 
         $out .= '<h2>Run-time details</h2>';
         $out .= '<p>Your IP address: ' . escape_html(get_ip_address()) . '</p>';
-        if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+        if ((php_function_allowed('posix_getuid')) && (php_function_allowed('posix_getpwuid'))) {
             $user = posix_getuid();
             $suexec = ($user == fileowner(get_file_base() . '/index.php'));
             $dets = posix_getpwuid($user);
             $out .= '<p>Running as user: ' . escape_html($dets['name']) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
-        } elseif (strpos(@ini_get('disable_functions'), 'shell_exec') === false) {
+        } elseif (php_function_allowed('shell_exec')) {
             $test = @shell_exec('whoami');
             if (!empty($test)) {
-                if (function_exists('get_current_user') && strpos(@ini_get('disable_functions'), 'get_current_user') === false) {
+                if (php_function_allowed('get_current_user')) {
                     $suexec = ($test == get_current_user());
                 } else {
                     $suexec = null;
@@ -159,9 +159,9 @@ class Module_admin_phpinfo
             $user = @fileowner($tmp);
             @unlink($tmp);
             $suexec = ($user == fileowner(get_file_base() . '/index.php'));
-            $out .= '<p>Running as user: ' . escape_html(($suexec && (function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'get_current_user') === false)) ? get_current_user() : ('#' . strval($user))) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
+            $out .= '<p>Running as user: ' . escape_html((($suexec) && (php_function_allowed('get_current_user'))) ? get_current_user() : ('#' . strval($user))) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
         }
-        if (function_exists('php_sapi_name')) {
+        if (php_function_allowed('php_sapi_name')) {
             $out .= '<p>PHP configured as: ' . escape_html(php_sapi_name()) . '</p>';
         }
 

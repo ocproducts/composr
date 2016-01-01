@@ -33,8 +33,8 @@ class Hook_cron_classifieds
             return; // Don't do more than once per hour
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $start = 0;

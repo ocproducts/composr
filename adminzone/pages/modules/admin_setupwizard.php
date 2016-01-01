@@ -824,8 +824,8 @@ class Module_admin_setupwizard
         require_code('abstract_file_manager');
         force_have_afm_details();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(600);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(600);
         }
         send_http_output_ping();
 

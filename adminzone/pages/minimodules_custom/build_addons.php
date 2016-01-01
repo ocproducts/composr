@@ -31,8 +31,8 @@ require_code('addons2');
 require_code('version');
 require_code('version2');
 
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 
 $only = get_param_string('only', null);

@@ -171,7 +171,7 @@ function is_suexec_like()
 
     static $answer = null;
     if ($answer === null) {
-        $answer = (((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
+        $answer = (((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
                    || (is_writable_wrap(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
     }
     return $answer;
@@ -992,7 +992,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
  */
 function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 {
-    $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+    $locale = localeconv();
     if ($locale['thousands_sep'] == '') {
         $locale['thousands_sep'] = ',';
     }
@@ -1024,7 +1024,7 @@ function integer_format($val)
 {
     static $locale = null;
     if ($locale === null) {
-        $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+        $locale = localeconv();
         if ($locale['thousands_sep'] == '') {
             $locale['thousands_sep'] = ',';
         }
@@ -1912,7 +1912,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
+                    if (!php_function_allowed('gethostbyname')) {
                         $self_ip = gethostbyname($self_host);
                     } else {
                         $self_ip = '';
@@ -2962,7 +2962,7 @@ function get_mass_import_mode()
  */
 function escapeshellarg_wrap($arg)
 {
-    if ((function_exists('escapeshellarg')) && (strpos(@ini_get('disable_functions'), 'escapeshellarg') === false)) {
+    if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";

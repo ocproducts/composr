@@ -534,8 +534,8 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
  */
 function wiki_delete_page($page_id)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     // Get page details

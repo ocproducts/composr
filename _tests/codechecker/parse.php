@@ -1667,9 +1667,6 @@ function handle_comment($comment)
         if (strpos($comment[1], 'FUDGE') !== false) {
             log_warning('FUDGE comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
-        if (strpos($comment[1], 'HACKHACK') !== false) {
-            log_warning('HACKHACK comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
-        }
         //if (strpos($comment[1], 'XHTMLXHTML') !== false) log_warning('XHTMLXHTML comment found', $GLOBALS['I']); Don't want to report these
     }
 }

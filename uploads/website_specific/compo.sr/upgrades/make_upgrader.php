@@ -36,8 +36,8 @@ function make_upgrade_get_path($from_version, $to_version)
         return array(null, $err);
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     require_code('tar');
     require_code('m_zip');

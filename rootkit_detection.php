@@ -184,19 +184,14 @@ END;
     }
 
     // Check files
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $files = rd_do_dir('');
     foreach ($files as $file) {
         if (filesize($FILE_BASE . '/' . $file) != 0) {
             $results .= 'File: ' . $file . '=';
-            if (function_exists('md5_file')) {
-                $results .= md5_file($FILE_BASE . '/' . $file);
-            } else {
-                $data = file_get_contents($FILE_BASE . '/' . $file);
-                $results .= md5($data);
-            }
+            $results .= md5_file($FILE_BASE . '/' . $file);
             $results .= "\n";
         }
     }

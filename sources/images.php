@@ -472,64 +472,62 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  */
 function check_memory_limit_for($file_path, $exit_on_error = true)
 {
-    if (function_exists('memory_get_usage')) {
-        $ov = ini_get('memory_limit');
+    $ov = ini_get('memory_limit');
 
-        $_what_we_will_allow = get_value('real_memory_available_mb');
-        $what_we_will_allow = is_null($_what_we_will_allow) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
+    $_what_we_will_allow = get_value('real_memory_available_mb');
+    $what_we_will_allow = is_null($_what_we_will_allow) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
 
-        if ((substr($ov, -1) == 'M') || (!is_null($what_we_will_allow))) {
-            if (is_null($what_we_will_allow)) {
-                $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
+    if ((substr($ov, -1) == 'M') || (!is_null($what_we_will_allow))) {
+        if (is_null($what_we_will_allow)) {
+            $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
 
-                $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 3; // 3 is for 3MB extra space needed to finish off
-            }
+            $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 3; // 3 is for 3MB extra space needed to finish off
+        }
 
-            $details = @getimagesize($file_path);
-            if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
-                $magic_factor = 3.0; /* factor of inefficency by experimentation */
+        $details = @getimagesize($file_path);
+        if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
+            $magic_factor = 3.0; /* factor of inefficency by experimentation */
 
-                $channels = 4;//array_key_exists('channels', $details) ? $details['channels'] : 3; it will be loaded with 4
-                $bits_per_channel = 8;//array_key_exists('bits', $details) ? $details['bits'] : 8; it will be loaded with 8
-                $bytes = ($details[0] * $details[1]) * ($bits_per_channel / 8) * ($channels + 1) * $magic_factor;
+            $channels = 4;//array_key_exists('channels', $details) ? $details['channels'] : 3; it will be loaded with 4
+            $bits_per_channel = 8;//array_key_exists('bits', $details) ? $details['bits'] : 8; it will be loaded with 8
+            $bytes = ($details[0] * $details[1]) * ($bits_per_channel / 8) * ($channels + 1) * $magic_factor;
 
-                if ($bytes > floatval($what_we_will_allow)) {
-                    $max_dim = intval(sqrt(floatval($what_we_will_allow) / 4.0 / $magic_factor/*4 1 byte channels*/));
+            if ($bytes > floatval($what_we_will_allow)) {
+                $max_dim = intval(sqrt(floatval($what_we_will_allow) / 4.0 / $magic_factor/*4 1 byte channels*/));
 
-                    // Can command line imagemagick save the day?
-                    $imagemagick = '/usr/bin/convert';
-                    if (!@file_exists($imagemagick)) {
-                        $imagemagick = '/usr/local/bin/convert';
-                    }
-                    if (!@file_exists($imagemagick)) {
-                        $imagemagick = '/opt/local/bin/convert';
-                    }
-                    if (!@file_exists($imagemagick)) {
-                        $imagemagick = '/opt/cloudlinux/bin/convert';
-                    }
-                    if (@file_exists($imagemagick)) {
-                        $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
-                        $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
-                        $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
-                        $err_cond = -1;
-                        $output_arr = array();
-                        if (strpos(@ini_get('disable_functions'), 'shell_exec') === false) {
-                            $err_cond = @shell_exec($shrink_command);
-                            if (!is_null($err_cond)) {
-                                return true;
-                            }
+                // Can command line imagemagick save the day?
+                $imagemagick = '/usr/bin/convert';
+                if (!@file_exists($imagemagick)) {
+                    $imagemagick = '/usr/local/bin/convert';
+                }
+                if (!@file_exists($imagemagick)) {
+                    $imagemagick = '/opt/local/bin/convert';
+                }
+                if (!@file_exists($imagemagick)) {
+                    $imagemagick = '/opt/cloudlinux/bin/convert';
+                }
+                if (@file_exists($imagemagick)) {
+                    $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
+                    $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
+                    $err_cond = -1;
+                    $output_arr = array();
+                    if (php_function_allowed('shell_exec')) {
+                        $err_cond = @shell_exec($shrink_command);
+                        if (!is_null($err_cond)) {
+                            return true;
                         }
                     }
-
-                    $message = do_lang_tempcode('IMAGE_TOO_LARGE_FOR_THUMB', escape_html(integer_format($max_dim)), escape_html(integer_format($max_dim)));
-                    if (!$exit_on_error) {
-                        attach_message($message, 'warn');
-                    } else {
-                        warn_exit($message);
-                    }
-
-                    return false;
                 }
+
+                $message = do_lang_tempcode('IMAGE_TOO_LARGE_FOR_THUMB', escape_html(integer_format($max_dim)), escape_html(integer_format($max_dim)));
+                if (!$exit_on_error) {
+                    attach_message($message, 'warn');
+                } else {
+                    warn_exit($message);
+                }
+
+                return false;
             }
         }
     }

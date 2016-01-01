@@ -92,8 +92,8 @@ function init__database__xml()
         $GLOBALS['XML_CHAIN_DB'] = null;
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(100); // XML DB is *slow*
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(100); // XML DB is *slow*
     }
 }
 

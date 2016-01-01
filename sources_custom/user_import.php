@@ -38,8 +38,8 @@ function init__user_import()
 
 function do_user_import()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if (!USER_IMPORT_TEST_MODE) {

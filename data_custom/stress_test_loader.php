@@ -39,7 +39,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/sources/global.php');
 
-if (function_exists('set_time_limit')) {
+if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
 safe_ini_set('ocproducts.xss_detect', '0');

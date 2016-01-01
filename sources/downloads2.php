@@ -256,8 +256,8 @@ function dload_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -500,7 +500,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         return '';
     }
 
-    if ((function_exists('memory_get_usage')) && (ini_get('memory_usage') == '8M')) {
+    if (ini_get('memory_usage') == '8M') {
         return ''; // Some cowardice... don't want to tempt fate
     }
 
@@ -729,7 +729,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
             break;
         case 'pdf':
-            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false) && (!is_null($tmp_file))) {
+            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (php_function_allowed('shell_exec')) && (!is_null($tmp_file))) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
                 if (stripos(PHP_OS, 'win') !== false) {

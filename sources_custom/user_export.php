@@ -38,8 +38,8 @@ function init__user_export()
 
 function do_user_export($to_file = true)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if ($to_file) {

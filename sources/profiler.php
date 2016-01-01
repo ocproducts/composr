@@ -226,9 +226,7 @@ function _cms_profiler_script_end()
     // Post-logging
     _cms_profile_log_line(''); // Spacer line
     _cms_profiler_generic_logging();
-    if (function_exists('memory_get_usage')) {
-        _cms_profile_log_line('PHP memory usage: ' . clean_file_size(memory_get_usage()));
-    }
+    _cms_profile_log_line('PHP memory usage: ' . clean_file_size(memory_get_usage()));
     if (function_exists('memory_get_peak_usage')) {
         _cms_profile_log_line('PHP peak memory usage: ' . clean_file_size(memory_get_peak_usage()));
     }

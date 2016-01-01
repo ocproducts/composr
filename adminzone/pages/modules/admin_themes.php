@@ -1997,8 +1997,8 @@ class Module_admin_themes
      */
     public function manage_images()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
         send_http_output_ping();
 
@@ -2192,8 +2192,8 @@ class Module_admin_themes
      */
     public function list_screen_previews()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(120);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(120);
         }
         send_http_output_ping();
 

@@ -1957,8 +1957,8 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $send_view_reports = post_param_string('send_view_reports', STRING_MAGIC_NULL);
         if (!fractional_edit()) {
             if (post_param_integer('reset_category_permissions', 0) == 1) {
-                if (function_exists('set_time_limit')) {
-                    @set_time_limit(0);
+                if (php_function_allowed('set_time_limit')) {
+                    set_time_limit(0);
                 }
 
                 $start = 0;

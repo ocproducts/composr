@@ -1009,7 +1009,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Support for SMTP sockets rather than PHP mail()
     $error = null;
-    if ((get_option('smtp_sockets_use') == '1') && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+    if ((get_option('smtp_sockets_use') == '1') && (php_function_allowed('fsockopen'))) {
         $worked = false;
 
         $host = get_option('smtp_sockets_host');

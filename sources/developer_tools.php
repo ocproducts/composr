@@ -119,8 +119,8 @@ function destrictify($change_content_type = true, $mysql_too = false)
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(200);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(200);
     }
     if ((get_forum_type() == 'cns') && ($mysql_too)) {
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
@@ -163,8 +163,8 @@ function restrictify()
 
     // Put back strictness
     error_reporting(E_ALL);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);

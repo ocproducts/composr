@@ -146,7 +146,7 @@ function get_afm_form_fields()
         if (array_key_exists('ftp_username', $GLOBALS['SITE_INFO'])) {
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
-            if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+            if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 if ($u_info !== false) {
                     $ftp_username = $u_info['name'];

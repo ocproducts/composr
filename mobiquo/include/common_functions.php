@@ -264,7 +264,7 @@ function tapatalk_strip_comcode($data)
     $data = strtr($data, array_flip($shortcuts));
 
     // Emoticons
-    // HACKHACK: Disable emoticons Tapatalk actually has inbuilt. Tapatalk will sub in those that it supports
+    // FUDGE: Disable emoticons Tapatalk actually has inbuilt. Tapatalk will sub in those that it supports
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
     $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
     foreach ($emoticon_map as $tapatalk_code => $composr_code) {

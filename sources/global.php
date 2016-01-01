@@ -50,14 +50,8 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    static $mue = null;
-    if ($mue === null) {
-        $mue = function_exists('memory_get_usage');
-    }
-    if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-        if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-            $before = memory_get_usage();
-        }
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+        $before = memory_get_usage();
     }
 
     $worked = false;
@@ -225,11 +219,9 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-            if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                flush();
-            }
+        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+            print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+            flush();
         }
 
         if (!$done_init) {
@@ -268,11 +260,9 @@ function require_code($codename, $light_exit = false)
         }
 
         if ($worked) {
-            if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                    flush();
-                }
+            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+                flush();
             }
 
             $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
@@ -367,8 +357,10 @@ function object_factory($class, $failure_ok = false)
  */
 function php_function_allowed($function)
 {
-    if (!function_exists($function)) {
-        return false;
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            return false;
+        }
     }
     return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
 }

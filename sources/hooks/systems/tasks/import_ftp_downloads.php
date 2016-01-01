@@ -18,6 +18,8 @@
  * @package    downloads
  */
 
+/*EXTRA FUNCTIONS: ftp_.**/
+
 /**
  * Hook class.
  */

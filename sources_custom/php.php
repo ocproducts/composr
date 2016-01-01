@@ -872,7 +872,7 @@ function render_php_function($function, $class, $show_filename = false)
 
     $description = comcode_to_tempcode($function['description']);
 
-    if ((function_exists('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
+    if ((php_function_allowed('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
         $_code = "<" . "?php\n" . $function['code'] . "\n?" . ">";
 
         ob_start();

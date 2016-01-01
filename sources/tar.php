@@ -227,10 +227,10 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         /* We don't store all this stuff, it's not in Composr's remit
                         $owner = fileowner($full);
                         $group = filegroup($full);
-                        if (function_exists('posix_getpwuid')) {
-                            $owner = posix_getpwuid($owner);
+                        if (php_function_allowed('posix_getuid')) {
+                            $owner = posix_getuid($owner);
                         }
-                        if (function_exists('posix_getgrgid')) {
+                        if (php_function_allowed('posix_getgrgid')) {
                             $group = posix_getgrgid($group);
                         }
                         */

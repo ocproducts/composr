@@ -356,9 +356,9 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         generate_resource_fs_moniker('news', strval($id), null, null, true);
     }
 
-    if ((function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+    if (php_function_allowed('fsockopen')) {
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Send out on RSS cloud

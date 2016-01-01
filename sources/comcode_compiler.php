@@ -291,8 +291,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     $len = strlen($comcode);
 
-    if ((function_exists('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
-        @set_time_limit(300);
+    if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
+        set_time_limit(300);
     }
 
     $allowed_html_seqs = array( // HTML tag may actually be used in very limited conditions: only the following HTML seqs will come out as HTML. This is, unless the blacklist filter is used instead.

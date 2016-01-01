@@ -35,8 +35,8 @@ function xml_dump_script()
         _general_db_init();
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $GLOBALS['DEV_MODE'] = false;
     $GLOBALS['SEMI_DEV_MODE'] = false;

@@ -1105,8 +1105,8 @@ function do_block($codename, $map = null, $ttl = null)
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
                         disable_php_memory_limit();
-                        if (function_exists('set_time_limit')) {
-                            @set_time_limit(200);
+                        if (php_function_allowed('set_time_limit')) {
+                            set_time_limit(200);
                         }
                     }
                     if ($new_security_scope) {

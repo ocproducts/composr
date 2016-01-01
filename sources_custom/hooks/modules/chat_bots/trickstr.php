@@ -102,8 +102,8 @@ class Hook_chat_bot_trickstr
             if (get_value('trickstr_installed') !== '1') {
                 disable_php_memory_limit();
 
-                if (function_exists('set_time_limit')) {
-                    @set_time_limit(600);
+                if (php_function_allowed('set_time_limit')) {
+                    set_time_limit(600);
                 }
 
                 $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS bot");

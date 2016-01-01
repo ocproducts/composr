@@ -166,12 +166,12 @@ function init__global2()
      * @global boolean $SEMI_DEV_MODE
      */
     $SEMI_DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if ($DEV_MODE) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10);
         }
         safe_ini_set('ocproducts.type_strictness', '1');
         safe_ini_set('ocproducts.xss_detect', '1');

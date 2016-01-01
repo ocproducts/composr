@@ -201,7 +201,7 @@ class Module_topicview
             foreach ($topic_info['posts'] as $array_id => $_postdetails) {
                 if (($GLOBALS['META_DATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
                     // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' meta-data for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
-                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // HACKHACK: Should we hard-code this?
+                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Should we hard-code this?
                     $GLOBALS['META_DATA']['description'] = strip_html($truncated);
 
                     // Also scan for <img> tag, in case it was put in manually

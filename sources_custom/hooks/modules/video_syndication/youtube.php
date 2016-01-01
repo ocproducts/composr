@@ -234,8 +234,8 @@ class Hook_video_syndication_youtube
 
         $api_url = 'https://uploads.gdata.youtube.com/resumable/feeds/api/users/default/uploads';
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10000);
         }
         try {
             $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);

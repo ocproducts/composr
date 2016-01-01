@@ -430,8 +430,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -514,8 +514,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -614,8 +614,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -729,8 +729,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -861,8 +861,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -1005,8 +1005,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;

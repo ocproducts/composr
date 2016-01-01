@@ -533,8 +533,8 @@ class Module_admin_cns_members
      */
     public function _delurk()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(100);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
         }
         send_http_output_ping();
 

@@ -74,8 +74,8 @@ class Hook_cleanup_page_stats
             exit();
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Write install.php file

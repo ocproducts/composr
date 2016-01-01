@@ -799,7 +799,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
         $ffmpeg_path = get_option('ffmpeg_path');
 
-        if (($ffmpeg_path != '') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+        if (($ffmpeg_path != '') && (php_function_allowed('shell_exec'))) {
             $filename = 'thumb_' . md5(uniqid(strval(post_param_integer('thumbnail_auto_position', 1)), true)) . '%d.jpg';
             $dest_file = get_custom_file_base() . '/uploads/galleries/' . $filename;
             if (is_null($expected_output_path)) {
@@ -1608,8 +1608,8 @@ function delete_gallery($name)
     delete_lang($rows[0]['description']);
 
     // Images and videos are deleted, because we are deleting the _gallery_, not just a category (nobody is going to be deleting galleries with the expectation of moving the image to a different one in bulk - unlike download categories, for example).
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $images = $GLOBALS['SITE_DB']->query_select('images', array('id'), array('cat' => $name), '', 200);

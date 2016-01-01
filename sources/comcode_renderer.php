@@ -2269,7 +2269,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
     } else {
         switch (strtolower($type)) {
             case 'php':
-                if (!function_exists('highlight_string')) {
+                if (!php_function_allowed('highlight_string')) {
                     break;
                 }
 

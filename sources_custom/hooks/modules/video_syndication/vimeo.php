@@ -220,8 +220,8 @@ class Hook_video_syndication_vimeo
 
     public function upload_video($video)
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10000);
         }
         list($file_path, $is_temp_file) = $this->_url_to_file_path($video['url']);
         try {
@@ -311,8 +311,8 @@ class Hook_video_syndication_vimeo
                         break;
 
                     case 'url':
-                        if (function_exists('set_time_limit')) {
-                            @set_time_limit(10000);
+                        if (php_function_allowed('set_time_limit')) {
+                            set_time_limit(10000);
                         }
                         list($file_path, $is_temp_file) = $this->_url_to_file_path($changes['url']);
                         $remote_id = $this->_vimeo_ob->upload($file_path, true, 2097152, $video['remote_id']);

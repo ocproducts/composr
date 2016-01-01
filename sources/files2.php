@@ -182,7 +182,7 @@ function cms_get_temp_dir()
 function _cms_tempnam($prefix)
 {
     list($tmp_path, $problem_saving, $server_path, $local_path) = cms_get_temp_dir();
-    if ((function_exists('tempnam')) && (strpos(@ini_get('disable_functions'), 'tempnam') === false)) {
+    if (php_function_allowed('tempnam')) {
         // Create a real temporary file
         $tempnam = tempnam($tmp_path, 'tmpfile__' . $prefix);
         if ((($tempnam === false) || ($tempnam == ''/*Should not be blank, but seen in the wild*/)) && (!$problem_saving)) {
@@ -840,7 +840,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
             $file_path = $file_base . urldecode($parsed['path']);
 
-            if ((function_exists('shell_exec')) && (function_exists('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+            if ((function_exists('shell_exec')) && (php_function_allowed('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (php_function_allowed('shell_exec'))) {
                 $cmd = 'DOCUMENT_ROOT=' . escapeshellarg_wrap(dirname(get_file_base())) . ' PATH_TRANSLATED=' . escapeshellarg_wrap($file_path) . ' SCRIPT_NAME=' . escapeshellarg_wrap($file_path) . ' HTTP_USER_AGENT=' . escapeshellarg_wrap($ua) . ' QUERY_STRING=' . escapeshellarg_wrap($parsed['query']) . ' HTTP_HOST=' . escapeshellarg_wrap($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . escapeshellarg_wrap($file_path);
                 $contents = shell_exec($cmd);
                 $split_pos = strpos($contents, "\r\n\r\n");
@@ -1278,7 +1278,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $errno = 0;
     $errstr = '';
-    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen')) && (php_function_allowed('shell_exec'))) {
         if (!array_key_exists('host', $url_parts)) {
             $url_parts['host'] = '127.0.0.1';
         }
@@ -1292,7 +1292,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             if ($connect_to == '') {
                 $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
             }
-        } elseif (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
+        } elseif (php_function_allowed('gethostbyname')) {
             $connect_to = gethostbyname($connect_to); // for DNS caching
         }
         $proxy = function_exists('get_option') ? get_option('proxy') : null;

@@ -49,7 +49,7 @@ require($FILE_BASE . '/sources/global.php');
 /*
 This script cleans up stuff in the database after finishing beta testing a new site.
 
-HACKHACK It assumes multi-language content is turned off because it doesn't bother cleaning up translate table references.
+FUDGE It assumes multi-language content is turned off because it doesn't bother cleaning up translate table references.
 If that feature is needed the code could be improved.
 */
 
@@ -96,8 +96,8 @@ function cleanup()
 
     /* Actioning code follows... */
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $GLOBALS['SITE_INFO']['no_email_output'] = '1';

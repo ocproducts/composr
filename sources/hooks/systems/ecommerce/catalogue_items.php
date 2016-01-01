@@ -55,8 +55,8 @@ class Hook_ecommerce_catalogue_items
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $start = 0;

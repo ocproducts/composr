@@ -212,8 +212,8 @@ function actual_add_catalogue_field($c_name, $name, $description, $type, $order,
 
     $ob = get_fields_hook($type);
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     // Now add field values for all pre-existing entries (in the ideal world, there would be none yet)
@@ -362,8 +362,8 @@ function actual_delete_catalogue($name)
     $myrow = $rows[0];
 
     // Delete anything involved (ha ha destruction!)
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $entries = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('id'), array('c_name' => $name), '', 500));
@@ -593,8 +593,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
  */
 function rebuild_catalogue_cat_treecache()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_cat_treecache');
@@ -826,8 +826,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     delete_upload('uploads/repimages', 'catalogue_categories', 'rep_image', 'id', $id);
 
     if (!$deleting_all) { // If not deleting the whole catalogue
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // If we're in a tree
@@ -835,8 +835,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
             $GLOBALS['SITE_DB']->query_update('catalogue_categories', array('cc_parent_id' => $myrow['cc_parent_id']), array('cc_parent_id' => $id));
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('cc_id' => $myrow['cc_parent_id']), array('cc_id' => $id));
         } else { // If we're not in a tree catalogue we can't move them, we have to delete
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('cc_parent_id' => $id)); // Does nothing, in theory

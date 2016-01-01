@@ -139,7 +139,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
 
         // IMMEDIATE LOCAL FFMPEG
 
-        if (strpos(@ini_get('disable_functions'), 'shell_exec') !== false) {
+        if (!php_function_allowed('shell_exec')) {
             return $url; // Can't do
         }
 
@@ -239,8 +239,8 @@ function store_transcoding_failure($transcoder_id)
  */
 function store_transcoding_success($transcoder_id, $new_url = null)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     // Stuff about the transcoding

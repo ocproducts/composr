@@ -330,8 +330,8 @@ class Module_admin_addons
      */
     public function gui()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(180); // So it can scan inside addons
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(180); // So it can scan inside addons
         }
         send_http_output_ping();
 
@@ -575,8 +575,8 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         send_http_output_ping();
 

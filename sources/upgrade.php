@@ -28,8 +28,8 @@ function upgrade_script()
     require_lang('upgrade');
     require_code('database_action');
     require_code('config2');
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if ((array_key_exists('given_password', $_POST))) {
@@ -230,8 +230,8 @@ function upgrade_script()
                     appengine_live_guard();
 
                     require_code('tar');
-                    if (function_exists('set_time_limit')) {
-                        @set_time_limit(0);
+                    if (php_function_allowed('set_time_limit')) {
+                        set_time_limit(0);
                     }
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
@@ -556,7 +556,7 @@ function up_do_login($message = null)
     }
     if (is_null($ftp_username)) {
         if (!array_key_exists('ftp_username', $SITE_INFO)) {
-            if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+            if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 $ftp_username = $u_info['name'];
             } else {
@@ -971,10 +971,8 @@ function check_excess_perms($array, $rel = '')
 
             $relpath = $rel . (($rel == '') ? '' : '/') . $file;
             $ok = (in_array($relpath, $array)) || (in_array(preg_replace('#^[^/]+/#', 'site/', $relpath), $array)) || (in_array(preg_replace('#^themes/[^/]+/#', 'themes/default/', $relpath), $array));
-            if ((is_writable_wrap($dir . $file)) && ((!function_exists('posix_getuid')) || (fileowner($dir . $file) != posix_getuid()))) {
-                if (!$ok) {
-                    $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
-                }
+            if ((php_function_allowed('posix_getuid')) && (!$ok) && (is_writable_wrap($dir . $file)) && (fileowner($dir . $file) != posix_getuid())) {
+                $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
             }
 
             if (($is_dir) && (!$ok)) {
@@ -1167,7 +1165,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     }
 
     // And some special help for unix geeks
-    if (($unix_help) && (function_exists('escapeshellcmd')) && (strpos(@ini_get('disable_functions'), 'escapeshellcmd') === false)) {
+    if (($unix_help) && (php_function_allowed('escapeshellcmd'))) {
         $unix_out = 'CMS_EXTRACTED_AT="<manual-extracted-at-dir>";' . "\n" . 'cd "<temp-dir-to-upload-from>";' . "\n";
         $directories_to_make = array();
         foreach ($files_determined_to_upload as $file) {
@@ -1685,8 +1683,8 @@ function perform_search_replace($reps)
  */
 function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     require_code('zones2');
@@ -1844,8 +1842,8 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
 {
     @ob_end_clean();
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
@@ -2335,8 +2333,8 @@ function upgrade_sharedinstall_sites($from = 0)
     $total = count($sites);
 
     foreach ($sites as $i => $site) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         if (($i < $from) && ($site != 'shareddemo')) {

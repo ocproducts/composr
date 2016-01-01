@@ -280,7 +280,7 @@ class Module_report_content
 }
 
 
-/*HACKHACK...
+/*FUDGE...
 
 Before this can be an official Composr feature new content_meta_aware hooks are needed. Currently for instance there's no 'post' one.
 */

@@ -26,8 +26,8 @@ class template_previews_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $_GET['keep_has_js'] = '0';
@@ -101,8 +101,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $RECORDED_TEMPLATES_USED = array();
@@ -186,8 +186,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             init__lorem();
@@ -263,8 +263,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $ATTACHED_MESSAGES = new Tempcode();

@@ -13,7 +13,7 @@
  * @package    code_editor
  */
 
-/*EXTRA FUNCTIONS: tempnam*/
+/*EXTRA FUNCTIONS: tempnam|ftp_.*|posix_getuid*/
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;

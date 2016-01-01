@@ -36,7 +36,7 @@ function init__crypt()
      * @copyright 2012 The Authors
      */
 
-    if ((!defined('PASSWORD_DEFAULT')) && (function_exists('crypt')) && (version_compare(PHP_VERSION, '5.3.7') >= 0)) { // http://compo.sr/tracker/view.php?id=2011
+    if ((!defined('PASSWORD_DEFAULT')) && (version_compare(PHP_VERSION, '5.3.7') >= 0)) { // http://compo.sr/tracker/view.php?id=2011
         define('PASSWORD_BCRYPT', 1);
         define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
 
@@ -96,7 +96,7 @@ function init__crypt()
                         $buffer_valid = true;
                     }
                 }
-                if ((!$buffer_valid) && (function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+                if ((function_exists('openssl_random_pseudo_bytes')) && (!$buffer_valid) && (get_value('disable_openssl') !== '1')) {
                     $buffer = openssl_random_pseudo_bytes($raw_salt_len);
                     if ($buffer !== false) {
                         $buffer_valid = true;

@@ -955,7 +955,7 @@ function remap_portable_as_foreign_key($_table_referenced, $portable_data)
     $resource_type = convert_composr_type_codes('table', $table_referenced, 'content_type');
 
     if (empty($resource_type)) {
-        return $id;
+        return $portable_data['id'];
     }
 
     return remap_portable_as_resource_id($resource_type, $portable_data);

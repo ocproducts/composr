@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: ftp_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -123,8 +125,8 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
         make_missing_directory(get_custom_file_base() . '/exports/backups');
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $logfile_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
     $logfile = @fopen($logfile_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($logfile_path); // .txt file because IIS doesn't allow .log download

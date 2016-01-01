@@ -164,8 +164,8 @@ class Hook_search_filedump
                         'SUMMARY' => $tpl,
                     ));
                 } else {
-                    if (function_exists('set_time_limit')) {
-                        @set_time_limit(5);
+                    if (php_function_allowed('set_time_limit')) {
+                        set_time_limit(5);
                     }
 
                     $tpl = do_image_thumb($url, $caption, true, false, null, null, true);

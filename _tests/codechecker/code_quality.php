@@ -984,58 +984,38 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 check_assignment($c, $c_pos, $function_guard);
                 break;
             case 'IF':
-                $t = check_expression($c[1], false, false, $function_guard);
-                $passes = ensure_type(array('boolean'), $t, $c_pos, 'Conditionals must be boolean (if) [is ' . $t . ']', true);
-                if ($passes) {
-                    infer_expression_type_to_variable_type('boolean', $c[1]);
-                }
-                $temp_function_guard = $function_guard;
-                foreach (array(0,1) as $operand_pos)
-                {
-                    if (($c[1][0] == 'BOOLEAN_NOT') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING') && (($c[2][0][0] == 'BREAK') || ($c[2][0][0] == 'CONTINUE') || ($c[2][0][0] == 'RETURN') || (($c[2][0][0] == 'CALL_DIRECT') && ($c[2][0][1] == 'critical_error')))) {
-                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'CALL_DIRECT') && (strpos($c[1][1], '_exists') !== false) && (isset($c[1][2][$operand_pos])) && ($c[1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'BRACKETED') && ($c[1][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1][1], '_exists') !== false) && (isset($c[1][1][1][2][$operand_pos])) && ($c[1][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][1][1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][2][0] == 'BOOLEAN_AND') && ($c[1][2][1][0] == 'BRACKETED') && ($c[1][2][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][2][1][1][1], '_exists') !== false) && (isset($c[1][2][1][1][2][$operand_pos])) && ($c[1][2][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][2][1][1][2][$operand_pos][1][1] . ',';
-                    }
-                }
-                check_command($c[2], $depth, $temp_function_guard, $nogo_parameters);
-                break;
             case 'IF_ELSE':
-                $passes = ensure_type(array('boolean'), check_expression($c[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (if-else)', true);
+                $t = check_expression($c[1], false, false, $function_guard);
+                if ($c[0] == 'IF_ELSE') {
+                    $passes = ensure_type(array('boolean'), $t, $c_pos, 'Conditionals must be boolean (if-else) [is ' . $t . ']', true);
+                } else {
+                    $passes = ensure_type(array('boolean'), $t, $c_pos, 'Conditionals must be boolean (if) [is ' . $t . ']', true);
+                }
                 if ($passes) {
                     infer_expression_type_to_variable_type('boolean', $c[1]);
                 }
                 $temp_function_guard = $function_guard;
-                foreach (array(0,1) as $operand_pos)
-                {
-                    if (($c[1][0] == 'BOOLEAN_NOT') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING') && (($c[2][0][0] == 'BREAK') || ($c[2][0][0] == 'CONTINUE') || ($c[2][0][0] == 'RETURN') || (($c[2][0][0] == 'CALL_DIRECT') && ($c[2][0][1] == 'critical_error')))) {
-                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
+                foreach (array(0, 1) as $function_parameter_pos) {
+                    if (($c[1][0] == 'BOOLEAN_NOT') && ($c[1][1][0] == 'CALL_DIRECT') && ($c[1][1][1] == 'php_function_allowed' || strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$function_parameter_pos])) && ($c[1][1][2][$function_parameter_pos][0] == 'LITERAL') && ($c[1][1][2][$function_parameter_pos][1][0] == 'STRING') && (($c[2][0][0] == 'BREAK') || ($c[2][0][0] == 'CONTINUE') || ($c[2][0][0] == 'RETURN') || (($c[2][0][0] == 'CALL_DIRECT') && ($c[2][0][1] == 'critical_error')))) {
+                        $temp_function_guard .= ',' . $c[1][1][2][$function_parameter_pos][1][1] . ',';
                     }
-                    if (($c[1][0] == 'CALL_DIRECT') && (strpos($c[1][1], '_exists') !== false) && (isset($c[1][2][$operand_pos])) && ($c[1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][2][$operand_pos][1][1] . ',';
+                    if (($c[1][0] == 'CALL_DIRECT') && ($c[1][1] == 'php_function_allowed' || strpos($c[1][1], '_exists') !== false) && (isset($c[1][2][$function_parameter_pos])) && ($c[1][2][$function_parameter_pos][0] == 'LITERAL') && ($c[1][2][$function_parameter_pos][1][0] == 'STRING')) {
+                        $temp_function_guard .= ',' . $c[1][2][$function_parameter_pos][1][1] . ',';
                     }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'BRACKETED') && ($c[1][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1][1], '_exists') !== false) && (isset($c[1][1][1][2][$operand_pos])) && ($c[1][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][1][1][2][$operand_pos][1][1] . ',';
-                    }
-                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][2][0] == 'BOOLEAN_AND') && ($c[1][2][1][0] == 'BRACKETED') && ($c[1][2][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][2][1][1][1], '_exists') !== false) && (isset($c[1][2][1][1][2][$operand_pos])) && ($c[1][2][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][1][1][2][$operand_pos][1][0] == 'STRING')) {
-                        $temp_function_guard .= ',' . $c[1][2][1][1][2][$operand_pos][1][1] . ',';
+
+                    foreach (array(0, 1) as $and_position) { // NB: Can't check 3rd AND position because this is actually nested AND's, so we'd need to write recursive code or more hard-coded checking
+                        if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][$and_position + 1][0] == 'CALL_DIRECT') && ($c[1][$and_position + 1][1] == 'php_function_allowed' || strpos($c[1][$and_position + 1][1], '_exists') !== false) && (isset($c[1][$and_position + 1][2][$function_parameter_pos])) && ($c[1][$and_position + 1][2][$function_parameter_pos][0] == 'LITERAL') && ($c[1][$and_position + 1][2][$function_parameter_pos][1][0] == 'STRING')) {
+                            $temp_function_guard .= ',' . $c[1][$and_position + 1][2][$function_parameter_pos][1][1] . ',';
+                        }
+                        if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][$and_position + 1][0] == 'BRACKETED') && ($c[1][$and_position + 1][1][0] == 'CALL_DIRECT') && ($c[1][$and_position + 1][1][1] == 'php_function_allowed' || strpos($c[1][$and_position + 1][1][1], '_exists') !== false) && (isset($c[1][$and_position + 1][1][2][$function_parameter_pos])) && ($c[1][$and_position + 1][1][2][$function_parameter_pos][0] == 'LITERAL') && ($c[1][$and_position + 1][1][2][$function_parameter_pos][1][0] == 'STRING')) {
+                            $temp_function_guard .= ',' . $c[1][$and_position + 1][1][2][$function_parameter_pos][1][1] . ',';
+                        }
                     }
                 }
                 check_command($c[2], $depth, $temp_function_guard, $nogo_parameters);
-                check_command($c[3], $depth, $function_guard, $nogo_parameters);
+                if ($c[0] == 'IF_ELSE') {
+                    check_command($c[3], $depth, $function_guard, $nogo_parameters);
+                }
                 break;
             case 'INNER_FUNCTION':
                 $temp = $LOCAL_VARIABLES;
@@ -1420,7 +1400,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         if (isset($GLOBALS['API'])) {
             if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (strpos($function_guard, ',' . $function . ',') === false) && (strpos($function_guard, ',' . $class . ',') === false) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move', '__construct'))) && (!in_array($class, array('mixed', '?mixed', 'object', '?object', ''/*Dynamic*/)))) {
                 if ((is_null($class)) || ($class == '__global')) {
-                    if ($function != '') {
+                    if ($function != '' && $function != 'ocp_mark_as_escaped' && $function != 'ocp_is_escaped'/*These aren't checked with function_exists, checked with a global, for performance reasons*/) {
                         log_warning('Could not find function \'' . $function . '\'', $c_pos);
                     }
                 } else {
@@ -1684,7 +1664,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         }
     }
     if ($e[0] == 'UNARY_IF') {
-        if (($e[1][0] == 'CALL_DIRECT') && (strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
+        if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
             $function_guard .= ',' . $e[1][2][0][1][1] . ',';
         }
         $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (unary)');
@@ -1702,11 +1682,15 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR', 'BOOLEAN_XOR'))) {
-        if (($e[0] == 'BOOLEAN_AND') && ($e[1][0] == 'BRACKETED') && ($e[1][1][0] == 'CALL_DIRECT') && (strpos($e[1][1][1], '_exists') !== false) && ($e[1][1][2][0][0] == 'LITERAL') && ($e[1][1][2][0][1][0] == 'STRING')) {
-            $function_guard .= ',' . $e[1][1][2][0][1][1] . ',';
-        }
-        if (($e[0] == 'BOOLEAN_AND') && ($e[2][0] == 'BOOLEAN_AND') && ($e[2][1][0] == 'BRACKETED') && ($e[2][1][1][0] == 'CALL_DIRECT') && (strpos($e[2][1][1][1], '_exists') !== false) && ($e[2][1][1][2][0][0] == 'LITERAL') && ($e[2][1][1][2][0][1][0] == 'STRING')) {
-            $function_guard .= ',' . $e[2][1][1][2][0][1][1] . ',';
+        foreach (array(0, 1) as $function_parameter_pos) {
+            foreach (array(0, 1) as $and_position) {
+                if (($e[0] == 'BOOLEAN_AND') && ($e[1][0] == 'BRACKETED') && ($e[1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[1][$and_position + 1][1], '_exists') !== false) && (isset($e[1][$and_position + 1][2][$function_parameter_pos])) && ($e[1][$and_position + 1][2][$function_parameter_pos][0] == 'LITERAL') && ($e[1][$and_position + 1][2][$function_parameter_pos][1][0] == 'STRING')) {
+                    $function_guard .= ',' . $e[1][1][2][$function_parameter_pos][1][1] . ',';
+                }
+                if (($e[0] == 'BOOLEAN_AND') && ($e[2][0] == 'BOOLEAN_AND') && ($e[2][1][0] == 'BRACKETED') && ($e[2][1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[2][1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[2][1][$and_position + 1][1], '_exists') !== false) && (isset($e[2][1][$and_position + 1][2][$function_parameter_pos])) && ($e[2][1][$and_position + 1][2][$function_parameter_pos][0] == 'LITERAL') && ($e[2][1][$and_position + 1][2][$function_parameter_pos][1][0] == 'STRING')) {
+                    $function_guard .= ',' . $e[2][1][1][2][$function_parameter_pos][1][1] . ',';
+                }
+            }
         }
         $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos - 1, 'Can only use boolean combinators with booleans');
         if ($passes) {

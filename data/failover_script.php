@@ -42,7 +42,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/_config.php');
 
-if (function_exists('php_sapi_name')) {
+if (php_function_allowed('php_sapi_name')) {
     if (php_sapi_name() != 'cli') {
         header('Content-type: text/plain');
     }

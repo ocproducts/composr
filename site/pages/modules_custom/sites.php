@@ -299,8 +299,8 @@ class Module_sites
      */
     public function hostingcopy_step2()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $hidden = build_keep_post_fields();
@@ -335,8 +335,8 @@ class Module_sites
      */
     public function hostingcopy_step3()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $conn_id = $this->_hostingcopy_ftp_connect();

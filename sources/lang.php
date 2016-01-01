@@ -470,7 +470,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
 
     $REQUIRE_LANG_LOOP++;
 
-    if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
         print('<!-- require_lang: ' . htmlentities($codename) . ' (' . integer_format(memory_get_usage()) . ' before) -->' . "\n");
         flush();
     }

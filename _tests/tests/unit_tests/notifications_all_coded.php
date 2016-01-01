@@ -20,8 +20,8 @@ class notifications_all_coded_test_set extends cms_test_case
 {
     public function testAllNotificationsCoded()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Ensure all notification types used

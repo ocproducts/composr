@@ -78,10 +78,8 @@ function get_staff_actions_list()
         'spacer_4' => do_lang_tempcode('DEVELOPMENT_VIEWS'),
         'query' => do_lang_tempcode('VIEW_PAGE_QUERIES'),
         'ide_linkage' => do_lang_tempcode('IDE_LINKAGE'),
+        'memory' => do_lang_tempcode('_MEMORY_USAGE'),
     );
-    if (function_exists('memory_get_usage')) {
-        $list['memory'] = do_lang_tempcode('_MEMORY_USAGE');
-    }
     $special_page_type = get_param_string('special_page_type', 'view');
     $staff_actions = '';
     $started_opt_group = false;

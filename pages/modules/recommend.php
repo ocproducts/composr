@@ -432,47 +432,49 @@ class Module_recommend
 
                     $skip_next_process = false;
 
-                    if ((function_exists('mb_detect_encoding')) && (function_exists('mb_convert_encoding')) && (strlen(mb_detect_encoding($csv_header_line_fields[0], "ASCII,UTF-8,UTF-16,UTF16")) == 0)) { // Apple mail weirdness
-                        // Test string just for Apple mail detection
-                        $test_unicode = utf8_decode(mb_convert_encoding($csv_header_line_fields[0], "UTF-8", "UTF-16"));
-                        if (preg_match('#\?\?ame#u', $test_unicode) != 0) {
-                            foreach ($csv_header_line_fields as $key => $value) {
-                                $csv_header_line_fields[$key] = utf8_decode(mb_convert_encoding($csv_header_line_fields[$key], "UTF-8", "UTF-16"));
+                    if (function_exists('mb_convert_encoding')) {
+                        if ((function_exists('mb_detect_encoding')) && (strlen(mb_detect_encoding($csv_header_line_fields[0], "ASCII,UTF-8,UTF-16,UTF16")) == 0)) { // Apple mail weirdness
+                            // Test string just for Apple mail detection
+                            $test_unicode = utf8_decode(mb_convert_encoding($csv_header_line_fields[0], "UTF-8", "UTF-16"));
+                            if (preg_match('#\?\?ame#u', $test_unicode) != 0) {
+                                foreach ($csv_header_line_fields as $key => $value) {
+                                    $csv_header_line_fields[$key] = utf8_decode(mb_convert_encoding($csv_header_line_fields[$key], "UTF-8", "UTF-16"));
 
-                                $found_email_address = '';
-                                $found_name = '';
+                                    $found_email_address = '';
+                                    $found_name = '';
 
-                                $first_row_exploded = explode(';', $csv_header_line_fields[0]);
+                                    $first_row_exploded = explode(';', $csv_header_line_fields[0]);
 
-                                $email_index = 1; // by default
-                                $name_index = 0; // by default
+                                    $email_index = 1; // by default
+                                    $name_index = 0; // by default
 
-                                foreach ($csv_header_line_fields as $key2 => $value2) {
-                                    if (preg_match('#\?\?ame#', $value2) != 0) {
-                                        $name_index = $key2; // Windows mail
-                                    }
-                                    if (preg_match('#E\-mail#', $value2) != 0) {
-                                        $email_index = $key2; // both
-                                    }
-                                }
-
-                                while (($csv_line = fgetcsv($myfile, 10240, $del)) !== false) { // Reading a CSV record
-                                    foreach ($csv_line as $key2 => $value2) {
-                                        $csv_line[$key2] = utf8_decode(mb_convert_encoding($value2, "UTF-8", "UTF-16"));
+                                    foreach ($csv_header_line_fields as $key2 => $value2) {
+                                        if (preg_match('#\?\?ame#', $value2) != 0) {
+                                            $name_index = $key2; // Windows mail
+                                        }
+                                        if (preg_match('#E\-mail#', $value2) != 0) {
+                                            $email_index = $key2; // both
+                                        }
                                     }
 
-                                    $found_email_address = (array_key_exists($email_index, $csv_line) && strlen($csv_line[$email_index]) > 0) ? $csv_line[$email_index] : '';
-                                    $found_email_address = (preg_match('#.*\@.*\..*#', $found_email_address) != 0) ? preg_replace("#\"#", '', $found_email_address) : '';
-                                    $found_name = $found_email_address;
+                                    while (($csv_line = fgetcsv($myfile, 10240, $del)) !== false) { // Reading a CSV record
+                                        foreach ($csv_line as $key2 => $value2) {
+                                            $csv_line[$key2] = utf8_decode(mb_convert_encoding($value2, "UTF-8", "UTF-16"));
+                                        }
 
-                                    if (strlen($found_email_address) > 0) {
-                                        $skip_next_process = true;
-                                        // Add to the list what we've found
-                                        $fields->attach(form_input_tick($found_name, $found_email_address, 'use_details_' . strval($email_counter), true));
-                                        $hidden->attach(form_input_hidden('details_email_' . strval($email_counter), $found_email_address));
-                                        $hidden->attach(form_input_hidden('details_name_' . strval($email_counter), $found_name));
-                                        $email_counter++;
-                                        $success_read = true;
+                                        $found_email_address = (array_key_exists($email_index, $csv_line) && strlen($csv_line[$email_index]) > 0) ? $csv_line[$email_index] : '';
+                                        $found_email_address = (preg_match('#.*\@.*\..*#', $found_email_address) != 0) ? preg_replace("#\"#", '', $found_email_address) : '';
+                                        $found_name = $found_email_address;
+
+                                        if (strlen($found_email_address) > 0) {
+                                            $skip_next_process = true;
+                                            // Add to the list what we've found
+                                            $fields->attach(form_input_tick($found_name, $found_email_address, 'use_details_' . strval($email_counter), true));
+                                            $hidden->attach(form_input_hidden('details_email_' . strval($email_counter), $found_email_address));
+                                            $hidden->attach(form_input_hidden('details_name_' . strval($email_counter), $found_name));
+                                            $email_counter++;
+                                            $success_read = true;
+                                        }
                                     }
                                 }
                             }

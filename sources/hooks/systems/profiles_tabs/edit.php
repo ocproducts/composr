@@ -77,8 +77,8 @@ class Hook_profiles_tabs_edit
             return array($title, null, $order, 'tabs/settings');
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(60); // Raise time limit, as can be slow
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(60); // Raise time limit, as can be slow
         }
 
         if (count($_POST) > 0) {

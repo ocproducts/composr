@@ -2168,7 +2168,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                         $parent_gallery_title = get_translated_text($_parent_gallery_title);
                     }
                 }
-                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'gallery'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*HACKHACK: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
+                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'gallery'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*FUDGE: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
             } else {
                 $hidden->attach(form_input_hidden('parent_id', $parent_id));
             }

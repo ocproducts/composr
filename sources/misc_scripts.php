@@ -235,8 +235,8 @@ function preview_script()
  */
 function cron_bridge_script($caller)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(1000); // May get overridden lower later on
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(1000); // May get overridden lower later on
     }
 
     // In query mode, Composr will just give advice on CRON settings to use
@@ -566,8 +566,8 @@ function external_url_proxy_script()
     }
 
     // No time-limits wanted
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     // Can't add in compression

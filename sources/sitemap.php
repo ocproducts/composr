@@ -44,8 +44,8 @@ Node structure includes the following special data for menu rendering:
  */
 function init__sitemap()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(100);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(100);
     }
 
     // Defining what should be gathered with the Sitemap

@@ -384,13 +384,13 @@ function step_1()
     // Some checks relating to installation permissions
     global $FILE_ARRAY;
     if (!@is_array($FILE_ARRAY)) { // Talk about manual permission setting a bit
-        if ((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
+        if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('SUEXEC_SERVER'))));
         } elseif (is_writable_wrap(get_file_base() . '/install.php')) {
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!function_exists('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -802,7 +802,7 @@ function step_4()
 
     // Detect FTP settings
 
-    if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+    if (php_function_allowed('posix_getpwuid')) {
         $u_info = posix_getpwuid(fileowner(get_file_base() . '/install.php'));
         if ($u_info !== false) {
             $ftp_username = $u_info['name'];
@@ -1039,8 +1039,8 @@ function step_5()
         exit(do_lang('INST_POST_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     $url = 'install.php?step=6';
@@ -2078,8 +2078,8 @@ function step_5_core_2()
  */
 function step_6()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2113,8 +2113,8 @@ function step_6()
  */
 function big_installation_common()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2375,10 +2375,8 @@ function require_code($codename)
     }
 
     if (!array_key_exists('type', $_GET)) {
-        if (function_exists('memory_get_usage')) {
-            $prior = memory_get_usage();
-            echo '<!-- Memory: ' . number_format(memory_get_usage()) . ' -->' . "\n";
-        }
+        $prior = memory_get_usage();
+        echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n";
         echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
         flush();
     }
@@ -2410,9 +2408,7 @@ function require_code($codename)
         }
     }
     /*if (!array_key_exists('type', $_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
-        if (function_exists('memory_get_usage')) {
-            echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
-        }
+        echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
     }*/
 }
 
