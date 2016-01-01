@@ -142,7 +142,7 @@ Hourly cost (approx):
 						<p>Sound like the kinds of things you'd prefer not to think about? No problem -- we've been doing this for years.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=paid_support:cost=pay{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Open ticket</a>
 						</div>
 					</li>
 
@@ -161,7 +161,7 @@ Hourly cost (approx):
 						<p>Once you have agreed to these terms, please open a ticket with us.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=installation:cost=pay{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Open ticket</a>
 						</div>
 					</li>
 
@@ -184,7 +184,7 @@ Hourly cost (approx):
 						<p>ocProducts has a commitment to delivering work of the best quality, and for quality management processes. You won't be disappointed.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=paid_development:cost=pay{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:project}">Open ticket</a>
 						</div>
 					</li>
 
@@ -208,7 +208,7 @@ Hourly cost (approx):
 						<p>Interested? Open a ticket to get started.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=consultancy:cost=pay{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Open ticket</a>
 						</div>
 					</li>
 
@@ -224,7 +224,7 @@ Hourly cost (approx):
 						<p>If you just want to support the project, we can help you pick something to sponsor, so just open up a ticket with us and let us know.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=general_feedback:cost=free{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Open ticket</a>
 						</div>
 					</li>
 				</ul>

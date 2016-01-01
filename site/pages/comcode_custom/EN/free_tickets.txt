@@ -24,12 +24,12 @@
 		</div>
 
 		<div class="cntRB">
-			<p>Please report any <strong>genuine malfunctions</strong> you encounter using Composr. We often get out bug fixes <strong>within a few days</strong>. If you need a very quick fix, consider using a [page="site:tickets:ticket:ticket_template=paid_support:cost=pay"]commercial ticket[/page] (e.g. an emergency ticket), as we cannot guarantee response times otherwise.</p>
+			<p>Please report any <strong>genuine malfunctions</strong> you encounter using Composr. We often get out bug fixes <strong>within a few days</strong>. If you need a very quick fix, consider using a [page="_SEARCH:contact:support"]commercial ticket[/page] (e.g. an emergency ticket), as we cannot guarantee response times otherwise.</p>
 
 			<p>We also consider non-bugs (<strong>usability problems</strong>) well-worth being reported.</p>
 
 			<div class="btnDft">
-				<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=bug:cost=free{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Report bug</a>
+				<a href="{$PAGE_LINK*,_SEARCH:contact:free}">Report bug</a>
 			</div>
 		</div>
 	</div>
@@ -51,7 +51,7 @@
 			<p>We take user feedback very seriously. Please share <strong>any input</strong> you have regarding our software, website, services, or documentation. Note this is for feedback not support.</p>
 
 			<div class="btnDft">
-				<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=general_feedback:cost=free{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Feedback</a>
+				<a href="{$PAGE_LINK*,_SEARCH:contact:free}">Feedback</a>
 			</div>
 		</div>
 	</div>
@@ -75,7 +75,7 @@
 			<p>Please get in touch.</p>
 
 			<div class="btnDft">
-				<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=enquiry:cost=free{$?,{$IS_GUEST},:redirect={$SELF_URL&}}}">Business</a>
+				<a href="{$PAGE_LINK*,_SEARCH:contact:job}">Business</a>
 			</div>
 		</div>
 	</div>

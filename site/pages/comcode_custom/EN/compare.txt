@@ -620,7 +620,7 @@ We have to be clear that these don't always hold true, every project is differen
 	</ol>
 
 	<div class="commonBtn">
-		[page="site:tickets:ticket:ticket_template=enquiry:cost=free"]Contact[/page]
+		[page="site:tickets:ticket:ticket_type=Partnership"]Contact[/page]
 	</div>
 </div>
 

@@ -122,7 +122,7 @@
 					</div>
 				</div>
 
-                <p class="testimonial_link">Send us more <a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=general_feedback:cost=free}">testimonials</a>.</p>
+                <p class="testimonial_link">Send us more <a href="{$PAGE_LINK*,site:tickets:ticket:ticket_type=Feedback}">testimonials</a>.</p>
 			</div>
 		</div>
 

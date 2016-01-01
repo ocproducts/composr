@@ -1,7 +1,9 @@
 [semihtml]
 	[block="ocp_nav" type="top"]side_stored_menu[/block]
 
-	{+START,IF,{$EQ,{$PAGE},support,tickets,commercial_support}}[block]show_credits[/block]{+END}{+START,IF,{$EQ,{$SUBSTR,{$PAGE},0,4},tut_}}
+	{+START,IF,{$EQ,{$PAGE},support,tickets,commercial_support,contact}}[block]show_credits[/block]{+END}
+
+    {+START,IF,{$EQ,{$SUBSTR,{$PAGE},0,4},tut_}}
 		<p class="right" style="margin-right: 5px">
 			&laquo; Back to <a href="{$PAGE_LINK*,docs:tutorials}"><strong>Tutorial Index</strong></a>
 		</p>

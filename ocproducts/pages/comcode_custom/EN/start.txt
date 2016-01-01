@@ -147,7 +147,7 @@
 				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img9}" /></div>
 
 				<p><strong>Ready to contact us?</strong><br />
-				<span><a href="#">Open a ticket »</a></span></p>
+				<span><a href="{$PAGE_LINK*,_SEARCH:contact}">Project Briefr »</a></span></p>
 			</div>
 		</div>
 
@@ -155,11 +155,7 @@
 			<h3 class="colrBl text-center">The world-class web development team is waiting to hear from you</h3><br />
 
 			<div class="compCol_lft marRht">
-				<p>To get started, <a href="#">open a ticket</a> with your requirements. We'll respond promptly with a free quote *1, *5.</p>
-			</div>
-
-			<div class="compCol_lft">
-				<p>Or, fill in our <a href="#">project briefing survey</a> to tell us your website development needs directly.</p>
+				<p>To get started, <a href="{$PAGE_LINK*,_SEARCH:contact}">contact us</a> with your requirements. We'll respond promptly with a free quote *1, *5.</p>
 			</div>
 		</div>
 	</div>
@@ -379,7 +375,7 @@
 
 			<div class="sept"></div>
 
-			<p>As well as being able to provide a high quality full agency service, we enjoy working on web design projects with other professionals in partnership. For example, we can work with designers as a development provider &ndash; making the design and vision real, and implementing extreme technology as required. If you would like to work with us then [page="site:tickets:ticket:ticket_template=agency:cost=free"]we would love to hear from you[/page].</p>
+			<p>As well as being able to provide a high quality full agency service, we enjoy working on web design projects with other professionals in partnership. For example, we can work with designers as a development provider &ndash; making the design and vision real, and implementing extreme technology as required. If you would like to work with us then [page="_SEARCH:tickets:ticket:ticket_type=Partnership"]we would love to hear from you[/page].</p>
 		</div>
 	</div>
 
