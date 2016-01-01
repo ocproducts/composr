@@ -509,7 +509,9 @@ function memory_tracking()
 {
     $memory_tracking = intval(get_value('memory_tracking'));
     if (memory_get_peak_usage() > 1024 * 1024 * $memory_tracking) {
-        @error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(), 0);
+        if (php_function_allowed('error_log')) {
+            error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(), 0);
+        }
     }
 }
 
@@ -761,7 +763,9 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
                 if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
                     syslog($syslog_type, $php_error_label);
                 }
-                @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+                if (php_function_allowed('error_log')) {
+                    @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+                }
                 critical_error('EMERGENCY', $errstr . escape_html(' [' . $errfile . ' at ' . strval($errline) . ']'));
             }
         }

@@ -401,7 +401,9 @@ function init__m_zip()
                 // uncomment this if you want to delete files (use m_deldir on anything)
                 // unlink($a_dir);
                 // comment this if you want to skip warning
-                error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                if (php_function_allowed('error_log')) {
+                    error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                }
             }
         }
     }

@@ -577,20 +577,6 @@ function deg2rad($number)
 }
 
 /**
- * Send an error message somewhere.
- *
- * @param  string $message The message to log.
- * @param  integer $message_type The message type (0 is normal PHP logging system, 1 is e-mail address [non-Roadsend], 2 is debugger connection, 3 is file).
- * @set    0 1 2 3
- * @param  string $destination The parameter that defines details of the message type (for type 0, meaningless).
- * @return boolean Success status.
- */
-function error_log($message, $message_type = 0, $destination = '')
-{
-    return true;
-}
-
-/**
  * Sets which PHP errors are reported.
  *
  * @param  ?integer $level OR'd combination of error type constants. (E_ERROR, E_WARNING,  E_PARSE, E_NOTICE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE, E_ALL) (null: find current level).
@@ -4800,18 +4786,6 @@ function nl2br($in)
 }
 
 /**
- * Returns information about the operating system PHP is running on.
- *
- * @param  string $mode Type of info to get.
- * @set    a s n r v m
- * @return string The info.
- */
-function php_uname($mode = 'a')
-{
-    return '';
-}
-
-/**
  * Output a formatted string.
  *
  * @param  string $format Formatting string.
@@ -5784,6 +5758,8 @@ highlight_string
 highlight_file
 disk_free_space
 disk_total_space
+error_log
+php_uname
 
 Disabled due to often being ill-configured or disabled on hosts...
 

@@ -38,7 +38,7 @@ class Hook_check_functions_needed
             array_slice array_splice array_unique array_values arsort asort base64_decode base64_encode
             call_user_func ceil chdir checkdate chmod chr chunk_split class_exists clearstatcache closedir
             constant copy cos count crypt current date dechex decoct define defined dirname
-            deg2rad error_log error_reporting eval exit explode fclose feof fgets file file_exists
+            deg2rad error_reporting eval exit explode fclose feof fgets file file_exists
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
             function_exists fwrite gd_info get_class get_html_translation_table get_magic_quotes_gpc getcwd
@@ -86,7 +86,7 @@ class Hook_check_functions_needed
             parse_ini_file parse_str is_executable memory_get_usage
             is_scalar is_subclass_of metaphone natcasesort natsort nl2br ob_get_length ob_gzhandler
             ob_implicit_flush ob_clean
-            php_uname printf convert_cyr_string cosh count_chars
+            printf convert_cyr_string cosh count_chars
             gethostbynamel getimagesize getlastmod fpassthru
             gettimeofday get_cfg_var get_magic_quotes_runtime get_meta_tags get_parent_class
             get_included_files get_resource_type gzcompress gzdeflate gzencode gzfile gzinflate
