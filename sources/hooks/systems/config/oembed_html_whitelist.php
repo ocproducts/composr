@@ -50,6 +50,6 @@ class Hook_config_oembed_html_whitelist
      */
     public function get_default()
     {
-        return "youtube.com\nyoutu.be\nvimeo.com\ndailymotion.com\nslideshare.net\nscribd.com\nsoundcloud.com\ntwitter.com\nembed.ly\nmaps.google.com\nmaps.google.co.uk\nimgur.com\nustream.tv\njustin.tv\napi.embed.ly\nnoembed.com";
+        return "youtube.com\nyoutu.be\nvimeo.com\ndailymotion.com\nslideshare.net\nscribd.com\nsoundcloud.com\ntwitter.com\nembed.ly\nmaps.google.com\nmaps.google.co.uk\nimgur.com\nustream.tv\njustin.tv\napi.embed.ly\nnoembed.com\nfacebook.com";
     }
 }
