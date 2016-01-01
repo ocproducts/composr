@@ -45,7 +45,7 @@
 		<link label="{!HOME}">:</link>
 	</substitution>
 
-	<substitution match_key=":free_tickets">
+	<substitution match_key=":contact">
 		<link label="{!HOME}">:</link>
 		<link label="Support">:support</link>
 	</substitution>
