@@ -5,116 +5,116 @@
 {$REQUIRE_CSS,jquery.ui.all}
 
 <div class="cntRow">
-    [title]Features[/title]
+	[title]Features[/title]
 </div>
 
 <div class="cntRow">
-    <p>Here we have a summary of ocP's major features: as you'll see, you have many to pick from! You don't need to be a [url="Rocket Surgeon"]https://www.google.co.uk/search?q=rocket+surgeon+t-shirts&tbm=isch[/url] to see why you should use Composr.</p>
-    <p>Remember that almost every feature in Composr is optional. We hate web software that forces too much on us (and the visitors), so we ensure Composr scales back and customises very well.</p>
+	<p>Here we have a summary of ocP's major features: as you'll see, you have many to pick from! You don't need to be a [url="Rocket Surgeon"]https://www.google.co.uk/search?q=rocket+surgeon+t-shirts&tbm=isch[/url] to see why you should use Composr.</p>
+	<p>Remember that almost every feature in Composr is optional. We hate web software that forces too much on us (and the visitors), so we ensure Composr scales back and customises very well.</p>
 
-    <div class="ft-blk1">
-        <h2>Companion information</h2>
+	<div class="ft-blk1">
+		<h2>Companion information</h2>
 
-        <div class="list">
-            <ul>
-                <li class="list-none">Please also check the following information to help you in your [abbr="Content Management System"]CMS[/abbr] decision:</li>
+		<div class="list">
+			<ul>
+				<li class="list-none">Please also check the following information to help you in your [abbr="Content Management System"]CMS[/abbr] decision:</li>
 
-                <li>Learn <a class="list-link" href="{$PAGE_LINK*,:compare}">50 reasons why Composr is different</a> to other CMSs.</li>
-                <li>Learn <a class="list-link" href="{$PAGE_LINK*,:antifeatures}">what Composr is not</a> (this page contains <strong>vitally important</strong> details to help you plan your project).</li>
-                <li>Learn our <a class="list-link" href="{$PAGE_LINK*,:vision}">vision for Composr</a>, as well as the future of the web.</li>
-                <li>Browse the <a class="list-link" href="{$PAGE_LINK*,ocproducts:portfolio}">ocProducts portfolio</a> to see example Composr sites.</li>
-                <li>Set up a <a class="list-link" href="{$PAGE_LINK*,:demo}">personal demo</a>. Supply some details and we'll instantly set up your temporary site.</li>
+				<li>Learn <a class="list-link" href="{$PAGE_LINK*,:compare}">50 reasons why Composr is different</a> to other CMSs.</li>
+				<li>Learn <a class="list-link" href="{$PAGE_LINK*,:antifeatures}">what Composr is not</a> (this page contains <strong>vitally important</strong> details to help you plan your project).</li>
+				<li>Learn our <a class="list-link" href="{$PAGE_LINK*,:vision}">vision for Composr</a>, as well as the future of the web.</li>
+				<li>Browse the <a class="list-link" href="{$PAGE_LINK*,ocproducts:portfolio}">ocProducts portfolio</a> to see example Composr sites.</li>
+				<li>Set up a <a class="list-link" href="{$PAGE_LINK*,:demo}">personal demo</a>. Supply some details and we'll instantly set up your temporary site.</li>
 
-                <li class="list-none">We also link to the shared demo below to illustrate all the features (click the blue arrows).</li>
-            </ul>
-        </div>
-    </div>
+				<li class="list-none">We also link to the shared demo below to illustrate all the features (click the blue arrows).</li>
+			</ul>
+		</div>
+	</div>
 
-    <div class="ft-rw accordion">
-        <h2><a href="#">Content types</a></h2>
+	<div class="ft-rw accordion">
+		<h2><a href="#">Content types</a></h2>
 
-        <div>
-            [block="catalogues|quizzes,galleries|wiki,calendar|downloads,news|pages"]composr_homesite_featuretray[/block]
-        </div>
+		<div>
+			[block="catalogues|quizzes,galleries|wiki,calendar|downloads,news|pages"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">General features</a></h2>
+		<h2><a href="#">General features</a></h2>
 
-        <div>
-            [block="installation|featured,banners|ecommerce,search|support,newsletters"]composr_homesite_featuretray[/block]
-        </div>
+		<div>
+			[block="installation|featured,banners|ecommerce,search|support,newsletters"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">Forums and members</a></h2>
+		<h2><a href="#">Forums and members</a></h2>
 
-        <div>
-            <p class="intro">Enjoy <strong>seamless integration</strong> with our cutting-edge forum, Conversr &mdash; [i]or[/i] integrate with your current product.</p>
+		<div>
+			<p class="intro">Enjoy <strong>seamless integration</strong> with our cutting-edge forum, Conversr &mdash; [i]or[/i] integrate with your current product.</p>
 
-            [block="cnsmembers,cnsforum,tracking|forumcontentsharing,forumdrivers"]composr_homesite_featuretray[/block]
-        </div>
+			[block="cnsmembers,cnsforum,tracking|forumcontentsharing,forumdrivers"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">More social networking</a></h2>
+		<h2><a href="#">More social networking</a></h2>
 
-        <div>
-            [block="polls|msn,points,chat,community"]composr_homesite_featuretray[/block]
-        </div>
+		<div>
+			[block="polls|msn,points,chat,community"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">Design and management</a></h2>
+		<h2><a href="#">Design and management</a></h2>
 
-        <div>
-            [block="adminzone,tools|rad,barriers|tempcode,richmedia"]composr_homesite_featuretray[/block]
-        </div>
+		<div>
+			[block="adminzone,tools|rad,barriers|tempcode,richmedia"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">Standards</a></h2>
+		<h2><a href="#">Standards</a></h2>
 
-        <div>
-            [block="webstandards|performance,seo|itln,security,easeofuse"]composr_homesite_featuretray[/block]
-        </div>
+		<div>
+			[block="webstandards|performance,seo|itln,security,easeofuse"]composr_homesite_featuretray[/block]
+		</div>
 
-        <h2><a href="#">Architecture</a></h2>
+		<h2><a href="#">Architecture</a></h2>
 
-        <div>
-            [block="debranding|permissions,nav,integration,extendable"]composr_homesite_featuretray[/block]
-        </div>
-    </div>
+		<div>
+			[block="debranding|permissions,nav,integration,extendable"]composr_homesite_featuretray[/block]
+		</div>
+	</div>
 
-    <div class="ft-rw2 no_print">
-        <h2>Recommend Composr to a friend</h2>
+	<div class="ft-rw2 no_print">
+		<h2>Recommend Composr to a friend</h2>
 
-        <div class="content extended_screen_actions">
-            <p>Does your friend use another CMS? Maybe you think they should give Composr a try?</p>
+		<div class="content extended_screen_actions">
+			<p>Does your friend use another CMS? Maybe you think they should give Composr a try?</p>
 
-            {$SET,already_loaded_screen_actions,1}[block]main_screen_actions[/block]
-        </div>
-    </div>
+			{$SET,already_loaded_screen_actions,1}[block]main_screen_actions[/block]
+		</div>
+	</div>
 </div>
 
 <div class="cntRow"></div>
 
 <!--accordion -->
 <script>//<![CDATA[
-    $(function() {
-        $('.accordion').accordion({
-            heightStyle: "content",
-            navigation: true
-        });
-    });
+	$(function() {
+		$('.accordion').accordion({
+			heightStyle: "content",
+			navigation: true
+		});
+	});
 //]]></script>
 
 <script>// <![CDATA[
-    function toggle_seemore(ob)
-    {
-        var ob2=ob.parentNode.previousSibling;
-        if (!ob2) return;
-        if (ob2.style.display!='block')
-        {
-            ob2.style.display='none'; // just to reinforce as invisible currently, as JS code needs this
-            ob.innerHTML='See fewer';
-            ob.className='seefewer';
-        } else
-        {
-            ob.innerHTML='See more';
-            ob.className='seemore';
-        }
-        toggleable_tray(ob2,true);
-    }
+	function toggle_seemore(ob)
+	{
+		var ob2=ob.parentNode.previousSibling;
+		if (!ob2) return;
+		if (ob2.style.display!='block')
+		{
+			ob2.style.display='none'; // just to reinforce as invisible currently, as JS code needs this
+			ob.innerHTML='See fewer';
+			ob.className='seefewer';
+		} else
+		{
+			ob.innerHTML='See more';
+			ob.className='seemore';
+		}
+		toggleable_tray(ob2,true);
+	}
 //]]></script>
 [/semihtml]

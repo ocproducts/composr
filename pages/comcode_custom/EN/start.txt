@@ -8,169 +8,168 @@
 {$REQUIRE_JAVASCRIPT,jquerypp.custom}
 
 {+START,IF,{$MOBILE}}
-   <div class="BannerPart">
-       <div class="BannerIn">
-         <span class="MainTxt"> <span class="TxtBlack">The versatile</span> 
-           <span class="TxtOrange">Content Management System</span>
-           <span class="TxtWhite">for next generation website</span>
-         </span>
-         <a class="Button" href="{$PAGE_LINK*,site:features}">see our features</a>
-       </div>
-   </div>
-   
-   <ul class="RoundButPart">
-       <li><a class="RoundBut" href="{$PAGE_LINK*,site:download}"><span class="TxtUpper">Download</span> Composr CMS</a></li>
-       <li><a class="RoundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="TxtUpper">Tutorial</span> Library</a></li>
-       <li><a class="RoundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>
-   </ul>
-   
-   <ul class="MainMenu">
-        <li><a class="MenuBut" href="{$PAGE_LINK*,site:features}">about composr</a></li>
-        <li><a class="MenuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
-        <li><a class="MenuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
-        <li><a class="MenuBut" href="{$PAGE_LINK*,site:contribute}">contribute</a></li>
-        <li><a class="MenuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
-        <li><a class="MenuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>
-   </ul>
+	<div class="BannerPart">
+		<div class="BannerIn">
+			<span class="MainTxt"> <span class="TxtBlack">The versatile</span> 
+			<span class="TxtOrange">Content Management System</span>
+			<span class="TxtWhite">for next generation website</span>
+			<a class="Button" href="{$PAGE_LINK*,site:features}">see our features</a>
+		</div>
+		</div>
+
+	<ul class="RoundButPart">
+		<li><a class="RoundBut" href="{$PAGE_LINK*,site:download}"><span class="TxtUpper">Download</span> Composr CMS</a></li>
+		<li><a class="RoundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="TxtUpper">Tutorial</span> Library</a></li>
+		<li><a class="RoundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>
+	</ul>
+
+	<ul class="MainMenu">
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:features}">about composr</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:contribute}">contribute</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
+		<li><a class="MenuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>
+	</ul>
 {+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}
-    <div class="cntRow">
-        <div class="cntCol1">
-            <div class="head">
-                Here's the story of Composr!
-            </div>
+	<div class="cntRow">
+		<div class="cntCol1">
+			<div class="head">
+				Here's the story of Composr!
+			</div>
 
-            <p>Originally launched as Composr in 2004, Composr enables designers to realise their visions without a team of programmers.<br />Never before could you achieve so much · so quickly · to such high standard</p>
+			<p>Originally launched as Composr in 2004, Composr enables designers to realise their visions without a team of programmers.<br />Never before could you achieve so much · so quickly · to such high standard</p>
 
-            <p>Similarly, we've enabled programmers to achieve more faster, and we've helped businesses and government to do more for less investment.</p>
-        </div>
+			<p>Similarly, we've enabled programmers to achieve more faster, and we've helped businesses and government to do more for less investment.</p>
+		</div>
 
-        <div class="cntCol2">
-            <a href="{$PAGE_LINK*,site:download}" title="Click here to download Composr CMS">DOWNLOAD Composr CMS</a>
-        </div>
+		<div class="cntCol2">
+			<a href="{$PAGE_LINK*,site:download}" title="Click here to download Composr CMS">DOWNLOAD Composr CMS</a>
+		</div>
 
-        <div class="cntCol3">
-            <div class="head">
-                <span>Create smarter web properties;</span> accelerate &nbsp; &nbsp; &nbsp;time to market
-            </div>
+		<div class="cntCol3">
+			<div class="head">
+				<span>Create smarter web properties;</span> accelerate &nbsp; &nbsp; &nbsp;time to market
+			</div>
 
-            <ul>
-                <li><span><acronym title="Many features working together seamlessly out-of-the-box, including photo galleries, events, forums, and news">Huge integrated feature-set</acronym></span></li>
-                <li><span>Enthusiastic community</span></li>
-                <li><span>No licensing costs</span></li>
-                <li><span>Cloud-compatible</span></li>
-                <li><span class="last"><acronym title="Powered by HTML5">HTML5</acronym>, <acronym title="Full design flexibility using templating and CSS3">CSS3</acronym>, <acronym title="Acclaimed accessibility, including WCAG and ATAG compliance">WCAG</acronym></span></li>
-            </ul>
-        </div>
-    </div>
+			<ul>
+				<li><span><acronym title="Many features working together seamlessly out-of-the-box, including photo galleries, events, forums, and news">Huge integrated feature-set</acronym></span></li>
+				<li><span>Enthusiastic community</span></li>
+				<li><span>No licensing costs</span></li>
+				<li><span>Cloud-compatible</span></li>
+				<li><span class="last"><acronym title="Powered by HTML5">HTML5</acronym>, <acronym title="Full design flexibility using templating and CSS3">CSS3</acronym>, <acronym title="Acclaimed accessibility, including WCAG and ATAG compliance">WCAG</acronym></span></li>
+			</ul>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        <div class="libHolder">
-            <div class="libHead">
-                Tutorial Library
-            </div>
+	<div class="cntRow">
+		<div class="libHolder">
+			<div class="libHead">
+				Tutorial Library
+			</div>
 
-            <div id="tabsholder">
-                <ul class="tabs">
-                    <li id="tab1">Curated Order</li>
-                    <li id="tab2">Newest First</li>
-                    <li id="tab3">Most up-voted</li>
-                    <li id="tab4">Recently up-voted</li>
-                </ul>
+			<div id="tabsholder">
+				<ul class="tabs">
+					<li id="tab1">Curated Order</li>
+					<li id="tab2">Newest First</li>
+					<li id="tab3">Most up-voted</li>
+					<li id="tab4">Recently up-voted</li>
+				</ul>
 
-                <div class="contents marginbot">
-                    <div class="tabscontent" id="content1">
-                        <!--Curated Order Content-->
-                        <div class="container demo-1">
-                            <div class="main">
-                                {$BLOCK,block=main_tutorials_carousel,param=pinned}
-                            </div>
-                        </div>
-                    </div>
+				<div class="contents marginbot">
+					<div class="tabscontent" id="content1">
+						<!--Curated Order Content-->
+						<div class="container demo-1">
+							<div class="main">
+								{$BLOCK,block=main_tutorials_carousel,param=pinned}
+							</div>
+						</div>
+					</div>
 
-                    <div class="tabscontent" id="content2">
-                        <!--Newest First Content-->
-                        <div class="container demo-1">
-                            <div class="main">
-                                {$BLOCK,block=main_tutorials_carousel,param=recent}
-                            </div>
-                        </div>
-                    </div>
+					<div class="tabscontent" id="content2">
+						<!--Newest First Content-->
+						<div class="container demo-1">
+							<div class="main">
+								{$BLOCK,block=main_tutorials_carousel,param=recent}
+							</div>
+						</div>
+					</div>
 
-                    <div class="tabscontent" id="content3">
-                        <!--Most up-voted Content-->
-                        <div class="container demo-1">
-                            <div class="main">
-                                {$BLOCK,block=main_tutorials_carousel,param=likes}
-                            </div>
-                        </div>
-                    </div>
+					<div class="tabscontent" id="content3">
+						<!--Most up-voted Content-->
+						<div class="container demo-1">
+							<div class="main">
+								{$BLOCK,block=main_tutorials_carousel,param=likes}
+							</div>
+						</div>
+					</div>
 
-                    <div class="tabscontent" id="content4">
-                        <!--Recently up-voted Content-->
-                        <div class="container demo-1">
-                            <div class="main">
-                                {$BLOCK,block=main_tutorials_carousel,param=likes_recent}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<div class="tabscontent" id="content4">
+						<!--Recently up-voted Content-->
+						<div class="container demo-1">
+							<div class="main">
+								{$BLOCK,block=main_tutorials_carousel,param=likes_recent}
+							</div>
+						</div>
+					</div>
+				</div>
 
-                <div class="moreBtn">
-                    <div class="plusBtn">
-                        <a href="{$PAGE_LINK*,docs:}" title="More tutorials">more</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="moreBtn">
+					<div class="plusBtn">
+						<a href="{$PAGE_LINK*,docs:}" title="More tutorials">more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        <div class="paletteHold">
-            <div class="palHead"></div>
+	<div class="cntRow">
+		<div class="paletteHold">
+			<div class="palHead"></div>
 
-            <div class="palBox">
-                <ul>
-                    <li class="bx1"><a href="{$PAGE_LINK*,docs:tutorials:Mobile}" title="Mobile-friendly">Mobile-friendly</a></li>
-                    <li class="bx2"><a href="{$PAGE_LINK*,docs:tutorials:Social}" title="Social networking">Social networking</a></li>
-                    <li class="bx3"><a href="{$PAGE_LINK*,docs:tutorials:Administration}" title="Powerful Administration">Powerful Administration</a></li>
-                    <li class="bx4"><a href="{$PAGE_LINK*,docs:tutorials:Security}" title="Fights-hackers">Fights-hackers</a></li>
-                    <li class="bx5"><a href="{$PAGE_LINK*,docs:tutorials:Performance}" title="High-performance">High-performance</a></li>
-                    <li class="bx6"><a href="{$PAGE_LINK*,docs:tutorials:SEO}" title="Automatic SEO">Automatic SEO</a></li>
-                    <li class="bx7"><a href="{$PAGE_LINK*,docs:tutorials:Content}" title="Huge feature set">Huge feature set</a></li>
-                    <li class="bx8"><a href="{$PAGE_LINK*,docs:tutorials:Development}" title="Extendable">Extendable</a></li>
-                    <li class="bx9"><a href="{$PAGE_LINK*,docs:tutorials:Power tools}" title="Highly-customisable">Highly-customisable</a></li>
-                </ul>
-            </div>
+			<div class="palBox">
+				<ul>
+					<li class="bx1"><a href="{$PAGE_LINK*,docs:tutorials:Mobile}" title="Mobile-friendly">Mobile-friendly</a></li>
+					<li class="bx2"><a href="{$PAGE_LINK*,docs:tutorials:Social}" title="Social networking">Social networking</a></li>
+					<li class="bx3"><a href="{$PAGE_LINK*,docs:tutorials:Administration}" title="Powerful Administration">Powerful Administration</a></li>
+					<li class="bx4"><a href="{$PAGE_LINK*,docs:tutorials:Security}" title="Fights-hackers">Fights-hackers</a></li>
+					<li class="bx5"><a href="{$PAGE_LINK*,docs:tutorials:Performance}" title="High-performance">High-performance</a></li>
+					<li class="bx6"><a href="{$PAGE_LINK*,docs:tutorials:SEO}" title="Automatic SEO">Automatic SEO</a></li>
+					<li class="bx7"><a href="{$PAGE_LINK*,docs:tutorials:Content}" title="Huge feature set">Huge feature set</a></li>
+					<li class="bx8"><a href="{$PAGE_LINK*,docs:tutorials:Development}" title="Extendable">Extendable</a></li>
+					<li class="bx9"><a href="{$PAGE_LINK*,docs:tutorials:Power tools}" title="Highly-customisable">Highly-customisable</a></li>
+				</ul>
+			</div>
 
-            <div class="palBtm">
-                <div class="readMoreBtn">
-                    <a href="{$PAGE_LINK*,site:features}" title="read more about Composr palette">READ MORE</a>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="palBtm">
+				<div class="readMoreBtn">
+					<a href="{$PAGE_LINK*,site:features}" title="read more about Composr palette">READ MORE</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        {$BLOCK,block=main_news,title=Latest News}
+	<div class="cntRow">
+		{$BLOCK,block=main_news,title=Latest News}
 
-        {$BLOCK,block=main_newsletter_signup,title=Newsletter Sign up}
-    </div>
+		{$BLOCK,block=main_newsletter_signup,title=Newsletter Sign up}
+	</div>
 
-    <!-- Script for Tab menu -->
-    <script>//<![CDATA[
-        $(document).ready(function() {
-            $('.elastislide-list').elastislide();
+	<!-- Script for Tab menu -->
+	<script>//<![CDATA[
+		$(document).ready(function() {
+			$('.elastislide-list').elastislide();
 
-            window.setTimeout(function() {
-                $("#tabsholder").tytabs({
-                    tabinit:"1",
-                    fadespeed:"fast"
-                });
-            },0);
-        });
-    //]]></script>
+			window.setTimeout(function() {
+				$("#tabsholder").tytabs({
+					tabinit:"1",
+					fadespeed:"fast"
+				});
+			},0);
+		});
+	//]]></script>
 {+END}
 
 [/semihtml]

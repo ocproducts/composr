@@ -7,276 +7,276 @@
 {$REQUIRE_CSS,jquery.scrollbars}
 
 <div class="float_surrounder">
-    <div class="cntRow">
-        [title]Vision[/title]
+	<div class="cntRow">
+		[title]Vision[/title]
 
-        <div class="hSliderHold">
-            <div class="hSliderInner">
-                <div class="hSlider">
-                    <div class="con"><img alt="" src="{$IMG*,composr_homesite/vision/slider_vision_page}" /></div>
-                </div>
+		<div class="hSliderHold">
+			<div class="hSliderInner">
+				<div class="hSlider">
+					<div class="con"><img alt="" src="{$IMG*,composr_homesite/vision/slider_vision_page}" /></div>
+				</div>
 
-                <div class="hSliderBtm"></div>
-            </div>
-        </div>
-    </div>
+				<div class="hSliderBtm"></div>
+			</div>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        <p class="text-center">"With Composr, we are committed to using our experience and talents to keep the web open, ensuring people don't need legions of programmers to build websites with the features they truly need. Through our Open Source Content Management System, Composr, we are carrying the web forward by empowering people to build sophisticated sites with elegance and efficiency."</p>
-    </div>
+	<div class="cntRow">
+		<p class="text-center">"With Composr, we are committed to using our experience and talents to keep the web open, ensuring people don't need legions of programmers to build websites with the features they truly need. Through our Open Source Content Management System, Composr, we are carrying the web forward by empowering people to build sophisticated sites with elegance and efficiency."</p>
+	</div>
 
-    <div class="cntRow"><img alt="" height="11" src="{$IMG*,composr_homesite/sep_comp}" width="962" /></div>
+	<div class="cntRow"><img alt="" height="11" src="{$IMG*,composr_homesite/sep_comp}" width="962" /></div>
 
-    <div class="cntRow">
-        <h2 class="sub-head-big">Composr Manifesto</h2>
-    </div>
+	<div class="cntRow">
+		<h2 class="sub-head-big">Composr Manifesto</h2>
+	</div>
 
-    <div class="cntRow">
-        <p>Composr isn't just thrown together on a whim. It is developed to a very particular vision, which we describe below in the Composr manifesto:</p>
+	<div class="cntRow">
+		<p>Composr isn't just thrown together on a whim. It is developed to a very particular vision, which we describe below in the Composr manifesto:</p>
 
-        <div class="vision-list">
-            <ul>
-                <li>
-                    <span>1</span>
+		<div class="vision-list">
+			<ul>
+				<li>
+					<span>1</span>
 
-                    <p>Article publishing is just one thing an Composr website should do well, and nobody should have to rely on non-standard addons to achieve common website functionality -- on the flip-side every feature must be easily justifiable and software bloat avoided.</p>
-                </li>
+					<p>Article publishing is just one thing an Composr website should do well, and nobody should have to rely on non-standard addons to achieve common website functionality -- on the flip-side every feature must be easily justifiable and software bloat avoided.</p>
+				</li>
 
-                <li>
-                    <span>2</span>
+				<li>
+					<span>2</span>
 
-                    <p>Features should almost always be designed for users not developers, but developers should also be supported in achieving their optimal productivity.</p>
-                </li>
+					<p>Features should almost always be designed for users not developers, but developers should also be supported in achieving their optimal productivity.</p>
+				</li>
 
-                <li>
-                    <span>3</span>
+				<li>
+					<span>3</span>
 
-                    <p>A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards and tools are other sides of the same coin.</p>
-                </li>
+					<p>A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards and tools are other sides of the same coin.</p>
+				</li>
 
-                <li>
-                    <span>4</span>
+				<li>
+					<span>4</span>
 
-                    <p>Everything should fit together smoothly, into a tidy streamlined model &ndash; from the features running through the software, to the clean design of the Composr website.</p>
-                </li>
+					<p>Everything should fit together smoothly, into a tidy streamlined model &ndash; from the features running through the software, to the clean design of the Composr website.</p>
+				</li>
 
-                <li>
-                    <span>5</span>
+				<li>
+					<span>5</span>
 
-                    <p>Composr should remain Open Source software, free to use and modify.</p>
-                </li>
+					<p>Composr should remain Open Source software, free to use and modify.</p>
+				</li>
 
-                <li>
-                    <span>6</span>
+				<li>
+					<span>6</span>
 
-                    <p>Everything should be as documented and user-friendly as possible &ndash; any area where this can't be done inside the development process should be made achievable by a well-integrated crowd-sourcing mechanism.</p>
-                </li>
+					<p>Everything should be as documented and user-friendly as possible &ndash; any area where this can't be done inside the development process should be made achievable by a well-integrated crowd-sourcing mechanism.</p>
+				</li>
 
-                <li>
-                    <span>7</span>
+				<li>
+					<span>7</span>
 
-                    <p>Composr is here to empower everybody, from casual users, to programmers, to web managers; and people in every country of the world.</p>
-                </li>
+					<p>Composr is here to empower everybody, from casual users, to programmers, to web managers; and people in every country of the world.</p>
+				</li>
 
-                <li>
-                    <span>8</span>
+				<li>
+					<span>8</span>
 
-                    <p>Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.</p>
-                </li>
+					<p>Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.</p>
+				</li>
 
-                <li>
-                    <span>9</span>
+				<li>
+					<span>9</span>
 
-                    <p>Composr development should not be guided by short-term fads, reinventions of the wheel, and it should not be biased in it's affiliation with third party companies.</p>
-                </li>
+					<p>Composr development should not be guided by short-term fads, reinventions of the wheel, and it should not be biased in it's affiliation with third party companies.</p>
+				</li>
 
-                <li>
-                    <span>10</span>
+				<li>
+					<span>10</span>
 
-                    <p>Everything in Composr should be done to best standards, and fully flexible and customisable.</p>
-                </li>
-            </ul>
+					<p>Everything in Composr should be done to best standards, and fully flexible and customisable.</p>
+				</li>
+			</ul>
 
-            <div class="clear"></div>
-        </div>
-    </div>
+			<div class="clear"></div>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        <h2 class="sub-head-big">Standards &amp; accessibility</h2>
+	<div class="cntRow">
+		<h2 class="sub-head-big">Standards &amp; accessibility</h2>
 
-        <p>One key factor we emphasise is the growing importance of accessibility on the Internet. For the web to progress, we all (website developers) share the obligation to build semantically-correct websites. This essential consideration ensures that innovative new software can interact with websites in clever ways, and that everyone-including paralysed and blind users, can fully participate on the web.</p>
+		<p>One key factor we emphasise is the growing importance of accessibility on the Internet. For the web to progress, we all (website developers) share the obligation to build semantically-correct websites. This essential consideration ensures that innovative new software can interact with websites in clever ways, and that everyone-including paralysed and blind users, can fully participate on the web.</p>
 
-        <p>Sadly, widespread support is largely lacking within the CMS industry. Composr, contrast currently conforms to <a href="{$PAGE_LINK*,docs:tut_markup}">dozens of strict standards</a> &mdash; something for which we are very proud.</p>
-    </div>
+		<p>Sadly, widespread support is largely lacking within the CMS industry. Composr, contrast currently conforms to <a href="{$PAGE_LINK*,docs:tut_markup}">dozens of strict standards</a> &mdash; something for which we are very proud.</p>
+	</div>
 
-    <div class="cntRow">
-        <div class="vision-meta">
-            <div class="vision-meta-img">
-                <a href="{$IMG*,composr_homesite/vision/security-model-full}" rel="lightbox"><img alt="" height="121" src="{$IMG*,composr_homesite/vision/security-model}" width="176" /></a>
-            </div>
+	<div class="cntRow">
+		<div class="vision-meta">
+			<div class="vision-meta-img">
+				<a href="{$IMG*,composr_homesite/vision/security-model-full}" rel="lightbox"><img alt="" height="121" src="{$IMG*,composr_homesite/vision/security-model}" width="176" /></a>
+			</div>
 
-            <div class="vision-meta-txt">
-                <h2>Security</h2>
+			<div class="vision-meta-txt">
+				<h2>Security</h2>
 
-                <p>Finally we are very vigilant about solid security and employment layers of security throughout our development process to ensure that the only person making changes to your website is you. Click the icon to the left to the learn more.</p>
-            </div>
-        </div>
-    </div>
+				<p>Finally we are very vigilant about solid security and employment layers of security throughout our development process to ensure that the only person making changes to your website is you. Click the icon to the left to the learn more.</p>
+			</div>
+		</div>
+	</div>
 
-    <div class="cntRow">
-        <h2 class="sub-head-big text-center">Composr's history &ndash; the highlights of our major versions over the years:</h2>
+	<div class="cntRow">
+		<h2 class="sub-head-big text-center">Composr's history &ndash; the highlights of our major versions over the years:</h2>
 
-        <div class="vhis-box margin-r-19">
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v1<br />
-                    <span>March 2004</span>
-                </div>
+		<div class="vhis-box margin-r-19">
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v1<br />
+					<span>March 2004</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    A Forum-Friendly CMS trailblazer
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					A Forum-Friendly CMS trailblazer
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v2.5<br />
-                    <span>October 2005</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v2.5<br />
+					<span>October 2005</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Standalone social networking system
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Standalone social networking system
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v4<br />
-                    <span>August 2008</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v4<br />
+					<span>August 2008</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Continued improvements in our UI/UX
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Continued improvements in our UI/UX
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v6<br />
-                    <span>March 2011</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v6<br />
+					<span>March 2011</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Big performance improvements
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Big performance improvements
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v7<br />
-                    <span>May 2011</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v7<br />
+					<span>May 2011</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Interactive CSS editing, theme UX
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Interactive CSS editing, theme UX
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v9<br />
-                    <span>March 2004</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v9<br />
+					<span>March 2004</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Big theme design improvements
-                </div>
-            </div>
-        </div>
+				<div class="vhis-box-txt">
+					Big theme design improvements
+				</div>
+			</div>
+		</div>
 
-        <div class="vhis-box">
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v2<br />
-                    <span>August 2004</span>
-                </div>
+		<div class="vhis-box">
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v2<br />
+					<span>August 2004</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    The whole new CMS framework, and MVC
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					The whole new CMS framework, and MVC
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v3<br />
-                    <span>July 2006</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v3<br />
+					<span>July 2006</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    AJAX arrived, major system overhaul
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					AJAX arrived, major system overhaul
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v5<br />
-                    <span>July 2010</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v5<br />
+					<span>July 2010</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Continued improvements in our UI/UX
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Continued improvements in our UI/UX
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v6.1<br />
-                    <span>April 2011</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v6.1<br />
+					<span>April 2011</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Interactive CSS editing, themeing UX
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Interactive CSS editing, themeing UX
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v8<br />
-                    <span>March 2012</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v8<br />
+					<span>March 2012</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Many major features upgraded
-                </div>
-            </div>
+				<div class="vhis-box-txt">
+					Many major features upgraded
+				</div>
+			</div>
 
-            <div class="vhis-box-row">
-                <div class="vhis-box-date">
-                    v10<br />
-                    <span>February 2015</span>
-                </div>
+			<div class="vhis-box-row">
+				<div class="vhis-box-date">
+					v10<br />
+					<span>February 2015</span>
+				</div>
 
-                <div class="vhis-box-txt">
-                    Platform overhaul, Composr now Composr
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="vhis-box-txt">
+					Platform overhaul, Composr now Composr
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Script for Vertical Tab menu -->
 <script>//<![CDATA[
-    $(function() {
-        $('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-        $('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-    });
+	$(function() {
+		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	});
 //]]></script>
 
 <!--custom div scroll bar -->
 <script>//<![CDATA[
-    $(function() {
-        $('.con').scrollbars();
-    });
+	$(function() {
+		$('.con').scrollbars();
+	});
 //]]></script>
 
 [/semihtml]
