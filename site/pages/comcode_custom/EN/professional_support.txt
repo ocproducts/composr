@@ -5,225 +5,225 @@
 {$REQUIRE_CSS,jquery.verticaltabs}
 
 <div class="cntRow">
-	<div class="cntLeft">
-		<div class="cntL_Row">
-			[title]Professional Support[/title]
+    <div class="cntLeft">
+        <div class="cntL_Row">
+            [title]Professional Support[/title]
 
-			<p>Need help with your Composr website? Head straight to the source with our professional support service.</p>
+            <p>Need help with your Composr website? Head straight to the source with our professional support service.</p>
 
-			<p>Our experienced team can dig you out of any situation: from installation, to routine maintenance and training, or even new programming to give your site the competitive edge.</p>
+            <p>Our experienced team can dig you out of any situation: from installation, to routine maintenance and training, or even new programming to give your site the competitive edge.</p>
 
-			<p>With our pre-pay system you purchase credits in advance, then maximise their value depending on the priority of your needs. We are able to pass on savings by avoiding the need to manage invoicing and take separate payment for every small job.</p>
+            <p>With our pre-pay system you purchase credits in advance, then maximise their value depending on the priority of your needs. We are able to pass on savings by avoiding the need to manage invoicing and take separate payment for every small job.</p>
 
-			<table class="comSr">
-				<tr>
-					<th class="Hdr">Priority level</th>
-					<th class="Hdr">Response times (&dagger;)</th>
-					<th class="Hdr">Time per credit</th>
-					<th class="Hdr">Minimum per ticket (*)</th>
-				</tr>
+            <table class="comSr">
+                <tr>
+                    <th class="Hdr">Priority level</th>
+                    <th class="Hdr">Response times (&dagger;)</th>
+                    <th class="Hdr">Time per credit</th>
+                    <th class="Hdr">Minimum per ticket (*)</th>
+                </tr>
 
-				<tr>
-					<th class="tdBody">Budget priority</th>
-					<td class="tdBody">7 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
+                <tr>
+                    <th class="tdBody">Budget priority</th>
+                    <td class="tdBody">7 working days</td>
+                    <td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 3 credits &#8801; [currency]16.50[/currency]
 
 60 minutes &#8801; 6 credits &#8801; [currency]33.00[/currency]"]10 minutes[/tooltip]</td>
-					<td class="tdBody">3 credits (30 minutes)</td>
-				</tr>
+                    <td class="tdBody">3 credits (30 minutes)</td>
+                </tr>
 
-				<tr>
-					<th class="tdBody">Normal priority</th>
-					<td class="tdBody">3 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
+                <tr>
+                    <th class="tdBody">Normal priority</th>
+                    <td class="tdBody">3 working days</td>
+                    <td class="tdBody">[tooltip="Minimum ticket price:
 32 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
 
 Hourly cost (approx):
 64 minutes &#8801; 8 credits &#8801; [currency]44.00[/currency]"]8 minutes[/tooltip]</td>
-					<td class="tdBody">4 credits (32 minutes)</td>
-				</tr>
+                    <td class="tdBody">4 credits (32 minutes)</td>
+                </tr>
 
-				<tr>
-					<th class="tdBody">Day priority</th>
-					<td class="tdBody">8 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
+                <tr>
+                    <th class="tdBody">Day priority</th>
+                    <td class="tdBody">8 working days</td>
+                    <td class="tdBody">[tooltip="Minimum ticket price:
 28 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
 
 Hourly cost (approx):
 63 minutes &#8801; 9 credits &#8801; [currency]49.50[/currency]"]7 minutes[/tooltip]</td>
-					<td class="tdBody">4 credits (28 minutes)</td>
-				</tr>
+                    <td class="tdBody">4 credits (28 minutes)</td>
+                </tr>
 
-				<tr>
-					<th class="tdBody">High priority</th>
-					<td class="tdBody">3 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
+                <tr>
+                    <th class="tdBody">High priority</th>
+                    <td class="tdBody">3 working days</td>
+                    <td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 6 credits &#8801; [currency]33.00[/currency]
 
 Hourly cost (approx):
 60 minutes &#8801; 12 credits &#8801; [currency]66.00[/currency]"]5 minutes[/tooltip]</td>
-					<td class="tdBody">6 credits (30 minutes)</td>
-				</tr>
+                    <td class="tdBody">6 credits (30 minutes)</td>
+                </tr>
 
-				<tr>
-					<th class="tdBody">Emergencies</th>
-					<td class="tdBody">1 working hour<br /><span>(24×7 if staff near a computer)</span></td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
+                <tr>
+                    <th class="tdBody">Emergencies</th>
+                    <td class="tdBody">1 working hour<br /><span>(24×7 if staff near a computer)</span></td>
+                    <td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 10 credits &#8801; [currency]55.00[/currency]
 
 Hourly cost (approx):
 60 minutes &#8801; 20 credits &#8801; [currency]110.00[/currency]"]3 minutes[/tooltip]</td>
-					<td class="tdBody">10 credits (30 minutes)<br /><span>(even if cost not agreed)</span></td>
-				</tr>
-			</table>
-		</div>
-	</div>
+                    <td class="tdBody">10 credits (30 minutes)<br /><span>(even if cost not agreed)</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-	<div class="cntRight">
-		<div class="cntR_Row">
-			<div class="tesBlock">
-				<div class="tesHead2">
-					Top up
-				</div>
+    <div class="cntRight">
+        <div class="cntR_Row">
+            <div class="tesBlock">
+                <div class="tesHead2">
+                    Top up
+                </div>
 
                 {$SET,purchase_url,{$PAGE_LINK,_SEARCH:purchase:licence:member_id={$MEMBER}}}
-				<form class="quoteCst" action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get">
+                <form class="quoteCst" action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get">
                     {$HIDDENS_FOR_GET_FORM,{$GET,purchase_url}}
 
                     [block]credit_exps[/block]
 
-					<div class="purchaseBtn">
+                    <div class="purchaseBtn">
                         <input type="submit" value="Purchase" />
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-	<div class="cntRow">
-		<p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
+    <div class="cntRow">
+        <p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
 
-		<p>&dagger; Response times aren't guaranteed, but you won't be charged in full if we can't meet them. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to discuss this in advance to ensure we schedule for your needs.</p>
+        <p>&dagger; Response times aren't guaranteed, but you won't be charged in full if we can't meet them. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to discuss this in advance to ensure we schedule for your needs.</p>
 
-		<!--<p>&dagger;&dagger; VAT applies for EU customers. VAT not included in figures quoted here.</p>-->
-	</div>
+        <!--<p>&dagger;&dagger; VAT applies for EU customers. VAT not included in figures quoted here.</p>-->
+    </div>
 
-	<div class="cntRow">
-		<h3 class="colrBl">Choose a support type:</h3>
+    <div class="cntRow">
+        <h3 class="colrBl">Choose a support type:</h3>
 
-		<div class="comSrTab">
-			<div class="verticalslider" id="textExample">
-				<ul class="verticalslider_tabs">
-					<li class="frst"><a href="#">Technical support</a></li>
-					<li class="secd"><a href="#">Installation services</a></li>
-					<li class="thrd"><a href="#">Upgrade service</a></li>
-					<li class="frth"><a href="#">Staff secondment</a></li>
-					<li class="ffth"><a href="#">Feature sponsorship</a></li>
-				</ul>
+        <div class="comSrTab">
+            <div class="verticalslider" id="textExample">
+                <ul class="verticalslider_tabs">
+                    <li class="frst"><a href="#">Technical support</a></li>
+                    <li class="secd"><a href="#">Installation services</a></li>
+                    <li class="thrd"><a href="#">Upgrade service</a></li>
+                    <li class="frth"><a href="#">Staff secondment</a></li>
+                    <li class="ffth"><a href="#">Feature sponsorship</a></li>
+                </ul>
 
                 <!-- The text below is intensively short. The main text goes in contact.php (the decision tree). This page is mostly about explaining options/benefits to people and sign-posting, rather than educating on or leading through process. -->
 
-				<ul class="verticalslider_contents">
-					<li>
-						<h2>Technical support</h2>
+                <ul class="verticalslider_contents">
+                    <li>
+                        <h2>Technical support</h2>
 
-						<p>From advice on how best to use Composr for your needs, to questions about website deployment in general, you can count on our knowledgeable, friendly staff to be the support team you can depend on.</p>
+                        <p>From advice on how best to use Composr for your needs, to questions about website deployment in general, you can count on our knowledgeable, friendly staff to be the support team you can depend on.</p>
 
-						<h3>Here are some examples of ways we can help:</h3>
-						<ul>
-							<li>Answering Composr-related questions (mentoring, and advice).</li>
-							<li>Help configuring complex features, such as LDAP or eCommerce support.</li>
-							<li>Availability to repair errors (e.g. if a database corrupts due to a power outage).</li>
-							<li>Advice and tutoring on web technologies, such as CSS.</li>
-						</ul>
+                        <h3>Here are some examples of ways we can help:</h3>
+                        <ul>
+                            <li>Answering Composr-related questions (mentoring, and advice).</li>
+                            <li>Help configuring complex features, such as LDAP or eCommerce support.</li>
+                            <li>Availability to repair errors (e.g. if a database corrupts due to a power outage).</li>
+                            <li>Advice and tutoring on web technologies, such as CSS.</li>
+                        </ul>
 
-						<p>Sound like the kinds of things you'd prefer not to think about? No problem -- we've been doing this for years.</p>
+                        <p>Sound like the kinds of things you'd prefer not to think about? No problem -- we've been doing this for years.</p>
 
-						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Ask your question</a>
-						</div>
-					</li>
+                        <div class="commonBtn margin-l-20">
+                            <a href="{$PAGE_LINK*,_SEARCH:contact:support}">Ask your question</a>
+                        </div>
+                    </li>
 
-					<li>
-						<h2>Installation services</h2>
+                    <li>
+                        <h2>Installation services</h2>
 
-						<p>We can install Composr onto your server of choice.</p>
+                        <p>We can install Composr onto your server of choice.</p>
 
-						<p>If you would like our installation service please first check:</p>
-						<ul>
-							<li>Make sure you have at least 8 credits.</li>
-							<li>You agree to our [page="site:server_access"]server access policy[/page].</li>
-							<li>Your server meets our minimum requirements (if we can't install because it doesn't, or the server is faulty, we'll still need to charge for the service).</li>
-						</ul>
+                        <p>If you would like our installation service please first check:</p>
+                        <ul>
+                            <li>Make sure you have at least 8 credits.</li>
+                            <li>You agree to our [page="site:server_access"]server access policy[/page].</li>
+                            <li>Your server meets our minimum requirements (if we can't install because it doesn't, or the server is faulty, we'll still need to charge for the service).</li>
+                        </ul>
 
-						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Send us your details</a>
-						</div>
-					</li>
+                        <div class="commonBtn margin-l-20">
+                            <a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Send us your details</a>
+                        </div>
+                    </li>
 
-					<li>
-						<h2>Upgrade service</h2>
+                    <li>
+                        <h2>Upgrade service</h2>
 
                         <p>Want an existing Composr website upgraded to a newer version?</p>
 
                         <p>We can handle:</p>
-						<ul>
-							<li>Uploading the new files.</li>
-							<li>Upgrading your database.</li>
-							<li>Updating your theme.</li>
-							<li>Updating any custom code.</li>
-						</ul>
+                        <ul>
+                            <li>Uploading the new files.</li>
+                            <li>Upgrading your database.</li>
+                            <li>Updating your theme.</li>
+                            <li>Updating any custom code.</li>
+                        </ul>
 
-						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:upgrade}">Brief us</a>
-						</div>
-					</li>
+                        <div class="commonBtn margin-l-20">
+                            <a href="{$PAGE_LINK*,_SEARCH:contact:upgrade}">Brief us</a>
+                        </div>
+                    </li>
 
-					<li>
-						<h2>Staff secondment</h2>
+                    <li>
+                        <h2>Staff secondment</h2>
 
-						<p>The best modern websites involve ongoing work to keep them fresh, and optimise the user experience. We can arrange for developer(s) to work regular hours for you.</p>
+                        <p>The best modern websites involve ongoing work to keep them fresh, and optimise the user experience. We can arrange for developer(s) to work regular hours for you.</p>
 
-						<h3>Benefits:</h3>
-						<ul>
-							<li>Pay only for the regular hours you need rather than a full salary</li>
-							<li>Achieve excellence</li>
-							<li>Save the time of having to micro-manage ongoing maintenance, just rely on us and pay the regular invoices</li>
-							<li>Avoid having to interview people for a role you are not yourself expert in</li>
-							<li>Avoid the need for office space</li>
-						</ul>
+                        <h3>Benefits:</h3>
+                        <ul>
+                            <li>Pay only for the regular hours you need rather than a full salary</li>
+                            <li>Achieve excellence</li>
+                            <li>Save the time of having to micro-manage ongoing maintenance, just rely on us and pay the regular invoices</li>
+                            <li>Avoid having to interview people for a role you are not yourself expert in</li>
+                            <li>Avoid the need for office space</li>
+                        </ul>
 
-						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:secondment}">Talk to us</a>
-						</div>
-					</li>
+                        <div class="commonBtn margin-l-20">
+                            <a href="{$PAGE_LINK*,_SEARCH:contact:secondment}">Talk to us</a>
+                        </div>
+                    </li>
 
-					<li>
-						<h2>Feature sponsorship</h2>
+                    <li>
+                        <h2>Feature sponsorship</h2>
 
-						<p>Composr moves forward when people sponsor new functionality. If you want to see something integrated cleanly into Composr's roadmap, feature sponsorship might be a great way to do it.</p>
+                        <p>Composr moves forward when people sponsor new functionality. If you want to see something integrated cleanly into Composr's roadmap, feature sponsorship might be a great way to do it.</p>
 
-						<p>If you just want to support the project, we can help you pick something to sponsor, so just open up a ticket with us and let us know.</p>
+                        <p>If you just want to support the project, we can help you pick something to sponsor, so just open up a ticket with us and let us know.</p>
 
-						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Read more</a>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+                        <div class="commonBtn margin-l-20">
+                            <a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Read more</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-	<div class="cntRow">
-		<p>As a thank you for supporting the Composr developers, each purchased support credit automatically leads to 50 points (so you get a position of respect in the Composr community).</p>
-	</div>
+    <div class="cntRow">
+        <p>As a thank you for supporting the Composr developers, each purchased support credit automatically leads to 50 points (so you get a position of respect in the Composr community).</p>
+    </div>
 </div>
 
 <script>//<![CDATA[
 $(document).ready(function() {
-	$("#textExample").verticaltabs({speed: 500,slideShow: false,activeIndex: 0});
-	$("#imageExample").verticaltabs({speed: 1000,slideShow: true,slideShowSpeed: 3000,activeIndex: 0,playPausePos: "topRight"});
+    $("#textExample").verticaltabs({speed: 500,slideShow: false,activeIndex: 0});
+    $("#imageExample").verticaltabs({speed: 1000,slideShow: true,slideShowSpeed: 3000,activeIndex: 0,playPausePos: "topRight"});
 });
 //]]></script>
 

@@ -4,67 +4,67 @@
 
 [semihtml]
 [tabs="Popular,Recent,Hard,Easy,My Votes,Sponsored,Tutorials"]
-	[tab="Popular" default="1"]
-		[block sort="popular DESC" completed="0" project="1"]main_mantis_tracker[/block]
+    [tab="Popular" default="1"]
+        [block sort="popular DESC" completed="0" project="1"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
-	[/tab]
-	[tab="Recent"]
-		[block sort="added DESC" completed="0" project="1"]main_mantis_tracker[/block]
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
+        [/center]</p>
+    [/tab]
+    [tab="Recent"]
+        [block sort="added DESC" completed="0" project="1"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
-	[/tab]
-	[tab="Hard"]
-		[block sort="hours DESC" completed="0" project="1"]main_mantis_tracker[/block]
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
+        [/center]</p>
+    [/tab]
+    [tab="Hard"]
+        [block sort="hours DESC" completed="0" project="1"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
-	[/tab]
-	[tab="Easy"]
-		[block sort="hours ASC" completed="0" project="1"]main_mantis_tracker[/block]
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
+        [/center]</p>
+    [/tab]
+    [tab="Easy"]
+        [block sort="hours ASC" completed="0" project="1"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
-	[/tab]
-	[tab="My Votes"]
-		[block voted="1" sort="popular DESC" completed="0"]main_mantis_tracker[/block]
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
+        [/center]</p>
+    [/tab]
+    [tab="My Votes"]
+        [block voted="1" sort="popular DESC" completed="0"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
-	[/tab]
-	[tab="Sponsored"]
-		[block sort="sponsorship_progress DESC" completed="0"]main_mantis_tracker[/block]
-	[/tab]
-	[tab="Tutorials"]
-		<p>The core developers are unlikely to step through solutions outside paid support, but if you can phrase questions in a general way and lots of people vote them up, the chance goes up a video tutorial could be made at some point.</p>
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
+        [/center]</p>
+    [/tab]
+    [tab="Sponsored"]
+        [block sort="sponsorship_progress DESC" completed="0"]main_mantis_tracker[/block]
+    [/tab]
+    [tab="Tutorials"]
+        <p>The core developers are unlikely to step through solutions outside paid support, but if you can phrase questions in a general way and lots of people vote them up, the chance goes up a video tutorial could be made at some point.</p>
 
-		<p>[b]Cost guide[/b]: Videos take about 5 times longer to make than they are in length, e.g. a 12 minute video would take about 1 hour to make.</p>
+        <p>[b]Cost guide[/b]: Videos take about 5 times longer to make than they are in length, e.g. a 12 minute video would take about 1 hour to make.</p>
 
-		[block sort="popular DESC" completed="0" project="7"]main_mantis_tracker[/block]
+        [block sort="popular DESC" completed="0" project="7"]main_mantis_tracker[/block]
 
-		<hr />
+        <hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]Request video tutorial[/url] ]
-			[/center]</p>
-	[/tab]
+        <p class="community_block_tagline">[center]
+            [ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]Request video tutorial[/url] ]
+            [/center]</p>
+    [/tab]
 [/tabs]
 [/semihtml]
 
@@ -80,13 +80,13 @@ Before you make requests, it's a good idea to check they aren't already made, an
 
 [semihtml]
 <div style="padding: 15px">
-	<div style="font-size: 1.4em; float: right; width: 490px">
-		[img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
+    <div style="font-size: 1.4em; float: right; width: 490px">
+        [img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
 
-		<p style="margin-top: 2em">[size="0.7"](The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)[/size]</p>
-	</div>
+        <p style="margin-top: 2em">[size="0.7"](The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)[/size]</p>
+    </div>
 
-	<div class="ohloh" style="display: inline-block">[box]<div style="padding: 5px"><script src="http://www.ohloh.net/p/480776/widgets/project_cocomo.js"></script></div>[/box]</div>
+    <div class="ohloh" style="display: inline-block">[box]<div style="padding: 5px"><script src="http://www.ohloh.net/p/480776/widgets/project_cocomo.js"></script></div>[/box]</div>
 </div>
 [/semihtml]
 

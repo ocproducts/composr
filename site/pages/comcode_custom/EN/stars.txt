@@ -5,33 +5,33 @@
 {$REQUIRE_CSS,jquery.ui.all}
 
 <div class="cntRow">
-	[title]Community Stars[/title]
+    [title]Community Stars[/title]
 </div>
 
 <div class="cntRow">
-	<p>Each time you are give points in our community, you are asigned a role in relation to the points you recieve:</p>
+    <p>Each time you are give points in our community, you are asigned a role in relation to the points you recieve:</p>
 
-	<div class="cmn-strs">
-		<div class="list">
-			<ul>
-				<li>Helpful soul &ndash; For those who are generally helpful</li>
-				<li>Support expert &ndash; For those who help give out technical support</li>
-				<li>Programming god &ndash; For those who are great addon coders, or coding advice</li>
-				<li>Themeing genius &ndash; For those that put out great themes, or themeing advice</li>
-				<li>Community ambassador &ndash; For those that work inside and outside our community to strengthen us all</li>
-				<li>Translator saviour &ndash; For those that work on translations</li>
-			</ul>
-		</div>
+    <div class="cmn-strs">
+        <div class="list">
+            <ul>
+                <li>Helpful soul &ndash; For those who are generally helpful</li>
+                <li>Support expert &ndash; For those who help give out technical support</li>
+                <li>Programming god &ndash; For those who are great addon coders, or coding advice</li>
+                <li>Themeing genius &ndash; For those that put out great themes, or themeing advice</li>
+                <li>Community ambassador &ndash; For those that work inside and outside our community to strengthen us all</li>
+                <li>Translator saviour &ndash; For those that work on translations</li>
+            </ul>
+        </div>
 
-		<p>This page honours the top 'stars' for each of these 5 roles. That means:</p>
+        <p>This page honours the top 'stars' for each of these 5 roles. That means:</p>
 
-		<div class="list2">
-			<ul>
-				<li>If you show up here then it's something really special, and worth putting on your CV/Résumé.</li>
-				<li>If you've received a lot of help, and the people have put PayPal donation details in their bio, consider donating.</li>
-			</ul>
-		</div>
-	</div>
+        <div class="list2">
+            <ul>
+                <li>If you show up here then it's something really special, and worth putting on your CV/Résumé.</li>
+                <li>If you've received a lot of help, and the people have put PayPal donation details in their bio, consider donating.</li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <h2 class="colrBl">Helpful soul</h2>
@@ -65,83 +65,83 @@
 </div>
 
 <div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/chris}" />
-	</div>
+    <div class="blk1">
+        <img alt="" width="100" src="{$IMG*,composr_homesite/stars/chris}" />
+    </div>
 
-	<div class="blk2">
-		<strong>Name :</strong> Chris Graham<br />
-		CEO, ocProducts<br /><br />
+    <div class="blk2">
+        <strong>Name :</strong> Chris Graham<br />
+        CEO, ocProducts<br /><br />
         <a class="link_exempt" target="_blank" title="Facebook profile {!LINK_NEW_WINDOW}" href="http://www.facebook.com/ocpchris"><img src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x" alt="" /></a>
         <a class="link_exempt" target="_blank" title="Twitter profile {!LINK_NEW_WINDOW}" href="http://twitter.com/occhris"><img src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x" alt="" /></a>
-	</div>
+    </div>
 
-	<div class="blk3">
+    <div class="blk3">
         <ul>
             <li>Original developer of ocPortal, continuing lead developer of Composr CMS</li>
             <li>Masters degree in Computer Science from The University Of Sheffield</li>
             <li>Undertaken work for over 15 FTSE-100 companies, as well as many small and mid-sized organisations. Includes a number of banks and major brands.</li>
         </ul>
-	</div>
+    </div>
 </div>
 
 <div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/robert}" />
-	</div>
+    <div class="blk1">
+        <img alt="" width="100" src="{$IMG*,composr_homesite/stars/robert}" />
+    </div>
 
-	<div class="blk2">
-		<strong>Name :</strong> Robert Goacher<br />
-		Company secretary
-	</div>
+    <div class="blk2">
+        <strong>Name :</strong> Robert Goacher<br />
+        Company secretary
+    </div>
 
-	<div class="blk3">
+    <div class="blk3">
         <ul>
             <li>Ran some of the early websites where ocPortal came from</li>
             <li>Technically the original developer of ocPortal, in that he wrote the first few lines of code</li>
             <li>Heavily involved in the feature design process</li>
             <li>Hosted some of our early meetups</li>
         </ul>
-	</div>
+    </div>
 </div>
 
 <div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/allen}" />
-	</div>
+    <div class="blk1">
+        <img alt="" width="100" src="{$IMG*,composr_homesite/stars/allen}" />
+    </div>
 
-	<div class="blk2">
-		<strong>Name :</strong> Allen Ellis<br />
-		Design/marketing (former)
-	</div>
+    <div class="blk2">
+        <strong>Name :</strong> Allen Ellis<br />
+        Design/marketing (former)
+    </div>
 
-	<div class="blk3">
+    <div class="blk3">
         <ul>
             <li>Original designer for ocPortal</li>
             <li>Also conceived and coded the Theme Wizard and Point Store</li>
             <li>Son of one of the early inventors of Internet protocols (Usenet, aka Internet newsgroups)</li>
             <li>Token non-brit</li>
         </ul>
-	</div>
+    </div>
 </div>
 
 <div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/philip}" />
-	</div>
+    <div class="blk1">
+        <img alt="" width="100" src="{$IMG*,composr_homesite/stars/philip}" />
+    </div>
 
-	<div class="blk2">
-		<strong>Name :</strong> Philip Withnall<br />
-		Development (former)
-	</div>
+    <div class="blk2">
+        <strong>Name :</strong> Philip Withnall<br />
+        Development (former)
+    </div>
 
-	<div class="blk3">
+    <div class="blk3">
         <ul>
             <li>Developer of ocPortal &ndash; coded the chat room, blogging support, the analytics system, and OcCLE (now Commandr)</li>
             <li>Masters Degree in Computer Science degree from The University Of Cambridge</li>
             <li>Other work has included helping out with Firefox, and ongoing work on GNOME</li>
         </ul>
-	</div>
+    </div>
 </div>
 
 <div class="cntRow">
@@ -162,10 +162,10 @@
 
 <!-- Script for Vertical Tab menu -->
 <script>//<![CDATA[
-	$(function() {
-		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	});
+    $(function() {
+        $('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+        $('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+    });
 //]]></script>
 
 [/semihtml]

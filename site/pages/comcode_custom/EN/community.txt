@@ -5,111 +5,111 @@
 {$REQUIRE_JAVASCRIPT,jquery.swipe}
 
 <div class="cntRow">
-	<div class="cntLeft">
-		<div class="cntL_Row">
-			[title]Community[/title]
+    <div class="cntLeft">
+        <div class="cntL_Row">
+            [title]Community[/title]
 
-			<p>Ask as many questions as you want, and answer all you can in return. Share your tips, your successes, and benefit from the experience of others. Or converse in real-time in [page=site:chat]our chatroom[/page].</p>
-		</div>
+            <p>Ask as many questions as you want, and answer all you can in return. Share your tips, your successes, and benefit from the experience of others. Or converse in real-time in [page=site:chat]our chatroom[/page].</p>
+        </div>
 
-		<div class="cntL_Row">
-			<ul class="cmnty">
-				<li class="head">Downloads</li>
+        <div class="cntL_Row">
+            <ul class="cmnty">
+                <li class="head">Downloads</li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-themes}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-themes}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Theme</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Theme</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						The Theme Wizard can repaint your site in seconds, but themes take you further.
-					</div>
-				</li>
+                    <div class="cmntyCnt">
+                        The Theme Wizard can repaint your site in seconds, but themes take you further.
+                    </div>
+                </li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-translations}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-translations}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Translations</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Translations</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						Sprechen sie Deutsch? Make your website speak your language.
-					</div>
-				</li>
+                    <div class="cmntyCnt">
+                        Sprechen sie Deutsch? Make your website speak your language.
+                    </div>
+                </li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-addons}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-addons}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Addons</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Addons</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						Add new features, or modify existing ones. Composr is extendible and modular.
-					</div>
-				</li>
-			</ul>
+                    <div class="cmntyCnt">
+                        Add new features, or modify existing ones. Composr is extendible and modular.
+                    </div>
+                </li>
+            </ul>
 
-			<ul class="cmnty cmtyRht">
-				<li class="head">Discussion</li>
+            <ul class="cmnty cmtyRht">
+                <li class="head">Discussion</li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-chat}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-chat}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,site:chat}">Chat</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,site:chat}">Chat</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						Get quick answers and socialise with other users, in real-time.
-					</div>
-				</li>
+                    <div class="cmntyCnt">
+                        Get quick answers and socialise with other users, in real-time.
+                    </div>
+                </li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-tracker}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-tracker}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,site:tracker}">Tracker</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,site:tracker}">Tracker</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						Post and discuss feature requests and bug reports.
-					</div>
-				</li>
+                    <div class="cmntyCnt">
+                        Post and discuss feature requests and bug reports.
+                    </div>
+                </li>
 
-				<li>
-					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-forums}" /></div>
+                <li>
+                    <div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-forums}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,forum:}">Forums</a>
-					</div>
+                    <div class="head">
+                        <a href="{$PAGE_LINK*,forum:}">Forums</a>
+                    </div>
 
-					<div class="cmntyCnt">
-						Talk with other Composr users &ndash; share ideas, ask questions, and answer them.
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
+                    <div class="cmntyCnt">
+                        Talk with other Composr users &ndash; share ideas, ask questions, and answer them.
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-	<div class="cntRight">
-		<div class="cntR_Row">
-			<div class="tesBlock">
-				<h3 class="tesHead">
-					Testimonials
-				</h3>
+    <div class="cntRight">
+        <div class="cntR_Row">
+            <div class="tesBlock">
+                <h3 class="tesHead">
+                    Testimonials
+                </h3>
 
-				<div class="tesNav">
-					<span class="nav prev">Prev</span> <span class="nav next">Next</span>
-				</div>
+                <div class="tesNav">
+                    <span class="nav prev">Prev</span> <span class="nav next">Next</span>
+                </div>
 
-				<div class="quoteCst">
-					<div class="demo-wrapper">
-						<div class="swipe" id="slider">
-							<div class="swipe-wrap">
+                <div class="quoteCst">
+                    <div class="demo-wrapper">
+                        <div class="swipe" id="slider">
+                            <div class="swipe-wrap">
                                 <div class="testimonial">&ldquo;I am a forty-eight year old blind male. I have tried literally every CMS out there. Thank you for the most accessible CMS I've ever had the pleasure of working with&rdquo; <span class="ta highlight_span">Chipster</span></div>
 
                                 <div class="testimonial">&ldquo;One of their greatest features is that it's all tied together seamlessly. Everything is always compatible and updated at the same time.&rdquo; <span class="ta highlight_span">Rishi Saravan</span></div>
@@ -117,90 +117,90 @@
                                 <div class="testimonial">&ldquo;Combined with the superb forum software integration, Composr transformed a site that once took hours a day to run into something that could be completely updated in a matter of minutes!&rdquo; <span class="ta highlight_span">Pete</span></div>
 
                                 <div class="testimonial">&ldquo;I have been searching for a portal for my website for over a year now, I have reviewed close to 50 portals, installed, and tried over a dozen. In my humble opinion Composr is the perfect portal system, it doesn't get any better then this.&rdquo; <span class="ta highlight_span">Andrew Randt</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <p class="testimonial_link">Send us more <a href="{$PAGE_LINK*,site:tickets:ticket:ticket_type=Feedback}">testimonials</a>.</p>
-			</div>
-		</div>
+            </div>
+        </div>
 
         [block limit="10"]main_forum_topics[/block]
-	</div>
+    </div>
 </div>
 
 <div class="cntRow">
-	<div class="ltNews">
-		<h3 class="ltNewsHead">
-			Facebook Friends
-		</h3>
+    <div class="ltNews">
+        <h3 class="ltNewsHead">
+            Facebook Friends
+        </h3>
 
-		<div class="ltCnt"><div style="padding:0 1em">
-			[block fans="16" param="80430912569" fanpage_name="Composr friends"]main_facebook_friends[/block]
-		</div></div>
-	</div>
+        <div class="ltCnt"><div style="padding:0 1em">
+            [block fans="16" param="80430912569" fanpage_name="Composr friends"]main_facebook_friends[/block]
+        </div></div>
+    </div>
 
-	<div class="ltNewsRht">
-		<h3 class="ltNewsHead">
-			Tweets
-		</h3>
+    <div class="ltNewsRht">
+        <h3 class="ltNewsHead">
+            Tweets
+        </h3>
 
-		<div class="ltCnt"><div style="padding:0 1em">
+        <div class="ltCnt"><div style="padding:0 1em">
             <a class="twitter-timeline" href="https://twitter.com/hashtag/composr" data-widget-id="558676915687804929">#composr Tweets</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-		</div></div>
-	</div>
+        </div></div>
+    </div>
 </div>
 
 [box="Community Banners"]
-	[center]
-		{$BANNER}
-		[surround="associated_details"]These banners are from members of the Composr community, bought with [page="site:pointstore"]points[/page].[/surround]
-	[/center]
+    [center]
+        {$BANNER}
+        [surround="associated_details"]These banners are from members of the Composr community, bought with [page="site:pointstore"]points[/page].[/surround]
+    [/center]
 [/box]
 
 <!-- Script for Tab menu -->
 <script>//<![CDATA[
-	$(document).ready(function() {
-		$("#tabsholder").tytabs({
-			tabinit:"1",
-			fadespeed:"fast"
-		});
-		$("#tabsholder2").tytabs({
-			prefixtabs:"tabz",
-			prefixcontent:"contentz",
-			classcontent:"tabscontent",
-			tabinit:"3",
-			catchget:"tab2",
-			fadespeed:"normal"
-		});
-		$('[placeholder]').focus(function() {
-		  var input = $(this);
-		  if (input.val() == input.attr('placeholder')) {
-		    input.val('');
-		    input.removeClass('placeholder');
-		  }
-		}).blur(function() {
-		  var input = $(this);
-		  if (input.val() == '' || input.val() == input.attr('placeholder')) {
-		    input.addClass('placeholder');
-		    input.val(input.attr('placeholder'));
-		  }
-		}).blur();
-	});
+    $(document).ready(function() {
+        $("#tabsholder").tytabs({
+            tabinit:"1",
+            fadespeed:"fast"
+        });
+        $("#tabsholder2").tytabs({
+            prefixtabs:"tabz",
+            prefixcontent:"contentz",
+            classcontent:"tabscontent",
+            tabinit:"3",
+            catchget:"tab2",
+            fadespeed:"normal"
+        });
+        $('[placeholder]').focus(function() {
+          var input = $(this);
+          if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+          }
+        }).blur(function() {
+          var input = $(this);
+          if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+          }
+        }).blur();
+    });
 //]]></script>
 
 <script>//<![CDATA[
-	$(document).ready(function() {
-		var slider = $('#slider').Swipe({
-			auto: 3000,
-			continuous: true
-		}).data('Swipe');
+    $(document).ready(function() {
+        var slider = $('#slider').Swipe({
+            auto: 3000,
+            continuous: true
+        }).data('Swipe');
 
-		$('.prev').on('click', slider.prev);
-		$('.next').on('click', slider.next);
-	});
+        $('.prev').on('click', slider.prev);
+        $('.next').on('click', slider.next);
+    });
 //]]></script>
 
 [/semihtml]
