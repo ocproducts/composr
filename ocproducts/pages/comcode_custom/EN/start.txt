@@ -268,7 +268,7 @@
 
 					<p>After you sign-off, our website development begins. This phase includes regular progress updates plus thorough testing where we critically review our work against a wide range of quality and standards compliance criteria. Then we prepare a live demo for you to evaluate.</p>
 
-					<p>When everyone is happy, we deploy the new website, and remain on-call for further support needs with our Experts by the Hour service.</p>
+					<p>When everyone is happy, we deploy the new website, and remain on-call for further support needs with our professional support service.</p>
 				</div>
 			</div>
 

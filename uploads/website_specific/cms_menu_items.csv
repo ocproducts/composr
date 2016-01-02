@@ -18,7 +18,7 @@ id,i_menu,i_order,i_parent,i_url,i_check_permissions,i_expanded,i_new_window,i_p
 531,composr_website_header,10,511,site:cedi,0,0,0,,,Community docs,,
 532,composr_website_header,11,511,docs:faq,0,0,0,,,FAQ,,
 533,composr_website_header,12,511,docs:codebook,0,0,0,,,Developer docs,,
-534,composr_website_header,13,511,site:commercial_support,0,0,0,,,Professional,,
+534,composr_website_header,13,511,site:professional_support,0,0,0,,,Professional,,
 535,composr_website_header,17,512,site:community,0,0,0,,,Index,,
 536,composr_website_header,18,512,forum:forumview,0,0,0,,,Forums,Participate in the online Composr community,
 537,composr_website_header,19,512,site:chat,0,0,0,,,Chat,,

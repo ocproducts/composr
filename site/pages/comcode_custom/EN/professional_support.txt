@@ -1,5 +1,5 @@
 [semihtml]
-{$REQUIRE_CSS,composr_homesite__commercial_support}
+{$REQUIRE_CSS,composr_homesite__professional_support}
 
 {$REQUIRE_JAVASCRIPT,jquery.verticaltabs}
 {$REQUIRE_CSS,jquery.verticaltabs}
@@ -7,9 +7,9 @@
 <div class="cntRow">
 	<div class="cntLeft">
 		<div class="cntL_Row">
-			[title]Commercial Support[/title]
+			[title]Professional Support[/title]
 
-			<p>Need help with your Composr website? Head straight to the source with our Experts by the hour support service.</p>
+			<p>Need help with your Composr website? Head straight to the source with our professional support service.</p>
 
 			<p>Our experienced team can dig you out of any situation: from installation, to routine maintenance and training, or even new programming to give your site the competitive edge.</p>
 

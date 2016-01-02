@@ -51,7 +51,7 @@
 				<li>We've been around since 2004 and has evolved continuously to keep up to date with technological changes</li>
 				<li>Composr has an active community of users.</li>
 				<li>Composr has a proper company behind it, so you can trust that the developers won't vanish. Lack of reliance on addons = no risk of orphaned features</li>
-				<li>The team behind Composr have a commercial support service available to you if you need it</li>
+				<li>The team behind Composr have a professional support service available to you if you need it</li>
 				<li>Because Composr is deployed commercially, it is continually tuned</li>
 				<li>Through Composr's advanced theme technology you can get a unique design up quickly</li>
 				<li>You can integrate Composr with most forum software, so that forum users may login to the site</li>

@@ -2,7 +2,7 @@
 
 <p>You can chat here with other Composr users using your compo.sr username ({$USERNAME*}) or you can chat from inside your own website using your website name.</p>
 
-<p>Be advised you may be better off <a href="{$PAGE_LINK*,forum:}">posting in the forum</a> if there is no one here to answer you immediately or if your question is quite long and complex. If you really need a quick and detailed answer you might consider commercial support, as the chat and forum are run by volunteers.</p>
+<p>Be advised you may be better off <a href="{$PAGE_LINK*,forum:}">posting in the forum</a> if there is no one here to answer you immediately or if your question is quite long and complex. If you really need a quick and detailed answer you might consider professional support, as the chat and forum are run by volunteers.</p>
 
 <p>Please note that <kbd>chris_graham</kbd> will always show as online in the room, due to the way this Zoho Chat room works. The real Chris pops in occasionally but tends to be horrifically busy.</p>
 

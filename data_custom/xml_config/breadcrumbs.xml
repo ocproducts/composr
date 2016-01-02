@@ -49,7 +49,7 @@
 		<link label="{!HOME}">:</link>
 		<link label="Support">:support</link>
 	</substitution>
-	<substitution match_key=":commercial_support">
+	<substitution match_key=":professional_support">
 		<link label="{!HOME}">:</link>
 		<link label="Support">:support</link>
 	</substitution>

@@ -106,7 +106,7 @@
 
 	<p>If you have general feedback, a bug report, or a business enquiry, please take advantage of our free ticket type: contact us.</p>
 
-	<p>For all other support questions, you can choose between either our pre-paid commercial support system: Experts by the hour, or our Full agency service for complete site deployment.</p>
+	<p>For all other support questions, you can choose between either our pre-paid professional support system, or our Full agency service for complete site development.</p>
 
 	<p>We recommend any commercial users maintain a balance of support credits so we can help immediately.</p>
 </div>
@@ -153,7 +153,7 @@
 		</div>
 
 		<div class="commonBtn cntr">
-			[page="site:commercial_support"]Professional support[/page]
+			[page="site:professional_support"]Professional support[/page]
 		</div>
 	</div>
 

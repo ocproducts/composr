@@ -1,7 +1,7 @@
 [semihtml]
 	[block="ocp_nav" type="top"]side_stored_menu[/block]
 
-	{+START,IF,{$EQ,{$PAGE},support,tickets,commercial_support,contact}}[block]show_credits[/block]{+END}
+	{+START,IF,{$EQ,{$PAGE},support,tickets,professional_support,contact}}[block]show_credits[/block]{+END}
 
     {+START,IF,{$EQ,{$SUBSTR,{$PAGE},0,4},tut_}}
 		<p class="right" style="margin-right: 5px">
