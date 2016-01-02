@@ -122,6 +122,8 @@ Hourly cost (approx):
 					<li class="ffth"><a href="#">Feature sponsorship</a></li>
 				</ul>
 
+                <!-- The text below is intensively short. The main text goes in contact.php (the decision tree). This page is mostly about explaining options/benefits to people and sign-posting, rather than educating on or leading through process. -->
+
 				<ul class="verticalslider_contents">
 					<li>
 						<h2>Technical support</h2>
@@ -200,16 +202,12 @@ Hourly cost (approx):
 					<li>
 						<h2>Feature sponsorship</h2>
 
-						<p>Composr moves forward when people sponsor new functionality, or when new functionality is developed as part of a wider commercial project. If you want to see something integrated cleanly into Composr's roadmap, and don't need a custom deployment, feature sponsorship is a great way to do it.</p>
-
-						<p>Sponsored features are developed at ocProduct's lowest hourly rate (budget priority) and sponsorship is accepted for most things that make sense to be included in the Composr project. There is no definite time window in which sponsored work is completed, but we don't like to see things queue up. When the work is complete it will be committed into the development repository. A patch is also supplied for the latest stable version &ndash; although these won't be maintained routinely so you may also need some support to have the patch maintained until it lands as a standard feature.</p>
-
-						<p><a href="{$PAGE_LINK*,site:tracker}">Visit the tracker</a> to declare your sponsorship. Once you have sponsored something you will be given the ability to buy support credits in precise quantities (we only offer this to feature sponsorers, as buying individual credits isn't an appropriate model for normal technical support).</p>
+						<p>Composr moves forward when people sponsor new functionality. If you want to see something integrated cleanly into Composr's roadmap, feature sponsorship might be a great way to do it.</p>
 
 						<p>If you just want to support the project, we can help you pick something to sponsor, so just open up a ticket with us and let us know.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Learn more</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Read more</a>
 						</div>
 					</li>
 				</ul>
