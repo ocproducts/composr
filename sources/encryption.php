@@ -39,8 +39,8 @@ function is_encryption_enabled()
 {
     static $enabled = null;
     if ($enabled === null) {
-        $public_key = get_option('encryption_key');
-        $private_key = get_option('decryption_key');
+        $public_key = str_replace('{file_base}', get_file_base(), get_option('encryption_key'));
+        $private_key = str_replace('{file_base}', get_file_base(), get_option('decryption_key'));
         $enabled = ((function_exists('openssl_pkey_get_public')) && ($public_key != '') && ($private_key != '') && (file_exists($public_key)) && (file_exists($private_key)));
     }
     return $enabled;
@@ -76,7 +76,7 @@ function encrypt_data($data)
     }
 
     /* See http://uk.php.net/manual/en/function.openssl-pkey-get-public.php */
-    $key = openssl_pkey_get_public('file://' . get_option('encryption_key'));
+    $key = openssl_pkey_get_public('file://' . str_replace('{file_base}', get_file_base(), get_option('encryption_key')));
     if ($key === false) {
         attach_message(do_lang_tempcode('ENCRYPTION_KEY_ERROR'), 'warn');
         return '';
@@ -159,14 +159,14 @@ function decrypt_data($data, $passphrase)
     // Remove the magic encryption marker and base64-decode it first
     $data = base64_decode(remove_magic_encryption_marker(str_replace('<br />', '', $data)));
 
-    $key = openssl_pkey_get_private(array('file://' . get_option('decryption_key'), $passphrase));
+    $key = openssl_pkey_get_private(array('file://' . str_replace('{file_base}', get_file_base(), get_option('decryption_key')), $passphrase));
     if ($key === false) {
         attach_message(do_lang_tempcode('ENCRYPTION_KEY_ERROR'), 'warn');
         return '';
     }
 
     $maxlength = strlen($data);
-    $decryption_keyfile = file_get_contents(get_option('decryption_key'));
+    $decryption_keyfile = file_get_contents(str_replace('{file_base}', get_file_base(), get_option('decryption_key')));
     if (strpos($decryption_keyfile, 'AES') === false) {
         $maxlength = 128; // 1024 bit key assumption
     } elseif (strpos($decryption_keyfile, 'AES-256') !== false) {
