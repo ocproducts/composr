@@ -101,7 +101,7 @@ class Block_main_staff_tips
                             get_brand_page_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_template' => 'general_feedback', 'cost' => 'free'), 'site'),
                             brand_name(),
                             array(
-                                get_brand_page_url(array('page' => 'commercial_support'), 'site'),
+                                get_brand_page_url(array('page' => 'professional_support'), 'site'),
                                 get_brand_page_url(array('page' => ''), 'forum')
                             )
                         );

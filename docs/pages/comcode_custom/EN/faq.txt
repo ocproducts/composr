@@ -502,6 +502,6 @@ If you want to place a block, use the 'Add block' button you see while editing C
 [title="3"]Do you have another question?[/title]
 
 Please first check the documentation, and if there is no obvious answer, post your question on our public forums so anyone can answer.
-If you need an answer from an ocProducts employee, we have a commercial support scheme.
+If you need an answer from an ocProducts employee, we have a professional support scheme.
 
 {$SET,tutorial_tags,Introduction,novice,pinned}{$SET,tutorial_add_date,Dec 2004}{$SET,tutorial_summary,Frequently Asked Questions about Composr.}[block]main_tutorial_rating[/block]

@@ -23,7 +23,7 @@ The developers have a track record of responding to bug reports within just a fe
 Bug fixes usually come with an automated (non-personal) response that includes a hotfix, a description of the bug, and a link to show the changes made in the code repository (git/github).
 
 If you really do require an urgent priority response it means either (or both):
- - You need to be using paid support tickets to get commercial-grade support
+ - You need to be using paid support tickets to get professional-grade support
  - You need to take better backups so you don't rely on external factors
 So please bear this in mind and structure your own processes accordingly.
 
@@ -58,7 +58,7 @@ In general:
  - [b]Don't write a long meandering essay[/b]. If you could convey as much meaning using fewer words, try and do that. Remember that the developers might have to read another 10 reports in the same morning, actually deal with them, and finish it all without having expended the energy required for their primary job. They don't have time to read too much narrative.
  - [b]Don't write it as a letter[/b] to someone specific. Chris Graham may currently be the lead developer, but don't start your report "Dear Chris" - it's a little annoying because it adds some unnecessary pressure / filing difficulty. What if Chris is on holiday or ill and someone else is covering lead development duties?
  - [b]Write for a broad audience[/b]. Other users are probably also reading your report. Don't write the report as something about you and your site, try to keep the focus on the problem itself, and Composr.
- - [b]Assume the staff have amnesia[/b]. You may have previously interacted with staff, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that staff will often dump their memory after dealing with something.
+ - [b]Assume the developers have amnesia[/b]. You may have previously interacted with the developers, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that the developers will often dump their memory after dealing with something.
 
 If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Error log). The error log shows all non-user-errors that have occurred on your site.
 
@@ -70,7 +70,7 @@ Composr comes with an automatic bug reporting mechanism, that is enabled by defa
 
 [title="3"]Where to post[/title]
 
-The "correct" place is the [url="tracker"]http://compo.sr/tracker[/url]. However, practically speaking most users are most comfortable posting informally on the forum, and up to this point the developers have been very happy with that. The staff have tools for automatic submission of formal reports to the tracker anyway.
+The "correct" place is the [url="tracker"]http://compo.sr/tracker[/url]. However, practically speaking most users are most comfortable posting informally on the forum, and up to this point the developers have been very happy with that. The developers have tools for automatic submission of formal reports to the tracker anyway.
 
 The developers don't promise to check the forum, so if you don't get a reply to a bug after about a week then you should go to post on the tracker, but not getting a reply on the forum has been rare in the past.
 
@@ -191,18 +191,18 @@ It is not about:
  - general bugs in functionality
  - problems with your hosting, e.g. databases suddenly corrupting
 
-If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page="_SEARCH:tickets:ticket:ticket_template=bug:cost=free"]free bug report support ticket[/page]. The staff will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
+If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page="_SEARCH:tickets:ticket:ticket_template=bug:cost=free"]free bug report support ticket[/page]. The developers will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
 
-It is important that you help the staff help you. Remember that no staff are not employed 24x7 to manage your bug reports, they have to fit it in within their working hours, and it is a secondary job to what pays the bills. You need to make it really easy for them to jump in to fix the problem, the first time they open the ticket. The staff will not want to:
+It is important that you help the developers help you. Remember that the developers are not employed 24x7 to manage your bug reports, they have to fit it in within their working hours, and it is a secondary job to what pays the bills. You need to make it really easy for them to jump in to fix the problem, the first time they open the ticket. The developers will not want to:
  - negotiate for the access needed to fix the problem
  - have a protracted back-and-forth over hours or days
  - have to schedule processing of the ticket
  - have to keep requesting additional information
-In short: provide the access they need to solve the problem immediately when they open the ticket for the first time, i.e. FTP or control panel access. There is functionality to encrypt these details. Ideally, the staff should be able to look at your ticket, have the access they need to resolve the problem immediately, resolve it there and then, and then simply be able to tell you it has been resolved.
+In short: provide the access they need to solve the problem immediately when they open the ticket for the first time, i.e. FTP or control panel access. There is functionality to encrypt these details. Ideally, the developers should be able to look at your ticket, have the access they need to resolve the problem immediately, resolve it there and then, and then simply be able to tell you it has been resolved.
 
-Don't make the staff have to do detective work just to extra crucial information from you. Explain the exact situation and anything pertinent. For example, if it is a problem upgrading, describe the exact process you used to upgrade, what you upgraded from, and what you upgraded to.
+Don't make the developers have to do detective work just to extra crucial information from you. Explain the exact situation and anything pertinent. For example, if it is a problem upgrading, describe the exact process you used to upgrade, what you upgraded from, and what you upgraded to.
 
-In return, the staff will try their best to ensure unintended glitches don't cause you unnecessarily pain. They have a [i]very[/i] strong track record for this.
+In return, the developers will try their best to ensure unintended glitches don't cause you unnecessarily pain. They have a [i]very[/i] strong track record for this.
 
 Specifically for upgrading, the developers do advise taking backups as part of the upgrade process. If you did have a problem upgrading, the best process you could follow would be:
 1) Take a backup
@@ -211,9 +211,9 @@ Specifically for upgrading, the developers do advise taking backups as part of t
 4) Move the current site into a temporary directory (e.g. [tt]failed_upgrade[/tt]), and rename the database (e.g. [tt]failed_upgrade[/tt])
 5) Restore the backup to its original directory and database
 6) Open a support ticket explaining the problem, and providing access to the temporary site
-7) (The staff would then quickly resolve)
+7) (The developers would then quickly resolve)
 
-Bear in mind that the primary defence to something suddenly going wrong with your site is to take backups, and know how to restore them (having practised it at least once). The staff are committed to ensuring Composr's stability as a product, but bug fixing is [i]not[/i] a free concierge service that puts the responsibility for your site onto the staff's shoulders. The staff can provide this kind of service via commercial support, but not via free bug fixing.
+Bear in mind that the primary defence to something suddenly going wrong with your site is to take backups, and know how to restore them (having practised it at least once). The developers are committed to ensuring Composr's stability as a product, but bug fixing is [i]not[/i] a free concierge service that puts the responsibility for your site onto the developer's shoulders. The developers can provide this kind of service via professional support, but not via free bug fixing.
 
 &raquo; Also see the [page="_SEARCH:tut_disaster"]Disaster recovery[/page] tutorial.
 

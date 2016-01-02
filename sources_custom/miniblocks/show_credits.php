@@ -24,10 +24,10 @@ $welcome_msg = new Tempcode();
 $tickets_open_msg = new Tempcode();
 $no_credits_link = new Tempcode();
 $credits_message = new Tempcode();
-if (get_page_name() != 'commercial_support') {
-    $_commercial_support_url = build_url(array('page' => 'commercial_support'), 'site');
-    $commercial_support_url = $_commercial_support_url->evaluate();
-    $whats_this = do_lang_tempcode('SHOW_CREDITS_Whats_this', $commercial_support_url);
+if (get_page_name() != 'professional_support') {
+    $_professional_support_url = build_url(array('page' => 'professional_support'), 'site');
+    $professional_support_url = $_professional_support_url->evaluate();
+    $whats_this = do_lang_tempcode('SHOW_CREDITS_Whats_this', $professional_support_url);
 }
 
 if (is_guest()) {
