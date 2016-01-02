@@ -117,8 +117,8 @@ Hourly cost (approx):
 				<ul class="verticalslider_tabs">
 					<li class="frst"><a href="#">Technical support</a></li>
 					<li class="secd"><a href="#">Installation services</a></li>
-					<li class="thrd"><a href="#">Custom development</a></li>
-					<li class="frth"><a href="#">Training and consultancy</a></li>
+					<li class="thrd"><a href="#">Upgrade service</a></li>
+					<li class="frth"><a href="#">Staff secondment</a></li>
 					<li class="ffth"><a href="#">Feature sponsorship</a></li>
 				</ul>
 
@@ -130,85 +130,70 @@ Hourly cost (approx):
 
 						<h3>Here are some examples of ways we can help:</h3>
 						<ul>
-							<li>Help registering domain names, and managing web hosting.</li>
 							<li>Answering Composr-related questions (mentoring, and advice).</li>
 							<li>Help configuring complex features, such as LDAP or eCommerce support.</li>
 							<li>Availability to repair errors (e.g. if a database corrupts due to a power outage).</li>
-							<li>Server up-time monitoring, backup keeping and off-site storage, and keeping your site updated with the latest patches.</li>
-							<li>Help keeping up-to-date with all the latest fixes (bugs and security holes).</li>
 							<li>Advice and tutoring on web technologies, such as CSS.</li>
 						</ul>
 
 						<p>Sound like the kinds of things you'd prefer not to think about? No problem -- we've been doing this for years.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Ask your question</a>
 						</div>
 					</li>
 
 					<li>
 						<h2>Installation services</h2>
 
-						<p>For credits at budget priority, we can install Composr onto your server of choice.</p>
+						<p>We can install Composr onto your server of choice.</p>
 
 						<p>If you would like our installation service please first check:</p>
 						<ul>
-							<li>Make sure you have at least 9 credits (more if you want higher than budget priority).</li>
+							<li>Make sure you have at least 8 credits.</li>
 							<li>You agree to our [page="site:server_access"]server access policy[/page].</li>
 							<li>Your server meets our minimum requirements (if we can't install because it doesn't, or the server is faulty, we'll still need to charge for the service).</li>
 						</ul>
 
-						<p>Once you have agreed to these terms, please open a ticket with us.</p>
-
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Send us your details</a>
 						</div>
 					</li>
 
 					<li>
-						<h2>Custom development</h2>
+						<h2>Upgrade service</h2>
 
-						<p>We built Composr - perhaps let us help with your site, too.</p>
+                        <p>Want an existing Composr website upgraded to a newer version?</p>
 
-						<p>If you find the need to extend Composr outside it's original abilities, you can either take on 3rd party programmers, or go right to the experts.</p>
-
-						<p>Leave your needs with the team that designed Composr. We can exceed the level of quality that you expect from today's demanding commercial solutions. For example, we can:</p>
+                        <p>We can handle:</p>
 						<ul>
-							<li>Design and build full websites using Composr</li>
-							<li>Convert data from other software to an Composr database</li>
-							<li>Integrate Composr with other web-apps and scripts</li>
-							<li>Implement new functionality for you</li>
-							<li>Customise existing Composr features</li>
+							<li>Uploading the new files.</li>
+							<li>Upgrading your database.</li>
+							<li>Updating your theme.</li>
+							<li>Updating any custom code.</li>
 						</ul>
 
-						<p>ocProducts has a commitment to delivering work of the best quality, and for quality management processes. You won't be disappointed.</p>
-
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:project}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:upgrade}">Brief us</a>
 						</div>
 					</li>
 
 					<li>
-						<h2>Training and consultancy</h2>
+						<h2>Staff secondment</h2>
 
-						<p>Time is money. We're happy to help you plan your site &ndash; which can save you a lot of time in the long run.</p>
+						<p>The best modern websites involve ongoing work to keep them fresh, and optimise the user experience. We can arrange for developer(s) to work regular hours for you.</p>
 
-						<p>Our 1-on-1 consultancy begins with a thorough review of your site's goals, allowing us the chance to make recommendations and show how you would best leverage Composr to accomplish your specific needs.</p>
-
-						<p>Go right to the source and get expert advice from the team that's built dozens of websites and the framework powering them all.</p>
-
-						<h3>Some ways we can help:</h3>
+						<h3>Benefits:</h3>
 						<ul>
-							<li>Professional review of your diagrams and site plans</li>
-							<li>Develop a personalised training and deployment plan</li>
-							<li>Walk you through feature use (e.g. custom databases, advanced navigations, payment processing)</li>
-							<li>You can sponsor a new written or video tutorial of your choice (instant 50% discount if we use it on compo.sr)</li>
+							<li>Pay only for the regular hours you need rather than a full salary</li>
+							<li>Achieve excellence</li>
+							<li>Save the time of having to micro-manage ongoing maintenance, just rely on us and pay the regular invoices</li>
+							<li>Avoid having to interview people for a role you are not yourself expert in</li>
+							<li>Avoid the need for office space</li>
 						</ul>
 
-						<p>Interested? Open a ticket to get started.</p>
-
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Talk to us</a>
 						</div>
 					</li>
 
@@ -224,7 +209,7 @@ Hourly cost (approx):
 						<p>If you just want to support the project, we can help you pick something to sponsor, so just open up a ticket with us and let us know.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Open ticket</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Learn more</a>
 						</div>
 					</li>
 				</ul>

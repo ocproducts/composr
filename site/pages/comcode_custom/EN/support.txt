@@ -136,24 +136,24 @@
 		<div class="srBtmImg"><img alt="Hour" src="{$IMG*,composr_homesite/support/sr_by_hour}" /></div>
 
 		<div class="srBtmTitle">
-			EXPERTS BY THE HOUR
+			PROFESSIONAL SUPPORT
 		</div>
 
 		<div class="srBtmBlockInner">
-			<p>Receive any of the following pre-paid support options:</p>
+			<p>Receive support via pre-paid support credits:</p>
 
 			<ul class="srBtmLi">
 				<li>Installation</li>
-				<li>Hourly support</li>
-				<li>Custom development</li>
-				<li>1-on-1 training</li>
+				<li>Get questions answered</li>
+				<li>Site upgrades</li>
+				<li>Feature sponsorship</li>
 			</ul>
 
 			<p>To learn more, click the link below.</p>
 		</div>
 
 		<div class="commonBtn cntr">
-			[page="site:commercial_support"]Experts by the hour[/page]
+			[page="site:commercial_support"]Professional support[/page]
 		</div>
 	</div>
 
@@ -161,35 +161,37 @@
 		<div class="srBtmImg"><img alt="Agency" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
 
 		<div class="srBtmTitle">
-			FULL AGENCY SERVICE
+			WEB PROJECTS
 		</div>
 
 		<div class="srBtmBlockInner">
-			<p>For 1-on-1 service on projects costing £600 GBP and above, we offer:</p>
+			<p>We'll help you find a developer and brief them:</p>
 
 			<ul class="srBtmLi">
-				<li>Direct contact options</li>
-				<li>Formal requirements documents and [abbr="Unified Modelling Language"]UML[/abbr] diagrams</li>
-				<li>Project management</li>
 				<li>Complete design and development</li>
+				<li>Professional project management</li>
+				<li>Ongoing maintenance options</li>
+				<li>By [page="ocproducts:start"]ocProducts[/page] or a company near you</li>
 			</ul>
 
 			<p>To learn more, click below&hellip;</p>
 		</div>
 
 		<div class="commonBtn cntrLast">
-			[page="ocproducts:start"]Hire ocProducts[/page]
+			[page="_SEARCH:contact:project"]Hire developer[/page]
 		</div>
 	</div>
 </div>
 
 <div class="cntRow">
-	<p>Composr is made by ocProducts Ltd, a [tooltip="Company number 05321273
+	<p>Composr is primarily sponsored/developed by ocProducts Ltd, a [tooltip="Company number 05321273
 
 Our address is: [b][address]ocProducts Ltd, Walkley House, Burnaby Crescent, Sheffield, S6 2RZ[/address][/b]"]UK-based company[/tooltip] specialising in cutting-edge website solutions.</p>
 
+    <!-- TODO: Re-enable when there are more partners to list. For now directory more for internal use, when we do skill matching after customer has used Briefr
 	<h3 class="colrBl">Partner programme</h3>
 
-	<p>In addition to support from ocProducts (the core Composr development company), there may be other providers who can provide services to you. All Composr partners are listed in the [page="site:catalogues:category:catalogue_name=partners"]partner directory[/page].</p>
+	<p>In addition to support from ocProducts, there may be other providers who can provide services to you. Composr implementors may be listed in the [page="site:catalogues:category:catalogue_name=partners"]partner directory[/page].</p>
+    -->
 </div>
 [/semihtml]
