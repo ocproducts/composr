@@ -3368,9 +3368,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
 }
-.buttons__revisions {
-	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
-}
 .buttons__choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
 }
