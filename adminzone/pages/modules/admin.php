@@ -245,7 +245,7 @@ class Module_admin
             array('member', 'user', 'contact', 'person'),
             array('profile', 'account', 'memberaccount'),
             array('accessibility', 'a11y'),
-            array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation'),
+            array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation', 'translation'),
             array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite', 'credentials'),
             array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
