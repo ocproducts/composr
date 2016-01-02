@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,jquery}
-{$REQUIRE_JAVASCRIPT,jquery_ui_core}
+{$REQUIRE_JAVASCRIPT,jquery_ui}
 {$REQUIRE_JAVASCRIPT,jquery_flip}
 {$REQUIRE_CSS,flip}
 

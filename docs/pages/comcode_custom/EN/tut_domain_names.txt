@@ -1,42 +1,52 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: How domain names work[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: How domain names work[/title]
 
 This tutorial is designed to give a full explanation of domain names, DNS, and the politics surrounding it all. It is written primarily for agencies/consultancies who need to work with previously registered domain names.
 
 [contents]decimal,lower-alpha[/contents]
 
+[title="2"]localhost[/title]
+
+Before we get into explaining domain names, I wanted to quickly talk about host names. Domain names are a form of host names, but you can define your own host names on private networks. Every computer actually automatically has a fully working host name called "localhost" which points back to your own computer. This is useful if you are testing a site on your own computer.
+
 [title="2"]The business relationships of an actual domain name[/title]
 
-Domain names are purchased from a domain name registar (aka "agent"), which is an independent company which uses their prearranged relationship with a high level authority to get a domain name set up. The registrar then provides the commercial services for that domain, and the technical services to be able to set things up against it. The high level authorities differ depending on what kind of domain it is (all these authorities are chosen by the highest level authority, ICANN):
+[media width="150" description="Registering a domain name (rough illustration)" float="right"]data_custom/images/docs/tut_domain_names/register.png[/media]
+Domain names are purchased from a domain name registrar (aka "agent"), which is an independent company which uses their prearranged relationship with a high level authority to get a domain name set up. The registrar then provides the commercial services for that domain, and the technical services to be able to set things up against it. The high level authorities differ depending on what kind of domain it is (all these authorities are chosen by the highest level authority, ICANN):
  - The high level authority for uk domains is Nominet
  - The high level authority for com, org, etc (usually Verisign)
 When dealing with the management of domain names as assets, one typically deals solely with registrars, and never deals with the high level authority. However if a registrar goes out of business or is too poor to provide reasonable service, then one needs to deal with the high level authority. Dealing with the high level authority is not ideal, as the service is more bureaucratic than commercial -- one needs to provide identity, send postal letters, and make 'statutory' payments to get anything done.
 
+[title="3"]The very special case of Tucows (ignore if you don't care)[/title]
+
 Matters are made complicated in the case of a domain where Tucows is the registrar. This is because Tucows creates an additional level of authority, because they set themselves up as an agent for their own resellers. These resellers don't have to have such a complex infrastructure as full-blown registrars, and thus some companies that sell domain names aren't really registrars, they are just Tucows resellers. Tucows refuse to provide services to domain owners, and insist you always work through one of their resellers. Fortunately, Tucows are set up such that the owner of a domain (on proof of their identity via a scanned passport) can have a different Tucows reseller subsume control over their domain name, without having to make any specific payments or filling in forms or posting anything.
 
-[title="2"]How domain names are mapped to servers[/title]
+[title="2"]How domain names direct traffic to servers[/title]
 
-Every domain name has basically one setting that affects how traffic is routed: the name server for that domain name. At the domain name level, there is no such thing as 'web hosting', as domain names are not tied to the web at all.
-The name server for the domain itself defines where different kinds of Internet traffic get routed to.
-It basically defines against two different traffic kinds:
- - E-mail (MX records)
- - All other Internet traffic (A records)
+[media width="150" description="A DNS lookup in action (rough illustration)" float="right"]data_custom/images/docs/tut_domain_names/lookup.png[/media]
+Note that domains names are not a "web" technology, they are an "Internet" technology. So at the level of domain names we are not considering websites yet, merely how traffic is directed on the Internet. (The web refers to the multimedia experience, while the Internet is the networking technology)
+
+Every domain name has basically one setting involved in the process of directing traffic: the nameserver for that domain name.
+
+The nameserver for the domain then will itself define where different kinds of Internet traffic get routed to. It basically defines against two different traffic kinds:
+1) E-mail (MX records)
+2) All other Internet traffic, including web traffic (A records)
 
 [title="3"]Subdomains[/title]
 
-A name server may define records for subdomains of any complexity, underneath domain names it handles). So a nameserver for [tt]example.com[/tt] could define records for [tt]foo.example.com[/tt], [tt]bar.example.com[/tt], and even [tt]foo.bar.example.com[/tt].
+A nameserver may define records for subdomains of any complexity, underneath domain names it handles). So a nameserver for [tt]example.com[/tt] could define records for [tt]foo.example.com[/tt], [tt]bar.example.com[/tt], and even [tt]foo.bar.example.com[/tt].
 
-However, DNS is based on the idea of delegation. Name servers may also choose to delegate control of names such as the above to separate name servers, instead of handling themselves. So for example, the name server for [tt]example.com[/tt] could delegate [tt]test.example.com[/tt] to a separate name server. That name server could then set all records for [tt]test.example.com[/tt] or anything underneath it, and it could itself make further delegations.
+However, DNS is based on the idea of delegation. nameservers may also choose to delegate control of names such as the above to separate nameservers, instead of handling themselves. So for example, the nameserver for [tt]example.com[/tt] could delegate [tt]test.example.com[/tt] to a separate nameserver. That nameserver could then set all records for [tt]test.example.com[/tt] or anything underneath it, and it could itself make further delegations.
 
 [title="2"]Web hosting[/title]
 
 Knowing all the above, we can deduce that there are a number of ways that we could get a domain name to point to some web hosting. These ways are fundamentally quite different, but from the end-users point of view, have the same result.
  - Transfer a domain (in English, this means "change the ownership of the domain name")
- - Change the domain tag (in English, this means "change to a different registrar")
- - Change the reseller
- - Change the name server
- - Change the DNS records at the existing name server
- - Use an HTML solution
-The distinguishing factors are based on typically non-technical reasons, that can get quite complex.
+ - Change the domain tag (in English, this means "move the domain to a different registrar")
+ - Change the reseller (for Tucows-only)
+ - Change the nameserver (in English, this means "set a new nameserver so the controller of that nameserver can configure where traffic will go")
+ - Change the DNS records at the existing nameserver (in English, this means "re-configure the domain name settings")
+
+Which to use? It typically depends on non-technical reasons that can get quite complex. Basically it depends if you are transferring ownership or just making configuration changes.
 
 [title="3"]Transfer a domain[/title]
 
@@ -61,27 +71,27 @@ The problem with this mechanism is it depends on:
 
 The advantage of this method is that if the domain tag can be changed to that of the hosting company (assuming they do domain registration), only a single business relationship needs maintaining. The disadvantage is that the existing business relationship is broken, and that we probably then start taking responsibility for things like domain renewal (this is perhaps not a disadvantage if we are providing a full service).
 
-Note that as well as changing the domain tag, one might need to manually change the name server (see below). This might be done for you by some domain registrars, but it needs to be checked. It's a simple job to make such a change manually anyway.
+Note that as well as changing the domain tag, one might need to manually change the nameserver (see below). This might be done for you by some domain registrars, but it needs to be checked. It's a simple job to make such a change manually anyway.
 
 [title="3"]Change the reseller[/title]
 
 This only applies in cases such as Tucows, where the real registrar is in fact just a reseller to other companies. The only case where we would want to change Tucows reseller, rather than either sticking with the existing reseller, or changing the domain tag, would be the case where the existing reseller is out of business, and we do not want to have to deal with the high level authority by messing around posting things and writing cheques.
 
-[title="3"]Change the name server[/title]
+[title="3"]Change the nameserver[/title]
 
-Changing the name server is a simple and effective way of moving a domain to different hosting. One just changes the name server so as to point to the name server provided by the web host. The web hosting control panel then allows direct configuration of all hosting-related aspects of that domain name.
+Changing the nameserver is a simple and effective way of moving a domain to different hosting. One just changes the nameserver so as to point to the nameserver provided by the web host. The web hosting control panel then allows direct configuration of all hosting-related aspects of that domain name.
 
 The only problem with this method is that it means a commercial relationship has to be maintained with the domain registrar. It's often preferable to do a tag change to a company that provides both web hosting and domain registration -- because then only one business relationship needs to be maintained.
 
-[title="3"]Change the DNS records at the existing name server[/title]
+[title="3"]Change the DNS records at the existing nameserver[/title]
 
 One can change DNS records so as to manually point web traffic towards a new web host.
 
-Note that this method also has the disadvantages of "changing the name server".
+Note that this method also has the disadvantages of "changing the nameserver".
 
 [title="3"]Use an HTML solution[/title]
 
-Another way to handle things is either to set up an HTML frameset, a simple HTML redirect page, a PHP header redirect, or a header redirect configured in the web server software (e.g. IIS, or .htaccess). This isn't ideal because the domain name cannot be used for making long URLs to the website. However, if there is a second domain name that is 'good enough' then the problem is very small because long URLs can be made against this second domain name.
+Another way to handle things is either to set up an HTML frameset, a simple HTML redirect page, a PHP header redirect, or a header redirect configured in the web server software (e.g. IIS, or [tt].htaccess[/tt]). This isn't ideal because the domain name cannot be used for making long URLs to the website. However, if there is a second domain name that is 'good enough' then the problem is very small because long URLs can be made against this second domain name.
 
 We'd use an HTML solution in the case where we can leverage no control over any domain settings whatsoever. Two situations for this would be:
  - the domain is somehow tied up
@@ -95,7 +105,7 @@ Note that for all the methods other than 'Use an HTML solution', it is necessary
 
 I recommend using http://www.dnsstuff.com/ to lookup settings for domain names. Use a "WHOIS Lookup" to find out:
  - The contact details for a domain
- - A domain's name servers
+ - A domain's nameservers
  - Who the registrar is
  - When the domain will expire (need renewing)
 

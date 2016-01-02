@@ -85,7 +85,7 @@ class Hook_addon_registry_wordpress_style_page_children
      */
     public function get_description()
     {
-        return 'Make links to child pages look more like Wordpress, including a thumbnail for each child page\".';
+        return 'Make links to child pages look more like Wordpress, including a thumbnail for each child page".';
     }
 
     /**

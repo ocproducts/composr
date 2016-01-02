@@ -46,7 +46,7 @@ class Module_admin_points
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -67,7 +67,7 @@ class Module_admin_points
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -107,7 +107,7 @@ class Module_admin_points
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -135,8 +135,8 @@ class Module_admin_points
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
-     * @return tempcode The result of execution.
+     * @param  Tempcode $title The title to display.
+     * @return Tempcode The result of execution.
      */
     public function _get_between($title)
     {
@@ -163,11 +163,11 @@ class Module_admin_points
     /**
      * Export a CSV of point transactions.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function points_export()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -180,7 +180,7 @@ class Module_admin_points
     /**
      * The UI to view all point transactions ordered by date.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_log()
     {
@@ -245,7 +245,7 @@ class Module_admin_points
     /**
      * The actualiser to reverse a point gift transaction.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function reverse()
     {
@@ -273,14 +273,8 @@ class Module_admin_points
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'd3d654c7dcffb353638d08b53697488b', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'URL' => get_self_url(false, false, array('confirm' => 1)), 'FIELDS' => build_keep_post_fields()));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $id), '', 1);
-        if (!is_guest($sender_id)) {
-            $_sender_gift_points_used = point_info($sender_id);
-            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-        }
-        $temp_points = point_info($recipient_id);
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+        require_code('points2');
+        reverse_point_gift_transaction($id);
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
@@ -294,7 +288,7 @@ class Module_admin_points
     /**
      * The actualiser to charge a member points.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_charge()
     {

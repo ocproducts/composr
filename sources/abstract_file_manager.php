@@ -24,6 +24,8 @@ The abstract file manager allows easy and transparent file system maintenance, e
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__abstract_file_manager()
 {
@@ -60,9 +62,8 @@ function force_have_afm_details()
     if (is_null($ftp_password)) {
         $ftp_password = '';
     }
-    //$uses_ftp=get_value('uses_ftp');    We can't use this because there's no reliable way to trust this is always going to be right (permissions change/differ, and we can't accurately run a test and trust the result going forward for everything)
-    if (/*($uses_ftp==='0') || */
-    (strlen($ftp_password) > 0)
+    //$uses_ftp = get_value('uses_ftp');    We can't use this because there's no reliable way to trust this is always going to be right (permissions change/differ, and we can't accurately run a test and trust the result going forward for everything)
+    if (/*($uses_ftp === '0') || */(strlen($ftp_password) > 0)
     ) { // Permanently stored
         return;
     }
@@ -114,7 +115,7 @@ function get_afm_form()
 /**
  * Get the fields that need to be filled in to know how to do an AFM connection.
  *
- * @return tempcode The form fields.
+ * @return Tempcode The form fields.
  */
 function get_afm_form_fields()
 {
@@ -145,7 +146,7 @@ function get_afm_form_fields()
         if (array_key_exists('ftp_username', $GLOBALS['SITE_INFO'])) {
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
-            if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+            if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 if ($u_info !== false) {
                     $ftp_username = $u_info['name'];
@@ -211,7 +212,9 @@ function get_afm_form_fields()
  * Return the FTP connection, from stored/posted details.
  *
  * @param  boolean $light_fail Whether to simply echo-out errors.
- * @return ~resource                    The FTP connection (false: not connecting via FTP).
+ * @return ~resource The FTP connection (false: not connecting via FTP).
+ *
+ * @ignore
  */
 function _ftp_info($light_fail = false)
 {
@@ -324,6 +327,8 @@ function _ftp_info($light_fail = false)
  *
  * @param  boolean $world_access Whether world directory access is required.
  * @return integer The absolute permission.
+ *
+ * @ignore
  */
 function _translate_dir_access($world_access)
 {
@@ -344,6 +349,8 @@ function _translate_dir_access($world_access)
  * @param  boolean $world_access Whether world file access is required.
  * @param  ID_TEXT $file_type The file type (blank: don't care).
  * @return integer The absolute permission.
+ *
+ * @ignore
  */
 function _translate_file_access($world_access, $file_type = '')
 {
@@ -378,6 +385,8 @@ function _translate_file_access($world_access, $file_type = '')
  *
  * @param  integer $access_int The integer permission.
  * @return string The string version.
+ *
+ * @ignore
  */
 function _access_string($access_int)
 {
@@ -389,6 +398,8 @@ function _access_string($access_int)
  *
  * @param  PATH $path Original path.
  * @return PATH Rescoped path.
+ *
+ * @ignore
  */
 function _rescope_path($path)
 {
@@ -476,6 +487,8 @@ function afm_make_directory($basic_path, $world_access, $recursive = false)
  * @param  PATH $base The base directory for the search.
  * @param  PATH $at The directory where we are searching under.
  * @return array An array of directories found under this recursive level.
+ *
+ * @ignore
  */
 function _get_dir_tree($base, $at = '')
 {

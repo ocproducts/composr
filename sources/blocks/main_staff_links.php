@@ -51,11 +51,11 @@ class Block_main_staff_links
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)>0)?null:array()'; // No cache on POST as this is when we save text data
@@ -104,7 +104,7 @@ class Block_main_staff_links
                 'Smashing Magazine (web design articles)' => 'http://www.smashingmagazine.com/',
                 'w3schools (learn web technologies)' => 'http://www.w3schools.com/',
                 // NB: Not including a web host, as the user will likely already have one
-                //'GoDaddy (Domains and SSL certificates)'=>'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
+                //'GoDaddy (Domains and SSL certificates)' => 'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
             );
             foreach ($default_links as $link_title => $url) {
                 $GLOBALS['SITE_DB']->query_insert('stafflinks', array(
@@ -120,7 +120,7 @@ class Block_main_staff_links
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -161,6 +161,8 @@ class Block_main_staff_links
             }
 
             decache('main_staff_links');
+
+            log_it('STAFF_LINKS');
         }
 
         $rows = $GLOBALS['SITE_DB']->query_select('stafflinks', array('*'));

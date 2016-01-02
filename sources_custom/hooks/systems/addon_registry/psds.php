@@ -85,7 +85,7 @@ class Hook_addon_registry_psds
      */
     public function get_description()
     {
-        return 'The source PSD files for graphics that contain English text.';
+        return 'The source PSD files for graphics that contain English text. Also dark versions of Composr\'s animated gif emoticons.';
     }
 
     /**
@@ -131,9 +131,21 @@ class Hook_addon_registry_psds
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/psds.php',
-            'data_custom/psds/blank_emoticon.png',
-            'data_custom/psds/chatcode.psd',
-            'data_custom/psds/comcode.psd',
+            'data_custom/images/psds/blank_emoticon.png',
+            'data_custom/images/psds/chatcode.psd',
+            'data_custom/images/psds/whisper.psd',
+            'data_custom/images/psds/comcode.psd',
+            'data_custom/images/psds/dark_emoticons/blink.gif',
+            'data_custom/images/psds/dark_emoticons/devil.gif',
+            'data_custom/images/psds/dark_emoticons/guitar.gif',
+            'data_custom/images/psds/dark_emoticons/lol.gif',
+            'data_custom/images/psds/dark_emoticons/ninja2.gif',
+            'data_custom/images/psds/dark_emoticons/nod.gif',
+            'data_custom/images/psds/dark_emoticons/reallybadday.gif',
+            'data_custom/images/psds/dark_emoticons/rockon.gif',
+            'data_custom/images/psds/dark_emoticons/rolleyes.gif',
+            'data_custom/images/psds/dark_emoticons/shake.gif',
+            'data_custom/images/psds/dark_emoticons/shutup.gif',
         );
     }
 }

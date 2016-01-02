@@ -22,6 +22,8 @@
 
 /**
  * Prepare to inject COR headers.
+ *
+ * @ignore
  */
 function cor_prepare()
 {
@@ -50,6 +52,8 @@ function cor_prepare()
 
 /**
  * Script to generate a Flash crossdomain file.
+ *
+ * @ignore
  */
 function crossdomain_script()
 {
@@ -76,6 +80,8 @@ function crossdomain_script()
 
 /**
  * AJAX script for checking if a new username is valid.
+ *
+ * @ignore
  */
 function username_check_script()
 {
@@ -103,6 +109,8 @@ function username_check_script()
 
 /**
  * AJAX script for checking if a username exists.
+ *
+ * @ignore
  */
 function username_exists_script()
 {
@@ -119,6 +127,8 @@ function username_exists_script()
 
 /**
  * AJAX script for allowing username/author/search-terms home-in.
+ *
+ * @ignore
  */
 function namelike_script()
 {
@@ -154,7 +164,7 @@ function namelike_script()
                     if ($n_eval == '') {
                         continue;
                     }
-                    if ((strpos(strtolower($n_eval), strtolower($id)) !== false) && (has_actual_page_access(get_member(), $i[2][0], $i[2][2]))) {
+                    if ((stripos($n_eval, $id) !== false) && (has_actual_page_access(get_member(), $i[2][0], $i[2][2]))) {
                         $names[] = '"' . $n_eval . '"';
                     }
                 }
@@ -198,14 +208,16 @@ function namelike_script()
                     echo '<option value="' . escape_html($name) . '" displayname="" />';
                 }
             } else {
-                $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15);
-                if ((count($likea) == 15) && (addon_installed('chat')) && (!is_guest())) {
-                    $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15, true); // Limit to friends, if possible
-                }
+                if ((!addon_installed('authors')) || ($special != 'author') || ($GLOBALS['FORUM_DRIVER']->get_members() < 5000)) {
+                    $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15);
+                    if ((count($likea) == 15) && (addon_installed('chat')) && (!is_guest())) {
+                        $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15, true); // Limit to friends, if possible
+                    }
 
-                foreach ($likea as $l) {
-                    if (count($names) < 15) {
-                        $names[$GLOBALS['FORUM_DRIVER']->mrow_id($l)] = $GLOBALS['FORUM_DRIVER']->mrow_username($l);
+                    foreach ($likea as $l) {
+                        if (count($names) < 15) {
+                            $names[$GLOBALS['FORUM_DRIVER']->mrow_id($l)] = $GLOBALS['FORUM_DRIVER']->mrow_username($l);
+                        }
                     }
                 }
 
@@ -224,6 +236,8 @@ function namelike_script()
 
 /**
  * AJAX script for finding out privileges for the queried resource.
+ *
+ * @ignore
  */
 function find_permissions_script()
 {
@@ -261,6 +275,8 @@ function find_permissions_script()
 
 /**
  * AJAX script to store an autosave.
+ *
+ * @ignore
  */
 function store_autosave()
 {
@@ -284,6 +300,8 @@ function store_autosave()
 
 /**
  * AJAX script to retrieve an autosave.
+ *
+ * @ignore
  */
 function retrieve_autosave()
 {
@@ -321,6 +339,8 @@ function retrieve_autosave()
 
 /**
  * AJAX script to make a fractional edit to some data.
+ *
+ * @ignore
  */
 function fractional_edit_script()
 {
@@ -331,7 +351,7 @@ function fractional_edit_script()
     $_POST['fractional_edit'] = '1'; // FUDGE
 
     $zone = get_param_string('zone');
-    $page = get_param_string('page');
+    $page = get_page_name();
 
     global $SESSION_CONFIRMED_CACHE;
     if ((!$SESSION_CONFIRMED_CACHE) && ($GLOBALS['SITE_DB']->query_select_value('zones', 'zone_require_session', array('zone_name' => $zone)) == 1)) {
@@ -368,6 +388,8 @@ function fractional_edit_script()
 
 /**
  * AJAX script to tell if data has been changed.
+ *
+ * @ignore
  */
 function change_detection_script()
 {
@@ -375,7 +397,7 @@ function change_detection_script()
 
     header('Content-type: text/plain; charset=' . get_charset());
 
-    $page = get_param_string('page');
+    $page = get_page_name();
 
     require_code('hooks/systems/change_detection/' . filter_naughty($page), true);
 
@@ -387,6 +409,8 @@ function change_detection_script()
 
 /**
  * AJAX script for recording that something is currently being edited.
+ *
+ * @ignore
  */
 function edit_ping_script()
 {
@@ -397,14 +421,14 @@ function edit_ping_script()
     $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE the_time<' . strval(time() - 200));
 
     $GLOBALS['SITE_DB']->query_delete('edit_pings', array(
-        'the_page' => get_param_string('page'),
+        'the_page' => get_page_name(),
         'the_type' => get_param_string('type'),
         'the_id' => get_param_string('id', false, true),
         'the_member' => get_member()
     ));
 
     $GLOBALS['SITE_DB']->query_insert('edit_pings', array(
-        'the_page' => get_param_string('page'),
+        'the_page' => get_page_name(),
         'the_type' => get_param_string('type'),
         'the_id' => get_param_string('id', false, true),
         'the_time' => time(),
@@ -415,112 +439,9 @@ function edit_ping_script()
 }
 
 /**
- * AJAX script for HTML<>Comcode conversion.
- */
-function comcode_convert_script()
-{
-    prepare_for_known_ajax_response();
-
-    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-
-    require_lang('comcode');
-
-    $data = post_param_string('data', null, false, false);
-    if (is_null($data)) {
-        $title = get_screen_title('_COMCODE');
-        $fields = new Tempcode();
-        require_code('form_templates');
-        $fields->attach(form_input_huge(do_lang_tempcode('TEXT'), '', 'data', '', true));
-        $fields->attach(form_input_tick('Convert HTML to Comcode', '', 'from_html', false));
-        $fields->attach(form_input_tick('Convert to semihtml', '', 'semihtml', false));
-        $fields->attach(form_input_tick('Lax mode (less parse rules)', '', 'lax', false));
-        $hidden = new Tempcode();
-        $hidden->attach(form_input_hidden('keep_skip_rubbish', strval(either_param_integer('keep_skip_rubbish', 0))));
-        $out2 = globalise(do_template('FORM_SCREEN', array('_GUID' => 'dd82970fa1196132e07049871c51aab7', 'TITLE' => $title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('VIEW'), 'TEXT' => '', 'HIDDEN' => $hidden, 'URL' => find_script('comcode_convert', true), 'FIELDS' => $fields)), null, '', true);
-        $out2->evaluate_echo();
-        return;
-    }
-    if (either_param_integer('from_html', 0) == 1) {
-        require_code('comcode_from_html');
-        $out = trim(semihtml_to_comcode($data));
-    } else {
-        if (either_param_integer('lax', 0) == 1) {
-            $GLOBALS['LAX_COMCODE'] = true;
-        }
-        if (either_param_integer('is_semihtml', 0) == 1) {
-            require_code('comcode_from_html');
-            $data = semihtml_to_comcode($data);
-        }
-        $db = $GLOBALS['SITE_DB'];
-        if (get_param_integer('forum_db', 0) == 1) {
-            $db = $GLOBALS['FORUM_DB'];
-        }
-        $tpl = comcode_to_tempcode($data, get_member(), false, null, null, $db, either_param_integer('semihtml', 0) == 1/*true*/, false, false, false);
-        $evaluated = $tpl->evaluate();
-        $out = '';
-        if ($evaluated != '') {
-            if (get_param_integer('css', 0) == 1) {
-                global $CSSS;
-                unset($CSSS['global']);
-                unset($CSSS['no_cache']);
-                $out .= static_evaluate_tempcode(css_tempcode());
-            }
-            if (get_param_integer('javascript', 0) == 1) {
-                global $JAVASCRIPTS;
-                unset($JAVASCRIPTS['global']);
-                unset($JAVASCRIPTS['staff']);
-                $out .= static_evaluate_tempcode(javascript_tempcode());
-            }
-        }
-        $out .= trim(trim($evaluated));
-    }
-
-    if (either_param_integer('fix_bad_html', 0) == 1) {
-        require_code('xhtml');
-        $new = xhtmlise_html($out, true);
-
-        $stripped_new = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $new));
-        $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
-        if ($stripped_new != $stripped_old) {
-            /*$myfile=fopen(get_file_base().'/b','wb'); // Useful for debugging
-            fwrite($myfile,preg_replace('#<!--.*-->#Us','',preg_replace('#\s+#',"\n",$new)));
-            fclose($myfile);
-
-            $myfile=fopen(get_file_base().'/a','wb');
-            fwrite($myfile,preg_replace('#<!--.*-->#Us','',preg_replace('#\s+#',"\n",$out)));
-            fclose($myfile);*/
-
-            $out = $new . do_lang('BROKEN_XHTML_FIXED');
-        }
-    }
-    if (either_param_integer('keep_skip_rubbish', 0) == 0) {
-        require_code('xml');
-
-        safe_ini_set('ocproducts.xss_detect', '0');
-
-        $box_title = get_param_string('box_title', '');
-        if (is_object($out)) {
-            $out = $out->evaluate();
-        }
-        if (($box_title != '') && ($out != '')) {
-            $out = static_evaluate_tempcode(put_in_standard_box(make_string_tempcode($out), $box_title));
-        }
-
-        header('Content-Type: text/xml');
-        echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
-        echo '<request><result>';
-        echo xmlentities($out);
-        echo '</result></request>';
-    } else {
-        safe_ini_set('ocproducts.xss_detect', '0');
-
-        header('Content-type: text/plain; charset=' . get_charset());
-        echo $out;
-    }
-}
-
-/**
  * AJAX script for dynamically extended selection tree.
+ *
+ * @ignore
  */
 function ajax_tree_script()
 {
@@ -566,6 +487,8 @@ function ajax_tree_script()
 
 /**
  * AJAX script for confirming a session is active.
+ *
+ * @ignore
  */
 function confirm_session_script()
 {
@@ -583,6 +506,8 @@ function confirm_session_script()
 
 /**
  * AJAX script for getting the text of a template, as used by a certain theme.
+ *
+ * @ignore
  */
 function load_template_script()
 {
@@ -595,8 +520,8 @@ function load_template_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     $theme = filter_naughty(get_param_string('theme'));
-    $id = filter_naughty(get_param_string('id'));
-    $directory = filter_naughty(get_param_string('directory', 'templates'));
+    $id = filter_naughty(basename(get_param_string('id')));
+    $directory = filter_naughty(get_param_string('directory', dirname(get_param_string('id'))));
 
     $x = get_custom_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $id;
     if (!file_exists($x)) {
@@ -608,6 +533,7 @@ function load_template_script()
     if (!file_exists($x)) {
         $x = get_file_base() . '/themes/default/' . $directory . '/' . $id;
     }
+
     if (file_exists($x)) {
         echo file_get_contents($x);
     }
@@ -615,6 +541,8 @@ function load_template_script()
 
 /**
  * AJAX script for dynamic inclusion of CSS.
+ *
+ * @ignore
  */
 function sheet_script()
 {
@@ -629,6 +557,8 @@ function sheet_script()
 
 /**
  * AJAX script for dynamic inclusion of XHTML snippets.
+ *
+ * @ignore
  */
 function snippet_script()
 {
@@ -650,17 +580,5 @@ function snippet_script()
         }
     }
 
-    // End early execution listening (this means register_shutdown_function will run after connection closed - faster)
-    if (function_exists('apache_setenv')) {
-        @apache_setenv('no-gzip', '1');
-    }
-    safe_ini_set('zlib.output_compression', 'Off');
-    $size = strlen($out);
-    header('Connection: close');
-    @ignore_user_abort(true);
-    header('Content-Encoding: none');
-    header('Content-Length: ' . strval($size));
     echo $out;
-    @ob_end_flush();
-    flush();
 }

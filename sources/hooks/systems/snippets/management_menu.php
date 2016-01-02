@@ -26,13 +26,13 @@ class Hook_snippet_management_menu
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
         if (has_zone_access(get_member(), 'adminzone')) {
             require_code('menus');
-            return build_stored_menu('popup', '_management');
+            return build_menu('popup', 'adminzone:start,include=node,title=' . do_lang('menus:DASHBOARD') . ',icon=menu/adminzone/start + adminzone:,include=children,max_recurse_depth=4,use_page_groupings=1 + cms:,include=node,max_recurse_depth=3,use_page_groupings=1');
         }
         return new Tempcode();
     }

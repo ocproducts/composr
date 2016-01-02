@@ -86,9 +86,9 @@ class Hook_addon_registry_calculatr
     public function get_description()
     {
         return 'A little calculator block that you could use to allow users to work out for example: how much money they might make. To include it use something like this Comcode on a page:
-[code=\"Comcode\"][block message=\"You could be earning as much as $xxx per year after your first year\" equation=\"Math.pow((this.totalPerSale*this.numAverageSales)*this.numPerLevel,(1+this.levelsAchieved*(this.fractionPerLevel/100)))\" totalPerSale=\"Commission per sale in $\" numAverageSales=\"Number of sales per reseller per year\" numPerLevel=\"Number of partners per reseller per year\" levelsAchieved=\"The number of partner levels in a year\" fractionPerLevel=\"Relative partner commission per sale in %\"]main_calculator[/block][/code]
+[code="Comcode"][block message="You could be earning as much as $xxx per year after your first year" equation="Math.pow((this.totalPerSale*this.numAverageSales)*this.numPerLevel,(1+this.levelsAchieved*(this.fractionPerLevel/100)))" totalPerSale="Commission per sale in $" numAverageSales="Number of sales per reseller per year" numPerLevel="Number of partners per reseller per year" levelsAchieved="The number of partner levels in a year" fractionPerLevel="Relative partner commission per sale in %"]main_calculator[/block][/code]
 
-This is coded as a \"mini block\", and serves as a good example of how you can use PHP on a page. We have coded it into [tt]sources_custom/miniblocks/main_calculator.php[/tt]';
+This is coded as a "mini block", and serves as a good example of how you can use PHP on a page. We have coded it into [tt]sources_custom/miniblocks/main_calculator.php[/tt]';
     }
 
     /**
@@ -113,6 +113,16 @@ This is coded as a \"mini block\", and serves as a good example of how you can u
             'recommends' => array(),
             'conflicts_with' => array()
         );
+    }
+
+    /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
     }
 
     /**

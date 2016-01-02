@@ -50,6 +50,6 @@ class Hook_config_network_links
      */
     public function get_default()
     {
-        return get_base_url() . '/netlink.php';
+        return get_base_url() . '/data/netlink.php';
     }
 }

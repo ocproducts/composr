@@ -65,7 +65,10 @@ class Hook_addon_registry_image_slider
      */
     public function get_copyright_attribution()
     {
-        return array('Thiago Silva Ferreira', 'Robert Penner');
+        return array(
+            'Thiago Silva Ferreira',
+            'Robert Penner',
+        );
     }
 
     /**

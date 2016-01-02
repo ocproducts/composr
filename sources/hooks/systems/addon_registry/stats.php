@@ -129,7 +129,9 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/addon_registry/stats.php',
             'sources/hooks/modules/admin_import_types/stats.php',
             'sources/hooks/modules/admin_stats/.htaccess',
+            'sources_custom/hooks/modules/admin_stats/.htaccess',
             'sources/hooks/modules/admin_stats/index.html',
+            'sources_custom/hooks/modules/admin_stats/index.html',
             'themes/default/templates/STATS_GRAPH.tpl',
             'themes/default/templates/STATS_SCREEN.tpl',
             'themes/default/templates/STATS_SCREEN_ISCREEN.tpl',
@@ -145,6 +147,7 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/cleanup/stats.php',
             'sources/svg.php',
             'sources/hooks/systems/config/bot_stats.php',
+            'sources/hooks/systems/tasks/install_geolocation_data.php',
         );
     }
 

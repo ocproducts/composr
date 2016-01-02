@@ -51,7 +51,7 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('multi_moderation', strval($id));
+        generate_resource_fs_moniker('multi_moderation', strval($id));
     }
 }
 
@@ -71,7 +71,7 @@ function cns_delete_multi_moderation($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('multi_moderation', strval($id));
+        expunge_resource_fs_moniker('multi_moderation', strval($id));
     }
 }
 
@@ -89,7 +89,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
 {
     $topic_details = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_cache_first_title', 't_cache_first_post_id'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $topic_details)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
     }
     $from = $topic_details[0]['t_forum_id'];
     if (!cns_may_perform_multi_moderation($from)) {
@@ -98,7 +98,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
 
     $mm = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('*'), array('id' => $id));
     if (!array_key_exists(0, $mm)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
     }
 
     require_code('selectcode');
@@ -112,7 +112,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
     $sink_state = $mm[0]['mm_sink_state'];
     $move_to = $mm[0]['mm_move_to'];
     $title_suffix = $mm[0]['mm_title_suffix'];
-    //$post_text=$mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
+    //$post_text = $mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
     $update_array = array();
     if (!is_null($pin_state)) {
         $update_array['t_pinned'] = $pin_state;

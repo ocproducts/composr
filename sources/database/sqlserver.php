@@ -27,6 +27,8 @@ You need to go into your server properties and turn the security to "SQL Server 
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database__sqlserver()
 {
@@ -77,14 +79,14 @@ class Database_Static_sqlserver
         if ($index_name[0] == '#') {
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
-                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, 10000));
+                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax()));
                 $this->db_query('CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_field . ')', $db);
                 $this->db_query('CREATE FULLTEXT CATALOG ft AS DEFAULT', $db, null, null, true); // Might already exist
                 $this->db_query('CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name, $db, null, null, true);
             }
             return;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, 10000)) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**
@@ -152,7 +154,6 @@ class Database_Static_sqlserver
             'IP' => 'varchar(40)',
             'LANGUAGE_NAME' => 'varchar(5)',
             'URLPATH' => 'varchar(255)',
-            'MD5' => 'varchar(33)'
         );
         return $type_remap;
     }
@@ -286,12 +287,12 @@ class Database_Static_sqlserver
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
-        // Potential cacheing
+        // Potential caching
         if (isset($this->cache_db[$db_name][$db_host])) {
             return $this->cache_db[$db_name][$db_host];
         }

@@ -101,9 +101,7 @@ class Hook_addon_registry_core_comcode_pages
         return array(
             'themes/default/images/icons/24x24/menu/cms/comcode_page_edit.png',
             'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.png',
-            'sources/hooks/systems/config/number_revisions_show.php',
             'sources/hooks/systems/config/points_COMCODE_PAGE_ADD.php',
-            'sources/hooks/systems/config/store_revisions.php',
             'sources/hooks/systems/addon_registry/core_comcode_pages.php',
             'themes/default/templates/COMCODE_PAGE_EDIT_ACTIONS.tpl',
             'themes/default/templates/COMCODE_PAGE_BOX.tpl',
@@ -158,6 +156,12 @@ class Hook_addon_registry_core_comcode_pages
             'themes/default/images/icons/48x48/contact_methods/email.png',
             'themes/default/images/icons/48x48/contact_methods/index.html',
             'themes/default/images/icons/48x48/contact_methods/telephone.png',
+        	'themes/default/images/icons/24x24/links/google_plus.png',
+        	'themes/default/images/icons/24x24/links/skype.png',
+        	'themes/default/images/icons/24x24/links/xmpp.png',
+        	'themes/default/images/icons/48x48/links/google_plus.png',
+        	'themes/default/images/icons/48x48/links/skype.png',
+        	'themes/default/images/icons/48x48/links/xmpp.png',
             'themes/default/images/icons/24x24/tiers/bronze.png',
             'themes/default/images/icons/24x24/tiers/gold.png',
             'themes/default/images/icons/24x24/tiers/index.html',
@@ -252,7 +256,7 @@ class Hook_addon_registry_core_comcode_pages
                 'CONTENT' => lorem_phrase(),
                 'EDIT_URL' => placeholder_url(),
                 'ADD_CHILD_URL' => placeholder_url(),
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_id(),
                 'NATIVE_ZONE' => lorem_word(),
             )), null, '', true)
         );
@@ -285,7 +289,7 @@ class Hook_addon_registry_core_comcode_pages
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    function tpl_preview__administrative__comcode_page_sitemap()
+    public function tpl_preview__administrative__comcode_page_sitemap()
     {
         $menu_paths = array();
         $menu_paths[] = array(
@@ -294,7 +298,8 @@ class Hook_addon_registry_core_comcode_pages
             'MENU_PATH_COMPONENTS' => array(lorem_phrase()),
         );
 
-        $page_structure[] = array(
+        $_page_structure = array();
+        $_page_structure[] = array(
             'EDIT_URL' => placeholder_url(),
             'ZONE_NAME' => lorem_phrase(),
             'PAGE_NAME' => lorem_phrase(),
@@ -306,7 +311,7 @@ class Hook_addon_registry_core_comcode_pages
         );
 
         $page_structure = do_lorem_template('GENERATE_PAGE_SITEMAP', array(
-            'PAGE_STRUCTURE' => $page_structure,
+            'PAGE_STRUCTURE' => $_page_structure,
         ));
 
         return array(

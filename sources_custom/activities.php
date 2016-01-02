@@ -33,7 +33,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
     require_all_lang();
 
     /*if (isset($member_ids[0])) // Useful for testing
-        $viewer_member=$member_ids[0];*/
+        $viewer_member = $member_ids[0];*/
 
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $is_guest = is_guest($viewer_member); // Can't be doing with overcomplicated SQL breakages. Weed it out.
@@ -53,9 +53,10 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
         }
     }
 
+    $where_clause = '';
+
     switch ($mode) {
         case 'some_members': // This is used to view one's own activity (e.g. on a profile)
-            $where_clause = '';
             foreach ($member_ids as $member_id) {
                 if ($where_clause != '') {
                     $where_clause .= ' AND ';
@@ -100,8 +101,6 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
             break;
 
         case 'friends':
-            $where_clause = '';
-
             // "friends" only makes sense if the chat addon is installed
             if ((addon_installed('chat')) && (!$is_guest)) { // If not a guest, get all reciprocal friendships.
                 // Working on the principle that you only want to see people you like on this, only those you like and have not blocked will be selected
@@ -251,7 +250,7 @@ function render_activity($row, $use_inside_cms = true)
         $extra_lang_string_params
     ));
 
-    // Lang string may not use all params, so add extras on if were unused
+    // Language string may not use all params, so add extras on if were unused
     for ($i = 1; $i <= 3; $i++) {
         if ((strpos($row['a_language_string_code'], '_UNTYPED') === false) && (strpos($test, '{1}') === false) && (strpos($test, '{2}') === false) && (strpos($test, '{3}') === false) && ($row['a_label_' . strval($i)] != '')) {
             if (!$message->is_empty()) {
@@ -266,11 +265,11 @@ function render_activity($row, $use_inside_cms = true)
 }
 
 /**
- * Convert a page-link into a tempcode.
+ * Convert a page-link into a Tempcode.
  *
  * @param  string $page_link The page-link
  * @param  boolean $external Whether the link is for putting out externally to the site (so no keep_* parameters)
- * @return array tempcode url
+ * @return array Tempcode url
  */
 function page_link_to_tempcode($page_link, $external = false)
 {

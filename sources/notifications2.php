@@ -22,7 +22,8 @@
  * Get a map of notification types available to our member.
  *
  * @param  ?MEMBER $member_id_of Member this is for (null: just check globally)
- * @return array Map of notification types (integer code to language string code)
+ * @return array Map of notification types (integer code to language string ID)
+ * @ignore
  */
 function _get_available_notification_types($member_id_of = null)
 {
@@ -41,6 +42,12 @@ function _get_available_notification_types($member_id_of = null)
             $_notification_types[$possible] = $ntype;
         }
     }
+
+    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+        $_notification_types += $ob->_get_available_notification_types($member_id_of);
+    }
+
     return $_notification_types;
 }
 
@@ -48,7 +55,7 @@ function _get_available_notification_types($member_id_of = null)
  * Put out a user interface for managing notifications overall.
  *
  * @param  MEMBER $member_id_of Member this is for
- * @return tempcode UI
+ * @return Tempcode UI
  */
 function notifications_ui($member_id_of)
 {
@@ -71,8 +78,6 @@ function notifications_ui($member_id_of)
     if (count($_notification_types) == 0) {
         return new Tempcode();
     }
-
-    $statistical_notification_type = _find_member_statistical_notification_type($member_id_of);
 
     $lockdown = collapse_2d_complexity('l_notification_code', 'l_setting', $GLOBALS['SITE_DB']->query_select('notification_lockdown', array('*')));
 
@@ -99,7 +104,7 @@ function notifications_ui($member_id_of)
             if ($ob->member_could_potentially_enable($notification_code, $member_id_of)) {
                 $current_setting = notifications_setting($notification_code, null, $member_id_of);
                 if ($current_setting == A__STATISTICAL) {
-                    $current_setting = $statistical_notification_type;
+                    $current_setting = _find_member_statistical_notification_type($member_id_of, $notification_code);
                 }
                 $allowed_setting = $ob->allowed_settings($notification_code);
 
@@ -225,9 +230,9 @@ function notifications_ui($member_id_of)
  * Put out a user interface for managing notifications for a notification-category supporting content type. Also toggle notifications if an ID is passed.
  *
  * @param  ID_TEXT $notification_code The notification code to work with
- * @param  ?tempcode $enable_message Special message to output if we have toggled to enable (null: use standard)
- * @param  ?tempcode $disable_message Special message to output if we have toggled to disable (null: use standard)
- * @return tempcode UI
+ * @param  ?Tempcode $enable_message Special message to output if we have toggled to enable (null: use standard)
+ * @param  ?Tempcode $disable_message Special message to output if we have toggled to disable (null: use standard)
+ * @return Tempcode UI
  */
 function notifications_ui_advanced($notification_code, $enable_message = null, $disable_message = null)
 {
@@ -371,13 +376,13 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
  * @param  integer $depth Recursion depth
  * @param  ?boolean $force_change_children_to Value to change setting to (null: do not change)
  * @param  boolean $done_get_change Whether we have made a change to the settings
- * @return tempcode UI
+ * @return Tempcode UI
+ *
+ * @ignore
  */
 function _notifications_build_category_tree($_notification_types, $notification_code, $ob, $id, $depth, $force_change_children_to, &$done_get_change)
 {
     $_notification_categories = $ob->create_category_tree($notification_code, $id);
-
-    $statistical_notification_type = _find_member_statistical_notification_type(get_member());
 
     $notification_categories = array();
     foreach ($_notification_categories as $c) {
@@ -385,7 +390,7 @@ function _notifications_build_category_tree($_notification_types, $notification_
 
         $current_setting = notifications_setting($notification_code, $notification_category);
         if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member());
+            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
         }
 
         $notification_category_being_changed = get_param_string('id', null);
@@ -409,14 +414,14 @@ function _notifications_build_category_tree($_notification_types, $notification_
 
         $current_setting = notifications_setting($notification_code, $notification_category);
         if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member());
+            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
         }
 
         $notification_types = array();
         foreach ($_notification_types as $possible => $ntype) {
             $current_setting = notifications_setting($notification_code, $notification_category);
             if ($current_setting == A__STATISTICAL) {
-                $current_setting = $statistical_notification_type;
+                $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
             }
             $allowed_setting = $ob->allowed_settings($notification_code);
 

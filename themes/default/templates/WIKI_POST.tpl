@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="cns_post_details_date">
-			{!POST_DATE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
+			{!POSTED_TIME_SIMPLE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
 		</div>
 
 		{+START,IF_NON_EMPTY,{UNVALIDATED}}
@@ -42,7 +42,7 @@
 						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}">
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility_hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input onclick="var button=document.getElementById('wiki_merge_button'); button.className=button.className.replace(' button_faded','');" {+START,IF,{$NOT,{$IS_GUEST}}}title="{!MARKER} #{ID*}" {+END}value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
+								<input onclick="var button=document.getElementById('wiki_merge_button'); button.className=button.className.replace(' button_faded','');"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
 							</div>
 						</form>
 					</div>

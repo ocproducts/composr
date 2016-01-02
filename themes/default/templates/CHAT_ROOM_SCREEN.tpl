@@ -32,10 +32,6 @@
 				{+END}
 			{+END}
 		</div>
-		<div class="chat_you_are">
-			{!LOGGED_IN_AS,{YOUR_NAME*}}
-			<img alt="" src="{$IMG*,icons/24x24/tabs/member_account/profile2}" srcset="{$IMG*,icons/48x48/tabs/member_account/profile2} 2x" />
-		</div>
 		<div class="right">
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('chat_comcode_panel');"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
 		</div>
@@ -64,6 +60,8 @@
 </p></div>
 
 <form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
 		<h2>{!OPTIONS}</h2>
 
@@ -78,13 +76,13 @@
 						<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 					</p>
 					<p>
-						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
+						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
 					</p>
 				</div>
 
 				<div class="chat_font_option">
 					<p>
-						<label for="text_colour">{!CHAT_OPTIONS_TEXT_NAME}:</label>
+						<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 					</p>
 					<p>
 						<select onclick="this.onchange(event);" onchange="on_font_change(this);" id="font_name" name="font_name">
@@ -114,17 +112,17 @@
 					{+END}
 				{+END}
 			</ul>
-
-			<div class="force_margin">
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=member_entered_chatroom
-					NOTIFICATIONS_ID={CHATROOM_ID}
-					BREAK=1
-				{+END}
-			</div>
 		</div>
 	</div></div>
 </form>
+
+<div class="force_margin">
+	{+START,INCLUDE,NOTIFICATION_BUTTONS}
+		NOTIFICATIONS_TYPE=member_entered_chatroom
+		NOTIFICATIONS_ID={CHATROOM_ID}
+		BREAK=1
+	{+END}
+</div>
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'real_load',function() {

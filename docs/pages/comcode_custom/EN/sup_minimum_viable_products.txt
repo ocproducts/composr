@@ -1,0 +1,99 @@
+[title sub="Written by Chris Graham (ocProducts CEO)"]Composr Supplementary: Minimum Viable Products[/title]
+
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_minimum_viable_products/image.jpg[/media]
+At the time of writing, Composr has approximately half a million lines of code. Our code is actually some of the most compact out there -- if it was written less tersely, it would be millions of lines. Composr has been created with roughly 12 man-years of non-stop development, to very high standards. We have created new programming languages, new compilers, our own fork of PHP, and done plenty of other crazy things -- all in the name of building and maintaining a huge codebase on a limited budget, and making it easy for people to use. I'm fairly sure we have more functionality in Composr than any other website building system.
+
+As a result of the strength of Composr, and the expertise within it all, commercial projects result in a constant churn of new functionality for new versions of Composr.
+
+Users create sites in Composr that continue to amaze me. There is great variety. There is incredible design. There are wonderful online communities, large and small. There are really interesting businesses and organisations covering just about everything.
+
+[title="2"]Unintended consequences -- underestimation[/title]
+
+Sometimes great successes can lead to unintended consequences. Sometimes users get 90% of required feature points easily and for free, but can underestimate the challenge of the remaining 10% :$. The intent of this tutorial is to help users navigate through, or around, this challenge. The [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page] covers similar ground, but from a different perspective.
+
+Because we give Composr away for free rather than selling it for a high figure, Composr can seem like something that was put together relatively easily. The same applies to many free websites, or other web systems. We have avoided taking venture capital to create Composr because we felt it would encumber the value of what we were creating and/or cause enormous distraction (it has actually been brought to us as an option, even though none of us are based near London or Silicon Valley). Instead, Composr is built on a lot of very hard work and sacrifices over a decade now. Again, this makes it hard for users to quantify the real investment made in the project. We are also grateful for the feature sponsorships that many valued and loyal users have made, to help push things forward even further.
+
+Because we have a lot of very flexible features and languages within Composr (more no-serious-programming-required flexibility than any other CMS I think), it can seem like [i]anything one needs[/i] will be possible if you just put in the necessary Comcode. Unfortunately, for any project that has ambitions beyond a simple info-site or blog, this is a risky way of thinking. We're [page="site:anti-features"]extremely upfront[/page] about the need for planning and budgeting, because openness is a core part of [page="site:vision"]our ethos[/page]. Other projects should be open about it too, because it usually affects them even more than it affects us -- everyone in "pre-packaged" software needs to make sure they are not perceived to be selling a panacea that does not exist -- well, everyone in software with a conscience and a desire to sleep at night.
+
+The truth is that the kind of people who love Composr usually want a website that is special. You probably don't want a clone of some other existing website; what would be the point? If you really did want a clone of another site, you'd use some unimaginative clone software and be done with it. You want differentiation (a [acronym="Unique Selling Point"]USP[/acronym]).
+
+Your website functionality is going to consist of 4 things:
+1) Really standard stuff any web-CMS can do
+2) Some pretty cool stuff that maybe only Composr does well (for example, points)
+3) Some custom functionality you can create yourself using Composr tools
+4) Entirely custom functionality / Customised functionality
+
+'2' and '3' are what really set Composr apart from other systems. However, we see cases of '4' where users actually assume it is '3'. My mission is to help people avoid hurdles and succeed, hence this tutorial, and the solutions I'll present. The truth is that you can't always just take anything you've seen somewhere in Composr or the wider web, mix it with something else, and create a new piece of hybrid functionality. When software components work together, they do so because an engineer has carefully lined up dozens of interfaces to make it happen (technical, as well as user interfaces): hopefully in concert with someone thinking deeply about user experience.
+
+Example #1:
+If I wanted a gallery that could have long video descriptions that could be edited as a wiki, it would be wrong to try and force these two parts of Composr together -- each system has dozens of user interaction paths, and the only way to meld them would be via an engineer giving each one consideration within actual PHP code. By the time that was done, you'd have been better off just taking one system, and having a programmer create new functionality from scratch, utilising simpler low-level components Composr might have to offer (e.g. Comcode, form widgets, validation code, and so on). Unfortunately we sometimes do see people spend days and tie their website in knots, just to avoid hiring a programmer for a few hours. I'm not saying you necessarily have to hire a programmer at all, but I'll get to that further down.
+
+Example #2:
+It's easy to imagine how some feature can be improved a little bit. How about we allow video banners. It seems simple, because Composr supports videos and supports banners. However even though both components exists somewhere in the Composr ecosystem, and it's perfectly easy to see how we'd fit them together, it's rare that a programmer could plan out work, write an amount of code to a professional standard, explain, and deploy it, without it being at least a few hours of work. Or if there's a novel way to do it already, a support operator probably would still take around an hour to research a solution involving multiple systems then document it in a user-friendly way. This is the key thing -- even a relatively small enhancement of an enormously sophisticated system, can still be a fair chunk of work in real terms. For people funding a project out of disposable income, a few hours work, even it it were for someone on minimum wage, is still a lot of money -- let alone the cost of having highly-skilled/educated/experienced programmers do things.
+
+[title="2"]Programming is hard[/title]
+
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_minimum_viable_products/image2.jpg[/media]
+Computer programming is an incredibly focused activity, often telling the computer what to do down to details that a layman never even realised existed. Computers are dumb, things rarely can connect together automatically, everything has to be explicitly defined.
+
+Unfortunately programmers often are pretty guilty of underestimating their work too. Good programmers have to be quite optimistic about code writing, otherwise it would be hard to stay motivated -- but they often don't notice the hours ticking away on the clock as they are getting stuff done.
+
+The good news is that once programming is done, it is wonderful just how much stuff can be re-used, and how much flexibility you can code in to it.
+I realise I am being a bit contradictory here, on one hand saying things need to be explicit, and on the other hand saying things can be flexible -- this is part of why it is difficult for a user to understand why not everything can be moulded. The truth is that it really varies a lot, from case to case; things that are relatively standalone tend to be flexible in their deployment, while things with inter-connections tend to require a programmer's touch. Integrating components into something not designed for components also requires a programmer's touch.
+
+[title="2"]The low-cost solution is to make a minimum viable product[/title]
+
+Assuming you don't have a high budget (the great majority), are not a programmer yourself, won't/can't learn programming, don't have volunteer programmers, do not just want a clone site, and you don't want to plan out your full implementation upfront, what are you to do?
+
+The answer is to focus on "Minimum Viable Product" (MVP). That is, a product (website) that has just enough functionality in it to meet your user's basic needs. Don't start with the expectation you'll need to have more functionality, and more flexibility, than anyone else. I know it's tempting, and exciting, and you want to make a big splash, but it is usually a big mistake and not even in your user's/customer's interest.
+
+Find simple ways to do things without only going for the idealised solution that you don't actually need. With a little creativity in how you approach your implementation, your users won't even know that you are working within constraints. By creativity, I don't mean gluing stuff together like a mad-man (which Composr's rich feature set makes a tempting idea) -- I mean just avoiding unnecessary complexity by finding something simple that achieves the same objective. By simple, I don't mean something with a poor user-experience -- it things are overtly clunky, users will not engage.
+
+After focusing on doing something simple really well, you hopefully will then have actual revenue to invest back into your business, expanding your offering.
+
+MVP allows you to be more nimble than your competitors. Their behemoth of a solution can't compete with your well-tuned and marketed one.
+
+MVP simplicity is not only something to save you money/effort, it also makes things easier to maintain, but crucially it can mean less for your visitors/users to have to scan/absorb.
+
+[title="3"]Agile[/title]
+
+I would like to note that the MVP approach fits very well within a model of agile (iterative) development. This significantly cuts down your upfront costs, and general risk (trying too much all at once --> likely failure), and lets you switch around your plans based on what you learn during development and experience in the market.
+
+There is a section in the [page="_SEARCH:sup_pricing"]Project pricing tutorial[/page] that covers how agile works with project pricing.
+
+[title="3"]I can hear your objections already[/title]
+
+You may well be thinking something like:
+[quote="In your head"]
+For my site's requirements, I need (...)
+[/quote]
+
+Are you sure you [i]need[/i] to? Throughout the development of Composr, we have always seen users pushing the features at the edge of the product to implement what are seen as basic requirements for a vision. It's similar to the classic problem of motorway building in the UK -- however many roads get built, they always end up clogged up. It's also the case that quite some time back we reached the point where adding any more flexibility would make Composr a more complex and confusing product. The reality is that too often the fact Composr has so many features/configurability (more than most other CMSs) works like a drug on users, deferring the realisation that any out-of-the-box product will have limits -- often to the detriment, as we give a lot of rope to hang yourself with.
+
+I stress that there are only three viable ways to build a complex site:
+1) Either have a budget comparable to other complex sites, and employ programmers (next section)
+2) Be a programmer yourself
+3) Simplify down to a minimum viable product that sits [i]well within[/i] the features of the software used, and then consider expanding complexity only after launch
+
+It is vital that any user of any CMS make this realisation as early as possible in their site to avoid digging too much of a hole, when focus should usually be on content/sales/relationship-building.
+
+Take a site such as techcrunch.com. It is a wildly successful site, but not much more than Wordpress. They could have come in wanting to create something like Reddit (which was created with a huge amount of programming investment), but instead they focused on adding value only through the content they write. TechCrunch is a good example of a minimum viable product, while Reddit is a good example of a custom vision implemented via a team of programmers and funded by professional investment. Both have their place. What you never see is complex/custom well-designed sites, made by non-programmers, without strong budgets -- I'd challenge anyone to come up with a single example that didn't at least have an in-house IT team behind it. Software like Composr provides a [i]base[/i] for something very tailored & sophisticated to be developed, or it provides a [i]commodity system[/i] to lay other business value on top of (e.g. news site, social community, and so on -- standard kinds of out-of-the-box site). The distinction with Composr is it lets you mix things up much more than other software does, but still definitely within limits.
+
+[title="2"]The higher-cost solution is to invest in engineering and talent[/title]
+
+Sometimes it is inescapable that a market will be competitive, or inherently expensive to operate in, or a target market particularly demanding.
+
+You might need to be an Apple to displace a Microsoft ;).
+
+The truth is, increasingly Composr is not just a tool to help you save money -- it is actually an essential tool if you want your project to have any chance of your success. For quite some time now people have been needing to use CMSs or frameworks to get stuff going. This ties into what I said earlier -- if you want to be differentiated in the mature web (in a competitive market without exploitable niches), while you need to stand on the shoulders of giants to do anything impressive, you also need to be adding enough height of your own.
+
+The market adapts to innovations such as Composr. The expectations from your website are based on the level of competition, which is based on what people can invest, which is based upon the value of the attainable market share. So, all things being equal, budgets largely stay the same but new technology means that expectations grow. You win by using a pre-existing tower of technology, then spending your budget adding a good dose of strong differentiation on top, focusing it to where it really delivers that extra shine or unique functionality. Plan smart, fund well, pick the right technology, implement something amazing, market it well, and repeat.
+
+[title="2"]See also[/title]
+
+ - https://pragprog.com/magazines/2010-10/way-of-the-agile-warrior
+ - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
+ - [page="_SEARCH:sup_pricing"]Project pricing[/page]
+ - [page="_SEARCH:sup_running_agency"]Guide to running a web agency[/page]
+
+{$SET,tutorial_tags,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,The importance of simplifying and aligning requirements, in order to kickstart a seemingly complex project.}[block]main_tutorial_rating[/block]

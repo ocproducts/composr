@@ -78,7 +78,7 @@ class Hook_fields_posting_field
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -101,7 +101,7 @@ class Hook_fields_posting_field
      * @param  ?string $actual_value The actual current value of the field (null: none)
      * @param  boolean $new Whether this is for a new entry
      * @param  boolean $last Whether this is the last field in the catalogue
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new, $last = true)
     {
@@ -120,19 +120,21 @@ class Hook_fields_posting_field
 
         $tabindex = get_form_field_tabindex();
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         $actual_value = filter_form_field_default($_cf_name, $actual_value);
 
-        list($attachments, $attach_size_field) = get_attachments('field_' . strval($field['id']));
+        list($attachments, $attach_size_field) = get_attachments($input_name);
 
         $hidden_fields = new Tempcode();
         $hidden_fields->attach($attach_size_field);
 
         $help_zone = get_comcode_zone('userguide_comcode', false);
 
-        $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser('field_' . strval($field['id']));
+        $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser($input_name);
 
-        $comcode_editor = get_comcode_editor('field_' . strval($field['id']));
-        $comcode_editor_small = get_comcode_editor('field_' . strval($field['id']), true);
+        $comcode_editor = get_comcode_editor($input_name);
+        $comcode_editor_small = get_comcode_editor($input_name, true);
 
         $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($actual_value, '{$,page hint: no_wysiwyg}') === false));
 
@@ -162,7 +164,7 @@ class Hook_fields_posting_field
             'DESCRIPTION' => $_cf_description,
             'HIDDEN_FIELDS' => $hidden_fields,
             'PRETTY_NAME' => $_cf_name,
-            'NAME' => 'field_' . strval($field['id']),
+            'NAME' => $input_name,
             'TABINDEX_PF' => strval($tabindex)/*not called TABINDEX due to conflict with FORM_STANDARD_END*/,
             'COMCODE_EDITOR' => $comcode_editor,
             'COMCODE_EDITOR_SMALL' => $comcode_editor_small,
@@ -186,7 +188,7 @@ class Hook_fields_posting_field
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

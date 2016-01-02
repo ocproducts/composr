@@ -114,7 +114,9 @@ class Hook_addon_registry_core_notifications
             'lang/EN/notifications.ini',
             'sources/hooks/systems/cron/notification_digests.php',
             'sources/hooks/systems/notifications/.htaccess',
+            'sources_custom/hooks/systems/notifications/.htaccess',
             'sources/hooks/systems/notifications/index.html',
+            'sources_custom/hooks/systems/notifications/index.html',
             'sources/hooks/systems/profiles_tabs_edit/notifications.php',
             'themes/default/css/notifications.css',
             'themes/default/javascript/notifications.js',
@@ -132,6 +134,9 @@ class Hook_addon_registry_core_notifications
             'sources/hooks/systems/config/notification_keep_days.php',
             'sources/hooks/systems/config/web_notifications_enabled.php',
             'sources/hooks/systems/config/notification_poll_frequency.php',
+            'sources/hooks/systems/config/notification_desktop_alerts.php',
+            'sources/hooks/systems/config/notification_enable_digests.php',
+            'sources/hooks/systems/config/notification_enable_private_topics.php',
             'data/notifications.php',
             'sources/blocks/top_notifications.php',
             'sources/hooks/systems/startup/notification_poller_init.php',
@@ -149,6 +154,12 @@ class Hook_addon_registry_core_notifications
             'data_custom/modules/web_notifications/.htaccess',
             'data_custom/modules/web_notifications/index.html',
             'sources/hooks/systems/tasks/dispatch_notification.php',
+            'sources/hooks/systems/notification_types_extended/.htaccess',
+            'sources/hooks/systems/notification_types_extended/index.html',
+            'sources_custom/hooks/systems/notification_types_extended/.htaccess',
+            'sources_custom/hooks/systems/notification_types_extended/index.html',
+            'sources/hooks/systems/rss/web_notifications.php',
+            'sources/hooks/systems/commandr_fs_extended_member/notifications_enabled.php',
         );
     }
 
@@ -196,7 +207,7 @@ class Hook_addon_registry_core_notifications
                 'FROM_AVATAR_URL' => placeholder_image_url(),
                 'PRIORITY' => '3',
                 'DATE_TIMESTAMP' => placeholder_date_raw(),
-                'DATE_WRITTEN_TIME' => placeholder_time(),
+                'DATE_WRITTEN_TIME' => placeholder_date(),
                 'NOTIFICATION_CODE' => placeholder_id(),
                 'CODE_CATEGORY' => placeholder_id(),
                 'HAS_READ' => false,
@@ -234,7 +245,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
             'HAS_READ' => true,
@@ -280,7 +291,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
             'HAS_READ' => true,
@@ -310,7 +321,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
         ));
@@ -338,7 +349,7 @@ class Hook_addon_registry_core_notifications
             'URL' => placeholder_url(),
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
         ));
 
         return array(

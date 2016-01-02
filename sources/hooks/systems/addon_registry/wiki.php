@@ -99,10 +99,8 @@ class Hook_addon_registry_wiki
     {
         return array(
             'themes/default/images/icons/24x24/menu/rich_content/wiki.png',
-            'themes/default/images/icons/24x24/menu/rich_content/wiki/change_log.png',
             'themes/default/images/icons/24x24/menu/rich_content/wiki/random_page.png',
             'themes/default/images/icons/48x48/menu/rich_content/wiki.png',
-            'themes/default/images/icons/48x48/menu/rich_content/wiki/change_log.png',
             'themes/default/images/icons/48x48/menu/rich_content/wiki/random_page.png',
             'themes/default/images/icons/24x24/buttons/edit_tree.png',
             'themes/default/images/icons/48x48/buttons/edit_tree.png',
@@ -125,7 +123,6 @@ class Hook_addon_registry_wiki
             'sources/hooks/systems/addon_registry/wiki.php',
             'sources/hooks/modules/admin_themewizard/wiki.php',
             'sources/hooks/modules/admin_import_types/wiki.php',
-            'themes/default/templates/WIKI_CHANGES_SCREEN.tpl',
             'themes/default/templates/WIKI_LIST_TREE_LINE.tpl',
             'themes/default/templates/WIKI_MANAGE_TREE_SCREEN.tpl',
             'themes/default/templates/WIKI_PAGE_SCREEN.tpl',
@@ -173,7 +170,6 @@ class Hook_addon_registry_wiki
             'templates/WIKI_SUBCATEGORY_LINK.tpl' => 'wiki_page_screen',
             'templates/WIKI_POST.tpl' => 'wiki_page_screen',
             'templates/WIKI_PAGE_SCREEN.tpl' => 'wiki_page_screen',
-            'templates/WIKI_CHANGES_SCREEN.tpl' => 'wiki_changes_screen',
             'templates/WIKI_RATING.tpl' => 'wiki_page_screen',
             'templates/WIKI_POSTING_SCREEN.tpl' => 'wiki_posting_screen',
             'templates/WIKI_RATING_FORM.tpl' => 'wiki_page_screen'
@@ -314,23 +310,6 @@ class Hook_addon_registry_wiki
                 'POSTS' => $posts,
                 'NUM_POSTS' => placeholder_number(),
                 'BUTTONS' => placeholder_button(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__wiki_changes_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('WIKI_CHANGES_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'RESULTS' => lorem_phrase(),
             )), null, '', true)
         );
     }

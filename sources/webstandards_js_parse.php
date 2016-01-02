@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webstandards_js_parse()
 {
@@ -47,6 +49,7 @@ function webstandards_js_parse()
  * Return parse info for parse type.
  *
  * @return ?map Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_js()
 {
@@ -68,7 +71,7 @@ function _webstandards_js_parse_js()
                         js_log_warning('PARSER', 'Duplicated function \'' . $_function['name'] . '\'');
                     }
                 }
-                //log_special('defined',$_function['name']);
+                //log_special('defined', $_function['name']);
                 $program['functions'][] = $_function;
 
                 // Sometimes happens when people get confused by =function() and function blah() {};
@@ -96,6 +99,7 @@ function _webstandards_js_parse_js()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_command()
 {
@@ -148,6 +152,7 @@ function _webstandards_js_parse_command()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_command_actual()
 {
@@ -455,6 +460,7 @@ function _webstandards_js_parse_command_actual()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_if_rest()
 {
@@ -482,6 +488,7 @@ function _webstandards_js_parse_if_rest()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_cases()
 {
@@ -547,6 +554,7 @@ function _webstandards_js_parse_cases()
  *
  * @param  boolean $anonymous Whether this is an anonymous function
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_function_dec($anonymous = false)
 {
@@ -583,6 +591,7 @@ function _webstandards_js_parse_function_dec($anonymous = false)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_expression()
 {
@@ -679,6 +688,7 @@ function precedence_sort($op_list)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_expression_inner()
 {
@@ -889,6 +899,7 @@ function _webstandards_js_parse_expression_inner()
  *
  * @param  list $variable The variable
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_identify_chain($variable)
 {
@@ -914,7 +925,7 @@ function _webstandards_js_parse_identify_chain($variable)
                 return null;
             }
             $expression = array('CALL', $variable, $parameters, $GLOBALS['JS_PARSE_POSITION']);
-            //log_special('functions',$next[1].'/'.count($parameters)); Useful for debugging
+            //log_special('functions', $next[1] . '/' . count($parameters)); Useful for debugging
 
             // Now, it is possible we are actually part of a larger variable
             $next_2 = parser_peek();
@@ -962,6 +973,7 @@ function _webstandards_js_parse_identify_chain($variable)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_variable()
 {
@@ -985,6 +997,7 @@ function _webstandards_js_parse_variable()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_variable_actual()
 {
@@ -1053,6 +1066,7 @@ function _webstandards_js_parse_variable_actual()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_assignment_operator()
 {
@@ -1070,6 +1084,7 @@ function _webstandards_js_parse_assignment_operator()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_literal()
 {
@@ -1138,6 +1153,7 @@ function _webstandards_js_parse_literal()
  *
  * @param  boolean $allow_blanks Whether to allow blanks in the list
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_expressions($allow_blanks = false)
 {
@@ -1177,6 +1193,7 @@ function _webstandards_js_parse_comma_expressions($allow_blanks = false)
  *
  * @param  boolean $allow_blanks Whether to allow blanks in the list
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_variables($allow_blanks = false)
 {
@@ -1225,6 +1242,7 @@ function _webstandards_js_parse_comma_variables($allow_blanks = false)
  * @param  boolean $allow_expressions Whether to allow expressions in this
  * @param  string $separator The token that sits as the 'separator' between name and value
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_parameters($allow_expressions = true, $separator = 'EQUAL')
 {
@@ -1260,6 +1278,7 @@ function _webstandards_js_parse_comma_parameters($allow_expressions = true, $sep
  * @param  boolean $allow_expressions Whether to allow expressions in this
  * @param  string $separator The token that sits as the 'separator' between name and value
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_parameter($allow_expressions = true, $separator = 'EQUAL')
 {
@@ -1389,7 +1408,7 @@ function parser_next($all = false)
  * Give a parse error.
  *
  * @param  string $message The error
- * @return ?boolean Always NULL (null: exit)
+ * @return ?boolean Always null (null: exit)
  */
 function webstandards_js_parser_error($message)
 {

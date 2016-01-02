@@ -1,17 +1,17 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom structured content (via catalogues)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Custom structured content (via catalogues)[/title]
 
-[media width="150" description="Adding a catalogue" float="right"]data_custom/images/docs/catalogues_add.png[/media]
+[media width="150" description="Adding a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add.png[/media]
 {!catalogues:DOC_CATALOGUES}
+
+(in American English catalogues are spelled "catalogs")
+
 The pre-made catalogues are:
- - Links
- - FAQs
- - Modifications
- - Hosted-sites
- - Developer-projects
- - Contacts
+ - Links (for sharing links with visitors)
+ - FAQs (frequently asked questions and answers)
+ - Super-members projects (see the [page="_SEARCH:tut_collaboration"]Running a collaboration hub: the Collaboration Zone[/page] tutorial)
+ - Contacts (a simple contacts directory / address book)
 All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
 
-[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/catalogues_choose_to_add_to.png[/media]
 Catalogues can be used to model most things required by large websites that would otherwise have to be implemented either as new modules, or hard-coded pages. Note that catalogues are designed to store records of which there are likely more than one, not as a container for all unstructured custom information (that is what Comcode pages are for).
 
 Catalogues are initially defined by the fields in them. 'Categories' are then made in the catalogue. Then categories are filled with 'entries'.
@@ -20,11 +20,11 @@ Catalogues are initially defined by the fields in them. 'Categories' are then ma
 
 [title="2"]A warning[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 In some way we give you enough rope to hang yourself with via catalogues. In most cases, catalogues are great, but if you're not creating a pretty simple set of records you'll probably want a programmer.
 
-For a more detailed discussion, see this blog post:
-http://compo.sr/site/news/view/chris_grahams_blog/delivering-innovation.htm
-I also highly advise reading the [page="site:anti_features"]what Composr is not[/page] page which tries to spell out the practical realities of how to work with Composr (or any CMS really).
+For a more detailed discussion, see the [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page].
+I also highly advise reading the [page=":antifeatures"]what Composr is not[/page] page which tries to spell out the practical realities of how to work with Composr (or any CMS really).
 
 There are loads of features within the catalogue system, and there are more we could add to give yet further power that could be sponsored. Just proceed with caution, considering the cases laid out below.
 
@@ -49,36 +49,32 @@ If you later want to add some custom code features for interacting with catalogu
 
 [title="2"]Fields[/title]
 
-[surround]
-[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/catalogues_add_entry.png[/media][media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/catalogues_do_next.png[/media]
 A catalogue consists of a number of fields.
 
 You may order the fields, make some invisible, make some optional, and choose which defines ordering.
 
 The first field in a catalogue is used as the title field for entries in that catalogue.
 
-You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr search module).
+You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr [tt]search[/tt] module).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
-[/surround]
 
 [title="2"]Modes of display[/title]
 
-[media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/catalogues_view_index.png[/media]
+[surround]
+[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_entry.png[/media]
+[media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_index.png[/media]
 There are two options to set how a catalogue may display:
- - 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
- - 'Is tree' -- a tree catalogue has a full hierarchical category tree, much like the download system does; a non-tree catalogue just shows the categories from a single catalogue index.
+1) 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
+2) 'Is tree' -- a tree catalogue has a full hierarchical category tree, much like the download system does; a non-tree catalogue just shows the categories from a single catalogue index.
 
 Note that if you set all fields of your catalogue to "Display in category-views" and disable comments and ratings and trackbacks, there will be no links to the entry view screen. This is due to there being little purpose in this screen because everything already displays on categories.
-
-[surround]
-[media width="150" description="A catalogue with 'own pages' enabled" float="left"]data_custom/images/docs/catalogues_own_pages.png[/media]
-[media width="150" description="A catalogue without 'own pages' enabled" float="left"]data_custom/images/docs/catalogues_not_own_pages.png[/media]
-[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/catalogues_view_entry.png[/media]
 [/surround]
 
 [title="3"]Display type[/title]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_title_lists.png[/media]
 [title="4"]Title lists[/title]
 
 Title lists are very simple lists of links. Each link links through to the full entry screen.
@@ -86,7 +82,10 @@ Title lists are very simple lists of links. Each link links through to the full 
 Templates:
  - [tt]CATALOGUE_*_TITLELIST_ENTRY.tpl[/tt]
  - [tt]CATALOGUE_*_TITLELIST_WRAP.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Field-maps" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_field_maps.png[/media]
 [title="4"]Field-maps[/title]
 
 Field-maps are the most flexible display type because they can easily and automatically expand to show as much field data within the category view as you want.
@@ -94,7 +93,10 @@ Field-maps are the most flexible display type because they can easily and automa
 Templates:
  - [tt]CATALOGUE_*_FIELDMAP_ENTRY_WRAP.tpl[/tt]
  - [tt]CATALOGUE_*_FIELDMAP_ENTRY_FIELD.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Tabular listings" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_tabular_listings.png[/media]
 [title="4"]Tabular listings[/title]
 
 Tabular listings will show your entries in columns. This works well if the data within any particular category-displayed field is short, and if there aren't too many of them.
@@ -104,21 +106,27 @@ Templates:
  - [tt]CATALOGUE_*_TABULAR_ENTRY_FIELD.tpl[/tt]
  - [tt]CATALOGUE_*_TABULAR_HEADCELL.tpl[/tt]
  - [tt]CATALOGUE_*_TABULAR_WRAP.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_grid_images.png[/media]
 [title="4"]Grid of images[/title]
 
 This is probably the most attractive display, and works well if you only really need to show a title and a thumbnail on the category screen.
 
 The default template ([tt]CATALOGUE_DEFAULT_GRID_ENTRY_WRAP.tpl[/tt]) assumes the first field is the title and the second field is the picture.
 You therefore need to either:
-1) Follow this convention
-2) Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
+[list="a"]
+[*] Follow this convention
+[*] Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
+[/list]
 
 However there is an important exception to the above. The products catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the products catalogue because they have a hard-coded meaning.
 
 Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_WRAP.tpl[/tt]
  - [tt]CATALOGUE_*_GRID_ENTRY_FIELD.tpl[/tt]
+[/surround]
 
 [title="2"]Creating a tree catalogue, fast[/title]
 
@@ -126,89 +134,151 @@ There is a special feature on the screen to add a catalogue with a category tree
 To define the tree you just need to type in the categories you want in a special format that is very quick to write.
 
 This is best shown by example, so here is an example for a catalogue category tree with that has categories for each of the states/provinces in the USA and Canada:
-[code]
+[code="Text"]
 USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\Connecticut|USA\Delaware|USA\Florida|USA\Georgia|USA\Hawaii|USA\Idaho|USA\Illinois|USA\Indiana|USA\Iowa|USA\Kansas|USA\Kentucky|USA\Louisiana|USA\Maine|USA\Maryland|USA\Massachusetts|USA\Michigan|USA\Minnesota|USA\Mississippi|USA\Missouri|USA\Montana|USA\Nebraska|USA\Nevada|USA\New Hampshire|USA\New Jersey|USA\New Mexico|USA\New York|USA\North Carolina|USA\North Dakota|USA\Ohio|USA\Oklahoma|USA\Oregon|USA\Pennsylvania|USA\Rhode Island|USA\South Carolina|USA\South Dakota|USA\Tennessee|USA\Texas|USA\Utah|USA\Vermont|USA\Virginia|USA\Washington|USA\West Virginia|USA\Wisconsin|USA\Wyoming|Canada\Alberta|Canada\British Columbia|Canada\Manitoba|Canada\New Brunswick|Canada\Newfoundland and Labrador|Canada\Northwest Territories|USA\Nova Scotia|USA\Ontario|USA\Prince Edward Island|Canada\Quebec|Canada\Saskatchewan|Canada\Yukon Territory
 [/code]
 
 [title="2"]Adding a catalogue[/title]
 
-To add a catalogue (amongst other functions) go to Content Management > Catalogues > Add catalogue.
+To add a catalogue (among other functions) go to Content Management > Catalogues > Add catalogue.
 
-[title="2"]Editing a catalogue[/title]
+Once a catalogue is added it will get its own icon under Content Management.
 
-[media width="150" description="Editing a catalogue" float="right"]data_custom/images/docs/catalogues_edit.png[/media]
-You can edit a catalogue to change details, add, edit or remove fields.
+[title="2"]Editing/deleting a catalogue[/title]
+
+[media width="150" description="Editing a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_edit.png[/media]
+You can edit a catalogue to change details, add, edit or remove fields. Access this at:
+Content Management > Catalogues > Edit catalogue, or from under Content Management > [tt]<Catalogue name>[/tt].
 
 You cannot change field data types after you have created them (except between field types that have the same "storage" type) as this would affect the integrity of any data that may have already been entered into them. A workaround is to export to CSV, delete the field, create a new field with the same name and the new type, and reimport the CSV.
+
+You can delete a catalogue from the bottom of its edit form.
+
+[title="2"]Adding/editing/deleting categories.[/title]
+
+[surround]
+[media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/tut_catalogues/catalogues_do_next.png[/media]
+[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add_entry.png[/media]
+[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/tut_catalogues/catalogues_choose_to_add_to.png[/media]
+Add or edit categories from:
+Content Management > [tt]<Catalogue name>[/tt].
+
+You can delete a category from the bottom of its edit form.
+
+[title="2"]Adding/editing/deleting entries[/title]
+
+Add or edit entries from:
+Content Management > [tt]<Catalogue name>[/tt]. A form has been built for you automatically.
+
+You can delete an entry from the bottom of its edit form.
+
+[title="2"]Viewing catalogues[/title]
+
+You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index). Individual catalogue links are automatically added under Content on the default menus.
+[/surround]
 
 [title="2"]Permissions[/title]
 
 Like other Composr content types, catalogues support access permissions. However because catalogues essentially allow many different content types to be produced (each in their own catalogue), there is an extra layer of permissions available: you may set access permissions for both catalogues, and categories within them.
 
-[title="2"]Customising the look & feel of catalogues[/title]
+[title="2"]Customising the look & feel of catalogues (advanced)[/title]
 
 If you have multiple catalogues on your website and you wish for them to have customised appearances, this is possible for advanced users via one of two ways:
 
 [title="3"]Tempcode programming[/title]
 
-It is possibly to achieve template customisation wholely within the default set of templates, by using template programming. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
+It is possibly to achieve template customisation wholely within the default set of templates, by using [page="_SEARCH:tut_tempcode"]template programming[/page]. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
 
-Whilst the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
-
+While the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
 
 For example, take the [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template:
-[codebox]
-<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
-	<colgroup>
-		<col class="field_name_column" />
-		<col class="field_value_column" />
-	</colgroup>
+[code="HTML"]
+{$,Read the catalogue tutorial for information on custom catalogue layouts}
 
-	<tbody>
-		{FIELDS}
-	</tbody>
-</table></div>
-[/codebox]
+{+START,IF,{GIVE_CONTEXT}}
+<div class="box"><div class="box_inner">
+{+END}
+{+START,IF,{$NOT,{GIVE_CONTEXT}}}
+<div class="catalogue_fieldmap_entry_wrap">
+{+END}
+	{+START,IF,{GIVE_CONTEXT}}
+		<h3>{!CATALOGUE_GENERIC,{CATALOGUE_TITLE*}}</h3>
+	{+END}
 
-If we wanted to jazz a 'classifieds' catalogue up a bit, we might change it to something like:
-[codebox]
-<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
-	<colgroup>
-		<col class="field_name_column" />
-		<col class="field_value_column" />
-	</colgroup>
+	<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<colgroup>
+				<col class="catalogue_fieldmap_field_name_column" />
+				<col class="catalogue_fieldmap_field_value_column" />
+			</colgroup>
+		{+END}
 
-	<tbody>
-		{FIELDS}
-	</tbody>
-</table></div>
+		<tbody>
+			{FIELDS}
+		</tbody>
+	</table></div>
 
+	{+START,IF_PASSED,BREADCRUMBS}
+		{+START,IF_NON_EMPTY,{BREADCRUMBS}}
+			<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p>{!LOCATED_IN,{BREADCRUMBS}}</p></nav>
+		{+END}
+	{+END}
+
+	{+START,IF_NON_PASSED_OR_FALSE,ENTRY_SCREEN}
+		<div class="float_surrounder">
+			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
+				<p class="left">
+					<a target="_self" href="#"><img class="top_vertical_alignment" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
+				</p>
+			{+END}
+
+			{+START,IF_NON_EMPTY,{VIEW_URL}}
+				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
+					<a class="buttons__more button_screen_item" title="{!VIEW}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}{+END}" href="{VIEW_URL*}"><span>{!VIEW}</span></a>
+				</p>
+			{+END}
+			{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
+				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
+					<a class="buttons__edit button_screen_item" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
+				</p>
+			{+END}{+END}
+		</div>
+	{+END}
+{+START,IF,{$NOT,{GIVE_CONTEXT}}}
+</div>
+{+END}
+{+START,IF,{GIVE_CONTEXT}}
+</div></div>
+{+END}
+[/code]
+
+[media width="150" description="Our simple change. This is obviously a very basic change, but I just wanted to give one real quick example." float="right"]data_custom/images/docs/tut_catalogues/template_change.png[/media]
+Let's imagine we have made ourselves a catalogue called [tt]classifieds[/tt], and we want to add a very simple little snippet to the end with profile and e-mail links. In this case we could add something to the end of the template, like:
+[code="HTML"]
 {+START,IF,{$EQ,{CATALOGUE},classifieds}}
 <p>
 	This advert was posted by
-	<a href="{$PAGE_LINK,_SEARCH:members:view:{SUBMITTER}}">{$USERNAME*,{SUBMITTER}}</a>.<br />
+	<a href="{$PAGE_LINK*,_SEARCH:members:view:{SUBMITTER}}">{$USERNAME*,{SUBMITTER}}</a>.<br />
 	You might want to
-	<a href="{$PAGE_LINK,_SEARCH:contact_member:browse:{SUBMITTER}}">email {$USERNAME*,{SUBMITTER}}</a>
+	<a href="{$PAGE_LINK*,_SEARCH:contact_member:browse:{SUBMITTER}}">email {$USERNAME*,{SUBMITTER}}</a>
 	to query more about {FIELD_0*}.
 </p>
 {+END}
-[/codebox]
+[/code]
 
-You can see how you can reference individual fields in the template like [samp]{FIELD_0}[/samp].
-For a full table of fields you can use, put [samp]{+START,PARAM_INFO}{+END}[/samp] temporarily into the template, and it will show you everything defined in a neat table.
+You can see how you can reference individual fields in the template like [tt]{FIELD_0}[/tt].
+For a full table of fields you can use, put [tt]{+START,PARAM_INFO}{+END}[/tt] temporarily into the template, and it will show you everything defined in a neat table.
 
 Field values are available in three forms:
-1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and rendered
-2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not rendered
-3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not rendered
+1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and displayed
+2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not displayed
+3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not displayed
 They are also provided in sequence order (e.g. [tt]{FIELD_0}[/tt]) and by field ID (e.g. [tt]{_FIELD_44}[/tt]). Field ID is more robust, should you reorder fields later it won't affect the naming.
 
 [title="3"]Custom template sets[/title]
 
-[i]For power users only[/i]
-
-With some file system manipulation, you may make use of the 'custom template sets' feature. You then need to go to the [tt]themes/default/templates[/tt] directory in Composr and copy all the [tt]CATALOGUE_DEFAULT_*.tpl[/tt] files to [tt]CATALOGUE_<your-catalogue-codename>_*.tpl[/tt].
-You would then customise these templates.
+With some file system manipulation, you may make use of the 'custom template sets' feature. You then need to go to the [tt]themes/default/templates[/tt] directory in Composr and copy all the [tt]CATALOGUE_DEFAULT_*.tpl[/tt] files to [tt]themes/default/templates_custom/CATALOGUE_<your-catalogue-codename>_*.tpl[/tt].
+You would then customise these templates as appropriate.
 
 When we talk about default catalogue template set, we are referring to the [tt]CATALOGUE_DEFAULT_*.tpl[/tt] files rather than referring to the default theme or the default versions within that theme. It is possible for custom themes to have their own versions of the default catalogue template set, and also per-catalogue versions.
 We're using the word default in different contexts, so to clarify:
@@ -222,25 +292,39 @@ We intentionally did not provide a highly user-friendly interface for enabling c
 
 [title="3"]Seamless catalogues[/title]
 
-As well as customising the catalogue templates, you may also customise the language strings used by catalogues in a similar way to how custom template sets are customised.
+As well as customising the catalogue templates, you may also customise the language strings used by catalogues in a similar way to how custom template sets are customised. This gives you further control on how things appear to visitors within a particular catalogue.
 
-To do this, you need to manually edit the [tt]catalogues.ini[/tt] file to add new equivalents to the [tt]DEFAULT__*[/tt] strings (where 'DEFAULT' is replaced with the codename of the catalogue that you are customising for).
+To do this, you need to manually edit the [tt]lang/EN/catalogues.ini[/tt] file to add new equivalents to the [tt]DEFAULT__*[/tt] strings (where 'DEFAULT' is replaced with the codename of the catalogue that you are customising for). In fact, you should actually save your changes into [tt]lang_custom/EN/catalogues.ini[/tt], so that they are not lost during upgrades.
 
 You can see this has already been done for some of the default catalogues:
-[codebox]
-links__CATALOGUE={1}
+[code="INI"]
 links__CATALOGUE_INDEX=Link category index: {1}
 links__CATALOGUE_CATEGORY={1}
 links__CATALOGUE_ENTRY=Link: {1}
-[/codebox]
+[/code]
+
+Here's what they do:
+ - [tt]<catalogue-name>__CATALOGUE_INDEX[/tt] -- Used to make the screen title when viewing the catalogue index
+ - [tt]<catalogue-name>__CATALOGUE_CATEGORY[/tt] -- Used to make the screen title when viewing a catalogue category
+ - [tt]<catalogue-name>__CATALOGUE_ENTRY[/tt] -- Used to make the screen title when viewing a catalogue entry
 
 If you have the language cache enabled then you will need to empty the language cache before these changes will show up.
 
 You can also add descriptions to the add and edit screens for catalogues by creating new strings like:
-[codebox]
+[code="INI"]
 CATALOGUE_<catalogue-name>_ADD_TEXT=Shown on add screen.
 CATALOGUE_<catalogue-name>_EDIT_TEXT=Shown on edit screen.
-[/codebox]
+[/code]
+
+Here's an example [tt]lang_custom/EN/catalogues.ini[/tt] for having customised strings for a [tt]classifieds[/tt] catalogue:
+[code="INI"]
+[strings]
+classifieds__CATALOGUE_INDEX=Advertisement categories: {1}
+classifieds__CATALOGUE_CATEGORY={1} advertisements
+classifieds__CATALOGUE_ENTRY={1} (private advertisement)
+CATALOGUE_classifieds_ADD_TEXT=Your advertisement is now live on our site.
+CATALOGUE_classifieds_EDIT_TEXT=Your advertisement has been edited. The changes can be seen immediately.
+[/code]
 
 [title="3"]eCommerce catalogues[/title]
 
@@ -252,8 +336,10 @@ Composr can have special eCommerce catalogues, which integrate with the Composr 
  - stock counting
  - view tracking
 
-An eCommerce catalogue always assumes it has a number of special eCommerce fields as the first fields in the catalogue. The default 'product' catalogue is configured like this and thus can be used as a reference for creating more product catalogues, if desired (few users will, however, require more than one product catalogue).
+An eCommerce catalogue always assumes it has a number of special eCommerce fields as the first fields in the catalogue. The default [tt]product[/tt] catalogue is configured like this and thus can be used as a reference for creating more product catalogues, if desired (few users will, however, require more than one product catalogue).
+
 If an eCommerce catalogue is not correctly configured errors will occur.
+
 The special eCommerce fields are:
  - title
  - code
@@ -271,13 +357,15 @@ The special eCommerce fields are:
 
 Catalogues are ideal for setting up a classified ads system. In fact, there is special support for this as you can program a catalogue to move entries to an archival category after a specified period of time passes. There is also a permission ('Have a longer expiry-time for catalogue entries') that allows you to grant usergroups a longer period of advert display.
 
-This feature works by logging the date/time for each entry added. This is stored in the [tt]ce_last_moved[/tt] field in the database, under each entry. Any entry in a category that has a move target assigned will be scanned to see if the [tt]ce_last_moved[/tt] date/time is more than the configured number of move days. If it is, the entry is moved. When an entry is moved, the [tt]ce_last_moved[/tt] date/time is reset to the current time. Therefore you could, if you wished, set up chains of movements. There is no way in the Composr UI to change [tt]ce_last_moved[/tt] manually (it is not affected by manual moves, validation, or editing), although you could manually make changes to it in the database or you could manually move it back after it has moved and therefore the timer reset. As the movement happens in the scheduler, the [page="_SEARCH:tut_configuration"]scheduler[/page] must be enabled for it to work.
+This feature works by logging the date/time for each entry added. This is stored in the [tt]ce_last_moved[/tt] field in the database, under each entry. Any entry in a category that has a move target assigned will be scanned to see if the [tt]ce_last_moved[/tt] date/time is more than the configured number of move days. If it is, the entry is moved. When an entry is moved, the [tt]ce_last_moved[/tt] date/time is reset to the current time. Therefore you could, if you wished, set up chains of movements. There is no way in the Composr UI to change [tt]ce_last_moved[/tt] manually (it is not affected by manual moves, validation, or editing), although you could manually make changes to it in the database or you could manually move it back after it has moved and therefore the timer reset. As the movement happens in the CRON bridge scheduler, the [page="_SEARCH:tut_configuration"]scheduler[/page] must be enabled for it to work.
 
 The unofficial classified ads addon overrides the functionality of [tt]ce_last_moved[/tt] and uses it to track listing times. Unlike the default functionality, this de-validates entries rather than moving them (to allow listing extensions).
 
 [title="2"]Searching catalogues[/title]
 
-The Composr search module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
+The Composr [tt]search[/tt] module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
+
+For more information see the [page="_SEARCH:tut_search"]Searching your website[/page] tutorial.
 
 [title="2"]CSV import[/title]
 
@@ -304,6 +392,7 @@ A similar caveat holds true for custom profile fields, which share the same fiel
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
- - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:sup_catalogues"]Catalogues in Composr[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
 
-{$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system is a bit like a visual database system such as Microsoft Access. The possibilities are endless.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system lets you set up your own databases on your website.}[block]main_tutorial_rating[/block]

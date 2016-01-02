@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: xml_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -26,6 +28,9 @@
  */
 function load_breadcrumb_substitutions($segments)
 {
+    // Works by going through in left-to-right order, doing multiple sweeps until no more substitutions can be made.
+    // Only one substitution per rule is allowed.
+
     static $substitutions = null;
     if ($substitutions === null) {
         $substitutions = persistent_cache_get('BREADCRUMBS_CACHE');
@@ -54,6 +59,7 @@ function load_breadcrumb_substitutions($segments)
 
     $segments_new = array();
     $done_one = false;
+
     foreach ($segments as $i => $segment) {
         if (is_object($segment[1])) {
             $segment[1] = $segment[1]->evaluate();
@@ -63,14 +69,21 @@ function load_breadcrumb_substitutions($segments)
             list($zone, $attributes, $hash) = page_link_decode($segment[0]);
 
             foreach ($substitutions as $j => $details) {
-                if ($details !== null && match_key_match($details[0], false, $attributes, $zone, $attributes['page'])) {
-                    if ($details[1] === null || $details[1] == $segment[1]) {
-                        if (!$done_one) {
-                            $segments_new = $details[2]; // New stem found
-                            $done_one = true;
-                        }
+                if ($details !== null) {
+                    if (($details[0][0][0] == 'site') && ($zone == '') || ($details[0][0][0] == '') && ($zone == 'site')) {
+                        // Special handling, we don't want single public zone option (collapse_user_zones) to be too "smart" and apply a rule intended for when that option is off
+                        continue;
+                    }
 
-                        $substitutions[$j] = null; // Stop loops when recursing
+                    if (isset($attributes['page']) && match_key_match($details[0], false, $attributes, $zone, $attributes['page'])) {
+                        if ($details[1] === null || $details[1] == $segment[1]) {
+                            if (!$done_one) {
+                                $segments_new = $details[2]; // New stem found
+                                $done_one = true;
+                            }
+
+                            $substitutions[$j] = null; // Stop loops when recursing
+                        }
                     }
                 }
             }

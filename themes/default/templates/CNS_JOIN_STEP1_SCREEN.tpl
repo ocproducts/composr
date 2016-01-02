@@ -14,7 +14,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p>
-		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE_RULES}</label>
+		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>
 	</p>
 
 	{+START,IF_NON_EMPTY,{GROUP_SELECT}}
@@ -29,11 +29,10 @@
 
 	<p>
 		{+START,IF,{$JS_ON}}
-			<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" disabled="disabled" id="proceed_button" />
+			<button onclick="disable_button_just_clicked(this); window.top.location='{$PAGE_LINK;*,:}'; return false;" class="buttons__no button_screen">{!I_DISAGREE}</button>
 		{+END}
-		{+START,IF,{$NOT,{$JS_ON}}}
-			<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" id="proceed_button" />
-		{+END}
+
+		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__yes button_screen" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
 	</p>
 </form>
 

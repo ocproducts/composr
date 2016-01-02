@@ -47,7 +47,7 @@ class Module_admin_sitemap
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -70,7 +70,7 @@ class Module_admin_sitemap
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -138,7 +138,7 @@ class Module_admin_sitemap
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -175,7 +175,7 @@ class Module_admin_sitemap
     /**
      * The do-next manager for before content management. This is intended for exceptional users who cannot use the sitemap editor
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -193,11 +193,11 @@ class Module_admin_sitemap
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $title The title (output of get_screen_title)
      * @param  ?ID_TEXT $page The name of the page just handled (null: none)
      * @param  ID_TEXT $zone The name of the zone just handled (blank: none/welcome-zone)
-     * @param  tempcode $completion_text The text to show (blank: default)
-     * @return tempcode The UI
+     * @param  Tempcode $completion_text The text to show (blank: default)
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $page, $zone, $completion_text)
     {
@@ -209,7 +209,7 @@ class Module_admin_sitemap
     /**
      * The UI for the sitemap editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function sitemap()
     {
@@ -235,9 +235,9 @@ class Module_admin_sitemap
     /**
      * The UI to choose a zone.
      *
-     * @param  tempcode $title The title for the "choose a zone" page
+     * @param  Tempcode $title The title for the "choose a zone" page
      * @param  ?string $no_go Zone to not allow the selection of (null: none to filter out)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _choose_zone($title, $no_go = null)
     {
@@ -257,7 +257,7 @@ class Module_admin_sitemap
     /**
      * The UI to delete a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete()
     {
@@ -310,7 +310,7 @@ class Module_admin_sitemap
     /**
      * The UI to confirm deletion of a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _delete()
     {
@@ -323,6 +323,9 @@ class Module_admin_sitemap
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
+                if ($page_details === false) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
+                }
                 $pages[$page] = strtolower($page_details[0]);
             }
         }
@@ -356,7 +359,7 @@ class Module_admin_sitemap
     /**
      * The actualiser to delete a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __delete()
     {
@@ -408,7 +411,7 @@ class Module_admin_sitemap
     /**
      * The UI to move a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function move()
     {
@@ -459,7 +462,7 @@ class Module_admin_sitemap
     /**
      * The actualiser to move a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _move()
     {
@@ -489,6 +492,9 @@ class Module_admin_sitemap
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
+                if ($page_details === false) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
+                }
                 $pages[$page] = strtolower($page_details[0]);
                 if (array_key_exists(3, $page_details)) {
                     $pages[$page] .= '/' . $page_details[3];
@@ -559,23 +565,23 @@ class Module_admin_sitemap
                     continue;
                 }
 
-                if (file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page))) {
+                if (file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type) . '/' . $_page))) {
                     if ($afm_needed) {
-                        afm_move(zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page, true),
+                        afm_move(zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type) . '/' . $_page, true),
                             zone_black_magic_filterer(filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page, true));
                     } else {
-                        rename(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page),
+                        rename(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type) . '/' . $_page),
                             zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page));
                     }
                 }
 
                 // If a non-overridden one is there too, need to move that too
-                if ((strpos($type, '_custom') !== false) && (file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page))) && (!file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page)))) {
+                if ((strpos($type, '_custom') !== false) && (file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page))) && (!file_exists(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page)))) {
                     if ($afm_needed) {
-                        afm_move(zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page, true),
+                        afm_move(zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page, true),
                             zone_black_magic_filterer(filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page, true));
                     } else {
-                        rename(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page),
+                        rename(zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page),
                             zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($new_zone) . (($new_zone != '') ? '/' : '') . 'pages/' . filter_naughty(str_replace('_custom', '', $type)) . '/' . $_page));
                     }
                 }

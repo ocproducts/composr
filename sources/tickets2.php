@@ -33,7 +33,7 @@ function get_ticket_details($ticket_id, $hard_error = true)
     $_comments = get_ticket_posts($ticket_id, $forum, $topic_id, $_ticket_type_id, 0, 1);
     if ((!is_array($_comments)) || (!array_key_exists(0, $_comments))) {
         if ($hard_error) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
 
         return null;
@@ -71,7 +71,7 @@ function add_ticket_type($ticket_type_name, $guest_emails_mandatory = 0, $search
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('ticket_type', strval($ticket_type_id), null, null, true);
+        generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), null, null, true);
     }
 
     return $ticket_type_id;
@@ -100,7 +100,7 @@ function edit_ticket_type($ticket_type_id, $ticket_type_name, $guest_emails_mand
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('ticket_type', strval($ticket_type_id), $ticket_type_name);
+        generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), $ticket_type_name);
     }
 }
 
@@ -125,7 +125,7 @@ function delete_ticket_type($ticket_type_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('ticket_type', strval($ticket_type_id));
+        expunge_resource_fs_moniker('ticket_type', strval($ticket_type_id));
     }
 }
 
@@ -211,22 +211,22 @@ function update_ticket_type_lead_times()
  * Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
  * in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.
  *
- * @param  AUTO_LINK $member The member ID
+ * @param  AUTO_LINK $member_id The member ID
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: all ticket types)
  * @param  boolean $override_view_others_tickets Don't view others' tickets, even if the member has permission to
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning NULL instead
+ * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
  * @param  boolean $open_only Open tickets only
  * @param  boolean $include_first_posts Whether to include first posts
  * @return array Array of tickets, empty on failure
  */
-function get_tickets($member, $ticket_type_id = null, $override_view_others_tickets = false, $silent_error_handling = false, $open_only = false, $include_first_posts = false)
+function get_tickets($member_id, $ticket_type_id = null, $override_view_others_tickets = false, $silent_error_handling = false, $open_only = false, $include_first_posts = false)
 {
     $restrict = '';
     $restrict_description = '';
-    $view_others_tickets = (!$override_view_others_tickets) && (has_privilege($member, 'view_others_tickets'));
+    $view_others_tickets = (!$override_view_others_tickets) && (has_privilege($member_id, 'view_others_tickets'));
 
     if (!$view_others_tickets) {
-        $restrict = strval($member) . '\_%';
+        $restrict = strval($member_id) . '\_%';
         $restrict_description = do_lang('SUPPORT_TICKET') . ': #' . $restrict;
     } else {
         if ((!is_null($ticket_type_id)) && (!has_category_access(get_member(), 'tickets', strval($ticket_type_id)))) {
@@ -260,7 +260,7 @@ function get_tickets($member, $ticket_type_id = null, $override_view_others_tick
                 $forums = collapse_2d_complexity('id', 'id', $rows);
             }
         } else {
-            $forums = array(get_ticket_forum_id($member, $ticket_type_id, false, $silent_error_handling));
+            $forums = array(get_ticket_forum_id($member_id, $ticket_type_id, false, $silent_error_handling));
         }
     } else {
         $forums = array(get_ticket_forum_id(null, null, false, $silent_error_handling));
@@ -314,7 +314,7 @@ function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start
         $forum = $ticket[0]['forum_id'];
         $topic_id = $ticket[0]['topic_id'];
         $count = 0;
-        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $ticket_id), $count, $max, $start);
+        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count, $max, $start);
     }
 
     // It must be an old-style ticket, residing in the root ticket forum
@@ -322,7 +322,7 @@ function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start
     $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id);
     $ticket_type_id = null;
     $count = 0;
-    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $ticket_id), $count);
+    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count);
 }
 
 /**
@@ -339,27 +339,33 @@ function delete_ticket_by_topic_id($topic_id)
  * Add a new post to a ticket, or create a new ticket if a ticket with the given ID doesn't exist.
  * It has the same return value as make_post_forum_topic().
  *
- * @param  AUTO_LINK $member The member ID
+ * @param  ?AUTO_LINK $member_id The member ID (null: current member)
  * @param  string $ticket_id The ticket ID (doesn't have to exist)
- * @param  AUTO_LINK $ticket_type_id The ticket type
+ * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: reply to ticket)
  * @param  LONG_TEXT $title The post title
  * @param  LONG_TEXT $post The post content in Comcode format
  * @param  string $ticket_url The home URL
  * @param  boolean $staff_only Whether the reply is staff only (invisible to ticket owner, only on Conversr)
  * @param  ?TIME $time_post The post time (null: use current time)
  */
-function ticket_add_post($member, $ticket_id, $ticket_type_id, $title, $post, $ticket_url, $staff_only = false, $time_post = null)
+function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post, $ticket_url, $staff_only = false, $time_post = null)
 {
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
     if (is_null($fid)) {
-        $fid = get_ticket_forum_id($member, $ticket_type_id);
+        $fid = get_ticket_forum_id($member_id, $ticket_type_id);
     }
 
+    // Find member ID
+    if (is_null($member_id)) {
+        $member_id = get_active_support_user();
+    }
+
+    // Make post
     $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
         $fid,
         $ticket_id,
-        $member,
+        $member_id,
         $title,
         $post,
         $title,
@@ -377,9 +383,11 @@ function ticket_add_post($member, $ticket_id, $ticket_type_id, $title, $post, $t
         null,
         $time_post
     );
+
+    // Save meta-data
     $topic_id = $GLOBALS['LAST_TOPIC_ID'];
     $is_new = $GLOBALS['LAST_TOPIC_IS_NEW'];
-    if (($is_new) && ($ticket_type_id != -1)) {
+    if (($is_new) && ($ticket_type_id !== null)) {
         $GLOBALS['SITE_DB']->query_insert('tickets', array('ticket_id' => $ticket_id, 'forum_id' => $fid, 'topic_id' => $topic_id, 'ticket_type' => $ticket_type_id));
     }
 }
@@ -392,14 +400,17 @@ function ticket_add_post($member, $ticket_id, $ticket_type_id, $title, $post, $t
  * @param  LONG_TEXT $post The ticket post's content
  * @param  mixed $ticket_url The home URL (to view the ticket) (URLPATH or Tempcode URL)
  * @param  EMAIL $uid_email Ticket owner's e-mail address, in the case of a new ticket
- * @param  integer $ticket_type_id_if_new The new ticket type, or -1 if it is a reply to an existing ticket
+ * @param  ?AUTO_LINK $ticket_type_id_if_new The new ticket type (null: it is a reply to an existing ticket)
  * @param  ?MEMBER $new_poster Posting member (null: current member)
  * @param  boolean $auto_created Whether the ticket was auto-created
  */
 function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $ticket_type_id_if_new, $new_poster = null, $auto_created = false)
 {
     if (is_null($new_poster)) {
-        $new_poster = get_member();
+        $new_poster = get_active_support_user();
+        $new_poster_real = get_member();
+    } else {
+        $new_poster_real = $new_poster;
     }
 
     require_lang('tickets');
@@ -421,7 +432,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
     if ($title == '') {
         $title = do_lang('UNKNOWN');
     }
-    $new_ticket = ($ticket_type_id_if_new != -1);
+    $new_ticket = ($ticket_type_id_if_new !== null);
 
     // Lookup ticket type details
     if ($new_ticket) {
@@ -460,7 +471,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
                     $uid_lang
                 );
 
-                $message = do_lang(
+                $message = do_notification_lang(
                     'TICKET_REPLY_MESSAGE',
                     comcode_escape($title),
                     comcode_escape($ticket_url),
@@ -497,7 +508,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
             get_site_default_lang()
         );
 
-        $message = do_lang(
+        $message = do_notification_lang(
             $new_ticket ? 'TICKET_NEW_MESSAGE_FOR_STAFF' : 'TICKET_REPLY_MESSAGE_FOR_STAFF',
             comcode_escape($title),
             comcode_escape($ticket_url),
@@ -536,19 +547,19 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
         $subject = do_lang(
             'TICKET_ACTIVITY_SUBJECT',
             $title,
-            $GLOBALS['FORUM_DRIVER']->get_username($new_poster, true),
-            $GLOBALS['FORUM_DRIVER']->get_username($new_poster),
+            $GLOBALS['FORUM_DRIVER']->get_username($new_poster_real, true),
+            $GLOBALS['FORUM_DRIVER']->get_username($new_poster_real),
             get_site_default_lang()
         );
 
-        $message = do_lang(
+        $message = do_notification_lang(
             'TICKET_ACTIVITY_BODY',
             comcode_escape($title),
             comcode_escape($ticket_url),
             array(
                 $post,
-                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster, true)),
-                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster))
+                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster_real, true)),
+                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster_real))
             ),
             get_site_default_lang()
         );

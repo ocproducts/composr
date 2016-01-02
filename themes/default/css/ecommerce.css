@@ -10,6 +10,7 @@
 .purchase_licence {
 	width: 100%;
 	font-family: Courier, monospace;
+	white-space: pre-wrap;
 }
 
 .purchase_screen_contents {
@@ -41,7 +42,7 @@
 	background-image: url('{$IMG,icons/24x24/menu/rich_content/ecommerce/purchase}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu__adminzone__audit__ecommerce__subscriptions {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/ecommerce/subscriptions}') !important;
 	}

@@ -72,7 +72,7 @@ class Hook_page_groupings_catalogues
 
                         $page_grouping = 'rich_content';
                         if ($row['c_name'] == 'projects') {
-                            $page_grouping = (has_zone_access($member_id, 'collaboration') ? 'collaboration' : 'rich_content');
+                            $page_grouping = ((addon_installed('collaboration_zone') && has_zone_access($member_id, 'collaboration')) ? 'collaboration' : 'rich_content');
                         }
                         if ($row['c_name'] == 'classifieds') {
                             $page_grouping = 'social';
@@ -80,7 +80,7 @@ class Hook_page_groupings_catalogues
 
                         if ($row['c_is_tree'] == 0) {
                             $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $row['c_name']));
-                            /*if ($num_categories==0) { // Actually we should show an empty index - catalogue exists, show it does
+                            /*if ($num_categories == 0) { // Actually we should show an empty index - catalogue exists, show it does
                                 continue;
                             }
                             else*/
@@ -99,7 +99,7 @@ class Hook_page_groupings_catalogues
             }
         }
 
-        //$ret[]=array('rich_content','menu/rich_content/catalogues/catalogues',array('catalogues',array(),get_module_zone('catalogues')),do_lang_tempcode('catalogues:CATALOGUES'));  Lame
+        //$ret[] = array('rich_content', 'menu/rich_content/catalogues/catalogues', array('catalogues', array(), get_module_zone('catalogues')), do_lang_tempcode('catalogues:CATALOGUES'));  Lame
 
         return $ret;
     }

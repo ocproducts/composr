@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__comcode_renderer()
 {
@@ -46,6 +48,8 @@ function init__comcode_renderer()
  *
  * @param  string $text The text to add emoticons to (assumption: that this is XHTML)
  * @return string The XHTML with the image-substitution of emoticons
+ *
+ * @ignore
  */
 function _apply_emoticons($text)
 {
@@ -103,14 +107,14 @@ function _apply_emoticons($text)
 }
 
 /**
- * Turn a triple of emoticon parameters into some actual tempcode.
+ * Turn a triple of emoticon parameters into some actual Tempcode.
  *
  * @param  array $imgcode Parameter triple(template,src,code)
- * @return mixed Either a tempcode result, or a string result, depending on $evaluate
+ * @return mixed Either a Tempcode result, or a string result, depending on $evaluate
  */
 function do_emoticon($imgcode)
 {
-    $tpl = do_template($imgcode[0], array('UNIQID' => uniqid('', true), 'SRC' => $imgcode[1], 'EMOTICON' => $imgcode[2]));
+    $tpl = do_template($imgcode[0], array('SRC' => $imgcode[1], 'EMOTICON' => $imgcode[2]));
     return $tpl;
 }
 
@@ -171,6 +175,8 @@ function check_naughty_javascript_url($source_member, $url, $as_admin)
  * Load up Custom Comcode tags so that we may parse them.
  *
  * @param  object $connection The database connection to use
+ *
+ * @ignore
  */
 function _custom_comcode_import($connection)
 {
@@ -202,7 +208,7 @@ function _custom_comcode_import($connection)
             if (($GLOBALS['FORUM_DB'] != $connection) && (!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
                 $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
             }
-            if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+            if (is_forum_db($connection)) {
                 $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
             }
             $tags = array_merge($tags, $connection->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
@@ -247,7 +253,7 @@ function _custom_comcode_import($connection)
 }
 
 /**
- * Convert the specified Comcode (unknown format) into a tempcode tree. You shouldn't output the tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the tempcode object, to convert it into a string.
+ * Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.
  *
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  ?MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)
@@ -262,7 +268,9 @@ function _custom_comcode_import($connection)
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
- * @return tempcode The tempcode generated
+ * @return Tempcode The Tempcode generated
+ *
+ * @ignore
  */
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
@@ -302,11 +310,11 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
  * Show a Comcode parser error.
  *
  * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion.
- * @param  array $_message Error message details to pass to do_lang, or if the first in the list is NULL, use directly
+ * @param  array $_message Error message details to pass to do_lang, or if the first in the list is null, use directly
  * @param  integer $pos The position during parsing that the error occurred at
  * @param  LONG_TEXT $comcode The Comcode the parser error occurred in
  * @param  boolean $check_only Whether to only check the Comcode.
- * @return tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).
+ * @return Tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).
  */
 function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_only = false)
 {
@@ -320,10 +328,19 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         $message = call_user_func_array('do_lang_tempcode', array_map('escape_html', $_message));
     }
 
+    require_code('failure');
+    if (throwing_errors()) {
+        throw new CMSException($message);
+    }
+
     $posted = false;
     foreach ($_POST + $_GET as $name => $val) {
         if (is_array($val)) {
             continue;
+        }
+
+        if (is_integer($name)) {
+            $name = strval($name);
         }
 
         if ((post_param_string($name, '') == $comcode) || (substr($name, -7) == '_parsed')) {
@@ -392,7 +409,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
             }
         }
         if (is_null($name)) {
-            warn_exit(do_lang_tempcode('COMCODE_ERROR', $message, integer_format($line)));
+            warn_exit(do_lang_tempcode('COMCODE_ERROR', $message, escape_html(integer_format($line))));
         }
     }
 
@@ -464,7 +481,7 @@ function absoluteise_and_test_comcode_url($given_url, $source_member, $as_admin,
  * @param  string $tag_type Comcode tag type, to which the URL is associated.
  * @param  string $given_url URL actually provided.
  * @param  MEMBER $source_member The member who is responsible for this Comcode
- * @return tempcode Error message, or blank if no error.
+ * @return Tempcode Error message, or blank if no error.
  */
 function test_url($url_full, $tag_type, $given_url, $source_member)
 {
@@ -481,7 +498,12 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED']++;
         $test = ($GLOBALS['COMCODE_PARSE_URLS_CHECKED'] >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
         if ((is_null($test)) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
-            $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '7bcea67226f89840394614d88020e3ac', 'FOR_GUESTS' => false, 'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full))));
+            $temp_tpl = do_template('WARNING_BOX', array(
+                '_GUID' => '7bcea67226f89840394614d88020e3ac',
+                'FOR_GUESTS' => false,
+                'INLINE' => true,
+                'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
+            ));
             if (array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) {
                 $GLOBALS['COMCODE_BROKEN_URLS'][] = array($url_full, null);
             } elseif ((!in_array(get_page_name(), $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (running_script('index'))) {
@@ -508,13 +530,13 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
 }
 
 /**
- * Get tempcode for a Comcode tag. This function should always return (errors should be placed in the Comcode output stream), for stability reasons (i.e. if you're submitting something, you can't have the whole submit process die half way through in an unstructured fashion).
+ * Get Tempcode for a Comcode tag. This function should always return (errors should be placed in the Comcode output stream), for stability reasons (i.e. if you're submitting something, you can't have the whole submit process die half way through in an unstructured fashion).
  *
  * @param  string $tag The tag being converted
- * @param  array $attributes A map of the attributes (name=>val) for the tag. Val is usually a string, although in select places, the XML parser may pass tempcode.
+ * @param  array $attributes A map of the attributes (name=>val) for the tag. Val is usually a string, although in select places, the XML parser may pass Tempcode.
  * @param  mixed $embed Tempcode of the inside of the tag ([between]THIS[/between]); the XML parser may pass in special stuff here, which is interpreted only for select tags
  * @param  boolean $comcode_dangerous Whether we are allowed to proceed even if this tag is marked as 'dangerous'
- * @param  string $pass_id A special identifier to mark where the resultant tempcode is going to end up (e.g. the ID of a post)
+ * @param  string $pass_id A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)
  * @param  integer $marker The position this tag occurred at in the Comcode
  * @param  MEMBER $source_member The member who is responsible for this Comcode
  * @param  boolean $as_admin Whether to check as arbitrary admin
@@ -526,7 +548,9 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
- * @return tempcode The tempcode for the Comcode
+ * @return Tempcode The Tempcode for the Comcode
+ *
+ * @ignore
  */
 function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $connection, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false)
 {
@@ -552,7 +576,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         return do_template('WARNING_BOX', array('_GUID' => 'faea04a9d6f1e409d99b8485d28b2225', 'WARNING' => do_lang_tempcode('comcode:NO_ACCESS_FOR_TAG', escape_html($tag), escape_html($username))));
     } // These are just for convenience.. we will remap to more formalised Comcode
     elseif ($tag == 'codebox') {
-        $attributes['scroll'] = 1;
+        $attributes['scroll'] = '1';
         $tag = 'code';
     } elseif ($tag == 'left') {
         $attributes['param'] = 'left';
@@ -567,8 +591,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
     if ($semiparse_mode) { // We have got to this point because we want to provide a special 'button' editing representation for these tags
         if (wysiwyg_comcode_markup_style($tag, $attributes, $embed) != WYSIWYG_COMCODE__HTML) {
-            $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml)));
-            if ($temp_tpl !== null) {
+            $_temp_tpl = add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml));
+            if ($_temp_tpl !== null) {
+                $temp_tpl = make_string_tempcode($_temp_tpl);
                 return $temp_tpl;
             }
         }
@@ -597,13 +622,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $height = strval(array_key_exists('height', $attributes) ? intval($attributes['height']) : 300);
             $timein = strval(array_key_exists('timein', $attributes) ? intval($attributes['timein']) : 0);
             $timeout = strval(array_key_exists('timeout', $attributes) ? intval($attributes['timeout']) : -1);
-            $temp_tpl = do_template('COMCODE_OVERLAY', array('_GUID' => 'dfd0f7a72cc2bf6b613b28f8165a0034', 'UNIQ_ID' => 'a' . uniqid('', true), 'EMBED' => $embed, 'ID' => ($attributes['param'] != '') ? $attributes['param'] : ('rand' . uniqid('', true)), 'X' => $x, 'Y' => $y, 'WIDTH' => $width, 'HEIGHT' => $height, 'TIMEIN' => $timein, 'TIMEOUT' => $timeout));
+            $temp_tpl = do_template('COMCODE_OVERLAY', array('_GUID' => 'dfd0f7a72cc2bf6b613b28f8165a0034', 'EMBED' => $embed, 'ID' => ($attributes['param'] != '') ? $attributes['param'] : ('rand' . uniqid('', true)), 'X' => $x, 'Y' => $y, 'WIDTH' => $width, 'HEIGHT' => $height, 'TIMEIN' => $timein, 'TIMEOUT' => $timeout));
             break;
 
         case 'code':
-            list($_embed, $title) = do_code_box($attributes['param'], $embed, (array_key_exists('numbers', $attributes)) && ($attributes['numbers'] == 1), $in_semihtml, $is_all_semihtml);
+            list($_embed, $title) = do_code_box($attributes['param'], $embed, (array_key_exists('numbers', $attributes)) && ($attributes['numbers'] == '1'), $in_semihtml, $is_all_semihtml);
             if (!is_null($_embed)) {
-                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == 1)) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
+                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
                 if (($tpl == 'COMCODE_CODE_SCROLL') && (substr_count($_embed, "\n") < 10)) {
                     $style = 'height: auto';
                 } else {
@@ -623,9 +648,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = $embed->evaluate();
 
                 if ((!array_key_exists('scroll', $attributes)) && (strlen($_embed) > 1000)) {
-                    $attributes['scroll'] = 1;
+                    $attributes['scroll'] = '1';
                 }
-                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == 1)) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
+                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
                 if (($tpl == 'COMCODE_CODE_SCROLL') && (substr_count($_embed, "\n") < 10)) {
                     $style = 'height: auto';
                 } else {
@@ -706,7 +731,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
 
                 if ($s_title === null) {
-                    $s_title = do_lang_tempcode('FORUM_POST_NUMBERED', integer_format($post_id));
+                    $s_title = do_lang_tempcode('FORUM_POST_NUMBERED', escape_html(integer_format($post_id)));
                 }
             } else {
                 $s_title = make_string_tempcode($attributes['param']);
@@ -1008,7 +1033,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_parts->attach(do_template('COMCODE_RANDOM_PART', array('_GUID' => '5fa49a916304f9caa0ddedeb01531142', 'NUM' => strval($num), 'VAL' => $val)));
             }
 
-            $temp_tpl = do_template('COMCODE_RANDOM', array('_GUID' => '9b77aaf593b12c763fb0c367fab415b6', 'UNIQID' => uniqid('', true), 'FULL' => $embed, 'MAX' => strval($max), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_RANDOM', array('_GUID' => '9b77aaf593b12c763fb0c367fab415b6', 'FULL' => $embed, 'MAX' => strval($max), 'PARTS' => $_parts));
             break;
 
         case 'jumping':
@@ -1021,7 +1046,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             $embed = $embed->evaluate();
-            $temp_tpl = do_template('COMCODE_JUMPING', array('_GUID' => '85e9f83ed134868436a7db7692f56047', 'UNIQID' => uniqid('', true), 'FULL' => implode(', ', $attributes), 'TIME' => strval($embed), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_JUMPING', array('_GUID' => '85e9f83ed134868436a7db7692f56047', 'FULL' => implode(', ', $attributes), 'TIME' => strval($embed), 'PARTS' => $_parts));
             break;
 
         case 'shocker':
@@ -1047,7 +1072,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             $embed = $embed->evaluate();
-            $temp_tpl = do_template('COMCODE_SHOCKER', array('_GUID' => 'd648de0a5e3b5f84d82d781f4964e04a', 'UNIQID' => uniqid('', true), 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'FULL' => implode(', ', $attributes), 'TIME' => strval(intval($embed)), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_SHOCKER', array('_GUID' => 'd648de0a5e3b5f84d82d781f4964e04a', 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'FULL' => implode(', ', $attributes), 'TIME' => strval(intval($embed)), 'PARTS' => $_parts));
             break;
 
         case 'ticker':
@@ -1056,7 +1081,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $width = '300';
             }
             $fspeed = array_key_exists('speed', $attributes) ? float_to_raw_string(floatval($attributes['speed'])) : '1';
-            $temp_tpl = do_template('COMCODE_TICKER', array('_GUID' => 'e48893cda61995261577f0556443c537', 'UNIQID' => uniqid('', true), 'SPEED' => $fspeed, 'WIDTH' => $width, 'TEXT' => $embed));
+            $temp_tpl = do_template('COMCODE_TICKER', array('_GUID' => 'e48893cda61995261577f0556443c537', 'SPEED' => $fspeed, 'WIDTH' => $width, 'TEXT' => $embed));
 
             break;
 
@@ -1203,12 +1228,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'box':
             $width = array_key_exists('width', $attributes) ? comcode_to_tempcode($attributes['width'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member) : make_string_tempcode('auto');
             $type = array_key_exists('type', $attributes) ? $attributes['type'] : '';
+            $class = array_key_exists('class', $attributes) ? $attributes['class'] : '';
             $options = array_key_exists('options', $attributes) ? $attributes['options'] : '';
             $meta = ($comcode_dangerous && isset($attributes['meta'])) ? $attributes['meta'] : ''; // Insecure, unneeded here
             $links = ($comcode_dangerous && isset($attributes['links'])) ? $attributes['links'] : ''; // Insecure, unneeded here
             $converted_title = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
 
-            $temp_tpl = directive_tempcode('BOX', $embed, array($converted_title, make_string_tempcode($type), $width, make_string_tempcode($options), make_string_tempcode($meta), make_string_tempcode($links)));
+            $temp_tpl = directive_tempcode('BOX', $embed, array($converted_title, make_string_tempcode($type), $width, make_string_tempcode($options), make_string_tempcode($meta), make_string_tempcode($links), new Tempcode(), make_string_tempcode($class)));
             if (isset($attributes['float'])) {
                 $temp_tpl = do_template('FLOATER', array('_GUID' => '54e8fc9ec1e16cfc5c8824e22f1e8745', 'FLOAT' => $attributes['float'], 'CONTENT' => $temp_tpl));
             }
@@ -1257,6 +1283,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             if (($attributes['param'] == '') && (isset($attributes['author']))) {
                 $attributes['param'] = $attributes['author']; // Compatibility with SMF
+            }
+
+            if (is_numeric($attributes['param'])) {
+                $attributes['param'] = $GLOBALS['FORUM_DRIVER']->get_username(intval($attributes['param']), true);
             }
 
             if ($attributes['param'] != '') {
@@ -1598,11 +1628,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             // If we need to switch
             if ((!is_email_address($_embed)) && (is_email_address($attributes['param']))) {
-                $temp = $embed; // Is tempcode
+                $temp = $embed; // Is Tempcode
                 $_embed = $attributes['param'];
                 $attributes['param'] = $temp;
             } else {
-                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member); // Becomes tempcode
+                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member); // Becomes Tempcode
             }
             if ($attributes['param']->is_empty()) {
                 $attributes['param'] = obfuscate_email_address($_embed);
@@ -1643,23 +1673,23 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             global $OVERRIDE_SELF_ZONE;
             $page_link = $attributes['param'];
-            list($zone, $attributes, $hash) = page_link_decode($page_link);
-            if (!array_key_exists('page', $attributes)) {
-                $attributes['page'] = '';
+            list($zone, $_attributes, $hash) = page_link_decode($page_link);
+            if (!array_key_exists('page', $_attributes)) {
+                $_attributes['page'] = '';
             }
             if (($zone == '_SELF') && (!is_null($OVERRIDE_SELF_ZONE))) {
                 $zone = $OVERRIDE_SELF_ZONE;
             }
-            unset($attributes['param']);
             if ($zone == '_SEARCH') {
-                $zone = get_page_zone($attributes['page'], false);
+                $zone = get_page_zone($_attributes['page'], false);
                 if (is_null($zone)) {
                     $zone = '';
                 }
             }
-            $pl_url = build_url($attributes, $zone, null, false, false, false, $hash);
-            $temp_tpl = hyperlink($pl_url, $caption, false, true);
-            $page = $attributes['page'];
+            $external = (array_key_exists('external', $attributes) && $attributes['external'] == '1');
+            $pl_url = build_url($_attributes, $zone, null, false, false, false, $hash);
+            $temp_tpl = hyperlink($pl_url, $caption, $external, true);
+            $page = $_attributes['page'];
 
             if ($page != '') {
                 if ($zone == '_SELF') {
@@ -1673,12 +1703,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
                 $ptest = _request_page($page, $zone);
                 if ($ptest !== false) {
-                    if (($page == 'topicview') && (array_key_exists('id', $attributes))) {
-                        if (!is_numeric($attributes['id'])) {
-                            $attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $attributes['id']));
+                    if (($page == 'topicview') && (array_key_exists('id', $_attributes))) {
+                        if (!is_numeric($_attributes['id'])) {
+                            $_attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $_attributes['id']));
                         }
-                        if (!is_null($attributes['id'])) {
-                            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $attributes['id']));
+                        if (!is_null($_attributes['id'])) {
+                            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $_attributes['id']));
                             if (is_null($test)) {
                                 $ptest = false;
                             }
@@ -1688,7 +1718,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     }
                 }
                 if ($ptest === false) {
-                    //$temp_tpl->attach(' ['.do_lang('MISSING_RESOURCE').']');  // Don't want this as we might be making the page immediately
+                    //$temp_tpl->attach(' [' . do_lang('MISSING_RESOURCE') . ']');  // Don't want this as we might be making the page immediately
                     if ((!in_array(get_page_name(), $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (!in_array($page, $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (running_script('index'))) {
                         if ($ignore_if_hidden) {
                             $temp_tpl = do_template('COMCODE_DEL', array('_GUID' => 'df638c61bc17ca975e95cf5f749836f5', 'CONTENT' => $caption));
@@ -1977,7 +2007,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 sync_file($path);
                 $_size = strlen($file);
                 $url = 'uploads/attachments/' . $new_filename;
-                if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                if (is_forum_db($connection)) {
                     $url = get_custom_base_url() . '/' . $url;
                 }
             } // New attachments: uploads
@@ -2023,7 +2053,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($urls[0] == '') {
                     require_code('images');
                     require_code('files2');
-                    $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '81dce25ce8c1e0a9a2407315df0cf99c', 'WARNING' => do_lang_tempcode('ATTACHMENT_WOULD_NOT_UPLOAD', float_format(get_max_file_size() / 1024 / 1024), float_format(get_max_image_size() / 1024 / 1024))));
+                    $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '81dce25ce8c1e0a9a2407315df0cf99c', 'WARNING' => do_lang_tempcode('ATTACHMENT_WOULD_NOT_UPLOAD', escape_html(float_format(get_max_file_size() / 1024 / 1024)), escape_html(float_format(get_max_image_size() / 1024 / 1024)))));
                     break;
                 }
 
@@ -2031,8 +2061,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($attributes['thumb_url'] == '') {
                     $attributes['thumb_url'] = array_key_exists(1, $urls) ? $urls[1] : '';
                 }
-                // Existing attachments
             } else {
+                // Existing attachments
+
                 $__id = intval($id);
 
                 // Load attachment
@@ -2081,10 +2112,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                             } else {
                                 $ext = '.' . get_file_extension($original_filename);
                             }
+                            $md5 = md5(substr($original_filename, 0, 30));
                             $attributes['thumb_url'] = 'uploads/attachments_thumbs/' . $md5 . $ext;
                             convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . $attributes['thumb_url'], -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                            if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                            if (is_forum_db($connection)) {
                                 $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];
                             }
                         } else {
@@ -2112,7 +2144,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
 
                 // Set URL correctly, if on an M.S.N.
-                if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                if (is_forum_db($connection)) {
                     if (url_is_local($url)) {
                         $url = get_custom_base_url() . '/' . $url;
                     }
@@ -2202,29 +2234,29 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
  * Render a code box.
  *
  * @param  string $type The data type (e.g. file extension) we are rendering.
- * @param  tempcode $embed Contents (code) to render.
+ * @param  Tempcode $embed Contents (code) to render.
  * @param  boolean $numbers Whether to show line numbers.
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
- * @return array A pair: The tempcode for the code box, and the title of the box
+ * @return array A pair: The Tempcode for the code box, and the title of the box
  */
 function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_all_semihtml = false)
 {
     $_embed = mixed();
     $title = do_lang_tempcode('CODE');
-    if ((file_exists(get_file_base() . '/sources/geshi/' . filter_naughty(($type == 'HTML') ? 'html4strict' : strtolower($type)) . '.php')) || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($type == 'HTML') ? 'html4strict' : strtolower($type)) . '.php'))) {
+    if (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($type == 'HTML') ? 'html5' : strtolower($type)) . '.php')) {
         $evaluated = $embed->evaluate();
 
         if (($in_semihtml) || ($is_all_semihtml)) {
             require_code('comcode_from_html');
-            $evaluated = semihtml_to_comcode($evaluated);
+            $evaluated = semihtml_to_comcode($evaluated, true);
         }
 
         require_code('geshi');
         if (class_exists('GeSHi')) {
             require_code('developer_tools');
             destrictify(false);
-            $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html4strict' : strtolower($type));
+            $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html5' : strtolower($type));
             $geshi->set_header_type(GESHI_HEADER_DIV);
             if ($numbers) {
                 $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
@@ -2237,7 +2269,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
     } else {
         switch (strtolower($type)) {
             case 'php':
-                if (!function_exists('highlight_string')) {
+                if (!php_function_allowed('highlight_string')) {
                     break;
                 }
 
@@ -2278,7 +2310,9 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
  * @param  array $list_types The list types to use for each level
  * @param  integer $base The level to start from
  * @param  integer $the_level The level we are at in the recursion
- * @return tempcode The TOC node.
+ * @return Tempcode The TOC node.
+ *
+ * @ignore
  */
 function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
 {

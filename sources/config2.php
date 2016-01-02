@@ -22,6 +22,8 @@
  * An option has dissappeared somehow - find it via searching our code-base for it's install code. It doesn't get returned, just loaded up. This function will produce a fatal error if we cannot find it.
  *
  * @return boolean Whether to run in multi-lang mode.
+ *
+ * @ignore
  */
 function _multi_lang()
 {
@@ -94,12 +96,17 @@ function _multi_lang()
  */
 function get_default_option($name)
 {
-    require_code('hooks/systems/config/' . filter_naughty($name));
+    $path = 'hooks/systems/config/' . filter_naughty($name);
+    if (!is_file(get_file_base() . '/sources/' . $path . '.php') && !is_file(get_file_base() . '/sources_custom/' . $path . '.php')) {
+        return null;
+    }
+
+    require_code($path);
     $ob = object_factory('Hook_config_' . $name);
 
     $value = $ob->get_default();
     if (is_null($value)) {
-        $value = ''; // Cannot save a NULL. We don't need to save as NULL anyway, options are only disabled when they wouldn't have been used anyway
+        $value = ''; // Cannot save a null. We don't need to save as null anyway, options are only disabled when they wouldn't have been used anyway
     }
 
     return $value;
@@ -107,6 +114,7 @@ function get_default_option($name)
 
 /**
  * Set a configuration option with the specified values.
+ * Note that you may wish to also empty the template cache after running this function. Config options may have been set into template(s).
  *
  * @param  ID_TEXT $name The name of the value
  * @param  LONG_TEXT $value The value
@@ -144,7 +152,7 @@ function set_option($name, $value, $will_be_formally_set = 1)
             return; // Don't save in the installer
         }
 
-        $GLOBALS['SITE_DB']->query_insert('config', $map);
+        $GLOBALS['SITE_DB']->query_insert('config', $map, false, true/*block race condition errors*/);
     } else {
         $needs_dereference = $CONFIG_OPTIONS_CACHE[$name]['c_needs_dereference'];
     }
@@ -180,7 +188,9 @@ function set_option($name, $value, $will_be_formally_set = 1)
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('OPTIONS');
     }
-    Self_learning_cache::erase_smart_cache();
+    if (class_exists('Self_learning_cache')) {
+        Self_learning_cache::erase_smart_cache();
+    }
 }
 
 /**

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    ad_success
+ * @package    newsletter_no_members
  */
 
 /**
@@ -113,6 +113,16 @@ class Hook_addon_registry_newsletter_no_members
             'recommends' => array(),
             'conflicts_with' => array()
         );
+    }
+
+    /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
     }
 
     /**

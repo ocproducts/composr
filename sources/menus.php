@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__menus()
 {
@@ -34,7 +36,7 @@ function init__menus()
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
  * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
- * @return tempcode The generated tempcode of the menu
+ * @return Tempcode The generated Tempcode of the menu
  */
 function build_menu($type, $menu, $silent_failure = false)
 {
@@ -86,6 +88,8 @@ function build_menu($type, $menu, $silent_failure = false)
  *
  * @param  SHORT_TEXT $menu The menu identifier to use (the name of a stored menu)
  * @return array The menu branch structure
+ *
+ * @ignore
  */
 function _build_stored_menu($menu)
 {
@@ -113,6 +117,7 @@ function _build_stored_menu($menu)
  *
  * @param  SHORT_TEXT $menu The menu identifier to use (syntax to load from the Sitemap)
  * @return array The Sitemap node structure (called a 'branch structure' for menus)
+ * @ignore
  */
 function _build_sitemap_menu($menu)
 {
@@ -127,7 +132,7 @@ function _build_sitemap_menu($menu)
         $valid_node_types = null;
         $child_cutoff = 50;
         $max_recurse_depth = null;
-        $options = SITEMAP_GEN_NONE;
+        $options = SITEMAP_GEN_CHECK_PERMS;
         $include = 'children';
         $title = mixed();
         $icon = mixed();
@@ -171,6 +176,12 @@ function _build_sitemap_menu($menu)
                             }
                             break;
 
+                        case 'collapse_zones':
+                            if ($setting == '1') {
+                                $options |= SITEMAP_GEN_COLLAPSE_ZONES;
+                            }
+                            break;
+
                         case 'include':
                             $include = $setting;
                             break;
@@ -189,12 +200,15 @@ function _build_sitemap_menu($menu)
 
         $node = retrieve_sitemap_node(
             $page_link,
-            /*$callback=*/null,
+            /*$callback=*/
+            null,
             $valid_node_types,
             $child_cutoff,
             $max_recurse_depth,
-            /*$options=*/$options,
-            /*$zone=*/'_SEARCH',
+            /*$options=*/
+            $options,
+            /*$zone=*/
+            '_SEARCH',
             SITEMAP_GATHER_DESCRIPTION | SITEMAP_GATHER_IMAGE
         );
 
@@ -206,8 +220,13 @@ function _build_sitemap_menu($menu)
             $node['title'] = comcode_to_tempcode($title);
         }
         if ($icon !== null) {
-            $node['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
-            $node['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $icon);
+            if (find_theme_image('icons/24x24/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
+                $node['extra_meta']['image'] = find_theme_image('icons/32x32/' . $icon);
+                $node['extra_meta']['image_2x'] = '';
+            } else {
+                $node['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
+                $node['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $icon);
+            }
         }
 
         switch ($include) {
@@ -228,6 +247,8 @@ function _build_sitemap_menu($menu)
  * Get root branch (an empty shell).
  *
  * @return array The root branch
+ *
+ * @ignore
  */
 function _get_menu_root_wrapper()
 {
@@ -255,6 +276,8 @@ function _get_menu_root_wrapper()
  * @param  array $item The database row
  * @param  array $items List of all the database rows for this menu
  * @return array A list of menu branches
+ *
+ * @ignore
  */
 function _build_stored_menu_branch($item, $items)
 {
@@ -336,6 +359,8 @@ function _build_stored_menu_branch($item, $items)
  *
  * @param  array $branches Branches
  * @param  string $page_link_append What to append to the page-links
+ *
+ * @ignore
  */
 function _append_to_page_links(&$branches, $page_link_append)
 {
@@ -354,7 +379,9 @@ function _append_to_page_links(&$branches, $page_link_append)
  * @param  ?MEMBER $source_member The member the menu is being built as (null: current member)
  * @param  ID_TEXT $type The menu type (determines what templates get used)
  * @param  boolean $as_admin Whether to generate Comcode with admin privilege
- * @return tempcode The generated tempcode of the menu
+ * @return Tempcode The generated Tempcode of the menu
+ *
+ * @ignore
  */
 function _render_menu($menu, $source_member, $type, $as_admin = false)
 {
@@ -410,7 +437,9 @@ function _render_menu($menu, $source_member, $type, $as_admin = false)
  * @param  boolean $as_admin Whether to generate Comcode with admin privilege
  * @param  array $all_branches Array of all other branches
  * @param  integer $the_level The level
- * @return array A pair: array of parameters of the menu branch (or NULL if unrenderable, or Tempcode of something to attach), and whether it is expanded
+ * @return array A pair: array of parameters of the menu branch (or null if unrenderable, or Tempcode of something to attach), and whether it is expanded
+ *
+ * @ignore
  */
 function _render_menu_branch($branch, $codename, $source_member, $level, $type, $as_admin, $all_branches, $the_level = 1)
 {
@@ -498,6 +527,9 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
         $current_zone = (($zone_name == $users_current_zone) || (($REDIRECTED_TO_CACHE !== null) && ($zone_name == $REDIRECTED_TO_CACHE['r_to_zone']) && (!$somewhere_definite))); // This code is a bit smart, as zone menus usually have a small number of zones on them - redirects will be counted into the zone redirected to, so long as there is no more suitable zone and so long as it is not a transparent redirect
         if (($zone_name == $users_current_zone) || (($REDIRECTED_TO_CACHE !== null) && ($zone_name == $REDIRECTED_TO_CACHE['r_to_zone']) && (isset($map['page'])) && ($map['page'] == $REDIRECTED_TO_CACHE['r_to_page']))) {
             $current_page = true;
+
+            $v = mixed();
+
             foreach ($map as $k => $v) {
                 if (is_integer($v)) {
                     $v = strval($v);
@@ -513,7 +545,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
                     }
                 }
                 $pv = get_param_string($k, ($k == 'page') ? $dp : null, true);
-                if (($pv !== $v) && (($k != 'page') || ($REDIRECTED_TO_CACHE === null) || (($REDIRECTED_TO_CACHE !== null) && (($v !== $REDIRECTED_TO_CACHE['r_to_page']) || ($zone_name != $REDIRECTED_TO_CACHE['r_to_zone'])))) && (($k != 'type') || ($v != 'browse') || ($pv !== null)) && (($v != $dp) || ($k != 'page') || (get_param_string('page', '') != '')) && (substr($k, 0, 5) != 'keep_')) {
+                if (($pv !== $v) && (($k != 'page') || ($REDIRECTED_TO_CACHE === null) || (($REDIRECTED_TO_CACHE !== null) && (($v !== $REDIRECTED_TO_CACHE['r_to_page']) || ($zone_name != $REDIRECTED_TO_CACHE['r_to_zone'])))) && (($k != 'type') || ($v != 'browse') || ($pv !== null)) && (($v != $dp) || ($k != 'page') || (get_page_name() != '')) && (substr($k, 0, 5) != 'keep_')) {
                     $current_page = false;
                     break;
                 }
@@ -527,28 +559,8 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $sym_pos = mixed();
             $sym_pos = strpos($_url, '{$');
             if ($sym_pos !== false) { // Specially encoded $ symbols
-                $len = strlen($_url);
-                $prev = 0;
-                do {
-                    $p_len = $sym_pos + 1;
-                    $balance = 1;
-                    while (($p_len < $len) && ($balance != 0)) {
-                        if ($_url[$p_len] == '{') {
-                            $balance++;
-                        } elseif ($_url[$p_len] == '}') {
-                            $balance--;
-                        }
-                        $p_len++;
-                    }
-
-                    $url->attach(substr($_url, $prev, $sym_pos - $prev));
-                    $_ret = new Tempcode();
-                    $_ret->parse_from($_url, $sym_pos, $p_len);
-                    $_url->attach($_ret);
-                    $prev = $p_len;
-                    $sym_pos = strpos($_url, '{$', $sym_pos + 1);
-                } while ($sym_pos !== false);
-                $url->attach(substr($_url, $prev));
+                require_code('tempcode_compiler');
+                $url = template_to_tempcode($url->evaluate());
             } else {
                 $url = make_string_tempcode($_url);
             }
@@ -635,6 +647,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
         // To do with children
         'CHILDREN' => $children,
+        'NUM_CHILDREN' => strval($num),
         'DISPLAY' => $display,
 
         // Useful contextual information

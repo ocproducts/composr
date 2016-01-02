@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__lookup()
 {
@@ -41,6 +43,8 @@ function lookup_member_page($member, &$name, &$id, &$ip)
         return array();
     }
 
+    require_code('type_sanitisation');
+
     if (is_numeric($member)) {
         // From member ID
         $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
@@ -48,6 +52,17 @@ function lookup_member_page($member, &$name, &$id, &$ip)
             return array();
         }
         $id = intval($member);
+        $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
+        if (is_null($ip)) {
+            $ip = '127.0.0.1';
+        }
+    } elseif (is_email_address($member)) {
+        // From e-mail address
+        $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
+        $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
+        if (is_null($id)) {
+            return array();
+        }
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
         if (is_null($ip)) {
             $ip = '127.0.0.1';
@@ -106,7 +121,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC
- * @return tempcode The results table
+ * @return Tempcode The results table
  */
 function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_and_time', $sort_order = 'DESC')
 {
@@ -160,7 +175,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
 
         $out->attach(results_entry(array(escape_html($page_converted), escape_html($date), $parameters, escape_html($myrow['browser']), escape_html($myrow['operating_system'])), false));
     }
-    return results_table(do_lang_tempcode('_RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'sort');
+    return results_table(do_lang_tempcode('RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'sort');
 }
 
 /**

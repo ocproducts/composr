@@ -46,7 +46,7 @@ class Module_admin_quiz
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -65,7 +65,7 @@ class Module_admin_quiz
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -138,7 +138,7 @@ class Module_admin_quiz
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -180,7 +180,7 @@ class Module_admin_quiz
     /**
      * The do-next manager for before setup management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -200,7 +200,7 @@ class Module_admin_quiz
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -218,7 +218,7 @@ class Module_admin_quiz
     /**
      * Standard crud_module delete actualiser.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function export_quiz()
     {
@@ -247,7 +247,7 @@ class Module_admin_quiz
     /**
      * UI: find quiz winner.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function find_winner()
     {
@@ -275,7 +275,7 @@ class Module_admin_quiz
     /**
      * Actualiser: find quiz winner.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _find_winner()
     {
@@ -352,29 +352,29 @@ class Module_admin_quiz
             $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
             switch ($i) {
                 case 0:
-                    $name = do_lang_tempcode('WINNER_FIRST', integer_format($i + 1), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+                    $name = do_lang_tempcode('WINNER_FIRST', escape_html(integer_format($i + 1)), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
                     break;
                 case 1:
-                    $name = do_lang_tempcode('WINNER_SECOND', integer_format($i + 1), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+                    $name = do_lang_tempcode('WINNER_SECOND', escape_html(integer_format($i + 1)), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
                     break;
                 case 2:
-                    $name = do_lang_tempcode('WINNER_THIRD', integer_format($i + 1), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+                    $name = do_lang_tempcode('WINNER_THIRD', escape_html(integer_format($i + 1)), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
                     break;
                 default:
-                    $name = do_lang_tempcode('WINNER', integer_format($i + 1), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+                    $name = do_lang_tempcode('WINNER', escape_html(integer_format($i + 1)), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
                     break;
             }
             $_winners->attach(do_template('INDEX_SCREEN_ENTRY', array('_GUID' => '85f558c8dc99b027dbf4de821de0e419', 'URL' => $url, 'NAME' => $name, 'TARGET' => '_blank')));
         }
 
         // Show the winners
-        return do_template('INDEX_SCREEN', array('_GUID' => 'd427ec7300a325ee4f00020ea59468e2', 'TITLE' => $this->title, 'CONTENT' => $_winners, 'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'), 'POST' => ''));
+        return do_template('INDEX_SCREEN', array('_GUID' => 'd427ec7300a325ee4f00020ea59468e2', 'TITLE' => $this->title, 'CONTENT' => $_winners, 'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'), 'POST' => do_lang_tempcode('WINNERS_HANDLING')));
     }
 
     /**
      * Choose quiz to view results of.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function quiz_results()
     {
@@ -407,7 +407,7 @@ class Module_admin_quiz
     /**
      * View quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _quiz_results()
     {
@@ -437,7 +437,7 @@ class Module_admin_quiz
                 foreach ($all_answers as $bits => $count) {
                     list($answer, $i) = unserialize($bits);
 
-                    $answers->attach(paragraph(do_lang_tempcode('QUIZ_ANSWER_RESULT', escape_html($answer), integer_format($count), integer_format($i + 1))));
+                    $answers->attach(paragraph(do_lang_tempcode('QUIZ_ANSWER_RESULT', escape_html($answer), escape_html(integer_format($count)), escape_html(integer_format($i + 1)))));
                 }
                 if ($answers->is_empty()) {
                     $answers = do_lang_tempcode('FREE_ENTRY_ANSWER');
@@ -522,7 +522,7 @@ class Module_admin_quiz
     /**
      * View a single filled-in quiz.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function __quiz_results()
     {
@@ -532,7 +532,7 @@ class Module_admin_quiz
 
         $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $row['q_quiz']), '', 1);
         if (!array_key_exists(0, $quizzes)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
         $quiz = $quizzes[0];
 
@@ -541,6 +541,7 @@ class Module_admin_quiz
         if (is_null($username)) {
             $username = do_lang('UNKNOWN');
         }
+        $member_url = mixed();
         $member_url = get_base_url();
         if (!is_guest($member_id)) {
             $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
@@ -594,7 +595,7 @@ class Module_admin_quiz
     /**
      * Delete some quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function delete_quiz_results()
     {

@@ -24,6 +24,7 @@ class Module_admin_workflow extends Standard_crud_module
     public $select_name = 'NAME';
     public $menu_label = 'WORKFLOW';
     public $appended_actions_already = true;
+    public $do_preview = false;
 
     /**
      * Find details of the module.
@@ -120,7 +121,7 @@ class Module_admin_workflow extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -138,7 +139,7 @@ class Module_admin_workflow extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -181,7 +182,7 @@ class Module_admin_workflow extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -202,7 +203,7 @@ class Module_admin_workflow extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -247,7 +248,7 @@ class Module_admin_workflow extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a adding/editing form.
+     * Get Tempcode for a adding/editing form.
      *
      * @param  ?integer $id The workflow being edited (null: adding, not editing)
      * @return array A pair: The input fields, Hidden fields
@@ -370,7 +371,7 @@ class Module_admin_workflow extends Standard_crud_module
     /**
      * Renders a screen for setting permissions on approval points.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function second_screen()
     {
@@ -483,7 +484,7 @@ class Module_admin_workflow extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -577,7 +578,7 @@ class Module_admin_workflow extends Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to add an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -625,7 +626,7 @@ class Module_admin_workflow extends Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to edit an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit()
     {
@@ -673,7 +674,7 @@ class Module_admin_workflow extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return ?tempcode Confirm message (null: continue)
+     * @return ?Tempcode Confirm message (null: continue)
      */
     public function edit_actualisation($id)
     {

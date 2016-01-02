@@ -31,6 +31,7 @@
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select, $filter_key, $field_val, $db_fields, $table_join_code)
 {
@@ -90,7 +91,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  * @param  ?array $extra_fields Map of extra fields to show (null: none)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The member box
+ * @return Tempcode The member box
  */
 function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
@@ -202,9 +203,9 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
     $dob = null;
     $age = null;
     $day = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
-    if (($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) && ($day !== null)) {
-        $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
-        $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
+    $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
+    $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
+    if (($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) && ($day !== null) && ($month !== null) && ($year !== null)) {
         if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
             $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
         } else {

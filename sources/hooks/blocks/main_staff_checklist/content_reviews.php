@@ -26,7 +26,7 @@ class Hook_checklist_content_reviews
     /**
      * Find items to include on the staff checklist.
      *
-     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or NULL if not on a timer), the number of things to sort out (or NULL if not on a queue), The name of the config option that controls the schedule (or NULL if no option).
+     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or null if not on a timer), the number of things to sort out (or null if not on a queue), The name of the config option that controls the schedule (or null if no option).
      */
     public function run()
     {
@@ -41,8 +41,8 @@ class Hook_checklist_content_reviews
         $url = build_url(array('page' => 'admin_content_reviews'), 'adminzone');
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c00c54ed0e3095ff0b653a5799b7cd92', 'URL' => '',
                                                                     'STATUS' => $_status,
-                                                                    'TASK' => urlise_lang(do_lang('NAG_CONTENT_REVIEWS'), $url),
-                                                                    'INFO' => do_lang_tempcode('CONTENT_NEEDING_REVIEWING', integer_format($num_to_review)),
+                                                                    'TASK' => do_lang_tempcode('NAG_CONTENT_REVIEWS', $url->evaluate()),
+                                                                    'INFO' => do_lang_tempcode('CONTENT_NEEDING_REVIEWING', escape_html(integer_format($num_to_review))),
         ));
         return array(array($tpl, null, $num_to_review, null));
     }

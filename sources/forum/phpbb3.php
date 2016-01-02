@@ -25,6 +25,8 @@
  * @param  integer $count How many chars to encode
  * @param  string $itoa64 Lookup table used internally
  * @return string The encoded output
+ *
+ * @ignore
  */
 function _hash_encode64($input, $count, &$itoa64)
 {
@@ -73,46 +75,53 @@ function _hash_encode64($input, $count, &$itoa64)
  * @param  string $password To encode
  * @param  string $setting Encode settings in special format
  * @param  string $itoa64 Lookup table used internally
- * @return string The encoded output
+ * @return ~string The encoded output (false: error)
+ * @ignore
  */
 function _hash_crypt_private($password, $setting, &$itoa64)
 {
     $output = '*';
 
-    // Check for correct hash
-    if (substr($setting, 0, 3) != '$H$') {
-        return $output;
+    if (substr($setting, 0, 3) == '$H$') {
+        $count_log2 = strpos($itoa64, $setting[3]);
+
+        if ($count_log2 < 7 || $count_log2 > 30) {
+            return $output;
+        }
+
+        $count = 1 << $count_log2;
+        $salt = substr($setting, 4, 8);
+
+        if (strlen($salt) != 8) {
+            return $output;
+        }
+
+        /**
+         * We're kind of forced to use MD5 here since it's the only
+         * cryptographic primitive available in all versions of PHP
+         * currently in use.  To implement our own low-level crypto
+         * in PHP would result in much worse performance and
+         * consequently in lower iteration counts and hashes that are
+         * quicker to crack (by non-PHP code).
+         */
+        $hash = pack('H*', md5($salt . $password));
+        do {
+            $hash = pack('H*', md5($hash . $password));
+            --$count;
+        } while ($count > 0);
+
+        $output = substr($setting, 0, 12);
+        $output .= _hash_encode64($hash, 16, $itoa64);
     }
 
-    $count_log2 = strpos($itoa64, $setting[3]);
-
-    if ($count_log2 < 7 || $count_log2 > 30) {
-        return $output;
+    if ((substr($setting, 0, 3) == '$2y') || (substr($setting, 0, 3) == '$2a$')) {
+        $hash = $setting;
+        $salt = substr($hash, 0, 29);
+        $output = crypt($password, $salt);
+        if (strlen($output) < 60) {
+            return false;
+        }
     }
-
-    $count = 1 << $count_log2;
-    $salt = substr($setting, 4, 8);
-
-    if (strlen($salt) != 8) {
-        return $output;
-    }
-
-    /**
-     * We're kind of forced to use MD5 here since it's the only
-     * cryptographic primitive available in all versions of PHP
-     * currently in use.  To implement our own low-level crypto
-     * in PHP would result in much worse performance and
-     * consequently in lower iteration counts and hashes that are
-     * quicker to crack (by non-PHP code).
-     */
-    $hash = pack('H*', md5($salt . $password));
-    do {
-        $hash = pack('H*', md5($hash . $password));
-        --$count;
-    } while ($count > 0);
-
-    $output = substr($setting, 0, 12);
-    $output .= _hash_encode64($hash, 16, $itoa64);
 
     return $output;
 }
@@ -314,7 +323,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      * Get an emoticon chooser template.
      *
      * @param  string $field_name The ID of the form field the emoticon chooser adds to
-     * @return tempcode The emoticon chooser template
+     * @return Tempcode The emoticon chooser template
      */
     public function get_emoticon_chooser($field_name = 'post')
     {
@@ -341,10 +350,10 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     }
 
     /**
-     * Set a custom profile fields value. It should not be called directly.
+     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
-     * @param  string $field The field name
+     * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname")
      * @param  string $value The value
      */
     public function set_custom_field($member, $field, $value)
@@ -601,7 +610,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      * @param  SHORT_TEXT $poster_name_if_guest The name of the poster
      * @param  ?AUTO_LINK $parent_id ID of post being replied to (null: N/A)
      * @param  boolean $staff_only Whether the reply is only visible to staff
-     * @return array Topic ID (may be NULL), and whether a hidden post has been made
+     * @return array Topic ID (may be null), and whether a hidden post has been made
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member, $post_title, $_post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false)
     {
@@ -919,7 +928,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     }
 
     /**
-     * Get the member ID of the next member after the given one, or NULL.
+     * Get the member ID of the next member after the given one, or null.
      * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
      *
      * @param  MEMBER $member The member ID to increment
@@ -945,7 +954,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
 
     /**
      * Get the name relating to the specified member ID.
-     * If this returns NULL, then the member has been deleted. Always take potential NULL output into account.
+     * If this returns null, then the member has been deleted. Always take potential null output into account.
      *
      * @param  MEMBER $member The member ID
      * @return ?SHORT_TEXT The member name (null: member deleted)
@@ -1099,7 +1108,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
 
     /**
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
-     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, whilst others made the humanly readeable name.
+     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
      * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
      * @return ID_TEXT The theme
@@ -1294,7 +1303,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_members_groups($member)
     {
-        //if ($member==$this->get_guest_id()) return array(1); May not hold true
+        //if ($member == $this->get_guest_id()) return array(1); May not hold true
 
         $groups = collapse_1d_complexity('group_id', $this->connection->query_select('user_group', array('group_id'), array('user_pending' => 0, 'user_id' => $member)));
         $groups[] = $this->get_member_row_field($member, 'group_id');
@@ -1323,7 +1332,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             return '';
         }
 
-        return _hash_crypt_private($data, $hash, $itoa64);
+        $test = _hash_crypt_private($data, $hash, $itoa64);
+        if ($test === false) {
+            return '';
+        }
+        return $test;
     }
 
     /**
@@ -1348,10 +1361,12 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             $real_session_cookie = preg_replace('#\_u$#', '_sid', $real_member_cookie);
         }
 
-        $hash = substr(uniqid(strval(mt_rand(0, 32000)), true), 0, 17);
+        require_code('crypt');
+        $hash = substr(get_rand_password(), 0, 17);
         $this->connection->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
 
-        $session_id = uniqid(strval(mt_rand(0, 32000)), true);
+        require_code('crypt');
+        $session_id = get_rand_password();
         $this->connection->query_insert('sessions', array(
             'session_id' => $session_id,
             'session_user_id' => $id,
@@ -1384,16 +1399,16 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     }
 
     /**
-     * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+     * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
      * @param  MEMBER $userid The member ID
-     * @param  MD5 $password_hashed The md5-hashed password
+     * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
-     * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+     * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {
@@ -1416,7 +1431,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         }
         $row = $rows[0];
         if ($this->is_banned($row['user_id'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('MEMBER_BANNED'));
+            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
             return $out;
         }
         if ($cookie_login) {

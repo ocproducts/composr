@@ -26,10 +26,10 @@ class Hook_config_jestr_name_changes
     public function get_details()
     {
         return array(
-            'human_name' => 'OCJESTER_NAME_CHANGES',
+            'human_name' => 'JESTER_NAME_CHANGES',
             'type' => 'text',
             'category' => 'FEATURE',
-            'group' => 'OCJESTER_TITLE',
+            'group' => 'JESTER_TITLE',
             'explanation' => 'CONFIG_OPTION_jestr_name_changes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

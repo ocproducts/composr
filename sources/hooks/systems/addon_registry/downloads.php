@@ -176,6 +176,8 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/tasks/import_filesystem_downloads.php',
             'sources/hooks/systems/tasks/import_ftp_downloads.php',
             'sources/hooks/systems/tasks/index_download.php',
+            'site/download_gateway.php',
+            'themes/default/templates/DOWNLOAD_GATEWAY_SCREEN.tpl',
         );
     }
 
@@ -196,7 +198,8 @@ class Hook_addon_registry_downloads
             'templates/DOWNLOAD_SCREEN_IMAGE.tpl' => 'download_screen',
             'templates/DOWNLOAD_GALLERY_IMAGE_CELL.tpl' => 'download_screen',
             'templates/DOWNLOAD_GALLERY_ROW.tpl' => 'download_screen',
-            'templates/DOWNLOAD_SCREEN.tpl' => 'download_screen'
+            'templates/DOWNLOAD_SCREEN.tpl' => 'download_screen',
+            'templates/DOWNLOAD_GATEWAY_SCREEN.tpl' => 'download_gateway_screen'
         );
     }
 
@@ -282,6 +285,7 @@ class Hook_addon_registry_downloads
             'IMGCODE' => '',
             'GIVE_CONTEXT' => false,
             'MAY_DOWNLOAD' => true,
+            'DOWNLOAD_URL' => placeholder_url(),
         );
         $tpl = do_lorem_template('DOWNLOAD_BOX', $map);
         $downloads->attach($tpl);
@@ -292,6 +296,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_paragraph_html(),
                 'SUBCATEGORIES' => $subcategories,
@@ -333,6 +338,7 @@ class Hook_addon_registry_downloads
                 'IMGCODE' => '',
                 'GIVE_CONTEXT' => false,
                 'MAY_DOWNLOAD' => true,
+                'DOWNLOAD_URL' => placeholder_url(),
             );
             $tpl = do_lorem_template('DOWNLOAD_BOX', $map);
             $downloads->attach($tpl);
@@ -346,6 +352,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'SUB_CATEGORIES' => $subcats,
             )), null, '', true)
@@ -389,10 +396,10 @@ class Hook_addon_registry_downloads
                 'LICENCE_TITLE' => lorem_phrase(),
                 'LICENCE_HYPERLINK' => placeholder_link(),
                 'SUBMITTER' => placeholder_id(),
-                'EDIT_DATE' => placeholder_time(),
+                'EDIT_DATE' => placeholder_date(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'NUM_DOWNLOADS' => placeholder_number(),
                 'TITLE' => lorem_title(),
@@ -414,6 +421,26 @@ class Hook_addon_registry_downloads
                 'MAY_DOWNLOAD' => true,
                 'NUM_IMAGES' => '3',
                 'CAT' => placeholder_id(),
+                'DOWNLOAD_URL' => placeholder_url(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__download_gateway_screen()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('DOWNLOAD_GATEWAY_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'NAME' => lorem_phrase(),
+                'DOWNLOAD_URL' => placeholder_url(),
+                'URL' => placeholder_url(),
             )), null, '', true)
         );
     }

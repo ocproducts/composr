@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__chat()
 {
@@ -30,20 +32,19 @@ function init__chat()
     $EFFECT_SETTINGS_ROWS = null;
 
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
-        define('CHAT_ACTIVITY_PRUNE', 25); // NB: This define is duplicated in chat_poller.php for performance
-        define('CHAT_BACKLOG_TIME', 60 * 5); // 5 minutes of messages if you enter an existing room
-        define('CHAT_EVENT_PRUNE', 60 * 60 * 24);
+        define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations. NB: This define is duplicated in chat_poller.php for performance
+        define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
 }
 
 /**
- * Get tempcode for a chat room 'feature box' for the given row
+ * Get Tempcode for a chat room 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -85,7 +86,7 @@ function messages_script()
     }
 
     // Check we are allowed here
-    //if (!has_actual_page_access(get_member(),'chat')) access_denied('PAGE_ACCESS');  Actually we'll use room permissions for that; don't want to block the shoutbox
+    //if (!has_actual_page_access(get_member(), 'chat')) access_denied('PAGE_ACCESS');  Actually we'll use room permissions for that; don't want to block the shoutbox
 
     // Check the action
     $action = get_param_string('action', 'new');
@@ -137,7 +138,7 @@ function messages_script()
         $room_id = get_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true, null, true)) {
@@ -229,7 +230,7 @@ function messages_script()
         }
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true, null, true)) {
@@ -381,6 +382,8 @@ function chat_room_prune($room_id)
  * @param  ?AUTO_LINK $message_id Latest received message ID (null: we're not getting latest messages)
  * @param  ?AUTO_LINK $event_id Latest event ID (null: we're not getting events, but we do request a null event so we can use that as a future reference point)
  * @param  string $events_output Events output to append
+ *
+ * @ignore
  */
 function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = null, $event_id = null, $events_output = '')
 {
@@ -392,12 +395,13 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     require_lang('submitban');
 
     $room_check = null;
+    $room_row = null;
     if ($room_id >= 0) {
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
 
         if (!array_key_exists(0, $room_check)) {
             // This room doesn't exist
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true)) {
@@ -405,28 +409,20 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         }
         $welcome = ((array_key_exists(get_member(), get_chatters_in_room($room_id))) || (!$backlog) || (get_param_integer('no_reenter_message', 0) == 1)) ? null : $room_row['c_welcome'];
     } else {
+        $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
+
         $welcome = null;
     }
-    if ($room_id >= 0) {
-        $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id));
-        if (array_key_exists(0, $room_check)) {
-            $room_row = $room_check[0];
-            chat_room_prune($room_id);
-        }
-    } elseif ($room_id != -2) {
+
+    if ($room_id != -2) { // Some room(s) at least, so do some cleanup
         // Note that *we are still here*
         if ($room_id == -1) {
             $GLOBALS['SITE_DB']->query_update('chat_active', array('date_and_time' => time()), array('member_id' => get_member()));
         } else {
-            $GLOBALS['SITE_DB']->query_delete('chat_active', array('member_id' => get_member(), 'room_id' => $room_id));
-            $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id), '', 1);
+            $GLOBALS['SITE_DB']->query_delete('chat_active', array('member_id' => get_member(), 'room_id' => $room_id), '', 1);
+            $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id));
         }
         chat_room_prune(-1);
-    }
-
-    if (is_null($room_check)) {
-        $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
-        $room_row = $room_check[0];
     }
 
     $from_id = null;
@@ -434,11 +430,9 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
     if (!$backlog) {
         $from_id = $message_id;
-    } else {
-        $start = time() - CHAT_BACKLOG_TIME;
     }
 
-    $messages = ($room_id == -2) ? array() : chat_get_room_content($room_id, $room_check, 20, false, false, $start, null, $from_id, null, $welcome, true, get_param_integer('no_reenter_message', 0) == 0);
+    $messages = ($room_id == -2) ? array() : chat_get_room_content($room_id, $room_check, intval(get_option('chat_max_messages_to_show')), false, false, $start, null, $from_id, null, $welcome, true, get_param_integer('no_reenter_message', 0) == 0);
     $stored_id = (array_key_exists(0, $messages)) ? $messages[0]['id'] : null;
 
     $messages_output = '';
@@ -446,7 +440,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         $edit_url = new Tempcode();
         $chat_ban_url = new Tempcode();
         $chat_unban_url = new Tempcode();
-        if ((!is_null($room_check)) && (array_key_exists(0, $room_check))) {
+        if ((!is_null($room_check)) && (!is_null($room_row)) && (array_key_exists(0, $room_check))) {
             $moderator = is_chat_moderator($_message['member_id'], $room_id, $room_row['room_owner']);
             $edit_url = build_url(array('page' => 'cms_chat', 'type' => 'edit', 'id' => $_message['id'], 'room_id' => $_message['room_id']), get_module_zone('cms_chat'));
             if (has_privilege(get_member(), 'ban_chatters_from_rooms')) {
@@ -464,9 +458,9 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
         if ((addon_installed('actionlog')) && (has_actual_page_access(get_member(), 'admin_actionlog')) && (preg_match('#[:\.]#', $_message['ip_address']) != 0)) {
             if (is_guest($_message['member_id'])) {
-                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_ip_ban', 'id' => $_message['ip_address']), 'adminzone');
+                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_ip_ban', 'id' => $_message['ip_address']), get_module_zone('admin_actionlog'));
             } else {
-                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_submitter_ban', 'id' => $_message['member_id']), 'adminzone');
+                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_submitter_ban', 'id' => $_message['member_id']), get_module_zone('admin_actionlog'));
             }
         } else {
             $ban_url = new Tempcode();
@@ -666,6 +660,8 @@ function is_chat_moderator($member_id, $room_id, $room_owner)
  * @param  string $font Font name
  * @param  string $colour Font colour
  * @param  BINARY $first_message Whether this is the first message sent out to this room, since some change
+ *
+ * @ignore
  */
 function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_message)
 {
@@ -673,7 +669,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
 
     if (!array_key_exists(0, $room_check)) {
         // This room doesn't exist
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
     }
     $room_row = $room_check[0];
     if (!check_chatroom_access($room_row, true)) {
@@ -740,14 +736,14 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
     if ($message == '') {
         $return = '0';
     } else {
-        if (chat_post_message($room_id, $message, $font, $colour, 60)) {
+        if (chat_post_message($room_id, $message, $font, $colour)) {
             $return = '1';
         } else {
             $return = '0';
         }
     }
 
-    if (($room_row['is_im'] == 1)/* && ($first_message==1)*/) { // first_message doesn't add much efficiency and a pain to correlate on the client-side
+    if (($room_row['is_im'] == 1)/* && ($first_message == 1)*/) { // first_message doesn't add much efficiency and a pain to correlate on the client-side
         $invited_already = null;
         $active_members = null;
         $allow_list = explode(',', $room_row['allow_list']);
@@ -783,7 +779,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                         $subject = do_lang('IM_INVITED_SUBJECT', null, null, null, get_lang($allow));
                         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
                         $username2 = $GLOBALS['FORUM_DRIVER']->get_username($allow);
-                        $message = do_lang('IM_INVITED_MESSAGE', get_timezoned_date(time(), true), $username, array($lobby_url, $username2, $message, strval($allow)), get_lang($allow));
+                        $message = do_notification_lang('IM_INVITED_MESSAGE', get_timezoned_date(time(), true), $username, array($lobby_url, $username2, $message, strval($allow)), get_lang($allow));
 
                         require_code('notifications');
                         dispatch_notification('im_invited', null, $subject, $message, array($allow), $room_row['room_owner'], 1);
@@ -793,12 +789,12 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         }
     }
 
-    /*if ($return=='0') Flood control creates error, but we'd rather see it shown inline
+    /*if ($return == '0') Flood control creates error, but we'd rather see it shown inline
     {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
-        $output='<'.'?xml version="1.0" encoding="'.get_charset().'" ?'.'>
+        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
 <!DOCTYPE xc:content [
 <!ENTITY euro "&#8364;">
 <!ENTITY ldquo "&#8220;">
@@ -836,7 +832,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
 }
 
 /**
- * Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a tempcode storage format.
+ * Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a Tempcode storage format.
  *
  * @param  AUTO_LINK $room_id The room ID for the message to be posted in
  * @param  LONG_TEXT $message The message body
@@ -860,7 +856,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         if (is_guest()) {
             $time_last_map = array('ip_address' => get_ip_address(), 'system_message' => 0);
         } else {
-            $time_last_map = array('user_id' => get_member(), 'system_message' => 0);
+            $time_last_map = array('member_id' => get_member(), 'system_message' => 0);
         }
         $time_last_message = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_messages', 'MAX(date_and_time)', $time_last_map);
         if (!is_null($time_last_message)) {
@@ -881,7 +877,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
             $text_colour = '#' . substr($text_colour, 2, strlen($text_colour) - 2);
         }
 
-        // Store as assembled tempcode
+        // Store as assembled Tempcode
         $map = array(
             'system_message' => 0,
             'ip_address' => get_ip_address(),
@@ -981,7 +977,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         'text_colour' => get_option('chat_default_post_colour'),
         'font_name' => get_option('chat_default_post_font'),
     );
-    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*,$wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside it's definition
+    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*, $wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside its definition
     $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
     $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
     fwrite($myfile, strval($message_id));
@@ -1019,7 +1015,7 @@ function get_chatters_in_room($room_id)
  * Get some template code showing the number of chatters in a room.
  *
  * @param   array $users A mapping (user=>username) of the chatters in the room
- * @return  tempcode       The Tempcode
+ * @return  Tempcode       The Tempcode
  */
 function get_chatters_in_room_tpl($users)
 {
@@ -1095,25 +1091,24 @@ function chat_get_all_rooms()
 }
 
 /**
- * Get a multidimensional array of the content of the specified chatroom. It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.
- * If you set the $dereference flag, all the messages will be dereferenced for you, and if you set the $downloading flag, the array is returned in a format appropriate for things like downloading the chat logs.
- * $start and $finish are used to cutoff the number of messages returned, based on their posting date and time, and the $uptoid variable is used to make the function only return the messages newer than the ID specified.
+ * Get a multidimensional array of the content of the specified chatroom.
+ * It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.
  *
  * @param  AUTO_LINK $room_id The room ID (-1 for IM)
  * @param  array $_rooms Rooms database rows that we'll need
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
- * @param  boolean $dereference Whether to dereference the returned messages
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
+ * @param  boolean $dereference Whether to dereference the returned messages (i.e. lookup the language strings)
  * @param  boolean $downloading Whether to return the messages in a downloadeable format (using the templates for log downloading)
  * @param  ?integer $start The datetime stamp to start gathering messages from (null: all)
  * @param  ?integer $finish The datetime stamp to stop gathering messages at (null: current time)
  * @param  ?integer $uptoid The lowest message ID to return (null: no special lowest number)
  * @param  ?ID_TEXT $zone The zone the chat module is in (null: find it)
- * @param  ?AUTO_LINK $entering_room The language ID for the "entering room" message (null: not entering the room)
+ * @param  ?AUTO_LINK $entering_room The language string ID for the "entering room" message (null: not entering the room)
  * @param  boolean $return_my_messages Return the current user's messages?
  * @param  boolean $return_system_messages Return system messages
  * @return array An array of all the messages collected according to the search criteria
  */
-function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference = false, $downloading = false, $start = null, $finish = null, $uptoid = null, $zone = null, $entering_room = null, $return_my_messages = true, $return_system_messages = true)
+function chat_get_room_content($room_id, $_rooms, $max_messages = null, $dereference = false, $downloading = false, $start = null, $finish = null, $uptoid = null, $zone = null, $entering_room = null, $return_my_messages = true, $return_system_messages = true)
 {
     if (is_null($zone)) {
         $zone = get_module_zone('chat');
@@ -1170,7 +1165,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
         require_code('notifications');
         $subject = do_lang('MEC_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $their_username, $room_name, $room_language);
         $room_url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $room_id), $zone, null, false, false, true);
-        $mail = do_lang('MEC_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($their_username), array(comcode_escape($room_name), $room_url->evaluate()), $room_language);
+        $mail = do_notification_lang('MEC_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($their_username), array(comcode_escape($room_name), $room_url->evaluate()), $room_language);
         dispatch_notification('member_entered_chatroom', strval($room_id), $subject, $mail);
     }
 
@@ -1218,13 +1213,13 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
         }
         $query .= (($where == '') ? '' : ' WHERE ' . $where) . ' ORDER BY date_and_time DESC,id DESC';
         global $TABLE_LANG_FIELDS_CACHE;
-        $rows = $GLOBALS['SITE_DB']->query($query, $cutoff, null, false, false, array_key_exists('chat_messages', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['chat_messages'] : array());
+        $rows = $GLOBALS['SITE_DB']->query($query, $max_messages, null, false, false, array_key_exists('chat_messages', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['chat_messages'] : array());
     } else {
         $where_array = array('room_id' => $room_id);
         if (!$return_system_messages) {
             $where_array['system_message'] = 0;
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_messages', array('*'), $where_array, 'ORDER BY date_and_time DESC,id DESC', $cutoff);
+        $rows = $GLOBALS['SITE_DB']->query_select('chat_messages', array('*'), $where_array, 'ORDER BY date_and_time DESC,id DESC', $max_messages);
     }
     $rows = array_reverse($rows);
 
@@ -1245,7 +1240,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
             $pm_message_deleted = false;
         }
 
-        // Right... let's scan for chat tags in our tempcode, such as [private="Philip"]text[/private]
+        // Right... let's scan for chat tags in our Tempcode, such as [private="Philip"]text[/private]
         $chatcode_tags = array('private', 'invite', 'newroom');
         $text = $message->evaluate();
         if (!$pm_message_deleted) {
@@ -1253,7 +1248,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
                 $pm_matches = array();
                 if (preg_match_all('#\[' . $tag . '=&quot;([^&]*)&quot;\]([^\[]*)\[/' . $tag . '\]#', $text, $pm_matches) != 0) { // The quotes will have been escaped to put into HTML; thus &quot;
                     foreach (array_keys($pm_matches[0]) as $key) {
-                        $returns = _deal_with_chatcode_tags($text, $tag, $pm_matches[1][$key], $pm_matches[2][$key], $rows[$i]['username'], $cutoff, $zone, $rows[$i]['room_id'], $rows[$i]['system_message']);
+                        $returns = _deal_with_chatcode_tags($text, $tag, $pm_matches[1][$key], $pm_matches[2][$key], $rows[$i]['username'], $max_messages, $zone, $rows[$i]['room_id'], $rows[$i]['system_message']);
 
                         $pm_message_deleted = ($returns['pm_message_deleted']);
                         if ($pm_message_deleted) {
@@ -1287,17 +1282,19 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
  * @param  string $pm_user 1st param
  * @param  string $pm_message 2nd param
  * @param  SHORT_TEXT $username The username of who made this chatcode
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
  * @param  ID_TEXT $zone The zone that our chat module is in
  * @param  AUTO_LINK $room_id The room ID the message is in
  * @param  BINARY $system_message Whether this is within a system message
  * @return array A pair: whether the message was deleted, and the new text of the message
+ *
+ * @ignore
  */
-function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username, $cutoff, $zone, $room_id, $system_message)
+function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username, $max_messages, $zone, $room_id, $system_message)
 {
     switch ($tag) {
         case 'newroom':
-            return _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $cutoff);
+            return _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $max_messages);
         case 'invite':
             return _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zone);
         case 'private':
@@ -1316,6 +1313,8 @@ function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username,
  * @param  AUTO_LINK $room_id The room ID the message is in
  * @param  BINARY $system_message Whether this is within a system message
  * @return array A pair: whether the message was deleted, and the new text of the message
+ *
+ * @ignore
  */
 function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $room_id, $system_message)
 {
@@ -1374,6 +1373,8 @@ function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $r
  * @param  string $text The text we are using
  * @param  ID_TEXT $zone The zone the chat module is in
  * @return array A pair: whether the message was deleted, and the new text of the message
+ *
+ * @ignore
  */
 function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zone)
 {
@@ -1415,10 +1416,12 @@ function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zo
  * @param  string $pm_message Comma-separated list of members to allow in
  * @param  SHORT_TEXT $username The username of who made this chatcode
  * @param  string $text The text we are using
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
  * @return array A pair: whether the message was deleted, and the new text of the message
+ *
+ * @ignore
  */
-function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $cutoff)
+function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $max_messages)
 {
     $pm_message_deleted = false;
     if (!has_privilege(get_member(), 'create_private_room')) {
@@ -1428,7 +1431,7 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $c
     // This deals with the [newroom="roomname"]allowlist[/newroom] tag
     // We need to send invitations to all the people on the allow list
     // Create the room if it hasn't already been created
-    $_row = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('room_name' => $pm_user), '', $cutoff);
+    $_row = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('room_name' => $pm_user), '', $max_messages);
     if (!array_key_exists(0, $_row)) {
         $new_room_id = $GLOBALS['SITE_DB']->query_insert('chat_rooms', array('is_im' => 0, 'room_name' => $pm_user, 'room_owner' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($username), 'allow_list' => parse_allow_list_input($pm_message), 'disallow_list' => '', 'allow_list_groups' => '', 'disallow_list_groups' => '', 'room_language' => user_lang()) + insert_lang('c_welcome', '', 3), true);
         $rooms = chat_get_all_rooms();
@@ -1471,6 +1474,8 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $c
  * @param  array $messages Original list of messages
  * @param  array $message_ids List of message IDs to keep
  * @return array A new list of messages
+ *
+ * @ignore
  */
 function _remove_empty_messages($messages, $message_ids)
 {
@@ -1515,7 +1520,7 @@ function parse_allow_list_input($_allow)
 /**
  * Check whether a member has access to the chatroom.
  *
- * @param  mixed $room The row of the chat room to check for access OR it's ID (AUTO_LINK)
+ * @param  mixed $room The row of the chat room to check for access OR its ID (AUTO_LINK)
  * @param  boolean $ret Whether to return false if there is no access (as opposed to bombing out)
  * @param  ?MEMBER $member_id The member to check as (null: current member)
  * @param  boolean $must_be_explicit Whether to also ensure for $member_id having explicit access
@@ -1526,7 +1531,7 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
     if (!is_array($room)) {
         $_room = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room), '', 1);
         if (!array_key_exists(0, $_room)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room = $_room[0];
     }
@@ -1610,7 +1615,7 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
 /**
  * Get a template that will set up the chat sound effects as for what this member needs.
  *
- * @return tempcode Template to set up chat sound effects.
+ * @return Tempcode Template to set up chat sound effects.
  */
 function get_chat_sound_tpl()
 {

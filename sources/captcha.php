@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__captcha()
 {
@@ -43,7 +45,7 @@ function captcha_script()
 
         warn_exit(do_lang_tempcode('CAPTCHA_NO_SESSION'));*/
     }
-    mt_srand($code_needed); // Important: to stop averaging out of different attempts. This makes the distortion consistent for that particular code.
+    mt_srand(crc32($code_needed)); // Important: to stop averaging out of different attempts. This makes the distortion consistent for that particular code.
 
     safe_ini_set('ocproducts.xss_detect', '0');
 
@@ -165,7 +167,7 @@ function captcha_script()
         <head>
             <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
         </head>
-        <body>
+        <body style="margin: 0">
         ';
         echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
         for ($j = 0; $j < $height; $j++) {
@@ -192,7 +194,7 @@ function captcha_script()
 /**
  * Get a captcha (aka security code) form field.
  *
- * @return tempcode The field
+ * @return Tempcode The field
  */
 function form_input_captcha()
 {
@@ -268,9 +270,6 @@ function check_captcha($code_entered, $regenerate_on_error = true)
 {
     if (use_captcha()) {
         $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-        if (get_option('captcha_single_guess') == '1') {
-            $GLOBALS['SITE_DB']->query_delete('captchas', array('si_session_id' => get_session_id())); // Only allowed to check once
-        }
         if (is_null($code_needed)) {
             if (get_option('captcha_single_guess') == '1') {
                 generate_captcha();
@@ -281,7 +280,9 @@ function check_captcha($code_entered, $regenerate_on_error = true)
         $passes = (strtolower($code_needed) == strtolower($code_entered));
         if ($regenerate_on_error) {
             if (get_option('captcha_single_guess') == '1') {
-                if (!$passes) {
+                if ($passes) {
+                    register_shutdown_function('_cleanout_captcha');
+                } else {
                     generate_captcha();
                 }
             }
@@ -303,6 +304,19 @@ function check_captcha($code_entered, $regenerate_on_error = true)
 }
 
 /**
+ * Delete current CAPTCHA.
+ *
+ * @ignore
+ */
+function _cleanout_captcha()
+{
+	if (!running_script('snippet'))
+	{
+        $GLOBALS['SITE_DB']->query_delete('captchas', array('si_session_id' => get_session_id())); // Only allowed to check once
+    }
+}
+
+/**
  * Get code to do an AJAX check of the CAPTCHA.
  *
  * @return string JavaScript code.
@@ -319,19 +333,18 @@ function captcha_ajax_check()
         var form=document.getElementById('main_form');
         if (!form) form=document.getElementById('posting_form');
         form.old_submit_b=form.onsubmit;
-        form.onsubmit=function()
+        form.onsubmit=function() {
+            document.getElementById('submit_button').disabled=true;
+            var url='" . addslashes($script) . "?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
+            if (!do_ajax_field_test(url))
             {
-                    document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
-                    if (!do_ajax_field_test(url))
-                    {
-                            document.getElementById('captcha').src+='&'; // Force it to reload latest captcha
-                            document.getElementById('submit_button').disabled=false;
-                            return false;
-                    }
-                    document.getElementById('submit_button').disabled=false;
-                    if (typeof form.old_submit_b!='undefined' && form.old_submit_b) return form.old_submit_b();
-                    return true;
-            };
+                document.getElementById('captcha').src+='&'; // Force it to reload latest captcha
+                document.getElementById('submit_button').disabled=false;
+                return false;
+            }
+            document.getElementById('submit_button').disabled=false;
+            if (typeof form.old_submit_b!='undefined' && form.old_submit_b) return form.old_submit_b();
+            return true;
+        };
     ";
 }

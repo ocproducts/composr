@@ -43,12 +43,16 @@ function incoming_uploads_script()
         } else {
             header('HTTP/1.1 500 File Upload Error');
 
-            @error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
+            if (php_function_allowed('error_log')) {
+                error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
+            }
 
             exit('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
         }
 
         $name = $_FILES['file']['name'];
+
+        $name = str_replace('C:\\fakepath\\', '', $name);
 
         if ($is_uploaded) { // && (file_exists($_FILES['file']['tmp_name']))) // file_exists check after is_uploaded_file to avoid race conditions. >>> Actually, open_basedir might block it
             @move_uploaded_file($_FILES['file']['tmp_name'], get_custom_file_base() . '/' . $savename) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
@@ -87,7 +91,7 @@ function incoming_uploads_script()
         $max_length = 255;
         $field_type_test = $GLOBALS['SITE_DB']->query_select_value('db_meta', 'm_type', array('m_name' => 'i_orig_filename'));
         if ($field_type_test == 'ID_TEXT') {
-            $max_length = 80; // Legacy
+            $max_length = 80; // LEGACY
         }
         $name = substr($name, max(0, strlen($name) - $max_length));
 
@@ -142,7 +146,7 @@ function incoming_uploads_script()
         $outstr .= '}';
         echo $outstr;
     } else {
-        //header('Content-type: text/plain; charset=' . get_charset()); @print('No file ('.serialize($_FILES).')');
+        //header('Content-type: text/plain; charset=' . get_charset()); @print('No file (' . serialize($_FILES) . ')');
         header('HTTP/1.1 500 File Upload Error');
 
         // Test harness

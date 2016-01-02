@@ -147,6 +147,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
             'themes/default/templates_custom/POINTSTORE_DISASTR.tpl',
             'themes/default/templates_custom/POINTSTORE_DISASTR_DISEASES.tpl',
             'uploads/diseases_addon/index.html',
+            'uploads/diseases_addon/hazard.jpg',
         );
     }
 }

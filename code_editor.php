@@ -13,7 +13,7 @@
  * @package    code_editor
  */
 
-/*EXTRA FUNCTIONS: tempnam*/
+/*EXTRA FUNCTIONS: tempnam|ftp_.*|posix_getuid*/
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
@@ -36,10 +36,6 @@ if (get_magic_quotes_gpc()) {
     }
 }
 
-global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2;
-$HTML_ESCAPE_1_STRREP = array('&'/*,'�','�'*/, '"', '\'', '<', '>'/*,'�'*/);
-$HTML_ESCAPE_2 = array('&amp;'/*,'&quot;','&quot;'*/, '&quot;', '&#039;', '&lt;', '&gt;'/*,'&pound;'*/);
-
 /**
  * Escape HTML text. Heavily optimised! Ended up with preg_replace after trying lots of things.
  *
@@ -52,7 +48,7 @@ function code_editor_escape_html($string)
         return ''; // Optimisation
     }
 
-    return str_replace($GLOBALS['HTML_ESCAPE_1_STRREP'], $GLOBALS['HTML_ESCAPE_2'], $string);
+    return htmlspecialchars($string, ENT_QUOTES);
 }
 
 require_once($FILE_BASE . '/_config.php');
@@ -233,7 +229,7 @@ END;
 }
 
 /**
- * Search inside a directory for editable files, whilst favouring the overridden versions.
+ * Search inside a directory for editable files, while favouring the overridden versions.
  *
  * @param  SHORT_TEXT $dir The directory path to search.
  * @return array A list of the HTML elements for the list box selection.
@@ -697,6 +693,11 @@ function ce_check_master_password($password_given)
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
         $salt = 'cms';
+
+        // LEGACY
+        if ($actual_password_hashed != md5($password_given . $salt)) {
+            $salt = 'ocp';
+        }
     }
     return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
 }
@@ -705,7 +706,7 @@ function ce_check_master_password($password_given)
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
  * @param  string $prefix The prefix of the temporary file name.
- * @return ~string                      The name of the temporary file (false: error).
+ * @return ~string The name of the temporary file (false: error).
  */
 function ce_cms_tempnam($prefix)
 {

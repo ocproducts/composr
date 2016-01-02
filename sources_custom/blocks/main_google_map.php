@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    data_mappr
+ */
+
+/**
+ * Block class.
  */
 class Block_main_google_map
 {
@@ -27,7 +32,7 @@ class Block_main_google_map
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height',/*'api_key',*/
+        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height',/* 'api_key',*/
                                     'zoom', 'center', 'latitude', 'longitude', 'show_links', 'min_latitude', 'max_latitude', 'min_longitude', 'max_longitude', 'star_entry', 'max_results', 'extra_sources', 'guid');
         return $info;
     }
@@ -36,7 +41,7 @@ class Block_main_google_map
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -44,6 +49,7 @@ class Block_main_google_map
 
         require_code('catalogues');
         require_lang('google_map');
+        require_lang('locations');
 
         // Set up config/defaults
         if (!isset($map['title'])) {
@@ -169,7 +175,7 @@ class Block_main_google_map
             }
             $entries_to_show = array_merge($entries_to_show, $ce_entries);
             if ((count($entries_to_show) == 0) && (($min_latitude == '') || ($max_latitude == '') || ($min_longitude == '') || ($max_longitude == ''))) { // If there's nothing to show and no given bounds
-                //return paragraph(do_lang_tempcode('NO_ENTRIES'),'','nothing_here');
+                //return paragraph(do_lang_tempcode('NO_ENTRIES'), '', 'nothing_here');
             }
 
             // Find long/lat fields
@@ -177,7 +183,7 @@ class Block_main_google_map
             if (isset($CAT_FIELDS_CACHE[$catalogue_name])) {
                 $fields = $CAT_FIELDS_CACHE[$catalogue_name];
             } else {
-                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             }
             $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
             $_latitude_key = 'FIELD_1';
@@ -196,7 +202,8 @@ class Block_main_google_map
 
             // Make marker data JavaScript-friendly
             foreach ($entries_to_show as $i => $entry_row) {
-                $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null/*,$only_fields*/);
+                $breadcrumbs = null;
+                $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null, null, null, false, false, null, $breadcrumbs, true);
 
                 $latitude = $details[$_latitude_key];
                 $longitude = $details[$_longitude_key];

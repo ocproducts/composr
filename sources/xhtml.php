@@ -21,8 +21,8 @@
 /**
  * Function that tucks-under-the-carpet lumps of XHTML that knowingly won't conform to XHTML5.
  *
- * @param  tempcode $html What to hide away
- * @return tempcode Hidden away version
+ * @param  Tempcode $html What to hide away
+ * @return Tempcode Hidden away version
  */
 function hide_the_evidence($html)
 {
@@ -208,16 +208,16 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
 
     // Remove some empty tags that shouldn't be empty (e.g. table)
     $may_not_be_empty = array(
-        /*'h1','h2','h3','h4','h5','h6','p','blockquote','pre',*/
-        'br', 'hr',/*'fieldset','address','noscript',*/
+        /*'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'pre',*/
+        'br', 'hr',/*'fieldset', 'address', 'noscript',*/
         'table', 'tbody',
         'tfoot', 'thead', 'tr', 'dd', 'dt', 'dl', 'li', 'ol', 'ul', 'rbc', 'rtc', 'rb', 'rt', 'rp',/*'span',*/
         'abbr',
-        'acronym', 'cite',/*'code',*/
-        'dfn',/*'em','strong','kbd','q','samp','var','sub','sup','tt','del',*/
+        'acronym', 'cite',/* 'code',*/
+        'dfn',/* 'em', 'strong', 'kbd', 'q', 'samp', 'var', 'sub', 'sup', 'tt', 'del',*/
         'ruby', 'bdo',
         'img',/*'ins',*/
-        'param', 'input', 'select', 'object', 'caption', 'label',/*'b','i','small','big',*/
+        'param', 'input', 'select', 'object', 'caption', 'label',/* 'b', 'i', 'small', 'big',*/
         'base', 'body', 'col', 'colgroup', 'map',
         'optgroup', 'legend', 'area', 'form',
     );
@@ -393,8 +393,8 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                     require_code('images');
                     list($width, $height) = _symbol_image_dims(array(html_entity_decode($matches[1], ENT_QUOTES, get_charset()))); // Safe way to grab image dimensions
                     if ($width == '') {
-                        $width = strval(get_option('thumb_width'));
-                        $height = strval(get_option('thumb_width'));
+                        $width = get_option('thumb_width');
+                        $height = get_option('thumb_width');
                     }
                     $pixels = intval($width) * intval($height);
                     $pixels_per_character = 15 * 15;
@@ -546,6 +546,8 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
  * @param  string $html The text to perform on.
  * @param  integer $desired_length Desired (nieve) substring length.
  * @return boolean Whether to keep continuing.
+ *
+ * @ignore
  */
 function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length)
 {
@@ -599,6 +601,8 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
  * @param  integer $desired_length Desired (nieve) substring length.
  * @param  boolean $testing_ahead Whether this is a cursory look-ahead rather than a byte-by-byte callback (therefore skip fine-grained checks which would interfere with a cursory result).
  * @return boolean Whether to keep continuing.
+ *
+ * @ignore
  */
 function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length, $testing_ahead = false)
 {

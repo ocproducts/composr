@@ -443,7 +443,7 @@ function update_permission_box(setting)
 			// Hide certain things if we only have view settings here, else show them
 			if (num_privilege_total==0)
 			{
-				set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0],'{!GROUP;^}');
+				set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0],'{!USERGROUP;^}');
 				for (k=0;k<known_groups.length;k++)
 				{
 					document.getElementById('access_'+known_groups[k]+'_presets').style.display='none';
@@ -452,7 +452,7 @@ function update_permission_box(setting)
 				}
 			} else
 			{
-				set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0],'<span class="heading_group">{!GROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
+				set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0],'<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
 				for (k=0;k<known_groups.length;k++)
 				{
 					document.getElementById('access_'+known_groups[k]+'_presets').style.display='block';

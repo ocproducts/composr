@@ -50,6 +50,9 @@ class Hook_config_mail_queue
      */
     public function get_default()
     {
+        if (!cron_installed()) {
+            return null;
+        }
         return '0';
     }
 }

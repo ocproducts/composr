@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_groups()
 {
@@ -43,7 +45,7 @@ function init__cns_groups()
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The usergroup box
+ * @return Tempcode The usergroup box
  */
 function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -76,14 +78,19 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  * Get a nice list for selection from the usergroups. Suitable for admin use only (does not check hidden status).
  *
  * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default).
- * @return tempcode The list.
+ * @param  boolean $allow_guest_group Allow the guest usergroup to be in the list.
+ * @return Tempcode The list.
  */
-function cns_create_selection_list_usergroups($it = null)
+function cns_create_selection_list_usergroups($it = null, $allow_guest_group = true)
 {
     $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-    $_m = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : null, 'ORDER BY g_order');
+    $_m = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : null, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
     $entries = new Tempcode();
     foreach ($_m as $m) {
+        if (!$allow_guest_group && $m['id'] == db_get_first_id()) {
+            continue;
+        }
+
         $entries->attach(form_input_list_entry(strval($m['id']), $it === $m['id'], get_translated_text($m['g_name'], $GLOBALS['FORUM_DB'])));
     }
 
@@ -119,11 +126,11 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
         return $ALL_DEFAULT_GROUPS_CACHE[$include_primary ? 1 : 0];
     }
 
-    $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array('g_is_default' => 1, 'g_is_presented_at_install' => 0), 'ORDER BY g_order');
+    $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_default' => 1, 'g_is_presented_at_install' => 0), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
     $groups = collapse_1d_complexity('id', $rows);
 
     if ($include_primary) {
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         if (($include_all_configured_default_groups) || (count($rows) == 1) || (get_option('show_first_join_page') == '0')) { // If just 1 then we won't have presented a choice on the join form, so should inject that 1 as the default group as it is implied
             $groups = array_merge($groups, collapse_1d_complexity('id', $rows));
         }
@@ -186,7 +193,7 @@ function cns_ensure_groups_cached($groups)
     $extra_groups = $GLOBALS['FORUM_DB']->query('SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $groups_to_load, null, null, false, true, array('g_name' => 'SHORT_TRANS', 'g_title' => 'SHORT_TRANS'));
 
     if (count($extra_groups) != $counter) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
     foreach ($extra_groups as $extra_group) {
@@ -208,7 +215,7 @@ function cns_ensure_groups_cached($groups)
  *
  * @param  GROUP $id The ID of the group.
  * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group.
- * @return tempcode The link.
+ * @return Tempcode The link.
  */
 function cns_get_group_link($id, $hide_hidden = true)
 {
@@ -292,7 +299,7 @@ function cns_get_member_best_group_property($member_id, $property)
 function cns_get_best_group_property($groups, $property)
 {
     $big_is_better = array('gift_points_per_day', 'gift_points_base', 'enquire_on_new_ips', 'is_super_admin', 'is_super_moderator', 'max_daily_upload_mb', 'max_attachments_per_post', 'max_avatar_width', 'max_avatar_height', 'max_post_length_comcode', 'max_sig_length_comcode');
-    //$small_and_perfectly_formed=array('flood_control_submit_secs','flood_control_access_secs'); Not needed by elimination, but nice to have here as a note
+    //$small_and_perfectly_formed = array('flood_control_submit_secs', 'flood_control_access_secs'); Not needed by elimination, but nice to have here as a note
 
     $go_super_size = in_array($property, $big_is_better);
 
@@ -339,12 +346,22 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             global $PROBATION_GROUP_CACHE;
             if (is_null($PROBATION_GROUP_CACHE)) {
                 $probation_group = get_option('probation_usergroup');
-                $PROBATION_GROUP = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('name') => $probation_group));
+                $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
                 if (is_null($PROBATION_GROUP_CACHE)) {
                     $PROBATION_GROUP_CACHE = false;
                 }
             }
             if ($PROBATION_GROUP_CACHE !== false) {
+                if ($member_id == get_member() && running_script('index')) {
+                    static $given_message = false;
+                    if (!$given_message) {
+                        require_lang('cns');
+                        require_code('site');
+                        attach_message(do_lang_tempcode('IN_PROBATION', escape_html(get_timezoned_date($opt))), 'notice');
+                        $given_message = true;
+                    }
+                }
+
                 return array($PROBATION_GROUP_CACHE => 1);
             }
         }

@@ -198,7 +198,9 @@ class Hook_addon_registry_galleries
             'sources/hooks/modules/admin_newsletter/galleries.php',
             'sources/hooks/modules/admin_setupwizard/galleries.php',
             'sources/hooks/modules/galleries_users/.htaccess',
+            'sources_custom/hooks/modules/galleries_users/.htaccess',
             'sources/hooks/modules/galleries_users/index.html',
+            'sources_custom/hooks/modules/galleries_users/index.html',
             'sources/hooks/modules/search/galleries.php',
             'sources/hooks/systems/page_groupings/galleries.php',
             'sources/hooks/systems/module_permissions/galleries.php',
@@ -479,8 +481,8 @@ class Hook_addon_registry_galleries
                         'VIEW_URL' => placeholder_url(),
                         'THUMB' => placeholder_image(),
                         'DESCRIPTION' => lorem_phrase(),
-                        'ADD_DATE_RAW' => placeholder_time(),
-                        'EDIT_DATE_RAW' => placeholder_time(),
+                        'ADD_DATE_RAW' => placeholder_date(),
+                        'EDIT_DATE_RAW' => placeholder_date(),
                         'VIEWS' => placeholder_number(),
                         'SUBMITTER' => placeholder_id(),
                         'ID' => placeholder_id(),
@@ -520,7 +522,7 @@ class Hook_addon_registry_galleries
                 'THUMB' => placeholder_image(),
                 'VIEW_URL' => placeholder_url(),
                 'ADD_DATE_RAW' => lorem_word(),
-                'EDIT_DATE_RAW' => placeholder_time(),
+                'EDIT_DATE_RAW' => placeholder_date(),
                 'VIEWS' => placeholder_id(),
                 '_EDIT_URL' => placeholder_url(),
             );
@@ -567,7 +569,7 @@ class Hook_addon_registry_galleries
             }
             $out->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE', array('TITLE' => lorem_word(), 'URL' => placeholder_url())));
 
-            $content->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE_CONTAINER', array('ID' => placeholder_random(), 'CAPTION' => lorem_phrase(), 'CONTENTS' => $out)));
+            $content->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE_CONTAINER', array('ID' => placeholder_random_id(), 'CAPTION' => lorem_phrase(), 'CONTENTS' => $out)));
         }
 
         return array(
@@ -661,7 +663,7 @@ class Hook_addon_registry_galleries
                 '_TITLE' => lorem_title(),
                 'ID' => strval($k),
                 'VIEWS' => placeholder_number(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'SUBMITTER' => lorem_word(),
                 'CLASS' => lorem_word(),
@@ -776,7 +778,7 @@ class Hook_addon_registry_galleries
                 '_TITLE' => lorem_title(),
                 'ID' => strval($k),
                 'VIEWS' => placeholder_number(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'SUBMITTER' => lorem_word(),
                 'CLASS' => lorem_word(),
@@ -877,8 +879,8 @@ class Hook_addon_registry_galleries
             'CAT' => lorem_word(),
             'THUMB' => placeholder_image(),
             'VIEW_URL' => placeholder_url(),
-            'EDIT_DATE_RAW' => placeholder_time(),
-            'ADD_DATE_RAW' => placeholder_time(),
+            'EDIT_DATE_RAW' => placeholder_date(),
+            'ADD_DATE_RAW' => placeholder_date(),
             'VIEWS' => placeholder_number(),
             '_EDIT_URL' => placeholder_url(),
         );
@@ -896,8 +898,8 @@ class Hook_addon_registry_galleries
             'TITLE' => lorem_phrase(),
             'VIDEO_DETAILS' => $video_details,
             'DESCRIPTION' => lorem_phrase(),
-            'ADD_DATE_RAW' => placeholder_time(),
-            'EDIT_DATE_RAW' => placeholder_time(),
+            'ADD_DATE_RAW' => placeholder_date(),
+            'EDIT_DATE_RAW' => placeholder_date(),
             'VIEWS' => placeholder_number(),
             'VIEW_URL' => placeholder_url(),
             'SUBMITTER' => placeholder_id(),
@@ -918,7 +920,7 @@ class Hook_addon_registry_galleries
             'NUM_VIDEOS' => lorem_word(),
             'NUM_IMAGES' => lorem_word(),
             'NUM_CHILDREN' => lorem_word(),
-            'ID' => lorem_word(),
+            'ID' => placeholder_random_id(),
             'LANG' => lorem_word(),
             'ADD_DATE_RAW' => placeholder_date_raw(),
             'ADD_DATE' => lorem_word(),

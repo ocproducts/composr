@@ -9,7 +9,7 @@
 		<div class="cns_information_bar float_surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_a">
-					<img alt="{!AVATAR}" title="{!AVATAR}" src="{AVATAR_URL*}" />
+					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				</div>
 			{+END}
 

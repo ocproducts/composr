@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__comcode_from_html()
 {
@@ -31,6 +33,8 @@ function init__comcode_from_html()
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _img_tag_fixup($matches)
 {
@@ -51,9 +55,8 @@ function _img_tag_fixup($matches)
     }
     $params = str_replace(' ismap', '', $params);
 
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     if ((strpos($matches[2], '{$FIND_SCRIPT') === false) && (strpos($matches[2], '{$IMG') === false)) {
         $new_url = qualify_url($matches[2], $caller_url);
@@ -69,12 +72,13 @@ function _img_tag_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _img_tag_fixup_raw($matches)
 {
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     $matches[2] = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
 
@@ -94,6 +98,8 @@ function _img_tag_fixup_raw($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _a_tag_link_fixup($matches)
 {
@@ -108,6 +114,8 @@ function _a_tag_link_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _css_color_fixup($matches)
 {
@@ -132,6 +140,8 @@ function _css_color_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _css_quot_fixup($matches)
 {
@@ -139,10 +149,12 @@ function _css_quot_fixup($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _cdata_protect($matches)
 {
@@ -157,10 +169,12 @@ function _cdata_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _codetag_protect($matches)
 {
@@ -171,10 +185,12 @@ function _codetag_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _codetag_unprotect($matches)
 {
@@ -189,6 +205,8 @@ function _codetag_unprotect($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _reorder_xhtml_attributes($matches)
 {
@@ -223,6 +241,8 @@ function _reorder_xhtml_attributes($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _reorder_css_properties($matches)
 {
@@ -308,8 +328,8 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     // Our wrapper tags
     require_code('comcode_renderer');
     _custom_comcode_import($GLOBALS['SITE_DB']);
-    global $TEXTUAL_TAGS;
-    foreach (array_keys($TEXTUAL_TAGS) as $tag) {
+    global $VALID_COMCODE_TAGS;
+    foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
         $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', 'detagonise', $semihtml);
         $semihtml = preg_replace('#</\s*comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
     }
@@ -397,13 +417,19 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false)
 {
-    require_code('obfuscate');
     $semihtml = trim($semihtml);
 
     // Optimisation, not long enough to clean up
     if (cms_trim($semihtml, strlen($semihtml) < 30) == '') {
         return '';
     }
+
+    $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
+    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($decoded, '&') === false) {
+        return $decoded;
+    }
+
+    require_code('obfuscate');
 
     safe_ini_set('pcre.backtrack_limit', '10000000');
 
@@ -439,17 +465,19 @@ function semihtml_to_comcode($semihtml, $force = false)
         if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }
-        $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
-        if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
-            if ($semihtml != '') {
-                $semihtml = '[html]' . $semihtml . '[/html]';
+        if (strpos($semihtml, 'data:') === false) {
+            $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
+            if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
+                if ($semihtml != '') {
+                    $semihtml = '[html]' . $semihtml . '[/html]';
+                }
+                $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
+                $semihtml = str_replace('[/html][html]', '', $semihtml);
+                $semihtml = str_replace('[html][/html]', '', $semihtml);
+                return $semihtml;
             }
-            $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
-            $semihtml = str_replace('[/html][html]', '', $semihtml);
-            $semihtml = str_replace('[html][/html]', '', $semihtml);
-            return $semihtml;
         }
         if ($semihtml != '') {
             $semihtml = '[semihtml]' . $semihtml . '[/semihtml]';
@@ -481,7 +509,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace_callback('#(<![CDATA[)(.*)(]]>)#siU', '_cdata_protect', $semihtml);
     // And use same method to protect our code tags
     /* foreach (array_keys($GLOBALS['CODE_TAGS']) as $code_tag)
-            $semihtml=preg_replace_callback('#(\['.$code_tag.'[^\]]*\])(.*)(\[/'.$code_tag.'\])#siU','_codetag_protect',$semihtml);
+        $semihtml = preg_replace_callback('#(\[' . $code_tag . '[^\]]*\])(.*)(\[/' . $code_tag . '\])#siU', '_codetag_protect', $semihtml);
     Actually no, we don't want this. These tags are typed potentially to show HTML and thus the entities must get decoded
     */
 
@@ -764,9 +792,11 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</CDATA__amp>', '&', $semihtml);
 
     // Tempcode escaping
-    /*$semihtml=str_replace('{+','\{+',$semihtml); No - people should be able to type this if they want
-    $semihtml=str_replace('{$','\{$',$semihtml);
-    $semihtml=str_replace('{!','\{!',$semihtml);*/
+    /* No - people should be able to type this if they want
+    $semihtml = str_replace('{+', '\{+', $semihtml);
+    $semihtml = str_replace('{$', '\{$', $semihtml);
+    $semihtml = str_replace('{!', '\{!', $semihtml);
+    */
 
     $semihtml = str_replace('[ html', '[html', $semihtml);
     $semihtml = str_replace('[ semihtml', '[semihtml', $semihtml);
@@ -861,9 +891,9 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
     if (strpos($semihtml2, '<') === false) {
-        //     $semihtml2=str_replace(array('&lt;','&gt;','&amp;'),array('___lt___','___gt___','___amp___'),$semihtml2);
+        //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES, get_charset());
-//    $semihtml2=str_replace(array('___lt___','___gt___','___amp___'),array('&lt;','&gt;','&amp;'),$semihtml2);
+        //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
         return $semihtml2;
     }
 
@@ -955,6 +985,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
 
 /**
  * Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.
+ * It is case-sensitive for performance reasons. But everyone uses lower-case tags for a long time now. Also assumes no tabs within tag definition.
  *
  * @param  string $element The element name to replace over
  * @param  array $array A list of pairs: Pattern, Replacement
@@ -963,17 +994,66 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
  */
 function array_html_preg_replace($element, $array, $semihtml)
 {
+    // Quick exit, for efficiency
+    if (strpos($semihtml, '<' . $element) === false) {
+        return $semihtml;
+    }
+
+    // See if we have no nesting (no nesting --> $easy_replace)
+    $easy_replace = true;
+    $on_closer = true;
+    $pos = 0;
+    do {
+        $pos_opener_1 = strpos($semihtml, '<' . $element . '>', $pos);
+        $pos_opener_2 = strpos($semihtml, '<' . $element . ' ', $pos);
+        $pos_opener = ($pos_opener_1 !== false && ($pos_opener_2 === false || $pos_opener_1 < $pos_opener_2)) ? $pos_opener_1 : $pos_opener_2;
+        if ($pos_opener === false) {
+            break;
+        }
+
+        if ($pos == 0) // First iteration is just to find first opener
+        {
+            $pos = $pos_opener + 1;
+            continue;
+        }
+
+        $pos_closer_1 = strpos($semihtml, '</' . $element . '>', $pos);
+        $pos_closer_2 = strpos($semihtml, '</' . $element . ' ', $pos);
+        $pos_closer = ($pos_closer_1 !== false && ($pos_closer_2 === false || $pos_closer_1 < $pos_closer_2)) ? $pos_closer_1 : $pos_closer_2;
+        if ($pos_closer === false) {
+            break;
+        }
+
+        if ($pos_opener < $pos_closer) {
+            $easy_replace = false;
+            break;
+        }
+
+        $pos = $pos_opener + 1;
+    } while ($pos !== false);
+
+    // Short way
+    if ($easy_replace) {
+        foreach ($array as $temp) {
+            list($pattern, $replacement) = $temp;
+            $semihtml = preg_replace(str_replace('$', '', str_replace('^', '', $pattern)), $replacement, $semihtml);
+        }
+        return $semihtml;
+    }
+
+    // Long way
     $old_semihtml = '';
     do {
         $old_semihtml = $semihtml;
 
+        // Find offset of openers and closers
         $matches = array();
-        $count = preg_match_all('#<' . $element . '[\s>]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $count = preg_match_all('#<' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
         $starts = array();
         for ($i = 0; $i < $count; $i++) {
             $starts[] = $matches[0][$i][1];
         }
-        $count = preg_match_all('#</' . $element . '[\s>]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $count = preg_match_all('#</' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
         $ends = array();
         $lengths = array();
         for ($i = 0; $i < $count; $i++) {
@@ -989,9 +1069,11 @@ function array_html_preg_replace($element, $array, $semihtml)
                     if ($end < $start) {
                         continue;
                     }
+
                     $opens = @$s_opens[$start][$end];
                     $closes = @$s_closes[$start][$end];
-                    if (is_null($opens)) {
+                    if (is_null($opens)) // Not worked out yet, work out and put into $s_opens and $s_closes
+                    {
                         $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
                         $opens = substr_count($segment, '<' . $element . ' ') + substr_count($segment, '<' . $element . '>');
                         $closes = substr_count($segment, '</' . $element . '>');
@@ -1000,6 +1082,8 @@ function array_html_preg_replace($element, $array, $semihtml)
                     } else {
                         $segment = null;
                     }
+
+                    // Segment is a clean isolated tag
                     if ($opens == $closes) {
                         if (is_null($segment)) {
                             $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
@@ -1010,7 +1094,7 @@ function array_html_preg_replace($element, $array, $semihtml)
                         $semihtml = $before . $subbed . $after;
                         if ($semihtml != $old_semihtml) {
                             break 3;
-                        }
+                        } // We need to start again now as the offsets have all changed
                         break; // Ok, well at least we know we found our tag bound, so no more need to search
                     }
                 }

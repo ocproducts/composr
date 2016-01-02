@@ -14,7 +14,7 @@
 		<div class="trinav_left" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="buttons__previous button_screen" {+START,IF,{SLIDESHOW}}onclick="return slideshow_backward();" {+END}rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
+				<a class="buttons__previous button_screen"{+START,IF,{SLIDESHOW}} onclick="return slideshow_backward();"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
 				<span class="buttons__previous_none button_screen"><span>{!PREVIOUS}</span></span>
@@ -33,7 +33,7 @@
 
 			{$,Next}
 			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="buttons__next button_screen" {+START,IF,{SLIDESHOW}}onclick="return slideshow_forward();" {+END}rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
+				<a class="buttons__next button_screen"{+START,IF,{SLIDESHOW}} onclick="return slideshow_forward();"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
 				<span class="buttons__next_none button_screen"><span>{!NEXT}</span></span>

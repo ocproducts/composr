@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    user_simple_csv_sync
+ */
+
 function init__user_export()
 {
     define('USER_EXPORT_ENABLED', false);
@@ -32,8 +38,8 @@ function init__user_export()
 
 function do_user_export($to_file = true)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if ($to_file) {

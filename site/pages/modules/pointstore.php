@@ -127,7 +127,7 @@ class Module_pointstore
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -145,7 +145,7 @@ class Module_pointstore
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -163,7 +163,7 @@ class Module_pointstore
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -203,7 +203,7 @@ class Module_pointstore
     /**
      * The UI to choose a section of the Point Store.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_pointstore()
     {
@@ -221,10 +221,11 @@ class Module_pointstore
             $object->init();
             $tpls = $object->info();
             foreach ($tpls as $tpl) {
-                $item = do_template('POINTSTORE_ITEM', array('_GUID' => '1316f918b3c19331d5d8e55402a7ae45', 'ITEM' => $tpl));
-                $items->attach($item);
+                $items->attach($tpl);
             }
         }
+
+        // pop3/imap work from a single box so are handled here rather than in the hooks...
 
         if (get_option('is_on_forw_buy') == '1') {
             $forwarding_url = build_url(array('page' => '_SELF', 'type' => 'newforwarding', 'id' => 'forwarding'), '_SELF');
@@ -252,9 +253,10 @@ class Module_pointstore
         }
 
         if ((!$pointstore_mail_pop3_link->is_empty()) || (!$pointstore_mail_pop3_link->is_empty())) {
-            $mail_tpl = do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text');
-            $items->attach(do_template('POINTSTORE_ITEM', array('_GUID' => '815b00b651757d4052cb494ed6a8d926', 'ITEM' => $mail_tpl)));
+            $items->attach(do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text'));
         }
+
+        // --
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         return do_template('POINTSTORE_SCREEN', array('_GUID' => '1b66923dd1a3da6afb934a07909b8aa7', 'TITLE' => $this->title, 'ITEMS' => $items, 'POINTS_LEFT' => integer_format($points_left), 'USERNAME' => $username));

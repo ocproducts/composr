@@ -86,7 +86,7 @@ class Hook_addon_registry_google_similar_sites
     public function get_description()
     {
         return 'Display sites which are similar to a specified URL which you put in the parameter box. Example:
-[code=\"Comcode\"][block criteria=\"http://www.example.com\" max=\"5\"]side_similar_sites[/block][/code]';
+[code="Comcode"][block criteria="http://www.example.com" max="5"]side_similar_sites[/block][/code]';
     }
 
     /**
@@ -108,7 +108,7 @@ class Hook_addon_registry_google_similar_sites
     {
         return array(
             'requires' => array(
-                'PHP 5.2',
+                'PHP5.2',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

@@ -19,9 +19,9 @@
 				if (!o.id)
 					return o.text; // optgroup
 				{+START,LOOP,IMAGES}
-					if (o.id=='{_loop_var;/}')
-						return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="{$IMG*;/,{_loop_var}}" \/> '+escape_html(o.text)+'</span>';
-					{+END}
+				if (o.id=='{_loop_var;/}')
+					return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="{$IMG*;/,{_loop_var}}" \/> '+escape_html(o.text)+'</span>';
+				{+END}
 				return escape_html(o.text);
 			}
 		{+END}

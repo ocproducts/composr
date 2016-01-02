@@ -42,11 +42,11 @@ class Block_main_forum_topics
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'check\',$map)?$map[\'check\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'hot\',$map)?$map[\'hot\']:\'0\',array_key_exists(\'param\',$map)?$map[\'param\']:\'General chat\',array_key_exists(\'limit\',$map)?$map[\'limit\']:6,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'lasttime\',array_key_exists(\'username_key\',$map)?$map[\'username_key\']:\'firstusername\')';
@@ -58,7 +58,7 @@ class Block_main_forum_topics
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -120,7 +120,7 @@ class Block_main_forum_topics
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
             if (is_null($forum_name)) {
-                return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red_alert');
+                return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'topic'), '', 'red_alert');
             }
         }
         $_title = do_lang_tempcode('ACTIVE_TOPICS_IN', escape_html($forum_name));

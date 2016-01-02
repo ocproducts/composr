@@ -1,5 +1,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:date="http://exslt.org/dates-and-times">
+    xmlns:date="http://exslt.org/dates-and-times"
+    extension-element-prefixes="date">
     <xsl:output indent="yes" method="html" />
 
     <xsl:template name="string-replace-all">
@@ -106,6 +107,23 @@
                                     </xsl:if>
                                 </ul>
                             </li>
+                            <li class="dropdown" id="charts-menu">
+                                <a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{$root}graph_class.html">
+                                        <i class="icon-list-alt"></i>&#160;Class hierarchy diagram</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" id="reports-menu">
+                                <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <xsl:apply-templates select="/" mode="report-overview" />
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                     <!--<form class="navbar-search pull-right" onsubmit="$('.element:parent').show(); $('.element h1:not(:contains('+$('#search-query').val()+'))').parent().hide();return false;">-->
@@ -142,7 +160,7 @@
         <meta name="description" content="" />
 
         <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
         <![endif]-->
 
         <link href="{$root}css/template.css" rel="stylesheet" media="all" />

@@ -34,7 +34,7 @@ class Hook_config_brute_force_threshold
             'human_name' => 'BRUTE_FORCE_THRESHOLD',
             'type' => 'integer',
             'category' => 'SECURITY',
-            'group' => 'BRUTE_FORCE',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_brute_force_threshold',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

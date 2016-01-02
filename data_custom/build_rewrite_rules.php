@@ -34,7 +34,7 @@ $rewrite_rules = array(
     // Traditional Composr form, /pg/
 
     array(
-        'PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^([^=]*)pg/s/([^\&\?]*)/index\.php$', '$1index.php\?page=wiki&id=$2', array('L', 'QSA'), true),
         ),
@@ -74,7 +74,7 @@ $rewrite_rules = array(
     // New-style Composr form, .htm
 
     array(
-        'HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^(' . $zone_list . ')/s/([^\&\?]*)\.htm$', '$1/index.php\?page=wiki&id=$2', array('L', 'QSA'), true),
             array('^s/([^\&\?]*)\.htm$', 'index\.php\?page=wiki&id=$1', array('L', 'QSA'), true),
@@ -96,7 +96,7 @@ $rewrite_rules = array(
     // New-style Composr form, simple
 
     array(
-        'SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^(' . $zone_list . ')/s/([^\&\?]*)$', '$1/index.php\?page=wiki&id=$2', array('L', 'QSA'), false),
             array('^s/([^\&\?]*)$', 'index\.php\?page=wiki&id=$1', array('L', 'QSA'), false),
@@ -239,7 +239,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
                 foreach ($rewrite_rule_set as $y => $rewrite_rule) {
                     list($rule, $to, $flags, $enabled) = $rewrite_rule;
 
-                    $rules_txt .= "\n" . ($enabled ? '' : '//') . "if (preg_match('#{$rule}#',\$uri,\$matches)!=0)\n" . ($enabled ? '' : '//') . "\t{\n\t_roll_gae_redirect(\$matches,'{$to}');\n\treturn NULL;\n\t}";
+                    $rules_txt .= "\n" . ($enabled ? '' : '//') . "if (preg_match('#{$rule}#',\$uri,\$matches)!=0)\n" . ($enabled ? '' : '//') . "\t{\n\t_roll_gae_redirect(\$matches,'{$to}');\n\treturn null;\n\t}";
                 }
             }
             $rules_txt = preg_replace('#^#m', str_repeat("\t", $indent_level), $rules_txt) . "\n";

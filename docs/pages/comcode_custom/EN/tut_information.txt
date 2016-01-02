@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Choosing how to publish[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Choosing how to publish[/title]
 
 When it comes to deciding how to release information, things can be difficult with Composr. Not due to complexity, or lack of features -- but because Composr offers so much to choose from, that you actually have the opportunity to sit back, and think, 'which is best for me?'.
 
@@ -10,6 +10,7 @@ There are other ways of releasing information in Composr not mentioned here, suc
 
 [title="2"]The ways[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/tut_information/image.jpg[/media]
 The main ways to release information in Composr are:
  - Comcode pages
  - News articles
@@ -24,16 +25,16 @@ News articles are great for releasing "update" information. They are permanently
 
 Catalogues store information in a database-like fashion, with a strict record format that the stored information must comply with. This is therefore very appropriate for holding records, but feels forced for holding documents.
 
-Wiki+ is a very adhoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use.
+Wiki+ is a very ad hoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use. Imagine Wikipedia.
 
-Discussion forums are even more adhoc from Wiki+, and whilst they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
+Discussion forums are even more ad hoc from Wiki+, and while they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
 
-Downloads may be used to release information indirectly, essentially via archive.
+Downloads may be used to release information indirectly, essentially via storing it in an archive of files/publications.
 
 [title="2"]Comparison table[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
+<table class="columned_table results_table wide_table autosized_table">
 	<thead>
 		<tr>
 			<th>
@@ -58,8 +59,9 @@ Downloads may be used to release information indirectly, essentially via archive
 			</th>
 		</tr>
 	</thead>
+
 	<tbody>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p>User submittable</p>
 			</td>
@@ -82,7 +84,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p>Supports validation</p>
 			</td>
@@ -105,7 +107,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p>Quick to add (to)</p>
 			</td>
@@ -128,7 +130,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p>Automatically indexed</p>
 			</td>
@@ -151,7 +153,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>Yes</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p>Clean</p>
 			</td>
@@ -175,7 +177,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				provided there.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p>Regularly browsed</p>
 			</td>
@@ -198,7 +200,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>No</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p>Structured data</p>
 			</td>
@@ -222,7 +224,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				download.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p>Transitory</p>
 			</td>
@@ -245,7 +247,7 @@ Downloads may be used to release information indirectly, essentially via archive
 				<p>No</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p>Easy to re-organise</p>
 			</td>
@@ -272,8 +274,66 @@ Downloads may be used to release information indirectly, essentially via archive
 </table>
 [/html]
 
+[title="2"]Content type terminology[/title]
+
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/tut_information/image2.jpg[/media]
+We use 4 generic words in Composr for describing content:
+1) Content type (plural: content types)
+2) Resource (plural: resources)
+3) Category (plural: categories)
+4) Entry (plural: entries)
+
+None of these things have any specific implementation in Composr. For example, if you looked in the Composr code you wouldn't find an "entry" defined anywhere in it. They are just words we use consistently to describe how parts of the system behave and relate to each other.
+
+A content type is just as it sounds: a type of content. This could be a download, a gallery image, a banner, or an entry within an individual catalogue. Catalogues are essentially custom content types, i.e. they allow a site to create new content types without programming.
+Each content type in Composr runs from separate code, and separate database tables, in a separate addon, served from a separate module(s) -- except for catalogues, which all share those things.
+
+Resource can refer to any kind of "thing" in the system, including catalogues, categories, entries, members, usergroups, or just about anything else. We use the term quite loosely.
+
+Entries are organised within categories.
+
+[title="3"]Categories in more detail[/title]
+
+Categories are containers for entries. Most content types have categories, although they may be given different actual names in the system.
+
+A gallery is a kind of category. So images and videos are organised in gallery categories, aka galleries.
+
+A banner type is a kind of category. So banners are organised in banner type categories, aka banner types.
+
+Downloads are organised in download categories.
+
+Sometimes categories are hierarchical, e.g. they are for galleries and download categories, but are not for banner types. By hierarchical, I mean that categories can contain more categories ("subcategories"), forming a tree structure.
+
+Catalogues are like their own content types, and come with categories. Whether those categories are hierarchical or not is chosen as an option of the catalogue.
+
+So...
+
+A content type (e.g. galleries, banners, downloads, an individual catalogue) usually contains categories, which sometimes are hierarchical -- and categories contain entries.
+
+[title="2"]The narrow-in option[/title]
+
+Normally when browsing through categories you're opening up a category and seeing what's in it. If the "Narrow-in when browsing" config option is enabled then going deeper into categories works as a filter.
+
+E.g. if you have files X and Y categories as follows:
+root > a > File X
+root > a > b > File Y
+
+Without narrow-in, you see nothing under the root, file X under 'a', and file Y under 'b'.
+
+With narrow-in, you see everything under the root, everything under 'a', and just file Y under 'b'.
+
+[title="2"]Infinite scrolling[/title]
+
+There is an option "Infinite scrolling" if you wish to enable infinite scrolling for navigating back through old content rather than traditional pagination.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
+ - [page="_SEARCH:tut_catalogues"]Catalogues[/page]
+ - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
+ - [page="_SEARCH:tut_wiki"]Custom structured content (via Wiki+)[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
 
 {$SET,tutorial_tags,wiki,cns_forum,news,downloads,core_comcode_pages,catalogues,Content,Pages,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details on different publishing features available in Composr, and their advantages/disadvantages.}[block]main_tutorial_rating[/block]

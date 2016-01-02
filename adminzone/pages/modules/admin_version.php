@@ -56,7 +56,6 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('menu_items');
         $GLOBALS['SITE_DB']->drop_table_if_exists('values_elective');
         $GLOBALS['SITE_DB']->drop_table_if_exists('tutorial_links');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
         $GLOBALS['SITE_DB']->drop_table_if_exists('edit_pings');
         $GLOBALS['SITE_DB']->drop_table_if_exists('webstandards_checked_once');
         $GLOBALS['SITE_DB']->drop_table_if_exists('member_privileges');
@@ -77,24 +76,28 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('notifications_enabled');
         $GLOBALS['SITE_DB']->drop_table_if_exists('digestives_tin');
         $GLOBALS['SITE_DB']->drop_table_if_exists('digestives_consumed');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('unbannable_ip');
         $GLOBALS['SITE_DB']->drop_table_if_exists('alternative_ids');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_privacy');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('content_primary__members');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('content_privacy__members');
         $GLOBALS['SITE_DB']->drop_table_if_exists('task_queue');
         $GLOBALS['SITE_DB']->drop_table_if_exists('comcode_pages');
         $GLOBALS['SITE_DB']->drop_table_if_exists('cached_comcode_pages');
         $GLOBALS['SITE_DB']->drop_table_if_exists('email_bounces');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('sitemap_cache');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
 
-        /*$zones=find_all_zones(true);    We don't want to get rid of on-disk data when reinstalling
+        /* We don't want to get rid of on-disk data when reinstalling
+        $zones = find_all_zones(true);
         require_code('files');
-        $langs=find_all_langs(true);
-        foreach ($zones as $zone)
-        {
-            foreach (array_keys($langs) as $lang)
-            {
-                    deldir_contents(zone_black_magic_filterer(get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/comcode_custom/'.$lang,true),true);
+        $langs = find_all_langs(true);
+        foreach ($zones as $zone) {
+            foreach (array_keys($langs) as $lang) {
+                deldir_contents(zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang, true), true);
             }
-        }*/
+        }
+        */
 
         delete_attachments('comcode_page');
 
@@ -177,8 +180,8 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_table('webstandards_checked_once', array(
-                'hash' => '*MD5'
-            ));
+                'hash' => '*SHORT_TEXT'
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('edit_pings', array(
                 'id' => '*AUTO',
@@ -189,16 +192,6 @@ class Module_admin_version
                 'the_member' => 'MEMBER'
             ));
             $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
-
-            $GLOBALS['SITE_DB']->create_table('translate_history', array(
-                'id' => '*AUTO',
-                'lang_id' => 'AUTO_LINK',
-                'language' => '*LANGUAGE_NAME',
-                'text_original' => 'LONG_TEXT',
-                'broken' => 'BINARY',
-                'action_member' => 'MEMBER',
-                'action_time' => 'TIME'
-            ));
 
             $GLOBALS['SITE_DB']->create_table('values_elective', array(
                 'the_name' => '*ID_TEXT',
@@ -220,7 +213,7 @@ class Module_admin_version
                 'category_name' => '*ID_TEXT',
                 'the_value' => 'BINARY',
                 'active_until' => '?TIME',
-            ));
+            ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
             $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
 
@@ -309,6 +302,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_submitter', array('p_submitter'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_add_date', array('p_add_date'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_validated', array('p_validated'));
+            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
 
             $GLOBALS['SITE_DB']->create_table('cached_comcode_pages', array(
                 'the_zone' => '*ID_TEXT',
@@ -352,7 +346,7 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->create_table('logged_mail_messages', array(
                 'id' => '*AUTO',
-                'm_subject' => 'LONG_TEXT', // Whilst data for a subject would be tied to SHORT_TEXT, a language string could bump it up higher
+                'm_subject' => 'LONG_TEXT', // While data for a subject would be tied to SHORT_TEXT, a language string could bump it up higher
                 'm_message' => 'LONG_TEXT',
                 'm_to_email' => 'LONG_TEXT',
                 'm_extra_cc_addresses' => 'LONG_TEXT',
@@ -485,7 +479,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_table('digestives_tin', array( // Notifications queued up ready for the regular digest email
                                                                        'id' => '*AUTO',
                                                                        'd_subject' => 'LONG_TEXT',
-                                                                       'd_message' => 'LONG_TRANS',
+                                                                       'd_message' => 'LONG_TRANS__COMCODE',
                                                                        'd_from_member_id' => '?MEMBER',
                                                                        'd_to_member_id' => 'MEMBER',
                                                                        'd_priority' => 'SHORT_INTEGER',
@@ -670,20 +664,22 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->alter_table_field('member_page_access', 'active_until', '?TIME');
             $GLOBALS['SITE_DB']->alter_table_field('member_category_access', 'active_until', '?TIME');
 
+            $GLOBALS['SITE_DB']->query_update('values', array('the_name' => 'setupwizard_completed'), array('the_name' => 'setup_wizard_completed'), '', 1);
+
             $GLOBALS['SITE_DB']->promote_text_field_to_comcode('digestives_tin', 'd_message', 'id', 4);
             $GLOBALS['SITE_DB']->add_table_field('digestives_tin', 'd_read', 'BINARY');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'notifications_enabled SET l_setting=l_setting+' . strval(A_WEB_NOTIFICATION) . ' WHERE l_setting<>0');
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'd_read', array('d_read'));
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'unread', array('d_to_member_id', 'd_read'));
 
-            rename_config_option('cms_show_conceded_mode_link', 'show_conceded_mode_link');
-            rename_config_option('cms_show_personal_adminzone_link', 'show_personal_adminzone_link');
-            rename_config_option('cms_show_personal_last_visit', 'show_personal_last_visit');
-            rename_config_option('cms_show_personal_sub_links', 'show_personal_sub_links');
-            rename_config_option('cms_show_personal_usergroup', 'show_personal_usergroup');
-            rename_config_option('cms_show_staff_page_actions', 'show_staff_page_actions');
-            rename_config_option('cms_show_su', 'show_su');
-            rename_config_option('cms_show_avatar', 'show_avatar');
+            rename_config_option('ocp_show_conceded_mode_link', 'show_conceded_mode_link');
+            rename_config_option('ocp_show_personal_adminzone_link', 'show_personal_adminzone_link');
+            rename_config_option('ocp_show_personal_last_visit', 'show_personal_last_visit');
+            rename_config_option('ocp_show_personal_sub_links', 'show_personal_sub_links');
+            rename_config_option('ocp_show_personal_usergroup', 'show_personal_usergroup');
+            rename_config_option('ocp_show_staff_page_actions', 'show_staff_page_actions');
+            rename_config_option('ocp_show_su', 'show_su');
+            rename_config_option('ocp_show_avatar', 'show_avatar');
 
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_extra_cc_addresses', 'LONG_TEXT', serialize(array()));
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_extra_bcc_addresses', 'LONG_TEXT', serialize(array()));
@@ -764,6 +760,8 @@ class Module_admin_version
             while (count($keywords) > 0);
 
             $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
+
+            $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
@@ -773,13 +771,13 @@ class Module_admin_version
                                                                         'resource_moniker' => 'ID_TEXT',
                                                                         'resource_label' => 'SHORT_TEXT',
                                                                         'resource_guid' => 'ID_TEXT',
-                                                                        'resource_resourcefs_hook' => 'ID_TEXT',
+                                                                        'resource_resource_fs_hook' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_guid', array('resource_guid'));
-            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*,'resource_type'key would be too long*/));
+            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*, 'resource_type'key would be too long*/));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker', array('resource_moniker', 'resource_type'));
-            //$GLOBALS['SITE_DB']->create_index('alternative_ids','resource_label_uniqueness',array('resource_label','resource_resourcefs_hook'));key would be too long
-            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker_uniq', array('resource_moniker', 'resource_resourcefs_hook'));
+            //$GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label_uniqueness', array('resource_label', 'resource_resource_fs_hook'));key would be too long
+            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker_uniq', array('resource_moniker', 'resource_resource_fs_hook'));
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
@@ -805,7 +803,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'guest_view', array('guest_view'));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'member_view', array('member_view'));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'friend_view', array('friend_view'));
-            $GLOBALS['SITE_DB']->create_table('content_primary__members', array(
+            $GLOBALS['SITE_DB']->create_table('content_privacy__members', array(
                 'content_type' => '*ID_TEXT',
                 'content_id' => '*ID_TEXT',
                 'member_id' => '*MEMBER',
@@ -851,6 +849,40 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', '#page_search__combined', array('cc_page_title', 'string_index'));
+
+            $GLOBALS['SITE_DB']->create_table('sitemap_cache', array(
+                'page_link' => '*SHORT_TEXT',
+                'set_number' => 'INTEGER',
+                'add_date' => '?TIME',
+                'edit_date' => '?TIME',
+                'last_updated' => 'TIME',
+                'is_deleted' => 'BINARY',
+                'priority' => 'REAL',
+                'refreshfreq' => 'ID_TEXT',
+                'guest_access' => 'BINARY',
+            ), false, false, true);
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'set_number', array('set_number', 'last_updated'));
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'last_updated', array('last_updated'));
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'is_deleted', array('is_deleted'));
+
+            $GLOBALS['SITE_DB']->create_table('urls_checked', array(
+                'id' => '*AUTO',
+                'url' => 'LONG_TEXT', // Support arbitrary length
+                'url_exists' => 'BINARY',
+                'url_check_time' => 'TIME',
+            ));
+            $GLOBALS['SITE_DB']->create_index('urls_checked', 'url', array('url(200)'));
+
+            $GLOBALS['SITE_DB']->create_table('content_regions', array(
+                'content_type' => '*ID_TEXT',
+                'content_id' => '*ID_TEXT',
+                'region' => '*ID_TEXT',
+            ));
+
+            $GLOBALS['SITE_DB']->create_table('unbannable_ip', array(
+                'ip' => '*IP',
+                'note' => 'SHORT_TEXT',
+            ));
         }
     }
 
@@ -859,7 +891,7 @@ class Module_admin_version
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -869,7 +901,7 @@ class Module_admin_version
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {

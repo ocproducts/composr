@@ -27,6 +27,9 @@ function handle_bookmark_selection(ob,id,event)
 		if (folder_list.options[i].value==fv)
 		{
 			folder_list.selectedIndex=i;
+			if (typeof $(folder_list).select2!='undefined') {
+				$(folder_list).trigger('change');
+			}
 			if ((folder_list.onchange!='undefined') && (folder_list.onchange)) folder_list.onchange(event);
 			if ((folder_list.fakeonchange!='undefined') && (folder_list.fakeonchange)) folder_list.fakeonchange(event);
 			break;

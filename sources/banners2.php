@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
+ * Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
  *
  * @param  boolean $simplified Whether to simplify the banner interface (for the Point Store buy process)
  * @param  ID_TEXT $name The name of the banner
@@ -38,26 +38,40 @@
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
+ * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
- * @return array A pair: The input field tempcode, JavaScript code
+ * @return array A pair: The input field Tempcode, JavaScript code
  */
-function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $title_text = '')
+function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $regions = null, $title_text = '')
 {
+    if (is_null($b_types)) {
+        $b_types = array();
+    }
+    if (is_null($regions)) {
+        $regions = array();
+    }
+
     require_code('images');
 
     $fields = new Tempcode();
+
     require_code('form_templates');
+
     $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_NAME'), 'name', $name, true));
+
     $fields->attach(form_input_line(do_lang_tempcode('DESTINATION_URL'), do_lang_tempcode('DESCRIPTION_BANNER_URL'), 'site_url', $site_url, false)); // Blank implies iframe or direct code
+
     if (!$simplified) {
         $types = create_selection_list_banner_types($b_type);
         if ($types->is_empty()) {
             warn_exit(do_lang_tempcode('NO_CATEGORIES'));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('_BANNER_TYPE'), do_lang_tempcode('_DESCRIPTION_BANNER_TYPE'), 'b_type', $types, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode('BANNER_TYPE'), do_lang_tempcode('_DESCRIPTION_BANNER_TYPE'), 'b_type', $types, null, false, false));
     } else {
         $fields->attach(form_input_hidden('b_type', $b_type));
     }
+
     if (get_option('enable_staff_notes') == '1') {
         $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
     }
@@ -70,7 +84,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
             }
         }
         if (addon_installed('unvalidated')) {
-            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'banner'), 'validated', $validated == 1));
         }
     }
 
@@ -81,7 +95,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     $set_title = do_lang_tempcode('MEDIA');
     $field_set = alternate_fields_set__start($set_name);
 
-    $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_BANNER'), 'file', false, null, null, true, str_replace(' ', '', get_option('valid_images')) . ',swf'));
+    $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), 'file', false, null, null, true, str_replace(' ', '', get_option('valid_images')) . ',swf'));
 
     $field_set->attach(form_input_line(do_lang_tempcode('IMAGE_URL'), do_lang_tempcode('DESCRIPTION_URL_BANNER'), 'image_url', $image_url, false));
 
@@ -96,6 +110,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_BANNER_DESCRIPTION'), 'caption', $caption, false));
 
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1184532268cd8a58adea01c3637dc4c5', 'TITLE' => do_lang_tempcode('DEPLOYMENT_DETERMINATION'))));
+
     if (has_privilege(get_member(), 'full_banner_setup')) {
         $radios = new Tempcode();
         $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
@@ -109,14 +124,24 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         }
         $fields->attach(form_input_integer(do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('DESCRIPTION_IMPORTANCE_MODULUS', strval($total_importance), strval($importancemodulus)), 'importancemodulus', $importancemodulus, true));
     }
+
     $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
+
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
+
+    $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
+
+    if (get_option('filter_regions') == '1') {
+        require_code('locations');
+        $fields->attach(form_input_regions($regions));
+    }
 
     $javascript = '
         if (document.getElementById(\'campaignremaining\'))
         {
             var form=document.getElementById(\'campaignremaining\').form;
             var crf=function() {
-                    form.elements[\'campaignremaining\'].disabled=(!form.elements[\'the_type\'][1].checked);
+                form.elements[\'campaignremaining\'].disabled=(!form.elements[\'the_type\'][1].checked);
             };
             crf();
             form.elements[\'the_type\'][0].onclick=crf;
@@ -134,11 +159,12 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @return array A pair: The URL, and the title text
+ * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
  * @param  string $url_param_name Param name for possible URL field
  * @param  string $file_param_name Param name for possible upload field
+ * @return array A pair: The URL, and the title text
  */
-function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_param_name = 'image_url', $file_param_name = 'file')
+function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_types = null, $url_param_name = 'image_url', $file_param_name = 'file')
 {
     require_code('uploads');
     $is_upload = (is_plupload()) || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
@@ -147,12 +173,24 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
 
     $url = '';
 
-    // Check according to banner type
+    // Find banner type details
     $_banner_type_rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('*'), array('id' => $b_type), '', 1);
     if (!array_key_exists(0, $_banner_type_rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
     }
     $banner_type_row = $_banner_type_rows[0];
+
+    // Check banner types all match up
+    if (!empty($b_types)) {
+        $sql = 'SELECT * FROM ' . get_table_prefix() . 'banner_types WHERE id IN (\'' . implode('\',\'', $b_types) . '\')';
+        $sql .= ' AND (t_image_width<>' . strval($banner_type_row['t_image_width']) . ' OR t_image_height<>' . strval($banner_type_row['t_image_height']) . ' OR t_is_textual<>' . strval($banner_type_row['t_is_textual']) . ')';
+        $test = $GLOBALS['SITE_DB']->query($sql);
+        if (!empty($test)) {
+            warn_exit(do_lang_tempcode('INCONSISTENT_BANNER_SET'));
+        }
+    }
+
+    // Check according to banner type
     if ($banner_type_row['t_is_textual'] == 0) {
         if ($direct_code == '') {
             $urls = get_url($url_param_name, $file_param_name, 'uploads/banners', 0, $is_upload ? (CMS_UPLOAD_IMAGE | CMS_UPLOAD_SWF) : CMS_UPLOAD_ANYTHING);
@@ -174,7 +212,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
                     @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                     sync_file(rawurldecode($test_url));
                 }
-                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE', integer_format(intval(ceil(strlen($data) / 1024))), integer_format($banner_type_row['t_max_file_size'])));
+                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE', escape_html(integer_format(intval(ceil(strlen($data) / 1024)))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
             }
             if ((function_exists('imagetypes')) && (substr($test_url, -4) != '.swf')) {
                 require_code('images');
@@ -203,7 +241,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
                             @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                             sync_file(rawurldecode($test_url));
                         }
-                        warn_exit(do_lang_tempcode('BANNER_RES_BAD', integer_format($banner_type_row['t_image_width']), integer_format($banner_type_row['t_image_height'])));
+                        warn_exit(do_lang_tempcode('BANNER_RES_BAD', escape_html(integer_format($banner_type_row['t_image_width'])), escape_html(integer_format($banner_type_row['t_image_height']))));
                     }
                 }
             }
@@ -222,7 +260,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
         }
 
         if (strlen($title_text) > $banner_type_row['t_max_file_size']) {
-            warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', integer_format(strlen($title_text)), integer_format($banner_type_row['t_max_file_size'])));
+            warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', escape_html(integer_format(strlen($title_text))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
         }
     }
 
@@ -249,6 +287,8 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
+ * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  ?TIME $time The time the banner was added (null: now)
  * @param  integer $hits_from The number of return hits from this banners site
  * @param  integer $hits_to The number of banner hits to this banners site
@@ -258,8 +298,15 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
+function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = null, $regions = null, $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
 {
+    if (is_null($b_types)) {
+        $b_types = array();
+    }
+    if (is_null($regions)) {
+        $regions = array();
+    }
+
     if (is_null($campaignremaining)) {
         $campaignremaining = 0;
     }
@@ -274,7 +321,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
     if (!is_null($test)) {
         if ($uniqify) {
-            $name .= '_' . uniqid('', true);
+            $name .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
         }
@@ -307,14 +354,22 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
     $map += insert_lang_comcode('caption', $caption, 2);
     $GLOBALS['SITE_DB']->query_insert('banners', $map);
 
+    foreach ($b_types as $b_type_sup) {
+        $GLOBALS['SITE_DB']->query_insert('banners_types', array('name' => $name, 'b_type' => $b_type_sup));
+    }
+
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'banner', 'content_id' => $name, 'region' => $region));
+    }
+
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     log_it('ADD_BANNER', $name, $caption);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner', $name, null, null, true);
+        generate_resource_fs_moniker('banner', $name, null, null, true);
     }
 
     require_code('member_mentions');
@@ -344,19 +399,28 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
+function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = null, $regions = null, $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
+    if (is_null($b_types)) {
+        $b_types = array();
+    }
+    if (is_null($regions)) {
+        $regions = array();
+    }
+
     if ($old_name != $name) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -365,7 +429,11 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         if (addon_installed('catalogues')) {
             update_catalogue_content_ref('banner', $old_name, $name);
         }
+
+        $GLOBALS['SITE_DB']->query_update('banner_clicks', array('c_banner_id' => $name), array('c_banner_id' => $old_name));
     }
+
+    $GLOBALS['SITE_DB']->query_delete('banners_types', array('name' => $old_name));
 
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -379,7 +447,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     log_it('EDIT_BANNER', $name);
 
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;
@@ -417,9 +485,18 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
 
     $GLOBALS['SITE_DB']->query_update('banners', $update_map, array('name' => $old_name), '', 1);
 
+    foreach ($b_types as $b_type_sup) {
+        $GLOBALS['SITE_DB']->query_insert('banners_types', array('name' => $name, 'b_type' => $b_type_sup));
+    }
+
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'banner', 'content_id' => $old_name));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'banner', 'content_id' => $name, 'region' => $region));
+    }
+
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner', $name);
+        generate_resource_fs_moniker('banner', $name);
     }
 
     return $name;
@@ -434,12 +511,14 @@ function delete_banner($name)
 {
     $caption = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'caption', array('name' => $name));
     if (is_null($caption)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
     }
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('banner', $name, '');
     }
+
+    $GLOBALS['SITE_DB']->query_delete('banner_clicks', array('c_banner_id' => $name));
 
     delete_lang($caption);
 
@@ -447,15 +526,18 @@ function delete_banner($name)
     delete_upload('uploads/banners', 'banners', 'img_url', 'name', $name);
 
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     $GLOBALS['SITE_DB']->query_delete('banners', array('name' => $name), '', 1);
+
+    $GLOBALS['SITE_DB']->query_delete('banners_types', array('name' => $name));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'banner', 'content_id' => $name));
 
     log_it('DELETE_BANNER', $name, get_translated_text($caption));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('banner', $name);
+        expunge_resource_fs_moniker('banner', $name);
     }
 }
 
@@ -476,7 +558,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
     if (!is_null($test)) {
         if ($uniqify) {
-            $id .= '_' . uniqid('', true);
+            $id .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
         }
@@ -495,7 +577,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner_type', $id);
+        generate_resource_fs_moniker('banner_type', $id);
     }
 
     require_code('member_mentions');
@@ -523,7 +605,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
         if (!is_null($test)) {
             if ($uniqify) {
-                $id .= '_' . uniqid('', true);
+                $id .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
             }
@@ -548,7 +630,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner_type', $id);
+        generate_resource_fs_moniker('banner_type', $id);
     }
 
     return $id;
@@ -573,6 +655,6 @@ function delete_banner_type($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('banner_type', $id);
+        expunge_resource_fs_moniker('banner_type', $id);
     }
 }

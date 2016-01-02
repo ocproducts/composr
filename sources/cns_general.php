@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_general()
 {
@@ -117,15 +119,9 @@ function cns_read_in_member_profile($member_id, $lite = true)
         }
 
         // Find title
-        if (addon_installed('cns_member_titles')) {
-            $title = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_title');
-            if ($title == '') {
-                $primary_group = cns_get_member_primary_group($member_id);
-                $title = cns_get_group_property($primary_group, $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'title'));
-            }
-            if ($title != '') {
-                $out['title'] = $title;
-            }
+        $title = get_member_title($member_id);
+        if ($title != '') {
+            $out['title'] = $title;
         }
 
         // Find photo
@@ -169,7 +165,27 @@ function cns_read_in_member_profile($member_id, $lite = true)
 }
 
 /**
- * Get a usergroup colour based on it's ID number.
+ * Get a member title.
+ *
+ * @param  MEMBER $member_id Member ID.
+ * @return string Member title.
+ */
+function get_member_title($member_id)
+{
+    if (!addon_installed('cns_member_titles')) {
+        return '';
+    }
+
+    $title = addon_installed('cns_member_titles') ? $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_title') : '';
+    $primary_group = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
+    if ($title == '') {
+        $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
+    }
+    return $title;
+}
+
+/**
+ * Get a usergroup colour based on its ID number.
  *
  * @param  GROUP $gid ID number.
  * @return string Colour.
@@ -214,10 +230,10 @@ function cns_find_birthdays($time = null)
 }
 
 /**
- * Turn a list of maps describing buttons, into a tempcode button panel.
+ * Turn a list of maps describing buttons, into a Tempcode button panel.
  *
  * @param  array $buttons List of maps (each map contains: url, img, title).
- * @return tempcode The button panel.
+ * @return Tempcode The button panel.
  */
 function cns_button_screen_wrap($buttons)
 {

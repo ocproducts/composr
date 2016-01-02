@@ -20,3 +20,10 @@
 	vertical-align: middle;
 }
 
+.status_green {
+	color: {$GET,green_highlight_text} !important;
+}
+
+.status_orange {
+	color: {$GET,orange_highlight_text} !important;
+}

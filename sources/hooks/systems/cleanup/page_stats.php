@@ -35,7 +35,7 @@ class Hook_cleanup_page_stats
         $info = array();
         $info['title'] = do_lang_tempcode('PAGE_STATS_DELETE');
         $num_records = $GLOBALS['SITE_DB']->query_select_value('stats', 'COUNT(*)');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_PAGE_STATS_DELETE', integer_format($num_records), integer_format(intval(get_option('stats_store_time'))));
+        $info['description'] = do_lang_tempcode('DESCRIPTION_PAGE_STATS_DELETE', escape_html(integer_format($num_records)), escape_html(integer_format(intval(get_option('stats_store_time')))));
         $info['type'] = 'optimise';
 
         return $info;
@@ -44,7 +44,7 @@ class Hook_cleanup_page_stats
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {
@@ -74,8 +74,8 @@ class Hook_cleanup_page_stats
             exit();
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Write install.php file

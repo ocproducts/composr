@@ -52,7 +52,7 @@ class Hook_upload_syndication_photobucket
 
     protected function _login()
     {
-        $req_key = get_long_value('photobucket_oauth_key__' . strval(get_member()));
+        $req_key = get_value('photobucket_oauth_key__' . strval(get_member()), null, true);
         if ($req_key === null) {
             return false; // No receive_authorisation() started yet
         }
@@ -70,10 +70,10 @@ class Hook_upload_syndication_photobucket
 
         $api->setOAuthToken(
             $req_key,
-            get_long_value('photobucket_oauth_secret__' . strval(get_member()))
+            get_value('photobucket_oauth_secret__' . strval(get_member()), null, true)
         );
-        if (get_long_value('photobucket_oauth_subdomain__' . strval(get_member())) !== null) {
-            $api->setSubdomain(get_long_value('photobucket_oauth_subdomain__' . strval(get_member())));
+        if (get_value('photobucket_oauth_subdomain__' . strval(get_member()), null, true) !== null) {
+            $api->setSubdomain(get_value('photobucket_oauth_subdomain__' . strval(get_member()), null, true));
         }
 
         // Did it work (requires valid 'access' token, not a temporary 'request' token)
@@ -95,7 +95,7 @@ class Hook_upload_syndication_photobucket
 
         $api->setOAuthToken(
             $req_key,
-            get_long_value('photobucket_oauth_secret__' . strval(get_member()))
+            get_value('photobucket_oauth_secret__' . strval(get_member()), null, true)
         );
         $api->login('access');
         $api->post();
@@ -179,7 +179,7 @@ class Hook_upload_syndication_photobucket
             $call_params = array(
                 'name' => $remote_gallery_name,
             );
-            $username = get_long_value('photobucket_oauth_username__' . strval(get_member()));
+            $username = get_value('photobucket_oauth_username__' . strval(get_member()), null, true);
             $api->album($username, $call_params);
             $api->post();
             try {

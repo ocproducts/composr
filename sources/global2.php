@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: memory_get_peak_usage*/
+/*EXTRA FUNCTIONS: memory_get_peak_usage|error_get_last*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__global2()
 {
@@ -58,11 +60,11 @@ function init__global2()
 
         header('Content-Type: application/xml');
 
-        //  encoding="'.get_charset().'" not needed due to no data in it
+        //  encoding="' . get_charset() . '" not needed due to no data in it
         $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
     }
 
-    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $_CREATED_FILES, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8;
+    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8;
 
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
@@ -158,18 +160,18 @@ function init__global2()
      *
      * @global boolean $DEV_MODE
      */
-    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && ((is_dir(get_file_base() . '/.svn')) || (is_dir(get_file_base() . '/.git')) || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
+    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
     /** Whether Composr is running in a more limited development mode, which may make things a bit slower and more verbose, but won't run such severe standard enforcement tricks
      *
      * @global boolean $SEMI_DEV_MODE
      */
-    $SEMI_DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && ((is_dir(get_file_base() . '/.svn')) || (is_dir(get_file_base() . '/.git')) || (function_exists('ocp_mark_as_escaped')))));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(60);
+    $SEMI_DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))));
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if ($DEV_MODE) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10);
         }
         safe_ini_set('ocproducts.type_strictness', '1');
         safe_ini_set('ocproducts.xss_detect', '1');
@@ -197,7 +199,7 @@ function init__global2()
     require_code_no_override('version');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
-        //@header('X-Powered-By: Composr '.cms_version_pretty().' (PHP '.phpversion().')');
+        //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
         @header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
 
         // Get ready for query logging if requested
@@ -226,8 +228,8 @@ function init__global2()
         require_code('static_cache');
         static_cache((($bot_type !== null) ? STATIC_CACHE__FAST_SPIDER : 0) | STATIC_CACHE__FAILOVER_MODE);
     }
-    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast cacheing for bots
-        if ((running_script('index')) && (count($_POST) == 0)) {
+    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for bots and possibly guests
+        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
                 require_code('static_cache');
@@ -257,7 +259,7 @@ function init__global2()
     if (!$MICRO_AJAX_BOOTUP) {
         require_code('themes'); // Output needs to know about themes
         require_code('templates'); // So that we can do error templates
-        require_code('tempcode'); // Output is done with tempcode
+        require_code('tempcode'); // Output is done with Tempcode
         if (!$MICRO_BOOTUP) {
             require_code('comcode'); // Much output goes through comcode
         }
@@ -269,20 +271,26 @@ function init__global2()
         $RELATIVE_PATH = '';
     }
     require_code('users'); // Users are important due to permissions
-    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast cacheing for Guests
-        if ((running_script('index')) && (count($_POST) == 0)) {
+    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
+        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
         }
     }
-    $CACHE_TEMPLATES = ((get_option('is_on_template_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $CACHE_TEMPLATES = has_caching_for('template');
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
     if (!$MICRO_AJAX_BOOTUP) {
         require_code('temporal'); // Date/time functions
         convert_data_encodings(get_param_integer('known_utf8', 0) == 1);
         if (!$MICRO_BOOTUP) {
+            // FirePHP console support, only for administrators
+            if ((get_param_integer('keep_firephp', 0) == 1) && (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ($GLOBALS['IS_ACTUALLY_ADMIN']))) {
+                require_code('firephp');
+                $GLOBALS['OUTPUT_STREAMING'] = false;
+            }
+
             require_code('permissions'); // So we can check access
         }
     }
@@ -329,7 +337,7 @@ function init__global2()
     @setlocale(LC_ALL, $locales);
     unset($locales);
 
-    // Check RBL's
+    // Check RBLs
     $spam_check_level = get_option('spam_check_level');
     if ($spam_check_level == 'EVERYTHING') {
         if (get_option('spam_block_lists') != '') {
@@ -339,9 +347,6 @@ function init__global2()
     }
 
     // Our logging
-    if (get_option('log_php_errors') == '0') {
-        safe_ini_set('log_errors', '0');
-    }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP) && ((get_option('display_php_errors') == '1') || (running_script('upgrader')) || (has_privilege(get_member(), 'see_php_errors')))) {
         safe_ini_set('display_errors', '1');
     } elseif (!$DEV_MODE) {
@@ -349,7 +354,10 @@ function init__global2()
     }
 
     // G-zip?
-    safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
+    $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
+    if (!in_safe_mode() && $page != 'admin_config') {
+        safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
+    }
     safe_ini_set('zlib.output_compression_level', '2'); // Compression doesn't get much better after this, but performance drop
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
@@ -368,9 +376,9 @@ function init__global2()
     }
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
-        // Clear cacheing if needed
+        // Clear caching if needed
         $changed_base_url = !array_key_exists('base_url', $SITE_INFO) && get_value('last_base_url', null, true) !== get_base_url(false);
-        if ((running_script('index')) && ((is_browser_decacheing()) || ($changed_base_url))) {
+        if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
         }
@@ -389,11 +397,11 @@ function init__global2()
         $JAVASCRIPTS += $JAVASCRIPTS_DEFAULT;
     }
     /*cms_memory_profile('startup');   If debugging with inbuilt profiler
-    $func=get_defined_functions();
+    $func = get_defined_functions();
     print_r($func['user']);*/
 
     // Pre-load used blocks in bulk
-    preload_block_internal_cacheing();
+    preload_block_internal_caching();
 
     // Okay, we've loaded everything critical. Don't need to tell Composr to be paranoid now.
     $BOOTSTRAPPING = false;
@@ -402,15 +410,13 @@ function init__global2()
         semi_dev_mode_startup();
     }
 
-    // FirePHP console support, only for administrators
-    if ((get_param_integer('keep_firephp', 0) == 1) && (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ($GLOBALS['IS_ACTUALLY_ADMIN']))) {
-        require_code('firephp');
-    }
-
     // Reduce down memory limit / raise if requested
     $default_memory_limit = get_value('memory_limit');
     if ((is_null($default_memory_limit)) || ($default_memory_limit == '') || ($default_memory_limit == '0') || ($default_memory_limit == '-1')) {
         $default_memory_limit = '64M';
+        if ($GLOBALS['RELATIVE_PATH'] == 'adminzone' || $GLOBALS['RELATIVE_PATH'] == 'cms') {
+            $default_memory_limit = '128M';
+        }
     } else {
         if (substr($default_memory_limit, -2) == 'MB') {
             $default_memory_limit = substr($default_memory_limit, 0, strlen($default_memory_limit) - 1);
@@ -436,10 +442,10 @@ function init__global2()
         register_shutdown_function('memory_tracking');
     }
 
-    if (count($_POST) > 0) {
+    if (count($_POST) != 0) {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
-            $blackhole = post_param_string(md5(get_site_name() . ': antispam'), '');
+            $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');
             if ($blackhole != '') {
                 log_hack_attack_and_exit('LAME_SPAM_HACK', '<blackhole>' . $blackhole . '</blackhole>');
             }
@@ -447,14 +453,14 @@ function init__global2()
 
         // Check security token, if necessary
         if (running_script('index') || running_script('iframe')) {
-            $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin";
+            $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin\njoin";
             $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
             if (!in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name() . ':', $_security_token_exceptions)) {
-                /*if (post_param_string('session_id', null) === null) {    TODO: This does not work well, tune it
+                if (post_param_string('session_id', null) === null) {
                     warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_2_HACK'));
                 } elseif (post_param_string('session_id') != get_session_id()) {
                     warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_3_HACK'));
-                }*/
+                }
             }
         }
     }
@@ -477,6 +483,23 @@ function init__global2()
             automate_upgrade__safe();
         }
     }
+
+    // For performance testing
+    if (get_value('monitor_slow_urls') === '1') {
+        register_shutdown_function('monitor_slow_urls');
+    }
+}
+
+/**
+ * Use with register_shutdown_function to log slow URLs.
+ */
+function monitor_slow_urls()
+{
+    $time = time() - $_SERVER['REQUEST_TIME'];
+    if ($time >= 5) {
+        require_code('urls');
+        file_put_contents(get_file_base() . '/data_custom/time_log.txt', get_self_url_easy() . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()) . "\n", FILE_APPEND);
+    }
 }
 
 /**
@@ -486,7 +509,9 @@ function memory_tracking()
 {
     $memory_tracking = intval(get_value('memory_tracking'));
     if (memory_get_peak_usage() > 1024 * 1024 * $memory_tracking) {
-        @error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(), 0);
+        if (php_function_allowed('error_log')) {
+            error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(), 0);
+        }
     }
 }
 
@@ -529,7 +554,11 @@ function disable_php_memory_limit()
 {
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
-        safe_ini_set('memory_limit', '64M');
+        $default_memory_limit = '64M';
+        if ($GLOBALS['RELATIVE_PATH'] == 'adminzone' || $GLOBALS['RELATIVE_PATH'] == 'cms') {
+            $default_memory_limit = '128M';
+        }
+        safe_ini_set('memory_limit', '128M');
         safe_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {
@@ -561,7 +590,7 @@ function get_charset()
     }
 
     global $LANGS_REQUESTED;
-    if ((function_exists('do_lang')) && (function_exists('user_lang')) && (isset($LANGS_REQUESTED['critical_error'])) && (!in_safe_mode())) {
+    if ((function_exists('do_lang')) && (function_exists('user_lang')) && (isset($LANGS_REQUESTED['critical_error'])) && (isset($LANGS_REQUESTED['global'])) && (!in_safe_mode())) {
         $attempt = do_lang('charset', null, null, null, null, false);
         if ($attempt !== null) {
             $CHARSET_CACHE = trim($attempt);
@@ -603,7 +632,7 @@ function get_charset()
  */
 function load_user_stuff()
 {
-    if ((!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null)) { // Second clause is for Quercus, as it pre-NULLs referenced variables
+    if ((!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null)) { // Second clause is for Quercus, as it pre-nulls referenced variables
         global $SITE_INFO, $FORUM_DRIVER, $SITE_DB, $FORUM_DB;
 
         require_code('forum_stub');
@@ -621,10 +650,10 @@ function load_user_stuff()
          * @global object $FORUM_DRIVER
          */
         $FORUM_DRIVER = object_factory($class);
-        if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In debug mode needs separating so we can properly test our boundaries
+        if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In dev mode needs separating so we can properly test our boundaries
             $FORUM_DRIVER->connection = &$SITE_DB;
         } elseif ($SITE_INFO['forum_type'] != 'none') {
-            $FORUM_DRIVER->connection = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
+            $FORUM_DRIVER->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
         }
         $FORUM_DRIVER->MEMBER_ROWS_CACHED = array();
         /** The connection to the active forum database.
@@ -638,6 +667,8 @@ function load_user_stuff()
 
 /**
  * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
+ *
+ * @ignore
  */
 function catch_fatal_errors()
 {
@@ -656,7 +687,7 @@ function catch_fatal_errors()
                 i_force_refresh();
             }
         }
-        //$tmp=$GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);@exit();
+        //$tmp = $GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);@exit();
         //@var_dump(get_defined_functions()); exit(); // Useful for debugging memory problems, finding unneeded stuff that is loaded
         switch ($error['type']) {
             case E_ERROR:
@@ -679,6 +710,8 @@ function catch_fatal_errors()
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
  * @return boolean Always false
+ *
+ * @ignore
  */
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -730,7 +763,9 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
                 if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
                     syslog($syslog_type, $php_error_label);
                 }
-                @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+                if (php_function_allowed('error_log')) {
+                    @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+                }
                 critical_error('EMERGENCY', $errstr . escape_html(' [' . $errfile . ' at ' . strval($errline) . ']'));
             }
         }
@@ -746,7 +781,7 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
  *
  * @return boolean Whether the browser session is set to be doing a hard cache-empty refresh
  */
-function is_browser_decacheing()
+function is_browser_decaching()
 {
     global $BROWSER_DECACHEING_CACHE;
     if ($BROWSER_DECACHEING_CACHE !== null) {
@@ -775,9 +810,11 @@ function is_browser_decacheing()
 
     return false;    // This technique stopped working well, Chrome sends cache-control too freely
 
-    /*$header_method=(array_key_exists('HTTP_CACHE_CONTROL',$_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL']=='no-cache') && (cms_srv('REQUEST_METHOD')!='POST') && ((!function_exists('browser_matches')));
-    $BROWSER_DECACHEING=(($header_method) && ((array_key_exists('FORUM_DRIVER',$GLOBALS)) && (has_actual_page_access(get_member(),'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
-    return $BROWSER_DECACHEING;*/
+    /*
+    $header_method = (array_key_exists('HTTP_CACHE_CONTROL', $_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && (cms_srv('REQUEST_METHOD') != 'POST') && ((!function_exists('browser_matches')));
+    $BROWSER_DECACHEING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
+    return $BROWSER_DECACHEING;
+    */
 }
 
 /**
@@ -825,7 +862,7 @@ function running_script($is_this_running)
 /**
  * This is a intended to output an informational exit at the same time as terminating execution
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  ?boolean $support_match_key_messages Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
  */
@@ -838,7 +875,7 @@ function inform_exit($text, $support_match_key_messages = null)
 /**
  * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
  * @return mixed Never returns (i.e. exits)
  */
@@ -856,7 +893,7 @@ function warn_exit($text, $support_match_key_messages = false)
  * Do a fatal exit, echo the header (if possible) and an error message, followed by a debugging back-trace.
  * It also adds an entry to the error log, for reference.
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @return mixed Never returns (i.e. exits)
  */
 function fatal_exit($text)
@@ -868,7 +905,7 @@ function fatal_exit($text)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
@@ -904,7 +941,7 @@ function cms_version_pretty()
 }
 
 /**
- * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults amongst other things.
+ * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults among other things.
  *
  * @return string The domain of the website
  */
@@ -1066,7 +1103,8 @@ function in_safe_mode()
 }
 
 /**
- * Find the URL to a certain external handler script (Composr allows these to be moved around between zones, to suit site .htaccess requirements).
+ * Find the URL to a certain entry point script, located in the root directory, top level of a zone directory, data directory, or data_custom directory.
+ * Why this function? Because Composr allows these to be moved around between zone directories, to suit site .htaccess requirements).
  *
  * @param  string $name The codename of the needed script
  * @param  boolean $append_keep Whether to append keep variables
@@ -1102,15 +1140,13 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
     $zones[] = 'data';
     $zones = array_merge($zones, find_all_zones());
     foreach ($zones as $zone) {
-        if ($zone != 'site') { // If not found, we assume in here
-            if (is_file(get_file_base() . '/' . $zone . '/' . $name . '.php')) {
-                $ret = get_base_url() . '/' . $zone . (($zone != '') ? '/' : '') . $name . '.php';
-                $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
-                if (function_exists('persistent_cache_set')) {
-                    persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
-                }
-                return $ret . $append;
+        if (is_file(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php')) {
+            $ret = get_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php';
+            $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
+            if (function_exists('persistent_cache_set')) {
+                persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
             }
+            return $ret . $append;
         }
     }
     $ret = get_base_url(($base_url_code == 0) ? null : ($base_url_code == 2)) . '/site/' . $name . '.php';
@@ -1122,7 +1158,7 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our installation).
+ * Get the base URL (the minimum fully qualified URL to our installation).
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  ?ID_TEXT $zone_for The zone the link is for (null: root zone)
@@ -1135,10 +1171,14 @@ function get_base_url($https = null, $zone_for = null)
         $https = $CURRENTLY_HTTPS_CACHE;
         if ($https === null) {
             require_code('urls');
-            if (!addon_installed('ssl')) {
-                $https = tacit_https();
+            if (running_script('index')) {
+                if (!addon_installed('ssl')) {
+                    $https = tacit_https();
+                } else {
+                    $https = ((tacit_https()) || (function_exists('is_page_https')) && (function_exists('get_zone_name')) && (is_page_https(get_zone_name(), get_page_name())));
+                }
             } else {
-                $https = ((tacit_https()) || (function_exists('is_page_https')) && (function_exists('get_zone_name')) && (is_page_https(get_zone_name(), get_page_name())));
+                $https = function_exists('tacit_https') && tacit_https();
             }
             $CURRENTLY_HTTPS_CACHE = $https;
         }
@@ -1162,7 +1202,16 @@ function get_base_url($https = null, $zone_for = null)
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        $SITE_INFO['base_url'] = 'http://' . $domain . preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', dirname($script_name));
+        $php_self = dirname(cms_srv('PHP_SELF'));
+        if (($GLOBALS['RELATIVE_PATH'] == '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
+            $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
+        } else {
+            $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
+            for ($i = 0; $i <= $cnt; $i++) {
+                $php_self = dirname($php_self);
+            }
+        }
+        $SITE_INFO['base_url'] = 'http://' . $domain . str_replace('%2F', '/', rawurlencode($php_self));
     }
 
     // Lookup
@@ -1207,7 +1256,7 @@ function get_base_url($https = null, $zone_for = null)
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base-url.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @return URLPATH The base-url
@@ -1257,6 +1306,10 @@ function either_param_string($name, $default = false)
     }
 
     if ($ret === $default) {
+        if ($default === null) {
+            return null;
+        }
+
         return $ret;
     }
 
@@ -1288,20 +1341,29 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         return null;
     }
     if ((trim($ret) == '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] != '0')) {
+        if ($default === null) {
+            return null;
+        }
+
         require_code('failure');
         improperly_filled_in_post($name);
     }
 
     if (($ret != '') && (addon_installed('wordfilter'))) {
         if ($name != 'password') {
-            require_code('word_filter');
+            require_code('wordfilter');
             if ($ret !== $default) {
-                $ret = check_word_filter($ret, $name);
+                $ret = check_wordfilter($ret, $name);
             }
         }
     }
     if ($ret !== null) {
         $ret = unixify_line_format($ret, null, $html);
+
+        if (post_param_integer($name . '_download_associated_media', 0) == 1) {
+            require_code('comcode_cleanup');
+            download_associated_media($ret);
+        }
     }
 
     if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] == '1') && ($conv_from_wysiwyg)) {
@@ -1325,7 +1387,12 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     require_code('input_filter');
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
-        check_posted_field($name, $ret);
+        if ($ret !== $default) {
+            check_posted_field($name, $ret);
+        }
+
+        // Custom fields.xml filter system
+        $ret = filter_form_field_default($name, $ret, true);
     }
 
     if ($ret === $default) {
@@ -1336,7 +1403,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         $ret = cms_url_decode_post_process($ret);
     }
 
-    check_input_field_string($name, $ret);
+    check_input_field_string($name, $ret, true);
 
     return $ret;
 }
@@ -1347,7 +1414,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
- * @param  boolean $no_security Whether to skip the security check
+ * @param  boolean $no_security Whether to skip the security check. Does not currently do anything
  * @return ?string The parameter value (null: missing)
  */
 function get_param_string($name, $default = false, $no_security = false)
@@ -1387,6 +1454,8 @@ function get_param_string($name, $default = false, $no_security = false)
  * @param  boolean $integer Whether the parameter has to be an integer
  * @param  ?boolean $posted Whether the parameter is a POST parameter (null: undetermined)
  * @return string The value of the parameter
+ *
+ * @ignore
  */
 function __param($array, $name, $default, $integer = false, $posted = false)
 {
@@ -1439,7 +1508,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function either_param_integer($name, $default = false)
 {
@@ -1464,14 +1533,19 @@ function either_param_integer($name, $default = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function post_param_integer($name, $default = false)
 {
     $ret = __param($_POST, $name, ($default === false) ? $default : (($default === null) ? '' : strval($default)), true, true);
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
-        check_posted_field($name, $ret);
+        if (intval($ret) !== $default) {
+            check_posted_field($name, $ret);
+        }
+
+        // Custom fields.xml filter system
+        $ret = filter_form_field_default($name, $ret, true);
     }
 
     if (($default === null) && ($ret === '')) {
@@ -1502,7 +1576,7 @@ function post_param_integer($name, $default = false)
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $not_string_ok If a string is given, use the default parameter rather than giving an error (only use this if you are suffering from a parameter conflict situation between different parts of Composr)
- * @return ?integer The parameter value (null: not set, and NULL given as default)
+ * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function get_param_integer($name, $default = false, $not_string_ok = false)
 {
@@ -1622,29 +1696,28 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decacheing()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
 
     if (($support_smart_decaching) || (!$is_cached)) {
-        $_j = strtoupper($j);
-        $found = find_template_place($_j, '', $theme, '.js', 'javascript');
+        $found = find_template_place($j, '', $theme, '.js', 'javascript');
         if ($found === null) {
             return '';
         }
         $theme = $found[0];
-        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $_j . $found[2];
-        if (!is_file($fullpath)) {
-            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $_j . $found[2];
+        $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
+        if (!is_file($full_path)) {
+            $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         }
 
-        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $fullpath]))) {
-            $SITE_INFO['dependency__' . $fullpath] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $fullpath);
+        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $full_path]))) {
+            $SITE_INFO['dependency__' . $full_path] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $full_path);
         }
     }
 
-    if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($fullpath)) && (@filemtime($fullpath) < time())) || ((!empty($SITE_INFO['dependency__' . $fullpath])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $fullpath]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
+    if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
         require_code('css_and_js');
         js_compile($j, $js_cache_path, $minify);
     }
@@ -1655,11 +1728,11 @@ function javascript_enforce($j, $theme = null, $minify = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) all the JavaScript files that have been required.
+ * Get Tempcode to tie in (to the HTML, in <head>) all the JavaScript files that have been required.
  *
  * @param  ?string $position Position to get JavaScript for (null: all positions)
- * @set NULL header footer
- * @return tempcode The tempcode to tie in the JavaScript files
+ * @set null header footer
+ * @return Tempcode The Tempcode to tie in the JavaScript files
  */
 function javascript_tempcode($position = null)
 {
@@ -1717,14 +1790,15 @@ function javascript_tempcode($position = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
+ * Get Tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
  *
  * @param  ID_TEXT $j The javascript file required
- * @param  tempcode $js Tempcode object (will be written into if appropriate)
+ * @param  Tempcode $js Tempcode object (will be written into if appropriate)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
  * @param  ?boolean $do_enforce Whether to generate the cached file if not already cached (null: from what is cached)
+ * @ignore
  */
 function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
@@ -1841,7 +1915,7 @@ function css_enforce($c, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decacheing()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -1852,22 +1926,22 @@ function css_enforce($c, $theme = null, $minify = null)
             return '';
         }
         $theme = $found[0];
-        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
-        if (!is_file($fullpath)) {
-            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
+        $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
+        if (!is_file($full_path)) {
+            $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
         }
-        if (($text_only) && (!is_file($fullpath))) {
+        if (($text_only) && (!is_file($full_path))) {
             return '';
         }
     }
 
-    if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($fullpath)) && (@filemtime($fullpath) < time()) || ((!empty($SITE_INFO['dependency__' . $fullpath])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $fullpath]), filemtime($css_cache_path))))))))) {
-        if (filesize($fullpath) == 0) {
+    if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time()) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))))))) {
+        if (filesize($full_path) == 0) {
             return '';
         }
 
         require_code('css_and_js');
-        css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $minify);
+        css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 
     if (@filesize($css_cache_path) == 0/*Race condition?*/) {
@@ -1878,13 +1952,13 @@ function css_enforce($c, $theme = null, $minify = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) all the CSS files that have been required.
+ * Get Tempcode to tie in (to the HTML, in <head>) all the CSS files that have been required.
  *
  * @param  boolean $inline Force inline CSS
  * @param  boolean $only_global Only do global CSS
  * @param  ?string $context HTML context for which we filter (minimise) any CSS we spit out as inline (null: none)
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @return tempcode The tempcode to tie in the CSS files
+ * @return Tempcode The Tempcode to tie in the CSS files
  */
 function css_tempcode($inline = false, $only_global = false, $context = null, $theme = null)
 {
@@ -1934,11 +2008,11 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
+ * Get Tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
  *
  * @param  ID_TEXT $c The CSS file required
- * @param  tempcode $css Main tempcode object (will be written into if appropriate)
- * @param  tempcode $css_need_inline Inline tempcode object (will be written into if appropriate)
+ * @param  Tempcode $css Main Tempcode object (will be written into if appropriate)
+ * @param  Tempcode $css_need_inline Inline Tempcode object (will be written into if appropriate)
  * @param  boolean $inline Only do global CSS
  * @param  ?string $context HTML context for which we filter (minimise) any CSS we spit out as inline (null: none)
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme) (null: from what is cached)
@@ -1948,6 +2022,8 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
  * @param  boolean $do_enforce Whether to generate the cached file if not already cached
+ *
+ * @ignore
  */
 function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context = null, $theme = null, $_seed = null, $_text_only = null, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
@@ -1989,6 +2065,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
     } elseif (($c == 'no_cache') || ($inline)) {
         if (!$text_only) {
             if ($context !== null) {
+                require_code('mail');
                 $__css = filter_css($c, $theme, $context);
             } else {
                 $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);
@@ -2061,6 +2138,7 @@ function require_css($css)
  * @param  boolean $https If we are using HTTPs
  * @param  boolean $mobile If we are using mobile
  * @return ?ID_TEXT Resource name for merged file, which we assume is compiled (as this function makes it) (null: we don't know what is required / race condition)
+ * @ignore
  */
 function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 {
@@ -2215,7 +2293,7 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 }
 
 /**
- * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
+ * Provides an override point for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
  * @param  PATH $filename File/directory name to sync on (full path)
  */
@@ -2235,7 +2313,7 @@ function sync_file($filename)
 }
 
 /**
- * Provides a hook for file-move synchronisation between mirrored servers. Called after any rename or move action.
+ * Provides an override point for file-move synchronisation between mirrored servers. Called after any rename or move action.
  *
  * @param  PATH $old File/directory name to move from (may be full or relative path)
  * @param  PATH $new File/directory name to move to (may be full or relative path)

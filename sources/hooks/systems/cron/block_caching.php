@@ -80,8 +80,8 @@ class Hook_cron_block_caching
                 $TIMEZONE_MEMBER_CACHE[get_member()] = $backup_timezone;
                 $cache->handle_symbol_preprocessing();
                 if (!$DO_NOT_CACHE_THIS) {
-                    if (method_exists($object, 'cacheing_environment')) {
-                        $info = $object->cacheing_environment();
+                    if (method_exists($object, 'caching_environment')) {
+                        $info = $object->caching_environment();
                     } else {
                         $info = array();
                         $info['cache_on'] = 'array($map)';

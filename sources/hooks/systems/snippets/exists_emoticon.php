@@ -26,7 +26,7 @@ class Hook_snippet_exists_emoticon
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
@@ -39,6 +39,6 @@ class Hook_snippet_exists_emoticon
 
         require_lang('cns');
 
-        return make_string_tempcode(strip_tags(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val)))));
+        return make_string_tempcode(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val))));
     }
 }

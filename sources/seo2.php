@@ -19,12 +19,12 @@
  */
 
 /**
- * Clear cacheing for a particular seo entry.
+ * Clear caching for a particular seo entry.
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource
  */
-function seo_meta_clear_cacheing($type, $id)
+function seo_meta_clear_caching($type, $id)
 {
     if (function_exists('decache')) {
         decache('side_tag_cloud');
@@ -57,7 +57,7 @@ function seo_meta_erase_storage($type, $id, $do_decache = true)
     $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('meta_for_type' => $type, 'meta_for_id' => $id));
 
     if ($do_decache) {
-        seo_meta_clear_cacheing($type, $id);
+        seo_meta_clear_caching($type, $id);
     }
 }
 
@@ -67,7 +67,7 @@ function seo_meta_erase_storage($type, $id, $do_decache = true)
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ?ID_TEXT $id The ID of the resource (null: adding)
  * @param  boolean $show_header Whether to show a header
- * @return tempcode Form page tempcode fragment
+ * @return Tempcode Form page Tempcode fragment
  */
 function seo_get_fields($type, $id = null, $show_header = true)
 {
@@ -85,7 +85,7 @@ function seo_get_fields($type, $id = null, $show_header = true)
                 '_GUID' => '545aefd48d73cf01bdec7226dc6d93fb',
                 'SECTION_HIDDEN' => $keywords == '' && $description == '',
                 'TITLE' => do_lang_tempcode('SEO'),
-                'HELP' => (get_option('show_docs') === '0') ? null : protect_from_escaping(symbol_tempcode('URLISE_LANG', array(do_lang('TUTORIAL_ON_THIS'), get_tutorial_url('tut_seo'), 'tut_seo', '1'))),
+                'HELP' => (get_option('show_docs') === '0') ? null : do_lang_tempcode('TUTORIAL_ON_THIS', get_tutorial_url('tut_seo')),
             )));
         }
         $fields->attach(form_input_line_multi(do_lang_tempcode('KEYWORDS'), do_lang_tempcode('DESCRIPTION_META_KEYWORDS'), 'meta_keywords[]', array_map('trim', explode(',', preg_replace('#,+#', ',', $keywords))), 0));
@@ -134,7 +134,7 @@ function seo_meta_set_for_explicit($type, $id, $keywords, $description)
         $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', $map);
     }
 
-    seo_meta_clear_cacheing($type, $id);
+    seo_meta_clear_caching($type, $id);
 }
 
 /**
@@ -143,6 +143,8 @@ function seo_meta_set_for_explicit($type, $id, $keywords, $description)
  * @param  array $keyword_sources Array of content strings to summarise from
  * @param  SHORT_TEXT $description The description to use
  * @return array A pair: Keyword string generated, Description generated
+ *
+ * @ignore
  */
 function _seo_meta_find_data($keyword_sources, $description = '')
 {
@@ -150,11 +152,11 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     require_code('textfiles');
     $word_chars = explode("\n", read_text_file('word_characters', '')); // We use this, as we have no easy multi-language way of detecting if something is a word character in non-latin alphabets (as they don't usually have upper/lower case which would be our detection technique)
     foreach ($word_chars as $i => $word_char) {
-        $word_chars[$i] = cms_mb_trim($word_char);
+        $word_chars[$i] = trim($word_char);
     }
     $common_words = explode("\n", read_text_file('too_common_words', ''));
     foreach ($common_words as $i => $common_word) {
-        $common_words[$i] = cms_mb_trim(cms_mb_strtolower($common_word));
+        $common_words[$i] = trim(cms_mb_strtolower($common_word));
     }
 
     $word_chars_flip = array_flip($word_chars);

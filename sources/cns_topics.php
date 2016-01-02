@@ -27,7 +27,7 @@
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The topic box
+ * @return Tempcode The topic box
  */
 function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -71,18 +71,23 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * Get an SQL 'WHERE' clause for the posts in a topic.
  *
  * @param  AUTO_LINK $topic_id The ID of the topic we are getting details of.
+ * @param  ?MEMBER $member_id The member doing the lookup (null: current member).
  * @return string The WHERE clause.
  */
-function cns_get_topic_where($topic_id)
+function cns_get_topic_where($topic_id, $member_id = null)
 {
+    if (is_null($member_id)) {
+        $member_id = get_member();
+    }
+
     $where = 'p_topic_id=' . strval($topic_id);
     if (is_guest()) {
         $where .= ' AND p_intended_solely_for IS NULL';
-    } elseif (!has_privilege(get_member(), 'view_other_pt')) {
-        $where .= ' AND (p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ' OR p_intended_solely_for IS NULL)';
+    } elseif (!has_privilege($member_id, 'view_other_pt')) {
+        $where .= ' AND (p_intended_solely_for=' . strval($member_id) . ' OR p_poster=' . strval($member_id) . ' OR p_intended_solely_for IS NULL)';
     }
-    if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
-        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval(get_member()) . '))';
+    if ((!has_privilege($member_id, 'see_unvalidated')) && (addon_installed('unvalidated'))) {
+        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval($member_id) . '))';
     }
     return $where;
 }
@@ -103,7 +108,19 @@ function cns_may_make_private_topic($member_id = null)
         return false;
     }
 
-    return $member_id != $GLOBALS['CNS_DRIVER']->get_guest_id();
+    return !is_guest($member_id);
+}
+
+/**
+ * Check that a member may make a Private Topic.
+ */
+function cns_check_make_private_topic()
+{
+    check_privilege('use_pt');
+
+    if (is_guest()) {
+        access_denied('NOT_AS_GUEST');
+    }
 }
 
 /**
@@ -209,14 +226,20 @@ function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
  *
  * @param  AUTO_LINK $topic_id The ID of the topic to mark as read.
  * @param  ?MEMBER $member_id The member to do this for (null: current member).
+ * @param  ?TIME $timestamp Mark read timestamp (null: now).
  */
-function cns_ping_topic_read($topic_id, $member_id = null)
+function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
 {
     if (is_null($member_id)) {
         $member_id = get_member();
     }
-    $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id), '', 1);
-    $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id, 'l_time' => time()), false, true); // race condition
+    if (is_null($timestamp)) {
+        $timestamp = time();
+    }
+    if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
+        $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id), '', 1);
+        $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id, 'l_time' => $timestamp), false, true); // race condition
+    }
 }
 
 /**
@@ -238,21 +261,24 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
     }
 
     if (is_null($topic_last_time)) {
-        $topic_last_time = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_last_time', array('id' => $topic_id));
+        $topic_last_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_last_time', array('id' => $topic_id));
+        if (is_null($topic_last_time)) {
+            return true; // Should not happen
+        }
     }
 
-    $post_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
+    $post_read_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
 
-    if ((get_option('post_history_days') != '0') && (get_value('avoid_normal_topic_history') !== '1')) {
+    if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
         // Occasionally we need to delete old entries
         if (mt_rand(0, 1000) == 123) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
-                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_history_days_ago) . ' AND l_time<>0');
+                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_read_history_days_ago) . ' AND l_time<>0');
             }
         }
     }
 
-    if ($topic_last_time < $post_history_days_ago) {
+    if ($topic_last_time < $post_read_history_days_ago) {
         return true; // We don't store that old
     }
     if (is_null($member_last_time)) {

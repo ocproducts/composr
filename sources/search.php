@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__search()
 {
@@ -30,8 +32,11 @@ function init__search()
 
 /**
  * Base class for catalogue search / custom content fields search.
+ *
+ * @package        search
  */
-abstract class FieldsSearchHook {
+abstract class FieldsSearchHook
+{
     /**
      * Get a list of extra sort fields.
      *
@@ -44,7 +49,7 @@ abstract class FieldsSearchHook {
 
         require_code('fields');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order');
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($rows as $i => $row) {
             $ob = get_fields_hook($row['cf_type']);
             $temp = $ob->inputted_to_sql_for_search($row, $i);
@@ -65,7 +70,7 @@ abstract class FieldsSearchHook {
     protected function _get_fields($catalogue_name)
     {
         $fields = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order');
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         require_code('fields');
         foreach ($rows as $row) {
             $ob = get_fields_hook($row['cf_type']);
@@ -94,10 +99,11 @@ abstract class FieldsSearchHook {
     {
         $where_clause = '';
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         if (count($fields) == 0) {
             return null;
         }
+
         $table = '';
         $trans_fields = array('!' => '!');
         $nontrans_fields = array();
@@ -121,7 +127,11 @@ abstract class FieldsSearchHook {
                     case 'short_trans':
                         $trans_fields['f' . strval($i) . '.cv_value'] = 'SHORT_TRANS__COMCODE';
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short_trans f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
-                        $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
+                        if (multi_lang_content()) {
+                            $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
+                        } else {
+                            $search_field = 'f' . strval($i) . '.cv_value';
+                        }
                         break;
                     case 'long':
                         $nontrans_fields[] = 'f' . strval($i) . '.cv_value';
@@ -183,8 +193,7 @@ abstract class FieldsSearchHook {
 
                         if (substr($param, 0, 1) == '=') {
                             $where_clause .= db_string_equal_to($search_field, substr($param, 1));
-                        }
-                        elseif ($row_type == 'integer' || $row_type == 'float') {
+                        } elseif ($row_type == 'integer' || $row_type == 'float') {
                             if (is_numeric($param)) {
                                 $where_clause .= $search_field . '=' . $param;
                             } else {
@@ -311,6 +320,16 @@ function is_under_radar($test)
         return false;
     }
 
+    return ((strlen($test) < get_minimum_search_length()) && ($test != ''));
+}
+
+/**
+ * Get minimum search length for MySQL.
+ *
+ * @return integer    Search length
+ */
+function get_minimum_search_length()
+{
     static $min_word_length = null;
     if (is_null($min_word_length)) {
         $min_word_length = 4;
@@ -321,8 +340,7 @@ function is_under_radar($test)
             }
         }
     }
-
-    return ((strlen($test) < $min_word_length) && ($test != ''));
+    return $min_word_length;
 }
 
 /**
@@ -524,9 +542,56 @@ function do_search_block($map)
         $extra['content'] = '';
     }
 
+    $options = array();
+    if ((count($limit_to) == 1) && ($limit_to[0] != 'all_defaults')) { // If we are doing a specific hook
+        $id = preg_replace('#^search\_#', '', $limit_to[0]);
+
+        require_code('hooks/modules/search/' . filter_naughty($id));
+        $object = object_factory('Hook_search_' . $id);
+        $info = $object->info();
+        if (!is_null($info)) {
+            if (array_key_exists('special_on', $info)) {
+                foreach ($info['special_on'] as $name => $display) {
+                    $_name = 'option_' . $id . '_' . $name;
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_string('content', null) === null) || (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
+                }
+            }
+            if (array_key_exists('special_off', $info)) {
+                foreach ($info['special_off'] as $name => $display) {
+                    $_name = 'option_' . $id . '_' . $name;
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
+                }
+            }
+            if (method_exists($object, 'get_fields')) {
+                $fields = $object->get_fields();
+                foreach ($fields as $field) {
+                    $_name = 'option_' . $field['NAME'];
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION' . $field['TYPE'], array('DISPLAY' => $field['DISPLAY'], 'SPECIAL' => $field['SPECIAL'], 'CHECKED' => array_key_exists('checked', $field) ? $field['CHECKED'] : false));
+                }
+            }
+        }
+    }
+
+    $_input_fields = array();
+    foreach ($input_fields as $key => $val) {
+        $input = new Tempcode();
+        if (isset($options['option_' . $key])) { // If there is an input option for this particular $key
+            $tpl_params = $options['option_' . $key][1];
+            $tpl_params['NAME'] = 'option_' . $key;
+            if ($val != '') {
+                $tpl_params['DISPLAY'] = $val;
+            }
+            $input = do_template($options['option_' . $key][0], $tpl_params);
+        }
+        $_input_fields[$key] = array(
+            'LABEL' => $val,
+            'INPUT' => $input,
+        );
+    }
+
     return array(
         'TITLE' => $title,
-        'INPUT_FIELDS' => $input_fields,
+        'INPUT_FIELDS' => $_input_fields,
         'EXTRA' => $extra,
         'SORT' => $sort,
         'AUTHOR' => $author,

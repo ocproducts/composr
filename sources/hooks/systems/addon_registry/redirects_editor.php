@@ -103,7 +103,7 @@ class Hook_addon_registry_redirects_editor
             'themes/default/images/icons/24x24/menu/adminzone/structure/redirects.png',
             'themes/default/images/icons/48x48/menu/adminzone/structure/redirects.png',
             'sources/hooks/systems/addon_registry/redirects_editor.php',
-            'sources/hooks/systems/commandr_fs_extended_config/redirect.php',
+            'sources/hooks/systems/commandr_fs_extended_config/redirects.php',
             'themes/default/templates/REDIRECTE_TABLE_SCREEN.tpl',
             'themes/default/templates/REDIRECTE_TABLE_REDIRECT.tpl',
             'adminzone/pages/modules/admin_redirects.php',

@@ -65,7 +65,7 @@ function tar_open($path, $mode)
  * Return the root directory from the specified TAR file. Note that there are folders in here, and they will end '/'.
  *
  * @param  array $resource The TAR file handle
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @return ?array A list of maps that stores 'path', 'mode', 'size' and 'mtime', for each file in the archive (null: error)
  */
 function tar_get_directory(&$resource, $tolerate_errors = false)
@@ -119,7 +119,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             $mtime = octdec(trim(substr($header, 136, 12)));
             $chksum = octdec(trim(substr($header, 148, 8)));
             $block_size = file_size_to_tar_block_size($size);
-            //$is_ok=substr($header,156,1)=='0';  Actually, this isn't consistently useful
+            //$is_ok = substr($header, 156, 1) == '0';  Actually, this isn't consistently useful
 
             $header2 = substr($header, 0, 148);
             $header2 .= '        ';
@@ -224,12 +224,18 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                             }
                         }
-                        /*$owner=fileowner($full);   We don't store all this stuff, it's not in Composr's remit
-                        $group=filegroup($full);
-                        if (function_exists('posix_getpwuid')) $owner=posix_getpwuid($owner);
-                        if (function_exists('posix_getgrgid')) $group=posix_getgrgid($group);*/
+                        /* We don't store all this stuff, it's not in Composr's remit
+                        $owner = fileowner($full);
+                        $group = filegroup($full);
+                        if (php_function_allowed('posix_getuid')) {
+                            $owner = posix_getuid($owner);
+                        }
+                        if (php_function_allowed('posix_getgrgid')) {
+                            $group = posix_getgrgid($group);
+                        }
+                        */
                         $perms = fileperms($full);
-                        $info[] = array('path' => $full, 'size' => filesize($full),/*'owner'=>$owner,'group'=>$group,*/
+                        $info[] = array('path' => $full, 'size' => filesize($full),/* 'owner' => $owner, 'group' => $group,*/
                                         'perms' => $perms, 'ctime' => $ctime, 'mtime' => $mtime);
                     }
                 }
@@ -408,15 +414,15 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                 if (fwrite($myfile, $data['data']) < strlen($data['data'])) {
                     warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                 }
-                $fullpath = get_custom_file_base() . '/' . $path . $file['path'];
-                @chmod($fullpath, $data['mode']);
+                $full_path = get_custom_file_base() . '/' . $path . $file['path'];
+                @chmod($full_path, $data['mode']);
                 if ($data['mtime'] == 0) {
                     $data['mtime'] = time();
                 }
-                @touch($fullpath, $data['mtime']);
+                @touch($full_path, $data['mtime']);
                 fclose($myfile);
-                fix_permissions($fullpath);
-                sync_file($fullpath);
+                fix_permissions($full_path);
+                sync_file($full_path);
             } else {
                 afm_make_file($path . $file['path'], $data['data'], ($data['mode'] & 0002) != 0);
             }
@@ -429,7 +435,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
  *
  * @param  array $resource The TAR file handle
  * @param  PATH $path The full path to the file we want to get
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @param  ?PATH $write_data_to Write data to here (null: return within array)
  * @return ?array A map, containing 'data' (the file), 'size' (the filesize), 'mtime' (the modification timestamp), and 'mode' (the permissions) (null: not found / TAR possibly corrupt if we turned tolerate errors on)
  */

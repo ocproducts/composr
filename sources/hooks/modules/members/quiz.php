@@ -24,10 +24,10 @@
 class Hook_members_quiz
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
     public function run($member_id)
     {
@@ -97,7 +97,7 @@ class Hook_members_quiz
             false,
             array('q_name' => 'SHORT_TRANS')
         );
-        //$has_points = ($GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type'=>'TEST', 'q_validated' => 1)) > 0.0);
+        //$has_points = ($GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type' => 'TEST', 'q_validated' => 1)) > 0.0);
         $categories = array();
         foreach ($entries as $entry) {
             list(

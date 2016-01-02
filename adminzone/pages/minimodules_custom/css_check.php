@@ -7,8 +7,16 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    theme_debug
+ */
+
 /*
-Search for CSS classes used in templates, and check they exist in the default theme CSS files
+Search for CSS classes used in templates, and check they exist in the default theme CSS files.
+
+This is a general Composr tool for testing out the default theme manually but with some help. theme_debug.php has a theme-specific checker.
 */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);

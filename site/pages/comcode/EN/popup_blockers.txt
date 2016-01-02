@@ -5,18 +5,31 @@ Some of our systems rely on your web browser allowing {$SITE_NAME} to allow popu
 [b]You have been brought here as we detected a failure to open a popup window.[/b]{+END}
 [title="2"]Web browsers[/title]
 
-Often web browsers come built in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
+Often web browsers come built-in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
 
-[title="3"]Microsoft Internet Explorer[/title]
+[title="3"]Microsoft Edge / Microsoft Internet Explorer[/title]
 
-If you are a Windows user and haven't installed a new web browser, you are probably using the standard one: Microsoft Internet Explorer.
+If you are a Windows user and haven't installed a new web browser, you are probably using the standard one: Microsoft Edge or Microsoft Internet Explorer.
+
+[title="4"]Microsoft Edge[/title]
 
 Instructions:
- - From the [b]Tools[/b] menu, click [b]Pop-up Blocker[/b].
- - Click [b]Pop-up Blocker Settings[/b].
+ - From the "..." menu, go to [b]Settings[/b]
+ - Click "View advanced settings"
+ - Make sure "Block pop-ups" is set to Off.
+
+As this is a global setting (not a per-site setting), you'll want to put it back to "On" when you're done.
+
+[title="4"]Microsoft Internet Explorer[/title]
+
+Instructions:
+ - From the gear menu, go to [b]Internet Options[/b]
+ - Click the Privacy tab
+ - Under Pop-up Blocker, click [b]Settings[/b].
  - In the [b]Address of web site to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
  - Click [b]Add[/b].
  - Click [b]Close[/b].
+ - Click [b]OK[/b].
 
 [title="3"]Google Chrome[/title]
 

@@ -26,7 +26,7 @@
  * @param  PATH $file_path The path to the video file
  * @param  string $filename The original filename of the video file (so we can find the file type from the file extension)
  * @param  boolean $delay_errors Whether to skip over errored files instead of dying. We don't currently make use of this as our readers aren't sophisticard enough to properly spot erroneous situations.
- * @return ~array                       The triplet of width/height/length (possibly containing NULL's for when we can't detect properties) (false: error)
+ * @return ~array The triplet of width/height/length (possibly containing nulls for when we can't detect properties) (false: error)
  */
 function get_video_details($file_path, $filename, $delay_errors = false)
 {
@@ -155,7 +155,8 @@ function read_network_endian_int($buffer)
  * Get width,height,length of a .wmv video file.
  *
  * @param  resource $file The file handle
- * @return array The triplet (possibly containing NULL's for when we can't detect properties)
+ * @return array The triplet (possibly containing nulls for when we can't detect properties)
+ * @ignore
  */
 function _get_wmv_details($file)
 {
@@ -169,7 +170,8 @@ function _get_wmv_details($file)
  *
  * @param  resource $file The file handle
  * @param  ?integer $chunk_length The length of the current chunk list (null: covers full file)
- * @return ?array The quartet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @return ?array The quartet (possibly containing nulls for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
 {
@@ -239,7 +241,8 @@ function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
  * Get width,height,length of a .avi video file.
  *
  * @param  resource $file The file handle
- * @return array The triplet (possibly containing NULL's for when we can't detect properties)
+ * @return array The triplet (possibly containing nulls for when we can't detect properties)
+ * @ignore
  */
 function _get_avi_details($file)
 {
@@ -258,7 +261,8 @@ function _get_avi_details($file)
  * Get width,height,length of a .rm/.ram video file.
  *
  * @param  resource $file The file handle
- * @return ?array The triplet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @return ?array The triplet (possibly containing nulls for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_ram_details($file) // + rm
 {
@@ -290,7 +294,8 @@ function _get_ram_details($file) // + rm
  * Get width,height,length of a .mov/.qt video file.
  *
  * @param  resource $file The file handle
- * @return ?array The triplet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @return ?array The triplet (possibly containing nulls for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_mov_details($file)
 {
@@ -308,7 +313,8 @@ function _get_mov_details($file)
  *
  * @param  resource $file The file handle
  * @param  ?integer $atom_size The length of the current atom list (null: covers full file)
- * @return array The quartet (possibly containing NULL's for when we can't detect properties)
+ * @return array The quartet (possibly containing nulls for when we can't detect properties)
+ * @ignore
  */
 function _get_mov_details_do_atom_list($file, $atom_size = null)
 {
@@ -328,11 +334,11 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
         }
         $count += 4;
         if ($size == 0) {
-            //       $qt_atom=true;
+            //$qt_atom = true;
             fseek($file, 8, SEEK_CUR);
             $size = read_network_endian_int(fread($file, 4));
             $count += 12;
-        }// else $qt_atom=false;
+        }// else $qt_atom = false;
 
         $type = fread($file, 4);
         $count += 4;
@@ -409,13 +415,17 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '')
+function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
     require_code('global4');
     prevent_double_submit('ADD_IMAGE', null, $title);
 
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -447,11 +457,15 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     }
     $id = $GLOBALS['SITE_DB']->query_insert('images', $map, true);
 
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
+    }
+
     log_it('ADD_IMAGE', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('image', strval($id), null, null, true);
+        generate_resource_fs_moniker('image', strval($id), null, null, true);
     }
 
     require_code('seo2');
@@ -473,7 +487,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         require_code('notifications');
         $subject = do_lang('IMAGE_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
         $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
-        $mail = do_lang('IMAGE_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('IMAGE_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
@@ -485,6 +499,9 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('image', strval($id), $submitter);
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:image:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 
     return $id;
 }
@@ -505,14 +522,18 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  LONG_TEXT $notes Hidden notes associated with the image
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -566,6 +587,11 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     $GLOBALS['SITE_DB']->query_update('images', $update_map, array('id' => $id), '', 1);
 
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'image', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
+    }
+
     $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
 
     if ($just_validated) {
@@ -579,7 +605,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         require_lang('galleries');
         require_code('notifications');
         $subject = do_lang('IMAGE_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
-        $mail = do_lang('IMAGE_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('IMAGE_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
@@ -587,7 +613,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('image', strval($id));
+        generate_resource_fs_moniker('image', strval($id));
     }
 
     require_code('seo2');
@@ -606,6 +632,9 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         do_lang('VIEW_IMAGE', '', '', '', get_site_default_lang()),
         process_overridden_comment_forum('images', strval($id), $cat, $old_cat)
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:image:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -618,7 +647,7 @@ function delete_image($id, $delete_full = true)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
     }
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
@@ -640,8 +669,9 @@ function delete_image($id, $delete_full = true)
 
     // Delete from database
     $GLOBALS['SITE_DB']->query_delete('images', array('id' => $id), '', 1);
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'images', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'images', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'images', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'images', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'image', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'images_' . strval($id));
 
@@ -658,8 +688,11 @@ function delete_image($id, $delete_full = true)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('image', strval($id));
+        expunge_resource_fs_moniker('image', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:image:' . strval($id));
 }
 
 /**
@@ -667,7 +700,7 @@ function delete_image($id, $delete_full = true)
  *
  * @param  URLPATH $src_url Video to get thumbail from (must be local)
  * @param  ?PATH $expected_output_path Where to save to (null: decide for ourselves)
- * @return URLPATH Thumbnail, only valid if expected_output_path was passed as NULL (blank: could not generate)
+ * @return URLPATH Thumbnail, only valid if expected_output_path was passed as null (blank: could not generate)
  */
 function create_video_thumb($src_url, $expected_output_path = null)
 {
@@ -766,7 +799,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
         $ffmpeg_path = get_option('ffmpeg_path');
 
-        if (($ffmpeg_path != '') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+        if (($ffmpeg_path != '') && (php_function_allowed('shell_exec'))) {
             $filename = 'thumb_' . md5(uniqid(strval(post_param_integer('thumbnail_auto_position', 1)), true)) . '%d.jpg';
             $dest_file = get_custom_file_base() . '/uploads/galleries/' . $filename;
             if (is_null($expected_output_path)) {
@@ -846,13 +879,17 @@ function create_video_thumb($src_url, $expected_output_path = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '')
+function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
     require_code('global4');
     prevent_double_submit('ADD_VIDEO', null, $title);
 
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -887,6 +924,10 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     }
     $id = $GLOBALS['SITE_DB']->query_insert('videos', $map, true);
 
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
+    }
+
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
 
@@ -894,7 +935,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('video', strval($id), null, null, true);
+        generate_resource_fs_moniker('video', strval($id), null, null, true);
     }
 
     if ($validated == 1) {
@@ -909,7 +950,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         require_code('notifications');
         $subject = do_lang('VIDEO_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
         $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
-        $mail = do_lang('VIDEO_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('VIDEO_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
@@ -935,6 +976,9 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('member_mentions');
     dispatch_member_mention_notifications('video', strval($id), $submitter);
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:video:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+
     return $id;
 }
 
@@ -957,14 +1001,18 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  integer $video_height The height of the video
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -1020,6 +1068,11 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     $GLOBALS['SITE_DB']->query_update('videos', $update_map, array('id' => $id), '', 1);
 
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'video', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
+    }
+
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
 
@@ -1036,7 +1089,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         require_lang('galleries');
         require_code('notifications');
         $subject = do_lang('VIDEO_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
-        $mail = do_lang('VIDEO_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('VIDEO_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
@@ -1044,7 +1097,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('video', strval($id));
+        generate_resource_fs_moniker('video', strval($id));
     }
 
     require_code('seo2');
@@ -1063,13 +1116,16 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         process_overridden_comment_forum('videos', strval($id), $cat, $old_cat)
     );
 
-    if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
+    if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode()) && ($url != STRING_MAGIC_NULL)) {
         require_code('gallery_syndication');
         if (function_exists('sync_video_syndication')) {
             $consider_deferring = (!url_is_local($url)) || (filesize(get_custom_file_base() . '/' . rawurldecode($url)) > 1024 * 1024 * 20);
             sync_video_syndication($id, false, $orig_url != $url, $orig_url != $url && $consider_deferring);
         }
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:video:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -1080,7 +1136,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
  */
 function delete_video($id, $delete_full = true)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id), '', 1);
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
     $cat = $rows[0]['cat'];
@@ -1100,8 +1156,9 @@ function delete_video($id, $delete_full = true)
 
     // Delete from database
     $GLOBALS['SITE_DB']->query_delete('videos', array('id' => $id), '', 1);
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'videos', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'videos', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'videos', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'videos', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'video', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'videos_' . strval($id));
 
@@ -1123,8 +1180,11 @@ function delete_video($id, $delete_full = true)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('video', strval($id));
+        expunge_resource_fs_moniker('video', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:video:' . strval($id));
 }
 
 /**
@@ -1202,6 +1262,8 @@ function watermark_gallery_image($gallery, $file_path, $filename)
  * @param  URLPATH $watermark_url The (local) URL to the watermark file
  * @param  BINARY $x Whether a right hand side corner is being watermarked
  * @param  BINARY $y Whether a bottom edge corner is being watermarked
+ *
+ * @ignore
  */
 function _watermark_corner($source, $watermark_url, $x, $y)
 {
@@ -1283,7 +1345,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -1317,7 +1379,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('gallery', $name, null, null, true);
+        generate_resource_fs_moniker('gallery', $name, null, null, true);
     }
 
     if ($parent_id != '') {
@@ -1342,6 +1404,9 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('gallery', $name, $g_owner);
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:browse:' . $name, $add_date, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
 
     return $name;
 }
@@ -1370,7 +1435,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  * @param  BINARY $allow_comments Whether comments are allowed
  * @param  ?MEMBER $g_owner The gallery owner (null: nobody)
  * @param  ?TIME $add_time The add time (null: now)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
@@ -1382,7 +1447,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
     $under_category_id = $parent_id;
     while (($under_category_id != '') && ($under_category_id != STRING_MAGIC_NULL)) {
         if ($name == $under_category_id) {
-            warn_exit(do_lang_tempcode('OWN_PARENT_ERROR'));
+            warn_exit(do_lang_tempcode('OWN_PARENT_ERROR', 'gallery'));
         }
         $_under_category_id = $GLOBALS['SITE_DB']->query_select_value('galleries', 'parent_id', array('name' => $under_category_id));
         if ($under_category_id == $_under_category_id) {
@@ -1406,7 +1471,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -1434,7 +1499,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     $myrows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
     if (!array_key_exists(0, $myrows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
     $myrow = $myrows[0];
 
@@ -1488,7 +1553,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('gallery', $name);
+        generate_resource_fs_moniker('gallery', $name);
     }
 
     $GLOBALS['SITE_DB']->query_update('group_category_access', array('category_name' => $name), array('module_the_name' => 'galleries', 'category_name' => $old_name));
@@ -1506,6 +1571,9 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         process_overridden_comment_forum('galleries', $name, $name, $old_name)
     );
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:browse:' . $name, has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
+
     return $name;
 }
 
@@ -1517,12 +1585,12 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 function delete_gallery($name)
 {
     if ($name == '') {
-        warn_exit(do_lang_tempcode('NO_DELETE_ROOT'));
+        warn_exit(do_lang_tempcode('NO_DELETE_ROOT', 'gallery'));
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $name), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
 
     require_code('files2');
@@ -1540,8 +1608,8 @@ function delete_gallery($name)
     delete_lang($rows[0]['description']);
 
     // Images and videos are deleted, because we are deleting the _gallery_, not just a category (nobody is going to be deleting galleries with the expectation of moving the image to a different one in bulk - unlike download categories, for example).
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $images = $GLOBALS['SITE_DB']->query_select('images', array('id'), array('cat' => $name), '', 200);
@@ -1576,8 +1644,11 @@ function delete_gallery($name)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('gallery', $name);
+        expunge_resource_fs_moniker('gallery', $name);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:browse:' . $name);
 }
 
 /**

@@ -109,11 +109,11 @@ class Module_admin_customers
             $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_owner_view' => 1, 'cf_owner_set' => 1), array('id' => $cur_id), '', 1);
         }
         cns_make_custom_field('cms_support_credits', 1, '', '', 0, 1, 0, 0, 'integer');
-        cns_make_custom_field('cms_ftp_host', 1, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
-        cns_make_custom_field('cms_ftp_path', 1, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
-        cns_make_custom_field('cms_ftp_username', 1, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
-        cns_make_custom_field('cms_ftp_password', 1, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
-        cns_make_custom_field('cms_profession', 1, '', do_lang('CUSTOMER_PROFESSION_CPF_LIST'), 0, 1, 1, 0, 'list');
+        cns_make_custom_field('cms_ftp_host', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
+        cns_make_custom_field('cms_ftp_path', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
+        cns_make_custom_field('cms_ftp_username', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
+        cns_make_custom_field('cms_ftp_password', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
+        cns_make_custom_field('cms_profession', 0, '', do_lang('CUSTOMER_PROFESSION_CPF_LIST'), 0, 1, 1, 0, 'list');
 
         $GLOBALS['SITE_DB']->create_table('credit_purchases', array(
             'purchase_id' => '*AUTO',
@@ -666,7 +666,7 @@ class Module_admin_customers
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -681,7 +681,7 @@ class Module_admin_customers
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -699,7 +699,7 @@ class Module_admin_customers
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -721,7 +721,7 @@ class Module_admin_customers
     /**
      * The UI to charge a customer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function charge()
     {
@@ -772,7 +772,7 @@ class Module_admin_customers
         foreach ($logs as $log) {
             $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id']);
             if (is_null($charging_username)) {
-                $charging_username = do_lang_tempcode('DELETED');
+                $charging_username = do_lang('DELETED');
             }
             $_num_credits = integer_format($log['num_credits']);
             $date_and_time = get_timezoned_date($log['date_and_time']);
@@ -796,7 +796,7 @@ class Module_admin_customers
     /**
      * The actualiser to charge a customer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _charge()
     {

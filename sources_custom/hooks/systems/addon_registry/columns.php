@@ -66,7 +66,7 @@ class Hook_addon_registry_columns
     public function get_copyright_attribution()
     {
         return array(
-            'Based on the code of Adam Wulf',
+            'Based on the code of Adam Wulf ("Columnizer")',
         );
     }
 
@@ -90,7 +90,7 @@ class Hook_addon_registry_columns
         return 'Automatically columnise Comcode. Allows wrapping of HTML with a div with a [tt].column_wrapper[/tt] CSS class, to have it automatically put in columns.
 
 You need to add this code into your [tt]HTML_HEAD.tpl[/tt]:
-[code]<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js\"></script>
+[code]<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 {$REQUIRE_CSS,columns}
 {$REQUIRE_JAVASCRIPT,columns}[/code]';
     }

@@ -25,6 +25,8 @@
  * @param  ID_TEXT $op The function that was called to check a permission
  * @param  array $params Parameters to this permission-checking function
  * @param  boolean $result Whether the permission was held
+ *
+ * @ignore
  */
 function _handle_permission_check_logging($member, $op, $params, $result)
 {
@@ -124,7 +126,7 @@ function has_privilege_group($group_id, $permission, $page = null, $cats = null)
 /**
  * Get hidden fields for setting category access permissions as on.
  *
- * @return tempcode Hidden fields
+ * @return Tempcode Hidden fields
  */
 function get_category_permissions_hidden_on()
 {
@@ -142,10 +144,10 @@ function get_category_permissions_hidden_on()
  * @param  ID_TEXT $module The ID code for the module being checked for category access
  * @param  ID_TEXT $category The ID code for the category being checked for access (often, a number cast to a string)
  * @param  ?ID_TEXT $page The page this is for (null: current page)
- * @param  ?tempcode $help Extra help to show in interface (null: none)
+ * @param  ?Tempcode $help Extra help to show in interface (null: none)
  * @param  boolean $new_category Whether this is a new category (don't load permissions, default to on)
- * @param  ?tempcode $pinterface_view Label for view permissions (null: default)
- * @return tempcode The form field matrix
+ * @param  ?Tempcode $pinterface_view Label for view permissions (null: default)
+ * @return Tempcode The form field matrix
  */
 function get_category_permissions_for_environment($module, $category, $page = null, $help = null, $new_category = false, $pinterface_view = null)
 {
@@ -159,7 +161,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $category = mixed();
     }
 
-    $server_id = get_module_zone($page) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
+    $server_id = get_module_zone($page, 'modules', null, 'php', true, false) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
 
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
@@ -185,7 +187,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     // Heading
     require_code('zones2');
-    $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
     $out = new Tempcode;
     if (is_null($_overridables[0])) {
         $temp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6789cb454688a1bc811af1b4011ede35', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'HELP' => $help, 'SECTION_HIDDEN' => true));
@@ -237,8 +239,8 @@ function get_category_permissions_for_environment($module, $category, $page = nu
  * @param  array $privileges List of privilege settings relating to what we're setting permissions for, from the database
  * @param  array $default_access Multi-dimensional array showing what the inherited defaults for this permission would be
  * @param  boolean $no_outer Whether to not include the stuff to make it fit alongside other form fields in a normal form table
- * @param  ?tempcode $pinterface_view Label for view permissions (null: default)
- * @return tempcode The form field matrix
+ * @param  ?Tempcode $pinterface_view Label for view permissions (null: default)
+ * @return Tempcode The form field matrix
  */
 function get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, $no_outer = false, $pinterface_view = null)
 {
@@ -306,7 +308,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
                 '_GUID' => 'e2c4459ae995d33376c07e498f1d973a',
                 'FORCE_PRESETS' => $no_outer,
                 'GROUP_NAME' => $group_name,
-                'OVERRIDES' => $overrides->evaluate()/*FUDGEFUDGE*/,
+                'OVERRIDES' => $overrides->evaluate()/*FUDGE*/,
                 'ALL_GLOBAL' => $all_global,
                 'VIEW_ACCESS' => $view_access,
                 'TABINDEX' => strval($tabindex),
@@ -415,7 +417,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
         $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 
-    $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
     if (is_null($_overridables[0])) {
         $overridables = array();
     } else {
@@ -460,8 +462,8 @@ function set_category_permissions_from_environment($module, $category, $page = n
  *
  * @param  ID_TEXT $zone The ID code for the zone
  * @param  ID_TEXT $page The ID code for the page
- * @param  ?tempcode $help Extra help to show in interface (null: none)
- * @return tempcode The form fields
+ * @param  ?Tempcode $help Extra help to show in interface (null: none)
+ * @return Tempcode The form fields
  */
 function get_page_permissions_for_environment($zone, $page, $help = null)
 {

@@ -71,7 +71,6 @@ ADMIN_BANNERS
 ADMIN_ZONE_SEARCH_RESULTS
 ADMIN_ZONE_SEARCH_SYNTAX
 ADMIN_ZONE_TEXT
-ADVANCED_IMPORT
 ALLOWED_FILES
 ALLOWED_POST_SUBMITTERS
 ALLOW_ALPHA_SEARCH
@@ -200,7 +199,6 @@ DELETE_BY_EMPTYING
 DELETE_CATALOGUE
 DELETE_CATALOGUE_CATEGORY
 DELETE_CATALOGUE_ENTRY
-DELETE_CATEGORY
 DELETE_CLUB
 DELETE_CUSTOM_PROFILE_FIELD
 DELETE_DATA_AVAILABLE
@@ -261,7 +259,6 @@ DELETE_WELCOME_EMAIL
 DELETE_WITHOUT_MERGING
 DELETE_ZONE
 DELETE_ZONE_ERROR
-DESCRIPTION_ADVANCED_IMPORT
 DESCRIPTION_ALLOW_COMMENTS
 DESCRIPTION_ALLOW_RATING
 DESCRIPTION_ALLOW_TRACKBACKS
@@ -358,7 +355,6 @@ DESCRIPTION_SEND_TRACKBACKS
 DESCRIPTION_SHORTNAME
 DESCRIPTION_SMART_TOPIC_NOTIFICATION
 DESCRIPTION_STATS_CACHE
-DESCRIPTION_SUBMITTER
 DESCRIPTION_SUPER_MEMBERS
 DESCRIPTION_SUPER_MODERATORS
 DESCRIPTION_TEMPLATES
@@ -425,7 +421,6 @@ ECOM_CAT_tax_type
 ECOM_CAT_weight
 EDITAREA
 EDITING_CONTENT_IN_LANGUAGE_STAFF
-EDIT_CATEGORY
 EDIT_FORWARDING_DOMAIN
 EDIT_MEDIA
 EDIT_MENU_ITEM
@@ -637,11 +632,10 @@ MISSING_FILES
 MISSING_FORUM
 MISSING_IMPORT_SESSION
 MISSING_INSTALLATION_FILE
-MISSING_LANG_ENTRY
+MISSING_LANG_STRING
 MISSING_LANG_FILE
 MISSING_MENU
 MISSING_MODULE_REFERENCED
-MISSING_OPTION
 MISSING_PARAM
 MISSING_PHOTO
 MISSING_RESOURCE_COMCODE
@@ -866,7 +860,6 @@ NO_SUCH_THEME_IMAGE
 NO_THEME_PERMISSION
 ORPHANED_TAGS
 PATH_HACK
-REBUILD_CACHES
 RECURSIVE_TREE_CHAIN
 RSS_UNKNOWN_VERSION
 RSS_XML_ERROR
@@ -988,7 +981,7 @@ while (($f = readdir($dh)) !== false) {
         }
 
         foreach (array_diff(array_keys($strings), $lang_strings_non_admin, $lang_strings_admin) as $str) {
-            if ($f == 'tips' || $f == 'lookup' || $f == 'backups' || $f == 'debrand' || $f == 'version' || $f == 'errorlog' || $f == 'profiling' || $f == 'email_log' || $f == 'cns_config' || $f == 'xml_storage' || $f == 'realtime_rain' || $f == 'custom_comcode' || $f == 'aggregate_types' || $f == 'cns_multi_moderations' || $f == 'webstandards.ini' || $f == 'commandr.ini' || $f == 'stats.ini' || $f == 'actionlog.ini' || $f == 'abstract_file_manager.ini' || $f == 'submitban.ini' || $f == 'ssl.ini' || $f == 'addons.ini' || $f == 'installer.ini' || $f == 'cleanup.ini' || $f == 'staff_checklist.ini' || $f == 'themes.ini' || $f == 'upgrade.ini' || preg_match('#^(MODULE_TRANS_NAME_admin|MODULE_TRANS_NAME_cms|ABSTRACTION_SYMBOL_|ARITHMETICAL_SYMBOL_|PROGRAMMATIC_SYMBOL_|DIRECTIVE_|FORMATTING_SYMBOL_|LOGICAL_SYMBOL_|SYMBOL_|PRIVILEGE|FU|FIELDTYPE|CHECKLIST|CONFIG_OPTION|CONFIG_CATEGORY|CONFIG_GROUP|DOC|TIP|WCAG|XHTML|CSS|COMCODE_TAG|CMD|BLOCK)_#', $str) != 0) {
+            if ($f == 'tips' || $f == 'lookup' || $f == 'backups' || $f == 'debrand' || $f == 'version' || $f == 'errorlog' || $f == 'profiling' || $f == 'email_log' || $f == 'cns_config' || $f == 'realtime_rain' || $f == 'custom_comcode' || $f == 'aggregate_types' || $f == 'cns_multi_moderations' || $f == 'webstandards.ini' || $f == 'commandr.ini' || $f == 'stats.ini' || $f == 'actionlog.ini' || $f == 'abstract_file_manager.ini' || $f == 'submitban.ini' || $f == 'ssl.ini' || $f == 'addons.ini' || $f == 'installer.ini' || $f == 'cleanup.ini' || $f == 'staff_checklist.ini' || $f == 'themes.ini' || $f == 'upgrade.ini' || preg_match('#^(MODULE_TRANS_NAME_admin|MODULE_TRANS_NAME_cms|ABSTRACTION_SYMBOL_|ARITHMETICAL_SYMBOL_|PROGRAMMATIC_SYMBOL_|DIRECTIVE_|FORMATTING_SYMBOL_|LOGICAL_SYMBOL_|SYMBOL_|PRIVILEGE|FU|FIELDTYPE|CHECKLIST|CONFIG_OPTION|CONFIG_CATEGORY|CONFIG_GROUP|DOC|TIP|WCAG|XHTML|CSS|COMCODE_TAG|CMD|BLOCK)_#', $str) != 0) {
                 $lang_strings_admin[] = $str;
             } elseif (preg_match('#^ACCESS_DENIED__|ACTIVITY_|NOTIFICATION_TYPE_#', $str) != 0) {
                 $lang_strings_non_admin[] = $str;

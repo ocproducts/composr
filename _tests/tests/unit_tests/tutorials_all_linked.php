@@ -31,7 +31,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         parent::setUp();
     }
 
-    function testHaveFullMetaData()
+    public function testHaveFullMetaData()
     {
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if (is_numeric($tutorial_name)) {
@@ -47,9 +47,17 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
-    function testAddonLinkage()
+    public function testAddonLinkage()
     {
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
+            if (is_numeric($tutorial_name)) {
+                continue;
+            }
+
+            if (substr($tutorial_name, 0, 4) == 'sup_') {
+                continue;
+            }
+
             foreach ($tutorial['tags'] as $tag) {
                 if (strtolower($tag) == $tag) { // Addon tag
                     require_code('hooks/systems/addon_registry/' . $tag);
@@ -72,7 +80,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
-    function testIconLinkage()
+    public function testIconLinkage()
     {
         $icons_used = array();
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
@@ -91,7 +99,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.png') {
                 $icon = basename($f, '.png');
-                if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Generic ones we aren't using yet*/))) {
+                if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Very generic ones we aren't using yet*/))) {
                     $this->assertTrue(in_array(find_theme_image('tutorial_icons/' . $icon), $icons_used), $icon . ' icon is not used');
                 }
             }
@@ -99,7 +107,22 @@ class tutorials_all_linked_test_set extends cms_test_case
         closedir($dh);
     }
 
-    function testHasStandardParts()
+    public function testHasCorrectTitle()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, 0, 4) == 'sup_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Supplementary: ') !== false, $f . ' has wrong title stub');
+            }
+
+            elseif (substr($f, 0, 4) == 'tut_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Tutorial: ') !== false, $f . ' has wrong title stub');
+            }
+        }
+    }
+
+    public function testNotSelfLinking()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
@@ -109,10 +132,26 @@ class tutorials_all_linked_test_set extends cms_test_case
                     continue;
                 }
 
-                $c = file_get_contents($path . '/' . $f);
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), '"_SEARCH:' . $f . '"') === false, $f . ' is self linking');
+            }
+        }
+    }
+
+    public function testHasStandardParts()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                if ($f == 'panel_top.txt') {
+                    continue;
+                }
+
+                $c = remove_code_block_contents(file_get_contents($path . '/' . $f));
+
                 $this->assertTrue(strpos($c, '{$SET,tutorial_add_date,') !== false, $f . ' has no defined add date');
                 $this->assertTrue(strpos($c, '[block]main_tutorial_rating[/block]') !== false, $f . ' has no rating block');
-                if (preg_match('#^sup\_#', $c) == 0 && substr_count($c, '[title="2"') > 1 && strpos($f, 'codebook') === false) {
+                if (preg_match('#^sup\_#', $f) == 0 && substr_count($c, '[title="2"') > 1 && strpos($f, 'codebook') === false) {
                     $this->assertTrue(strpos($c, '[contents]decimal,lower-alpha[/contents]') !== false, $f . ' has no TOC');
                 }
             }
@@ -120,7 +159,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         closedir($dh);
     }
 
-    function testHasSomePinned()
+    public function testHasSomePinned()
     {
         $count = 0;
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
@@ -133,7 +172,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         $this->assertTrue($count == $desired, 'You should pin exactly ' . integer_format($desired) . ' tutorials, you have pinned ' . integer_format($count));
     }
 
-    function testTagSet()
+    public function testTagSet()
     {
         $tags = list_tutorial_tags(true);
         foreach ($tags as $tag) {

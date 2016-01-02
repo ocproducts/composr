@@ -46,7 +46,7 @@ class Module_join
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -54,7 +54,7 @@ class Module_join
         if (get_forum_type() != 'cns') {
             return null;
         }
-        if (!is_guest()) {
+        if ($check_perms && !is_guest($member_id)) {
             return null;
         }
 
@@ -68,7 +68,7 @@ class Module_join
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -103,7 +103,7 @@ class Module_join
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -133,7 +133,7 @@ class Module_join
     /**
      * The UI to accept the rules of joining.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -155,7 +155,7 @@ class Module_join
         $url = build_url($map, '_SELF');
 
         $group_select = new Tempcode();
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_default'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_default'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         if (count($rows) > 1) {
             foreach ($rows as $group) {
                 if (get_param_integer('usergroup', -1) == -1) {
@@ -173,7 +173,7 @@ class Module_join
     /**
      * The UI to enter profile details.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -200,7 +200,7 @@ class Module_join
     /**
      * The actualiser for adding a member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -234,7 +234,7 @@ class Module_join
     /**
      * The actualiser for setting up account confirmation.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {

@@ -83,7 +83,7 @@ class Hook_notification_cns_member_joined_group extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_member_joined_group'] = array(do_lang('GROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_member_joined_group'));
+        $list['cns_member_joined_group'] = array(do_lang('USERGROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_member_joined_group'));
         return $list;
     }
 

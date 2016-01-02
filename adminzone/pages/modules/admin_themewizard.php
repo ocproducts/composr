@@ -46,15 +46,18 @@ class Module_admin_themewizard
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $ret = array(
-            'browse' => array('THEMEWIZARD', 'menu/adminzone/style/themes/themewizard'),
-            'make_logo' => array('LOGOWIZARD', 'menu/adminzone/style/themes/logowizard'),
-        );
+        $ret = array();
+
+        if (!$be_deferential && !$support_crosslinks) {
+            $ret['browse'] = array('THEMEWIZARD', 'menu/adminzone/style/themes/themewizard');
+        }
+
+        $ret['make_logo'] = array('LOGOWIZARD', 'menu/adminzone/style/themes/logowizard');
 
         return $ret;
     }
@@ -64,7 +67,7 @@ class Module_admin_themewizard
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -81,6 +84,8 @@ class Module_admin_themewizard
         }
 
         if ($type == 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:adminzone:browse', do_lang_tempcode('MANAGE_THEMES'))));
+
             breadcrumb_set_self(do_lang_tempcode('THEMEWIZARD'));
 
             $this->title = get_screen_title('_THEMEWIZARD', true, array(escape_html(integer_format(1)), escape_html(integer_format(4))));
@@ -126,7 +131,7 @@ class Module_admin_themewizard
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -164,7 +169,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose colour).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -214,24 +219,23 @@ class Module_admin_themewizard
         $javascript = "
             var form=document.getElementById('main_form');
             form.elements['source_theme'].onchange=function() {
-                    var default_theme=(form.elements['source_theme'].options[form.elements['source_theme'].selectedIndex].value=='default');
-                    form.elements['algorithm'][0].checked=default_theme;
-                    form.elements['algorithm'][1].checked=!default_theme;
+                var default_theme=(form.elements['source_theme'].options[form.elements['source_theme'].selectedIndex].value=='default');
+                form.elements['algorithm'][0].checked=default_theme;
+                form.elements['algorithm'][1].checked=!default_theme;
             }
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            document.getElementById('submit_button').disabled=true;
-                            var url='" . addslashes($script) . "?snippet=exists_theme&name='+window.encodeURIComponent(form.elements['themename'].value);
-                            if (!do_ajax_field_test(url))
-                            {
-                                        document.getElementById('submit_button').disabled=false;
-                                        return false;
-                            }
-                            document.getElementById('submit_button').disabled=false;
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                document.getElementById('submit_button').disabled=true;
+                var url='" . addslashes($script) . "?snippet=exists_theme&name='+window.encodeURIComponent(form.elements['themename'].value);
+                if (!do_ajax_field_test(url))
+                {
+                    document.getElementById('submit_button').disabled=false;
+                    return false;
+                }
+                document.getElementById('submit_button').disabled=false;
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         return do_template('FORM_SCREEN', array('_GUID' => '98963f4d7ff60744382f937e6cc5acbf', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'JAVASCRIPT' => $javascript, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
@@ -240,7 +244,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose preview).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -250,6 +254,7 @@ class Module_admin_themewizard
         $dark = get_param_integer('dark', 0);
         $inherit_css = get_param_integer('inherit_css', 0);
         $themename = get_param_string('themename');
+        require_code('type_sanitisation');
         if ((!is_alphanumeric($themename, true)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
@@ -283,7 +288,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose save).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -313,7 +318,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (actualisation).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {
@@ -326,8 +331,9 @@ class Module_admin_themewizard
         $dark = post_param_integer('dark');
         $inherit_css = post_param_integer('inherit_css');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        send_http_output_ping();
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         require_code('type_sanitisation');
@@ -380,7 +386,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (ask for input).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function make_logo()
     {
@@ -432,7 +438,7 @@ class Module_admin_themewizard
         sort($fonts);
         require_css('fonts');
         foreach ($fonts as $font) {
-            if (strpos(strtolower($font), 'veranda') !== false) {
+            if (stripos($font, 'veranda') !== false) {
                 continue; // Not licensed for this, only used as a web standards patch for vertical text
             }
 
@@ -469,7 +475,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (show preview).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _make_logo()
     {
@@ -482,7 +488,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (set).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __make_logo()
     {

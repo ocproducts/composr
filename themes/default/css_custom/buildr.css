@@ -3,89 +3,90 @@
  Copyright (c) ocProducts, 2004-2015
 */
 
-.ocw_navigation {
+.buildr_navigation {
 	float: {!en_left};
 	width: 400px;
 }
 
-.ocw_navigation table {
+.buildr_navigation table {
 	margin-left: 20px;
 	margin-right: 20px;
 	width: 360px;
 	direction: ltr;
 }
 
-.ocw_navigation td {
+.buildr_navigation td {
 	width: 90px;
 	height: 40px;
 	text-align: center;
 	vertical-align: middle;
 }
 
-.ocw_room_info {
+.buildr_room_info {
 	margin-{!en_left}: 400px;
 }
 
-.ocw_room_chat {
+.buildr_room_chat {
 	float: {!en_right};
 	width: 500px;
+	margin-top: 0;
 }
 
-.ocw_room_chat iframe {
+.buildr_room_chat iframe {
 	width: 100%;
 	height: 100px;
 }
 
-.ocw_in_room {
+.buildr_in_room {
 	margin-{!en_right}: 510px;
 }
 
-.ocw_inventory {
+.buildr_inventory {
 	margin-top: 20px;
 }
 
-.ocw_icon {
+.buildr_icon {
 	float: {!en_left};
 }
 
-.ocw_centered_contents {
+.buildr_centered_contents {
 	text-align: center;
 }
 
-.ocw_avatar {
+.buildr_avatar {
 	margin-bottom: 10px;
 	float: {!en_right};
 }
 
-.ocw_avatar img {
+.buildr_avatar img {
 	max-width: 100px;
 }
 
-.ocw_arrow {
+.buildr_arrow {
 	font-size: 0.7em;
 	letter-spacing: 0;
 }
 
-.ocw_fadedttext {
+.buildr_fadedttext {
 	color: #C0CFDA;
 }
 
-.ocw_fadedtext {
+.buildr_fadedtext {
 	color: #809FB5;
 }
 
-.ocw_fadedtextarrow {
+.buildr_fadedtextarrow {
 	color: #C0CFDA;
 }
 
-.ocw_posttop, .ocw_posttop th {
+.buildr_posttop, .buildr_posttop th {
 	background-color: #628AB9;
 	color: #DDD;
 	font-weight: bold;
 	text-align: center;
 }
 
-.ocw_self_member {
+.buildr_self_member {
 	font-weight: bold;
 }
 

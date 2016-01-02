@@ -34,7 +34,7 @@
 					<th class="cns_forum_box_right">
 						<a href="#" onclick="event.returnValue=false; mark_all_topics(event); return false;"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
 					</th>
-				{+END}{+END}
+				{+END}{+END}{+END}
 			{+END}
 		</tr>
 	</thead>
@@ -109,7 +109,7 @@
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
 						<div class="inline">
-							<label for="order">{!ORDER}:
+							<label for="order">{!SORT}:
 							<select{+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} name="order" id="order">
 								<option value="last_post"{$?,{$EQ,{ORDER},last_post}, selected="selected",}>{!FORUM_ORDER_BY_LAST_POST}</option>
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>

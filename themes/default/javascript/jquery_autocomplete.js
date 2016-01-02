@@ -253,7 +253,7 @@ $(function() {
 			var _this = this;
 
 			if (typeof window.CKEDITOR != 'undefined') {
-				var editor = CKEDITOR.instances[this.element.name];
+				var editor = CKEDITOR.instances[this.element.id];
 				if (editor.document) {
 					editor.document.on('keyup', function(e) {
 						_this.onKeyUp.call(_this, e);

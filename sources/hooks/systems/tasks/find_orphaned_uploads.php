@@ -38,7 +38,7 @@ class Hook_task_find_orphaned_uploads
         // Find known paths
         $known_urls = array();
         $urlpaths = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => 'URLPATH'));
-        $base_url = get_base_url();
+        $base_url = get_custom_base_url();
         foreach ($urlpaths as $urlpath) {
             $ofs = $GLOBALS['SITE_DB']->query_select($urlpath['m_table'], array($urlpath['m_name']));
             foreach ($ofs as $of) {
@@ -57,7 +57,7 @@ class Hook_task_find_orphaned_uploads
         $orphaned = array();
         foreach ($all_files as $file) {
             if (!array_key_exists($file, $known_urls)) {
-                $orphaned[] = array('URL' => get_base_url() . '/' . str_replace('%2F', '/', rawurlencode($file)));
+                $orphaned[] = array('URL' => get_custom_base_url() . '/' . str_replace('%2F', '/', rawurlencode($file)));
             }
         }
 
@@ -79,7 +79,7 @@ class Hook_task_find_orphaned_uploads
     public function do_dir($dir)
     {
         $out = array();
-        $_dir = ($dir == '') ? '.' : $dir;
+        $_dir = ($dir == '') ? get_custom_file_base() : (get_custom_file_base() . '/' . $dir);
         $dh = @opendir($_dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {

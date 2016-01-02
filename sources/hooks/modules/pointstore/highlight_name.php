@@ -57,7 +57,7 @@ class Hook_pointstore_highlight_name
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -78,7 +78,7 @@ class Hook_pointstore_highlight_name
 
         // Check points
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         return do_template('POINTSTORE_HIGHLIGHT_NAME_SCREEN', array('_GUID' => 'fec7bedd71e57170f63257b95da43c93', 'TITLE' => $title, 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
@@ -87,7 +87,7 @@ class Hook_pointstore_highlight_name
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {
@@ -108,7 +108,7 @@ class Hook_pointstore_highlight_name
         $cost = intval(get_option($class));
         $points_left = available_points(get_member());
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         // Actuate

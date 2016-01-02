@@ -14,4 +14,19 @@ defaults.thumb='1';
 defaults.type=''; // =autodetect rendering type
 
 // Shall we show the options overlay?
-show_overlay=!is_archive;
+show_overlay=true;
+if (multi || is_image || is_archive)
+{
+	show_overlay=false;
+}
+
+if (is_image)
+{
+	tag='attachment_safe';
+}
+
+if (multi || is_image)
+{
+	defaults.framed='0';
+}
+

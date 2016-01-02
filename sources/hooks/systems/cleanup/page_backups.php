@@ -45,7 +45,7 @@ class Hook_cleanup_page_backups
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {

@@ -31,14 +31,16 @@
 	</div>
 {+END}
 
-<h2>{!SITEMAP}</h2>
+{+START,IF_NON_PASSED,SKIP_SITEMAP}
+	<h2>{!SITEMAP}</h2>
 
-{$BLOCK,block=menu,param=\,use_page_groupings=1,type=sitemap,quick_cache=1}
+	{$BLOCK,block=menu,param=\,use_page_groupings=1,type=sitemap,quick_cache=1}
 
-{+START,IF,{$ADDON_INSTALLED,search}}
-	<h2>{!SEARCH}</h2>
+	{+START,IF,{$ADDON_INSTALLED,search}}
+		<h2>{!SEARCH}</h2>
 
-	<div class="constrain_search_block">
-		{$BLOCK,block=main_search,failsafe=1}
-	</div>
+		<div class="constrain_search_block">
+			{$BLOCK,block=main_search,failsafe=1}
+		</div>
+	{+END}
 {+END}

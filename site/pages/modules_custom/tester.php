@@ -106,7 +106,7 @@ class Module_tester
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -129,7 +129,7 @@ class Module_tester
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -208,7 +208,7 @@ class Module_tester
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -259,7 +259,7 @@ class Module_tester
     /**
      * Show statistics on test progress.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function stats()
     {
@@ -308,7 +308,7 @@ class Module_tester
     /**
      * Run through tests.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function go()
     {
@@ -400,7 +400,7 @@ class Module_tester
     /**
      * A bug report for a test.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function report()
     {
@@ -423,7 +423,7 @@ class Module_tester
     /**
      * Save test run through results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _go()
     {
@@ -446,7 +446,7 @@ class Module_tester
      *
      * @param  ?AUTO_LINK $it The section to select by default (null: no specific default)
      * @param  boolean $unassigned Whether to only select inheritable sections
-     * @return tempcode The list
+     * @return Tempcode The list
      */
     public function get_section_list($it = null, $unassigned = false)
     {
@@ -479,7 +479,7 @@ class Module_tester
      * Get a list to choose a tester.
      *
      * @param  ?MEMBER $it The member to select by default (null: Select N/A)
-     * @return tempcode The list
+     * @return Tempcode The list
      */
     public function get_tester_list($it)
     {
@@ -501,14 +501,14 @@ class Module_tester
     }
 
     /**
-     * Get tempcode for a test adding/editing form.
+     * Get Tempcode for a test adding/editing form.
      *
      * @param  string $stub A short stub to prefix the field name
      * @param  SHORT_TEXT $test The text of the test
      * @param  ?MEMBER $assigned_to The member the test is assigned to (null: test section member)
      * @param  BINARY $enabled Whether the test is enabled
      * @param  string $inherit_from The section this test inherits from (blank: none)
-     * @return tempcode The tempcode for the visible fields
+     * @return Tempcode The Tempcode for the visible fields
      */
     public function get_test_form_fields($stub, $test = '', $assigned_to = null, $enabled = 1, $inherit_from = '')
     {
@@ -527,13 +527,13 @@ class Module_tester
     }
 
     /**
-     * Get tempcode for a test section adding/editing form.
+     * Get Tempcode for a test section adding/editing form.
      *
      * @param  SHORT_TEXT $section The name of the section
      * @param  LONG_TEXT $notes Notes for the section
      * @param  ?MEMBER $assigned_to The member the tests are assigned to (null: not a normal section, one that gets inherited into tests)
      * @param  BINARY $inheritable Whether this test section is intended to be inherited, not used by itself
-     * @return tempcode The tempcode for the visible fields
+     * @return Tempcode The Tempcode for the visible fields
      */
     public function get_test_section_form_fields($section = '', $notes = '', $assigned_to = null, $inheritable = 0)
     {
@@ -553,7 +553,7 @@ class Module_tester
     /**
      * Interface to add a test.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function add_test()
     {
@@ -576,7 +576,7 @@ class Module_tester
     /**
      * Actualiser to add a test.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _add_test()
     {
@@ -596,7 +596,7 @@ class Module_tester
     /**
      * Inteface to add a test section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function add()
     {
@@ -655,7 +655,7 @@ class Module_tester
     /**
      * Actualiser to add a test section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _add()
     {
@@ -683,7 +683,7 @@ class Module_tester
     /**
      * Choose a test section to edit.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function edit()
     {
@@ -709,7 +709,7 @@ class Module_tester
     /**
      * Interface to edit a test section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _edit()
     {
@@ -768,7 +768,7 @@ class Module_tester
     /**
      * Actualiser to edit a test section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function __edit()
     {

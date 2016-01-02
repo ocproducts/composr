@@ -176,7 +176,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/maximum_username_length.php',
             'sources/hooks/systems/config/minimum_password_length.php',
             'sources/hooks/systems/config/minimum_username_length.php',
-            'sources/hooks/systems/config/no_dob_ask.php',
+            'sources/hooks/systems/config/dobs.php',
             'sources/hooks/systems/config/one_per_email_address.php',
             'sources/hooks/systems/config/privacy_fax.php',
             'sources/hooks/systems/config/privacy_postal_address.php',
@@ -206,7 +206,9 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/disposable_values/cns_newest_member_id.php',
             'sources/hooks/systems/disposable_values/cns_newest_member_username.php',
             'sources/hooks/modules/members/.htaccess',
+            'sources_custom/hooks/modules/members/.htaccess',
             'sources/hooks/modules/members/index.html',
+            'sources_custom/hooks/modules/members/index.html',
             'sources/hooks/modules/search/cns_members.php',
             'sources/hooks/systems/addon_registry/core_cns.php',
             'sources/hooks/blocks/main_staff_checklist/usergroup_membership.php',
@@ -228,12 +230,13 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_MEMBER_PROFILE_ABOUT.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_EDIT.tpl',
             'themes/default/javascript/profile.js',
+            'themes/default/templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl',
             'themes/default/templates/CNS_USER_MEMBER.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_SCREEN.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER_PROSPECTIVE.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER_SECONDARY.tpl',
-            'approve_ip.php',
+            'data/approve_ip.php',
             'themes/default/images/cns_emoticons/birthday.png',
             'themes/default/images/cns_emoticons/angry.png',
             'themes/default/images/cns_emoticons/blink.gif',
@@ -292,6 +295,7 @@ class Hook_addon_registry_core_cns
             'themes/default/images/cns_emoticons/fishing.png',
             'themes/default/images/cns_emoticons/reallybadday.gif',
             'lang/EN/cns.ini',
+            'lang/EN/cns_special_cpf.ini',
             'lang/EN/cns_components.ini',
             'lang/EN/cns_config.ini',
             'sources/forum/cns.php',
@@ -301,7 +305,9 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/cleanup/cns_members.php',
             'sources/hooks/modules/admin_unvalidated/cns_members.php',
             'sources/hooks/systems/cns_cpf_filter/.htaccess',
+            'sources_custom/hooks/systems/cns_cpf_filter/.htaccess',
             'sources/hooks/systems/cns_cpf_filter/index.html',
+            'sources_custom/hooks/systems/cns_cpf_filter/index.html',
             'sources/hooks/systems/rss/cns_birthdays.php',
             'sources/hooks/systems/rss/cns_members.php',
             'sources/cns_forums.php',
@@ -339,7 +345,9 @@ class Hook_addon_registry_core_cns
             'site/pages/modules/members.php',
             'site/pages/modules/users_online.php',
             'sources/hooks/systems/profiles_tabs/.htaccess',
+            'sources_custom/hooks/systems/profiles_tabs/.htaccess',
             'sources/hooks/systems/profiles_tabs_edit/.htaccess',
+            'sources_custom/hooks/systems/profiles_tabs_edit/.htaccess',
             'sources/hooks/systems/commandr_fs/members.php',
             'sources/hooks/modules/admin_stats/cns_demographics.php',
             'pages/modules/join.php',
@@ -350,14 +358,20 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_JOIN_STEP2_SCREEN.tpl',
             'lang/EN/cns_lurkers.ini',
             'sources/cns_profiles.php',
+            'sources/cns_lost_password.php',
             'sources/hooks/systems/profiles_tabs/index.html',
+            'sources_custom/hooks/systems/profiles_tabs/index.html',
             'sources/hooks/systems/profiles_tabs/about.php',
             'sources/hooks/systems/profiles_tabs/edit.php',
             'sources/hooks/systems/profiles_tabs_edit/index.html',
+            'sources_custom/hooks/systems/profiles_tabs_edit/index.html',
             'sources/hooks/systems/profiles_tabs_edit/profile.php',
             'sources/hooks/systems/profiles_tabs_edit/settings.php',
             'sources/hooks/systems/profiles_tabs_edit/delete.php',
             'sources/cns_popups.php',
+            'sources/hooks/systems/commandr_fs/emoticons.php',
+            'sources/hooks/systems/resource_meta_aware/emoticon.php',
+            'sources/hooks/systems/commandr_fs_extended_member/known_login_ips.php',
             'sources/hooks/systems/preview/cns_emoticon.php',
             'sources/hooks/systems/cron/cns_confirm_reminder.php',
             'themes/default/templates/CNS_TOPIC_POST_AVATAR.tpl',
@@ -372,6 +386,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/cns_auth/smf.php',
             'sources/hooks/systems/cns_auth/vb3.php',
             'sources/hooks/systems/cns_auth/index.html',
+            'sources_custom/hooks/systems/cns_auth/index.html',
             'themes/default/templates/POSTING_FIELD.tpl',
             'themes/default/templates/CNS_MEMBER_BOX.tpl',
             'themes/default/templates/CNS_RANK_IMAGE.tpl',
@@ -415,6 +430,16 @@ class Hook_addon_registry_core_cns
             'themes/default/css/cns_admin.css',
             'themes/default/css/cns_header.css',
             'themes/default/css/cns_footer.css',
+
+            // Files for post map functionality
+            'themes/default/templates/CNS_POST_MAP.tpl',
+            'themes/default/templates/CNS_POST_MAP_ITEM.tpl',
+            'themes/default/images/cns_post_map/index.html',
+            'themes/default/images/cns_post_map/last_mesg_level.png',
+            'themes/default/images/cns_post_map/mesg_level.png',
+            'themes/default/images/cns_post_map/middle_mesg_level.png',
+            'sources/hooks/systems/config/is_on_post_map.php',
+            'sources/hooks/systems/config/is_on_automatic_mark_topic_read.php',
         );
     }
 
@@ -449,6 +474,8 @@ class Hook_addon_registry_core_cns
             'templates/BLOCK_MAIN_MEMBERS.tpl' => 'block_main_members',
             'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl' => 'cns_member_directory_screen_filter',
             'templates/CNS_MEMBER_DIRECTORY_USERNAME.tpl' => 'cns_member_directory_username',
+            'templates/CNS_POST_MAP.tpl' => 'cns_post_map',
+            'templates/CNS_POST_MAP_ITEM.tpl' => 'cns_post_map',
         );
     }
 
@@ -520,7 +547,7 @@ class Hook_addon_registry_core_cns
         require_lang('dates');
         $fields = new Tempcode();
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_LINE', array(
             'MAXLENGTH' => '3',
             'TABINDEX' => placeholder_number(),
@@ -539,7 +566,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_PASSWORD', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -557,7 +584,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_PASSWORD', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -575,7 +602,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_EMAIL', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -598,7 +625,7 @@ class Hook_addon_registry_core_cns
             'THEME_ALSO_INCLUDE_PAGES' => false,
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $timezone_list = new Tempcode();
         foreach (placeholder_array() as $key => $value) {
             $timezone_list->attach(do_lorem_template('CNS_AUTO_TIME_ZONE_ENTRY', array(
@@ -813,7 +840,7 @@ class Hook_addon_registry_core_cns
             'POINTS' => placeholder_number(),
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'MEMBER_ID' => placeholder_id(),
-            'JOIN_DATE' => placeholder_time(),
+            'JOIN_DATE' => placeholder_date(),
             'PRIMARY_GROUP_NAME' => lorem_phrase(),
             'CUSTOM_FIELDS' => lorem_phrase(),
             'CUSTOM_FIELDS_FULL' => lorem_phrase(),
@@ -911,10 +938,10 @@ class Hook_addon_registry_core_cns
             'AVATAR_WIDTH' => placeholder_id(),
             'PHOTO_WIDTH' => placeholder_id(),
             'MOST_ACTIVE_FORUM' => lorem_phrase(),
-            'TIME_FOR_THEM' => placeholder_time(),
+            'TIME_FOR_THEM' => placeholder_date(),
             'TIME_FOR_THEM_RAW' => placeholder_date_raw(),
             'SUBMIT_DAYS_AGO' => lorem_phrase(),
-            'SUBMIT_TIME_RAW' => placeholder_time(),
+            'SUBMIT_TIME_RAW' => placeholder_date(),
             'LAST_VISIT_TIME_RAW' => placeholder_date_raw(),
             'ONLINE_NOW' => lorem_phrase(),
             '_ONLINE_NOW' => false,
@@ -932,7 +959,7 @@ class Hook_addon_registry_core_cns
             'EMAIL_ADDRESS' => lorem_word(),
             'AVATAR_URL' => placeholder_avatar(),
             'SIGNATURE' => lorem_phrase(),
-            'JOIN_DATE' => placeholder_time(),
+            'JOIN_DATE' => placeholder_date(),
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'CUSTOM_FIELDS' => array(
                 array(
@@ -955,6 +982,10 @@ class Hook_addon_registry_core_cns
             'CLUBS' => lorem_phrase(),
             'VIEWS' => placeholder_number(),
             'TOTAL_SESSIONS' => placeholder_number(),
+            'EXTRA_INFO_DETAILS' => array(),
+            'EXTRA_TRACKING_DETAILS' => array(),
+            'USERS_TIMEZONE' => lorem_word(),
+            'USERS_TIMEZONE_RAW' => lorem_word(),
         ));
         $tabs[] = array(
             'TAB_CODE' => placeholder_id() . '0',
@@ -996,7 +1027,6 @@ class Hook_addon_registry_core_cns
             'URL' => placeholder_url(),
             'SUBMIT_ICON' => 'buttons__edit',
             'SUBMIT_NAME' => lorem_phrase(),
-            'AUTOCOMPLETE' => false,
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $tabs2,
             'HIDDEN' => '',
@@ -1035,7 +1065,7 @@ class Hook_addon_registry_core_cns
                 'AT_URL' => placeholder_url(),
                 'LOCATION' => lorem_word(),
                 'MEMBER' => placeholder_link(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
             )));
         }
 
@@ -1107,7 +1137,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $primary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $primary_members,
             'MESSAGE' => '',
@@ -1139,7 +1169,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $secondary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $_secondary_members,
             'MESSAGE' => '',
@@ -1171,7 +1201,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $prospective_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $_prospective_members,
             'MESSAGE' => '',
@@ -1196,6 +1226,64 @@ class Hook_addon_registry_core_cns
                 'PRIMARY_MEMBERS' => $primary_members,
                 'SECONDARY_MEMBERS' => $secondary_members,
                 'PROSPECTIVE_MEMBERS' => $prospective_members,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_post_map()
+    {
+        $items = new Tempcode();
+
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
+            'POST_LEVEL' => '0',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => true,
+        )));
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
+            'POST_LEVEL' => '0',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => false,
+        )));
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(false, true),
+            'POST_LEVEL' => '1',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => false,
+        )));
+
+        return array(
+            lorem_globalise(do_lorem_template('CNS_POST_MAP', array(
+                'ITEMS' => $items,
             )), null, '', true)
         );
     }

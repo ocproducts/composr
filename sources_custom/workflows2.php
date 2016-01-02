@@ -28,13 +28,13 @@
  *
  * @param  array $bits Language string bits
  * @param  AUTO_LINK $workflow_id The ID of the workflow to add this approval point to
- * @param  ?integer $position The position in the workflow that this approval point will have. NULL adds it to the end (null: default)
+ * @param  ?integer $position The position in the workflow that this approval point will have. null adds it to the end (null: default)
  * @return AUTO_LINK Requirement ID
  */
 function add_approval_point_to_workflow($bits, $workflow_id, $position = null)
 {
     // Now see what position we're adding to. We either need to determine
-    // the next position (if we've been given NULL), or else just dump
+    // the next position (if we've been given null), or else just dump
     // the position in the record (we don't assume that positions are
     // unique in any case, points with the same position will appear
     // together but their specific order is undefined)
@@ -94,7 +94,7 @@ function delete_workflow($id)
 /**
  * Deleting an approval point will remove it from any workflow it is a
  * part of. Any content which has been approved for this approval point
- * will be unaffected, whilst those not-yet-approved will first be
+ * will be unaffected, while those not-yet-approved will first be
  * approved, then have the approval point removed. This is to prevent any
  * content asking to be approved on a point which doesn't exist.
  *

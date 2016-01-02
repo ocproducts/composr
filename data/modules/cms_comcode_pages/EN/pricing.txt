@@ -1,4 +1,4 @@
-[title="1"]Pricing[/title]
+[title]Pricing[/title]
 
 [surround="light_table"]
 {| wide

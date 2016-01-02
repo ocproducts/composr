@@ -6,6 +6,8 @@ We will not guarantee the accuracy, validity, integrity or security status of an
 
 User posted content is out of our control unless we have known about the presence of it for at least one full week.
 
+Trademarks remain the property of their respective owners.
+
 [title="2"]Accounts and your behaviour[/title]
 
 Do not join this website more than once (hence creating multiple accounts). If you cannot remember your password, use the 'lost password' feature, which is available on the login page. If problems persist, contact the staff.
@@ -38,13 +40,13 @@ Do not spam this website:
  - you must be moderately confident that anything posted will interest at least a minority of the members.
  - you must not post material more than once unless there is good reason, from the point of view of other members.
 
-Do not intentionally disrupt the enjoyment of this website by other users. 'Enjoyment' has a general meaning for the purposes of this rule - for example, robust argument in a debate forum would be considered 'enjoyable', as debaters would wish for it.
+Do not intentionally disrupt the enjoyment of this website by other users. 'Enjoyment' has a general meaning for the purposes of this rule -- for example, robust argument in a debate forum would be considered 'enjoyable', as debaters would wish for it.
 
-This website is private properly and hence any form of censorship is allowed at the discretion of the staff - you agree not to consider this website a forum for free speech if the staff consider it breaks the rules.
+This website is private properly and hence any form of censorship is allowed at the discretion of the staff -- you agree not to consider this website a forum for free speech if the staff consider it breaks the rules.
 
 [title="2"]Forum and Chat[/title]
 
-Be respectful of the opinions of other members, and do not discriminate it based on nationality, sexuality, gender, religion or race. Do not flame or degrade other members. If you have a problem with another members actions, contact a member of staff.
+Be respectful of the opinions of other members, and do not discriminate it based on nationality, sexuality, gender, religion or race. Do not flame or degrade other members. If you have a problem with another member's actions, contact a member of staff.
 
 [title="2"]Forum[/title]
 
@@ -57,7 +59,7 @@ Do not complain in-topic about the subject being too far off-topic or otherwise 
 
 [title="2"]Chat[/title]
 
-In no circumstances may you use the chat rooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
+In no circumstances may you use the chatrooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
 
 [title="2"]Signatures[/title]
 
@@ -67,12 +69,12 @@ Remember that a big signature is not always a good signature. Keep it nice and s
 
 [title="2"]Avatars[/title]
 
-For your own sake, avoid trying to use .bmp files as avatars - the system will not let you, because you should compress them to a more appropriate format, such as the .png format.
+For your own sake, avoid trying to use [tt].bmp[/tt] files as avatars -- the system will not let you, because you should compress them to a more appropriate format, such as the [tt].png[/tt] format.
 Avatars size is restricted by the system according to your usergroup.
 
 [title="2"]Points[/title]
 
-Do not abuse the point system - every gift point transaction must be justifiable to the staff, in both quantity and purpose.
+Do not abuse the point system -- every gift point transaction must be justifiable to the staff, in both quantity and purpose.
 
 [title="2"]Hacking[/title]
 

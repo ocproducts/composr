@@ -30,7 +30,7 @@ class Hook_preview_comments
      */
     public function applies()
     {
-        $applies = ((addon_installed('cns_forum')) && (get_param_string('page') != 'topicview') && (post_param_integer('_comment_form_post', 0) == 1) && (is_null(post_param_string('hidFileID_file0', null))) && (is_null(post_param_string('file0', null))));
+        $applies = ((addon_installed('cns_forum')) && (get_page_name() != 'topicview') && (post_param_integer('_comment_form_post', 0) == 1) && (is_null(post_param_string('hidFileID_file0', null))) && (is_null(post_param_string('file0', null))));
         return array($applies, null, false);
     }
 

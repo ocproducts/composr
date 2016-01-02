@@ -42,11 +42,11 @@ class Block_main_quotes
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'title\',$map)?$map[\'title\']:\'-\',array_key_exists(\'param\',$map)?$map[\'param\']:\'quotes\')';
@@ -59,7 +59,7 @@ class Block_main_quotes
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -74,7 +74,7 @@ class Block_main_quotes
 
         $place = _find_text_file_path($file, '');
         if ($place == '') {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file), escape_html(do_lang('FILE'))));
         }
 
         if (!file_exists($place)) {

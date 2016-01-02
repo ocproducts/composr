@@ -32,7 +32,7 @@ class Hook_content_meta_aware_poll
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'polls:POLL',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_poll
             'title_field_dereference' => true,
             'description_field' => null,
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:polls:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_polls:_edit:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_poll
             'support_url_monikers' => true,
 
             'views_field' => 'poll_views',
+            'order_field' => null,
             'submitter_field' => 'submitter',
+            'author_field' => null,
             'add_time_field' => 'add_time',
             'edit_time_field' => 'edit_date',
             'date_field' => 'add_time',
@@ -75,9 +78,14 @@ class Hook_content_meta_aware_poll
 
             'feedback_type_code' => 'polls',
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'polls',
+            'rss_hook' => 'polls',
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => 'poll_chosen',
+            'sitemap_hook' => 'poll',
 
             'addon_name' => 'polls',
 
@@ -87,7 +95,11 @@ class Hook_content_meta_aware_poll
             'commandr_filesystem_hook' => 'polls',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'polls',
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_POLL',
         );
@@ -103,7 +115,7 @@ class Hook_content_meta_aware_poll
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

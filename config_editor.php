@@ -148,9 +148,9 @@ function do_access($given_password)
         'admin_username' => 'The username used for the administrator when Composr is installed to not use a forum. On the vast majority of sites this setting does nothing.',
         'master_password' => 'If you wish the password to be changed, enter a new password here. Otherwise leave blank.',
 
-        'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). If the URL changes, the base URL must be changed to reflect it. If you change this option you will need to empty your template and image caches (in the Cleanup Tools or Upgrader), else you may get strange error messages, broken images, and a Composr warning about an inconsistency.',
+        'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). You can blank this out for auto-detection, but only do this during development -- if you do it live and somehow multiple domains can get to your site, random errors will occur due to caching problems.',
         'domain' => 'The domain that e-mail addresses are registered on. This applies only to the Point Store and may be ignored by most.',
-        'default_lang' => 'The default language used on the site (language code form, of subdirectory under lang/).',
+        'default_lang' => 'The default language used on the site (language codename form, of subdirectory under lang/).',
         'block_mod_rewrite' => 'Whether to block the short-URL (mod_rewrite) option. Set this to 1 if you turned on short-URLs and find your site no longer works.',
         'on_msn' => 'Whether this is a site on an Conversr multi-site-network (enable for to trigger URLs to avatars and photos to be absolute).',
 
@@ -178,10 +178,12 @@ function do_access($given_password)
         'cookie_path' => '<em>Cookies:</em> The URL path the cookeis are tied to. Only URLs branching from this may access the cookies. Either set it to the path portion of the base-URL, or a shortened path if cookies need to work with something elsewhere on the domain, or leave blank for auto-detection. <strong>It\'s best not to change this setting once your community is active, as it can cause logging-out problems.</strong>',
         'cookie_days' => '<em>Cookies:</em> The number of days to store login cookies for.',
 
-        'use_persistent_cache' => '<em>Performance:</em> Whether persistent memory cacheing is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available).',
-        'fast_spider_cache' => '<em>Performance:</em> The number of hours that the spider/bot cache lasts for (this sets both HTTP cacheing, and server retention of cached screens).',
+        'use_persistent_cache' => '<em>Performance:</em> Whether persistent memory caching is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available).',
+        'fast_spider_cache' => '<em>Performance:</em> The number of hours that the spider/bot cache lasts for (this sets both HTTP caching, and server retention of cached screens).',
         'any_guest_cached_too' => '<em>Performance:</em> Whether Guests are cached with the spider cache time too.',
         'self_learning_cache' => '<em>Performance:</em> Whether to allow pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront. Stores copies of some resources within the self-learning cache itself. If you disable this you should also disable the Composr "Output streaming" config option.',
+
+        'max_execution_time' => '<em>Performance:</em> The time in seconds to use for PHP\'s maximum execution time option. Composr defaults to 60 and raises it in known situations that require more time.',
 
         'disable_smart_decaching' => '<em>Tuning/Disk performance:</em> Don\'t check file times to check caches aren\'t stale.',
         'no_disk_sanity_checks' => '<em>Tuning/Disk performance:</em> Assume that there are no missing language directories, or other configured directories; things may crash horribly if they are missing and this is enabled.',
@@ -208,7 +210,20 @@ function do_access($given_password)
         'no_email_output' => '<em>Development:</em> Whether emails should never be sent.',
         'email_to' => '<em>Development:</em> If you have set up a customised critical error screen, and a background e-mailing process, this defines where error e-mails will be sent.',
 
-        'failover_mode' => 'The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
+        'failover_mode' => '<em>Failover:</em> The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
+        'failover_apache_rewritemap_file' => '<em>Failover:</em> Set to \'1\' to maintain an Apache RewriteMap file that maps disk cache files to URLs directly. This is a very advanced option and needs server-level Apache configuration by a programmer. You can also set to \'-\' which is like \'1\' except mobile hits are not differentiated from desktop hits.',
+        'failover_cache_miss_message' => '<em>Failover:</em> Error message shown if failover mode misses a cache hit (i.e. cannot display a page from the cache).',
+        'failover_check_urls' => '<em>Failover:</em> Relative URL(s) separated by \';\' that failover mode should check when deciding to activate/deactivate.',
+        'failover_email_contact' => '<em>Failover:</em> E-mail address separated by \';\' that failover mode notifications are sent to.',
+        'failover_loadaverage_threshold' => '<em>Failover:</em> Minimum load average before failover mode activates.',
+        'failover_loadtime_threshold' => '<em>Failover:</em> Minimum page load time in seconds before failover mode activates.',
+        'failover_message' => '<em>Failover:</em> Message shown at top of the screen when failover mode is activated.',
+        'failover_message_place_after' => '<em>Failover:</em> failover_message will be placed after this HTML marker.',
+        'failover_message_place_before' => '<em>Failover:</em> failover_message will be placed before this HTML marker. May be specified in addition to failover_message_place_after, so that two messages show.',
+
+        'rate_limiting' => '<em>Rate limiting:</em> Whether to enable rate limiting for IPs. Set to \'1\' to enable it. It is not enabled by default. The data_custom/rate_limiter.php file must exist and be writeable (on a suExec-style server the file will auto-create). IP addresses passed to PHP must be accurate.',
+        'rate_limit_time_window' => '<em>Rate limiting:</em> The number of seconds hits are counted across. Defaults to \'10\'.',
+        'rate_limit_hits_per_window' => '<em>Rate limiting:</em> The number of hits per IP going back as far as the time window. Defaults to \'5\'.',
 
         'gae_application' => '<em>Google App Engine:</em> Application name',
         'gae_bucket_name' => '<em>Google App Engine:</em> Cloud Storage bucket name',
@@ -223,6 +238,10 @@ function do_access($given_password)
     // Display UI to set all settings
     foreach ($settings as $key => $notes) {
         $val = array_key_exists($key, $SITE_INFO) ? $SITE_INFO[$key] : '';
+
+        if (($key == 'master_password') || ($key == 'confirm_master_password')) {
+            $val = '';
+        }
 
         if (is_array($val)) {
             foreach ($val as $val2) {
@@ -311,7 +330,7 @@ function do_set()
                     $val = $given_password;
                 }
                 if (function_exists('password_hash')) { // PHP5.5+
-                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
                 } else {
                     $val = '!' . md5($val . 'cms');
                 }
@@ -479,6 +498,11 @@ function co_check_master_password($password_given)
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
         $salt = 'cms';
+
+        // LEGACY
+        if ($actual_password_hashed != md5($password_given . $salt)) {
+            $salt = 'ocp';
+        }
     }
     return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
 }

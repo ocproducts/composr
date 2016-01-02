@@ -52,7 +52,7 @@ function enter_chat_lobby()
  * @param  ?MEMBER $member_id The member ID (null: current user).
  * @param  boolean $simpler Whether to show a simpler, more compact, UI.
  * @param  ?integer $max Maximum to show (null: default).
- * @return tempcode The contact UI.
+ * @return Tempcode The contact UI.
  */
 function show_im_contacts($member_id = null, $simpler = false, $max = null)
 {
@@ -90,8 +90,8 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
             $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true, true);
 
             $friend = array(
-                /*'DATE_AND_TIME_RAW'=>strval($friend['date_and_time']),
-                'DATE_AND_TIME'=>get_timezoned_date($friend['date_and_time'],false),*/
+                /*'DATE_AND_TIME_RAW' => strval($friend['date_and_time']),
+                'DATE_AND_TIME' => get_timezoned_date($friend['date_and_time'], false),*/
                 'MEMBER_PROFILE_URL' => $member_profile_url,
                 'MEMBER_ID' => strval($friend['member_liked']),
                 'USERNAME' => $username,

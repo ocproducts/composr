@@ -57,6 +57,9 @@ class Module_quiz
         delete_privilege('bypass_quiz_repeat_time_restriction');
         delete_privilege('bypass_quiz_timer');
         delete_privilege('view_others_quiz_results');
+
+        delete_privilege('autocomplete_keyword_quiz');
+        delete_privilege('autocomplete_title_quiz');
     }
 
     /**
@@ -121,7 +124,7 @@ class Module_quiz
                 'q_open_time' => 'TIME',
                 'q_close_time' => '?TIME',
                 'q_num_winners' => 'INTEGER',
-                'q_redo_time' => '?INTEGER', // Number of hours between attempts. NULL implies it may never be re-attempted
+                'q_redo_time' => '?INTEGER', // Number of hours between attempts. null implies it may never be re-attempted
                 'q_type' => 'ID_TEXT', // COMPETITION, TEST, SURVEY
                 'q_add_date' => 'TIME',
                 'q_validated' => 'BINARY',
@@ -196,7 +199,7 @@ class Module_quiz
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -216,7 +219,7 @@ class Module_quiz
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -240,7 +243,7 @@ class Module_quiz
 
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
             if (!array_key_exists(0, $quizzes)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
             }
             $quiz = $quizzes[0];
 
@@ -306,7 +309,7 @@ class Module_quiz
 
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
             if (!array_key_exists(0, $quizzes)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
             }
             $quiz = $quizzes[0];
             $this->enforcement_checks($quiz);
@@ -326,7 +329,7 @@ class Module_quiz
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -348,7 +351,7 @@ class Module_quiz
     /**
      * The UI to browse quizzes/surveys/tests.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function archive()
     {
@@ -436,7 +439,7 @@ class Module_quiz
     /**
      * The UI for doing a quiz.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function do_quiz()
     {
@@ -502,7 +505,10 @@ class Module_quiz
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'fc690dedf8601cc456e011931dfec595', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'fc690dedf8601cc456e011931dfec595',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'quiz'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -533,7 +539,7 @@ class Module_quiz
     /**
      * Actualiser: process quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _do_quiz()
     {
@@ -658,7 +664,7 @@ class Module_quiz
                 }
 
                 // Send notification about the result to the staff: include result and corrections, and unknowns
-                $mail = do_template('QUIZ_TEST_ANSWERS_MAIL', array(
+                $mail = do_notification_template('QUIZ_TEST_ANSWERS_MAIL', array(
                     '_GUID' => 'a0f8f47cdc1ef83b59c93135ebb5c114',
                     'ENTRY_ID' => strval($entry_id),
                     'QUIZ_NAME' => $quiz_name,
@@ -689,7 +695,7 @@ class Module_quiz
             case 'SURVEY':
                 $result_to_member = do_lang_tempcode('SURVEY_THANKYOU');
 
-                $given_answers_to_staff = do_template('QUIZ_SURVEY_ANSWERS_MAIL', array(
+                $given_answers_to_staff = do_notification_template('QUIZ_SURVEY_ANSWERS_MAIL', array(
                     '_GUID' => '381f392c8e491b6e078bcae34adc45e8',
                     'ENTRY_ID' => strval($entry_id),
                     'QUIZ_NAME' => $quiz_name,

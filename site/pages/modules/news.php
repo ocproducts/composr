@@ -57,6 +57,9 @@ class Module_news
         $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'news'));
 
         delete_attachments('news');
+
+        delete_privilege('autocomplete_keyword_news');
+        delete_privilege('autocomplete_title_news');
     }
 
     /**
@@ -158,7 +161,7 @@ class Module_news
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -192,13 +195,14 @@ class Module_news
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
         $type = get_param_string('type', 'browse');
 
         require_lang('news');
+        require_code('news');
 
         inform_non_canonical_parameter('select');
         inform_non_canonical_parameter('select_and');
@@ -270,7 +274,7 @@ class Module_news
             // Load from database
             $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE', 'news'));
             }
             $myrow = $rows[0];
 
@@ -322,14 +326,14 @@ class Module_news
             // Category membership
             $news_cats = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NULL OR id=' . strval($myrow['news_category']));
             $news_cats = list_to_map('id', $news_cats);
-            $img = ($news_cats[$myrow['news_category']]['nc_img'] == '') ? '' : find_theme_image($news_cats[$myrow['news_category']]['nc_img']);
+            $img = get_news_category_image_url($news_cats[$myrow['news_category']]['nc_img']);
             if (is_null($img)) {
                 $img = '';
             }
             if ($myrow['news_image'] != '') {
                 $img = $myrow['news_image'];
                 if ((url_is_local($img)) && ($img != '')) {
-                    $img = get_base_url() . '/' . $img;
+                    $img = get_custom_base_url() . '/' . $img;
                 }
             }
             $category = get_translated_text($news_cats[$myrow['news_category']]['nc_title']);
@@ -381,12 +385,11 @@ class Module_news
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
         require_code('feedback');
-        require_code('news');
         require_css('news');
 
         $type = get_param_string('type', 'browse');
@@ -414,7 +417,7 @@ class Module_news
      * The UI to select a news category to view news within.
      *
      * @param  ?integer $blogs What to show (null: news and blogs, 0: news, 1: blogs)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function news_cat_select($blogs)
     {
@@ -431,7 +434,7 @@ class Module_news
             $max_rows = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', $map);
         } elseif ($blogs == 1) {
             $categories = $GLOBALS['SITE_DB']->query('SELECT c.* FROM ' . get_table_prefix() . 'news_categories c WHERE nc_owner IS NOT NULL ORDER BY nc_owner DESC,' . $GLOBALS['SITE_DB']->translate_field_ref('nc_title'), $max, $start, false, false, array('nc_title' => 'SHORT_TRANS')); // Ordered to show newest blogs first
-            $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NOT NULL', null, null, false, false, array('nc_title' => 'SHORT_TRANS'));
+            $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NOT NULL', false, false, array('nc_title' => 'SHORT_TRANS'));
         } else {
             $map = array('nc_owner' => null);
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), $map, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('nc_title'), $max, $start); // Ordered by title (can do efficiently as limited numbers of non-blogs)
@@ -487,7 +490,7 @@ class Module_news
     /**
      * The UI to view the news archive.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function news_archive()
     {
@@ -534,7 +537,7 @@ class Module_news
     /**
      * The UI to view a news entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_news()
     {
@@ -586,7 +589,10 @@ class Module_news
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '5fd82328dc2ac9695dc25646237065b0', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '5fd82328dc2ac9695dc25646237065b0',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'news'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

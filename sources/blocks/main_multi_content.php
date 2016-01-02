@@ -65,17 +65,17 @@ class Block_main_multi_content
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '
             (preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)
             ?
-            NULL
+            null
             :
             array(
                 array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,
@@ -86,13 +86,13 @@ class Block_main_multi_content
                 get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),
                 get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),
                 ((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),
-                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',NULL),
+                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',null),
                 (array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',
                 (array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',
                 array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',
                 array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,
-                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):NULL,
-                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):NULL,
+                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):null,
+                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):null,
                 ((array_key_exists(\'pinned\',$map)) && ($map[\'pinned\']!=\'\'))?explode(\',\',$map[\'pinned\']):array(),
                 array_key_exists(\'title\',$map)?$map[\'title\']:\'\',
                 array_key_exists(\'param\',$map)?$map[\'param\']:\'download\',
@@ -138,7 +138,7 @@ class Block_main_multi_content
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -199,6 +199,8 @@ class Block_main_multi_content
         if (!has_actual_page_access(null, $info['cms_page'], null, null)) {
             $submit_url = '';
         }
+
+        $first_id_field = is_array($info['id_field']) ? $info['id_field'][0] : $info['id_field'];
 
         // Get entries
 
@@ -281,7 +283,7 @@ class Block_main_multi_content
             $x1 = $this->build_select($select, $info, $category_field_select);
             $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
             if (($parent_spec__table_name !== null) && ($parent_spec__table_name != $info['table'])) {
-                $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $info['id_field'];
+                $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $first_id_field;
             }
         }
         if (($select_b != '') && ($category_field_access !== null)) {
@@ -360,8 +362,6 @@ class Block_main_multi_content
             $lang_fields['r.' . $lang_field] = $lang_field_type;
         }
 
-        $first_id_field = is_array($info['id_field']) ? $info['id_field'][0] : $info['id_field'];
-
         // Find what kind of query to run and run it
         if ($select != '-1') {
             if (substr($query, -strlen(' WHERE 1=1 AND (0=1)')) == ' WHERE 1=1 AND (0=1)') {
@@ -386,7 +386,7 @@ class Block_main_multi_content
                         foreach (array_keys($hooks) as $hook) {
                             $other_ob = get_content_object($hook);
                             $other_info = $other_ob->info();
-                            if (($hook != $content_type) && (isset($other_info['parent_category_meta_aware_type'])) && ($other_info['parent_category_meta_aware_type'] == $content_type) && (is_string($other_info['parent_category_field'])) && (isset($other_info['add_time_field']))) {
+                            if (($hook != $content_type) && (!is_null($other_info['parent_category_meta_aware_type'])) && ($other_info['parent_category_meta_aware_type'] == $content_type) && (is_string($other_info['parent_category_field'])) && (!is_null($other_info['add_time_field']))) {
                                 $sort_combos[] = array($other_info['table'], $other_info['add_time_field'], $other_info['parent_category_field']);
                             }
                         }
@@ -402,7 +402,7 @@ class Block_main_multi_content
                                 } else {
                                     $order_by .= 'IFNULL((SELECT MIN(';
                                 }
-                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $info['id_field'] . '=x.' . $other_category_field;
+                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
                                 $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
                             }
                             $order_by .= ')';
@@ -455,19 +455,31 @@ class Block_main_multi_content
                             break;
                         }
                         $sort = $first_id_field;
-                    default: // Some manual order
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
-                        break;
                     case 'title':
+                    case 'title ASC':
+                    case 'title DESC':
+                        if ($sort == 'title') {
+                            $sort .= ' DESC';
+                        }
+                        $sort_order = preg_replace('#^.* #', '', $sort);
+
+                        $sql = 'SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ';
+                        if (isset($info['order_field'])) {
+                            $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
+                        }
                         if ((array_key_exists('title_field', $info)) && (strpos($info['title_field'], ':') === false)) {
                             if ($info['title_field_dereference']) {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ASC', $max, $start, false, true, $lang_fields);
+                                $sql .= $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order;
                             } else {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['title_field'] . ' ASC', $max, $start, false, true, $lang_fields);
+                                $sql .= 'r.' . $info['title_field'] . ' ' . $sort_order;
                             }
                         } else {
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $first_id_field . ' ASC', $max, $start, false, true, $lang_fields);
+                            $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
                         }
+                        $rows = $info['connection']->query($sql, $max, $start, false, true, $lang_fields);
+                        break;
+                    default: // Some manual order
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                         break;
                 }
             }
@@ -696,7 +708,7 @@ class Block_main_multi_content
     public function build_select($select, $info, $category_field_select)
     {
         $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
-        $parent_field_name = $category_field_select;//array_key_exists('parent_field_name',$info)?$info['parent_field_name']:NULL;
+        $parent_field_name = $info['is_category'] ? $info['id_field'] : $category_field_select;
         if ($parent_field_name === null) {
             $parent_spec__table_name = null;
         }
@@ -704,7 +716,9 @@ class Block_main_multi_content
         $parent_spec__field_name = array_key_exists('parent_spec__field_name', $info) ? $info['parent_spec__field_name'] : null;
         $id_field_numeric = ((!array_key_exists('id_field_numeric', $info)) || ($info['id_field_numeric']));
         $category_is_string = ((array_key_exists('category_is_string', $info)) && (is_array($info['category_is_string']) ? $info['category_is_string'][1] : $info['category_is_string']));
+
         require_code('selectcode');
+
         $sql = selectcode_to_sqlfragment($select, 'r.' . $info['id_field'], $parent_spec__table_name, $parent_spec__parent_name, 'r.' . $parent_field_name, $parent_spec__field_name, $id_field_numeric, !$category_is_string);
         return $sql;
     }

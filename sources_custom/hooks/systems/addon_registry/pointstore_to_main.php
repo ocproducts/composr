@@ -85,7 +85,7 @@ class Hook_addon_registry_pointstore_to_main
      */
     public function get_description()
     {
-        return 'Allows point-store custom products to be bought inside the main eCommerce store (i.e. for real money). This is one way to allow people to sell downloads through Composr.';
+        return 'Allows Point Store custom products to be bought inside the main eCommerce store (i.e. for real money). This is one way to allow people to sell downloads through Composr.';
     }
 
     /**

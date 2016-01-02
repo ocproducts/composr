@@ -1,0 +1,42 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Creating a Hidden Members Zone in Composr[/title]
+
+[media width="150" description="Setting permissions" float="right"]data_custom/images/docs/sup_creating_a_hidden_members_zone_in_composr/34192953fcca3188147739c0cd7c800d.jpg[/media]
+It's quite common for community sites to have a hidden member's area of the site where you can post private updates or information relating to things you don't want guests to see. 
+
+There are effectively 3 tasks you need to have completed to achieve this. There will be an extra task if you have set up Short URLs. These tasks are:
+ - Creating a usergroup which you can add members to who will then be able to see the new zone.
+ - Create the new zone taking care to make sure the permissions are set correctly.
+ - Add the zone to the menu with the setting correct so only those who can visit the zone will see the link.
+
+[title="2"]Adding the Usergroup[/title]
+
+The first part of the process is making sure you have created your new usergroup. For the purpose of this I will refer to it as Members usergroup and Members zone. You might have already created the Members group but if not there is a tutorial [page="_SEARCH:sup_setup_a_new_usergroup_in_composr"]here[/page] which will guide you through the process: [page="_SEARCH:sup_setup_a_new_usergroup_in_composr"]Setting up a new Usergroup[/page]
+
+Once you have created the usergroup you will need to create a new zone.
+
+[title="2"]Adding the new members zone[/title]
+
+Now you have your usergroup set up you will need to create the new members zone. Setting up the zone follows exactly the same process of [page="_SEARCH:sup_add_a_new_zone_in_composr"]setting up any other zone[/page] until you come to the permissions for the zone.
+
+You will need to set the zone permissions so only the Members usergroup can see the zone and be able to access it. You must set the other usergroups so they can't view the zone. Administrators by default will have full access to the zone.
+
+[b][i]Note:[/i][/b] If you have set up the "Use .htm to identify CMS pages" URL scheme for your Composr site you must make sure you follow the process detailed in the short URLs tutorial or your new zone will not work. You can read the [page="_SEARCH:sup_set_up_short_urls_in_composr"]Setting up short URLs in Composr tutorial[/page] here before going any further with this process.
+
+[title="2"]Adding a link to the hidden zone for your members[/title]
+
+[media width="150" description="Making the menu respect permissions" float="right"]data_custom/images/docs/sup_creating_a_hidden_members_zone_in_composr/582992345a4a97857cc26a3793c9583a.jpg[/media]
+You will need a link on the Main menu to your zone.
+
+If you are using the default Sitemap-based menus, this will automatically.
+
+If you are doing it manually...
+
+Navigate to the menu in the menu management section of the Admin Zone (located on the Structure section).
+
+Choose the menu you want to add the link to and add the link as normal.
+
+You'll also want to make sure it's not visible to guests or other usergroups. Therefore select the "Only display if has permission" option. I tend to always select this so if I later make an existing zone members only or change the permissions I won't have to edit the menu. If a user can access the zone they will see the relevant link.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Security,Members,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,It's quite common for community sites to have a hidden member's area of the site where you can post private updates or information relating to things you don't want guests to see.}[block]main_tutorial_rating[/block]

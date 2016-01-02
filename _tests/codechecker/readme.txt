@@ -39,7 +39,7 @@ Error sensitivity
 
 The checker is not a be-all-and-end-all tool for conformance. Rather, it is designed to find a high number of errors, so that problems won't be missed. It is designed to increase the efficiency and quality of the IT professionals workflow.
 
-In situations where additional code would remove ambiguity with-respect-to what may and may not be an error, the checkers enforce that the extra code to be written. For instance, the PHP checker enforces strict-typing (even though PHP itself does not), so that typing-errors may be found -- typing errors are infact, often the cause of major security problems, as well as general bugs.
+In situations where additional code would remove ambiguity with-respect-to what may and may not be an error, the checkers enforce that the extra code to be written. For instance, the PHP checker enforces strict-typing (even though PHP itself does not), so that typing-errors may be found -- typing errors are in fact, often the cause of major security problems, as well as general bugs.
 
 The checkers favour practical quality rather than strict standard compliance. For example, many CSS errors are generated purely to avoid problems with Internet Explorer's lack of standards support.
 
@@ -50,7 +50,7 @@ Some tips:
  - Layout tables are allowed, but to specify them you must place an empty table summary.
  - If you need a form field label but can't place it in your design, make it invisible.
  - If you need something to space links, make an invisible comma.
- - IE's conditional-comments feature is a useful way to workaround IE's poor Object Tag implementation. Don't use 'embed'.
+ - Internet Explorer's conditional-comments feature is a useful way to workaround IE's poor Object Tag implementation. Don't use 'embed'.
 
 If you want to check an HTML email (which requires additional rules), name the file '_mail.html' or '_mail.htm' and load in the files like any other file.
 
@@ -72,6 +72,13 @@ WCAG cannot be met by scanning alone. In particular, some manual checks are requ
  - Mark up lists and list items properly.
  - Ensure that all information conveyed with color is also available without color, for example from context or markup.
  - <blockquote> not used for non-quoting
+
+CSS
+---
+
+Useful checks we don't do that other tools may do:
+ - Warning if 'display' and 'float' used together ('display' would be ignored in most contexts) (REASON: it might be used to undo something like display:none inherited from somewhere else)
+This is a useful tool that does more checks: http://www.dirtymarkup.com/
 
 Spellcheck
 ----------
@@ -106,7 +113,7 @@ The code quality checker has been an essential and very successful part of our p
  - identifying areas that need special manual checking for security
  - [i]dozens of other things[/i]
 
-The downside to the checker is that it will not let you use weak-typing, and it will force all PHP functions you use to be explicitly laid out according to their typing properties. This is because if weak-type checking is allowed in PHP, it is literally impossible to properly check the code for a whole range of problems - for example, it is impossible to check if function parameters are passed in an incorrect order (which is extremely useful for the case of a function having it's arguments changed, and somewhere a call to it accidentally not updated).
+The downside to the checker is that it will not let you use weak-typing, and it will force all PHP functions you use to be explicitly laid out according to their typing properties. This is because if weak-type checking is allowed in PHP, it is literally impossible to properly check the code for a whole range of problems - for example, it is impossible to check if function parameters are passed in an incorrect order (which is extremely useful for the case of a function having its arguments changed, and somewhere a call to it accidentally not updated).
 Zend (the makers of PHP) also have a code checker in their Zend Studio package, but it does not do the type checking that ours does, and is closed-source and hence we could not tailor it to Composr).
 
 Certain aspects of the PHP language have been left out of the subset supported by the checker. This is because either:
@@ -123,7 +130,7 @@ The skipped aspects are:
  - clone (REASON: PHP5+)
  - try catch throw (REASON: PHP5+)
  - if..endif (etc) style (REASON: bad style)
- - non functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
+ - non-functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
  - certain duplicated cast identifiers (REASON: bad style)
  - written AND or OR or XOR (REASON: bad style)
  - unused variable check imperfect for loops (REASON: can't check)
@@ -137,7 +144,7 @@ The PHP checker is very much set up to enforce compatibility across different PH
  - gd2
  - ftp
  - gzip
- - xml (this is no longer an extension in-fact)
+ - xml (this is no longer an extension in fact)
 For all of these, you should use function_exists at some point before using these function sets.
 For other functions you can use function_exists too. The checker is smart about function_exists, but not very smart. You can do:
 function_exists('foo')?foo():bar()
@@ -173,7 +180,9 @@ Relationship with Composr
 
 Some files, such as phpstub.php, and webstandards_js_lint.php, come from Composr. Composr contains the latest versions of these files, the CQC is updated separately as required.
 
-PHP- handling of return values
+Update: As of the time of writing we have decided just to fully integrate the CQC as a component of Composr, as we want to streamline development and do more-opinionated checks. Quality standards chosen and enforced are very Composr-centric now.
+
+PHP: handling of return values
 ------------------------------
 
 PHP gives errors via one of a few methods:
@@ -182,7 +191,7 @@ PHP gives errors via one of a few methods:
  - Return values (usually in concert with outputted errors or error returning functions)
  - Error throwing (since PHP5)
 
-Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors progmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to read $php_errormsg (the track_errors option must be on).
+Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors programmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to read $php_errormsg (the track_errors option must be on).
 
 If the PHP checker is asked to do 'checks' then it will check against a number of functions that should either be "@'d" or wrapped with a custom error handler. In the cases when there is no @ing, a warning will be shown stating that the wrapping should happen.
 

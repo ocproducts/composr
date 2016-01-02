@@ -50,14 +50,8 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    static $mue = null;
-    if ($mue === null) {
-        $mue = function_exists('memory_get_usage');
-    }
-    if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-        if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-            $before = memory_get_usage();
-        }
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+        $before = memory_get_usage();
     }
 
     $worked = false;
@@ -162,7 +156,7 @@ function require_code($codename, $light_exit = false)
                         include($path_orig);
                     }
                 } else {
-                    //static $log_file=NULL;if ($log_file===NULL) $log_file=fopen(get_file_base().'/log.'.strval(time()).'.txt','wb');fwrite($log_file,$path_orig."\n");      Good for debugging errors in eval'd code
+                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); fwrite($log_file, $path_orig . "\n");      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
 
                 }
@@ -225,11 +219,9 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-            if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                flush();
-            }
+        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+            print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+            flush();
         }
 
         if (!$done_init) {
@@ -268,11 +260,9 @@ function require_code($codename, $light_exit = false)
         }
 
         if ($worked) {
-            if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                    flush();
-                }
+            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+                flush();
             }
 
             $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
@@ -345,7 +335,7 @@ function tacit_https()
  * Make an object of the given class
  *
  * @param  string $class The class name
- * @param  boolean $failure_ok Whether to return NULL if there is no such class
+ * @param  boolean $failure_ok Whether to return null if there is no such class
  * @return ?object The object (null: no such class)
  */
 function object_factory($class, $failure_ok = false)
@@ -367,6 +357,11 @@ function object_factory($class, $failure_ok = false)
  */
 function php_function_allowed($function)
 {
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            return false;
+        }
+    }
     return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
 }
 
@@ -375,7 +370,7 @@ function php_function_allowed($function)
  *
  * @param  string $var Config option.
  * @param  string $value New value of option.
- * @return ~string                      Old value of option (false: error).
+ * @return ~string Old value of option (false: error).
  */
 function safe_ini_set($var, $value)
 {
@@ -459,7 +454,7 @@ function filter_naughty_harsh($in, $preg = false)
         return $in;
     }
     if (preg_match('#^[\w\-]*/#', $in) != 0) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath an SEO URL, should not really happen
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath a URL Scheme short URL, should not really happen
     }
 
     if ($preg) {
@@ -473,24 +468,30 @@ function filter_naughty_harsh($in, $preg = false)
  * Include some PHP code, compiling to HHVM's hack, for type strictness (uses Composr phpdoc comments).
  *
  * @param  PATH $path Include path
- * @return ?mixed Code return code (null: actual NULL)
+ * @return ?mixed Code return code (null: actual null)
  */
 function hhvm_include($path)
 {
     return include($path); // Disable this line to enable the fancy Hack support. We don't maintain this 100%, but it is a great performance option.
 
-    /*//if (!is_file($path.'.hh'))  // Leave this commented when debugging
+    /*//if (!is_file($path . '.hh'))  // Leave this commented when debugging
     {
-        if ($path==get_file_base().'/sources/php.php') return include($path);
-        if ($path==get_file_base().'/sources/type_sanitisation.php') return include($path);
-        if (strpos($path,'_custom')!==false) return include($path);
+        if ($path == get_file_base() . '/sources/php.php') {
+            return include($path);
+        }
+        if ($path == get_file_base() . '/sources/type_sanitisation.php') {
+            return include($path);
+        }
+        if (strpos($path, '_custom') !== false) {
+            return include($path);
+        }
 
         require_code('php');
-        $path=substr($path,strlen(get_file_base())+1);
-        $new_code=convert_from_php_to_hhvm_hack($path);
-        file_put_contents($path.'.hh',$new_code);
+        $path = substr($path, strlen(get_file_base()) + 1);
+        $new_code = convert_from_php_to_hhvm_hack($path);
+        file_put_contents($path . '.hh', $new_code);
     }
-    return include($path.'.hh');*/
+    return include($path . '.hh');*/
 }
 
 // Useful for basic profiling
@@ -519,6 +520,9 @@ safe_ini_set('track_errors', '1'); // so $php_errormsg is available
 if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
+}
+if (!defined('E_DEPRECATED')) { // LEGACY
+    define('E_DEPRECATED', 0);
 }
 safe_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available
@@ -577,10 +581,84 @@ global $SITE_INFO;
 $SITE_INFO = array();
 @include($FILE_BASE . '/_config.php');
 if (count($SITE_INFO) == 0) {
+    // LEGACY
+    if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
+        @rename($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
+        @include($FILE_BASE . '/_config.php');
+    }
+}
+if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
         critical_error('INFO.PHP');
     }
     critical_error('INFO.PHP_CORRUPTED');
+}
+
+// Rate limiter, to stop aggressive bots
+global $SITE_INFO;
+$rate_limiting = empty($SITE_INFO['rate_limiting']) ? false : ($SITE_INFO['rate_limiting'] == '1');
+if ($rate_limiting) {
+    if ((!empty($_SERVER['REMOTE_ADDR'])) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
+        // Basic context
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $time = time();
+
+        if (!(((!empty($_SERVER['SERVER_ADDR'])) && ($ip == $_SERVER['SERVER_ADDR'])) || ((!empty($_SERVER['LOCAL_ADDR'])) && ($ip == $_SERVER['LOCAL_ADDR'])))) {
+            // Read in state
+            $rate_limiter_path = dirname(dirname(__FILE__)) . '/data_custom/rate_limiter.php';
+            if (is_file($rate_limiter_path)) {
+                global $RATE_LIMITING_DATA;
+                $RATE_LIMITING_DATA = array();
+
+                $fp = fopen($rate_limiter_path, 'r');
+                flock($fp, LOCK_SH);
+                include($rate_limiter_path);
+                fclose($fp);
+            }
+
+            // Filter to just times within our window
+            $pertinent = array();
+            $rate_limit_time_window = empty($SITE_INFO['rate_limit_time_window']) ? 10 : intval($SITE_INFO['rate_limit_time_window']);
+            if (isset($RATE_LIMITING_DATA[$ip])) {
+                foreach ($RATE_LIMITING_DATA[$ip] as $i => $old_time) {
+                    if ($old_time >= $time - $rate_limit_time_window) {
+                        $pertinent[] = $old_time;
+                    }
+                }
+            }
+
+            // Do we have to block?
+            $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
+            if (count($pertinent) >= $rate_limit_hits_per_window) {
+                header('HTTP/1.0 429 Too Many Requests');
+                header('Content-Type: text/plain');
+                exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
+            }
+
+            // Remove any old hits from other IPs
+            foreach ($RATE_LIMITING_DATA as $_ip => $times) {
+                if ($_ip != $ip) {
+                    foreach ($times as $i => $old_time) {
+                        if ($old_time < $time - $rate_limit_time_window) {
+                            unset($RATE_LIMITING_DATA[$_ip][$i]);
+                        }
+                    }
+                    if (count($RATE_LIMITING_DATA[$_ip]) == 0) {
+                        unset($RATE_LIMITING_DATA[$_ip]);
+                    }
+                }
+            }
+
+            // Write out new state
+            $RATE_LIMITING_DATA[$ip] = $pertinent;
+            $RATE_LIMITING_DATA[$ip][] = $time;
+            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
+            //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
+
+            // Save some memory
+            unset($RATE_LIMITING_DATA);
+        }
+    }
 }
 
 get_custom_file_base(); // Make sure $CURRENT_SHARE_USER is set if it is a shared site, so we can use CURRENT_SHARE_USER as an indicator of it being one.

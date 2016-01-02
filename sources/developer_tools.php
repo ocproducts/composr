@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: (var_export)|(debug_print_backtrace)|(memory_get_usage)*/
+/*EXTRA FUNCTIONS: var_export|debug_print_backtrace|memory_get_usage|get_php_file_api|test_fail_php_type_check*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -20,8 +20,19 @@
  * @package    core
  */
 
+/*
+Some basic developer tools for ocPortal PHP development.
+
+Also see:
+ firephp
+ profiler
+ php
+*/
+
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__developer_tools()
 {
@@ -47,7 +58,7 @@ function semi_dev_mode_startup()
 
         if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (is_null(get_param_string('keep_devtest', null)))) {
             $_GET['keep_devtest'] = '1';
-            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). Whilst not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
+            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
         } else {
             $_GET['keep_devtest'] = '1';
         }
@@ -56,7 +67,7 @@ function semi_dev_mode_startup()
     global $_CREATED_FILES;
     if (isset($_CREATED_FILES)) { // Comes from ocProducts custom PHP version
         /**
-         * Run after-tests for debug mode, to make sure coding standards are met.
+         * Run after-tests for dev mode, to make sure coding standards are met.
          */
         function dev_mode_aftertests()
         {
@@ -64,12 +75,12 @@ function semi_dev_mode_startup()
 
             // Use the info from ocProduct's custom PHP version to make sure that all files that were created/modified got synched as they should have been.
             foreach ($_CREATED_FILES as $file) {
-                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (substr($file, -4) != '.tmp') && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (substr($file, -4) != '.tmp') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not permission-synched: ' . $file));
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (basename($file) != 'rate_limiter.php') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not change-synched: ' . $file));
                 }
             }
@@ -107,15 +118,15 @@ function destrictify($change_content_type = true, $mysql_too = false)
     }
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
-    error_reporting(E_ALL ^ E_NOTICE);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(200);
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(200);
     }
     if ((get_forum_type() == 'cns') && ($mysql_too)) {
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
     }
     global $PREVIOUS_XSS_STATE;
-    array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
+    @array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
     safe_ini_set('ocproducts.xss_detect', '0');
     $include_path = ini_get('include_path');
     $include_path .= PATH_SEPARATOR . './';
@@ -140,7 +151,7 @@ function destrictify($change_content_type = true, $mysql_too = false)
  */
 function restrictify()
 {
-    global $_CREATED_FILES, $_MODIFIED_FILES;
+    global $_CREATED_FILES, $_MODIFIED_FILES, $SITE_INFO;
 
     // Reset functions
     if (isset($_CREATED_FILES)) {
@@ -152,8 +163,8 @@ function restrictify()
 
     // Put back strictness
     error_reporting(E_ALL);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(25);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);
@@ -162,7 +173,7 @@ function restrictify()
         safe_ini_set('ocproducts.type_strictness', '1');
 
         global $PREVIOUS_XSS_STATE;
-        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        @safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');
@@ -198,6 +209,8 @@ function inspect_plain()
  *
  * @param  array $args Arguments to output
  * @param  boolean $force_plain Whether to force text output
+ *
+ * @ignore
  */
 function _inspect($args, $force_plain = false)
 {
@@ -292,9 +305,9 @@ function show_memory_points()
  * @param  ?string $death_message The message to exit with (null: return, do not exit)
  * @return boolean Whether we are
  */
-/*function debug_running_underneath($function, $death_message=NULL)
+/*function debug_running_underneath($function, $death_message = null)
 {
-    $stack=debug_backtrace();
+    $stack = debug_backtrace();
     foreach ($stack as $level) {
         if (in_array($function, $level)) {
             if (!is_null($death_message)) {
@@ -305,3 +318,51 @@ function show_memory_points()
     }
     return false;
 }*/
+
+/**
+ * Verify the parameters passed into the *calling* function match the phpdoc specification for that function.
+ * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
+ * For example, when web APIs are plumbed into ocPortal APIs and you need to ensure the types are coming in correctly.
+ *
+ * @param  boolean $dev_only Whether to only run the checks in dev-mode
+ */
+function cms_verify_parameters_phpdoc($dev_only = false)
+{
+    if ($dev_only) {
+        if (!$GLOBALS['DEV_MODE']) {
+            return;
+        }
+    }
+
+    if (!addon_installed('testing_platform')) {
+        return;
+    }
+
+    $trace = debug_backtrace();
+
+    $filename = $trace[1]['file'];
+    if (substr($filename, 0, strlen(get_file_base() . '/')) == get_file_base() . '/') {
+        $filename = substr($filename, strlen(get_file_base() . '/'));
+    }
+    $class = isset($trace[1]['class']) ? $trace[1]['class'] : '__global';
+    $function = $trace[1]['function'];
+
+    static $api = array();
+    if (!isset($api[$filename])) {
+        require_code('php');
+        $api[$filename] = get_php_file_api($filename, false);
+    }
+
+    if (isset($api[$filename][$class]['functions'][$function]['parameters'])) {
+        foreach ($api[$filename][$class]['functions'][$function]['parameters'] as $i => $param) {
+            $name = $param['name'];
+            $type_expected = $param['type'];
+
+            if (isset($trace[1]['args'][$i])) {
+                $value = $trace[1]['args'][$i];
+
+                test_fail_php_type_check($type_expected, (isset($trace[1]['class']) ? ($class . '::') : '') . $function, $name, $value);
+            }
+        }
+    }
+}

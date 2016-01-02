@@ -44,7 +44,7 @@ class Hook_task_send_newsletter
         require_code('newsletter');
         require_code('mail');
 
-        //mail_wrap($subject,$message,$addresses,$usernames,$from_email,$from_name,3,null,true,null,true,$html_only==1);  Not so easy any more as message needs tailoring per subscriber
+        //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
 
         $last_cron = get_value('last_cron');
 
@@ -97,18 +97,21 @@ class Hook_task_send_newsletter
                 }
 
                 if (!is_null($last_cron)) {
-                    $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', array(
-                        'd_inject_time' => time(),
-                        'd_subject' => $subject,
-                        'd_message' => $newsletter_message_substituted,
-                        'd_html_only' => $html_only,
-                        'd_to_email' => $email_address,
-                        'd_to_name' => $usernames[$i],
-                        'd_from_email' => $from_email,
-                        'd_from_name' => $from_name,
-                        'd_priority' => $priority,
-                        'd_template' => $mail_template,
-                    ));
+                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
+                    if (is_null($test)) {
+                        $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', array(
+                            'd_inject_time' => time(),
+                            'd_subject' => $subject,
+                            'd_message' => $newsletter_message_substituted,
+                            'd_html_only' => $html_only,
+                            'd_to_email' => $email_address,
+                            'd_to_name' => $usernames[$i],
+                            'd_from_email' => $from_email,
+                            'd_from_name' => $from_name,
+                            'd_priority' => $priority,
+                            'd_template' => $mail_template,
+                        ));
+                    }
                 } else {
                     mail_wrap($subject, $newsletter_message_substituted, array($email_address), array($usernames[$i]), $from_email, $from_name, $priority, null, true, null, true, $in_html, false, $mail_template);
                 }

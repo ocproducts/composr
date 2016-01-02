@@ -42,11 +42,11 @@ class Block_main_news
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'optimise\',$map)?$map[\'optimise\']:\'0\',preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),array_key_exists(\'title\',$map)?escape_html($map[\'title\']):\'(default title)\',array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'show_in_full\',$map)?$map[\'show_in_full\']:\'0\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',((array_key_exists(\'attach_to_url_filter\',$map)?$map[\'attach_to_url_filter\']:\'0\')==\'1\'),array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'member_based\',$map)?$map[\'member_based\']:\'0\',array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'historic\',$map)?$map[\'historic\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):14,array_key_exists(\'multiplier\',$map)?floatval($map[\'multiplier\']):0.5,array_key_exists(\'fallback_full\',$map)?intval($map[\'fallback_full\']):3,array_key_exists(\'fallback_archive\',$map)?intval($map[\'fallback_archive\']):6,array_key_exists(\'select\',$map)?$map[\'select\']:get_param_string(\'news_select\',\'\'),array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
@@ -62,13 +62,15 @@ class Block_main_news
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
-        require_lang('news');
         require_lang('cns');
+        require_lang('news');
         require_css('news');
+        require_code('news');
+        require_code('images');
 
         // Read in parameters
         $days = isset($map['param']) ? intval($map['param']) : 14;
@@ -137,7 +139,7 @@ class Block_main_news
 
         // Filtercode
         if ($filter != '') {
-            require_code('filter');
+            require_code('filtercode');
             $content_type = 'news';
             list($filter_extra_select, $filter_extra_join, $filter_extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), $content_type, '');
             $extra_select_sql = implode('', $filter_extra_select);
@@ -156,6 +158,11 @@ class Block_main_news
             $q_filter .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $q_filter .= sql_region_filter('news', 'r.id');
+        }
+
         // Read in rows
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT r.id) FROM ' . get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON d.news_entry=r.id' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : ''), false, true);
         if ($historic == '') {
@@ -167,12 +174,12 @@ class Block_main_news
                 $rows2 = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . ' AND date_and_time>=' . strval(time() - 60 * 60 * 24 * intval($days_full + $days_outline)) . ' AND date_and_time<' . strval(time() - 60 * 60 * 24 * intval($days_full)) . (can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', max($fallback_full + $fallback_archive, 30)/*reasonable limit*/, null, false, false, array('title' => 'SHORT_TRANS', 'news' => 'LONG_TRANS', 'news_article' => 'LONG_TRANS'));
             }
         } else {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             do {
-                $_rows = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . (can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', 200, $start, null, false, true);
+                $_rows = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . (can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', 200, $start, false, true);
                 $rows = array();
                 $rows2 = array();
                 foreach ($_rows as $row) {
@@ -311,12 +318,9 @@ class Block_main_news
                         $img_raw = $base_url . '/' . $img_raw;
                     }
                     require_code('images');
-                    $img = do_image_thumb($img_raw, $category, false);
+                    $img = $img_raw;
                 } else {
-                    $img_raw = ($news_cat_row['nc_img'] == '') ? '' : find_theme_image($news_cat_row['nc_img']);
-                    if (is_null($img_raw)) {
-                        $img_raw = '';
-                    }
+                    $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
                     $img = $img_raw;
                 }
 

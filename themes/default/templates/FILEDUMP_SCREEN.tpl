@@ -9,7 +9,7 @@
 
 				<p class="left">
 					<label class="accessibility_hidden" for="search_filedump_{$GET*,i}">{!SEARCH}</label>
-					<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" maxlength="255" size="25" type="search" id="search_filedump_{$GET*,i}" name="search" onfocus="placeholder_focus(this,'{!SEARCH;}');" onblur="placeholder_blur(this,'{!SEARCH;}');" class="{$?,{$IS_EMPTY,{SEARCH}},field_input_non_filled,field_input_filled}" value="{$?,{$IS_EMPTY,{SEARCH}},{!SEARCH},{SEARCH}}" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="25" type="search" id="search_filedump_{$GET*,i}" name="search" onfocus="placeholder_focus(this,'{!SEARCH;}');" onblur="placeholder_blur(this,'{!SEARCH;}');" class="{$?,{$IS_EMPTY,{SEARCH}},field_input_non_filled,field_input_filled}" value="{$?,{$IS_EMPTY,{SEARCH}},{!SEARCH},{SEARCH}}" />
 
 					<label for="recurse_{$GET*,i}">{!INCLUDE_SUBFOLDERS}</label>
 					<input{+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_{$GET*,i}" value="1" />
@@ -49,8 +49,8 @@
 						<option{+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
 						<option{+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>
 						<option{+START,IF,{$EQ,{SORT},name DESC}} selected="selected"{+END} value="name DESC">{!FILENAME},{!_DESCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!_FILE_SIZE},{!_ASCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!_FILE_SIZE},{!_DESCENDING}</option>
+						<option{+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!FILE_SIZE},{!_ASCENDING}</option>
+						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
 					</select>
 
 					<input class="buttons__filter button_micro" type="submit" value="{!FILTER}" />
@@ -82,12 +82,6 @@
 
 			<input type="submit" value="{!PROCEED}" class="buttons__proceed button_micro" />
 		</div>
-
-		{+START,INCLUDE,NOTIFICATION_BUTTONS}
-			NOTIFICATIONS_TYPE=filedump
-			NOTIFICATIONS_ID={PLACE}
-			RIGHT=1
-		{+END}
 	</div>
 {+END}
 
@@ -153,6 +147,12 @@
 				{$GET,file_dump_footer,1}
 			</form>
 
+			{+START,INCLUDE,NOTIFICATION_BUTTONS}
+				NOTIFICATIONS_TYPE=filedump
+				NOTIFICATIONS_ID={PLACE}
+				RIGHT=1
+			{+END}
+
 			{+START,IF_NON_EMPTY,{PAGINATION_THUMBNAILS}}
 				<div class="float_surrounder force_margin">
 					{PAGINATION_THUMBNAILS}
@@ -179,6 +179,12 @@
 				{$SET,i,2}
 				{$GET,file_dump_footer,1}
 			</form>
+
+			{+START,INCLUDE,NOTIFICATION_BUTTONS}
+				NOTIFICATIONS_TYPE=filedump
+				NOTIFICATIONS_ID={PLACE}
+				RIGHT=1
+			{+END}
 
 			{+START,IF_NON_EMPTY,{PAGINATION_LISTING}}
 				<div class="float_surrounder force_margin">
@@ -250,7 +256,7 @@
 		1_ICON=menu/pages/help
 
 		{+START,IF,{$IS_ADMIN}}
-			2_URL={$PAGE_LINK,_SELF:_SELF:broken}
+			2_URL={$PAGE_LINK*,_SELF:_SELF:broken}
 			2_TITLE={!FIND_BROKEN_FILEDUMP_LINKS}
 			2_ICON=menu/adminzone/tools/cleanup
 		{+END}

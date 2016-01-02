@@ -67,10 +67,10 @@ function autoprobe_cdns()
         (substr($domain_name, 0, 4) == 'www.') ? preg_replace('#^www\.#', '', $domain_name) : ('www' . '.' . $domain_name),
         'ftp' . '.' . $domain_name,
         'mail' . '.' . $domain_name,
-        /*'smtp'.'.'.$domain_name,  Let's be at least somewhat reasonable ;-)
-        'imap'.'.'.$domain_name,
-        'pop'.'.'.$domain_name,
-        'webmail'.'.'.$domain_name,*/
+        /*'smtp' . '.' . $domain_name,  Let's be at least somewhat reasonable ;-)
+        'imap' . '.' . $domain_name,
+        'pop' . '.' . $domain_name,
+        'webmail' . '.' . $domain_name,*/
     );
 
     $detected_cdns = '';
@@ -442,7 +442,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
-        $_POST[$field_url] = get_magic_quotes_gpc() ? addslashes($url) : $url; // HACKHACK
+        $_POST[$field_url] = get_magic_quotes_gpc() ? addslashes($url) : $url; // FUDGE
         $urls = get_url($field_url, '', $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
         if ($thumb_url !== null) {
             $thumb_url = $urls[1];
@@ -537,6 +537,8 @@ function find_images_do_dir($theme, $subdir, $langs)
  */
 function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = null)
 {
+    global $THEME_IMAGES_CACHE;
+
     if (is_null($db)) {
         $db = $GLOBALS['SITE_DB'];
     }
@@ -557,7 +559,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
 
     $ids = array();
 
-    if ((!$db_only) && (($db->connection_write == $GLOBALS['SITE_DB']->connection_write) || ($dirs_only) || (!is_on_multi_site_network()))) {
+    if ((!$db_only) && ((!is_forum_db($db)) || ($dirs_only) || (!is_on_multi_site_network()))) {
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         if ($theme != 'default') {
@@ -573,7 +575,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     }
 
     if (!$dirs_only) {
-        $query = 'SELECT DISTINCT id,path FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
+        $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
             $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
         }
@@ -594,6 +596,13 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
                 continue;
             }
             if ($row['path'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
+                // Optimisation to avoid having to build the full theme image table for a new theme in one step (huge numbers of queries)
+                if (!multi_lang()) {
+                    if (($theme == $row['theme']) || (($row['theme'] == 'default') && (!isset($THEME_IMAGES_CACHE['site'][$row['id']])))) {
+                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['path'];
+                    }
+                }
+
                 $ids[] = $row['id'];
             } else {
                 $key = array_search($row['id'], $ids);
@@ -617,6 +626,8 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  array $skip The list of files/directories to skip
+ *
+ * @ignore
  */
 function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip)
 {
@@ -657,12 +668,12 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
 }
 
 /**
- * Get tempcode for a radio list to choose an image from the image FILES in the theme.
+ * Get Tempcode for a radio list to choose an image from the image FILES in the theme.
  *
  * @param  string $selected_path The currently selected image path (blank for none)
  * @param  URLPATH $base_url The base-URL to where we are searching for images
  * @param  PATH $base_path The base-path to where we are searching for images
- * @return tempcode The generated tempcode
+ * @return Tempcode The generated Tempcode
  */
 function combo_get_image_paths($selected_path, $base_url, $base_path)
 {
@@ -761,13 +772,13 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
 }
 
 /**
- * Get tempcode for a dropdown to choose a theme from the themes present.
+ * Get Tempcode for a dropdown to choose a theme from the themes present.
  *
  * @param  ?ID_TEXT $it The currently selected image ID (null: none selected)
  * @param  ?string $filter An SQL where clause (including the WHERE), that filters the query somehow (null: none)
  * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than paths
  * @param  boolean $include_all Whether to include images not yet used (i.e not in theme_images map yet)
- * @return tempcode Tempcode for a list selection of theme images
+ * @return Tempcode Tempcode for a list selection of theme images
  * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as paths (blank: no limitation)
  */
 function create_selection_list_theme_images($it = null, $filter = null, $do_id = false, $include_all = false, $under = '')
@@ -809,7 +820,7 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
  * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
  * @param  boolean $show_everything Whether to forget about permissions for this list
  * @param  ID_TEXT $default_message_string The language string to use for the default answer
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_themes($theme = null, $no_rely = false, $show_everything = false, $default_message_string = 'RELY_FORUMS')
 {

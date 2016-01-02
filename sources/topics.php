@@ -55,7 +55,8 @@ class CMS_Topic
     // Will be filled up during processing
     public $all_posts_ordered = null;
     public $is_threaded = null;
-    public $topic_id = null; // May need setting, if posts were loaded in manually rather than letting the class load them; may be left as NULL but functionality degrades somewhat
+    public $topic_id = null; // May need setting, if posts were loaded in manually rather than letting the class load them; may be left as null but functionality degrades somewhat
+    public $topic_last_read = null;
     public $reverse = false;
 
     // Will be filled up like 'return results'
@@ -96,7 +97,7 @@ class CMS_Topic
      * @param  ?MEMBER $highlight_by_member Member to highlight the posts of (null: none)
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  ?integer $num_to_show_limit Maximum to load (null: default)
-     * @return tempcode The tempcode for the comment topic
+     * @return Tempcode The Tempcode for the comment topic
      */
     public function render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum_name, $post_warning, $preloaded_comments, $explicit_allow, $reverse, $highlight_by_member, $allow_reviews, $num_to_show_limit)
     {
@@ -242,7 +243,7 @@ class CMS_Topic
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  array $posts List of post IDs to load
      * @param  AUTO_LINK $parent_id Parent node being loaded to
-     * @return tempcode The tempcode for the comment topic
+     * @return Tempcode The Tempcode for the comment topic
      */
     public function render_posts_from_topic($topic_id, $num_to_show_limit, $allow_comments, $invisible_if_no_comments, $forum_name, $preloaded_comments, $reverse, $may_reply, $highlight_by_member, $allow_reviews, $posts, $parent_id)
     {
@@ -336,6 +337,7 @@ class CMS_Topic
     public function load_from_topic($topic_id, $num_to_show_limit, $start = 0, $reverse = null, $posts = null, $load_spacer_posts_too = false)
     {
         $this->topic_id = $topic_id;
+        $this->topic_last_read = is_guest() ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $this->topic_id));
         $this->reverse = $reverse;
 
         if (get_param_integer('threaded', null) === 1) {
@@ -360,12 +362,13 @@ class CMS_Topic
             $reverse = true;
         }
 
+        require_code('users');
         $posts = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts(
             $topic_id,
             $this->total_posts,
             $this->is_threaded ? 5000 : $num_to_show_limit,
             $this->is_threaded ? 0 : $start,
-            true,
+            $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1, // $mark_read,
             $reverse,
             true,
             $posts,
@@ -377,6 +380,18 @@ class CMS_Topic
             if ($posts === -2) {
                 $posts = array();
             }
+
+            // Check if threaded mode and post map enabled, orphan any children of the first post if so - because
+            // we don't want any replies to appear before the post map
+            if ($this->is_threaded && (get_option('is_on_post_map') == '1')) {
+                foreach ($posts as &$post) {
+                    if ($post['parent_id'] === $this->first_post_id) {
+                        $post['parent_id'] = null;
+                        $post['p_parent_id'] = null;
+                    }
+                }
+            }
+
             $this->inject_posts_for_scoring_algorithm($posts);
 
             return true;
@@ -457,6 +472,18 @@ class CMS_Topic
             $queue = array();
         } else {
             $posts = $this->_decide_what_to_render($num_to_show_limit, $queue);
+        }
+
+        // Work out sequence numbers
+        $post_numbers = array();
+        foreach ($posts as $i => $post) {
+            $post_numbers[$post['id']] = $i;
+        }
+        ksort($post_numbers);
+        $x = 1;
+        foreach ($post_numbers as $post_id => $i) {
+            $posts[$i]['number'] = $x;
+            $x++;
         }
 
         require_javascript('ajax');
@@ -722,7 +749,7 @@ class CMS_Topic
      * @param  AUTO_LINK $forum_id ID of forum this topic in in
      * @param  ?array $topic_info The topic row (null: not running Conversr).
      * @param  integer $depth The recursion depth
-     * @return tempcode Rendered tree structure
+     * @return Tempcode Rendered tree structure
      */
     protected function _render_post_tree($num_to_show_limit, $tree, $may_reply, $highlight_by_member, $all_individual_review_ratings, $forum_id, $topic_info, $depth = 0)
     {
@@ -816,6 +843,20 @@ class CMS_Topic
                     }
                 }
 
+                // Signature
+                require_code('cns_posts');
+                $sig = new Tempcode();
+                if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option') == '0')) && (!isset($post['skip_sig'])) && ($post['skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+                    global $SIGNATURES_CACHE;
+
+                    if (array_key_exists($post['member'], $SIGNATURES_CACHE)) {
+                        $sig = $SIGNATURES_CACHE[$post['member']];
+                    } else {
+                        $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($post['member']), 'm_signature', $GLOBALS['FORUM_DB']);
+                        $SIGNATURES_CACHE[$post['member']] = $sig;
+                    }
+                }
+
                 // Conversr renderings of poster
                 static $hooks = null;
                 if (is_null($hooks)) {
@@ -834,7 +875,7 @@ class CMS_Topic
                     }
                 }
                 if (!$is_spacer_post) {
-                    if (!is_guest($post['poster'])) {
+                    if (!is_guest($post['member'])) {
                         require_code('cns_members2');
                         $poster_details = render_member_box($post, false, $hooks, $hook_objects, false, null, false);
                     } else {
@@ -849,13 +890,13 @@ class CMS_Topic
                 }
                 if (addon_installed('cns_forum')) {
                     require_code('users2');
-                    if (!is_guest($post['poster'])) {
+                    if (!is_guest($post['member'])) {
                         $poster = do_template('CNS_POSTER_MEMBER', array(
                             '_GUID' => 'da673c38b3cfbe9bf53d4334ca0eacfd',
-                            'ONLINE' => member_is_online($post['poster']),
-                            'ID' => strval($post['poster']),
+                            'ONLINE' => member_is_online($post['member']),
+                            'ID' => strval($post['member']),
                             'POSTER_DETAILS' => $poster_details,
-                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['poster'], false, true),
+                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true),
                             'POSTER_USERNAME' => $post['poster_username'],
                         ));
                     } else {
@@ -873,7 +914,7 @@ class CMS_Topic
             }
 
             // Child posts
-            $children = mixed(); // NULL
+            $children = mixed(); // null
             $other_ids = array();
             if (array_key_exists('children', $post)) {
                 foreach ($post['children'][1] as $u) {
@@ -912,8 +953,11 @@ class CMS_Topic
                 }
             }
 
-            // Render
-            $sequence->attach(do_template('POST', array(
+            $is_unread = is_null($this->topic_last_read) || ($this->topic_last_read <= $post['date']) || ((get_forum_type() == 'cns') && ($this->topic_last_read <= $post['p_last_edit_time']));
+            if ($post['member'] == get_member()) {
+                $is_unread = false;
+            }
+            $post_tempcode = do_template('POST', array(
                 '_GUID' => 'eb7df038959885414e32f58e9f0f9f39',
                 'INDIVIDUAL_REVIEW_RATINGS' => $individual_review_ratings,
                 'HIGHLIGHT' => $highlight,
@@ -928,6 +972,7 @@ class CMS_Topic
                 'ID' => strval($post['id']),
                 'POST' => $post['message'],
                 'POST_COMCODE' => isset($post['message_comcode']) ? $post['message_comcode'] : null,
+                'POST_NUMBER' => strval($post['number']),
                 'CHILDREN' => $children,
                 'OTHER_IDS' => (count($other_ids) == 0) ? null : $other_ids,
                 'RATING' => $rating,
@@ -939,11 +984,93 @@ class CMS_Topic
                 'UNVALIDATED' => $unvalidated,
                 'IS_SPACER_POST' => $is_spacer_post,
                 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit),
+                'SIGNATURE' => $sig->is_empty() ? null : $sig,
+                'IS_UNREAD' => $is_unread,
                 'IS_THREADED' => $this->is_threaded,
-            )));
+            ));
+
+            if ($this->is_threaded && ($this->first_post_id === $post['id']) && (count($rendered) > 1) && (get_forum_type() === 'cns') && (get_option('is_on_post_map') === '1')) { // If threaded mode, first post with replies, forum type is CNS and post map feature is enabled
+                $this->set_level_has_adjacent_sibling($rendered);
+
+                $items = new Tempcode();
+
+                foreach (array_slice($rendered, 1) as $p) { // Slice off first post because we're listing replies
+                    $items->attach($this->render_post_map_item($p));
+                }
+
+                $post_tempcode->attach(do_template('CNS_POST_MAP', array(
+                    '_GUID' => '9fe6a70073284f7d9028c2425948e13a',
+                    'ITEMS' => $items,
+                )));
+            }
+
+            // Render
+            $sequence->attach($post_tempcode);
         }
 
         return $sequence;
+    }
+
+    /**
+     * Sets a level_has_adjacent_sibling property on posts, which is a single-dimensional array
+     * with a boolean value for every parent post and the post itself containing whether it has an adjacent sibling
+     *
+     * @param array $posts An array of posts
+     * @param ?array $level_has_adjacent_sibling For internal use only (null: none)
+     */
+    protected function set_level_has_adjacent_sibling(&$posts, $level_has_adjacent_sibling = null)
+    {
+        if (is_null($level_has_adjacent_sibling)) {
+            $level_has_adjacent_sibling = array();
+        }
+
+        foreach ($posts as $i => &$post) {
+            $post['level_has_adjacent_sibling'] = $level_has_adjacent_sibling;
+            $post['level_has_adjacent_sibling'][] = array_key_exists($i + 1, $posts);
+
+            $this->set_level_has_adjacent_sibling($post['children'][0], $post['level_has_adjacent_sibling']);
+        }
+    }
+
+    /**
+     * Renders the post map items to a tempcode object
+     *
+     * @param array $post A post
+     * @return Tempcode
+     */
+    protected function render_post_map_item($post)
+    {
+        $datetime = get_timezoned_date($post['date']);
+        $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true);
+        $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
+        if (is_null($poster_name)) {
+            $poster_name = do_lang('UNKNOWN');
+        }
+        $is_unread = is_null($this->topic_last_read) || ($this->topic_last_read <= $post['date']) || (get_forum_type() == 'cns') && !is_null($post['p_last_edit_time']) && ($this->topic_last_read <= $post['p_last_edit_time']);
+        if ($post['p_poster'] == get_member()) {
+            $is_unread = false;
+        }
+
+        $tempcode = do_template('CNS_POST_MAP_ITEM', array(
+            '_GUID' => '763f031c2c8d4af986ff38bc51c8f6f4',
+            'TITLE' => $this->topic_title,
+            'URL' => '#post_' . strval($post['id']),
+            'POST_NUMBER' => strval($post['number']),
+            'POSTER_ID' => strval($post['member']),
+            'POSTER_IS_GUEST' => is_guest($post['member']),
+            'POSTER_URL' => $poster_url,
+            'POSTER_NAME' => $poster_name,
+            'LEVEL_HAS_ADJACENT_SIBLING' => $post['level_has_adjacent_sibling'],
+            'POST_LEVEL' => strval(count($post['level_has_adjacent_sibling']) - 1), // Calculate this post's level
+            'TIME' => $datetime,
+            'IS_UNREAD' => $is_unread,
+        ));
+
+        foreach ($post['children'][0] as $child_post) {
+            $tempcode->attach($this->render_post_map_item($child_post));
+        }
+
+        return $tempcode;
     }
 
     /**
@@ -974,9 +1101,9 @@ class CMS_Topic
      * @param  ID_TEXT $type The content type of what this posting will be for
      * @param  ID_TEXT $id The content ID of what this posting will be for
      * @param  boolean $allow_reviews Whether to accept reviews
-     * @param  tempcode $post_url URL where form submit will go
+     * @param  Tempcode $post_url URL where form submit will go
      * @param  ?string $post_warning The default post to use (null: standard courtesy warning)
-     * @return tempcode Posting form
+     * @return Tempcode Posting form
      */
     public function get_posting_form($type, $id, $allow_reviews, $post_url, $post_warning)
     {
@@ -1012,7 +1139,7 @@ class CMS_Topic
             $redirect = get_self_url(true, true);
             $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
             $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
-            $join_bits = do_template('JOIN_OR_LOGIN', array('_GUID' => '2d26dba6fa5e6b665fbbe3f436289f7b', 'LOGIN_URL' => $login_url, 'JOIN_URL' => $join_url));
+            $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
         }
 
         $reviews_rating_criteria = array();

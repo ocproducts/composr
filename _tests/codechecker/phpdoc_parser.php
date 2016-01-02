@@ -54,16 +54,9 @@ ini_set('memory_limit', '-1');
 $classes = array();
 $global = array();
 global $TO_USE;
-//$files=array($COMPOSR_PATH.'/sources/global2.php'); For debugging
+//$files = array($COMPOSR_PATH . '/sources/global2.php'); For debugging
 foreach ($files as $filename) {
     if (strpos($filename, 'sabredav/') !== false || strpos($filename, 'Swift/') !== false || strpos($filename, 'tracker/') !== false) { // Lots of complex code we want to ignore, even if doing custom files
-        continue;
-    }
-
-    if (basename($filename, '.php') == 'tempcode__runtime') {
-        continue;
-    }
-    if (basename($filename, '.php') == 'tempcode_compiler__runtime') {
         continue;
     }
 
@@ -73,14 +66,14 @@ foreach ($files as $filename) {
     if ($_filename == 'sources' . DIRECTORY_SEPARATOR . 'minikernel.php') {
         continue;
     }
-    //echo 'SIGNATURES-DOING '.$_filename.cnl();
+    //echo 'SIGNATURES-DOING ' . $_filename . cnl();
     $result = get_php_file_api($_filename, false);
 
     foreach ($result as $i => $r) {
         if ($r['name'] == '__global') {
-            if (($_filename != 'sources' . DIRECTORY_SEPARATOR . 'global.php') && ($_filename != 'phpstub.php') && ($_filename != 'tempcode_compiler__runtime') && ($_filename != 'tempcode_compiler')) {
+            if (($_filename != 'sources' . DIRECTORY_SEPARATOR . 'global.php') && ($_filename != 'phpstub.php')) {
                 foreach (array_keys($r['functions']) as $f) {
-                    if ((isset($global[$f])) && (!in_array($f, array('file_get_contents', 'ftp_chmod', 'html_entity_decode', 'str_ireplace', 'str_word_count', 'do_lang', 'mixed', 'qualify_url', 'http_download_file', 'get_forum_type', 'cms_srv', 'mailto_obfuscated', 'get_custom_file_base')))) {
+                    if ((isset($global[$f])) && (!in_array($f, array('do_lang', 'mixed', 'qualify_url', 'http_download_file', 'get_forum_type', 'cms_srv', 'mailto_obfuscated', 'get_custom_file_base')))) {
                         echo 'DUPLICATE-FUNCTION ' . $f . ' (in ' . $filename . ')' . cnl();
                     }
                 }
@@ -97,7 +90,7 @@ foreach ($files as $filename) {
             $classes[$class] = $in;
         }
     }
-    //echo 'SIGNATURES-DONE '.$_filename.cnl();
+    //echo 'SIGNATURES-DONE ' . $_filename . cnl();
 }
 
 $classes['__global'] = array('functions' => $global);

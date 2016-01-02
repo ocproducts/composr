@@ -76,6 +76,8 @@ class Hook_sitemap_topic extends Hook_sitemap_content
         }
         list($content_id, $row, $partial_struct) = $_;
 
+        $partial_struct['page_link'] = str_replace(':browse:', ':id=', $partial_struct['page_link']);
+
         $sitemap_refreshfreq = 'yearly';
         if ($row['t_cache_last_time'] > time() - 60 * 60 * 24 * 90) {
             $sitemap_refreshfreq = 'monthly';

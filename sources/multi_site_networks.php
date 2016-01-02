@@ -22,7 +22,7 @@
  * Get a netlink block / direct to a netlink site.
  *
  * @param  URLPATH $redir_url The URL we grab our netlink from. If this is not blank, instead of getting a netlink block, we direct to a netlink site.
- * @return tempcode The netlink block
+ * @return Tempcode The netlink block
  */
 function do_netlink($redir_url = '')
 {

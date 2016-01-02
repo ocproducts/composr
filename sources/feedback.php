@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__feedback()
 {
@@ -225,7 +227,7 @@ function post_comment_script()
 }
 
 /**
- * Get tempcode for doing ratings (sits above get_rating_simple_array)
+ * Get Tempcode for doing ratings (sits above get_rating_simple_array)
  *
  * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
@@ -233,7 +235,7 @@ function post_comment_script()
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  boolean $allow_rating Whether this resource allows rating (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return tempcode Tempcode for complete rating box
+ * @return Tempcode Tempcode for complete rating box
  */
 function get_rating_box($content_url, $content_title, $content_type, $content_id, $allow_rating, $submitter = null)
 {
@@ -253,7 +255,7 @@ function get_rating_box($content_url, $content_title, $content_type, $content_id
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  ID_TEXT $display_tpl The template to use to display the rating box
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return tempcode Tempcode for complete trackback box
+ * @return Tempcode Tempcode for complete trackback box
  */
 function display_rating($content_url, $content_title, $content_type, $content_id, $display_tpl = 'RATING_INLINE_STATIC', $submitter = null)
 {
@@ -275,7 +277,7 @@ function display_rating($content_url, $content_title, $content_type, $content_id
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  ID_TEXT $form_tpl The template to use to display the rating box
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return ?array Current rating information (ready to be passed into a template). RATING is the rating (out of 10), NUM_RATINGS is the number of ratings so far, RATING_FORM is the tempcode of the rating box (null: rating disabled)
+ * @return ?array Current rating information (ready to be passed into a template). RATING is the rating (out of 10), NUM_RATINGS is the number of ratings so far, RATING_FORM is the Tempcode of the rating box (null: rating disabled)
  */
 function get_rating_simple_array($content_url, $content_title, $content_type, $content_id, $form_tpl = 'RATING_FORM', $submitter = null)
 {
@@ -511,8 +513,8 @@ function actualise_give_rating_points()
  * @param  ID_TEXT $content_type The type (download, etc) that this rating is for
  * @param  ID_TEXT $type The second level type (probably blank)
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
- * @param  ?string $content_url The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know)
- * @param  mixed $content_title The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
+ * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
+ * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know)
  */
 function actualise_specific_rating($rating, $page_name, $member_id, $content_type, $type, $content_id, $content_url, $content_title)
 {
@@ -553,7 +555,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 
     // Top rating / liked
     if (($rating === 10) && ($type == '') && ($past_rating !== $rating)) {
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
 
             // Special case. Would prefer not to hard-code, but important for usability
@@ -589,7 +591,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                         $rendered = preg_replace('#keep_devtest=\w*#', 'filtered=1', $rendered);
                     }
                 }
-                $mail = do_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
+                $mail = do_notification_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
                 dispatch_notification('like', null, $subject, $mail, array($submitter));
             }
 
@@ -634,7 +636,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 }
 
 /**
- * Get the tempcode containing all the comments posted, and the comments posting form for the specified resource.
+ * Get the Tempcode containing all the comments posted, and the comments posting form for the specified resource.
  *
  * @param  ID_TEXT $content_type The type (download, etc) that this commenting is for
  * @param  boolean $allow_comments Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
@@ -648,7 +650,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
  * @param  ?MEMBER $highlight_by_user User to highlight the posts of (null: none)
  * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
  * @param  ?integer $num_to_show_limit Maximum to load (null: default)
- * @return tempcode The tempcode for the comment topic
+ * @return Tempcode The Tempcode for the comment topic
  */
 function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null)
 {
@@ -734,6 +736,9 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     if (is_null($post)) {
         $post = post_param_string('post', null);
+        if (($post == do_lang('POST_WARNING')) || ($post == do_lang('THREADED_REPLY_NOTICE', do_lang('POST_WARNING')))) {
+            $post = '';
+        }
     }
     if (!is_null($post_title)) {
         if (($post == '') && ($post_title !== '')) {
@@ -775,7 +780,12 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     list(, $submitter, , $safe_content_url, $cma_info) = get_details_behind_feedback_code($content_type, $content_id);
 
-    $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    if (get_forum_type() == 'cns') {
+        require_code('cns_posts_action2');
+        $poster_name_if_guest = cns_get_safe_specified_poster_name(false);
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    }
     list($topic_id, $is_hidden) = $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
     // Define scope
         $forum,
@@ -851,7 +861,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
         $content_type_title = $content_type;
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
         }
 
@@ -861,7 +871,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $subject = do_lang('NEW_COMMENT_SUBJECT', get_site_name(), ($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title, array($post_title, $displayname, $username), get_site_default_lang());
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $message_raw = do_lang('NEW_COMMENT_BODY', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(($post_title == '') ? do_lang('NO_SUBJECT') : $post_title, post_param_string('post'), comcode_escape($content_url_flat), comcode_escape($displayname), strval(get_member()), comcode_escape($username)), get_site_default_lang());
+        $message_raw = do_notification_lang('NEW_COMMENT_BODY', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(($post_title == '') ? do_lang('NO_SUBJECT') : $post_title, post_param_string('post'), comcode_escape($content_url_flat), comcode_escape($displayname), strval(get_member()), comcode_escape($username)), get_site_default_lang());
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $privacy_limits = privacy_limits_for($content_type, $content_id);
@@ -962,7 +972,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
     $content_title = strip_comcode($content_title);
 
     if (is_null($post_id)) {
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_id, $content_type . '_' . $content_id);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id);
         if (is_null($topic_id)) {
             return;
         }
@@ -986,13 +996,13 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
 }
 
 /**
- * Get the tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.
+ * Get the Tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.
  *
  * @param  ID_TEXT $content_type The type (download, etc) that this trackback is for
  * @param  ID_TEXT $content_id The ID of the type that this trackback is for
  * @param  boolean $allow_trackback Whether this resource allows trackback (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
  * @param  ID_TEXT $type The type of details being fetched (currently: blank or XML)
- * @return tempcode Tempcode for complete trackback box
+ * @return Tempcode Tempcode for complete trackback box
  */
 function get_trackbacks($content_type, $content_id, $allow_trackback, $type = '')
 {

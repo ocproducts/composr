@@ -32,7 +32,7 @@ class Hook_content_meta_aware_calendar_type
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'calendar:EVENT_TYPE',
 
@@ -66,7 +66,9 @@ class Hook_content_meta_aware_calendar_type
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -76,9 +78,14 @@ class Hook_content_meta_aware_calendar_type
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'calendar_type',
 
             'addon_name' => 'calendar',
 
@@ -88,7 +95,11 @@ class Hook_content_meta_aware_calendar_type
             'commandr_filesystem_hook' => 'calendar',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CALENDAR_TYPE',
         );
@@ -104,7 +115,7 @@ class Hook_content_meta_aware_calendar_type
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    facebook
+ * @package    facebook_support
  */
 
 /**
@@ -28,7 +28,7 @@ class Hook_config_facebook_uid
         return array(
             'human_name' => 'FACEBOOK_UID',
             'type' => 'line',
-            'category' => 'USERS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'FACEBOOK_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_facebook_uid',
             'shared_hosting_restricted' => '0',

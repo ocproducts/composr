@@ -88,14 +88,14 @@ class Hook_addon_registry_stealr
         return 'Add some random dynamic chaos to your website and has a number of options you can configure such as who you want points to be automatically stolen from.
 
 There are four options:
- - \"Members that are inactive, but have a lot of points\"
- - \"Members that are rich\"
- - \"Members that are random\" (random member(-s) selection
- - \"Members that are in a certain usergroup\"
+ - "Members that are inactive, but have a lot of points"
+ - "Members that are rich"
+ - "Members that are random" (random member(-s) selection
+ - "Members that are in a certain usergroup"
 
 You can also decide how many users/victims Stealr will steal from and how much to steal.
 
-After stealing the points from the \"unlucky\" members and giving them to \"lucky\" members it creates a Private Topics between them to explain what happened.
+After stealing the points from the "unlucky" members and giving them to "lucky" members it creates a Private Topics between them to explain what happened.
 
 To configure Stealr go to Admin Zone > Setup > Configuration > Point store options, and scroll down to the Stealr options.';
     }
@@ -125,6 +125,16 @@ To configure Stealr go to Admin Zone > Setup > Configuration > Point store optio
             'recommends' => array(),
             'conflicts_with' => array()
         );
+    }
+
+    /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
     }
 
     /**

@@ -30,16 +30,42 @@ class Hook_block_ui_renderers_banners
      * @param  ID_TEXT $parameter The parameter of the block
      * @param  boolean $has_default Whether there is a default value for the field, due to this being an edit
      * @param  string $default Default value for field
-     * @param  tempcode $description Field description
-     * @return ?tempcode Rendered field (null: not handled).
+     * @param  Tempcode $description Field description
+     * @return ?Tempcode Rendered field (null: not handled).
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
-        if (($parameter == 'param') && (in_array($block, array('main_banner_wave', 'main_topsites')))) { // banner type list
+        if (($parameter == 'param') && (in_array($block, array('main_banner_wave', 'main_top_sites')))) { // banner type list
             require_code('banners');
             $list = create_selection_list_banner_types($default);
             return form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false);
         }
+
+        if (($parameter == 'name') && (in_array($block, array('main_banner_wave')))) { // banner list
+            require_code('banners');
+            $list = new Tempcode();
+            $list->attach(form_input_list_entry('', false));
+            $list->attach(create_selection_list_banners($default));
+            return form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false);
+        }
+
+        if (($parameter == 'region') && (in_array($block, array('main_banner_wave')))) { // region list
+            require_code('locations');
+            $continents_and_countries = find_continents_and_countries();
+
+            $list_groups = new Tempcode();
+            $list_groups->attach(form_input_list_entry('', false));
+            foreach ($continents_and_countries as $continent => $countries) {
+                $list = new Tempcode();
+                foreach ($countries as $country_code => $country_name) {
+                    $list->attach(form_input_list_entry($country_code, $country_code == $default, $country_name));
+                }
+                $list_groups->attach(form_input_list_group($continent, $list));
+            }
+
+            return form_input_list(titleify($parameter), escape_html($description), $parameter, $list_groups, null, false, false);
+        }
+
         return null;
     }
 }

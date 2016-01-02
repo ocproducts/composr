@@ -21,7 +21,7 @@ class Acl extends DAV\Property {
     private $privileges;
 
     /**
-     * Whether or not the server base url is required to be prefixed when
+     * Whether or not the server base URL is required to be prefixed when
      * serializing the property.
      *
      * @var boolean
@@ -39,7 +39,7 @@ class Acl extends DAV\Property {
      * well.
      *
      * The prefixBaseUrl should be set to false, if the supplied principal urls
-     * are already full urls. If this is kept to true, the servers base url
+     * are already full urls. If this is kept to true, the servers base URL
      * will automatically be prefixed.
      *
      * @param bool $prefixBaseUrl

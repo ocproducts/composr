@@ -45,8 +45,8 @@ class Hook_fields_list
         $special->attach(form_input_list_entry('', get_param_string('option_' . strval($field['id']), '') == '', '---'));
         $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']); // 'trans_name' may have been set in CPF retrieval API, might not correspond to DB lookup if is an internal field
         $list = $this->get_input_list_map($field, true);
-        foreach ($list as $l) {
-            $special->attach(form_input_list_entry($l, $current != '' && $current === $l));
+        foreach ($list as $l => $written) {
+            $special->attach(form_input_list_entry($l, $current != '' && $current === $l, $written));
         }
         return array('NAME' => strval($field['id']), 'DISPLAY' => $display, 'TYPE' => $type, 'SPECIAL' => $special);
     }
@@ -90,7 +90,7 @@ class Hook_fields_list
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -124,14 +124,28 @@ class Hook_fields_list
             $list = array();
             foreach ($csv_structure['csv_files'][$default]['data'] as $row) {
                 if ($csv_heading == '') {
-                    $list[array_shift($row)] = true;
+                    $l = array_shift($row);
+                    $list[$l] = $l;
                 } else {
-                    $list[$row[$csv_heading]] = true;
+                    $l = $row[$csv_heading];
+                    $list[$l] = $l;
                 }
             }
-            $list = array_keys($list);
         } else {
-            $list = ($default == '') ? array() : explode('|', $default);
+            if ($default == '') {
+                $list = array();
+            } else {
+                if (substr_count($default, '|') + 1 == substr_count($default, '=')) {
+                    foreach (explode('|', $default) as $l) {
+                        list($l, $written) = explode('=', $l);
+                        $list[$l] = $written;
+                    }
+                } else {
+                    foreach (explode('|', $default) as $l) {
+                        $list[$l] = $l;
+                    }
+                }
+            }
         }
 
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
@@ -145,13 +159,12 @@ class Hook_fields_list
             } else {
                 $existing_data = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('DISTINCT field_' . strval($field['id']) . ' AS d'));
             }
-            $_list = array_flip($list); // Much more efficient to do unique value merge using hashes
             foreach ($existing_data as $d) {
                 if ($d['d'] != '') {
-                    $_list += array_flip(explode("\n", $d['d']));
+                    $parts = explode("\n", $d['d']);
+                    $list += array_combine($parts, $parts);
                 }
             }
-            $list = array_keys($_list);
         }
 
         return $list;
@@ -164,7 +177,7 @@ class Hook_fields_list
      * @param  string $_cf_description The field description
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value)
     {
@@ -172,20 +185,17 @@ class Hook_fields_list
 
         $list = $this->get_input_list_map($field);
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
         $selected = ($actual_value !== null && $actual_value !== '' && $actual_value !== $field['cf_default']);
-        $custom_value = ($selected && !in_array($actual_value, $list));
+        $custom_value = ($selected && !array_key_exists($actual_value, $list));
 
         $value_remap = option_value_from_field_array($field, 'value_remap', 'none');
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            natsort($list);
-        }
-
-        $is_locations = (($value_remap == 'country') && (!in_safe_mode()) && (is_file(get_file_base() . '/sources_custom/locations.php')));
-        if ($is_locations) {
-            require_code('locations');
+            asort($list);
         }
 
         $input_size = max(1, intval(option_value_from_field_array($field, 'input_size', '9')));
@@ -195,27 +205,23 @@ class Hook_fields_list
         switch ($widget) {
             case 'radio':
                 $list_tpl = new Tempcode();
-                if (($field['cf_required'] == 0) || (!$selected) && (!in_array('', $list))) {
-                    $list_tpl->attach(form_input_radio_entry('field_' . strval($field['id']), '', !$selected, do_lang_tempcode('NA_EM')));
+                if (($field['cf_required'] == 0) && (!array_key_exists('', $list))) {
+                    $list_tpl->attach(form_input_radio_entry($input_name, '', !$selected, do_lang_tempcode('NA_EM')));
                 }
 
-                foreach ($list as $l) {
-                    $l_nice = $l;
-                    if (($is_locations) && (strlen($l) == 2)) {
-                        $l_nice = find_country_name_from_iso($l);
-                    }
-                    $list_tpl->attach(form_input_radio_entry('field_' . strval($field['id']), $l, $l === $actual_value, escape_html($l_nice)));
+                foreach ($list as $l => $l_nice) {
+                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                 }
 
                 if ($custom_values == 'on') {
                     $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array(
                         'TABINDEX' => strval(get_form_field_tabindex()),
-                        'NAME' => 'field_' . strval($field['id']),
+                        'NAME' => $input_name,
                         'VALUE' => $custom_value ? $actual_value : '',
                     )));
                 }
 
-                return form_input_radio($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, $field['cf_required'] == 1);
+                return form_input_radio($_cf_name, $_cf_description, $input_name, $list_tpl, $field['cf_required'] == 1);
 
             case 'inline':
             case 'dropdown':
@@ -225,49 +231,34 @@ class Hook_fields_list
                 if ($custom_values == 'on') {
                     $list_tpl = new Tempcode();
 
-                    if (($field['cf_required'] == 0) || (!$selected) && (!in_array('', $list))) {
+                    if (($field['cf_required'] == 0) || (!$selected) && (!array_key_exists('', $list))) {
                         $list_tpl->attach(form_input_list_entry('', !$selected, do_lang_tempcode('NA_EM')));
                     }
 
-                    foreach ($list as $l) {
-                        $l_nice = $l;
-                        if (($is_locations) && (strlen($l) == 2)) {
-                            $l_nice = find_country_name_from_iso($l);
-                        }
-                        $list_tpl->attach(form_input_list_entry($l, false, $l_nice));
+                    foreach ($list as $l => $l_nice) {
+                        $list_tpl->attach(form_input_list_entry($l, false, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     $required = $field['cf_required'] == 1;
-                    $name = 'field_' . strval($field['id']);
 
-                    $tabindex = get_form_field_tabindex(null);
-
-                    $_required = ($required) ? '_required' : '';
-
-                    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('_GUID' => '0736ea661a743a09354346e9534aa597', 'DEFAULT' => $custom_value ? $actual_value : '', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $list_tpl));
-
-                    return _form_input($name, $_cf_name, $_cf_description, $input, $required, false, $tabindex);
+                    return form_input_combo($_cf_name, $_cf_description, $input_name, $custom_value ? $actual_value : '', $list_tpl, null, $required);
                 } else {
                     $list_tpl = new Tempcode();
 
-                    if ((($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value))) && (!in_array('', $list))) {
+                    if ((($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value))) && (!array_key_exists('', $list))) {
                         $list_tpl->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
                     }
 
-                    foreach ($list as $l) {
-                        $l_nice = $l;
-                        if (($is_locations) && (strlen($l) == 2)) {
-                            $l_nice = find_country_name_from_iso($l);
-                        }
+                    foreach ($list as $l => $l_nice) {
                         $selected = ($l === $actual_value || is_null($actual_value) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
-                        $list_tpl->attach(form_input_list_entry($l, $selected, $l_nice));
+                        $list_tpl->attach(form_input_list_entry($l, $selected, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     if ($widget == 'dropdown_huge' || $widget == 'inline_huge') {
-                        return form_input_huge_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size);
+                        return form_input_huge_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size);
                     }
 
-                    return form_input_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size);
+                    return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size);
                 }
         }
     }
@@ -277,7 +268,7 @@ class Hook_fields_list
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

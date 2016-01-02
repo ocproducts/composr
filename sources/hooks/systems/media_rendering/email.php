@@ -52,7 +52,7 @@ class Hook_media_rendering_email
      */
     public function recognises_mime_type($mime_type)
     {
-        return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
+        return MEDIA_RECOG_PRECEDENCE_NONE;
     }
 
     /**
@@ -63,7 +63,7 @@ class Hook_media_rendering_email
      */
     public function recognises_url($url)
     {
-        return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
+        return MEDIA_RECOG_PRECEDENCE_NONE;
     }
 
     /**
@@ -74,7 +74,7 @@ class Hook_media_rendering_email
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null)
     {

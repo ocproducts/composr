@@ -20,6 +20,8 @@
 
 /**
  * CRUD module (Create/Update/Delete), for operations on content types.
+ *
+ * @package        core
  */
 abstract class Standard_crud_module
 {
@@ -73,7 +75,7 @@ abstract class Standard_crud_module
     public $second_stage_preview = false;
     public $add_submit_name = null;
     public $edit_submit_name = null;
-    public $do_preview = true; // true or NULL (NULL means false here)
+    public $do_preview = true; // true or null (null means false here)
     public $add_one_label = null;
     public $add_one_cat_label = null;
     public $edit_this_label = null;
@@ -132,7 +134,7 @@ abstract class Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -167,7 +169,7 @@ abstract class Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -366,7 +368,7 @@ abstract class Standard_crud_module
                 $this->title = get_screen_title('MASS_DELETE');
             }
 
-            if ((method_exists($this, 'browse')) && ($type != 'browse')) {
+            if ((((method_exists($this, 'browse')) && ($type != 'browse')) || ((isset($this->is_chained_with_parent_browse)) && ($this->is_chained_with_parent_browse)))) {
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
                     breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE'))));
                 } else {
@@ -390,7 +392,7 @@ abstract class Standard_crud_module
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -585,8 +587,16 @@ abstract class Standard_crud_module
     public function choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks)
     {
         if (is_null($allow_rating)) {
-            $val = $GLOBALS['SITE_DB']->query_select_value($this->table, 'AVG(allow_rating)');
-            $allow_rating = is_null($val) ? 1 : intval(round($val));
+            $query = 'SELECT allow_comments,count(allow_comments) AS qty FROM ' . get_table_prefix() . $this->table;
+            if ($this->table == 'catalogue_entries') {
+                $catalogue_name = get_param_string('catalogue_name', null);
+                if (!is_null($catalogue_name)) {
+                    $query .= ' WHERE ' . db_string_equal_to('c_name', $catalogue_name);
+                }
+            }
+            $query .= ' GROUP BY allow_comments ORDER BY qty DESC';
+            $val = $GLOBALS['SITE_DB']->query_value_if_there($query); // We need the mode here, not the mean
+            $allow_rating = is_null($val) ? 1 : $val;
         }
 
         if (is_null($allow_comments)) {
@@ -606,10 +616,10 @@ abstract class Standard_crud_module
      * Standard CRUD-module permission chooser.
      *
      * @param  ?ID_TEXT $category_id The category ID the permissions are being chosen for (null: new category)
-     * @param  ?tempcode $help Extra help to show in interface (null: none)
+     * @param  ?Tempcode $help Extra help to show in interface (null: none)
      * @param  boolean $new_category Whether this is a new category (don't load permissions, default to on)
-     * @param  ?tempcode $pinterface_view Label for view permissions (null: default)
-     * @return tempcode The permission fields
+     * @param  ?Tempcode $pinterface_view Label for view permissions (null: default)
+     * @return Tempcode The permission fields
      */
     public function get_permission_fields($category_id, $help = null, $new_category = false, $pinterface_view = null)
     {
@@ -629,10 +639,10 @@ abstract class Standard_crud_module
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?ID_TEXT $id The ID of whatever we are working with (null: deleted)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -679,8 +689,8 @@ abstract class Standard_crud_module
     /**
      * If a confirmation is needed, and not been given, ask for one.
      *
-     * @param  tempcode $title The page title for what's being done
-     * @return ?tempcode The confirmation UI (null: all is clear - no confirmation needed)
+     * @param  Tempcode $title The page title for what's being done
+     * @return ?Tempcode The confirmation UI (null: all is clear - no confirmation needed)
      */
     public function handle_confirmations($title)
     {
@@ -702,8 +712,8 @@ abstract class Standard_crud_module
     /**
      * Get some XHTML for a form to choose a catalogue out of all the available ones.
      *
-     * @param  tempcode $title The get_screen_title converted title for this page
-     * @return ?tempcode The tempcode for the catalogue chooser (null: already chosen)
+     * @param  Tempcode $title The get_screen_title converted title for this page
+     * @return ?Tempcode The Tempcode for the catalogue chooser (null: already chosen)
      */
     public function choose_catalogue($title)
     {
@@ -744,8 +754,8 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI for a separate preview.
      *
-     * @param  tempcode $title The page title
-     * @return tempcode The UI
+     * @param  Tempcode $title The page title
+     * @return Tempcode The UI
      */
     public function preview_intercept($title)
     {
@@ -776,7 +786,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to add an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add()
     {
@@ -905,7 +915,7 @@ abstract class Standard_crud_module
             $fields_new = new Tempcode();
             for ($i = 0; $i < 10; $i++) { // Up to 10 new fields for catalogue, although this number is arbitrary
                 list($_fields_new, $_hidden_new) = $this->get_field_fields((($i == 0) && (substr(get_param_string('id', ''), 0, 1) != '_')), 10, 'new_field_' . strval($i) . '_', $i);
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '3eba3a73d1fbdf922707d63216e13e03' . get_class($this), 'VISIBLE' => ($i == 0) ? true : null, 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '3eba3a73d1fbdf922707d63216e13e03' . get_class($this), 'VISIBLE' => ($i == 0) ? true : null, 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGE*/));
                 $fields_new->attach($temp);
                 $hidden->attach($_hidden_new);
             }
@@ -917,8 +927,8 @@ abstract class Standard_crud_module
                                                               'TITLE' => $this->title,
                                                               'TEXT' => $this->add_text,
                                                               'URL' => $post_url,
-                                                              'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
-                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGEFUDGE*/,
+                                                              'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
                                                               'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
                                                               'SUBMIT_NAME' => $submit_name,
                                                               'JAVASCRIPT' => $this->javascript,
@@ -931,7 +941,7 @@ abstract class Standard_crud_module
                                                      'PREVIEW' => $this->do_preview,
                                                      'SEPARATE_PREVIEW' => $this->second_stage_preview,
                                                      'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGEFUDGE*/,
+                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                                                      'JAVASCRIPT' => $this->javascript,
                                                      'SUPPORT_AUTOSAVE' => true,
                                                  ) + $extra_tpl_params);
@@ -946,7 +956,7 @@ abstract class Standard_crud_module
                                                   'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
                                                   'TEXT' => $this->add_text,
                                                   'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
                                                   'SUBMIT_ICON' => $submit_icon,
                                                   'SUBMIT_NAME' => $submit_name,
                                                   'JAVASCRIPT' => $this->javascript,
@@ -958,7 +968,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to add an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -1015,7 +1025,7 @@ abstract class Standard_crud_module
                     send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                 }
 
-                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
             }
             $submitter = get_member();
             if (method_exists($this, 'get_submitter')) {
@@ -1117,7 +1127,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module entry list fetcher.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -1134,7 +1144,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to choose an entry to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -1204,7 +1214,7 @@ abstract class Standard_crud_module
                 'TEXT' => $text,
                 'TABLE' => $table,
                 'SUBMIT_ICON' => 'buttons__sort',
-                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('ORDER') : null,
+                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('SORT') : null,
                 'POST_URL' => get_self_url(),
                 'JAVASCRIPT' => $this->javascript_for_choose,
             ));
@@ -1228,7 +1238,7 @@ abstract class Standard_crud_module
             if ($entries->is_empty()) {
                 inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
             }
-            $fields = form_input_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
+            $fields = form_input_huge_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
         }
 
         $post_url = build_url($map, '_SELF', null, false, true);
@@ -1258,7 +1268,7 @@ abstract class Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => $text,
             'URL' => $post_url,
-            'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+            'FIELDS' => $fields->evaluate()/*FUDGE*/,
             'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
@@ -1270,7 +1280,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to edit an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit()
     {
@@ -1424,7 +1434,7 @@ abstract class Standard_crud_module
             // Existing fields
             $field_count = 0;
             $c_name = get_param_string('id', false, true);
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order');
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             $fields_existing = new Tempcode();
             foreach ($rows as $i => $myrow) {
                 $name = get_translated_text($myrow['cf_name']);
@@ -1435,7 +1445,7 @@ abstract class Standard_crud_module
                     $_fields_existing->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1959d74d4226cad31629b6f24a8e4b0', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                     $_fields_existing->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), $prefix . 'delete', false));
                 }
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
                 $fields_existing->attach($temp);
                 $hidden->attach($_fields_hidden);
 
@@ -1446,7 +1456,7 @@ abstract class Standard_crud_module
             $fields_new = new Tempcode();
             for ($i = 0; $i < 5; $i++) {
                 list($_fields_new, $_fields_hidden) = $this->get_field_fields(false, count($rows) + 10, 'new_field_' . strval($i) . '_', $field_count);
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '8b9a632eafae003ccc6b007eefb0ce3d' . get_class($this), 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '8b9a632eafae003ccc6b007eefb0ce3d' . get_class($this), 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGE*/));
                 $fields_new->attach($temp);
                 $hidden->attach($_fields_hidden);
 
@@ -1460,9 +1470,9 @@ abstract class Standard_crud_module
                                                                'TITLE' => $this->title,
                                                                'TEXT' => $this->add_text,
                                                                'URL' => $post_url,
-                                                               'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
-                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGEFUDGE*/,
-                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGEFUDGE*/,
+                                                               'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
+                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
                                                                'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
                                                                'SUBMIT_NAME' => $submit_name,
                                                                'JAVASCRIPT' => $this->javascript,
@@ -1483,7 +1493,7 @@ abstract class Standard_crud_module
                                                      'PING_URL' => $ping_url,
                                                      'WARNING_DETAILS' => $warning_details,
                                                      'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGEFUDGE*/,
+                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                                                      'JAVASCRIPT' => $this->javascript,
                                                      'SUPPORT_AUTOSAVE' => true,
                                                  ) + $extra_tpl_params);
@@ -1500,7 +1510,7 @@ abstract class Standard_crud_module
                                                   'HIDDEN' => $hidden,
                                                   'TEXT' => $this->edit_text,
                                                   'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
                                                   'SUBMIT_ICON' => $submit_icon,
                                                   'SUBMIT_NAME' => $submit_name,
                                                   'JAVASCRIPT' => $this->javascript,
@@ -1512,7 +1522,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to edit an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit()
     {
@@ -1528,20 +1538,10 @@ abstract class Standard_crud_module
             if ((!is_null($date_and_time)) && (addon_installed('points'))) {
                 $reverse = post_param_integer('reverse_point_transaction', 0);
                 if ($reverse == 1) {
-                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('*'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('id'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
                     if (array_key_exists(0, $points_test)) {
-                        $amount = $points_test[0]['amount'];
-                        $sender_id = $points_test[0]['gift_from'];
-                        $recipient_id = $points_test[0]['gift_to'];
-                        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $points_test[0]['id']), '', 1);
-                        if (!is_guest($sender_id)) {
-                            $_sender_gift_points_used = point_info($sender_id);
-                            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-                            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-                        }
-                        require_code('points');
-                        $temp_points = point_info($recipient_id);
-                        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+                        require_code('points2');
+                        reverse_point_gift_transaction($points_test[0]['id']);
                     }
                 }
             }
@@ -1568,11 +1568,12 @@ abstract class Standard_crud_module
                 delete_form_custom_fields($this->content_type, $id);
             }
 
-            /*if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect',NULL)))))    No - resource is gone now, and redirect would almost certainly try to take us back there
-            {
-                    $url=(($this->redirect_type=='!') || (is_null($this->redirect_type)))?get_param_string('redirect'):build_url(array('page'=>'_SELF','type'=>$this->redirect_type),'_SELF');
-                    return redirect_screen($this->title,$url,do_lang_tempcode($this->success_message_str));
-            }*/
+            /*    No - resource is gone now, and redirect would almost certainly try to take us back there
+            if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
+                $url = (($this->redirect_type == '!') || (is_null($this->redirect_type))) ? get_param_string('redirect') : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
+                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
+            }
+            */
 
             if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
                 $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect')));
@@ -1643,7 +1644,7 @@ abstract class Standard_crud_module
                         send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                     }
 
-                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
                 }
             }
         }
@@ -1661,7 +1662,7 @@ abstract class Standard_crud_module
      * Mass delete some entries/categories.
      *
      * @param  boolean $top_level Whether this is a top level mass delete op (i.e. not a recursion)
-     * @return ?tempcode The UI (null: not top level)
+     * @return ?Tempcode The UI (null: not top level)
      */
     public function mass_delete($top_level = true)
     {

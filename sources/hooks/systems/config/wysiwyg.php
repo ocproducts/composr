@@ -31,7 +31,7 @@ class Hook_config_wysiwyg
     public function get_details()
     {
         return array(
-            'human_name' => 'ENABLE_WYSIWYG',
+            'human_name' => 'comcode:ENABLE_WYSIWYG',
             'type' => 'tick',
             'category' => 'ACCESSIBILITY',
             'group' => 'GENERAL',

@@ -139,6 +139,23 @@ footer .global_minilinks {
 
 /*
 =========================
+========Revisions========
+=========================
+*/
+
+.revisions_filter_item {
+	width: 15%;
+	margin: 0 5% 0.5em 0;
+	float: left;
+}
+
+.revisions_filter_item_button {
+	margin: 0.75em 0.5em 0 0;
+	float: right;
+}
+
+/*
+=========================
 =========Buttons=========
 =========================
 */
@@ -150,7 +167,7 @@ footer .global_minilinks {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/tools/upgrade}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu__adminzone__tools__cleanup {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/tools/cleanup}') !important;
 	}

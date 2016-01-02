@@ -51,10 +51,7 @@ class Hook_config_smtp_sockets_username
      */
     public function get_default()
     {
-        if (!function_exists('fsockopen')) {
-            return null;
-        }
-        if (strpos(@ini_get('disable_functions'), 'shell_exec') !== false) {
+        if (!php_function_allowed('fsockopen')) {
             return null;
         }
         return '';

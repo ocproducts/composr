@@ -34,7 +34,7 @@ class Hook_config_sms_high_limit
             'human_name' => 'SMS_HIGH_LIMIT',
             'type' => 'integer',
             'category' => 'FEATURE',
-            'group' => 'SMS',
+            'group' => 'sms:SMS',
             'explanation' => 'CONFIG_OPTION_sms_high_limit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

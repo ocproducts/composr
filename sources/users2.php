@@ -53,7 +53,7 @@ function get_users_online($longer_time, $filter, &$count)
     $users_online_time_seconds = intval($longer_time ? (60.0 * 60.0 * floatval(get_option('session_expiry_time'))) : (60.0 * floatval(get_option('users_online_time'))));
     $cutoff = time() - $users_online_time_seconds;
 
-    if (get_option('session_prudence') != '0') {
+    if (get_option('session_prudence') == '1') {
         // If we have multiple servers this many not be accurate as we probably turned replication off for the sessions table. The site design should be updated to not show this kind of info
         $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff)); // Written in by reference
         if (!is_null($filter)) {
@@ -207,9 +207,8 @@ function get_members_viewing($page = null, $type = null, $id = null, $forum_laye
         return null;
     }
 
-    global $ZONE;
     if ($page === null) {
-        $page = get_param_string('page', $ZONE['zone_default_page']);
+        $page = get_page_name();
     }
     if ($type === null) {
         $type = get_param_string('type', '/');

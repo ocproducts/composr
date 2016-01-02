@@ -152,8 +152,8 @@ class Hook_addon_registry_awards
                 'AWARDEE_PROFILE_URL' => placeholder_url(),
                 'AWARDEE' => lorem_phrase(),
                 'AWARDEE_USERNAME' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase_html(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
@@ -175,8 +175,8 @@ class Hook_addon_registry_awards
                 'AWARDEE_PROFILE_URL' => placeholder_url(),
                 'AWARDEE' => lorem_phrase(),
                 'AWARDEE_USERNAME' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date_raw(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase(),
             )), null, '', true)
         );

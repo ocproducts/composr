@@ -24,6 +24,8 @@ global3.php contains further support functions, which are shared between the ins
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__global3()
 {
@@ -36,10 +38,6 @@ function init__global3()
     $IS_MOBILE_TRUTH_CACHE = null;
 
     // Heavily optimised string escaping data
-    global $HTML_ESCAPE_1, $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2;
-    $HTML_ESCAPE_1 = array('/&/', '/"/', '/\'/', '/</', '/>/');
-    $HTML_ESCAPE_1_STRREP = array('&', '"', '\'', '<', '>');
-    $HTML_ESCAPE_2 = array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;');
     global $PHP_REP_FROM, $PHP_REP_TO, $PHP_REP_TO_TWICE;
     $PHP_REP_FROM = array('\\', "\n", '$', '"', "\0");
     $PHP_REP_TO = array('\\\\', '\n', '\$', '\\"', '\0');
@@ -61,13 +59,13 @@ function init__global3()
     global $MSN_DB;
     $MSN_DB = null;
 
-    // This is like NULL, but is a higher-precedence NULL that can also survive string layers (such as HTML forms). It should only be used when:
-    //  - 'NULL' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
+    // This is like null, but is a higher-precedence null that can also survive string layers (such as HTML forms). It should only be used when:
+    //  - 'null' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
     //  - OR, as the standard "ignore this field" indicator for query_update (so that "fractional edits" can happen without requiring a secondary API set or a messed up primary API)
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when NULL and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -124,13 +122,13 @@ function init__global3()
     // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
     define('A_NA', 0x0); // Not applicable          (0 in decimal)
     //
-    define('A_INSTANT_EMAIL', 0x2); //              (2 in decimal)
-    define('A_DAILY_EMAIL_DIGEST', 0x4); //            (4 in decimal)
-    define('A_WEEKLY_EMAIL_DIGEST', 0x8); //        (8 in decimal)
-    define('A_MONTHLY_EMAIL_DIGEST', 0x10); //         (16 in decimal)
-    define('A_INSTANT_SMS', 0x20); //                  (32 in decimal)
-    define('A_INSTANT_PT', 0x40); // Private topic  (64 in decimal)
-    define('A_WEB_NOTIFICATION', 0x80); // Desktop notification if site is open, and always shows on notification dropdown  (128 in decimal)
+    define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
+    define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
+    define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
+    define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
+    define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
+    define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
+    define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
     // And...
     define('A__ALL', 0xFFFFFF);
     // And...
@@ -173,7 +171,7 @@ function is_suexec_like()
 
     static $answer = null;
     if ($answer === null) {
-        $answer = (((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
+        $answer = (((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
                    || (is_writable_wrap(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
     }
     return $answer;
@@ -211,15 +209,15 @@ function fix_permissions($path, $perms = 0666)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -251,6 +249,8 @@ function http_download_file($url, $byte_limit = null, $trigger_error = true, $no
  *
  * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
  * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ *
+ * @ignore
  */
 function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 {
@@ -410,16 +410,17 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
 }
 
 /**
- * Turn the tempcode lump into a standalone page.
+ * Turn the Tempcode lump into a standalone page.
  *
- * @param  ?tempcode $middle The tempcode to put into a nice frame (null: support output streaming mode)
+ * @param  ?Tempcode $middle The Tempcode to put into a nice frame (null: support output streaming mode)
  * @param  ?mixed $message 'Additional' message (null: none)
  * @param  string $type The type of special message
  * @set    inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
- * @return tempcode Standalone page
+ * @param  boolean $show_border Whether to include a full screen rendering layout (will be overridable by 'show_border' GET parameter if present or if main page view)
+ * @return Tempcode Standalone page
  */
-function globalise($middle, $message = null, $type = '', $include_header_and_footer = false)
+function globalise($middle, $message = null, $type = '', $include_header_and_footer = false, $show_border = false)
 {
     if (!$include_header_and_footer) { // FUDGE
         $old = mixed();
@@ -436,8 +437,8 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
 
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
-    if (!running_script('dload') && !running_script('attachment') && !running_script('index') && !running_script('approve_ip')) {
-        global $ATTACHED_MESSAGES;
+    $show_border = (get_param_integer('show_border', $show_border ? 1 : 0) == 1);
+    if (!$show_border && !running_script('index')) {
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -457,10 +458,19 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         $global->singular_bind('MIDDLE', $middle);
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
-        $global = do_template('GLOBAL_HTML_WRAP', array(
-            '_GUID' => '592faa2c0e8bf2dc3492de2c11ca7131',
-            'MIDDLE' => $middle,
-        ));
+        if (headers_sent()) {
+            $global = do_template('STANDALONE_HTML_WRAP', array(
+                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+                'FRAME' => false,
+                'TARGET' => '_self',
+                'CONTENT' => $middle,
+            ));
+        } else {
+            $global = do_template('GLOBAL_HTML_WRAP', array(
+                '_GUID' => '592faa2c0e8bf2dc3492de2c11ca7131',
+                'MIDDLE' => $middle,
+            ));
+        }
         $global->handle_symbol_preprocessing();
     }
 
@@ -534,6 +544,9 @@ function set_http_status_code($code)
             case '404':
                 header('HTTP/1.0 404 Not Found');
                 break;
+            case '429':
+                header('HTTP/1.0 429 Too Many Requests');
+                break;
             case '500':
                 header('HTTP/1.0 500 Internal server error');
                 break;
@@ -599,8 +612,8 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
                 if ((substr($possible_theme, 0, 1) != '.') && ($possible_theme != 'default') && ($possible_theme != $theme) && ($possible_theme != 'map.ini') && ($possible_theme != 'index.html')) {
-                    $fullpath = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
-                    if (is_file($fullpath)) {
+                    $full_path = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
+                    if (is_file($full_path)) {
                         $place = array($possible_theme, '/' . $directory . '_custom/', $suffix);
                         break;
                     }
@@ -698,18 +711,19 @@ function fix_bad_unicode($input, $definitely_unicode = false)
  * Get string length, with utf-8 awareness where possible/required.
  *
  * @param  string $in The string to get the length of.
+ * @param  boolean $force Whether to force unicode as on.
  * @return integer The string length.
  */
-function cms_mb_strlen($in)
+function cms_mb_strlen($in, $force = false)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (!$force && strtolower(get_charset()) != 'utf-8') {
         return strlen($in);
     }
     if (function_exists('mb_strlen')) {
-        return @mb_strlen($in); // @ is because there could be invalid unicode involved
+        return @mb_strlen($in, $force ? 'utf-8' : get_charset()); // @ is because there could be invalid unicode involved
     }
     if (function_exists('iconv_strlen')) {
-        return @iconv_strlen($in);
+        return @iconv_strlen($in, $force ? 'utf-8' : get_charset());
     }
     return strlen($in);
 }
@@ -721,12 +735,12 @@ function cms_mb_strlen($in)
  * @param  integer $from The start position.
  * @param  ?integer $amount The length to extract (null: all remaining).
  * @param  boolean $force Whether to force unicode as on.
- * @return ~string                      String part (false: $start was over the end of the string).
+ * @return ~string String part (false: $start was over the end of the string).
  */
 function cms_mb_substr($in, $from, $amount = null, $force = false)
 {
     if ($amount === null) {
-        $amount = cms_mb_strlen($in) - $from;
+        $amount = cms_mb_strlen($in, $force) - $from;
     }
 
     if ((!$force) && (strtolower(get_charset()) != 'utf-8')) {
@@ -734,10 +748,10 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
     }
 
     if (function_exists('iconv_substr')) {
-        return @iconv_substr($in, $from, $amount);
+        return @iconv_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
     if (function_exists('mb_substr')) {
-        return @mb_substr($in, $from, $amount);
+        return @mb_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
 
     $ret = substr($in, $from, $amount);
@@ -812,21 +826,6 @@ function cms_mb_strtoupper($in)
 }
 
 /**
- * Trim white-space.
- *
- * @param  string $in Subject.
- * @return string Result.
- */
-function cms_mb_trim($in)
-{
-    if (strtoupper(get_charset()) != 'utf-8') {
-        return trim($in);
-    }
-
-    return preg_replace('/(^\s+)|(\s+$)/us', '', $in); // Based on comment in PHP manual
-}
-
-/**
  * Find if we a string is ASCII, and hence we can use non-UTF-safe functions on it.
  *
  * @param  string $x String to test
@@ -861,10 +860,10 @@ function is_writable_wrap($path)
 
     if (is_dir($path)) {
         /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
-            $test=@fopen($path.'/cms.delete.me',GOOGLE_APPENGINE?'wb':'wt');
-            if ($test!==false) {
+            $test = @fopen($path . '/cms.delete.me', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            if ($test !== false) {
                 fclose($test);
-                unlink($path.'/cms.delete.me');
+                unlink($path . '/cms.delete.me');
                 return true;
             }
             return false;
@@ -896,22 +895,12 @@ function intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return tempcode Message
+ * @return Tempcode Message
  */
 function intelligent_write_error_inline($path)
 {
     require_code('files2');
     return _intelligent_write_error_inline($path);
-}
-
-/**
- * Find whether a fractional edit is underway.
- *
- * @return boolean Whether a fractional edit is underway
- */
-function fractional_edit()
-{
-    return post_param_integer('fractional_edit', 0) == 1;
 }
 
 /**
@@ -950,7 +939,7 @@ function addon_installed($addon, $non_bundled_too = false)
     }
 
     $addon = filter_naughty($addon);
-    $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/addon_registry/' . $addon . '.php');
+    $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
     if ((!$answer) && ($non_bundled_too) && (!running_script('install'))) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
         if ($test !== null) {
@@ -975,19 +964,20 @@ function addon_installed($addon, $non_bundled_too = false)
 function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
 {
     $str = number_format($num, $decs_wanted, '.', '');
-    $decs_here = strlen($str) - strpos($str, '.') - 1;
+    $dot_pos = strpos($str, '.');
+    $decs_here = ($dot_pos === false) ? 0 : (strlen($str) - $dot_pos - 1);
     if ($decs_here < $decs_wanted) {
         for ($i = 0; $i < $decs_wanted - $decs_here; $i++) {
             $str .= '0';
         }
-    } else {
+    } elseif ($decs_here > $decs_wanted) {
         $str = substr($str, 0, strlen($str) - $decs_here + $decs_wanted);
-        if ($decs_wanted == 0) {
+        if ($decs_wanted == 0 && !$only_needed_decs) {
             $str = rtrim($str, '.');
         }
     }
     if ($only_needed_decs) {
-        $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
+        $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
@@ -1002,7 +992,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
  */
 function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 {
-    $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+    $locale = localeconv();
     if ($locale['thousands_sep'] == '') {
         $locale['thousands_sep'] = ',';
     }
@@ -1018,7 +1008,7 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
             $str = rtrim($str, '.');
         }
     }
-    if ($only_needed_decs) {
+    if ($only_needed_decs && $decs_wanted != 0) {
         $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
     }
     return $str;
@@ -1034,7 +1024,7 @@ function integer_format($val)
 {
     static $locale = null;
     if ($locale === null) {
-        $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+        $locale = localeconv();
         if ($locale['thousands_sep'] == '') {
             $locale['thousands_sep'] = ',';
         }
@@ -1061,6 +1051,7 @@ function sort_maps_by__strlen($rows, $sort_key)
  * @param  string $a The first string to compare
  * @param  string $b The second string to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _strlen_sort($a, $b)
 {
@@ -1180,6 +1171,7 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
  * @param  array $a The first to compare
  * @param  array $b The second to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _multi_sort($a, $b)
 {
@@ -1253,7 +1245,7 @@ function cns_require_all_forum_stuff()
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
  * @param  string $prefix The prefix of the temporary file name.
- * @return ~string                      The name of the temporary file (false: error).
+ * @return ~string The name of the temporary file (false: error).
  */
 function cms_tempnam($prefix)
 {
@@ -1408,7 +1400,9 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
 }
 
 /**
- * Get the name of the current page
+ * Get the name of the page in the URL (by convention: the current page).
+ * This works on the basis of the 'page' parameter and does not require index.php be the active script.
+ * It will do dash to underscore substitution as required.
  *
  * @return ID_TEXT The current page name
  */
@@ -1423,7 +1417,7 @@ function get_page_name()
         return 'unknown';
     }
     $GETTING_PAGE_NAME = true;
-    $page = get_param_string('page', '');
+    $page = get_param_string('page', '', true);
     if (strlen($page) > 80) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -1439,10 +1433,35 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
+    $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
     $GETTING_PAGE_NAME = false;
+    return $page;
+}
+
+/**
+ * Fix a page name that may have been given dashes for SEO reasons.
+ *
+ * @param  string $zone Zone.
+ * @param  string $page Page.
+ * @return string The fixed page name.
+ */
+function fix_page_name_dashing($zone, $page)
+{
+    // Fix page-name dashes if needed
+    if (strpos($page, '-') !== false) {
+        require_code('site');
+        $test = _request_page($page, $zone);
+        if ($test === false) {
+            $_page = str_replace('-', '_', $page);
+            $test = _request_page($_page, $zone);
+            if ($test !== false) {
+                $page = $_page;
+            }
+        }
+    }
     return $page;
 }
 
@@ -1493,7 +1512,7 @@ function collapse_2d_complexity($key, $value, $list)
 /**
  * Take a list of maps of just one element, and make it into a single map
  *
- * @param  string $key The key of our maps that reside in our map
+ * @param  ?string $key The key of our maps that reside in our map (null: first key)
  * @param  array $list The map of maps
  * @return array The collapsed map
  */
@@ -1501,7 +1520,11 @@ function collapse_1d_complexity($key, $list)
 {
     $new_array = array();
     foreach ($list as $map) {
-        $new_array[] = $map[$key];
+        if ($key === null) {
+            $new_array[] = array_shift($map);
+        } else {
+            $new_array[] = $map[$key];
+        }
     }
 
     return $new_array;
@@ -1594,7 +1617,7 @@ function is_valid_ip($ip)
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
  * @set    1 2 3 4
- * @param  ?IP $ip IP address to use, normally left NULL (null: current user's)
+ * @param  ?IP $ip IP address to use, normally left null (null: current user's)
  * @return IP The users IP address (blank: could not find a valid one)
  */
 function get_ip_address($amount = 4, $ip = null)
@@ -1608,10 +1631,15 @@ function get_ip_address($amount = 4, $ip = null)
     }
 
     if ($ip === null) {
-        /*$fw=cms_srv('HTTP_X_FORWARDED_FOR');  Presents too many security and maintenance problems. Can easily be faked, or changed.
-        if (cms_srv('HTTP_CLIENT_IP')!='') $fw=cms_srv('HTTP_CLIENT_IP');
-        if (($fw!='') && ($fw!='127.0.0.1') && (substr($fw,0,8)!='192.168.') && (substr($fw,0,3)!='10.') && (is_valid_ip($fw)) && ($fw!=cms_srv('SERVER_ADDR'))) $ip=$fw;
-        else */
+        /* Presents too many security and maintenance problems. Can easily be faked, or changed.
+        $fw = cms_srv('HTTP_X_FORWARDED_FOR');
+        if (cms_srv('HTTP_CLIENT_IP') != '') {
+            $fw = cms_srv('HTTP_CLIENT_IP');
+        }
+        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != cms_srv('SERVER_ADDR'))) {
+            $ip = $fw;
+        } else
+        */
         $ip = cms_srv('REMOTE_ADDR');
     }
 
@@ -1644,7 +1672,9 @@ function normalise_ip_address($ip, $amount = null)
     }
 
     // ...and another
-    $ip = preg_replace('#%14$#', '', $ip);
+    if (strpos($ip, '%') !== false) {
+        $ip = preg_replace('#%14$#', '', $ip);
+    }
 
     if (!is_valid_ip($ip)) {
         $ip_cache[$ip][$amount] = '';
@@ -1808,7 +1838,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return NULL, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -1850,7 +1880,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
         if ($ip_bans === null) {
             $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), null, '', null, null, true);
-            if (!is_array($ip_bans)) {
+            if (!is_array($ip_bans)) { // LEGACY
                 $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), null, '', null, null, true);
             }
             if ($ip_bans !== null) {
@@ -1882,7 +1912,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
+                    if (!php_function_allowed('gethostbyname')) {
                         $self_ip = gethostbyname($self_host);
                     } else {
                         $self_ip = '';
@@ -1926,14 +1956,15 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
 /**
  * Log an action
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. D) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
+ * @return ?AUTO_LINK Log ID (null: did not save a log)
  */
 function log_it($type, $a = null, $b = null)
 {
     require_code('global4');
-    _log_it($type, $a, $b);
+    return _log_it($type, $a, $b);
 }
 
 /**
@@ -1946,7 +1977,7 @@ function php_addslashes($in)
 {
     global $PHP_REP_FROM, $PHP_REP_TO;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO, $in);
-    //return str_replace("\n",'\n',str_replace('$','\$',str_replace('\\\'','\'',addslashes($in))));
+    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
 }
 
 /**
@@ -2096,23 +2127,21 @@ function get_num_users_peak()
  */
 function escape_html($string)
 {
-    //   if ($string==='') return $string; // Optimisation, but doesn't work well
+    //if ($string === '') return $string; // Optimisation, but doesn't work well
     if (isset($string->codename)/*faster than is_object*/) {
         return $string;
     }
 
-    /*if ($GLOBALS['XSS_DETECT'])   Useful for debugging
-    {
-        if (ocp_is_escaped($string))
-        {
+    /*if ($GLOBALS['XSS_DETECT']) {  Useful for debugging
+        if (ocp_is_escaped($string)) {
             @var_dump(debug_backtrace());
             @exit('String double-escaped');
         }
     }*/
 
-    global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
+    global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $string);
+    $ret = htmlspecialchars($string, ENT_QUOTES, get_charset());
 
     if (!$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
@@ -2129,10 +2158,11 @@ function escape_html($string)
  * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+)
  *
  * @param  string $code The property code
- * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot
+ * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes
+ * @param  ?string $comcode Comcode that might be WYSIWYG edited; used to determine whether WYSIWYG may load when we'd prefer it to not do so (null: none)
  * @return boolean Whether there is a match
  */
-function browser_matches($code)
+function browser_matches($code, $comcode = null)
 {
     global $BROWSER_MATCHES_CACHE;
     if (isset($BROWSER_MATCHES_CACHE[$code])) {
@@ -2151,6 +2181,9 @@ function browser_matches($code)
     $is_ie9_plus = $is_ie && !$is_ie8;
 
     switch ($code) {
+        case 'simplified_attachments_ui':
+            $BROWSER_MATCHES_CACHE[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
+            return $BROWSER_MATCHES_CACHE[$code];
         case 'itunes':
             $BROWSER_MATCHES_CACHE[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);
             return $BROWSER_MATCHES_CACHE[$code];
@@ -2164,7 +2197,7 @@ function browser_matches($code)
             $BROWSER_MATCHES_CACHE[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
             return $BROWSER_MATCHES_CACHE[$code];
         case 'wysiwyg':
-            if ((get_option('wysiwyg') == '0') || (is_mobile())) {
+            if ((get_option('wysiwyg') == '0') || ((is_mobile()) && ((is_null($comcode)) || (strpos($comcode, 'html]') === false)))) {
                 $BROWSER_MATCHES_CACHE[$code] = false;
                 return false;
             }
@@ -2238,8 +2271,10 @@ function is_mobile($user_agent = null, $truth = false)
     }
 
     if ((!function_exists('get_option')) || (get_option('mobile_support') == '0')) {
-        $IS_MOBILE_CACHE = false;
-        $IS_MOBILE_TRUTH_CACHE = false;
+        if (function_exists('get_option')) {
+            $IS_MOBILE_CACHE = false;
+            $IS_MOBILE_TRUTH_CACHE = false;
+        }
         return false;
     }
 
@@ -2253,9 +2288,18 @@ function is_mobile($user_agent = null, $truth = false)
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
-            if ((!empty($details['mobile_pages'])) && (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) && (preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0)) {
-                $IS_MOBILE_CACHE = false;
-                return false;
+            if (!empty($details['mobile_pages'])) {
+                if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
+                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                } else {
+                    if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -2263,11 +2307,15 @@ function is_mobile($user_agent = null, $truth = false)
     if (!$user_agent_given) {
         $val = get_param_integer('keep_mobile', null);
         if ($val !== null) {
+            $result = ($val == 1);
             if (isset($GLOBALS['FORUM_DRIVER'])) {
-                $IS_MOBILE_CACHE = ($val == 1);
+                if ($truth) {
+                    $IS_MOBILE_TRUTH_CACHE = $result;
+                } else {
+                    $IS_MOBILE_CACHE = $result;
+                }
             }
-            $IS_MOBILE_TRUTH_CACHE = $IS_MOBILE_CACHE;
-            return $IS_MOBILE_CACHE;
+            return $result;
         }
     }
 
@@ -2286,6 +2334,7 @@ function is_mobile($user_agent = null, $truth = false)
 
         // Well known/important browsers/brands
         'Mobile Safari', // Usually Android
+        'Android',
         'iPhone',
         'iPod',
         'Opera Mobi',
@@ -2301,8 +2350,8 @@ function is_mobile($user_agent = null, $truth = false)
 
     if (((!isset($SITE_INFO['no_extra_mobiles'])) || ($SITE_INFO['no_extra_mobiles'] != '1')) && (is_file(get_file_base() . '/text_custom/mobile_devices.txt'))) {
         require_code('files');
-        $pdas = better_parse_ini_file((get_file_base() . '/text_custom/mobile_devices.txt'));
-        foreach ($pdas as $key => $val) {
+        $mobile_devices = better_parse_ini_file((get_file_base() . '/text_custom/mobile_devices.txt'));
+        foreach ($mobile_devices as $key => $val) {
             if ($val == 1) {
                 $browsers[] = $key;
             } else {
@@ -2315,15 +2364,18 @@ function is_mobile($user_agent = null, $truth = false)
     $result = (preg_match('/(' . implode('|', $browsers) . ')/i', $user_agent) != 0) && (preg_match('/(' . implode('|', $exceptions) . ')/i', $user_agent) == 0);
     if (!$user_agent_given) {
         if (isset($GLOBALS['FORUM_DRIVER'])) {
-            $IS_MOBILE_CACHE = $result;
-            $IS_MOBILE_CACHE_TRUTH_CACHE = $IS_MOBILE_CACHE;
+            if ($truth) {
+                $IS_MOBILE_TRUTH_CACHE = $result;
+            } else {
+                $IS_MOBILE_CACHE = $result;
+            }
         }
     }
     return $result;
 }
 
 /**
- * Get the name of a webcrawler bot, or NULL if no bot detected
+ * Get the name of a webcrawler bot, or null if no bot detected
  *
  * @return ?string Webcrawling bot name (null: not a bot)
  */
@@ -2406,9 +2458,9 @@ function has_cookies() // Will fail on users first visit, but then will catch on
         return $HAS_COOKIES_CACHE;
     }
 
-    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies',0)==0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
+    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
     {
-        $_COOKIE=array();
+        $_COOKIE = array();
         return false;
     }*/
 
@@ -2481,12 +2533,12 @@ function wordfilter_text($text)
         return $text;
     }
 
-    require_code('word_filter');
-    return check_word_filter($text, null, true);
+    require_code('wordfilter');
+    return check_wordfilter($text, null, true);
 }
 
 /**
- * Assign this to explicitly declare that a variable may be of mixed type, and initialise to NULL.
+ * Assign this to explicitly declare that a variable may be of mixed type, and initialise to null.
  *
  * @return ?mixed Of mixed type (null: default)
  */
@@ -2563,7 +2615,7 @@ function seo_meta_load_for($type, $id, $title = null)
  *
  * @param  ?ID_TEXT $limit_to The search code for this tag content (e.g. downloads) (null: there is none)
  * @param  ?array $the_tags Explicitly pass a list of tags instead (null: use loaded ones)
- * @return tempcode Loaded tag output (or blank if there are none)
+ * @return Tempcode Loaded tag output (or blank if there are none)
  */
 function get_loaded_tags($limit_to = null, $the_tags = null)
 {
@@ -2690,6 +2742,7 @@ function titleify($boring)
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('Cpfs', 'CPFs', $ret);
+    $ret = str_replace('CNS', 'Conversr', $ret);
 
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($boring)) {
         ocp_mark_as_escaped($ret);
@@ -2740,7 +2793,7 @@ function propagate_filtercode_page_link()
  * @param  ID_TEXT $content_type Content type
  * @param  mixed $id Content ID
  * @param  mixed $title Content title (either unescaped string, or Compiled Comcode [i.e. Tempcode])
- * @return tempcode Inline editable HTML to put into output
+ * @return Tempcode Inline editable HTML to put into output
  */
 function make_fractionable_editable($content_type, $id, $title)
 {
@@ -2758,6 +2811,16 @@ function make_fractionable_editable($content_type, $id, $title)
 }
 
 /**
+ * Find whether a fractional edit is underway.
+ *
+ * @return boolean Whether a fractional edit is underway
+ */
+function fractional_edit()
+{
+    return post_param_integer('fractional_edit', 0) == 1;
+}
+
+/**
  * Convert some HTML to plain text.
  *
  * @param  string $in HTML
@@ -2770,8 +2833,8 @@ function strip_html($in)
     }
 
     $search = array(
-        '#<script[^>]*?' . '>.*?</script>#si',    // Strip out JavaScript
-        '#<style[^>]*?' . '>.*?</style>#siU',        // Strip style tags properly
+        '#<script[^>]*?' . '>.*?</script>#si',  // Strip out JavaScript
+        '#<style[^>]*?' . '>.*?</style>#siU',   // Strip style tags properly
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $in = preg_replace($search, '', $in);
@@ -2814,7 +2877,7 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value=get_brand_base_url().'/'.$zone.'/'.urlencode($params['page']).'.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
+    //$value = get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
     return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
 }
 
@@ -2899,7 +2962,7 @@ function get_mass_import_mode()
  */
 function escapeshellarg_wrap($arg)
 {
-    if ((function_exists('escapeshellarg')) && (strpos(@ini_get('disable_functions'), 'escapeshellarg') === false)) {
+    if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
@@ -2997,7 +3060,7 @@ function update_catalogue_content_ref($type, $from, $to)
     if (strpos(get_db_type(), 'mysql') !== false) {
         $GLOBALS['SITE_DB']->query_update('catalogue_fields f JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short v ON v.cf_id=f.id', array('cv_value' => $to), array('cv_value' => $from, 'cf_type' => $type));
     } else {
-        $fields = $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('id'), array('cf_type' => $type));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('cf_type' => $type));
         foreach ($fields as $field) {
             $GLOBALS['SITE_DB']->query_update('catalogue_efv_short', array('cv_value' => $to), array('cv_value' => $from, 'cf_id' => $field['id']));
         }
@@ -3025,4 +3088,13 @@ function cms_profile_end_for($identifier, $specifics = null)
 {
     require_code('profiler');
     _cms_profile_end_for($identifier, $specifics);
+}
+
+/**
+ * Put out some benign HTTP output.
+ * FastCGI seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+ */
+function send_http_output_ping()
+{
+    echo ' ';
 }

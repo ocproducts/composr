@@ -55,13 +55,21 @@ class Hook_preview_block_comcode
         $bparameters = '';
         $block = post_param_string('block');
         $parameters = get_block_parameters($block);
+        $parameters[] = 'failsafe';
+        $parameters[] = 'cache';
+        $parameters[] = 'quick_cache';
+        $parameters[] = 'defer';
+        $parameters[] = 'block_id';
         foreach ($parameters as $parameter) {
-            if (($parameter == 'select') && (in_array($block, array('bottom_news', 'main_news', 'side_news', 'side_news_archive')))) {
-                $value = post_param_string($parameter, '');
-            } else {
-                $value = post_param_string($parameter, '0');
+            $value = post_param_string($parameter, null);
+            if (is_null($value)) {
+                if (post_param_integer('tick_on_form__' . $parameter, null) === null) {
+                    continue;
+                } // If not on form, continue, otherwise must be 0
+                $value = '0';
             }
-            if ($value != '') {
+
+            if (($value != '') && (($parameter != 'failsafe') || ($value == '1')) && (($parameter != 'cache') || ($value != block_cache_default($block))) && (($parameter != 'quick_cache') || ($value == '1'))) {
                 $bparameters .= ' ' . $parameter . '="' . str_replace('"', '\"', $value) . '"';
             }
         }

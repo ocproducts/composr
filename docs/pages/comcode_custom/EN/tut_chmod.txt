@@ -1,22 +1,22 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Linux file permissions[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Linux file permissions[/title]
 
 Most Composr sites are hosted on Linux web servers. Linux uses the traditional file permission scheme from Unix, which is actually a very simple scheme in terms of what can be done, but technically complex to understand. Composr requires special file permissions for any uploaded file or directory that it needs to write to.
 
-This tutorial is intended to cover the theory behind the permissions Composr needs on most web hosts, and give practical explanations on how to work with them. It is not intended as a discussion on the relative merits of different server configurations, which is covered in the 'Security' tutorial.
+This tutorial is intended to cover the theory behind the permissions Composr needs on most web hosts, and give practical explanations on how to work with them. It is not intended as a discussion on the relative merits of different server configurations, which is covered in the [page="_SEARCH:tut_security"]Security tutorial[/page]. The [page="_SEARCH:tut_adv_install"]Advanced installation tutorial[/page] covers the permissions Composr needs.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]How Linux file permissions work[/title]
 
 Each file and directory on Linux has three numbers associated with it:
- - the number of the user that 'owns' it
- - the number of the group that 'group owns' it
- - the number that stores the file permissions
+1) the number of the user that 'owns' it
+2) the number of the group that 'group owns' it
+3) the number that stores the file permissions
 
 The file permission number (basically) is a number consisting of 3 parts (not 3 digits but 3 octets, as they can only be 0-7, not 0-9). From left-to-right, the numbers signify:
- - permissions that the 'owner' user has for it
- - permissions that the 'group owner' group has for it
- - permissions that anyone ('everyone') on the system has, irrespective of what groups they are in or what user they are
+1) permissions that the 'owner' user has for it
+2) permissions that the 'group owner' group has for it
+3) permissions that anyone ('everyone') on the system has, irrespective of what groups they are in or what user they are
 
 Each of these parts has a number range from 0-7, that is made up by a process of addition:
  - start with the number zero
@@ -38,31 +38,32 @@ The process of setting file permissions is often referred to as 'chmodding', as 
 
 [title="2"]PHP Web applications[/title]
 
-[media width="150" description="A typical error that is due to bad file permissions (on the 'FR' directory in this case)" float="right"]data_custom/images/docs/chmod_error.png[/media]
-Most web servers run PHP scripts with the credentials of a user named 'nobody'. Therefore the user 'nobody' needs to be able to do everything Composr needs to do. Unfortunately the main problem with permissions that make them so tricky with PHP web applications is that the user used to upload files is not 'nobody', and 'nobody' is not in the same primary group as the FTP user either. There is usually no convenient way to change ownership of a file so as to assign them to 'nobody', and if it was done, it would be a security problem anyway (as the entire installation directory would be writeable to by [b]any[/b] PHP script on the server). Therefore, if Composr is to write to any uploaded file, it must be possible for any user to do so -- and hence permissions must be set as such.
+Most web servers run PHP scripts with the credentials of a user named [tt]nobody[/tt]. Therefore the user [tt]nobody[/tt] needs to be able to do everything Composr needs to do. Unfortunately the main problem with permissions that make them so tricky with PHP web applications is that the user used to upload files is not [tt]nobody[/tt], and [tt]nobody[/tt] is not in the same primary group as the FTP user either. There is usually no convenient way to change ownership of a file so as to assign them to [tt]nobody[/tt], and if it was done, it would be a security problem anyway (as the entire installation directory would be writable to by [b]any[/b] PHP script on the server). Therefore, if Composr is to write to any uploaded file, it must be possible for any user to do so -- and hence permissions must be set as such.
 
 Consider these situations:
  - Composr needs to run -- it therefore needs to be able to list the contents of all its directories and read all its files -- this means there must be 'world read permission' (permission for anyone to read the file/directory) for all files and directories, and 'world execute permission' for all directories -- this is almost always provided by default fortunately, so does not need to be set
  - Composr needs to add a file to [tt]collaboration/pages/comcode_custom/FR[/tt] -- to make a file into a directory, there must be write permission for that directory -- therefore either the directory must have been made by Composr automatically, or the directory needs 'world write permission' (permission for anyone to write to the directory)
  - Composr needs to add a file to [tt]collaboration/pages/comcode_custom/EN[/tt] -- as above, however the Composr quick installer would have given this directory the necessary permissions during installation
- - Composr needs to modify a file [tt]themes/mytheme/templates_custom/GLOBAL_HTML_WRAP.tpl[/tt] -- usually this would not be a problem, as it would have been created by PHP when the [tt]GLOBAL_HTML_WRAP.tpl[/tt] was overridden from that of the default theme, and hence owned by 'nobody' -- however, if the theme was uploaded manually then the file would need to be given 'world write' permission
- - Composr needs to delete [tt]themes/mytheme/templates_cached/EN/GLOBAL_HTML_WRAP.tcp[/tt] (this happens a lot when editing things and Composr tries to clear caches) -- as above, normally there would be no problem, but if a webmaster uploads new templates it is often useful for them to delete the .tcd files themselves manually and allow Composr to regenerate them
+ - Composr needs to modify a file [tt]themes/mytheme/templates_custom/GLOBAL_HTML_WRAP.tpl[/tt] -- usually this would not be a problem, as it would have been created by PHP when the [tt]GLOBAL_HTML_WRAP.tpl[/tt] was overridden from that of the default theme, and hence owned by [tt]nobody[/tt] -- however, if the theme was uploaded manually then the file would need to be given 'world write' permission
+ - Composr needs to delete [tt]themes/mytheme/templates_cached/EN/GLOBAL_HTML_WRAP.tcp[/tt] (this happens a lot when editing things and Composr tries to clear caches) -- as above, normally there would be no problem, but if a webmaster uploads new templates it is often useful for them to delete the [tt].tcp[/tt] files themselves manually and allow Composr to regenerate them
 
-[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/chmod_1.png[/media]
 The gist of these situations is quite simple:
-[indent]If Composr made something itself, it can write to/into it, without problem, but it also needs to be writeable by the webmaster via FTP so is given 'world write' permissions. If a file was uploaded and Composr needs to write to/into it, and the quick installer couldn't set permissions for it (usually because it was added after installation), then 'world write' permissions need setting manually.[/indent]
+[indent]If Composr made something itself, it can write to/into it, without problem, but it also needs to be writable by the webmaster via FTP so is given 'world write' permissions. If a file was uploaded and Composr needs to write to/into it, and the quick installer couldn't set permissions for it (usually because it was added after installation), then 'world write' permissions need setting manually.[/indent]
 
 A typical file permission issue is shown in the screen-shot.
 File permissions that Composr requires are listed in the install guide.
 
 [title="2"]How to set Linux file permissions using FTP[/title]
 
-[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/chmod_2.png[/media]
+[surround]
+[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_1.png[/media]
+[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_2.png[/media]
 There is a extension to the FTP protocol that allows setting of file permissions. The extension is so wide-spread that most people do not know that it actually is one. Most FTP tools have file permission support, and SmartFTP has particularly user friendly support, where file permissions can be changed with tick-boxes.
 
 The screen-shots show how to set file permissions for:
- - a file that needs to be world writeable
- - a directory that needs to be world writeable
+ - a file that needs to be world writable
+ - a directory that needs to be world writable
+[/surround]
 
 [concepts
  1_key="Chmod"   1_value="The process of changing permissions for a file/directory"
@@ -71,8 +72,7 @@ The screen-shots show how to set file permissions for:
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_install"]Installation[/page]
- - [page="_SEARCH:tut_adv_installation"]Advanced installation[/page]
+ - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_chmod"]Linux file permissions[/page]
 
 {$SET,tutorial_tags,installer,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The theory behind the permissions Composr needs on most web hosts, and practical guidance on setting them.}[block]main_tutorial_rating[/block]

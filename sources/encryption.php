@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: openssl_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -35,9 +37,13 @@ function is_encryption_available()
  */
 function is_encryption_enabled()
 {
-    $public_key = get_option('encryption_key');
-    $private_key = get_option('decryption_key');
-    return ((function_exists('openssl_pkey_get_public')) && ($public_key != '') && ($private_key != '') && (file_exists($public_key)) && (file_exists($private_key)));
+    static $enabled = null;
+    if ($enabled === null) {
+        $public_key = get_option('encryption_key');
+        $private_key = get_option('decryption_key');
+        $enabled = ((function_exists('openssl_pkey_get_public')) && ($public_key != '') && ($private_key != '') && (file_exists($public_key)) && (file_exists($private_key)));
+    }
+    return $enabled;
 }
 
 /**
@@ -162,8 +168,7 @@ function decrypt_data($data, $passphrase)
     $maxlength = strlen($data);
     $decryption_keyfile = file_get_contents(get_option('decryption_key'));
     if (strpos($decryption_keyfile, 'AES') === false) {
-        $maxlength = 128/*1024 bit key assumption*/
-        ;
+        $maxlength = 128; // 1024 bit key assumption
     } elseif (strpos($decryption_keyfile, 'AES-256') !== false) {
         $maxlength = 256;
     } elseif (strpos($decryption_keyfile, 'AES-512') !== false) {

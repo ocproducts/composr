@@ -35,8 +35,8 @@ class html_safe_lang_test_set extends cms_test_case
     {
         require_code('files');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         global $LANGUAGE_STRINGS, $LANGUAGE_HTML, $LANGUAGE_LITERAL, $LANGUAGE_CURRENT, $FILE, $FIND_NO_GO_HTML_SPOTS;
@@ -96,6 +96,7 @@ class html_safe_lang_test_set extends cms_test_case
                             'TUTORIAL_ON_THIS',
                             'NO_PHP_FTP',
                             'NA_EM',
+                            'NO_RESET_ACCESS',
                             'QUERY_FAILED',
                             'HTTP_DOWNLOAD_NO_SERVER',
                             '_MEMBER_NO_EXIST',
@@ -105,6 +106,13 @@ class html_safe_lang_test_set extends cms_test_case
                             'REDIRECT_PAGE_TO',
                             'WRITE_ERROR_CREATE',
                             'WRITE_ERROR',
+                            'DESCRIPTION_I_AGREE_RULES',
+                            'BANNER_VIEWSFROM',
+                            'BANNER_VIEWSTO',
+                            'BANNER_HITSFROM',
+                            'BANNER_HITSTO',
+                            'CANT_TRACK',
+                            'BANNER_CLICKTHROUGH',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));
@@ -119,11 +127,11 @@ class html_safe_lang_test_set extends cms_test_case
             $_b = $LANGUAGE_HTML[$r][0];
             $b = str_replace(get_file_base() . '/', '', $_b);
             $this->assertTrue(false, $r . ': mismatch of HTML/plain usage with ' . $a . ' vs ' . $b);
-            //echo '<p>'.htmlentities($r).' (<a href="txmt://open?url=file://'.htmlentities($_a).'">'.htmlentities($a).'</a> and <a href="txmt://open?url=file://'.htmlentities($_b).'">'.htmlentities($b).')</a></p>';
+            //echo '<p>' . htmlentities($r) . ' (<a href="txmt://open?url=file://' . htmlentities($_a) . '">' . htmlentities($a) . '</a> and <a href="txmt://open?url=file://' . htmlentities($_b) . '">' . htmlentities($b) . ')</a></p>';
 
             $cnt++;
         }
-        //if ($cnt==0) echo '<p><em>None</em></p>';
+        //if ($cnt == 0) echo '<p><em>None</em></p>';
     }
 
     public function do_dir($dir, $dir_stub, $exp, $ext)
@@ -131,7 +139,7 @@ class html_safe_lang_test_set extends cms_test_case
         global $FILE2;
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_CONTENTS))) {
+                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                     if (is_file($dir . '/' . $file)) {
                         if (substr($file, -4, 4) == '.' . $ext) {
                             $FILE2 = $dir . '/' . $file;
@@ -143,6 +151,7 @@ class html_safe_lang_test_set extends cms_test_case
                     }
                 }
             }
+            closedir($dh);
         }
     }
 

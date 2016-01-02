@@ -42,7 +42,7 @@
 {$,Meta data for the page: standard meta data, Dublin Core meta data, Facebook Open Graph, and Composr meta data extensions [CMSCORE]}
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
 <link rel="baseurl" href="{$BASE_URL*}" />
-<link rel="sitemap" href="{$BASE_URL*}/cms_sitemap.xml" />
+<link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
 <meta name="description" content="{+START,IF,{$NEQ,{$META_DATA,meta_description},{!NA},???}}{$META_DATA*,meta_description}{+END}" />
 <meta name="keywords" content="{$META_DATA*,keywords}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
@@ -73,8 +73,8 @@
 {+START,IF_NON_EMPTY,{$META_DATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$META_DATA,type}}}" />{+END}
 <meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
-	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
-	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />{+END}
+	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid,1}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
+	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid,1}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$META_DATA,description}}<meta property="og:description" content="{$TRIM,{$META_DATA*,description}}" />{+END}
 {+START,IF_NON_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$META_DATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
@@ -138,6 +138,14 @@
 		})();
 	</script>
 {+END}{+END}
+
+{$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
+{+START,IF,{$CONFIG_OPTION,cookie_notice}}
+	<script type="text/javascript">
+		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;,:privacy}','theme':'dark-top'};
+	</script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+{+END}
 
 {$,Detecting of Timezones and JavaScript support}
 <script>// <![CDATA[

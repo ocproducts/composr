@@ -18,7 +18,7 @@
  */
 class xss_test_set extends cms_test_case
 {
-    function testComcodeHTMLFilter()
+    public function testComcodeHTMLFilter()
     {
         // This won't check everything, but will make sure we don't accidentally regress our overall checking
         // To do a better check, find a manual XSS test blob, and try pasting it into a news post (using html tags) to preview -- and ensure no JS alerts come up
@@ -68,7 +68,7 @@ class xss_test_set extends cms_test_case
         $this->assertTrue(strpos($parsed, '<script') === false);
     }
 
-    function testInputFilter()
+    public function testInputFilter()
     {
         global $FORCE_INPUT_FILTER_FOR_ALL;
         $FORCE_INPUT_FILTER_FOR_ALL = true;
@@ -83,15 +83,15 @@ class xss_test_set extends cms_test_case
         $this->assertTrue(strpos(get_param_string('foo'), 'http://example.com/') === false);
     }
 
-    var $found_error = null;
+    private $found_error = null;
 
-    function _temp_handler($errornum, $errormsg)
+    public function _temp_handler($errornum, $errormsg)
     {
         $this->found_error = $errormsg;
         return false;
     }
 
-    function testXSSDetectorOnAndWorking()
+    public function testXSSDetectorOnAndWorking()
     {
         $php_errormsg = mixed();
         $this->found_error = null;
@@ -113,7 +113,7 @@ class xss_test_set extends cms_test_case
         }
 	}
 
-    function testXSSDetectorOnAndWorkingComplex1()
+    public function testXSSDetectorOnAndWorkingComplex1()
     {
         $php_errormsg = mixed();
         $this->found_error = null;
@@ -136,7 +136,7 @@ class xss_test_set extends cms_test_case
         }
     }
 
-    function testXSSDetectorOnAndWorkingComplex2()
+    public function testXSSDetectorOnAndWorkingComplex2()
     {
         $php_errormsg = mixed();
         $this->found_error = null;
@@ -160,7 +160,7 @@ class xss_test_set extends cms_test_case
         }
     }
 
-    function testXSSDetectorOnAndWorkingComplex3()
+    public function testXSSDetectorOnAndWorkingComplex3()
     {
         $php_errormsg = mixed();
         $this->found_error = null;

@@ -49,7 +49,7 @@ class Hook_choose_download
                 $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('category') => $id));
             }
             if (is_null($_id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
             }
             $id = strval($_id);
         }
@@ -60,7 +60,7 @@ class Hook_choose_download
         $tar_filter = array_key_exists('tar_filter', $options) ? ($options['original_filename']) : false;
         $tree = get_downloads_tree($only_owned, is_null($id) ? null : intval($id), null, null, $shun, (get_param_integer('full_depth', 0) == 1) ? null : (is_null($id) ? 0 : 1), false, $editable_filter, $tar_filter);
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'downloads')) {
@@ -166,7 +166,7 @@ class Hook_choose_download
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null)
     {

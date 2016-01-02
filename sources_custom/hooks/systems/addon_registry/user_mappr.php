@@ -147,6 +147,7 @@ Parameters:
             'lang_custom/EN/google_map_users.ini',
             'sources_custom/blocks/main_google_map_users.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
+            'sources_custom/hooks/systems/fields/float.php',
             'data_custom/set_coordinates.php',
             'sources_custom/hooks/systems/cns_cpf_filter/latitude.php',
             'data_custom/get_member_tooltip.php',

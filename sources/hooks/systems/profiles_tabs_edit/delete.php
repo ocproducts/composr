@@ -40,7 +40,7 @@ class Hook_profiles_tabs_edit_delete
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -55,6 +55,9 @@ class Hook_profiles_tabs_edit_delete
             if (is_guest($member_id_of)) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
+
+            require_code('ocf_members_action');
+            require_code('ocf_members_action2');
 
             cns_delete_member($member_id_of);
 
@@ -88,7 +91,20 @@ class Hook_profiles_tabs_edit_delete
         require_code('form_templates');
         $fields->attach(form_input_tick(do_lang_tempcode(($member_id_of != $member_id_viewing) ? 'DELETE_WITHOUT_MERGING' : 'DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
-        $javascript = '';
+        require_code('tempcode_compiler');
+        $javascript = static_evaluate_tempcode(template_to_tempcode("
+			window.load_tab__edit__{\$LCASE,{!DELETE_MEMBER|*}}=function() {
+				var submit_button=document.getElementById('submit_button');
+				var delete_checkbox=document.getElementById('delete');
+				var tab=document.getElementById('t_edit__{\$LCASE,{!DELETE_MEMBER|*}}');
+
+				submit_button.disabled=!delete_checkbox.checked;
+
+				window.setInterval(function() {
+					submit_button.disabled=!delete_checkbox.checked && tab.className.indexOf('tab_active')!=-1;
+				},100);
+			}
+		"));
 
         return array($title, $fields, $text, $javascript, $order, null, 'tabs/member_account/edit/delete');
     }

@@ -75,13 +75,13 @@ class Hook_fields_date
     {
         $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
         if ($range_search) {
-            $_from = get_input_date('option_' . strval($field['id']) . '_from', true, false);
+            $_from = post_param_date('option_' . strval($field['id']) . '_from', true, false);
             $from = '';
             if (!is_null($_from)) {
                 $from = date('Y-m-d H:i', $_from);
             }
 
-            $_to = get_input_date('option_' . strval($field['id']) . '_to', true, false);
+            $_to = post_param_date('option_' . strval($field['id']) . '_to', true, false);
             $to = '';
             if (!is_null($_to)) {
                 $to = date('Y-m-d H:i', $_to);
@@ -90,7 +90,7 @@ class Hook_fields_date
             return $from . ';' . $to;
         }
 
-        $filter = get_input_date('option_' . strval($field['id']), true);
+        $filter = post_param_date('option_' . strval($field['id']), true);
         return is_null($filter) ? '' : date('Y-m-d H:i', $filter);
     }
 
@@ -121,7 +121,7 @@ class Hook_fields_date
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -130,7 +130,7 @@ class Hook_fields_date
         }
 
         if ($ev != '') {
-            if (strpos(strtolower($ev), 'now') !== false) {
+            if (stripos($ev, 'now') !== false) {
                 $time = time();
             } else {
                 // Y-m-d H:i
@@ -171,7 +171,7 @@ class Hook_fields_date
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
      * @param  boolean $new Whether this is for a new entry
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
@@ -205,14 +205,15 @@ class Hook_fields_date
             $time = array(intval($time_bits[1]), intval($time_bits[0]), intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
         }
         /*
-        $min_year=1902; // 1902 is based on signed integer limit
-        $max_year=2037; // 2037 is based on signed integer limit
-        $years_to_show=$max_year-$min_year;
+        $min_year = 1902; // 1902 is based on signed integer limit
+        $max_year = 2037; // 2037 is based on signed integer limit
+        $years_to_show = $max_year - $min_year;
         ^^^ NONSENSE: Integers not used to save!
         */
         $min_year = intval(option_value_from_field_array($field, 'min_year', strval(intval(date('Y')) - 10)));
         $years_to_show = intval(option_value_from_field_array($field, 'max_year', strval(intval(date('Y')) + 10))) - $min_year;
-        return form_input_date($_cf_name, $_cf_description, 'field_' . strval($field['id']), $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($actual_value == ''), true, $time, $years_to_show, $min_year);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_date($_cf_name, $_cf_description, $input_name, $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($actual_value == ''), true, $time, $years_to_show, $min_year);
     }
 
     /**
@@ -220,7 +221,7 @@ class Hook_fields_date
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */
@@ -230,7 +231,7 @@ class Hook_fields_date
         $stub = 'field_' . strval($id);
 
         require_code('temporal2');
-        list($year, $month, $day, $hour, $minute) = get_input_date_components($stub);
+        list($year, $month, $day, $hour, $minute) = post_param_date_components($stub);
         if (is_null($year)) {
             return $editing ? STRING_MAGIC_NULL : '';
         }

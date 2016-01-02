@@ -50,7 +50,7 @@ class Module_cms_blogs extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -59,7 +59,7 @@ class Module_cms_blogs extends Standard_crud_module
             'browse' => array('MANAGE_BLOGS', 'tabs/member_account/blog'),
         );
         $ret += parent::get_entry_points();
-        $ret = array(
+        $ret += array(
             'import_wordpress' => array('IMPORT_WORDPRESS', 'menu/_generic_admin/import'),
         );
         return $ret;
@@ -72,7 +72,7 @@ class Module_cms_blogs extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -105,7 +105,7 @@ class Module_cms_blogs extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -135,7 +135,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -219,7 +219,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -228,7 +228,7 @@ class Module_cms_blogs extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a news adding/editing form.
+     * Get Tempcode for a news adding/editing form.
      *
      * @param  ?AUTO_LINK $id The news ID (null: new)
      * @param  ?AUTO_LINK $main_news_category The primary category for the news (null: personal)
@@ -295,7 +295,7 @@ class Module_cms_blogs extends Standard_crud_module
         }
         if (has_some_cat_privilege(get_member(), 'bypass_validation_' . $this->permissions_require . 'range_content', 'cms_news', $this->permissions_cat_require)) {
             if (addon_installed('unvalidated')) {
-                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'news'), 'validated', $validated == 1));
             }
         }
         if ($cats1->is_empty()) {
@@ -312,7 +312,7 @@ class Module_cms_blogs extends Standard_crud_module
             $fields2->attach(form_input_hidden('main_news_category', is_null($main_news_category) ? 'personal' : strval($main_news_category)));
         }
         if (get_option('enable_secondary_news') == '1') {
-            $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES'), 'news_category', $cats2));
+            $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES', 'news'), 'news_category', $cats2));
         }
 
         $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'newscats', false, $image));
@@ -322,7 +322,7 @@ class Module_cms_blogs extends Standard_crud_module
         }
 
         require_code('feedback2');
-        $fields2->attach(feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2));
+        $fields2->attach(feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2));
 
         require_code('seo2');
         $fields2->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id)));
@@ -358,7 +358,7 @@ class Module_cms_blogs extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }
         return strval($temp);
     }
@@ -377,7 +377,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }
         $myrow = $rows[0];
 
@@ -447,7 +447,7 @@ class Module_cms_blogs extends Standard_crud_module
         require_code('themes2');
         $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && (!is_null($schedule)) && ($schedule > time())) {
             $validated = 0;
         } else {
@@ -464,6 +464,8 @@ class Module_cms_blogs extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('news', null);
 
         $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $url);
+
+        set_url_moniker('news', strval($id));
 
         $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'news_category', array('id' => $id));
         $this->donext_type = $main_news_category;
@@ -537,7 +539,7 @@ class Module_cms_blogs extends Standard_crud_module
             check_privilege('can_submit_to_others_categories', array('news', $main_news_category), null, 'cms_news');
         }
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
             require_code('calendar2');
@@ -578,7 +580,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news', strval($id));
 
-        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], true);
+        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], null, true);
     }
 
     /**
@@ -596,10 +598,10 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The do-next manager for after news content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id = null)
     {
@@ -627,7 +629,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The UI to import news
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_wordpress()
     {
@@ -693,7 +695,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The actualiser to import a wordpress blog
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import_wordpress()
     {

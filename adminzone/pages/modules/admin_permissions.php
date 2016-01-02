@@ -92,7 +92,7 @@ class Module_admin_permissions
             $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
             foreach ($usergroups as $id => $name) {
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => '', 'group_id' => $id));
-                //$GLOBALS['SITE_DB']->query_insert('group_zone_access',array('zone_name'=>'docs','group_id'=>$id)); Docs are admin only now
+                //$GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'docs', 'group_id' => $id)); Docs are admin only now
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'forum', 'group_id' => $id));
                 if ($id != $guest_groups[0]) {
                     $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'site', 'group_id' => $id));
@@ -144,6 +144,15 @@ class Module_admin_permissions
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             add_privilege('SUBMISSION', 'unfiltered_input', false);
         }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+            rename_privilege('bypass_word_filter', 'bypass_wordfilter');
+
+            delete_privilege('view_revision_history');
+            delete_privilege('view_content_history');
+            delete_privilege('restore_content_history');
+            delete_privilege('delete_content_history');
+        }
     }
 
     /**
@@ -152,7 +161,7 @@ class Module_admin_permissions
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -183,7 +192,7 @@ class Module_admin_permissions
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -213,9 +222,9 @@ class Module_admin_permissions
                 $this->title = get_screen_title('PRIVILEGES');
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:privileges', do_lang_tempcode('PRIVILEGES'))));
+                breadcrumb_set_self(do_lang_tempcode($p_section));
 
                 $this->title = get_screen_title('_PRIVILEGES', true, array(do_lang_tempcode($p_section)));
-                breadcrumb_set_self($p_section);
             }
         }
 
@@ -226,6 +235,7 @@ class Module_admin_permissions
             }
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:privileges', do_lang_tempcode('PRIVILEGES'))));
+            breadcrumb_set_self(do_lang_tempcode($p_section));
 
             $this->title = get_screen_title('PRIVILEGES');
         }
@@ -278,13 +288,14 @@ class Module_admin_permissions
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(60);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(60);
         }
+        send_http_output_ping();
 
         require_css('permissions_editor');
         require_css('forms');
@@ -327,7 +338,7 @@ class Module_admin_permissions
     /**
      * The UI to absorb usergroup permissions.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function absorb()
     {
@@ -373,7 +384,7 @@ class Module_admin_permissions
     /**
      * The actualiser to absorb usergroup permissions.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _absorb()
     {
@@ -395,7 +406,7 @@ class Module_admin_permissions
     /**
      * The UI to for the permissions-tree-editor (advanced substitute for the combination of the page permissions screen and various other structure/content-attached screens).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function tree_editor()
     {
@@ -447,7 +458,7 @@ class Module_admin_permissions
      *
      * @param  array $admin_groups List of admin usergroups
      * @param  array $groups Map of usergroups (id=>name)
-     * @return tempcode The header row
+     * @return Tempcode The header row
      */
     public function _access_header($admin_groups, $groups)
     {
@@ -483,8 +494,8 @@ class Module_admin_permissions
     /**
      * The UI to choose a zone to edit permissions for pages in.
      *
-     * @param  tempcode $title The title to use (output of get_screen_title)
-     * @return tempcode The UI
+     * @param  Tempcode $title The title to use (output of get_screen_title)
+     * @return Tempcode The UI
      */
     public function _choose_zone($title)
     {
@@ -493,8 +504,8 @@ class Module_admin_permissions
         require_lang('zones');
 
         require_code('zones3');
-        $zones = create_selection_list_zones();
-        $fields->attach(form_input_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
+        $zones = create_selection_list_zones(null, null, array('', 'site'));
+        $fields->attach(form_input_huge_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
 
         $post_url = get_self_url(false, false, null, false, true);
 
@@ -504,7 +515,7 @@ class Module_admin_permissions
     /**
      * The UI to set match-keys access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_match_keys_access()
     {
@@ -546,8 +557,7 @@ class Module_admin_permissions
 
                 $has_not_restriction = !in_array($gid, $access_rows);
 
-                $cells->attach(do_template('PERMISSION_CELL', array('_GUID' => '3d5fe8c61007d9665111fc9536f6ddf0', 'CHECKED' => !$has_not_restriction, 'HUMAN' => do_lang_tempcode('RESTRICTION_CELL',/*$zone.'__'.*/
-                    escape_html($page['page_name']), escape_html($g_name)), 'NAME' => 'p_' . strval($id) . '__' . strval($gid))));
+                $cells->attach(do_template('PERMISSION_CELL', array('_GUID' => '3d5fe8c61007d9665111fc9536f6ddf0', 'CHECKED' => !$has_not_restriction, 'HUMAN' => do_lang_tempcode('RESTRICTION_CELL', /*$zone.'__'.*/escape_html($page['page_name']), escape_html($g_name)), 'NAME' => 'p_' . strval($id) . '__' . strval($gid))));
                 $code .= 'form.elements[\'' . 'p_' . strval($id) . '__' . strval($gid) . '\'].checked=this.value==\'+\';';
             }
 
@@ -577,7 +587,7 @@ class Module_admin_permissions
     /**
      * The actualiser to set match-key access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_match_keys_access()
     {
@@ -638,7 +648,7 @@ class Module_admin_permissions
     /**
      * The UI to set page access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_page_access()
     {
@@ -705,7 +715,7 @@ class Module_admin_permissions
     /**
      * The actualiser to set page access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_page_access()
     {
@@ -778,7 +788,7 @@ class Module_admin_permissions
     /**
      * The UI to set privileges.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_privileges()
     {
@@ -979,13 +989,13 @@ class Module_admin_permissions
     /**
      * The actualiser to set privileges.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_privileges()
     {
         require_all_lang();
 
-        if ((count($_POST) == 0) && (strtolower(cms_srv('REQUEST_METHOD')) != 'post')) {
+        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             warn_exit(do_lang_tempcode('PERMISSION_TRAGEDY_PREVENTED'));
         }
 

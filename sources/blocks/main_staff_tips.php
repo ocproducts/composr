@@ -67,7 +67,7 @@ class Block_main_staff_tips
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -101,7 +101,7 @@ class Block_main_staff_tips
                             get_brand_page_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_template' => 'general_feedback', 'cost' => 'free'), 'site'),
                             brand_name(),
                             array(
-                                get_brand_page_url(array('page' => 'commercial_support'), 'site'),
+                                get_brand_page_url(array('page' => 'professional_support'), 'site'),
                                 get_brand_page_url(array('page' => ''), 'forum')
                             )
                         );

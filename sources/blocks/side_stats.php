@@ -43,11 +43,11 @@ class Block_side_stats
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '';
@@ -59,7 +59,7 @@ class Block_side_stats
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -90,7 +90,7 @@ class Block_side_stats
                     'VALUE' => integer_format($on_forum),
                 )));
             }
-            $title = do_lang_tempcode('SECTION_USERS');
+            $title = do_lang_tempcode('USERS_ONLINE');
         } else {
             if (get_option('activity_show_stats_count_users_online') == '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
@@ -143,7 +143,7 @@ class Block_side_stats
         }
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/blocks/side_stats/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_stats_' . filter_naughty_harsh($hook), true);
+            $object = object_factory('Hook_' . filter_naughty_harsh($hook), true);
             if (is_null($object)) {
                 continue;
             }

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__themewizard()
 {
@@ -164,9 +166,6 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         if (!is_file($css_path)) {
             $css_path = get_file_base() . '/themes/default/css/global.css';
         }
-        if (!is_file($css_path)) {
-            return '426aa9'; // Not ideal, but default theme is this
-        }
         $css_file_contents = file_get_contents($css_path);
         $matches = array();
         if (preg_match('#\{\$THEME\_WIZARD\_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
@@ -174,9 +173,12 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         } else {
             /*if ($no_easy_anchor)
             {
-                    Ideally we would put some auto-detection code here
+                   We could put some auto-detection code here; possibly a future improvement but not needed currently.
             } else {*/
-            $THEME_SEED_CACHE[$theme] = '426aa9'; // Not ideal, but default theme is this
+            if ($theme == 'default') {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            $THEME_SEED_CACHE[$theme] = find_theme_seed('default');
             //}
         }
     } else {
@@ -454,7 +456,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
             foreach ($THEME_WIZARD_IMAGES as $expression) {
                 if (substr($expression, -1) == '*') {
                     $expression = substr($expression, 0, strlen($expression) - 2); // remove "/*"
-                    $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/' . filter_naughty($source_theme) . '/default/images', $expression)));
+                    $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/images', $expression)));
                     $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/images/' . fallback_lang(), $expression)));
                 } else {
                     $full_img_set[] = $expression;
@@ -630,11 +632,18 @@ function themewizard_script()
             header('Location: ' . find_theme_image($show));
             exit();
         }
+
         header('Content-type: image/png');
         require_code('images_png');
-        _png_compress($image);
-        imagepng($image);
+        $saveat = cms_tempnam('themegen');
+        @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
         imagedestroy($image);
+        fix_permissions($saveat);
+        sync_file($saveat);
+        require_code('images_png');
+        png_compress($saveat);
+        readfile($saveat);
+        @unlink($saveat);
     }
 }
 
@@ -788,7 +797,7 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                         $img = generate_recoloured_image($path, '#12467A', $colours['a.hover'], '#0A223D', $colours['a.hover__dark']);
                     } elseif (in_array($show, array('cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect'))) {
                         $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#549B8C', $colours['cnsredirectindicator']);
-                    } elseif (in_array($show, array('cns_general/redirect', 'cns_general/redirect', 'cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect', 'cns_general/no_new_posts', 'cns_general/new_posts'))) {
+                    } elseif (in_array($show, array('cns_general/redirect', 'cns_general/redirect', 'cns_general/no_new_posts', 'cns_general/new_posts'))) {
                         $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#5A84C4', $colours['cnspostindicator']);
                     } else { // These are less special... we just change the hue
                         $img = re_hue_image($path, $seed, $source_theme);
@@ -820,8 +829,20 @@ function calculate_dynamic_css_colours($colours, $source_theme)
 
     require_lang('themes');
 
-    // First we build up our landscape
+    // Initialise landscape
     $landscape = array();
+    foreach ($colours as $key => $val) {
+        if (preg_match('#^[0-9a-f]{6}$#i', $val) != 0) {
+            $landscape[$key] = array(
+                $key, // Colour name
+                null, // Parsed expression
+                null, // Full match string
+                $val // Final colour
+            );
+        }
+    }
+
+    // First we build up our landscape
     while (($sheet = readdir($dh)) !== false) {
         if (substr($sheet, -4) == '.css') {
             $path = get_file_base() . '/themes/' . $theme . '/' . $css_dir . '/' . $sheet;
@@ -831,7 +852,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
             $num_matches = preg_match_all('#\{\$THEME_WIZARD_COLOR,(.*),(.*),(.*)\}#', $contents, $matches);
 
             for ($i = 0; $i < $num_matches; $i++) {
-                // Skip over our little stored hints (not intended for Composr)
+                // Skip over our little stored hints (not intended for calculation, comes with new seed)
                 if (in_array($matches[2][$i], array('seed', 'WB', 'BW'))) {
                     continue;
                 }
@@ -855,7 +876,9 @@ function calculate_dynamic_css_colours($colours, $source_theme)
     $safety_count = 0;
     while (count($landscape) != 0) {
         foreach ($landscape as $i => $peak) {
-            $peak[3] = execute_css_colour_expression($peak[1], $colours);
+            if (is_null($peak[3])) {
+                $peak[3] = execute_css_colour_expression($peak[1], $colours);
+            }
             if (!is_null($peak[3])) { // We were able to get a result
                 $resolved_landscaped[] = $peak;
                 unset($landscape[$i]);
@@ -908,6 +931,8 @@ function parse_css_colour_expression($textual)
  *
  * @param  array $tokens Tokens.
  * @return ?array Expression tree (null: error).
+ *
+ * @ignore
  */
 function _parse_css_colour_expression($tokens)
 {
@@ -1312,17 +1337,19 @@ function theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algo
         return $contents;
     }
     foreach ($landscape as $peak) {
-        $from = $peak[2];
-        $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
-        $contents = str_replace($from, $to, $contents);
+        if (!is_null($peak[2])) {
+            $from = $peak[2];
+            $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
+            $contents = str_ireplace($from, $to, $contents);
+        } else {
+            $to = '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',' . $peak[0] . ',100% ' . $peak[3] . '}';
+            $contents = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},' . $peak[0] . ',100% [\da-fA-F]{6}\}#i', $to, $contents);
+        }
     }
 
-    // Some hints not calculates by equations need separate replacements
+    // Some hints not calculated by equations need separate replacements
     $contents = str_replace('/* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#94979d,seed,100% 94979D}' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}' . "\n", '', $contents);
-    $contents = str_replace('/*Theme seed is: 94979D*/', '/*Theme seed is: ' . $seed . '*/', $contents);
+    $contents = str_ireplace('/*Theme seed is: ' . find_theme_seed('default') . '*/', '/*Theme seed is: ' . $seed . '*/', $contents);
 
     return $contents;
 }
@@ -1480,9 +1507,9 @@ function generate_gradient($top, $bottom)
  */
 function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour_b1_orig, $colour_b1_new, $colour_b2_orig = null, $colour_b2_new = null, $gradient_direction = 'vertical', $pixel_x_start_array = null, $gradient_offset = 0, $end_array = false)
 {
-    /*$colour_a_new=$colour_a_orig;  For testing: a null conversion
-    $colour_b1_new=$colour_b1_orig;
-    $colour_b2_new=$colour_b2_orig;*/
+    /*$colour_a_new = $colour_a_orig;  For testing: a null conversion
+    $colour_b1_new = $colour_b1_orig;
+    $colour_b2_new = $colour_b2_orig;*/
 
     $colour_a_orig = str_replace('#', '', $colour_a_orig);
     $colour_b1_orig = str_replace('#', '', $colour_b1_orig);
@@ -1535,18 +1562,24 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         if (function_exists('imagecreatetruecolor')) {
             if (!imageistruecolor($_image)) {
                 $image = imagecreatetruecolor($width, $height);
+                imagealphablending($image, false);
+                imagesavealpha($image, true);
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;
+                imagealphablending($image, false);
+                imagesavealpha($image, true);
             }
         } else {
             $image = $_image;
+            imagealphablending($image, false);
+            imagesavealpha($image, true);
         }
     } else {
         $image = $_image;
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
     }
-    imagealphablending($image, false);
-    imagesavealpha($image, true);
 
     if (is_null($colour_b2_new)) {
         $colour_b_orig_r = $colour_b1_orig_r;

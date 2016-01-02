@@ -87,7 +87,7 @@ class Hook_addon_registry_webdav
      */
     public function get_description()
     {
-        return 'Access your website repository as a folder on your computer. See the [page=\"docs:tut_repository\"]Repository Tutorial[/page] for more information.';
+        return 'Access your website repository as a folder on your computer. See the [page="docs:tut_repository"]Repository Tutorial[/page] for more information.';
     }
 
     /**
@@ -135,7 +135,7 @@ class Hook_addon_registry_webdav
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/TODO.php',
+            'sources_custom/hooks/systems/addon_registry/webdav.php',
             'sources_custom/sabredav/lib/Sabre/autoload.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/AbstractBasic.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/AbstractDigest.php',
@@ -144,6 +144,7 @@ class Hook_addon_registry_webdav
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/File.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/PDO.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Plugin.php',
+            'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VTodo.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/favicon.ico',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/icons/addressbook.png',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/icons/calendar.png',
@@ -274,7 +275,6 @@ class Hook_addon_registry_webdav
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VEvent.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VFreeBusy.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VJournal.php',
-            'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/Vwebdav.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/DateTimeParser.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Document.php',
@@ -304,7 +304,7 @@ class Hook_addon_registry_webdav
             'data_custom/modules/webdav/locks/index.html',
             'data_custom/modules/webdav/locks/locks.dat',
             'data_custom/modules/webdav/tmp/index.html',
-            'sources_custom/webdav_commandrfs.php',
+            'sources_custom/webdav_commandr_fs.php',
         );
     }
 }

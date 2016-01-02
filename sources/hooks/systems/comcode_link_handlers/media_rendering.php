@@ -15,11 +15,6 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- */
-
-/**
- * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright  ocProducts Ltd
  * @package    core_rich_media
  */
 
@@ -33,7 +28,7 @@ class Hook_comcode_link_handler_media_rendering
      *
      * @param  URLPATH $url Link to use or reject
      * @param  boolean $comcode_dangerous Whether we are allowed to proceed even if this tag is marked as 'dangerous'
-     * @param  string $pass_id A special identifier to mark where the resultant tempcode is going to end up (e.g. the ID of a post)
+     * @param  string $pass_id A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)
      * @param  integer $pos The position this tag occurred at in the Comcode
      * @param  MEMBER $source_member The member who is responsible for this Comcode
      * @param  boolean $as_admin Whether to check as arbitrary admin
@@ -42,11 +37,12 @@ class Hook_comcode_link_handler_media_rendering
      * @param  boolean $structure_sweep Whether this is only a structure sweep
      * @param  boolean $semiparse_mode Whether we are in semi-parse-mode (some tags might convert differently)
      * @param  ?array $highlight_bits A list of words to highlight (null: none)
-     * @return ?tempcode Handled link (null: reject due to inappropriate link pattern)
+     * @return ?Tempcode Handled link (null: reject due to inappropriate link pattern)
      */
     public function bind($url, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits)
     {
         require_code('media_renderer');
-        return render_media_url($url, $url, array('context' => 'comcode_link'), $as_admin, $source_member);
+        $ret = render_media_url($url, $url, array('context' => 'comcode_link', 'likely_not_framed' => '1'), $as_admin, $source_member);
+        return $ret;
     }
 }

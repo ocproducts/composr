@@ -32,9 +32,9 @@ class Hook_resource_meta_aware_aggregate_type_instance
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
-            'content_type_label' => 'AGGREGATE_TYPE_INSTANCES',
+            'content_type_label' => 'aggregate_type_instances:AGGREGATE_TYPE_INSTANCE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'aggregate_type_instances',
@@ -53,6 +53,9 @@ class Hook_resource_meta_aware_aggregate_type_instance
 
             'title_field' => 'aggregate_label',
             'title_field_dereference' => false,
+            'description_field' => null,
+            'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_aggregate_types:_edit:_WILD',
@@ -63,7 +66,9 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => 'add_time',
             'edit_time_field' => 'edit_time',
             'date_field' => 'add_time',
@@ -73,9 +78,14 @@ class Hook_resource_meta_aware_aggregate_type_instance
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'aggregate_types',
 
@@ -85,7 +95,11 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'commandr_filesystem_hook' => 'aggregate_type_instances',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_AGGREGATE_TYPE_INSTANCE',
         );

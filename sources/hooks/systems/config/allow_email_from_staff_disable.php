@@ -50,6 +50,6 @@ class Hook_config_allow_email_from_staff_disable
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

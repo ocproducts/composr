@@ -50,6 +50,6 @@ class Hook_config_gallery_media_title_required
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

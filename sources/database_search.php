@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database_search()
 {
@@ -33,6 +35,561 @@ function init__database_search()
     } else {
         define('MAXIMUM_RESULT_COUNT_POINT', intval($maximum_result_count_point));
     }
+}
+
+/**
+ * Get a list of MySQL stopwords.
+ *
+ * @return array List of stopwords (actually a map of stopword to true)
+ */
+function get_stopwords_list()
+{
+    // Hard-coded from MySQL manual (https://dev.mysql.com/doc/refman/5.5/en/fulltext-stopwords.html). No way to read it dynamically.
+    return array(
+        'a\'s' => true,
+        'able' => true,
+        'about' => true,
+        'above' => true,
+        'according' => true,
+        'accordingly' => true,
+        'across' => true,
+        'actually' => true,
+        'after' => true,
+        'afterwards' => true,
+        'again' => true,
+        'against' => true,
+        'ain\'t' => true,
+        'all' => true,
+        'allow' => true,
+        'allows' => true,
+        'almost' => true,
+        'alone' => true,
+        'along' => true,
+        'already' => true,
+        'also' => true,
+        'although' => true,
+        'always' => true,
+        'am' => true,
+        'among' => true,
+        'amongst' => true,
+        'an' => true,
+        'and' => true,
+        'another' => true,
+        'any' => true,
+        'anybody' => true,
+        'anyhow' => true,
+        'anyone' => true,
+        'anything' => true,
+        'anyway' => true,
+        'anyways' => true,
+        'anywhere' => true,
+        'apart' => true,
+        'appear' => true,
+        'appreciate' => true,
+        'appropriate' => true,
+        'are' => true,
+        'aren\'t' => true,
+        'around' => true,
+        'as' => true,
+        'aside' => true,
+        'ask' => true,
+        'asking' => true,
+        'associated' => true,
+        'at' => true,
+        'available' => true,
+        'away' => true,
+        'awfully' => true,
+        'be' => true,
+        'became' => true,
+        'because' => true,
+        'become' => true,
+        'becomes' => true,
+        'becoming' => true,
+        'been' => true,
+        'before' => true,
+        'beforehand' => true,
+        'behind' => true,
+        'being' => true,
+        'believe' => true,
+        'below' => true,
+        'beside' => true,
+        'besides' => true,
+        'best' => true, // Could be a surname, hence issue
+        'better' => true,
+        'between' => true,
+        'beyond' => true,
+        'both' => true,
+        'brief' => true,
+        'but' => true,
+        'by' => true,
+        'c\'mon' => true,
+        'c\'s' => true,
+        'came' => true,
+        'can' => true,
+        'can\'t' => true,
+        'cannot' => true,
+        'cant' => true,
+        'cause' => true,
+        'causes' => true,
+        'certain' => true,
+        'certainly' => true,
+        'changes' => true,
+        'clearly' => true,
+        'co' => true,
+        'com' => true,
+        'come' => true,
+        'comes' => true,
+        'concerning' => true,
+        'consequently' => true,
+        'consider' => true,
+        'considering' => true,
+        'contain' => true,
+        'containing' => true,
+        'contains' => true,
+        'corresponding' => true,
+        'could' => true,
+        'couldn\'t' => true,
+        'course' => true,
+        'currently' => true,
+        'definitely' => true,
+        'described' => true,
+        'despite' => true,
+        'did' => true,
+        'didn\'t' => true,
+        'different' => true,
+        'do' => true,
+        'does' => true,
+        'doesn\'t' => true,
+        'doing' => true,
+        'don\'t' => true,
+        'done' => true,
+        'down' => true,
+        'downwards' => true,
+        'during' => true,
+        'each' => true,
+        'edu' => true,
+        'eg' => true,
+        'eight' => true,
+        'either' => true,
+        'else' => true,
+        'elsewhere' => true,
+        'enough' => true,
+        'entirely' => true,
+        'especially' => true,
+        'et' => true,
+        'etc' => true,
+        'even' => true,
+        'ever' => true,
+        'every' => true,
+        'everybody' => true,
+        'everyone' => true,
+        'everything' => true,
+        'everywhere' => true,
+        'ex' => true,
+        'exactly' => true,
+        'example' => true,
+        'except' => true,
+        'far' => true,
+        'few' => true,
+        'fifth' => true,
+        'first' => true,
+        'five' => true,
+        'followed' => true,
+        'following' => true,
+        'follows' => true,
+        'for' => true,
+        'former' => true,
+        'formerly' => true,
+        'forth' => true,
+        'four' => true,
+        'from' => true,
+        'further' => true,
+        'furthermore' => true,
+        'get' => true,
+        'gets' => true,
+        'getting' => true,
+        'given' => true,
+        'gives' => true,
+        'go' => true,
+        'goes' => true,
+        'going' => true,
+        'gone' => true,
+        'got' => true,
+        'gotten' => true,
+        'greetings' => true,
+        'had' => true,
+        'hadn\'t' => true,
+        'happens' => true,
+        'hardly' => true,
+        'has' => true,
+        'hasn\'t' => true,
+        'have' => true,
+        'haven\'t' => true,
+        'having' => true,
+        'he' => true,
+        'he\'s' => true,
+        'hello' => true,
+        'help' => true,
+        'hence' => true,
+        'her' => true,
+        'here' => true,
+        'here\'s' => true,
+        'hereafter' => true,
+        'hereby' => true,
+        'herein' => true,
+        'hereupon' => true,
+        'hers' => true,
+        'herself' => true,
+        'hi' => true,
+        'him' => true,
+        'himself' => true,
+        'his' => true,
+        'hither' => true,
+        'hopefully' => true,
+        'how' => true,
+        'howbeit' => true,
+        'however' => true,
+        'i\'d' => true,
+        'i\'ll' => true,
+        'i\'m' => true,
+        'i\'ve' => true,
+        'ie' => true,
+        'if' => true,
+        'ignored' => true,
+        'immediate' => true,
+        'in' => true,
+        'inasmuch' => true,
+        'inc' => true,
+        'indeed' => true,
+        'indicate' => true,
+        'indicated' => true,
+        'indicates' => true,
+        'inner' => true,
+        'insofar' => true,
+        'instead' => true,
+        'into' => true,
+        'inward' => true,
+        'is' => true,
+        'isn\'t' => true,
+        'it' => true,
+        'it\'d' => true,
+        'it\'ll' => true,
+        'it\'s' => true,
+        'its' => true,
+        'itself' => true,
+        'just' => true,
+        'keep' => true,
+        'keeps' => true,
+        'kept' => true,
+        'know' => true,
+        'known' => true,
+        'knows' => true,
+        'last' => true,
+        'lately' => true,
+        'later' => true,
+        'latter' => true,
+        'latterly' => true,
+        'least' => true,
+        'less' => true,
+        'lest' => true,
+        'let' => true,
+        'let\'s' => true,
+        'like' => true,
+        'liked' => true,
+        'likely' => true,
+        'little' => true,
+        'look' => true,
+        'looking' => true,
+        'looks' => true,
+        'ltd' => true,
+        'mainly' => true,
+        'many' => true,
+        'may' => true,
+        'maybe' => true,
+        'me' => true,
+        'mean' => true,
+        'meanwhile' => true,
+        'merely' => true,
+        'might' => true,
+        'more' => true,
+        'moreover' => true,
+        'most' => true,
+        'mostly' => true,
+        'much' => true,
+        'must' => true,
+        'my' => true,
+        'myself' => true,
+        'name' => true,
+        'namely' => true,
+        'nd' => true,
+        'near' => true,
+        'nearly' => true,
+        'necessary' => true,
+        'need' => true,
+        'needs' => true,
+        'neither' => true,
+        'never' => true,
+        'nevertheless' => true,
+        'new' => true,
+        'next' => true,
+        'nine' => true,
+        'no' => true,
+        'nobody' => true,
+        'non' => true,
+        'none' => true,
+        'noone' => true,
+        'nor' => true,
+        'normally' => true,
+        'not' => true,
+        'nothing' => true,
+        'novel' => true,
+        'now' => true,
+        'nowhere' => true,
+        'obviously' => true,
+        'of' => true,
+        'off' => true,
+        'often' => true,
+        'oh' => true,
+        'ok' => true,
+        'okay' => true,
+        'old' => true,
+        'on' => true,
+        'once' => true,
+        'one' => true,
+        'ones' => true,
+        'only' => true,
+        'onto' => true,
+        'or' => true,
+        'other' => true,
+        'others' => true,
+        'otherwise' => true,
+        'ought' => true,
+        'our' => true,
+        'ours' => true,
+        'ourselves' => true,
+        'out' => true,
+        'outside' => true,
+        'over' => true,
+        'overall' => true,
+        'own' => true,
+        'particular' => true,
+        'particularly' => true,
+        'per' => true,
+        'perhaps' => true,
+        'placed' => true,
+        'please' => true,
+        'plus' => true,
+        'possible' => true,
+        'presumably' => true,
+        'probably' => true,
+        'provides' => true,
+        'que' => true,
+        'quite' => true,
+        'qv' => true,
+        'rather' => true,
+        'rd' => true,
+        're' => true,
+        'really' => true,
+        'reasonably' => true,
+        'regarding' => true,
+        'regardless' => true,
+        'regards' => true,
+        'relatively' => true,
+        'respectively' => true,
+        'right' => true,
+        'said' => true,
+        'same' => true,
+        'saw' => true,
+        'say' => true,
+        'saying' => true,
+        'says' => true,
+        'second' => true,
+        'secondly' => true,
+        'see' => true,
+        'seeing' => true,
+        'seem' => true,
+        'seemed' => true,
+        'seeming' => true,
+        'seems' => true,
+        'seen' => true,
+        'self' => true,
+        'selves' => true,
+        'sensible' => true,
+        'sent' => true,
+        'serious' => true,
+        'seriously' => true,
+        'seven' => true,
+        'several' => true,
+        'shall' => true,
+        'she' => true,
+        'should' => true,
+        'shouldn\'t' => true,
+        'since' => true,
+        'six' => true,
+        'so' => true,
+        'some' => true,
+        'somebody' => true,
+        'somehow' => true,
+        'someone' => true,
+        'something' => true,
+        'sometime' => true,
+        'sometimes' => true,
+        'somewhat' => true,
+        'somewhere' => true,
+        'soon' => true,
+        'sorry' => true,
+        'specified' => true,
+        'specify' => true,
+        'specifying' => true,
+        'still' => true,
+        'sub' => true,
+        'such' => true,
+        'sup' => true,
+        'sure' => true,
+        't\'s' => true,
+        'take' => true,
+        'taken' => true,
+        'tell' => true,
+        'tends' => true,
+        'th' => true,
+        'than' => true,
+        'thank' => true,
+        'thanks' => true,
+        'thanx' => true,
+        'that' => true,
+        'that\'s' => true,
+        'thats' => true,
+        'the' => true,
+        'their' => true,
+        'theirs' => true,
+        'them' => true,
+        'themselves' => true,
+        'then' => true,
+        'thence' => true,
+        'there' => true,
+        'there\'s' => true,
+        'thereafter' => true,
+        'thereby' => true,
+        'therefore' => true,
+        'therein' => true,
+        'theres' => true,
+        'thereupon' => true,
+        'these' => true,
+        'they' => true,
+        'they\'d' => true,
+        'they\'ll' => true,
+        'they\'re' => true,
+        'they\'ve' => true,
+        'think' => true,
+        'third' => true,
+        'this' => true,
+        'thorough' => true,
+        'thoroughly' => true,
+        'those' => true,
+        'though' => true,
+        'three' => true,
+        'through' => true,
+        'throughout' => true,
+        'thru' => true,
+        'thus' => true,
+        'to' => true,
+        'together' => true,
+        'too' => true,
+        'took' => true,
+        'toward' => true,
+        'towards' => true,
+        'tried' => true,
+        'tries' => true,
+        'truly' => true,
+        'try' => true,
+        'trying' => true,
+        'twice' => true,
+        'two' => true,
+        'un' => true,
+        'under' => true,
+        'unfortunately' => true,
+        'unless' => true,
+        'unlikely' => true,
+        'until' => true,
+        'unto' => true,
+        'up' => true,
+        'upon' => true,
+        'us' => true,
+        'use' => true,
+        'used' => true,
+        'useful' => true,
+        'uses' => true,
+        'using' => true,
+        'usually' => true,
+        'value' => true,
+        'various' => true,
+        'very' => true,
+        'via' => true,
+        'viz' => true,
+        'vs' => true,
+        'want' => true,
+        'wants' => true,
+        'was' => true,
+        'wasn\'t' => true,
+        'way' => true,
+        'we' => true,
+        'we\'d' => true,
+        'we\'ll' => true,
+        'we\'re' => true,
+        'we\'ve' => true,
+        'welcome' => true,
+        'well' => true,
+        'went' => true,
+        'were' => true,
+        'weren\'t' => true,
+        'what' => true,
+        'what\'s' => true,
+        'whatever' => true,
+        'when' => true,
+        'whence' => true,
+        'whenever' => true,
+        'where' => true,
+        'where\'s' => true,
+        'whereafter' => true,
+        'whereas' => true,
+        'whereby' => true,
+        'wherein' => true,
+        'whereupon' => true,
+        'wherever' => true,
+        'whether' => true,
+        'which' => true,
+        'while' => true,
+        'whither' => true,
+        'who' => true,
+        'who\'s' => true,
+        'whoever' => true,
+        'whole' => true,
+        'whom' => true,
+        'whose' => true,
+        'why' => true,
+        'will' => true,
+        'willing' => true,
+        'wish' => true,
+        'with' => true,
+        'within' => true,
+        'without' => true,
+        'won\'t' => true,
+        'wonder' => true,
+        'would' => true,
+        'wouldn\'t' => true,
+        'yes' => true,
+        'yet' => true,
+        'you' => true,
+        'you\'d' => true,
+        'you\'ll' => true,
+        'you\'re' => true,
+        'you\'ve' => true,
+        'your' => true,
+        'yours' => true,
+        'yourself' => true,
+        'yourselves' => true,
+        'zero' => true,
+    );
 }
 
 /**
@@ -66,9 +623,9 @@ function generate_text_summary($_temp_summary, $words_searched)
             if (strtoupper($content_bit) == $content_bit) { // all upper case so don't want case sensitive
                 $content_bit_pos = strpos($_temp_summary, $content_bit, $last_pos);
             } else {
-                $content_bit_pos = strpos($_temp_summary_lower, strtolower($content_bit), $last_pos);
+                $content_bit_pos = stripos($_temp_summary_lower, $content_bit, $last_pos);
                 if (strpos($content_bit, '-') !== false) {
-                    $content_bit_pos_2 = strpos($_temp_summary_lower, strtolower(str_replace('-', '', $content_bit)), $last_pos);
+                    $content_bit_pos_2 = strpos($_temp_summary_lower, str_replace('-', '', $content_bit), $last_pos);
                     if (($content_bit_pos_2 !== false) && (($content_bit_pos === false) || ($content_bit_pos_2 < $content_bit_pos))) {
                         $content_bit_pos = $content_bit_pos_2;
                         $content_bit_matched = str_replace('-', '', $content_bit);
@@ -329,7 +886,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
  */
 function exact_match_sql($field, $i, $type = 'short', $param = null)
 {
-    $table = ' JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if (is_null($param)) {
         $param = get_param_string('option_' . strval($field['id']), '');
@@ -357,7 +914,7 @@ function exact_match_sql($field, $i, $type = 'short', $param = null)
  */
 function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
 {
-    $table = ' JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if (is_null($param)) {
         $param = get_param_string('option_' . strval($field['id']), '');
@@ -412,9 +969,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $g_or = _get_where_clause_groups(get_member());
 
         // this destroys mysqls query optimiser by forcing complexed OR's into the join, so we'll do this in PHP code
-        //     $table.=' LEFT JOIN '.$GLOBALS['SITE_DB']->get_table_prefix().'group_category_access z ON ('.db_string_equal_to('z.module_the_name',$permissions_module).' AND z.category_name='.$permissions_field.(($g_or!='')?(' AND '.str_replace('group_id','z.group_id',$g_or)):'').')';
-        //     $where_clause.=' AND ';
-        //     $where_clause.='z.category_name IS NOT NULL';
+        /*$table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', $permissions_module) . ' AND z.category_name=' . $permissions_field . (($g_or != '') ? (' AND ' . str_replace('group_id', 'z.group_id', $g_or)) : '') . ')';
+        $where_clause .= ' AND ';
+        $where_clause .= 'z.category_name IS NOT NULL';*/
 
         $cat_access = list_to_map('category_name', $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, null, false, true));
     }
@@ -431,7 +988,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
-    // This is so for example catalogue_entries.php can use brackets in it's table specifier whilst avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
+    // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {
         $table_clause = '(' . $table_clause;
@@ -638,13 +1195,13 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                 $query .= 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : ' WHERE ' . $where_clause_3);
             }
+            $query .= ($group_by_ok ? ' GROUP BY r.id' : '');
             if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
                 $query .= ' ORDER BY ' . $order;
                 if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
                     $query .= ' DESC';
                 }
             }
-            $query .= ($group_by_ok ? ' GROUP BY r.id' : '');
             $query .= ' LIMIT ' . strval($max + $start);
             $query .= ')';
             // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
@@ -755,6 +1312,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         }
                     }
 
+                    $fields_keys = array_keys($fields);
+
                     $where_clause_or = '';
                     $where_clause_or_fields = '';
                     foreach ($all_fields as $field) {
@@ -762,7 +1321,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             continue;
                         }
 
-                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== key($fields))) {
+                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== $fields_keys[0]) && (!isset($fields_keys[1]) || $fields_keys[0] !== '!' || $field !== $fields_keys[1])) {
                             break;
                         }
 
@@ -794,10 +1353,13 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         $where_clause_or .= preg_replace('#\?#', $where_clause_or_fields, $__where);
                     }
 
-                    if ($where_clause_and != '') {
-                        $where_clause_and .= ' ' . $boolean_operator . ' ';
+                    if ($where_clause_or != '') {
+                        if ($where_clause_and != '') {
+                            $where_clause_and .= ' ' . $boolean_operator . ' ';
+                        }
+
+                        $where_clause_and .= '(' . $where_clause_or . ')';
                     }
-                    $where_clause_and .= '(' . $where_clause_or . ')';
                 }
             }
             if ($disclude_where != '') {
@@ -916,7 +1478,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         } else {
             $results = var_export($t_rows, true);
         }
-        attach_message(do_lang('_RESULTS') . ': ' . $results, 'inform');
+        attach_message(do_lang('COUNT_RESULTS') . ': ' . $results, 'inform');
     }
 
     if (isset($cat_access)) {
@@ -939,6 +1501,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
  *
  * @param  string $search_filter The search string
  * @return array Words to search under the boolean operator, words that must be included, words that must not be included.
+ *
+ * @ignore
  */
 function _boolean_search_prepare($search_filter)
 {
@@ -1215,7 +1779,7 @@ function sort_search_results($hook_results, $results, $direction)
  * @param  string $direction Sort direction
  * @set    ASC DESC
  * @param  boolean $general_search Whether this is a general search, rather than a search for a specific result-type (such as all members)
- * @return tempcode Interface
+ * @return Tempcode Interface
  */
 function build_search_results_interface($results, $start, $max, $direction, $general_search = false)
 {

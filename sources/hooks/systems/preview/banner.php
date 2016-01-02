@@ -30,7 +30,7 @@ class Hook_preview_banner
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_banners') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = (get_page_name() == 'cms_banners') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }
 
@@ -53,7 +53,7 @@ class Hook_preview_banner
         $is_upload = is_plupload() || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
         $_banner_type_rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('*'), array('id' => post_param_string('b_type')), '', 1);
         if (!array_key_exists(0, $_banner_type_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
         }
         $banner_type_row = $_banner_type_rows[0];
         if ($banner_type_row['t_is_textual'] == 0) {
@@ -73,7 +73,7 @@ class Hook_preview_banner
             }
 
             if (strlen($title_text) > $banner_type_row['t_max_file_size']) {
-                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', integer_format(strlen($title_text)), integer_format($banner_type_row['t_max_file_size'])));
+                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', escape_html(integer_format(strlen($title_text))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
             }
         }
 

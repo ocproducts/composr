@@ -95,7 +95,7 @@ function member_password_too_old($member_id)
  * @param  ID_TEXT $username The username this is for
  * @param  string $password New password
  * @param  boolean $return_errors Whether to return errors instead of dieing on them.
- * @return ?tempcode Error (null: none).
+ * @return ?Tempcode Error (null: none).
  */
 function check_password_complexity($username, $password, $return_errors = false)
 {
@@ -103,18 +103,18 @@ function check_password_complexity($username, $password, $return_errors = false)
     $maximum_password_length = intval($_maximum_password_length);
     if (cms_mb_strlen($password) > $maximum_password_length) {
         if ($return_errors) {
-            return do_lang_tempcode('PASSWORD_TOO_LONG', integer_format($maximum_password_length));
+            return do_lang_tempcode('PASSWORD_TOO_LONG', escape_html(integer_format($maximum_password_length)));
         }
-        warn_exit(do_lang_tempcode('PASSWORD_TOO_LONG', integer_format($maximum_password_length)));
+        warn_exit(do_lang_tempcode('PASSWORD_TOO_LONG', escape_html(integer_format($maximum_password_length))));
     }
 
     $_minimum_password_length = get_option('minimum_password_length');
     $minimum_password_length = intval($_minimum_password_length);
     if (cms_mb_strlen($password) < $minimum_password_length) {
         if ($return_errors) {
-            return do_lang_tempcode('PASSWORD_TOO_SHORT', integer_format($minimum_password_length));
+            return do_lang_tempcode('PASSWORD_TOO_SHORT', escape_html(integer_format($minimum_password_length)));
         }
-        warn_exit(do_lang_tempcode('PASSWORD_TOO_SHORT', integer_format($minimum_password_length)));
+        warn_exit(do_lang_tempcode('PASSWORD_TOO_SHORT', escape_html(integer_format($minimum_password_length))));
     }
 
     $_minimum_password_strength = get_option('minimum_password_strength');

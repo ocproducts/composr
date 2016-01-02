@@ -24,10 +24,10 @@
 						</td>
 					</tr>
 					<tr>
-						<th>{!BOOKMARK_FOLDER}</th>
+						<th>{!FOLDER}</th>
 						<td>
 							<div class="constrain_field">
-								<div class="accessibility_hidden"><label for="folder_{ID*}">{!BOOKMARK_FOLDER}</label></div>
+								<div class="accessibility_hidden"><label for="folder_{ID*}">{!FOLDER}</label></div>
 								<input maxlength="80" size="{$?,{$MOBILE},30,50}" disabled="disabled" type="text" id="folder_{ID*}" name="folder" value="{FOLDER*}" />
 							</div>
 						</td>
@@ -70,3 +70,11 @@
 	</div>
 {+END}
 
+{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
+{+START,INCLUDE,STAFF_ACTIONS}
+	1_URL={$PAGE_LINK*,_SELF:_SELF:add}
+	1_TITLE={!ADD_BOOKMARK}
+	1_REL=add
+	1_NOREDIRECT=1
+	1_ICON=menu/_generic_admin/add_one
+{+END}

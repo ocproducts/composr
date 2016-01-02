@@ -1,15 +1,18 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a calendar/diary[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a calendar/diary[/title]
 
 {!calendar:DOC_CALENDAR}
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Events[/title]
+[title="2"]Introduction[/title]
 
-[media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/calendar_add_event.png[/media]
+[surround]
+[media width="150" description="Adding an event type" float="right"]data_custom/images/docs/tut_calendar/calendar_event_types.png[/media]
 Each entry in the calendar is called an 'event'. It is important to understand that an event is not a single point in time, or even a range in time, but rather something that may happen regularly. This is achieved through 'recurrence', which has a particularly powerful implementation in Composr.
 
-For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and render conflicting events in parallel activity streams on the day view interface.
+For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and display conflicting events in parallel activity streams on the day view screen.
+
+[title="2"]Event types[/title]
 
 Event types are used to categorise events. There is a good selection of default event types which have their own icons:
  - Anniversary
@@ -22,16 +25,28 @@ Event types are used to categorise events. There is a good selection of default 
  - System command.
 System commands are a special type, as events added to this define code to be executed (and permissions protect members adding to it by default).
 
-You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under the 'Calendar' icon in the Content Management Zone.
+You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under Content Management > Calendar.
+You can delete an event type from the bottom of its edit form.
+[/surround]
 
-[media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/calendar_view_event.png[/media]
+[title="2"]Adding events[/title]
+
+[surround]
+[media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/tut_calendar/calendar_view_event.png[/media]
+[media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/tut_calendar/calendar_add_event.png[/media]
+Adding and editing events is done from either:
+1) Under Content Management > Calendar
+2) Simply clicking in one of the boxes on the calendar view; this will fill in the date and time automatically for you (although you may wish to adjust that)
+3) Clicking the 'Add Event' button from a calendar view
+
+You can delete an event from the bottom of its edit form.
+
 When you add an event, you may define the following special settings:
  - The event type.
  - The start date and time. This defaults to an arbitrary time in the future. For a recurring event, this is the first time the event happens.
  - The end date and time. This is optional, and should only be set for an event that specifically has an end (many events can be considered points in time).
  - The recurrence type. For example, you can decide that recurrence is on a weekly basis.
- - The recurrence pattern. This is a source of popular confusion, but it is actually a very powerful tool. Significant in-line help is given for this, but basically it allows you to say things like 'this happens every weekday'. In our example, we have allowed the Cricket team to have a week off after every three weeks of practice.[media width="150" description="Adding an event type" float="right"]data_custom/images/docs/calendar_event_types.png[/media]
-
+ - The recurrence pattern. This is a source of popular confusion, but it is actually a very powerful tool. Significant in-line help is given for this, but basically it allows you to say things like 'this happens every weekday'. In our example, we have allowed the Cricket team to have a week off after every three weeks of practice.
  - The number of recurrences. In our example, the Cricket team only practices 25 times (therefore they have around 32 weeks between the start and end of their season, because of the weeks off).
  - Whether the event is public. Private events are generally used if the event is intended (by the event submitter) for a diary-like usage of the calendar system.
  - Priority. This is displayed in the interface, to help make it clear how a calendar user should plan their time.
@@ -40,37 +55,45 @@ When you add an event, you may define the following special settings:
 For monthly events you can also specify a special day-of-week position, from the start or end of the month. For example, the 2nd Tuesday of the month. If you wish to specify something like this, but once a year (e.g. the 2nd Tuesday of April, each year), specify a monthly recurrence with a recurrence pattern of [tt]100000000000[/tt].
 
 A member may remove reminders for events, and also have multiple reminders with different notice times.
+[/surround]
 
 [title="2"]Views[/title]
+
 [surround]
-[media width="150" description="The calendar day view" float="right"]data_custom/images/docs/calendar_view_day.png[/media]
-[media width="150" description="The calendar year view" float="right"]data_custom/images/docs/calendar_view_year.png[/media]
+[media width="150" description="The calendar day view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_day.png[/media]
+[media width="150" description="The calendar week view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_week.png[/media]
+[media width="150" description="The calendar month view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_month.png[/media]
+[media width="150" description="The calendar year view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_year.png[/media]
 The calendar has 5 views:
- - at the top level, you can view a whole year
- - you can view a whole month
- - you can view a whole week
- - you can view a whole day
- - you can view a specific event
+1) at the top level, you can view a whole year
+2) you can view a whole month
+3) you can view a whole week
+4) you can view a whole day
+5) you can view a specific event
+
+The views are a part of the [tt]calendar[/tt] module
+([tt]site:calendar[/tt] page-link,
+Social > Calendar on the default menus).
 [/surround]
+
 [surround]
-[media width="150" description="The calendar week view" float="left"]data_custom/images/docs/calendar_view_week.png[/media]
-[media width="150" description="The calendar month view" float="right"]data_custom/images/docs/calendar_view_month.png[/media]
+[media width="150" description="Calendar interest filtering" float="right"]data_custom/images/docs/tut_calendar/calendar_interests.png[/media]
 The user interface has been very carefully designed so as to allow very quick and easy navigation between these views, allowing you to focus in and out, and move along, from where you are viewing.
 
 The less focused the view, the less detail that is shown. On the year view you not see detail on any specific event happening on a day, but you can see trends and gauge how busy the individual days are. On the month view you can see specific events, but it is less easy to see how a day is time-tabled. On the week view you can can see a full time-table, but you can only see event titles by hovering the mouse. On the day view, you can see parallel activity streams, and actual event details.
 
 The views support filtering of event-types via a series of check-boxes (tick-boxes).
-[/surround]
-[surround]
-[media width="150" description="Calendar interest filtering" float="left"]data_custom/images/docs/calendar_interests.png[/media]
+
 You may also declare your 'interests', which marks you down for auto-reminding for new events of the types you have said you consider interesting.
 
 From the screen-shots of the calendar views you can see how the recurrence pattern causes a gap where for one week in four, there is no shown event.
 [/surround]
-[title="2"]Adding an event[/title]
 
-To add an event, simply click in one of the boxes on the calendar view; this will fill in the date and time automatically for you, although you may wish to adjust them.
-You may also click the 'Add Event' button to add an event, but you will need to fill in more details this way.
+[title="3"]Block[/title]
+
+[surround]
+[media width="150" description="Upcoming events via the listing mode of the [tt]side_calendar[/tt] block" float="right"]data_custom/images/docs/tut_calendar/listing.png[/media]
+The [tt]side_calendar[/tt] block allows embedding of a mini-month view of the calendar, or a listing of upcoming events.
 
 [title="2"]Time-zone issues[/title]
 
@@ -80,26 +103,33 @@ Special temporal events such as 'Daylight saving time', 'Leaps', 'Relativistic e
 
 The Composr calendar is strongly tied to the Gregorian calendar, as well as the yyyy/mm/dd ISO standard for display of dates.
 Changing this is not really viable: the internals of the calendar are extremely complex, as dates and time are inherently extremely complex.
+[/surround][title="2"]Recurrence fixing[/title]
 
-[title="2"]Recurrence fixing[/title]
-
-[box="Important note" width="25em" float="right"]It is advisable to take a database backup before fixing an event, just in case the process does not complete as you expect it to. The recurrence programming code in the calendar system is (has to be) extremely complex, and this is a place where a minor bug or user mistake could wreak havoc.[/box]
+[box="Important -- take a backup" width="25em" float="right"]
+It is advisable to take a database backup before fixing an event, just in case the process does not complete as you expect it to. The recurrence programming code in the calendar system is (has to be) extremely complex, and this is a place where a minor bug or user mistake could wreak havoc.
+[/box]
 If you have a recurring event, but for some reason, the event stops recurring, or there is a break in the recurrence pattern, then you will be pleased to hear that Composr has a feature for coping with this. The process of using the feature is labelled 'fixing an event'.
 
 To fix an event, you just edit the event as if it was starting afresh, but select the edit action (at the bottom of the form) of 'Edit with fixing past recurrences'. This will cause all past recurrences of the event to be hard-coded into the system as individual events, and the edited event will now be completely separate to anything that has happened before.
 
-For example, if with the Cricket Practice example, one of the practices is cancelled because the cricket pitch had been taken over by travelling folk, the cricket practice event will need some tweaking (assuming of course we don't just handle this by phone call and ignore the incorrect data in the system).
+[title="3"]Example[/title]
+
+If with the Cricket Practice example, one of the practices is cancelled because the cricket pitch had been taken over by travelling folk, the cricket practice event will need some tweaking (assuming of course we don't just handle this by phone call and ignore the incorrect data in the system).
+
 We would choose to edit the cricket practice event:
  - to start on the date of the next expected practice
  - to end 1 hour after that date
  - and select 'Edit with fixing past recurrences'
-It is preferably that we did this before the actual cancelled event occurrence. If we were too late, we would undergo the same process, but delete the last hard-coded event that was added.
+
+It is preferable that we did this before the actual cancelled event occurrence. If we were too late, we would undergo the same process, but delete the last hard-coded event that was added.
 
 [title="2"]Scheduling commands[/title]
 
 To schedule a command for execution, add an event with the event type of 'System command'. All settings (including recurrence) are as for any event, except the event text should be either:
- - a URL for Composr to call up (the process of calling a URL can be used to invoke some function of a web application)
- - a portion of Commandr code
+[list="a"]
+[*] a URL for Composr to call up (the process of calling a URL can be used to invoke some function of a web application)
+[*] a portion of Commandr code
+[/list]
 
 For scheduled commands to be executed you need to have the Composr scheduling system configured as specified in the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial.
 
@@ -109,11 +139,11 @@ Users may choose to overlay [concept]RSS[/concept] or [concept]Atom[/concept] fe
 
 [title="2"]Internationalisation / Culture[/title]
 
-It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see 'Localisation and internationalisation' tutorial.
+It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see the [page="_SEARCH:tut_intl"]Localisation and internationalisation tutorial[/page].
 
 [concepts
  1_key="Event"                1_value="An entry in the calendar system that may recur"
- 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events occurence, masked and repeating over the recurrences that would happen by default"
+ 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events occurrence, masked and repeating over the recurrences that would happen by default"
  3_key="Event fixing"         3_value="The process of hard-coding recurring events into individual events, so as to allow a change in the recurrence"
  4_key="Event type"           4_value="The classification of an event; appointment for example"
 ]Concepts[/concepts]

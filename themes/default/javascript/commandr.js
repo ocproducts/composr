@@ -133,7 +133,7 @@ function commandr_command_response(ajax_result_frame,ajax_result)
 	var stderr=merge_text_nodes(ajax_result.getElementsByTagName('stderr')[0].childNodes);
 	var stdnotifications=ajax_result.getElementsByTagName('stdnotifications')[0].childNodes[0];
 
-	var past_command_text=document.createTextNode(method+': ');
+	var past_command_text=document.createTextNode(method+' \u2192 ');
 	past_command_prompt.appendChild(past_command_text);
 
 	if (stdnotifications.childNodes.length>0)

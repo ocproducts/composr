@@ -1,49 +1,76 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Browser version requirements[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Browser version requirements[/title]
 
-This is a tutorial that details the default browser requirements for visitors to a Composr site.
+This is a tutorial that details the default browser requirements for visitors to a Composr site. It also contains a lot of historical information, as understanding the development history is useful for understanding the current browser landscape.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]The browser wars and vendors/versions[/title]
+[title="2"]The browser wars[/title]
 
-Towards the end of the 1990s, after Microsoft started seriously competing with Netscape rather than matching it, there was a very fast period of Internet development. Microsoft and Netscape both created technologies and submitted them to the W3C for standardisation, and the two browsers developed head-to-head, until Netscape essentially went out of business due to loss of sales when Internet Explorer was bundled with Windows and all ISPs switched to supporting it instead of Netscape Navigator.
-Once Netscape was truly 'buried', Internet Explorer essentially stagnated for many years, left with a lot of rough edges with respect to the standards the W3C had designed and moved forward in the interim. Somewhat in the sidelines, Netscape was rebuilt in Open Source as a browser framework designed specifically to standards (packaged as Mozilla, and more recently Firefox), and browsers such as Opera and Konqueror also got developed to be of a similar quality. The renewed competition, and the time for 'the dust to settle' has provided the environment for a movement for web sites to strictly be designed such that the web technologies they use draw on W3C/JavaScript standards only. This has a left an environment where Internet Explorer is clearly seen to be inferior in terms of standard compliance, and browser compatibility mostly involves avoiding features that IE does not support or flaws in implementation. However, this is changing, as Microsoft woke up to their popular competition from Firefox, and released Internet Explorer version 7 (and then, version 8, and soon version 9).
+[media float="right" framed="0" thumb="0" width="350"]data_custom/images/docs/tut_browsers/browsers.png[/media]
+[b]Early days:[/b]
+In the beginning the only mainstream web browser was Netscape Navigator. Microsoft soon realised it needed a browser too, so launched Internet Explorer.
 
-Composr is designed to work on all serious modern browsers. At the time of writing, this means that we aim to support:
- - IE9
- - IE8 (without full display fidelity)
- - Opera (a popular, commercially developed, but now free, browser)
- - Konqueror (an important browser on Linux, almost a default browser)
- - Firefox
- - Safari (the default browser on Mac OS X, based on Konqueror)
- - Google Chrome
+[b]Heavy competition:[/b]
+Towards the end of the 1990s, after Microsoft started seriously competing with Netscape rather than only matching it, there was a very fast period of Internet development. Microsoft and Netscape both created technologies and submitted them to the W3C for standardisation, and the two browsers developed head-to-head, until Netscape essentially went out of business due to loss of sales when Internet Explorer was bundled with Windows and all ISPs switched to supporting it instead of Netscape Navigator.
 
-With browsers other than IE, we support the latest version. This is because their users are very likely to keep the browsers up-to-date.
+[b]The transitory years:[/b]
+Once Netscape was truly 'buried', Internet Explorer essentially stagnated for many years, left with a lot of rough edges with respect to the standards the W3C had designed and moved forward in the interim. Somewhat in the sidelines, Netscape was rebuilt in Open Source as a browser framework designed specifically to standards (packaged as Mozilla, and then Firefox), and browsers such as Opera and Konqueror also got developed to be of a similar quality. Konqueror essentially became Safari after Apple got involved (Microsoft stopped supporting Mac OS). The renewed competition, and the time for 'the dust to settle' provided the environment for a movement for websites to strictly be designed such that the web technologies they use draw on W3C/JavaScript standards only. This left an environment where Internet Explorer was clearly seen to be inferior in terms of standard compliance, and browser compatibility.
+
+[b]Microsoft returns:[/b]
+As Microsoft woke up to their popular competition from Firefox, they sped up their development again: releasing Internet Explorer versions 7 through 11, then the new 'Edge' browser.
+
+[b]Google dominates:[/b]
+Parallel to Microsoft speeding up, Google Chrome (based on Safari's Webkit code) came along and ate up significant market share from both Firefox and Microsoft. Google Chrome now has a big lead because it is a high quality cross-platform browser, heavily promoted by Google. Google forked Webkit to create the Blink engine. Opera threw out their own engine and started using the Blink engine.
+
+[title="2"]Supported browsers[/title]
+
+Composr is designed to work on all serious modern browsers. We have official support for:
+ - Microsoft Edge (latest version &dagger;) (EdgeHTML/Chakra engine)
+ - Internet Explorer (common versions &dagger;&dagger;&dagger;) (Trident/Chakra engine)
+ - Firefox (latest version &dagger;) (Gecko/SpiderMonkey engine)
+ - Safari (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
+ - Google Chrome (latest version &dagger;) (Blink/V8 engine)
+ - Android browser (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
+ - Mobile Safari (common versions &dagger;&dagger;) (Blink/V8 engine)
+
+&dagger; These browsers auto-update, so we support the latest versions only.
+
+&dagger;&dagger; We officially support the last two releases of these browsers. In practice we are likely to accept bug reports for older browsers if they are still widely used by relevant demographics.
+
+&dagger;&dagger;&dagger; As IE is particularly widely-used and inflexible we are more explicit about what we will support. Officially it is still the last two releases, but we will accept bug reports for IE9-IE11, and maintain a basic level of frontend support for IE8). The exact supported versions will change over time, as install bases change, and this tutorial will be updated accordingly.
+
+We do not explicitly support the following browsers, but will generally accept bug reports for them:
+ - Chromium (the Open Source version of Google Chrome)
+ - Opera (a browser with a long history, now based on Blink/V8)
+ - Konqueror (an important browser on Linux, the originator of Webkit)
+ - Waterfox, Iceweasel, Pale Moon, SeaMonkey (alternative Gecko browsers)
 
 We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'wizz-bang' experience.
 
-[title="2"]Technologies[/title]
+[title="2"]Browser testing[/title]
 
-Composr makes use of a number of client-side web technologies, including:
- - XHTML5 (HTML formalised to be a proper XML format) -- structure, glue and content for a document
- - CSS -- stylisation for structured content
- - JavaScript -- interactive functionality
- - PNG -- for images
- - RSS, Atom and OPML -- (optional) feed technology, to export Composr news
- - XSLT -- (optional) technology to make RSS, Atom and OPML display in a web browser
- - XML -- for content import/export
+[media click_url="https://www.browserstack.com/" description="BrowserStack are kind enough to provide free testing capabilities to the core Composr developers. It is a high-quality service." float="right" thumb="0"]data_custom/images/docs/tut_browsers/browserstack.png[/media]
+Browser testing presents the following difficulties:
+1) A machine can only have one Microsoft browser installed.
+2) To test on mobile devices you really should test on a proper mobile device to get a real feel for things.
+3) Safari only works on Mac OS, so you need a Mac.
+4) Internet Explorer only works on Windows, so you need a Windows install.
+5) On browsers such as Google Chrome operating system font rendering differences may mean things lay out slightly differently on different operating systems.
 
-XHTML is like the glue that any supported browser will support. A lot of 'HTML' pages are actually technically XHTML, as an XHTML document is almost viewable on a pure-HTML (read: very old) browser.
-CSS and JavaScript are potentially unavailable on text-mode/accessibility browsers, however they are not required in these contexts.
-PNG is an image file format. PNG is used in favour to GIF, as it supports images more than 256 colours, 'alpha transparency' (blended transparency that is not tied to background colour) and is not encumbered by software patents.
-
-RSS, Atom and OPML are usually viewed in a separate program, such as 'FeedReader'. However, the latest generation of web browsers also provide their own feed subscription support. Firefox supports 'Active Bookmarks' that are assembled from links in an RSS feed: this works with Composr news.
+There are a number of approaches that can help you with the above problems:
+[list]
+[*] Google Chrome has excellent device emulation, for quick/earlier testing for different mobile devices (not a substitute for proper testing).
+[*] Internet Explorer lets you run in compatibility modes to test on earlier versions of their engines (imperfect, but useful).
+[*] [url="IETester"]http://www.my-debugbar.com/wiki/IETester/HomePage[/url] lets you test much older Internet Explorer versions (imperfect/unstable, but useful).
+[*] Virtual Machines let you test different Internet Explorer browsers without needing separate physical machines. [url="Microsoft supply free images to help"]https://dev.modern.ie/[/url]. They come at a hefty download size though, uses lots of disk space, and using VMs means lots of RAM usage.
+[*] You can use a commercial online testing system like [url="BrowserStack"]https://www.browserstack.com/[/url]. BrowserStack host virtual machines for you in the cloud so that you don't need to maintain your own VMs. You can also automatically take mass-screenshots across many devices, and also run automated JavaScript testing (for developers).
+[/list]
 
 [title="2"]JavaScript[/title]
 
 JavaScript may be disabled by visitors to Composr. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
 
-If a Composr visitor has JavaScript disabled then certain functionality will not work, such as viewing the Wiki+ tree or using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode 'hide' tag will drop-down to the level where the content isn't actually hidden by default.
+If a Composr visitor has JavaScript disabled then certain functionality will not work, such as using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode [tt]hide[/tt] tag will drop-down to the level where the content isn't actually hidden by default.
 
 The main reason for Composr not requiring JavaScript is that interactive functionality is usually inaccessible for those with certain forms of disability such as blindness. By disabling JavaScript in their accessible browser, or by the browser not supporting it anyway, they may get a better experience.
 
@@ -53,8 +80,7 @@ Composr does not require cookie support, although it is recommended. To at least
 
 [title="2"]Desktop settings[/title]
 
-A screen-resolution of at least 1024x768 is strongly suggested, as this is the minimum resolution that we design the default theme for.
-Composr users must be using 15 bit colour or higher. In other words, 256 colour is not supported: users are very unlikely to be using this any more.
+A screen-resolution of at least 1024&times;768 is strongly suggested, as this is the minimum resolution that we design the default theme for.
 
 [title="2"]Printing[/title]
 
@@ -65,14 +91,18 @@ There are 3 approaches to solving this problem that work together:
 3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
 
 The Composr [tt]wide_print[/tt] parameter is activated from either:
-a) The link from the [tt]side_printer_friendly[/tt] block
-b) The link from the [tt]main_screen_actions[/tt] block
-c) [i]Or, a link you've put together yourself[/i]
+[list="a"]
+[*] The link from the [tt]side_printer_friendly[/tt] block
+[*] The link from the [tt]main_screen_actions[/tt] block
+[*] [i]Or, a link you've put together yourself[/i]
+[/list]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_accessibility"]Making an accessible website with Composr[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions[/page]
- - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
+ - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
+ - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 
 {$SET,tutorial_tags,printer_friendly_block,Introduction,Design & Themeing,CSS,JavaScript,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial details the browser requirements for visitors to a Composr site, determined by the CSS/XHTML/JavaScript in our default theme.}[block]main_tutorial_rating[/block]

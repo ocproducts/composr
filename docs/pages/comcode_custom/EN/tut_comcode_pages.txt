@@ -1,50 +1,231 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom pages of information (via Comcode)[/title]
-[surround]
-[box="Note" width="25em" float="right"]If you are using short URLs, then '<base-url>/<zone>/pg/<page-name>' will also access the page.[/box]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Adding standalone pages of content (via Comcode)[/title]
+
 You may easily add new pages of information to Composr by making a 'Comcode page'.
-A Comcode page is a page written in Comcode, and thus is almost written in plain text. Like any page in Composr, a Comcode page is accessed by using:
-'[tt]<base-url>/<zone>/index.php?page=<page-name>[/tt]'.
-[/surround]
+
+A Comcode page is a page in the system that you can edit either via a [concept]WYSIWYG[/concept] editor, or a very simple [concept]mark-up language[/concept] called Comcode, or a combination of both.
+
+This documentation is written using Comcode in fact.
+
+If you want to write a page without any special formatting, you can just type it out in plain-text, and this will usually be valid Comcode and display as you would expect it to. You can then add 'tags' to identify things such as titles and links.
+
+This tutorial covers some basic information relating to Comcode pages.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Making pages[/title]
+[title="2"]Default pages[/title]
 
-[media width="150" description="The WYSIWYG editor may be used to edit Comcode pages, although it provides less control" float="right"]data_custom/images/docs/comcode_pages_wysiwyg.png[/media]
-[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/comcode_pages_edit.png[/media]
+[media width="150" description="The list of Comcode pages to be edited/deleted" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages.png[/media]
+Comcode pages may be selected for editing either:
+[list="a"]
+[*] From Content Management > Pages (Comcode pages), which gives you a table to choose from.
+[*] By clicking the edit link underneath a page being viewed.
+[/list]
 
-There are two supported ways to add a new Comcode page in Composr:
- - Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
- - Just to type in the URL to where you want the page to be, and click the given link to add the missing page.
+The default Comcode pages are...
+[html]
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Zone</th>
+			<th>Page</th>
+			<th>Purpose</th>
+			<th>Editing likelihood</th>
+		</tr>
+	</thead>
 
-[media width="150" description="The easy way to add a Comcode page" float="left"]data_custom/images/docs/comcode_pages_easyadd.png[/media]
-[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/comcode_pages_view.png[/media]
-Once the Comcode page editor is open, you can pretty much just type your page in plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include). It is beyond the scope of this tutorial to explain Comcode: see the Comcode tutorial for this.
+	<tbody>
+		<tr>
+			<td><em>All</em></td>
+			<td><kbd>panel_*</kbd></td>
+			<td>Panels are special pages that sit alongside all pages in a zone. They are like shared borders.<br />Composr 10+ does not use left/right panels by default. Some are there out-of-the-box in the system, but blank. If you do panels you can set them up by editing them like normal pages.</td>
+			<td>25%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>start</td>
+			<td>This is the default front-page.</td>
+			<td>100%</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td><kbd>start</td>
+			<td>This is the default front-page of the Site zone. It only exists if you do not have the "Single public zone" option enabled. If "Single public zone" is not enabled then this page is usually used for logged-in users only.</td>
+			<td>100%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>sitemap</kbd></td>
+			<td>The Site Map, which by default, is automatically generated using a special block.</td>
+			<td>5%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>_rules</kbd></td>
+			<td>Site rules, also shown when joining the website (<kbd>rules</kbd> also exists, which just wraps around <kbd>_rules</kbd> so that it looks good also as a standalone page).</td>
+			<td>50%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>privacy</kbd></td>
+			<td>Privacy information.</td>
+			<td>30%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>keymap</kbd></td>
+			<td>Keymap of shortcuts, promoted to users on screenreaders (i.e. partially-sighted/blind users).</td>
+			<td>5%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>404</kbd></td>
+			<td>Shown when requested content cannot be found.</td>
+			<td>5%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>recommend_help</kbd></td>
+			<td>Usage instructions on recommending the site. Only installed if the <kbd>recommend</kbd> addon is installed.</td>
+			<td>5%</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td><kbd>feedback</kbd></td>
+			<td>This provides a feedback form, linked from the footer.</td>
+			<td>50%</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td><kbd>help</kbd></td>
+			<td>Help for your site. Contains default information on points, etc.</td>
+			<td>80%</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td><kbd>userguide_comcode</kbd></td>
+			<td>A basic user-focused guide on Comcode.</td>
+			<td>30%</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td><kbd>popup_blockers</kbd></td>
+			<td>Information about how to disable popup blockers. Only installed if the <kbd>chat</kbd> addon is installed.</td>
+			<td>5%</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td><kbd>userguide_chatcode</kbd></td>
+			<td>Help for the chat system. Only installed if the <kbd>chat</kbd> addon is installed.</td>
+			<td>2%</td>
+		</tr>
+		<tr>
+			<td>Collaboration</td>
+			<td><kbd>start</td>
+			<td>This is the default front-page of the collaboration zone. Only installed if the <kbd>collaboration_zone</kbd> addon is installed.</td>
+			<td>100%</td>
+		</tr>
+		<tr>
+			<td>Collaboration</td>
+			<td><kbd>about</kbd></td>
+			<td>This describes the Collaboration Zone. Only installed if the <kbd>collaboration_zone</kbd> addon is installed.</td>
+			<td>100%</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
 
-[title="2"]Blocks[/title]
+[title="2"]URLs[/title]
 
-[box="Important note" width="25em" float="left"][tt][block=parameter]<block-name>[/block][/tt] is a shorthand for [tt][block param=parameter]<block-name>[/block][/tt].[/box]
-More advanced pages, such as the default start page in the Welcome Zone, and the panels, make use of 'blocks'. Blocks are dynamic elements, tied into Comcode pages via the Comcode '[tt]block[/tt]' tag.
-By 'dynamic element', I mean an element that automatically generates content that could not be prepared, such as a list of recent topics on a forum, or information about the currently logged in user.
-The actual block to use, is just the contents within the [tt][block][/tt] tag, and the parameters to the block are just the parameters given to the [tt][block][/tt] tag.
 [surround]
-[media width="150" description="An illustration to how blocks work" float="right"]data_custom/images/docs/comcode_pages_blocks.png[/media]
-At the time of writing, Composr contains 67 blocks to choose from.
-Blocks can be classified into:
- - Main blocks (blocks inserted into the internal body of the site)
- - Side blocks (blocks shown on the side of the site, in [tt]panel_left[/tt] or [tt]panel_right[/tt])
- - Bottom blocks (blocks intended for the site footer)
+Like any page in Composr, a Comcode page is accessed by using:
+[tt]http://yourbaseurl/<zone>/index.php?page=<page-name>[/tt]
+
+Actually If you are using a URL Scheme, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL Scheme[/page] you use):
+ - [tt]http://yourbaseurl/<zone>/pg/<page-name>[/tt]
+ - [tt]http://yourbaseurl/<zone>/<page-name>.htm[/tt]
+ - [tt]http://yourbaseurl/<zone>/<page-name>[/tt]
 [/surround]
+
+[title="2"]Adding a new page[/title]
+
+[surround]
+[media width="150" description="The easy way to add a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
+There are two ways to add a new Comcode page in Composr.
+
+Method 1:
+[list="a"]
+[*] Click the browser address bar
+[*] Just type in the URL to where you want the page to be
+[*] Click the given link to add the missing page
+[/list]
+[/surround]
+
+[surround]
+[media width="150" description="Choosing to add a page" float="right"]data_custom/images/docs/tut_comcode_pages/add_page_box.png[/media]
+Method 2:
+[list="a"]
+[*] Go to Content Management > Pages (Comcode pages)
+[*] Scroll down
+[*] Give a new page name in the [tt]<zone>:<page-name>[/tt] format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be [tt]:<page-name>[/tt])
+
+(If you don't use a colon, a default zone will be picked)
+[/list]
+[/surround]
+
+[title="3"]Proceeding to edit the page[/title]
+
+[surround]
+[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_view.png[/media]
+[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_edit.png[/media]
+Once the Comcode page editor is open, you can pretty much just type your page in.
+
+This screen is exactly the same both for adding a new page and editing an existing page.
+
+
+[b]If WYSIWYG is on[/b]:
+
+[indent="20"]
+You'll have a nice editor to use.
+[/indent]
+
+[b]If WYSIWYG is off[/b]:
+
+[indent="20"]
+You'll pretty much type plain-text, with small diversions to indicate special formatting (most notably, the [tt]title[/tt] tag, which every page should include).
+
+It is beyond the scope of this tutorial to explain Comcode: see the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page] for this.
+[/indent]
+
+[title="2"]Deleting pages[/title]
+
+You can delete a Comcode page from the bottom of its edit form.
+[/surround]
+
+[title="2"]Page templates[/title]
+
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
+There are a number of built-in page templates available. These are shown when you add a new page from Content Management > Pages.
+
+The templates are designed to help you in the following ways:
+ - So you don't need to think too hard about what kind of pages your site would benefit from
+  - Note we don't provide an FAQ page template because we have a default FAQ catalogue instead
+ - So you get some reasonable default layouts and graphics (any website benefits greatly from professional design, but the samples are enough to get most sites started)
+ - Specific and detailed advice you can work to, particularly on how to structure persuasive or engaging articles (we think we've saved you a lot of self-education here, bringing together techniques from journalism, PR, sales, and brand marketing, into a single set of convenient techniques)
+
+[title="2"]Hiding pages from the Sitemap[/title]
+
+There may be cases where you don't want a Comcode page to appear in your Sitemap. The easiest way to solve this is to preface the name of the Comcode page with an underscore (_). For example, pages named [tt]_test[/tt] and [tt]_example[/tt] will not show on the Sitemap due to starting with the underscore symbol.
 
 [concepts
  1_key="Comcode page"   1_value="A Composr page written in Comcode, editable from inside Composr"
- 2_key="Block"          2_value="A dynamic element designed to be inserted into a Comcode page via the \[block] tag"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
 
 {$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add new pages, using Comcode. It couldn't be simpler to do: Comcode pages almost look like plain text.}[block]main_tutorial_rating[/block]

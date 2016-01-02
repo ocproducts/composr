@@ -45,7 +45,7 @@ class Block_top_notifications
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -65,13 +65,15 @@ class Block_top_notifications
 
         list($pts, $num_unread_pts) = get_pts($max);
 
-        return do_template('BLOCK_TOP_NOTIFICATIONS', array('_GUID' => '3fa04eb827741561440dbf1a65988b33', 'NUM_UNREAD_WEB_NOTIFICATIONS' => strval($num_unread_web_notifications),
-                                                            'NOTIFICATIONS' => $notifications,
+        return do_template('BLOCK_TOP_NOTIFICATIONS', array(
+            '_GUID' => '3fa04eb827741561440dbf1a65988b33',
+            'NUM_UNREAD_WEB_NOTIFICATIONS' => strval($num_unread_web_notifications),
+            'NOTIFICATIONS' => $notifications,
 
-                                                            'NUM_UNREAD_PTS' => strval($num_unread_pts),
-                                                            'PTS' => $pts,
+            'NUM_UNREAD_PTS' => strval($num_unread_pts),
+            'PTS' => $pts,
 
-                                                            'MAX' => strval($max),
+            'MAX' => strval($max),
         ));
     }
 }

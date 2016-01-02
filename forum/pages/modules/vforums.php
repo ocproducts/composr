@@ -46,7 +46,7 @@ class Module_vforums
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -79,7 +79,7 @@ class Module_vforums
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -113,7 +113,7 @@ class Module_vforums
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -147,7 +147,7 @@ class Module_vforums
     /**
      * The UI to show topics with new posts since last visit time.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function new_posts()
     {
@@ -183,7 +183,7 @@ class Module_vforums
     /**
      * The UI to show unanswered topics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unanswered_topics()
     {
@@ -197,7 +197,7 @@ class Module_vforums
     /**
      * The UI to show topics you're involved with.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function involved_topics()
     {
@@ -214,7 +214,7 @@ class Module_vforums
     /**
      * The UI to show topics with unread posts.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unread_topics()
     {
@@ -223,7 +223,7 @@ class Module_vforums
         }
 
         $title = do_lang_tempcode('TOPICS_UNREAD');
-        $condition = array('l_time IS NOT NULL AND l_time<t_cache_last_time', 'l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))));
+        $condition = array('l_time IS NOT NULL AND l_time<t_cache_last_time', 'l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
 
         return $this->_vforum($title, $condition, 't_cache_last_time DESC', true);
     }
@@ -231,7 +231,7 @@ class Module_vforums
     /**
      * The UI to show topics which have been recently read by the current member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function recently_read()
     {
@@ -248,17 +248,18 @@ class Module_vforums
     /**
      * The UI to show a virtual forum.
      *
-     * @param  tempcode $title The title to show for the v-forum
+     * @param  Tempcode $title The title to show for the v-forum
      * @param  mixed $condition The condition (a fragment of an SQL query that gets embedded in the context of a topic selection query). May be string, or array of strings (separate queries to run and merge; done for performance reasons relating to DB indexing)
      * @param  string $order The ordering of the results
      * @param  boolean $no_pin Whether to not show pinning in a separate section
      * @param  ?array $extra_tpl_map Extra template parameters to pass through (null: none)
      * @param  ?string $initial_table The table to query (null: topic table)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null)
     {
-        $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), $title, get_param_integer('keep_forum_root', db_get_first_id()));
+        $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), null, get_param_integer('keep_forum_root', db_get_first_id()), false);
+        $_breadcrumbs[] = array('', $title);
         breadcrumb_set_parents($_breadcrumbs);
         $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
 

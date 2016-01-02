@@ -49,7 +49,7 @@ class Module_admin
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -71,7 +71,7 @@ class Module_admin
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -127,7 +127,7 @@ class Module_admin
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -170,46 +170,54 @@ class Module_admin
     public function _synonyms()
     {
         return array(
-            array('maximum', 'limit', 'total', 'max', 'increase', 'long'),
+            array('maximum', 'limit', 'total', 'max', 'increase', 'long', 'count', 'tally'),
             array('characters', 'words', 'bytes'),
 
-            array('order', 'sort'),
-            array('sudo', 'masquerade'),
+            array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
+            array('delineate', 'delimit', 'delimitate', 'demarcate'),
+            array('order', 'sort', 'position'),
+            array('sudo', 'masquerade', 'su'),
             array('multi-moderation', 'multimoderation'),
             array('invitation', 'invite'),
             array('social', 'forum'),
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
             array('news', 'blogs', 'press release'),
-            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation'), // i.e. Composr validation
-            array('webstandards', 'check', 'conformance'), // i.e. webstandards
-            // sanitisation or check or well-formed (for input data, or transactions)
-            // integrity (for system data)
-            // approve (for IPs)
-            // confirm (for newsletter subscriptions)
+            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'publish'/*, 'screened'*/), // i.e. Composr validation
+            array('webstandards', 'check', 'conformance'),
+            // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
+            //  sanitisation or check or well-formed (for input data, or transactions)
+            //  integrity (for system data)
+            //  approve (for IPs)
+            //  confirm (for newsletter subscriptions)
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
+            array('pm', 'pt', 'dm', 'private message', 'private topic', 'whisper'),
             array('filedump', 'library', 'file manager'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),
             array('colour', 'color', 'css', 'font', 'background'),
-            array('dob', 'date of birth', 'age'),
+            array('dob', 'date of birth', 'age', 'birthday'),
             array('sef', 'seo', 'google', 'search engine', 'search-engine-friendly', 'search-engine-optimisation'),
             array('ban', 'suspend', 'suspension', 'probation', 'warn', 'punish', 'punitive', 'troll'),
             array('crash', 'warn', 'error', 'fatal', 'falt'),
             array('staff', 'moderator', 'admin', 'administrator', 'operator', 'webmaster'),
-            array('open', 'closed', 'live', 'activate', 'activation', /*'enable', */
-                  'turn'),
-            array('import', 'convert', 'migrate'),
+            array('open', 'closed', 'live', 'activate', 'activation', /*'enable', */'turn'),
+            array('import', 'convert', 'migrate', 'interchange'),
             array('commandr', 'console', 'command prompt', 'command line', 'cle'),
+            array('required', 'optional'),
             array('export', 'download'),
             array('attachment', 'upload'),
+            array('tree', 'nest', 'hierarchy', 'node', 'child', 'recursive'),
+            array('pinned', 'sticky'),
+            array('interstitial', 'gateway'),
             array('cpfs', 'cpf', 'fields'),
             array('counting_blocks', 'hit counter'),
             array('email', 'e-mail', 'cns_contact_member'),
+            array('redirect', 'route'),
             array('center', 'centre'),
             array('license', 'licence'),
-            array('search', 'find'),
+            array('search', 'find', 'filter'),
             array('recommend', 'refer'),
             array('quizzes', 'surveys', 'tests', 'competitions', 'questionnaires', 'prize-draw', 'exam', 'assessment'),
             array('securitylogging', 'audit'),
@@ -217,53 +225,63 @@ class Module_admin
             array('award', 'highlight', 'feature'),
             array('bookmark', 'favorite'),
             array('calendar', 'event', 'diary', 'schedule'),
+            array('admin zone', 'admincp', 'admin panel', 'control panel'),
             array('collaboration_zone', 'groupware'),
             array('actionlog', 'audit'),
             array('atom', 'rss', 'feed', 'syndication'),
             array('login', 'logon', 'log-in', 'log-on'),
+            array('display', 'render', 'view'),
             array('gallery', 'album', 'galleries', 'podcast', 'multimedia'),
             array('audit', 'log', 'usage'),
-            array('download', 'file', 'document'),
+            array('download', 'file', 'document', 'publication', 'library'),
             array('page', 'article', 'comcode'),
             array('entry', 'item', 'content', 'resource', 'submission'),
-            array('category', 'node', 'section', 'repository'),
-            array('catalogue', 'database', 'classified', 'catalog'),
+            array('category', 'node', 'section', 'repository', 'collection'),
+            array('directory', 'folder'),
+            array('catalogue', 'database', 'classified', 'catalog', 'directory', 'schema', 'field'),
             array('speed', 'slow', 'fast', 'optimisation', 'performance', 'efficiency'),
-            array('panel', 'sidebar', 'frame', 'bar'),
-            array('usergroup', 'group', 'promote', 'rank'),
-            array('member', 'user'),
+            array('panel', 'sidebar', 'frame', 'bar', 'column'),
+            array('usergroup', 'group', 'promote', 'rank', 'badge'),
+            array('member', 'user', 'contact', 'person'),
             array('profile', 'account', 'memberaccount'),
             array('accessibility', 'a11y'),
             array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation'),
-            array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant'),
+            array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite', 'credentials'),
+            array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
-            array('option', 'setting', 'value'),
+            array('option', 'setting', 'value', 'parameter'),
             array('configure', 'configuration', 'setup', 'install', 'core_configuration'),
-            array('emoticon', 'smiley', 'face', 'emoji'),
-            array('forum', 'board', 'bbs', 'cns_forum'),
+            array('emoticon', 'smiley', 'smile', 'face', 'emoji'),
+            array('forum', 'board', 'bbs', 'cns_forum', 'message board'),
             array('thread', 'topic'),
             array('karma', 'point'),
-            array('subscribe', 'track', 'notification', 'alert', 'monitor', 'watch'),
+            array('batch', 'bulk', 'mass'),
+            array('subscribe', 'track', 'notification', 'alert', 'monitor', 'watch', 'follow'),
             array('bbcode', 'wikicode', 'comcode', 'shortcode'),
             array('html', 'xhtml'),
-            array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system'),
+            array('wysiwyg', 'rte'),
+            array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system', 'package', 'install'),
             array('name', 'title', 'label', ''/*May be a stop word*/),
             array('analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
             array('description', 'caption', 'summary'),
-            array('choose', 'set'),
-            array('add', 'submit', 'create', 'make'),
+            array('choose', 'set', 'specify', 'pick'),
+            array('add', 'submit', 'create', 'make', 'publish', 'upload'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
-            array('delete', 'erase', 'remove', 'discard'),
+            array('changes', 'revisions', 'diff', 'history', 'undelete', 'version'),
+            array('delete', 'erase', 'remove', 'discard', 'prune', 'trash'),
             array('restore', 'revert', 'undo'),
             array('news', 'story', 'stories', 'article'),
             array('language', 'unicode', 'utf', 'utf8', 'utf-8', 'character', 'charset', '24', 'clock', 'timezone', 'time-zone', 'time', 'date', 'translate'),
             array('ldap', 'active directory'),
             array('contact', 'feedback', 'ticket', 'message', 'issue', 'email', 'e-mail', 'support', 'desk'),
-            array('documentation', 'help', 'guide'),
+            array('post', 'message', 'body'),
+            array('documentation', 'help', 'guide', 'manual'),
             array('sef', 'short', 'friendly'),
-            array('survey', 'quiz', 'competition', 'test'),
+            array('survey', 'quiz', 'competition', 'test', 'questionnaire'),
             array('swf', 'flash'),
+            array('friend', 'buddy', 'follower'),
+            array('like', 'love', 'rate'),
             array('subscribe', 'subscription'),
             array('attach', 'embed'),
             array('smf', 'simple machines forum'),
@@ -280,6 +298,10 @@ class Module_admin
             array('block', 'widget'), // Joomla uses 'module', but we don't want to synonym this as it means something else in Composr
             array('moniker', 'slug'),
             array('guest', 'anonymous'),
+            array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions', 'legals'),
+            array('dashboard', 'console', 'status'),
+            array('menu', 'navigation'),
+            array('permalink', 'url', 'link'),
         );
     }
 
@@ -322,23 +344,29 @@ class Module_admin
                 if ($this->and_query) {
                     $regexp = '';
                 }
+                $there_somewhere = false;
                 foreach ($keyword_group as $keyword) {
                     if ($regexp != '') {
                         $regexp .= '|';
                     }
                     $regexp_for_keyword = '((^|\.|\#|\s|\/|\-|>|\)|\(|\})' . preg_quote($keyword, '#') . ')';
                     $regexp .= $regexp_for_keyword;
+
+                    if (!$there_somewhere) {
+                        $there_somewhere = (stripos($t, $keyword) !== false);
+                    }
                 }
-                if ($this->and_query) {
-                    if (preg_match('#' . $regexp . '#i', $t) == 0) {
+                if ($this->and_query) { // Running the regexps individually
+                    if ((!$there_somewhere/*optimisation*/) || (preg_match('#' . $regexp . '#i', $t) == 0)) {
                         return false;
                     }
                 }
             }
         }
-        if ($this->and_query) {
+        if ($this->and_query) { // Already done all the regexps individually
             return true;
         }
+        // Run the built up OR regexp
         return (preg_match('#' . $regexp . '#i', $t) != 0);
     }
 
@@ -356,7 +384,7 @@ class Module_admin
         }
 
         foreach ($section_limitations as $l) {
-            if (strpos(strtolower($results_type), strtolower($l)) !== false) {
+            if (stripos($results_type, $l) !== false) {
                 return true;
             }
         }
@@ -367,7 +395,7 @@ class Module_admin
     /**
      * Actualiser to perform Admin Zone search.
      *
-     * @return tempcode Interface.
+     * @return Tempcode Interface.
      */
     public function search()
     {
@@ -376,9 +404,10 @@ class Module_admin
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(100);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
         }
+        send_http_output_ping();
 
         $n = mixed();
 
@@ -386,6 +415,8 @@ class Module_admin
 
         // Mess around to find our search keywords (takes synonyms into account, and generally tidies up)
         $raw_search_string = get_param_string('content', false, true);
+
+        cms_profile_start_for('admin search:derive keywords');
 
         // Work out our keywords
         $keyword_string = $raw_search_string;
@@ -447,8 +478,8 @@ class Module_admin
         }
 
         // Stemming, if available (needs Stemmer class like http://www.chuggnutt.com/stemmer-source.php which we can't redistribute due to it being GPL not LGPL)
-        if (((is_file(get_file_base() . '/sources/stemmer_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/stemmer_' . user_lang() . '.php'))) && (!in_safe_mode())) {
-            require_code('stemmer_' . user_lang());
+        if (((is_file(get_file_base() . '/sources/lang_stemmer_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/stemmer_' . user_lang() . '.php'))) && (!in_safe_mode())) {
+            require_code('lang_stemmer_' . user_lang());
             $stemmer = object_factory('Stemmer_' . user_lang());
             foreach ($keywords as $i => $keyword_group) {
                 $_keyword_group = $keyword_group;
@@ -481,10 +512,29 @@ class Module_admin
 
         $this->keywords = $keywords;
 
+        cms_profile_end_for('admin search:derive keywords');
+
         $content = array();
+
+        // Targetted tips
+        $current_results_type = do_lang('TIPS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
+        if ($this->_section_match($section_limitations, $current_results_type)) {
+            $content[$current_results_type] = new Tempcode();
+            $tips = array(
+                'delete' => 'TIP_1j',
+            );
+            foreach ($tips as $n => $tip_string) {
+                if ($this->_keyword_match($n)) {
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => do_lang_tempcode($tip_string, escape_html(get_brand_base_url()), escape_html(brand_name())), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
+                }
+            }
+        }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Admin/CMS menu icons
         $current_results_type = do_lang('ADMIN_MODULES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $hooks = find_all_hooks('systems', 'page_groupings');
@@ -511,9 +561,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Module entry points
         $current_results_type = do_lang('SCREENS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             foreach (find_all_zones(false, true) as $zone => $zone_details) {
@@ -590,14 +642,14 @@ class Module_admin
                                 $sup = $breadcrumbs->is_empty() ? null : do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                                 $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), 'adminzone');
                                 $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+                               /* $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
                                     '_GUID' => 'f656efd513099deac516d3273f9adfc4',
                                     'NAME' => $n,
                                     'URL' => $_url,
                                     'TITLE' => '',
                                     'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())),
                                     'SUP' => $sup,
-                                )));
+                                )));*/
                             }
                         }
                     }
@@ -608,16 +660,18 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitetree', 'type' => 'site_tree', 'id' => $zone . ':' . $page), 'adminzone');
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITE_TREE_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Importers
         $current_results_type = do_lang('IMPORT');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_import'))) {
-            // Importers
             $content[$current_results_type] = new Tempcode();
             $hooks = find_all_hooks('modules', 'admin_import');
             foreach (array_keys($hooks) as $hook) {
@@ -631,10 +685,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Config options- names, descriptions, groups, categories
         $current_results_type = do_lang('CONFIGURATION');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if ((($this->_section_match($section_limitations, $current_results_type)) || ($this->_section_match($section_limitations, do_lang('OPTION_CATEGORIES'))) || ($this->_section_match($section_limitations, do_lang('OPTION_GROUPS')))) && (has_actual_page_access(get_member(), 'admin_config'))) {
-            // Config options- names, descriptions, groups, categories
             $content[$current_results_type] = new Tempcode();
             $map = array();
             $hooks = find_all_hooks('systems', 'config');
@@ -653,6 +709,10 @@ class Module_admin
             $config_categories = array();
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
+				$_n = do_lang($p['human_name'], null, null, null, null, false);
+				if (is_null($_n)) {
+                    continue;
+                }
                 $n = do_lang_tempcode($p['human_name']);
                 $t = do_lang($p['explanation'], null, null, null, null, false);
 
@@ -674,7 +734,8 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink($url, do_lang_tempcode($p['group']), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => protect_from_escaping($t), 'SUP' => $sup)));
+                    $_t = ($t == '') ? new Tempcode() : do_lang_tempcode($p['explanation']);
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $_t, 'SUP' => $sup)));
 
                     if ($conf_found_count > 100) {
                         $content[$current_results_type] = do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '360a5362435a57f9c1d6a7b18624f53b', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => ''));
@@ -739,10 +800,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Usergroups
         $current_results_type = do_lang('USERGROUPS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cns_groups')) && (get_forum_type() == 'cns')) {
-            // Usergroups
             $content[$current_results_type] = new Tempcode();
             $map = array('g_is_private_club' => 0);
             $all_groups = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map);
@@ -762,10 +825,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Themes
         $current_results_type = do_lang('THEMES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_themes')) {
-            // Themes
             $content[$current_results_type] = new Tempcode();
             $map = array();
             foreach (array(do_lang('MOBILE_PAGES')) as $n) {
@@ -783,10 +848,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Zones
         $current_results_type = do_lang('ZONES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_zones')) {
-            // Zones
             $content[$current_results_type] = new Tempcode();
             $map = array();
             $all_groups = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_title', 'zone_header_text'), $map, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
@@ -808,25 +875,29 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Blocks
         $current_results_type = do_lang('_BLOCKS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $map = array();
             require_code('zones2');
             $all_blocks = find_all_blocks();
             foreach (array_keys($all_blocks) as $p) {
-                $t = do_lang('BLOCK_' . $p . '_DESCRIPTION');
-                if (($this->_keyword_match($p)) || ($this->_keyword_match($t))) {
+                $t = do_lang('BLOCK_' . $p . '_DESCRIPTION', null, null, null, null, false);
+                if (($this->_keyword_match($p)) || ((!is_null($t)) && ($this->_keyword_match($t)))) {
                     $url = '';
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Non-installed addons
         $current_results_type = do_lang('ADDONS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $map = array();
@@ -855,10 +926,12 @@ class Module_admin
                 closedir($dh);
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
+        // Privileges- sections/names/descriptions
         $current_results_type = do_lang('PRIVILEGES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_permissions'))) {
-            // Privileges- sections/names/descriptions
             $content[$current_results_type] = new Tempcode();
             $all_permissions = $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name', 'p_section'));
             $pt_sections = array();
@@ -898,10 +971,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
-        $current_results_type = do_lang('USERGROUP_SETTINGS');
+        // Usergroup settings
+        $current_results_type = do_lang('USERGROUP_SETTINGS_SEARCH_GROUP');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'admin_cns_groups', 'adminzone'))) {
-            // Usergroup settings
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
                 array('ENQUIRE_ON_NEW_IPS', 'DESCRIPTION_ENQUIRE_ON_NEW_IPS'),
@@ -938,10 +1013,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
-        $current_results_type = do_lang('MEMBER_SETTINGS');
+        // Member settings
+        $current_results_type = do_lang('MEMBER_SETTINGS_SEARCH_GROUP');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'members'))) {
-            // Member settings
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
                 array('REVEAL_AGE', 'DESCRIPTION_REVEAL_AGE'),
@@ -964,9 +1041,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Zone options
         $current_results_type = do_lang('ZONE_OPTIONS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_zones', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
@@ -994,9 +1073,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Install options
         $current_results_type = do_lang('BASE_CONFIGURATION');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
             $content[$current_results_type] = new Tempcode();
             if (file_exists(get_file_base() . '/config_editor.php')) {
@@ -1012,16 +1093,18 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Language string names and contents
         $current_results_type = do_lang('MODULE_TRANS_NAME_admin_lang');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_lang', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
 
             global $LANGUAGE_STRINGS_CACHE;
             $lang_file_contents = array();
             $lang_found = array();
-            foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $n => $n_value) { // Search all lang strings (we loaded all earlier with require_all_lang)
+            foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $n => $n_value) { // Search all language strings (we loaded all earlier with require_all_lang)
                 if (($this->_keyword_match($n)) || ($this->_keyword_match($n_value))) {
                     $lang_found[$n] = $n_value;
                     if (count($lang_found) > 100) {
@@ -1065,9 +1148,11 @@ class Module_admin
             }
             $lang_file_contents = array();
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Theme images
         $current_results_type = do_lang('EDIT_THEME_IMAGES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'theme', 'lang'));
@@ -1087,13 +1172,15 @@ class Module_admin
                     $lang = $image['lang'];
                     $lang_map = better_parse_ini_file(file_exists(get_file_base() . '/lang_custom/langs.ini') ? (get_file_base() . '/lang_custom/langs.ini') : (get_file_base() . '/lang/langs.ini'));
                     $lang = array_key_exists($lang, $lang_map) ? $lang_map[$lang] : $lang;
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '68b418db6d3f7676cf1682a68f76f88a', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $lang, 'SUP' => $sup)));
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '68b418db6d3f7676cf1682a68f76f88a', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => escape_html($lang), 'SUP' => $sup)));
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Template names
         $current_results_type = do_lang('TEMPLATES');
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $tpl_found = array();
@@ -1118,9 +1205,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         // CSS file contents
         $current_results_type = 'CSS';
+        cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $dh = opendir(get_file_base() . '/themes/default/css/');
@@ -1145,6 +1234,7 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: ' . $current_results_type);
 
         //ksort($content);    Don't sort, we have an implicit good order in this code file
 
@@ -1152,8 +1242,8 @@ class Module_admin
         if (addon_installed('search')) {
             $_search_url = build_url(array('page' => 'search', 'type' => 'results', 'content' => $raw_search_string, 'days' => '-1', 'search_comcode_pages' => 1, 'all_defaults' => 1), get_module_zone('search'));
             $search_url = $_search_url->evaluate();
-            $software_search_url = get_brand_base_url() . '/site/index.php?page=search&type=results&search_under=docs&search_comcode_pages=1&days=-1&content=' . urlencode($raw_search_string);
-            $software_search_url_2 = get_brand_base_url() . '/site/index.php?page=search&type=results&search_cns_posts=1&days=-1&content=' . urlencode($raw_search_string);
+            $software_search_url = get_brand_base_url() . '/index.php?page=search&type=results&search_under=docs&search_comcode_pages=1&days=-1&content=' . urlencode($raw_search_string);
+            $software_search_url_2 = get_brand_base_url() . '/index.php?page=search&type=results&search_cns_posts=1&days=-1&content=' . urlencode($raw_search_string);
             $pre = do_lang_tempcode('ADMINZONE_SEARCH_RESULTS', escape_html($raw_search_string), escape_html($search_url), array(escape_html($software_search_url), escape_html($software_search_url_2)));
         } else {
             $pre = new Tempcode();

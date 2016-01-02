@@ -46,11 +46,11 @@ class Block_side_cns_private_topics
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array()';
@@ -63,7 +63,7 @@ class Block_side_cns_private_topics
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -97,7 +97,7 @@ class Block_side_cns_private_topics
             $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
             $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
 
-            $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
+            $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 
             $out->attach(do_template('CNS_PRIVATE_TOPIC_LINK', array(
                 '_GUID' => '05beab5a3fab191df988bf101f44a47a',

@@ -11,10 +11,10 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
-/* Returns triple: PATH or NULL if critical error, NULL or error string if error */
+/* Returns triple: PATH or null if critical error, null or error string if error */
 function make_upgrade_get_path($from_version, $to_version)
 {
     $err = null;
@@ -36,8 +36,8 @@ function make_upgrade_get_path($from_version, $to_version)
         return array(null, $err);
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     require_code('tar');
     require_code('m_zip');
@@ -201,7 +201,7 @@ function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir 
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir($new_base_path . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
             continue;
         }
 

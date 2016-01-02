@@ -50,6 +50,6 @@ class Hook_config_vote_member_ip_restrict
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

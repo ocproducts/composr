@@ -551,8 +551,8 @@ function process_request_changes()
 			// If status is 'OK'
 			if ((result.status) && ((result.status==200) || (result.status==500) || (result.status==400) || (result.status==401)))
 			{
-				//Process the result
-				if ((window.AJAX_METHODS[i]) && (!result.responseXML/*Not payload handler and not stack trace*/ || result.responseXML.childNodes.length==0))
+				// Process the result
+				if ((window.AJAX_METHODS[i]) && (typeof window.AJAX_METHODS[i]==='function') && (!result.responseXML/*Not payload handler and not stack trace*/ || result.responseXML.childNodes.length==0))
 				{
 					return window.AJAX_METHODS[i](result);
 				}

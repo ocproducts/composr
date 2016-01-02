@@ -20,10 +20,11 @@
 
 /*
 Adding attachments.
+(Editing/deleting is in attachments3.php)
 */
 
 /**
- * Get an array containing new Comcode, and tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.
+ * Get an array containing new Comcode, and Tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.
  *
  * @param  LONG_TEXT $comcode The unparsed Comcode that references the attachments
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
@@ -39,8 +40,8 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     require_lang('comcode');
     require_code('comcode_compiler');
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(600); // Thumbnail generation etc can take some time
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(600); // Thumbnail generation etc can take some time
     }
 
     global $COMCODE_ATTACHMENTS;
@@ -94,11 +95,10 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
         if ((($may_have_one) && (is_plupload()) || (is_uploaded_file($file['tmp_name']))) && (preg_match('#file(\d+)#', $key, $matches) != 0)) {
             $has_one = true;
 
-            // Handle attachment extraction
             $matches_extract = array();
-            if (preg_match('#\[attachment( [^\]]*)type="extract"( [^\]]*)?\]new_' . $matches[1] . '\[/attachment\]#', $comcode, $matches_extract) != 0) {
+            if (preg_match('#\[attachment( [^\]]*)type="extract"( [^\]]*)?\]new_' . $matches[1] . '\[/attachment\]#', $comcode, $matches_extract) != 0) { // Handle attachment extraction
                 _handle_attachment_extraction($comcode, $key, $type, $id, $matches_extract, $connection); // Handle missing attachment markup for uploaded attachments
-            } elseif ((strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
+            } elseif ((!browser_matches('simplified_attachments_ui')) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
                 if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual ID's referenced, it's almost certainly the case.
                     $comcode .= "\n\n" . '[attachment]new_' . $matches[1] . '[/attachment]';
                 }
@@ -117,6 +117,13 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     $ATTACHMENTS_ALREADY_REFERENCED = $old_already;
     if (!array_key_exists($id, $COMCODE_ATTACHMENTS)) {
         $COMCODE_ATTACHMENTS[$id] = array();
+    }
+
+    // Also the WYSIWYG-edited ones, which the Comcode parser won't find
+    $matches = array();
+    $num_matches = preg_match_all('#attachment.php\?id=(\d+)#', $comcode, $matches);
+    for ($i = 0; $i < $num_matches; $i++) {
+        $COMCODE_ATTACHMENTS[$id][] = $matches[1][$i];
     }
 
     // Put in our new attachment IDs (replacing the new_* markers)
@@ -144,7 +151,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     // Tidy out any attachment references to files that clearly are not here
     $comcode = preg_replace('#\[(attachment|attachment_safe)[^\]]*\]new_\d+\[/(attachment|attachment_safe)\]#', '', $comcode);
 
-    if (!$previewing_only) {
+    if ((!$previewing_only) && (get_option('attachment_cleanup') == '1')) {
         // Clear any de-referenced attachments
         foreach ($before as $ref) {
             if ((!in_array($ref['a_id'], $ids_present)) && (strpos($comcode, 'attachment.php?id=') === false) && (!multi_lang())) {
@@ -174,6 +181,8 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  object $connection The database connection to use
+ *
+ * @ignore
  */
 function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
 {
@@ -218,7 +227,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                         ), true);
                         $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
 
-                        $comcode = str_replace($comcode, $matches[0][$i], '[attachment framed="0" thumb="0"]' . strval($attachment_id) . '[/attachment]');
+                        $comcode = str_replace($matches[0][$i], '[attachment framed="0" thumb="0"]' . strval($attachment_id) . '[/attachment]', $comcode);
                     }
                 }
             }
@@ -235,6 +244,8 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  array $matches_extract Reg-exp grabbed parameters from the extract marker attachment (we will re-use them for each individual attachment)
  * @param  object $connection The database connection to use
+ *
+ * @ignore
  */
 function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_extract, $connection)
 {
@@ -362,7 +373,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                         $thumb_url = 'uploads/attachments_thumbs/' . $_file_thumb;
                         convert_image(get_custom_base_url() . '/uploads/attachments/' . $_file, $place_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                        if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                        if (is_forum_db($connection)) {
                             $thumb_url = get_custom_base_url() . '/' . $thumb_url;
                         }
                     } else {
@@ -409,6 +420,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
 
 /**
  * Check that not too many attachments have been uploaded for the member submitting.
+ *
+ * @ignore
  */
 function _check_attachment_count()
 {
@@ -442,7 +455,7 @@ function _check_attachment_count()
 }
 
 /**
- * Insert some Comcode content that may contain attachments, and return the language ID.
+ * Insert some Comcode content that may contain attachments, and return the language string ID.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  integer $level The level of importance this language string holds
@@ -453,7 +466,7 @@ function _check_attachment_count()
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $connection = null, $insert_as_admin = false, $for_member = null)
 {

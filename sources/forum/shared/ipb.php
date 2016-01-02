@@ -94,7 +94,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return $val;
     }
 
-    // for compatibility
+    /**
+     * preg callback.
+     *
+     * @param  array $matches Matches
+     * @return string Replacement
+     */
     public function unentity_1($matches)
     {
         $x = hexdec($matches[1]);
@@ -104,6 +109,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return chr($x);
     }
 
+    /**
+     * preg callback.
+     *
+     * @param  array $matches Matches
+     * @return string Replacement
+     */
     public function unentity_2($matches)
     {
         $x = intval($matches[1]);
@@ -113,6 +124,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return chr($x);
     }
 
+    /**
+     * Unescape from IPB escaping.
+     *
+     * @param  string $val The value to unescape
+     * @return string The unescaped value
+     */
     public function ipb_unescape($val)
     {
         $val = @html_entity_decode($val, ENT_QUOTES, get_charset());
@@ -189,7 +206,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
      * Get an emoticon chooser template.
      *
      * @param  string $field_name The ID of the form field the emoticon chooser adds to
-     * @return tempcode The emoticon chooser template
+     * @return Tempcode The emoticon chooser template
      */
     public function get_emoticon_chooser($field_name = 'post')
     {
@@ -416,7 +433,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
     }
 
     /**
-     * Get the member ID of the next member after the given one, or NULL.
+     * Get the member ID of the next member after the given one, or null.
      * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
      *
      * @param  MEMBER $member The member ID to increment

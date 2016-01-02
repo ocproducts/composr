@@ -27,7 +27,7 @@
 	background-position: 3px 3px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	#web_notifications_button {
 		background-image: url('{$IMG;,icons/48x48/tool_buttons/notifications}');
 		background-size: 24px 24px;
@@ -67,6 +67,7 @@
 .notification_meta, .topic_list_meta {
 	margin-top: 0.8em !important;
 	width: auto !important;
+	font-size: 0.9em;
 }
 
 .notification_meta {

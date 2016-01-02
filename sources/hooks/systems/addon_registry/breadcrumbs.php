@@ -62,6 +62,7 @@ class Hook_addon_registry_breadcrumbs
     {
         return array(
             'tut_structure',
+            'tut_adv_structure',
         );
     }
 

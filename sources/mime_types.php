@@ -19,18 +19,14 @@
  */
 
 /**
- * Find the mime type for the given file extension. It does not take into account whether the file type has been white-listed or not, and returns a binary download mime type for any unknown extensions.
+ * Find available mime types.
  *
- * @param  string $extension The file extension (no dot)
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
- * @return string The MIME type
+ * @return array The MIME types
  */
-function get_mime_type($extension, $as_admin)
+function get_mime_types($as_admin)
 {
-    $extension = strtolower($extension);
-
     $mime_types = array(
-
         // Plain text
         '1st' => 'text/plain',
         'txt' => 'text/plain',
@@ -53,7 +49,16 @@ function get_mime_type($extension, $as_admin)
         'mdb' => 'application/x-msaccess',
         'xls' => 'application/vnd.ms-excel',
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'docb' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'docm' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'xlsb' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'xlsm' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+
+        // iWork
+        'pages' => 'application/x-iwork-pages-sffpages',
+        'numbers' => 'application/x-iwork-pages-sffnumbers',
+        'keynote' => 'application/x-iwork-pages-sffkey',
 
         // XML
         'xml' => $as_admin ? 'text/xml' : 'application/octet-stream',
@@ -63,6 +68,8 @@ function get_mime_type($extension, $as_admin)
         // Presentations/Animations/3D
         'ppt' => 'application/powerpoint',
         'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'pptb' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'pptm' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'svg' => $as_admin ? 'image/svg+xml' : 'application/octet-stream',
         'wrl' => 'model/vrml',
         'vrml' => 'model/vrml',
@@ -105,7 +112,7 @@ function get_mime_type($extension, $as_admin)
         'webm' => 'video/webm',
 
         // Proprietary movie formats
-        'mov' => 'video/quicktime',
+        'mov' => 'video/mp4',//in the past may have been 'video/quicktime',
         'qt' => 'video/quicktime',
         'wmv' => 'video/x-ms-wmv',
         'ram' => 'audio/x-pn-realaudio',
@@ -125,10 +132,29 @@ function get_mime_type($extension, $as_admin)
 
         // File sharing
         'torrent' => 'application/x-bittorrent',
+
+        // Misc data
+        'dat' => 'application/octet-stream',
     );
     if (file_exists(get_file_base() . '/data/jwplayer.flash.swf')) {
         $mime_types['flv'] = 'video/x-flv';
     }
+
+    return $mime_types;
+}
+
+/**
+ * Find the mime type for the given file extension. It does not take into account whether the file type has been white-listed or not, and returns a binary download mime type for any unknown extensions.
+ *
+ * @param  string $extension The file extension (no dot)
+ * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
+ * @return string The MIME type
+ */
+function get_mime_type($extension, $as_admin)
+{
+    $extension = strtolower($extension);
+
+    $mime_types = get_mime_types($as_admin);
 
     if (array_key_exists($extension, $mime_types)) {
         return $mime_types[$extension];

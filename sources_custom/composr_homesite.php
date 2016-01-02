@@ -60,58 +60,6 @@ function server__close_tracker_issue($tracker_id)
     close_tracker_issue(intval($tracker_id));
 }
 
-function server__post_in_bugs_catalogue($version_pretty, $ce_title, $ce_description, $ce_affects, $ce_fix)
-{
-    require_code('catalogues2');
-
-    $bug_category_id = get_bug_category_id($version_pretty);
-
-    $map = array(
-        // FUDGE: Hard-coded IDs
-        35 => $ce_title,
-        36 => $ce_description,
-        32 => $ce_affects,
-        34 => $ce_fix,
-    );
-
-    $entry_id = actual_add_catalogue_entry($bug_category_id, 1, '', 0, 0, 0, $map);
-
-    echo strval($entry_id);
-}
-
-function get_bug_category_id($version_pretty)
-{
-    require_code('catalogues');
-    require_code('catalogues2');
-
-    if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'bugs')))) {
-        actual_add_catalogue('bugs', 'Bugs', '', C_DT_FIELDMAPS, 0, '', 0);
-        $fields = array(
-            array('Title', 'short_trans', 1, 1, 1),
-            array('Description', 'long_trans', 0, 1, 0),
-            array('Fix', 'long_trans', 0, 0, 0),
-        );
-        foreach ($fields as $i => $field) {
-            actual_add_catalogue_field('projects', $field[0], '', $field[1], $i, $field[2], 1, 1, '', $field[3], $field[4]);
-        }
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'bugs', 'group_id' => $group_id));
-        }
-    }
-
-    $bug_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => strval($version_pretty)));
-    if (is_null($bug_category_id)) {
-        $bug_category_id = actual_add_catalogue_category('bugs', strval($version_pretty), '', '', null);
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($bug_category_id), 'group_id' => $group_id));
-        }
-    }
-
-    return $bug_category_id;
-}
-
 function server__create_forum_post($_replying_to_post, $post_reply_title, $post_reply_message, $_post_important)
 {
     $replying_to_post = intval($_replying_to_post);
@@ -212,19 +160,18 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
 function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
     // Create database, set title and description and domain
-    $master_conn = new Database_driver(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // tcp/ip
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // local socket
-    $cmd = 'mysql -h' . /*$server*/
-           'localhost' . ' -Ddemonstratr_site_' . $codename . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' < ' . special_demonstratr_dir() . '/template.sql';
+    $cmd = 'mysql -h' . /*$server*/'localhost' . ' -Ddemonstratr_site_' . $codename . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' < ' . special_demonstratr_dir() . '/template.sql';
     if (get_member() == 6) {
         attach_message($cmd, 'inform');
     }
     shell_exec($cmd);
-    $db_conn = new Database_driver('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $GLOBALS['SITE_INFO']['mysql_demonstratr_password'], 'cms_');
+    $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $GLOBALS['SITE_INFO']['mysql_demonstratr_password'], 'cms_');
     $db_conn->query_update('config', array('c_value' => $email_address), array('c_name' => 'staff_address'), '', 1);
     $pass = md5($password);
     $salt = '';
@@ -270,7 +217,7 @@ function special_demonstratr_dir()
 /**
  * Get a list of categories that sites may be in.
  *
- * @return tempcode The result of execution.
+ * @return Tempcode The result of execution.
  */
 function get_site_categories()
 {
@@ -283,7 +230,7 @@ function get_site_categories()
  * Get a form field list of site categories.
  *
  * @param  string $cat The default selected item
- * @return tempcode List
+ * @return Tempcode List
  */
 function create_selection_list_site_categories($cat)
 {
@@ -299,7 +246,7 @@ function create_selection_list_site_categories($cat)
  * Get a form field list of servers.
  *
  * @param  string $server The default selected item
- * @return tempcode List
+ * @return Tempcode List
  */
 function create_selection_list_servers($server)
 {
@@ -403,7 +350,7 @@ global \$SITE_INFO;
 }
 
 /**
- * Cause the E-mail server to reload it's database.
+ * Cause the E-mail server to reload its database.
  */
 function reset_aliases()
 {
@@ -524,7 +471,7 @@ function find_server_load($server)
 {
     return 1; // Not currently supported, needs customising per-server
 
-    //   $stats=http_download_file('http://'.$server.'/data_custom/stats.php?html=1');
+    //$stats = http_download_file('http://' . $server . '/data_custom/stats.php?html=1');
     $stats = shell_exec('php /home/demonstratr/public_html/data_custom/stats.php 1');
     $matches = array();
     preg_match('#Memory%: (.*)<br />Swap%: (.*)<br />15-min-load: load average: (.*)<br />5-min-load: (.*)<br />1-min-load: (.*)<br />CPU-user%: (.*)<br />CPU-idle%: (.*)<br />Free-space: (.*)#', $stats, $matches);
@@ -582,8 +529,7 @@ function do_backup_script()
     $file_array = zip_scan_folder(special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($id));
     $tmp_path = cms_tempnam('demonstratr_backup');
     $user = substr(md5('demonstratr_site_' . $id), 0, 16);
-    shell_exec('mysqldump -h' . /*$server*/
-               'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
+    shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
     $file_array[] = array('full_path' => $tmp_path, 'name' => 'database.sql', 'time' => time());
     $data = create_zip_file($file_array);
     unlink($tmp_path);
@@ -618,7 +564,7 @@ function do_backup_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    @set_time_limit(0);
+    set_time_limit(0);
     error_reporting(0);
 
     // Send actual data
@@ -664,11 +610,11 @@ function demonstratr_delete_old_sites()
 function demonstratr_delete_site($server, $codename, $bulk = false)
 {
     // Database
-    $master_conn = new Database_driver(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, null, true);
-// $master_conn->query('DROP USER \'demonstratr_site_'.$codename.'\'');
+    //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);
     $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(rand(0, 100))), array('s_codename' => $codename), '', 1, null, false, true);
@@ -692,5 +638,5 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     reset_base_config_file($server);
 
     // Special
-    //$GLOBALS['SITE_DB']->query_delete('sites_email',array('s_codename'=>$codename));
+    //$GLOBALS['SITE_DB']->query_delete('sites_email', array('s_codename' => $codename));
 }

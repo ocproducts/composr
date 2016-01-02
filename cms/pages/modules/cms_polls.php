@@ -44,7 +44,7 @@ class Module_cms_polls extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -68,7 +68,7 @@ class Module_cms_polls extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -85,7 +85,7 @@ class Module_cms_polls extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -118,7 +118,7 @@ class Module_cms_polls extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -213,7 +213,7 @@ class Module_cms_polls extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -223,7 +223,7 @@ class Module_cms_polls extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a poll adding/editing form.
+     * Get Tempcode for a poll adding/editing form.
      *
      * @param  ?AUTO_LINK $id The poll ID (null: new)
      * @param  SHORT_TEXT $question The question
@@ -244,23 +244,23 @@ class Module_cms_polls extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the poll
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $question = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '', $a7 = '', $a8 = '', $a9 = '', $a10 = '', $current = false, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
+    public function get_form_fields($id = null, $question = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '', $a7 = '', $a8 = '', $a9 = '', $a10 = '', $current = true, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
         $fields = new Tempcode();
         require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('QUESTION'), do_lang_tempcode('DESCRIPTION_QUESTION'), 'question', $question, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(1)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option1', $a1, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(2)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option2', $a2, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(3)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option3', $a3, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(4)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option4', $a4, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(5)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option5', $a5, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(6)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option6', $a6, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(7)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option7', $a7, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(8)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option8', $a8, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(9)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option9', $a9, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(10)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option10', $a10, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(1))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option1', $a1, true));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(2))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option2', $a2, true));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(3))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option3', $a3, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(4))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option4', $a4, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(5))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option5', $a5, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(6))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option6', $a6, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(7))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option7', $a7, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(8))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option8', $a8, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(9))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option9', $a9, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(10))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option10', $a10, false));
         if (has_privilege(get_member(), 'choose_poll')) {
             if ($question == '') {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('poll', 'is_current', array('is_current' => 1));
@@ -268,12 +268,12 @@ class Module_cms_polls extends Standard_crud_module
                     $current = true;
                 }
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
+            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($question == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
         // Meta data
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         $fields->attach(meta_data_get_fields('poll', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
@@ -309,7 +309,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => intval($id)));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $myrow = $rows[0];
 
@@ -370,6 +370,9 @@ class Module_cms_polls extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('poll', null);
 
         $id = add_poll($question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, post_param_integer('validated', 0), $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $meta_data['views'], $meta_data['edit_time']);
+
+        set_url_moniker('poll', strval($id));
+
         $current = post_param_integer('validated', 0);
         if ($current == 1) {
             if (!has_privilege(get_member(), 'choose_poll')) {
@@ -401,7 +404,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('is_current', 'submitter', 'num_options'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];
@@ -497,7 +500,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('is_current', 'submitter'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];

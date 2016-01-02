@@ -26,7 +26,7 @@ class Hook_checklist_points
     /**
      * Find items to include on the staff checklist.
      *
-     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or NULL if not on a timer), the number of things to sort out (or NULL if not on a queue), The name of the config option that controls the schedule (or NULL if no option).
+     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or null if not on a timer), the number of things to sort out (or null if not on a queue), The name of the config option that controls the schedule (or null if no option).
      */
     public function run()
     {
@@ -36,7 +36,7 @@ class Hook_checklist_points
 
             $url = build_url(array('page' => 'admin_points', 'type' => 'logs'), 'adminzone');
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_NA');
-            $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'f421d75a70956d3beddf16c3f8138f26', 'URL' => '', 'STATUS' => $status, 'TASK' => urlise_lang(do_lang('NAG_MONITOR_GIFTS'), $url), 'INFO' => ''));
+            $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'f421d75a70956d3beddf16c3f8138f26', 'URL' => '', 'STATUS' => $status, 'TASK' => do_lang_tempcode('NAG_MONITOR_GIFTS', $url->evaluate()), 'INFO' => ''));
             return array(array($tpl, null, null, null));
         }
         return array();

@@ -264,6 +264,14 @@ function disable_buttons_just_clicked(inputs,permanent)
 
 function do_form_preview(event,form,preview_url,has_separate_preview)
 {
+	if (typeof has_separate_preview=='undefined') has_separate_preview=false;
+
+	if (!document.getElementById('preview_iframe'))
+	{
+		fauxmodal_alert('{!ADBLOCKER;}');
+		return false;
+	}
+
 	preview_url+=((typeof window.mobile_version_for_preview=='undefined')?'':('&keep_mobile='+(window.mobile_version_for_preview?'1':'0')));
 
 	var old_action=form.getAttribute('action');
@@ -279,7 +287,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 
 	if (form.onsubmit)
 	{
-		var test=form.onsubmit.call(form,event);
+		var test=form.onsubmit.call(form,event,true);
 		if (!test) return false;
 	} 
 
@@ -297,7 +305,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 	if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements))
 	{
 		window.setInterval(window.trigger_resize,500);  /* In case its running in an iframe itself */
-		animate_frame_load(pf,'preview_iframe',50);
+		illustrate_frame_load(pf,'preview_iframe',50);
 	}
 
 	disable_buttons_just_clicked(document.getElementsByTagName('input'));
@@ -426,12 +434,6 @@ function check_field(the_element,the_form,for_preview)
 	// Class name
 	the_class=first_class_name(the_element.className);
 
-	// Deleting?
-	if ((!for_preview) && (the_element.name=='delete') && (((the_class=='input_radio') && (the_element.value!='0')) || (the_class=='input_tick')) && (the_element.checked))
-	{
-		return [false,the_element,0,true]; // Because we're deleting, errors do not matter
-	}
-
 	// Find whether field is required and value of it
 	if (the_element.type=='radio')
 	{
@@ -485,7 +487,7 @@ function check_field(the_element,the_form,for_preview)
 			error_msg='{!NOT_FLOAT;^}'.replace('\{1}',my_value);
 		}
 
-		// shim for HTML5 regexp patterns
+		// Shim for HTML5 regexp patterns
 		if (the_element.getAttribute('pattern'))
 		{
 			if ((my_value!='') && (!my_value.match(new RegExp(the_element.getAttribute('pattern')))))
@@ -515,6 +517,12 @@ function check_field(the_element,the_form,for_preview)
 
 function check_form(the_form,for_preview)
 {
+	var delete_element=document.getElementById('delete');
+	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (the_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
+	{
+		return true;
+	}
+
 	var j,the_element,erroneous=false,total_file_size=0,alerted=false,error_element=null,check_result;
 	for (j=0;j<the_form.elements.length;j++)
 	{
@@ -989,15 +997,58 @@ function toggle_subordinate_fields(pic,help_id)
 	trigger_resize();
 }
 
+function initialise_input_theme_image_entry(name,code)
+{
+	var stem=name+'_'+code;
+
+	var e=document.getElementById('w_'+stem);
+	var img=e.getElementsByTagName('img')[0];
+	var input=document.getElementById('j_'+stem);
+	var label=e.getElementsByTagName('label')[0];
+	var form=input.form;
+
+	e.onkeypress=function(event) {
+		if (!event) event=window.event;
+
+		if (entered_pressed(event))
+			return e.onclick.call([event]);
+		return null;
+	};
+
+	var click_func=function(event) {
+		if (!event) event=window.event;
+
+		choose_picture('j_'+stem,img,name,event);
+
+		if (typeof window.main_form_very_simple!='undefined') form.submit();
+
+		cancel_bubbling(event);
+	}
+	img.onkeypress=click_func;
+	img.onclick=click_func;
+	e.onclick=click_func;
+
+	label.className='js_widget';
+
+	input.onclick=function() {
+		if (this.disabled) return;
+		if (typeof window.deselect_alt_url!='undefined') deselect_alt_url(this.form);
+		if (typeof window.main_form_very_simple!='undefined') this.form.submit();
+		cancel_bubbling(event);
+	}
+}
+
 function choose_picture(id,ob,name,event)
 {
+	if (!ob) return;
+
 	var r=document.getElementById(id);
 	if (!r) return;
 	var e=r.form.elements[name];
 	for (var i=0;i<e.length;i++)
 	{
 		if (e[i].disabled) continue;
-		var img=e[i].parentNode.parentNode.parentNode.getElementsByTagName('img')[0];
+		var img=e[i].parentNode.parentNode.getElementsByTagName('img')[0];
 		if ((img) && (img!=ob))
 		{
 			if (img.parentNode.className.indexOf(' selected')!=-1)
@@ -1187,5 +1238,61 @@ function assign_radio_deletion_confirm(name)
 				}
 			}
 		}
+	}
+}
+
+/* Geolocation for address fields */
+function geolocate_address_fields()
+{
+	if (typeof navigator.geolocation!='undefined')
+	{
+		try
+		{
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var fields=[
+					'{!cns:SPECIAL_CPF__cms_street_address;}',
+					'{!cns:SPECIAL_CPF__cms_city;}',
+					'{!cns:SPECIAL_CPF__cms_county;}',
+					'{!cns:SPECIAL_CPF__cms_state;}',
+					'{!cns:SPECIAL_CPF__cms_post_code;}',
+					'{!cns:SPECIAL_CPF__cms_country;}'
+				];
+
+				var geocode_url='{$FIND_SCRIPT;,geocode}';
+				geocode_url+='?latitude='+window.encodeURIComponent(position.coords.latitude)+'&longitude='+window.encodeURIComponent(position.coords.longitude);
+				geocode_url+=keep_stub();
+
+				do_ajax_request(geocode_url,function(ajax_result) {
+					var parsed=JSON.parse(ajax_result.responseText);
+					if (parsed===null) return;
+					var labels=document.getElementsByTagName('label'),label,field_name,field;
+					for (var i=0;i<labels.length;i++)
+					{
+						label=get_inner_html(labels[i]);
+						for (var j=0;j<fields.length;j++)
+						{
+							if (fields[j].replace(/^.*: /,'')==label)
+							{
+								if (parsed[j+1]===null) parsed[j+1]='';
+
+								field_name=labels[i].getAttribute('for');
+								field=document.getElementById(field_name);
+								if (field.nodeName.toLowerCase()=='select')
+								{
+									field.value=parsed[j+1];
+									if (typeof $(field).select2!='undefined') {
+										$(field).trigger('change');
+									}
+								} else
+								{
+									field.value=parsed[j+1];
+								}
+							}
+						}
+					}
+				});
+			});
+		}
+		catch (e) {}
 	}
 }

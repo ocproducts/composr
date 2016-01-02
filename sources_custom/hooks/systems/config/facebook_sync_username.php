@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    facebook
+ * @package    facebook_support
  */
 
 /**
@@ -28,7 +28,7 @@ class Hook_config_facebook_sync_username
         return array(
             'human_name' => 'FACEBOOK_SYNC_USERNAME',
             'type' => 'tick',
-            'category' => 'USERS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'FACEBOOK_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_facebook_sync_username',
             'shared_hosting_restricted' => '0',

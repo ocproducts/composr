@@ -49,7 +49,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => $new_zone));
         if (!is_null($test)) {
             if ($uniqify) {
-                $new_zone .= '_' . uniqid('', true);
+                $new_zone .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($new_zone)));
             }
@@ -98,7 +98,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('zone', $zone);
+        generate_resource_fs_moniker('zone', $zone);
     }
 
     return $zone;
@@ -168,8 +168,8 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
     }
 
     if (!$force) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         disable_php_memory_limit();
 
@@ -194,7 +194,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
 }
 
 /**
- * Delete a zones database stuff.
+ * Delete a zone's database stuff.
  *
  * @param  ID_TEXT $zone The name of the zone
  */
@@ -233,18 +233,18 @@ function actual_delete_zone_lite($zone)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('zone', $zone);
+        expunge_resource_fs_moniker('zone', $zone);
     }
 }
 
 /**
  * The do-next manager for after content management.
  *
- * @param  tempcode $title The title (output of get_screen_title)
+ * @param  Tempcode $title The title (output of get_screen_title)
  * @param  ?ID_TEXT $page The name of the page just handled (null: none)
  * @param  ID_TEXT $zone The name of the zone just handled (blank: none/welcome-zone)
- * @param  tempcode $completion_text The text to show (blank: default)
- * @return tempcode The UI
+ * @param  Tempcode $completion_text The text to show (blank: default)
+ * @return Tempcode The UI
  */
 function sitemap_do_next_manager($title, $page, $zone, $completion_text)
 {
@@ -254,7 +254,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
 
     require_code('templates_donext');
     $special = array(
-        array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
+        array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
         array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang_tempcode('COMCODE_PAGE_EDIT')),
     );
     if (!is_null($page)) {
@@ -301,7 +301,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
  * @param  ?array $reorder A reordering (null: no reordering)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_zones($sel = null, $no_go = null, $reorder = null, $updated_since = null)
 {
@@ -348,10 +348,10 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
 /**
  * Get a zone chooser interface.
  *
- * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing it's own borderings)
+ * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing its own borderings)
  * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
  * @param  ?array $reorder A reordering (null: no reordering)
- * @return tempcode The zone chooser
+ * @return Tempcode The zone chooser
  */
 function get_zone_chooser($inline = false, $no_go = null, $reorder = null)
 {
@@ -465,17 +465,14 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     // Handle if the page was renamed - move stuff over
     $renaming_page = ($new_file != $file);
     if ($renaming_page) {
-        if (addon_installed('catalogues')) {
-            update_catalogue_content_ref('comcode_page', $file, $new_file);
-        }
-
+        // Got to rename against multiple possible languages
         $langs = find_all_langs(true);
         $rename_map = array();
         foreach (array_keys($langs) as $lang) {
-            $old_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt', true);
+            $old_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt', true);
             if (file_exists(get_file_base() . '/' . $old_path)) {
-                $new_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $new_file . '.txt', true);
-                if (file_exists($new_path)) {
+                $new_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $new_file . '.txt', true);
+                if ((file_exists($new_path)) && (fileinode($new_path) != fileinode($old_path)/*avoid issue on case insensitive file systems while changing case*/)) {
                     warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($zone . ':' . $new_file)));
                 }
                 $rename_map[$old_path] = $new_path;
@@ -484,9 +481,16 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
                 attach_message(do_lang_tempcode('ORIGINAL_PAGE_NO_RENAME'), 'warn');
             }
         }
-
         foreach ($rename_map as $path => $new_path) {
             rename(get_custom_file_base() . '/' . $path, get_custom_file_base() . '/' . $new_path);
+        }
+
+        // Got to rename various resources
+
+        $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
+ 
+        if (addon_installed('catalogues')) {
+            update_catalogue_content_ref('comcode_page', $file, $new_file);
         }
 
         if (addon_installed('awards')) {
@@ -496,6 +500,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
             }
         }
 
+        // Main page record rename
         $GLOBALS['SITE_DB']->query_update('comcode_pages', array(
             'p_parent_page' => $new_file,
         ), array('the_zone' => $zone, 'p_parent_page' => $file));
@@ -530,17 +535,30 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         'p_order' => $order,
     ));
 
+    // Find file
+    $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
+    $file_changed = ((!file_exists($full_path)) || ($text != file_get_contents($full_path)));
+
+    // Save revision
+    if ($file_changed) {
+        require_code('revisions_engine_files');
+        $revision_engine = new RevisionEngineFiles();
+        list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
+        if ($existing_path != '') {
+            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+        }
+    }
+
     // Store page on disk
-    $fullpath = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
-    if ((!file_exists($fullpath)) || ($text != file_get_contents($fullpath))) {
-        if (!file_exists(dirname($fullpath))) {
+    if ($file_changed) {
+        if (!file_exists(dirname($full_path))) {
             require_code('files2');
-            make_missing_directory(dirname($fullpath));
+            make_missing_directory(dirname($full_path));
         }
 
-        $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
         if ($myfile === false) {
-            intelligent_write_error($fullpath);
+            intelligent_write_error($full_path);
         }
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
@@ -551,25 +569,13 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
-        sync_file($fullpath);
-        fix_permissions($fullpath);
-
-        $file_changed = true;
-    } else {
-        $file_changed = false;
-    }
-
-    // Save backup
-    if ((file_exists($fullpath)) && (get_option('store_revisions') == '1') && ($file_changed)) {
-        $time = time();
-        @copy($fullpath, $fullpath . '.' . strval($time)) or intelligent_write_error($fullpath . '.' . strval($time));
-        fix_permissions($fullpath . '.' . strval($time));
-        sync_file($fullpath . '.' . strval($time));
+        sync_file($full_path);
+        fix_permissions($full_path);
     }
 
     // Empty caching
     erase_persistent_cache();
-    //persistent_cache_delete(array('PAGE_INFO'));
+    //persistent_cache_delete(array('PAGE_INFO')); Already erases above
     decache('main_comcode_page_children');
     decache('menu');
     $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => $zone, 'the_page' => $file));
@@ -583,10 +589,21 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('comcode_page', $zone . ':' . $new_file);
+        generate_resource_fs_moniker('comcode_page', $zone . ':' . $new_file);
     }
 
-    return $fullpath;
+    $zone_default_page = get_zone_default_page($zone);
+    require_code('sitemap_xml');
+    notify_sitemap_node_add(
+        $zone . ':' . $new_file,
+        $add_time,
+        $edit_time,
+        ($zone_default_page == $new_file) ? SITEMAP_IMPORTANCE_ULTRA : SITEMAP_IMPORTANCE_HIGH,
+        ($zone_default_page == $new_file) ? 'daily' : 'weekly',
+        true
+    );
+
+    return $full_path;
 }
 
 /**
@@ -618,18 +635,20 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
     if ((substr($type, 0, 7) == 'comcode') || (substr($type, 0, 4) == 'html')) {
         $type_shortened = preg_replace('#/.+#', '', $type);
 
-        if ((substr($type, 0, 7) == 'comcode') && (get_option('store_revisions') == '1')) {
-            $time = time();
-            $fullpath = zone_black_magic_filterer(((strpos($type, 'comcode/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page);
-            $bs_path = zone_black_magic_filterer(str_replace('/comcode/', '/comcode_custom/', $fullpath) . '.' . strval($time));
-            @copy($fullpath, $bs_path) or intelligent_write_error($fullpath);
-            sync_file($bs_path);
-            fix_permissions($bs_path);
+        if (substr($type, 0, 7) == 'comcode') {
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_files');
+                $revision_engine = new RevisionEngineFiles();
+                list(, , $existing_path) = find_comcode_page(user_lang(), $page, $zone);
+                if ($existing_path != '') {
+                    $revision_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                }
+            }
         }
 
         $langs = find_all_langs(true);
         foreach (array_keys($langs) as $lang) {
-            $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type_shortened) . '/' . $lang . '/' . $_page, true);
+            $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type_shortened) . '/' . $lang . '/' . $_page, true);
             $path = ((strpos($type, 'comcode/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $_path;
             if (file_exists($path)) {
                 if ($use_afm) {
@@ -654,7 +673,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             seo_meta_erase_storage('comcode_page', $zone . ':' . $page);
         }
     } else {
-        $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page, true);
+        $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type) . '/' . $_page, true);
         $path = ((strpos($type, '_custom') === false) ? get_file_base() : get_custom_file_base()) . '/' . $_path;
         if (file_exists($path)) {
             if ($use_afm) {
@@ -673,4 +692,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
     }
 
     log_it('DELETE_PAGES', $page);
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete($zone . ':' . $page);
 }

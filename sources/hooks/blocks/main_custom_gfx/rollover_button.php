@@ -28,7 +28,7 @@ class Hook_main_custom_gfx_rollover_button
      *
      * @param  array $map Map of hook parameters (relayed from block parameters map).
      * @param  object $block The block itself (contains utility methods).
-     * @return tempcode HTML to output.
+     * @return Tempcode HTML to output.
      */
     public function run($map, &$block)
     {
@@ -64,7 +64,7 @@ class Hook_main_custom_gfx_rollover_button
             return $url_2;
         }
 
-        $comb_id = 'rollover_' . uniqid('', true);
+        $comb_id = 'rollover_' . uniqid('', false);
 
         $ret = '<img id="' . php_addslashes($comb_id) . '" class="gfx_text_overlay" alt="' . str_replace("\n", ' ', escape_html($map['data'])) . '" src="' . escape_html($url_1) . '" />';
         $ret .= trim('

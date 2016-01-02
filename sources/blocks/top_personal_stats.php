@@ -45,7 +45,7 @@ class Block_top_personal_stats
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -66,8 +66,8 @@ class Block_top_personal_stats
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
         require_code('global4');
-        list($links, $details, $num_unread_pps) = member_personal_links_and_details($member_id);
+        list($links, $links_ecommerce, $details, $num_unread_pps) = member_personal_links_and_details($member_id);
 
-        return do_template('BLOCK_TOP_PERSONAL_STATS', array('NUM_UNREAD_PTS' => strval($num_unread_pps), 'AVATAR_URL' => $avatar_url, 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'LINKS' => $links, 'DETAILS' => $details));
+        return do_template('BLOCK_TOP_PERSONAL_STATS', array('NUM_UNREAD_PTS' => strval($num_unread_pps), 'AVATAR_URL' => $avatar_url, 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'LINKS' => $links, 'LINKS_ECOMMERCE' => $links_ecommerce, 'DETAILS' => $details));
     }
 }

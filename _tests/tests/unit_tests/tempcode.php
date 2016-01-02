@@ -18,7 +18,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class tempcode_test_set extends cms_test_case
+class Tempcode_test_set extends cms_test_case
 {
     public function testTempcode()
     {

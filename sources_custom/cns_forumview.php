@@ -7,7 +7,7 @@
  * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
  * @param  boolean $pt Whether the topic is a Private Topic.
  * @param  ?string $show_forum The forum name (null: do not show the forum name).
- * @return tempcode The topic row.
+ * @return Tempcode The topic row.
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {

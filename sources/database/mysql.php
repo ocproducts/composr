@@ -41,12 +41,12 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
-        // Potential cacheing
+        // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db != $db_name) {
@@ -93,7 +93,7 @@ class Database_Static_mysql extends Database_super_mysql
 
         global $SITE_INFO;
         if (!array_key_exists('database_charset', $SITE_INFO)) {
-            $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8' : 'latin1';
+            $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
             mysql_set_charset($SITE_INFO['database_charset'], $db);
@@ -202,7 +202,7 @@ class Database_Static_mysql extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet='.strval(intval(strlen($query)*1.3)),$db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query)));
@@ -262,7 +262,7 @@ class Database_Static_mysql extends Database_super_mysql
 
         $query = ltrim($query);
         $sub = substr($query, 0, 4);
-        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'EXPL') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
+        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 
@@ -314,7 +314,7 @@ class Database_Static_mysql extends Database_super_mysql
 
                 switch ($type) {
                     case 'int':
-                        if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of NULL
+                        if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of null
                             $newrow[$name] = null;
                         } else {
                             if ($v == "\0" || $v == "\1") {

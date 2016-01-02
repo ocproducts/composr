@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composr_homesite_support_credits
+ * @package    group_points
  */
 
 /**
@@ -18,7 +18,7 @@
  *
  * @param  MEMBER $member_id_of The ID of the member who is being viewed
  * @param  ?MEMBER $member_id_viewing The ID of the member who is doing the viewing (null: current member)
- * @return tempcode The UI
+ * @return Tempcode The UI
  */
 function points_profile($member_id_of, $member_id_viewing)
 {

@@ -34,7 +34,7 @@ class Hook_config_normal_groups_per_page
             'human_name' => 'NORMAL_GROUPS_PER_PAGE',
             'type' => 'integer',
             'category' => 'USERS',
-            'group' => 'GROUPS',
+            'group' => 'USERGROUPS',
             'explanation' => 'CONFIG_OPTION_normal_groups_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

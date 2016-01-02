@@ -1,5 +1,5 @@
 <script src="http://www.google.com/jsapi"></script>
-{+START,IF,{$EQ,{CLUSTER},1}}
+{+START,IF,{CLUSTER}}
 	<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
 {+END}
 <script>// <![CDATA[
@@ -55,16 +55,16 @@
 			add_data_point(data[i],bounds,markers,info_window,map);
 		}
 
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 			var markerCluster=new MarkerClusterer(map,markers);
 		{+END}
 
 		{$,Fit the map around the markers, but only if we want the map centered.}
-		{+START,IF,{$EQ,{CENTER},1}}
+		{+START,IF,{CENTER}}
 			map.fitBounds(bounds);
 		{+END}
 
-		{+START,IF,{$EQ,{GEOLOCATE_USER},1}}
+		{+START,IF,{GEOLOCATE_USER}}
 			{+START,IF_NON_EMPTY,{SET_COORD_URL}}
 				{$,Geolocation for current member to get stored onto the map}
 				if (typeof navigator.geolocation!='undefined')
@@ -73,8 +73,8 @@
 					{
 						navigator.geolocation.getCurrentPosition(function(position) {
 							do_ajax_request('{SET_COORD_URL;/}'+position.coords.latitude+'_'+position.coords.longitude+keep_stub(),function() {});
-							var initialLocation=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-							map.setCenter(initialLocation);
+							var initial_location=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+							map.setCenter(initial_location);
 
 							add_data_point(['{$USERNAME;/,{$MEMBER},1}',position.coords.latitude,position.coords.longitude,''],bounds,markers,info_window,map);
 						});
@@ -113,10 +113,10 @@
 
 		var marker=new google.maps.Marker(marker_options);
 
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 			markers.push(marker);
 		{+END}
-		{+START,IF,{$NEQ,{CLUSTER},1}}
+		{+START,IF,{$NOT,{CLUSTER}}}
 			marker.setMap(map);
 		{+END}
 
@@ -137,7 +137,7 @@
 		})(marker,data_point[0])); {$,These are the args passed to the dynamic function above.}
 	}
 
-	google.load('maps','3',{callback: google_map_users_initialize,other_params:'sensor=true'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+	google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
 <section class="box box___block_main_google_map_users"><div class="box_inner">

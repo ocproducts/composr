@@ -42,11 +42,11 @@ class Block_main_image_fader
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'order\',$map)?$map[\'order\']:\'\',array_key_exists(\'time\',$map)?intval($map[\'time\']):8000,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'galleries\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'\')';
@@ -62,7 +62,7 @@ class Block_main_image_fader
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -101,8 +101,14 @@ class Block_main_image_fader
             $extra_where_video .= $privacy_where_video;
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
         $all_rows = array();
         if ($order != '') {
             foreach (explode(',', $order) as $o) {

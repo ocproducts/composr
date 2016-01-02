@@ -27,7 +27,7 @@
  * @param  boolean $include_manage_links Whether to include extra management links (e.g. editing, choosing, archive, etc)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The box
+ * @return Tempcode The box
  */
 function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {
@@ -146,7 +146,7 @@ function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = n
     if (is_null($myrow)) {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $poll_id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $myrow = $rows[0];
     }
@@ -225,7 +225,7 @@ function may_vote_in_poll($poll_id, $member_id, $ip)
  *
  * @param  ?AUTO_LINK $it The ID of the poll to select by default (null: first)
  * @param  ?MEMBER $only_owned Only show polls owned by this member (null: no such restriction)
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_polls($it = null, $only_owned = null)
 {

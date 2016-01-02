@@ -26,7 +26,7 @@ class Hook_snippet_rating
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
@@ -35,7 +35,7 @@ class Hook_snippet_rating
         }
 
         // Has there actually been any rating?
-        if ((strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') || (cms_srv('HTTP_REFERER') == '')) { // Code branch if this is a post request. Allow rating to not be given (= unrate). Has to check is post request to stop CSRF
+        if ((cms_srv('REQUEST_METHOD') == 'POST') || (cms_srv('HTTP_REFERER') == '')) { // Code branch if this is a post request. Allow rating to not be given (= unrate). Has to check is post request to stop CSRF
             $rating = either_param_integer('rating', null);
         } else {
             $rating = post_param_integer('rating'); // Will fail

@@ -26,10 +26,10 @@ class Hook_config_jestr_emoticon_magnet_shown_for
     public function get_details()
     {
         return array(
-            'human_name' => 'OCJESTER_EMOTICON_MAGNET_SHOWN_FOR',
+            'human_name' => 'JESTER_EMOTICON_MAGNET_SHOWN_FOR',
             'type' => 'line',
             'category' => 'FEATURE',
-            'group' => 'OCJESTER_TITLE',
+            'group' => 'JESTER_TITLE',
             'explanation' => 'CONFIG_OPTION_jestr_emoticon_magnet_shown_for',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -50,9 +50,6 @@ class Hook_config_is_on_block_cache
      */
     public function get_default()
     {
-        if (GOOGLE_APPENGINE) {
-            return '1';
-        }
-        return $GLOBALS['SEMI_DEV_MODE'] ? '0' : '1';
+        return '1';
     }
 }

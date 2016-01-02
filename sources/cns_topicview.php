@@ -33,7 +33,7 @@ function find_post_id_url($post_id)
 
     $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
     if (is_null($id)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     // What page is it on?
@@ -41,7 +41,7 @@ function find_post_id_url($post_id)
     $start = intval(floor(floatval($before) / floatval($max))) * $max;
 
     // Now redirect accordingly
-    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id);
+    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id, 'threaded' => get_param_integer('threaded', null));
     foreach ($_GET as $key => $val) {
         if ((substr($key, 0, 3) == 'kfs') || (in_array($key, array('topic_start', 'topic_max')))) {
             $map[$key] = $val;
@@ -74,7 +74,7 @@ function find_first_unread_url($id)
     $last_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $id));
     if (is_null($last_read_time)) {
         // Assumes that everything made in the last two weeks has not been read
-        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' ORDER BY id', 1);
+        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' ORDER BY id', 1);
         if (array_key_exists(0, $unread_details)) {
             $last_read_time = $unread_details[0]['p_time'] - 1;
         } else {
@@ -93,7 +93,7 @@ function find_first_unread_url($id)
         $before = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . cns_get_topic_where($id), false, true);
         $start = intval(floor(floatval($before) / floatval($max))) * $max;
         if ($start == $before) {
-            $start = $before - $max;
+            $start = max(0, $before - $max);
         }
     }
 
@@ -144,8 +144,16 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         'is_emphasised' => $_postdetails['p_is_emphasised'],
         'poster_username' => $_postdetails['p_poster_name_if_guest'],
         'poster' => $_postdetails['p_poster'],
-        'has_history' => !is_null($_postdetails['h_post_id'])
     );
+
+    $post['has_revisions'] = false;
+    if (addon_installed('actionlog')) {
+        require_code('revisions_engine_database');
+        $revision_engine = new RevisionEngineDatabase(true);
+        if ($revision_engine->has_revisions(array('post'), strval($_postdetails['id']))) {
+            $post['has_revisions'] = true;
+        }
+    }
 
     if (array_key_exists('message_comcode', $_postdetails)) {
         $post['message_comcode'] = $_postdetails['message_comcode'];
@@ -275,7 +283,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
         $_topic_info = $GLOBALS['FORUM_DB']->query_select($table, $select, array('t.id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
         $topic_info = $_topic_info[0];
 
@@ -371,11 +379,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Post query
         $where = cns_get_topic_where($topic_id);
-        if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-            $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
-        } else { // Can use subquery to avoid having to assume p_last_edit_time was not chosen as null during avoidance of duplication of rows
-            $query = 'SELECT p.*, (SELECT h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h WHERE (h.h_post_id=p.id) LIMIT 1) AS h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
-        }
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     } else {
         $out = array(
             'num_views' => 0,
@@ -399,7 +403,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Post query
         $where = 'p_intended_solely_for=' . strval(get_member());
-        $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     }
 
     // Posts
@@ -450,7 +454,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
             // Fake a quoted post? (kind of a nice 'tidy up' feature if a forum's threading has been turned off, leaving things for flat display)
             if ((!is_null($_postdetails['p_parent_id'])) && (strpos($_postdetails['message_comcode'], '[quote') === false)) {
-                $p = mixed(); // NULL
+                $p = mixed(); // null
                 if (array_key_exists($_postdetails['p_parent_id'], $_postdetailss)) { // Ah, we're already loading it on this page
                     $p = $_postdetailss[$_postdetails['p_parent_id']];
 
@@ -665,7 +669,7 @@ function cns_cache_member_details($members)
  * @param  array $_postdetails Map of post info.
  * @param  boolean $may_reply Whether the current member may reply to the topic
  * @param  ID_TEXT $rendering_context Rendering context
- * @return tempcode The buttons.
+ * @return Tempcode The buttons.
  */
 function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $rendering_context = 'cns')
 {
@@ -691,7 +695,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '712fdaee35f378e37b007f3a73246690', 'REL' => 'validate', 'IMMEDIATE' => true, 'IMG' => 'menu__adminzone__audit__unvalidated', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '712fdaee35f378e37b007f3a73246690', 'REL' => 'validate nofollow', 'IMMEDIATE' => true, 'IMG' => 'menu__adminzone__audit__unvalidated', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if (($may_reply) && (is_null(get_bot_type()))) {
@@ -724,14 +728,14 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach(do_lang_tempcode(($topic_info['is_threaded'] == 1) ? 'REPLY' : 'QUOTE_POST'));
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => ($topic_info['is_threaded'] == 1) ? 'buttons__new_reply' : 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript)));
 
         if ($topic_info['is_threaded'] == 1) { // Second button for replying with explicit quote
             $_title = do_lang_tempcode('QUOTE_POST');
             $_title_full = new Tempcode();
             $_title_full->attach($_title);
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply', 'IMMEDIATE' => false, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript_explicit_quote)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fc13d12cfe58324d78befec29a663b4f', 'REL' => 'add reply nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => $javascript_explicit_quote)));
         }
     }
 
@@ -768,7 +772,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fb1c74bae9c553dc160ade85adf289b5', 'REL' => 'add reply contact', 'IMMEDIATE' => false, 'IMG' => (get_option('inline_pp_advertise') == '0') ? 'buttons__send' : 'buttons__whisper', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fb1c74bae9c553dc160ade85adf289b5', 'REL' => 'add reply contact nofollow', 'IMMEDIATE' => false, 'IMG' => (get_option('inline_pp_advertise') == '0') ? 'buttons__send' : 'buttons__whisper', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if (array_key_exists('may_edit', $_postdetails)) {
@@ -791,7 +795,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = do_lang_tempcode('EDIT_POST');
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f341cfc94b3d705437d43e89f572bff6', 'REL' => 'edit', 'IMMEDIATE' => false, 'IMG' => 'buttons__edit', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $edit_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f341cfc94b3d705437d43e89f572bff6', 'REL' => 'edit nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__edit', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $edit_url)));
     }
 
     if (array_key_exists('may_delete', $_postdetails)) {
@@ -814,7 +818,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $_title_full = new Tempcode();
         $_title_full->attach(do_lang_tempcode('DELETE_POST'));
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '8bf6d098ddc217eef75718464dc03d41', 'REL' => 'delete', 'IMMEDIATE' => false, 'IMG' => 'menu___generic_admin__delete', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $delete_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '8bf6d098ddc217eef75718464dc03d41', 'REL' => 'delete nofollow', 'IMMEDIATE' => false, 'IMG' => 'menu___generic_admin__delete', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $delete_url)));
     }
 
     if ($rendering_context != 'tickets') {
@@ -824,7 +828,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title_full = new Tempcode();
             $_title_full->attach(do_lang_tempcode('REPORT_POST'));
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report', 'IMMEDIATE' => false, 'IMG' => 'buttons__report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => 'return open_link_as_overlay(this,null,\'100%\');')));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => 'return open_link_as_overlay(this,null,\'100%\');')));
         }
 
         if ((array_key_exists('may_warn_members', $topic_info)) && ($_postdetails['poster'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) && (addon_installed('cns_warnings'))) {
@@ -834,17 +838,17 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title = do_lang_tempcode('__WARN_MEMBER');
             $_title_full = do_lang_tempcode('WARN_MEMBER');
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'IMMEDIATE' => false, 'IMG' => 'buttons__warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'REL' => 'nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
         }
     }
 
-    if ((has_privilege(get_member(), 'view_content_history')) && ($_postdetails['has_history'])) {
-        $action_url = build_url(array('page' => 'admin_cns_history', 'type' => 'browse', 'post_id' => $_postdetails['id']), 'adminzone');
-        $_title = do_lang_tempcode('POST_HISTORY');
+    if ($_postdetails['has_revisions']) {
+        $action_url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'post', 'resource_id' => $_postdetails['id']), get_module_zone('admin_revisions'));
+        $_title = do_lang_tempcode('actionlog:REVISIONS');
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history', 'IMMEDIATE' => false, 'IMG' => 'buttons__history', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__revisions', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if ($rendering_context != 'tickets') {
@@ -864,7 +868,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
  * Get post emphasis Tempcode.
  *
  * @param  array $_postdetails Map of post info.
- * @return tempcode The tempcode.
+ * @return Tempcode The Tempcode.
  */
 function cns_get_post_emphasis($_postdetails)
 {

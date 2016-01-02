@@ -34,12 +34,12 @@ function pointstore_handle_error_taken($prefix, $suffix)
 }
 
 /**
- * Get a tempcode list of the available mail domains.
+ * Get a Tempcode list of the available mail domains.
  *
  * @param  ID_TEXT $type The type of mail domain
  * @set    pop3 forw
  * @param  integer $points_left Description
- * @return tempcode The tempcode list of available domains
+ * @return Tempcode The Tempcode list of available domains
  */
 function get_mail_domains($type, $points_left)
 {

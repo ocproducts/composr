@@ -57,7 +57,7 @@ class Hook_profiles_tabs_edit
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return array A tuple: The tab title, the tab contents, the suggested tab order, the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -73,12 +73,16 @@ class Hook_profiles_tabs_edit
 
         $only_tab = get_param_string('only_subtab', null);
 
-        if (($leave_to_ajax_if_possible) && (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST')) {
+        if (($leave_to_ajax_if_possible) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             return array($title, null, $order, 'tabs/settings');
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(60); // Raise time limit, as can be slow
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(60); // Raise time limit, as can be slow
+        }
+
+        if (count($_POST) > 0) {
+            send_http_output_ping();
         }
 
         $tabs = array();
@@ -169,7 +173,6 @@ class Hook_profiles_tabs_edit
             'URL' => $url,
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
-            'AUTOCOMPLETE' => false,
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $_tabs,
         ));

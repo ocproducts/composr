@@ -113,8 +113,10 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/page_groupings/trackbacks.php',
             'lang/EN/trackbacks.ini',
             'sources/hooks/systems/trackback/.htaccess',
+            'sources_custom/hooks/systems/trackback/.htaccess',
             'sources/hooks/systems/trackback/index.html',
-            'trackback.php',
+            'sources_custom/hooks/systems/trackback/index.html',
+            'data/trackback.php',
             'adminzone/pages/modules/admin_trackbacks.php',
             'sources/hooks/systems/addon_registry/core_feedback_features.php',
             'sources/hooks/systems/snippets/rating.php',
@@ -345,7 +347,7 @@ class Hook_addon_registry_core_feedback_features
                 'HIGHLIGHT' => ($i == 1),
                 'TITLE' => lorem_word(),
                 'TIME_RAW' => placeholder_number(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'POSTER_ID' => placeholder_id(),
                 'POSTER_URL' => placeholder_url(),
                 'POSTER_NAME' => lorem_word(),
@@ -440,12 +442,12 @@ class Hook_addon_registry_core_feedback_features
         foreach ($trackbacks as $i => $value) {
             $content->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id() . strval($i),
-                'TIME_RAW' => placeholder_time(),
-                'TIME' => placeholder_time(),
+                'TIME_RAW' => placeholder_date(),
+                'TIME' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'EXCERPT' => '',
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_id(),
             )));
         }
 

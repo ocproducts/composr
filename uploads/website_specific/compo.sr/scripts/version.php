@@ -11,7 +11,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
 // Find Composr base directory, and chdir into it
@@ -39,8 +39,6 @@ require($FILE_BASE . '/sources/global.php');
 
 require_lang('composrcom');
 
-//if (get_ip_address()!='86.141.238.33') return old_style();
-
 header('Content-type: text/plain; charset=' . get_charset());
 if (get_param_integer('html', 0) == 1) {
     header('Content-type: text/html');
@@ -62,25 +60,20 @@ VARIABLE KEY:
 version: complete minimal version string intended for humans
 long_version: maximal dotted version number
 intended: minimal dotted version number
-qualifier: NULL or alpha or beta or RC
-qualifier_number: NULL or integer
+qualifier: null or alpha or beta or RC
+qualifier_number: null or integer
 */
 
 // Find our version
 $our_version = null;
-if (preg_match('#^[\d\.]+$#', $intended) != 0) { // If we understand the format
-    $download_row = find_download($version_pretty);
-    if (!is_null($download_row)) {
-        $our_version = array(
-            'version' => $version_pretty,
-            'download_description' => strip_download_description($download_row['nice_description']),
-            'add_date' => $download_row['add_date'],
-        );
-    }
-} else {
-    old_style();
-    return;
-} // We can't do our clever stuff as we don't recognise the version number formatting. This should never happen, but better to allow it.
+$download_row = find_download($version_pretty);
+if (!is_null($download_row)) {
+    $our_version = array(
+        'version' => $version_pretty,
+        'download_description' => strip_download_description($download_row['nice_description']),
+        'add_date' => $download_row['add_date'],
+    );
+}
 
 // Possible next versions, in order of decreasing distance (i.e. we search from right to left until we find a match). Will never recommend a beta or RC unless you're already on the same track of them
 $bits = explode('.', $intended);
@@ -264,21 +257,21 @@ if (!is_null($our_version)) {
     echo '<p>' . do_lang('CMS_NON_EXISTANT_VERSION') . '</p>';
 }
 /*if (false) { // Info isn't actually helpful, as the download_description above contains it also
-	echo '<h3>Next version</h3>';
-	// Next version
-	if (!is_null($next_upgrade_version)) {
-		// NB: $has_jump should always be true in this branch, unless there are holes in the version DB
-		echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version '.escape_html($next_upgrade_version['version']).' (this link will open in a new window)" href="'.escape_html(static_evaluate_tempcode(build_url(array('page'=>'news','type'=>'view','id'=>$next_upgrade_version['news_id'],'wide_high'=>1),'site'))).'">version '.escape_html($next_upgrade_version['version']).'</a>, but read on for the latest recommended upgrade paths.</p>';
-	} elseif ((!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	} else {
-		echo '<p>Sorry, details of the next version is not in our database.</p>';
-	}
+    echo '<h3>Next version</h3>';
+    // Next version
+    if (!is_null($next_upgrade_version)) {
+        // NB: $has_jump should always be true in this branch, unless there are holes in the version DB
+        echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version ' . escape_html($next_upgrade_version['version']) . ' (this link will open in a new window)" href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $next_upgrade_version['news_id'], 'wide_high' => 1), 'site'))) . '">version ' . escape_html($next_upgrade_version['version']) . '</a>, but read on for the latest recommended upgrade paths.</p>';
+    } elseif ((!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    } else {
+        echo '<p>Sorry, details of the next version is not in our database.</p>';
+    }
 } else
 {
-	if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	}
+    if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    }
 }*/
 // Latest versions
 if ($has_jump) {
@@ -311,7 +304,7 @@ if ($has_jump) {
 
             // Output upgrader link
             $out = '';
-            $upgrade_script = (($bits[0] >= 4) ? 'upgrader.php' : 'force_upgrade.php');
+            $upgrade_script = 'upgrader.php';
             if (isset($found['news_id'])) {
                 $upgrade_script .= '?news_id=' . strval($higher_versions[$i]['news_id']);
             }
@@ -441,25 +434,5 @@ function load_download_rows()
                 $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
             }
         }
-    }
-}
-
-// ===========================
-//		OLD SIMPLE STYLE
-// ===========================
-
-function old_style()
-{
-    require_code('version2');
-    $dotted = get_version_dotted__from_anything(get_param_string('version'));
-    $version_pretty = get_version_pretty__from_dotted($dotted);
-
-    $rows = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', array('*'), array('validated' => 1, $GLOBALS['SITE_DB']->translate_field_ref('name') => 'Composr Version ' . $version_pretty));
-
-    if (!array_key_exists(0, $rows)) {
-        echo do_lang('CMS_NON_EXISTANT_VERSION');
-    } else {
-        $description = get_translated_tempcode('download_downloads', $rows[0], 'description');
-        echo $description->evaluate();
     }
 }

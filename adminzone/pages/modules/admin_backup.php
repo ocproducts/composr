@@ -46,7 +46,7 @@ class Module_admin_backup
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -69,7 +69,7 @@ class Module_admin_backup
         delete_value('backup_b_type');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/exports/backups',true);
+        //deldir_contents(get_custom_file_base() . '/exports/backups', true);
     }
 
     /**
@@ -87,7 +87,7 @@ class Module_admin_backup
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -122,7 +122,7 @@ class Module_admin_backup
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -159,7 +159,7 @@ class Module_admin_backup
     /**
      * The UI to do a backup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function backup_interface()
     {
@@ -222,7 +222,7 @@ class Module_admin_backup
     /**
      * Helper function to find information about past backups.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function get_results()
     {
@@ -283,7 +283,7 @@ class Module_admin_backup
     /**
      * The actualiser to start a backup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function make_backup()
     {
@@ -304,7 +304,7 @@ class Module_admin_backup
         }
 
         if (addon_installed('calendar')) {
-            $schedule = get_input_date('schedule');
+            $schedule = post_param_date('schedule');
             if (!is_null($schedule)) {
                 set_value('backup_schedule_time', strval($schedule));
                 set_value('backup_recurrance_days', strval(post_param_integer('recurrance_days', 0)));
@@ -324,7 +324,7 @@ class Module_admin_backup
     /**
      * The UI to confirm deletion of a backup file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function confirm_delete()
     {
@@ -341,7 +341,7 @@ class Module_admin_backup
     /**
      * The actualiser to delete a backup file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete()
     {

@@ -48,7 +48,7 @@ class Module_admin_phpinfo
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -61,7 +61,7 @@ class Module_admin_phpinfo
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -98,7 +98,7 @@ class Module_admin_phpinfo
         set_helper_panel_text(comcode_lang_string('DOC_PHPINFO'));
 
         ob_start();
-        if ((function_exists('phpinfo')) && (strpos(@ini_get('disable_functions'), 'phpinfo') === false)) {
+        if (php_function_allowed('phpinfo')) {
             phpinfo();
         } else {
             var_dump(PHP_VERSION);
@@ -139,15 +139,15 @@ class Module_admin_phpinfo
 
         $out .= '<h2>Run-time details</h2>';
         $out .= '<p>Your IP address: ' . escape_html(get_ip_address()) . '</p>';
-        if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+        if ((php_function_allowed('posix_getuid')) && (php_function_allowed('posix_getpwuid'))) {
             $user = posix_getuid();
             $suexec = ($user == fileowner(get_file_base() . '/index.php'));
             $dets = posix_getpwuid($user);
             $out .= '<p>Running as user: ' . escape_html($dets['name']) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
-        } elseif (strpos(@ini_get('disable_functions'), 'shell_exec') === false) {
-            $test = shell_exec('whoami');
+        } elseif (php_function_allowed('shell_exec')) {
+            $test = @shell_exec('whoami');
             if (!empty($test)) {
-                if (function_exists('get_current_user') && strpos(@ini_get('disable_functions'), 'get_current_user') === false) {
+                if (php_function_allowed('get_current_user')) {
                     $suexec = ($test == get_current_user());
                 } else {
                     $suexec = null;
@@ -159,9 +159,9 @@ class Module_admin_phpinfo
             $user = @fileowner($tmp);
             @unlink($tmp);
             $suexec = ($user == fileowner(get_file_base() . '/index.php'));
-            $out .= '<p>Running as user: ' . escape_html(($suexec && (function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'get_current_user') === false)) ? get_current_user() : ('#' . strval($user))) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
+            $out .= '<p>Running as user: ' . escape_html((($suexec) && (php_function_allowed('get_current_user'))) ? get_current_user() : ('#' . strval($user))) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
         }
-        if (function_exists('php_sapi_name')) {
+        if (php_function_allowed('php_sapi_name')) {
             $out .= '<p>PHP configured as: ' . escape_html(php_sapi_name()) . '</p>';
         }
 

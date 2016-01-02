@@ -74,7 +74,7 @@ class Hook_addon_registry_staff_messaging
     public function get_dependencies()
     {
         return array(
-            'requires' => array('ocf_forum'),
+            'requires' => array('cns_forum'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -127,7 +127,7 @@ class Hook_addon_registry_staff_messaging
     public function tpl_previews()
     {
         return array(
-            'templates/MESSAGING_MESSAGE_SCREEN.tpl' => 'administrative__messaging_message_screen', //
+            'templates/MESSAGING_MESSAGE_SCREEN.tpl' => 'administrative__messaging_message_screen',
             'templates/BLOCK_MAIN_CONTACT_US.tpl' => 'block_main_contact_us',
             'templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl' => 'block_main_contact_simple'
         );
@@ -172,7 +172,7 @@ class Hook_addon_registry_staff_messaging
                 'TAKE_RESPONSIBILITY_URL' => placeholder_url(),
                 'RESPONSIBLE' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'MEMBER_URL' => placeholder_url(),
                 'MEMBER_ID' => placeholder_id(),
             )), null, '', true)

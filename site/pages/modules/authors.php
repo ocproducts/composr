@@ -83,7 +83,7 @@ class Module_authors
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -102,7 +102,7 @@ class Module_authors
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -116,7 +116,7 @@ class Module_authors
                 global $EXTRA_HEAD;
                 $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
             }
 
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
@@ -143,7 +143,7 @@ class Module_authors
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -164,7 +164,7 @@ class Module_authors
     /**
      * The UI to view an author.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function show_author()
     {
@@ -191,7 +191,7 @@ class Module_authors
         // Links associated with the mapping between the author and a forum member
         $handle = get_author_id_from_name($author);
         if (!is_null($handle)) {
-            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, false, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
+            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, true, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
             if (addon_installed('points')) {
                 $give_points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $handle), get_module_zone('points'));
                 $point_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => '2bfb9bf9b5fdf1dad34102abd4bc4648', 'ACTION' => hyperlink($give_points_url, do_lang_tempcode('AUTHOR_POINTS'), false, false)));

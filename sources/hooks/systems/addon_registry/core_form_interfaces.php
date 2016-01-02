@@ -850,7 +850,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => true,
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '1',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -858,7 +858,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '2',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -866,7 +866,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '3',
             'TEXT' => lorem_phrase(),
         )));
 
@@ -922,7 +922,7 @@ class Hook_addon_registry_core_form_interfaces
             'DESCRIPTION' => lorem_sentence(),
             'TABINDEX' => placeholder_number(),
             '_REQUIRED' => '',
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'DEFAULT' => '',
         )));
 
@@ -1033,7 +1033,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $_comcode = do_lorem_template('COMCODE_MESSAGE', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'W' => '',
             'URL' => placeholder_url(),
         ));
@@ -1296,12 +1296,14 @@ class Hook_addon_registry_core_form_interfaces
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
             'REQUIRED' => '',
+            '_REQUIRED' => false,
             'DEFAULT' => '',
             'HOOK' => '',
             'ROOT_ID' => '',
             'OPTIONS' => serialize(''),
             'DESCRIPTION' => lorem_sentence_html(),
             'MULTI_SELECT' => false,
+            'CONTENT_TYPE' => '',
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
@@ -1468,7 +1470,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $hidden->attach(do_lorem_template('FORM_SCREEN_INPUT_HIDDEN', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'VALUE' => lorem_word(),
         )));
 
@@ -1706,7 +1708,7 @@ class Hook_addon_registry_core_form_interfaces
             'HIDDEN_FIELDS' => '',
             'PRETTY_NAME' => lorem_word(),
             'NAME' => placeholder_random_id(),
-            'TABINDEX_PF' => placeholder_random(),
+            'TABINDEX_PF' => placeholder_number(),
             'COMCODE_EDITOR' => placeholder_blank(),
             'COMCODE_EDITOR_SMALL' => placeholder_blank(),
             'CLASS' => lorem_word(),
@@ -1759,7 +1761,6 @@ class Hook_addon_registry_core_form_interfaces
 
         $buttons = new Tempcode();
         $_buttons = array(
-            'img',
             'thumb',
             'url',
             'page',
@@ -1827,6 +1828,8 @@ class Hook_addon_registry_core_form_interfaces
                 'SPECIALISATION' => placeholder_fields(),
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
+                'SUPPORT_AUTOSAVE' => false,
+                'DESCRIPTION' => lorem_paragraph(),
             )), null, '', true)
         );
     }
@@ -1877,7 +1880,7 @@ class Hook_addon_registry_core_form_interfaces
             $permission_rows->attach(do_lorem_template('FORM_SCREEN_INPUT_PERMISSION', array(
                 'FORCE_PRESETS' => false,
                 'GROUP_NAME' => lorem_phrase(),
-                'OVERRIDES' => $overrides->evaluate() /*FUDGEFUDGE*/,
+                'OVERRIDES' => $overrides->evaluate() /*FUDGE*/,
                 'ALL_GLOBAL' => true,
                 'VIEW_ACCESS' => '',
                 'TABINDEX' => placeholder_number(),

@@ -30,7 +30,7 @@ function get_composr_support_timings($open, $member_id, $ticket_type_name, $last
     }
 
     if (has_privilege($member_id, 'support_operator')) {
-        $d->attach(div('The last reply was by staff.'));
+        $d->attach(div(make_string_tempcode('The last reply was by staff.')));
     } else {
         $timestamp_to_answer_by = mixed();
         switch ($ticket_type_name) {
@@ -56,7 +56,7 @@ function get_composr_support_timings($open, $member_id, $ticket_type_name, $last
             if ($say_more) {
                 $text .= ' (Response times are determined by the requested ticket priority. Any requested programming tasks are started at the time of response. Response times apply between replies, as well as initially. Tickets may not be read until the next response time, so higher priority requests should be made in a new ticket. Often we will beat response times but this should not be considered a precedent.)';
             }
-            $d->attach(div($text));
+            $d->attach(div(make_string_tempcode($text)));
         }
     }
 

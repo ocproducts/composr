@@ -137,7 +137,7 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_DFN.tpl',
             'themes/default/templates/COMCODE_EDITOR_BUTTON.tpl',
             'themes/default/templates/COMCODE_EDITOR_MICRO_BUTTON.tpl',
-            'themes/default/templates/COMCODE_EDIT_SCREEN.tpl',
+            'themes/default/templates/COMCODE_PAGE_EDIT_SCREEN.tpl',
             'themes/default/templates/COMCODE_EMAIL.tpl',
             'themes/default/templates/COMCODE_FONT.tpl',
             'themes/default/templates/COMCODE_TELETYPE.tpl',
@@ -251,6 +251,8 @@ class Hook_addon_registry_core_rich_media
             'data/comcode_convert.php',
             'lang/EN/comcode.ini',
             'sources/comcode.php',
+            'sources/comcode_tools.php',
+            'sources/comcode_cleanup.php',
             'sources/comcode_check.php',
             'sources/comcode_from_html.php',
             'sources/comcode_renderer.php',
@@ -260,14 +262,20 @@ class Hook_addon_registry_core_rich_media
             'sources/attachments3.php',
             'sources/comcode_add.php',
             'sources/hooks/systems/attachments/.htaccess',
+            'sources_custom/hooks/systems/attachments/.htaccess',
             'sources/hooks/systems/attachments/index.html',
+            'sources_custom/hooks/systems/attachments/index.html',
             'sources/hooks/systems/attachments/null.php',
             'sources/blocks/main_emoticon_codes.php',
             'sources/hooks/systems/comcode_link_handlers/.htaccess',
+            'sources_custom/hooks/systems/comcode_link_handlers/.htaccess',
             'sources/hooks/systems/comcode_link_handlers/index.html',
+            'sources_custom/hooks/systems/comcode_link_handlers/index.html',
             'sources/hooks/systems/preview/comcode_tag.php',
+            'sources/hooks/systems/config/attachment_cleanup.php',
             'sources/hooks/systems/config/attachment_default_height.php',
             'sources/hooks/systems/config/attachment_default_width.php',
+            'sources/hooks/systems/config/simplified_attachments_ui.php',
             'sources/hooks/systems/config/oembed_html_whitelist.php',
             'sources/hooks/systems/config/oembed_manual_patterns.php',
             'sources/hooks/systems/config/oembed_max_size.php',
@@ -279,6 +287,12 @@ class Hook_addon_registry_core_rich_media
             'sources/hooks/systems/media_rendering/hyperlink.php',
             'sources/hooks/systems/media_rendering/image_websafe.php',
             'sources/hooks/systems/media_rendering/index.html',
+            'sources_custom/hooks/systems/media_rendering/.htaccess',
+            'sources_custom/hooks/systems/media_rendering/index.html',
+            'sources/hooks/systems/comcode_preparse/.htaccess',
+            'sources_custom/hooks/systems/comcode_preparse/.htaccess',
+            'sources/hooks/systems/comcode_preparse/index.html',
+            'sources_custom/hooks/systems/comcode_preparse/index.html',
             'sources/hooks/systems/media_rendering/email.php',
             'sources/hooks/systems/media_rendering/oembed.php',
             'sources/hooks/systems/media_rendering/pdf.php',
@@ -326,7 +340,7 @@ class Hook_addon_registry_core_rich_media
             'templates/ATTACHMENTS_BROWSER.tpl' => 'attachments_browser',
             'templates/COMCODE_BIG_TABS_TAB.tpl' => 'comcode_big_tabs',
             'templates/COMCODE_BIG_TABS_CONTROLLER.tpl' => 'comcode_big_tabs',
-            'templates/COMCODE_EDIT_SCREEN.tpl' => 'comcode_edit_screen',
+            'templates/COMCODE_PAGE_EDIT_SCREEN.tpl' => 'comcode_page_edit_screen',
             'templates/COMCODE_TOOLTIP.tpl' => 'comcode_tooltip',
             'templates/COMCODE_CRITICAL_PARSE_ERROR.tpl' => 'comcode_critical_parse_error',
             'templates/COMCODE_MISTAKE_ERROR.tpl' => 'comcode_mistake_screen',
@@ -446,15 +460,15 @@ class Hook_addon_registry_core_rich_media
             $page[] = $v;
         }
         $content->attach(do_lorem_template('COMCODE_BIG_TABS_CONTROLLER', array(
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
             'SWITCH_TIME' => '6000',
             'TABS' => $page,
         )));
 
         foreach ($page as $i => $v) {
             $content->attach(do_lorem_template('COMCODE_BIG_TABS_TAB', array(
-                'PASS_ID' => lorem_word() . strval($i),
-                'CONTENT' => lorem_paragraph() . placeholder_random(),
+                'PASS_ID' => placeholder_random_id() . strval($i),
+                'CONTENT' => lorem_paragraph() . strval($i),
                 'NAME' => $v,
                 'DEFAULT' => ($i == 0),
             )));
@@ -477,11 +491,11 @@ class Hook_addon_registry_core_rich_media
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__comcode_edit_screen()
+    public function tpl_preview__comcode_page_edit_screen()
     {
         require_lang('zones');
         return array(
-            lorem_globalise(do_lorem_template('COMCODE_EDIT_SCREEN', array(
+            lorem_globalise(do_lorem_template('COMCODE_PAGE_EDIT_SCREEN', array(
                 'NEW' => lorem_phrase(),
                 'PING_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',
@@ -492,7 +506,7 @@ class Hook_addon_registry_core_rich_media
                 'FILE' => lorem_phrase(),
                 'EXPORT_URL' => placeholder_url(),
                 'POSTING_FORM' => placeholder_form(),
-                'REVISION_HISTORY' => lorem_phrase(),
+                'REVISIONS' => lorem_phrase(),
             )), null, '', true)
         );
     }
@@ -606,6 +620,7 @@ class Hook_addon_registry_core_rich_media
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
                 'SUPPORT_AUTOSAVE' => true,
+                'DESCRIPTION' => lorem_paragraph(),
             )), null, '', true)
         );
     }
@@ -692,7 +707,6 @@ class Hook_addon_registry_core_rich_media
     {
         return array(
             lorem_globalise(do_lorem_template('COMCODE_OVERLAY', array(
-                'UNIQ_ID' => placeholder_id(),
                 'EMBED' => lorem_phrase(),
                 'ID' => placeholder_id(),
                 'X' => placeholder_number(),
@@ -735,7 +749,7 @@ class Hook_addon_registry_core_rich_media
         $section = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $section->attach(do_lorem_template('COMCODE_SECTION', array(
-                'PASS_ID' => lorem_word(),
+                'PASS_ID' => placeholder_random_id(),
                 'DEFAULT' => false,
                 'NAME' => strval($k + 1),
                 'CONTENT' => lorem_paragraph(),
@@ -743,7 +757,7 @@ class Hook_addon_registry_core_rich_media
         }
         $k++;
         $section->attach(do_lorem_template('COMCODE_SECTION', array(
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
             'DEFAULT' => true,
             'NAME' => strval($k + 1),
             'CONTENT' => lorem_paragraph(),
@@ -754,7 +768,7 @@ class Hook_addon_registry_core_rich_media
         }
         $section->attach(do_lorem_template('COMCODE_SECTION_CONTROLLER', array(
             'SECTIONS' => $page,
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
         )));
 
         return array(
@@ -898,7 +912,7 @@ class Hook_addon_registry_core_rich_media
             lorem_globalise(do_lorem_template('COMCODE_DEL', array(
                 'CONTENT' => lorem_phrase(),
                 'CITE' => lorem_word(),
-                'DATETIME' => placeholder_time(),
+                'DATETIME' => placeholder_date(),
             )), null, '', true)
         );
     }
@@ -916,7 +930,7 @@ class Hook_addon_registry_core_rich_media
             lorem_globalise(do_lorem_template('COMCODE_INS', array(
                 'CONTENT' => lorem_phrase(),
                 'CITE' => lorem_word(),
-                'DATETIME' => placeholder_time(),
+                'DATETIME' => placeholder_date(),
             )), null, '', true)
         );
     }
@@ -1102,7 +1116,6 @@ class Hook_addon_registry_core_rich_media
         }
         return array(
             lorem_globalise(do_lorem_template('COMCODE_RANDOM', array(
-                'UNIQID' => placeholder_id(),
                 'FULL' => placeholder_number(),
                 'MAX' => '3',
                 'PARTS' => $part,
@@ -1125,7 +1138,6 @@ class Hook_addon_registry_core_rich_media
 
         return array(
             lorem_globalise(do_lorem_template('COMCODE_JUMPING', array(
-                'UNIQID' => placeholder_id(),
                 'FULL' => lorem_phrase(),
                 'TIME' => '1000',
                 'PARTS' => $part,
@@ -1144,7 +1156,6 @@ class Hook_addon_registry_core_rich_media
     {
         return array(
             lorem_globalise(do_lorem_template('COMCODE_TICKER', array(
-                'UNIQID' => placeholder_id(),
                 'SPEED' => '10',
                 'WIDTH' => '400',
                 'TEXT' => lorem_sentence_html(),
@@ -1382,7 +1393,6 @@ class Hook_addon_registry_core_rich_media
         $max_color = 'FF0044';
 
         $temp_tpl = do_lorem_template('COMCODE_SHOCKER', array(
-            'UNIQID' => placeholder_random(),
             'MIN_COLOR' => $min_color,
             'MAX_COLOR' => $max_color,
             'FULL' => implode(', ', $attributes),
@@ -1652,11 +1662,14 @@ class Hook_addon_registry_core_rich_media
     {
         $tag_output = new Tempcode();
 
+        $column_sizes = array();
+
         $tag_output->attach(do_lorem_template('COMCODE_REAL_TABLE_START', array(
             'SUMMARY' => lorem_phrase(),
             'CAPTION' => lorem_word(),
             'COLUMNED_TABLE' => false,
             'WIDE' => true,
+            'COLUMN_SIZES' => $column_sizes,
         )));
         foreach (placeholder_array(2) as $i => $table_row) {
             $map = array();

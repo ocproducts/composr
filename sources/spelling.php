@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__spelling()
 {
@@ -38,7 +40,7 @@ function find_words($text)
 {
     $words = array();
 
-    $matches = array();
+    $_words = array();
     $num_matches = preg_match_all(WORD_REGEXP, $text, $_words);
 
     for ($i = 0; $i < $num_matches; $i++) {
@@ -211,6 +213,8 @@ function add_spellchecker_words($words)
  *
  * @param ?ID_TEXT $lang Language to check in (null: current language)
  * @return mixed Spellchecker
+ *
+ * @ignore
  */
 function _spellcheck_initialise($lang = null)
 {

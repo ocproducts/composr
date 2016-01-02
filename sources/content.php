@@ -24,10 +24,10 @@ Notes about hook info...
  - id_field may be array (which means that ":" works as a delimiter) (if so, the first one is the main ID, while the second one is assumed to be a qualifier)
   - unless, parent_spec__table_name!=table, where we require a single id_field, knowing it is a join field in all tables
  - category_field may be array of two (if so, the second one is assumed the main category, while the first is assumed to be for supplemental permission checking)
- - category_field may be NULL
+ - category_field may be null
  - category_type may be array
  - category_type may be '<page>' or '<zone>' (meaning "use page/zone permissions instead")
- - category_type may be NULL
+ - category_type may be null
  - category_type may be missing
  - add_url may contain '!' (meaning "parent category ID goes here")
  - submitter_field may be a field:regexp
@@ -77,7 +77,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         }
     }
 
-    // FUDGEFUDGE: Extra check for private topics
+    // FUDGE: Extra check for private topics
     $topic_id = null;
     if (($content_type == 'post') && (get_forum_type() == 'ocf')) {
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_intended_solely_for', 'p_poster'), array('id' => intval($content_id)), '', 1);
@@ -97,7 +97,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         if (!array_key_exists(0, $topic_rows)) {
             return false;
         }
-        require_code('ocf_topics');
+        require_code('cns_topics');
         if ($topic_rows[0]['t_forum_id'] === null && ($topic_rows[0]['t_pt_from'] != $member_id && $topic_rows[0]['t_pt_to'] != $member_id && !cns_has_special_pt_access($topic_id, $member_id) || is_guest($member_id))) {
             return false;
         }
@@ -123,9 +123,15 @@ function get_content_object($content_type)
     if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_code($path);
         $ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($content_type), true);
-    } else { // Okay, maybe it's a resource type (more limited functionality).
-        require_code('hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type));
-        $ob = object_factory('Hook_resource_meta_aware_' . filter_naughty_harsh($content_type), true);
+    } else {
+        // Okay, maybe it's a resource type (more limited functionality).
+        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type);
+        if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
+            require_code('hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type));
+            $ob = object_factory('Hook_resource_meta_aware_' . filter_naughty_harsh($content_type), true);
+        } else {
+            $ob = null;
+        }
     }
 
     $cache[$content_type] = $ob;
@@ -136,10 +142,10 @@ function get_content_object($content_type)
  * Find a different content type code from the one had.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @param  ID_TEXT $type_wanted Desired content type
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @return ID_TEXT Corrected content type type (blank: could not find)
  */
 function convert_composr_type_codes($type_has, $type_id, $type_wanted)
@@ -150,7 +156,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
 
     // Search content-meta-aware hooks
     $found_type_id = '';
-    $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
+    $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
     foreach (array_keys($cma_hooks) as $content_type) {
         if ((($type_has == 'content_type') && ($content_type == $type_id)) || ($type_has != 'content_type')) {
             $cma_ob = get_content_object($content_type);
@@ -173,7 +179,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
  * Find content type info, for a particular content type type we know.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @return array Content type info list (blank: could not find)
  */
@@ -183,7 +189,7 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
 
     // Search content-meta-aware hooks
     $found_type_ids = array();
-    $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
+    $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
     foreach (array_keys($cma_hooks) as $content_type) {
         if ((($type_has == 'content_type') && ($content_type == $type_id)) || ($type_has != 'content_type')) {
             $cma_ob = get_content_object($content_type);
@@ -203,10 +209,10 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
  *
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
- * @param  boolean $resourcefs_style Whether to use the content API as resource-fs requires (may be slightly different)
+ * @param  boolean $resource_fs_style Whether to use the content API as resource-fs requires (may be slightly different)
  * @return array Tuple: title, submitter, content hook info, the content row, URL (for use within current browser session), URL (for use in emails / sharing)
  */
-function content_get_details($content_type, $content_id, $resourcefs_style = false)
+function content_get_details($content_type, $content_id, $resource_fs_style = false)
 {
     $cma_ob = get_content_object($content_type);
     if (!is_object($cma_ob)) {
@@ -218,7 +224,7 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
 
     $content_row = content_get_row($content_id, $cma_info);
     if (is_null($content_row)) {
-        if (($content_type == 'comcode_page') && (strpos($content_id, ':') !== false) && (!$resourcefs_style)) {
+        if (($content_type == 'comcode_page') && (strpos($content_id, ':') !== false) && (!$resource_fs_style)) {
             list($zone, $page) = explode(':', $content_id, 2);
 
             $members = $GLOBALS['FORUM_DRIVER']->member_group_query($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), 1);
@@ -257,7 +263,7 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
 
     $title_field = $cma_info['title_field'];
     $title_field_dereference = $cma_info['title_field_dereference'];
-    if (($resourcefs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
+    if (($resource_fs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
         $title_field = $cma_info['title_field__resource_fs'];
         $title_field_dereference = $cma_info['title_field_dereference__resource_fs'];
     }
@@ -265,11 +271,11 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
         $content_title = do_lang($cma_info['content_type_label']);
     } else {
         if (strpos($title_field, 'CALL:') !== false) {
-            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resourcefs_style);
+            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resource_fs_style);
         } else {
             $_content_title = $content_row[$title_field];
             $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
-            if (($content_title == '') && (!$resourcefs_style)) {
+            if (($content_title == '') && (!$resource_fs_style)) {
                 $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
                 if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
                     require_lang('galleries');
@@ -282,7 +288,7 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
         }
     }
 
-    if (isset($cma_info['submitter_field'])) {
+    if (!is_null($cma_info['submitter_field'])) {
         if (strpos($cma_info['submitter_field'], ':') !== false) {
             $bits = explode(':', $cma_info['submitter_field']);
             $matches = array();

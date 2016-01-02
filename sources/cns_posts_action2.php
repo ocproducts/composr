@@ -19,6 +19,57 @@
  */
 
 /**
+ * Get the poster name a Guest may have specified, after sanitising it.
+ *
+ * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
+ * @return string Poster name.
+ */
+function cns_get_safe_specified_poster_name($is_required_field = null)
+{
+    if ($is_required_field === null) {
+        $is_required_field = (get_option('force_guest_names') === '1');
+    }
+
+    if ((get_option('force_guest_names') === '1') && (is_guest())) {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest');
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
+    }
+    if ($poster_name_if_guest == '') {
+        $poster_name_if_guest = null;
+    }
+    if (!is_null($poster_name_if_guest)) {
+        $poster_name_if_guest = trim($poster_name_if_guest);
+
+        if ($is_required_field) {
+            if ($poster_name_if_guest == do_lang('GUEST')) {
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__poster_name_if_guest', 'poster_name_if_guest'))));
+            }
+        }
+
+        $restricted_usernames = explode(',', get_option('restricted_usernames'));
+        $restricted_usernames[] = do_lang('UNKNOWN');
+        $restricted_usernames[] = do_lang('SYSTEM');
+        if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest))) {
+            $restricted_usernames[] = $poster_name_if_guest;
+        }
+        foreach ($restricted_usernames as $_restricted_username) {
+            $restricted_username = trim($_restricted_username);
+            if ($restricted_username == '') {
+                continue;
+            }
+            if ($poster_name_if_guest == $restricted_username) {
+                $poster_name_if_guest = $poster_name_if_guest . ' (' . do_lang('GUEST') . ')';
+                break;
+            }
+        }
+    } else {
+        $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+    }
+    return $poster_name_if_guest;
+}
+
+/**
  * Check to see if a member deserves promotion, and handle it.
  *
  * @param  ?MEMBER $member_id The member (null: current member).
@@ -51,11 +102,11 @@ function cns_member_handle_promotion($member_id = null)
         }
         $or_list .= 'id=' . strval($id);
     }
-    $promotions = $GLOBALS['FORUM_DB']->query('SELECT id,g_promotion_target FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups WHERE (' . $or_list . ') AND g_promotion_target IS NOT NULL AND g_promotion_threshold<=' . strval($total_points));
+    $promotions = $GLOBALS['FORUM_DB']->query('SELECT id,g_promotion_target FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups WHERE (' . $or_list . ') AND g_promotion_target IS NOT NULL AND g_promotion_threshold<=' . strval($total_points) . ' ORDER BY g_promotion_threshold');
     $promotes_today = array();
     foreach ($promotions as $promotion) {
         $_p = $promotion['g_promotion_target'];
-        if ((!array_key_exists($_p, $groups)) && (!array_key_exists($_p, $promotes_today))) { // If we're not already in the
+        if ((!array_key_exists($_p, $groups)) && (!array_key_exists($_p, $promotes_today))) { // If we're not already in the group
             // If it is our primary
             if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group') == $promotion['id']) {
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $_p), array('id' => $member_id), '', 1);
@@ -71,12 +122,12 @@ function cns_member_handle_promotion($member_id = null)
             ));
 
             // Notify the member
-            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
-            $mail = do_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             require_code('notifications');
+            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
+            $mail = do_notification_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             dispatch_notification('cns_rank_promoted', null, $subject, $mail, array($member_id));
 
-            // Carefully update run-time cacheing
+            // Carefully update run-time caching
             global $USERS_GROUPS_CACHE;
             foreach (array(true, false) as $a) {
                 foreach (array(true, false) as $b) {
@@ -135,8 +186,11 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($sender_member_id);
 
     require_lang('cns');
+
+    require_code('notifications');
+
     $subject = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL_SUBJECT' : 'POST_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $topic_title, array($sender_displayname, $sender_username));
-    $mail = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
+    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
 
     $limit_to = is_null($_limit_to) ? array() : array($_limit_to);
 
@@ -150,15 +204,13 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
         $limit_to[] = $topic_info[0]['t_pt_from'];
         $limit_to = array_merge($limit_to, collapse_1d_complexity('s_member_id', $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $topic_id))));
     }
-
-    require_code('notifications');
     dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, 3, false, false, $no_notify_for__notification_code, $no_notify_for__code_category);
 }
 
 /**
- * Update a topic's cacheing.
+ * Update a topic's caching.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to update cacheing of.
+ * @param  AUTO_LINK $topic_id The ID of the topic to update caching of.
  * @param  ?integer $post_count_dif The post count difference we know the topic has undergone (null: we'll need to work out from scratch how many posts are in the topic)
  * @param  boolean $last Whether this is the latest post in the topic.
  * @param  boolean $first Whether this is the first post in the topic.
@@ -169,11 +221,11 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
  * @param  ?string $last_username The last username to post in the topic (null: unknown).
  * @param  ?MEMBER $last_member_id The ID of the last member to post in the topic (null: unknown).
  */
-function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $last = true, $first = false, $last_post_id = null, $last_time = null, $last_title = null, $last_post = null, $last_username = null, $last_member_id = null)
+function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last = true, $first = false, $last_post_id = null, $last_time = null, $last_title = null, $last_post = null, $last_username = null, $last_member_id = null)
 {
     $first_title = '';
     if (is_null($last_post_id)) {
-        if ($first) { // We're updating cacheing of the first
+        if ($first) { // We're updating caching of the first
             $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_topic_id' => $topic_id), 'ORDER BY p_time ASC,id ASC', 1);
             if (!array_key_exists(0, $posts)) {
                 $first_post_id = null;
@@ -191,8 +243,13 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
                 $first_member_id = $posts[0]['p_poster'];
             }
         }
-        if ($last) { // We're updating cacheing of the last
-            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), 'ORDER BY p_time DESC,id DESC', 1);
+        if ($last) { // We're updating caching of the last
+            if (get_option('is_on_post_map') == '1') {
+                $order_by = 'ORDER BY p_last_edit_time DESC,p_time DESC,id DESC';
+            } else {
+                $order_by = 'ORDER BY p_time DESC,id DESC';
+            }
+            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), $order_by, 1);
             if (!array_key_exists(0, $posts)) {
                 $last_post_id = null;
                 $last_time = null;
@@ -235,7 +292,7 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
             't_cache_last_post_id=' . (is_null($last_post_id) ? 'NULL' : strval($last_post_id)) . ',
         t_cache_last_title=\'' . db_escape_string($last_title) . '\',
         t_cache_last_time=' . (is_null($last_time) ? 'NULL' : strval($last_time)) . ',
-        t_cache_last_username=\'' . db_escape_string($last_username) . '\',
+        t_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
         t_cache_last_member_id=' . (is_null($last_member_id) ? 'NULL' : strval($last_member_id)) . ',';
     }
 
@@ -270,7 +327,7 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
  * @param  ?MEMBER $last_member_id The last post member of the last topic (null: Unknown, it will have to be looked up).
  * @param  ?AUTO_LINK $last_forum_id The forum the last post was in (note this makes sense, because there may be subforums under this forum that we have to take into account). (null: Unknown, it will have to be looked up).
  */
-function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null, $num_posts_increment = null, $last_topic_id = null, $last_title = null, $last_time = null, $last_username = null, $last_member_id = null, $last_forum_id = null)
+function cns_force_update_forum_caching($forum_id, $num_topics_increment = null, $num_posts_increment = null, $last_topic_id = null, $last_title = null, $last_time = null, $last_username = null, $last_member_id = null, $last_forum_id = null)
 {
     if ((is_null($num_topics_increment)) && (!is_null($num_posts_increment))) {
         $num_topics_increment = 0;
@@ -321,7 +378,7 @@ function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null
                                 'f_cache_last_topic_id=' . (!is_null($last_topic_id) ? strval($last_topic_id) : 'NULL') . ',
         f_cache_last_title=\'' . db_escape_string($last_title) . '\',
         f_cache_last_time=' . (!is_null($last_time) ? strval($last_time) : 'NULL') . ',
-        f_cache_last_username=\'' . db_escape_string($last_username) . '\',
+        f_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
         f_cache_last_member_id=' . (!is_null($last_member_id) ? strval($last_member_id) : 'NULL') . ',
         f_cache_last_forum_id=' . (!is_null($last_forum_id) ? strval($last_forum_id) : 'NULL') . '
             WHERE id=' . strval($forum_id), 1, null, false, true);
@@ -330,7 +387,7 @@ function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null
     if (!is_null($forum_id)) {
         $parent_forum = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $forum_id));
         if ((!is_null($parent_forum)) && ($parent_forum != db_get_first_id())) {
-            cns_force_update_forum_cacheing($parent_forum, $num_topics_increment, $num_posts_increment);
+            cns_force_update_forum_caching($parent_forum, $num_topics_increment, $num_posts_increment);
         }
     }
 }

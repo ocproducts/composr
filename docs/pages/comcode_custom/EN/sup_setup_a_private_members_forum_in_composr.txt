@@ -1,0 +1,64 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setup a Private Members Forum in Composr[/title]
+
+[media width="150" description="Composr members only forum" float="right"]data_custom/images/docs/sup_setup_a_private_members_forum_in_composr/83c9a18ac46abb35f7d65a27ac5e587c.png[/media]
+If you are an owner or moderator for a large community such as a Games community or a Music community, then Composr has a great many features which you are likely to find very useful. Composr works extremely well as a base for a community website and a common task you may face is wanting to set up a private members area of the website.
+
+The Members area may just be for people who you deem worthy, a group of people you specifically trust or have earned a special status of some sort, or may even be a paid subscription membership. This tutorial won't go in to setting up a subscription service but will detail how to set up a new usergroup and a private area of your website for them.
+
+Depending on the type of area of the website you would like to partition off for your group, which I will refer to as special members, there are two routes you can go to achieve this. The first and simplest choice is to use the inbuilt clubs feature of Composr. By setting up a club you create a group which can be set to allow anyone to join or require someone to apply for membership. Once created a club already has its own forum created for them which you can if you choose allow other usergroups access to or not. The limiting factor by using clubs is if you want to create an information zone on your website too then this route won't be sufficient.
+
+[title="2"]Setting up a club step by step[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Choose the Content section of the Admin Zone menu
+[*] Choose the Clubs icon
+[*] Choose the Add club icon
+[*] Fill in the name of the new club and choose whether the club has open membership or not
+[*] Click the Add club button
+[*] [i]The following steps are optional[/i]
+[*] Go to your website forums
+[*] Click edit by the new forum which has been created to set any custom permissions and description
+[*] Click the Edit forum button
+[/list]
+
+[title="2"]Setting up a new Usergroup, Zone and Private members forum[/title]
+
+The other option is to create the usergroup, private zone and private forum separately. The benefit of this route is it allows you more control over what areas you wish to set up and make private. For example you may wish to allow your special members to have their own blog posts where other members may not. You may allow your special members to add site news where normal members may not.
+
+This way requires three parts to the process:
+[list="1"]
+[*] [page="_SEARCH:sup_setup_a_new_usergroup_in_composr"]Creating a new Composr usergroup[/page] which has been covered in a separate tutorial
+[*] [page="_SEARCH:sup_add_a_new_zone_in_composr"]Creating a new Composr Zone[/page] which has been covered in a separate tutorial
+[*] Creating a new private forum which the step by step process is below.
+[/list]
+
+You will need to make sure you set up the permissions for your new forum to only allow access to the special members group and any site staff who will need access to the zone.
+
+[title="2"]Creating a new private members forum[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Forums icon
+[*] Choose the Add forum icon
+[*] Fill in the form which is covered already in this tutorial: [page="_SEARCH:sup_setting_up_a_new_composr_forum"]Setting up a Composr forum[/page]
+[/list]
+
+[media width="150" description="Composr forum permissions" float="right"]data_custom/images/docs/sup_setup_a_private_members_forum_in_composr/262d454624a25bca300be9e4ced68aaf.png[/media]
+In this process you will need to make sure you set the permissions accordingly.
+
+If this zone is going to be just for site staff members and your newly created usergroup, you have to make sure the other usergroups do not have access to the forum. You can untick (uncheck) the view access box against all of the usergroups who you do not wish to be able to see this forum. For those who do have access to see the new forum, you need to set the level of access they have. There are four basic levels of access:
+[list]
+[*] [b]Read only[/b] -- where a usergroup will be able to read the posts in the forum but not reply. You may choose this if your new forum is not private but you want only select members to be able to post in it. An example of this may be an announcements forum.
+[*] [b]Add/Post/Submit[/b] -- this allows the usergroup to be able to post and add new threads but each will need to be validated by a moderator before they go live.
+[*] [b]Unvetted self add/Edit[/b] -- this allows the usergroup to be able to add posts and them appear without needing to be validated first.
+[*] [b]Administrate/moderate[/b] -- this allows the usergroup to be able to moderate any posts within the new forum.
+[/list]
+Once you have filled in the permissions for all of the groups that have view access you can add the forum as normal.
+
+You should now have a new forum and zone where only those in the new usergroup and site staff have access to it. You will need to remember to set the permissions for any new pages in the new zone or subforums to have the correct permissions too.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Forum,Social,Forum,Members,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Composr works extremely well as a base for a community website and a common task you may face is wanting to set up a private members area of the website. If you are an owner or moderator for a large community you may find this useful.}[block]main_tutorial_rating[/block]

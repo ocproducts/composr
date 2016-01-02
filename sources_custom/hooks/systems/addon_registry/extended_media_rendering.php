@@ -131,9 +131,9 @@ class Hook_addon_registry_extended_media_rendering
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/extended_media_rendering.php',
-            'sources_custom/hooks/systems/media_rendering/index.html',
             'sources_custom/hooks/systems/media_rendering/video_cnn.php',
             'lang_custom/EN/video_cnn.ini',
+            'themes/default/templates_custom/MEDIA_VIDEO_CNN.tpl',
         );
     }
 }

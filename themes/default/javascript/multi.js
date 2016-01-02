@@ -83,7 +83,7 @@ function ensure_next_field(this_field)
 		if (typeof this_field.onrealchange!='undefined') next_field.onchange=this_field.onrealchange;
 		if (this_field.nodeName.toLowerCase()!='textarea')
 		{
-			next_field.setAttribute('type','text');
+			next_field.type=this_field.type;
 		}
 		next_field.value='';
 		next_field.name=((this_field.name.indexOf('[]')==-1)?(name_stub+next_num):this_field.name);

@@ -62,6 +62,7 @@ class Hook_addon_registry_core_fields
     {
         return array(
             'tut_catalogues',
+            'tut_fields',
         );
     }
 
@@ -101,6 +102,7 @@ class Hook_addon_registry_core_fields
             'sources/fields.php',
             'sources/hooks/systems/addon_registry/core_fields.php',
             'sources/hooks/systems/fields/.htaccess',
+            'sources_custom/hooks/systems/fields/.htaccess',
             'sources/hooks/systems/fields/video.php',
             'sources/hooks/systems/fields/video_multi.php',
             'sources/hooks/systems/fields/content_link_multi.php',
@@ -112,14 +114,15 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/date.php',
             'sources/hooks/systems/fields/email.php',
             'sources/hooks/systems/fields/float.php',
+            'sources/hooks/systems/fields/guid.php',
             'sources/hooks/systems/fields/index.html',
+            'sources_custom/hooks/systems/fields/index.html',
             'sources/hooks/systems/fields/integer.php',
             'sources/hooks/systems/fields/isbn.php',
             'sources/hooks/systems/fields/list.php',
             'sources/hooks/systems/fields/long_text.php',
             'sources/hooks/systems/fields/long_trans.php',
             'sources/hooks/systems/fields/picture.php',
-            'sources/hooks/systems/fields/random.php',
             'sources/hooks/systems/fields/reference.php',
             'sources/hooks/systems/fields/short_text.php',
             'sources/hooks/systems/fields/short_trans.php',

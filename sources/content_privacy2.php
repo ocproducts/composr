@@ -25,7 +25,7 @@
  * @param  ?ID_TEXT $content_id The content ID (null: adding)
  * @param  boolean $show_header Whether to show a header to separate the settings out
  * @param  string $prefix Prefix for field naming
- * @return tempcode The form fields
+ * @return Tempcode The form fields
  */
 function get_privacy_form_fields($content_type, $content_id = null, $show_header = true, $prefix = '')
 {
@@ -51,7 +51,7 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
             $view_by_members = ($rows[0]['member_view'] == 1);
             $view_by_friends = ($rows[0]['friend_view'] == 1);
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('content_primary__members', null, array('content_type' => $content_type, 'content_id' => $content_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('content_privacy__members', null, array('content_type' => $content_type, 'content_id' => $content_id));
         $additional_access = array();
         foreach ($rows as $row) {
             $additional_access[] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
@@ -180,20 +180,20 @@ function save_privacy_form_fields($content_type, $content_id, $privacy_level, $a
         'friend_view' => $friend_view,
     ));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('content_primary__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
+    $rows = $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
     $currently_invited_members = array();
     foreach ($rows as $value) {
         $currently_invited_members[] = $value['member_id'];
     }
 
-    $GLOBALS['SITE_DB']->query_delete('content_primary__members', array('content_type' => $content_type, 'content_id' => $content_id));
+    $GLOBALS['SITE_DB']->query_delete('content_privacy__members', array('content_type' => $content_type, 'content_id' => $content_id));
 
     if (count($additional_access) != 0) {
         $invited_members = array();
         foreach ($additional_access as $member) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($member);
             if ($member_id !== null) {
-                $GLOBALS['SITE_DB']->query_insert('content_primary__members', array(
+                $GLOBALS['SITE_DB']->query_insert('content_privacy__members', array(
                     'member_id' => $member_id,
                     'content_type' => $content_type,
                     'content_id' => $content_id,
@@ -213,7 +213,7 @@ function save_privacy_form_fields($content_type, $content_id, $privacy_level, $a
             $content_type_label = do_lang($cma_info['content_type_label']);
 
             $subject = do_lang('NOTIFICATION_SUBJECT_invited_content', comcode_escape($content_submitter_username));
-            $mail = do_lang('NOTIFICATION_BODY_invited_content', comcode_escape($content_submitter_username), strtolower(comcode_escape($content_type_label)), array(comcode_escape($content_title), $content_url->evaluate(), comcode_escape($content_type_label)));
+            $mail = do_notification_lang('NOTIFICATION_BODY_invited_content', comcode_escape($content_submitter_username), strtolower(comcode_escape($content_type_label)), array(comcode_escape($content_title), $content_url->evaluate(), comcode_escape($content_type_label)));
             dispatch_notification('invited_content', null, $subject, $mail, $invited_members);
         }
     }
@@ -235,7 +235,7 @@ function delete_privacy_form_fields($content_type, $content_id)
     }
 
     $GLOBALS['SITE_DB']->query_delete('content_privacy', array('content_type' => $content_type, 'content_id' => $content_id), '', 1);
-    $GLOBALS['SITE_DB']->query_delete('content_primary__members', array('content_type' => $content_type, 'content_id' => $content_id));
+    $GLOBALS['SITE_DB']->query_delete('content_privacy__members', array('content_type' => $content_type, 'content_id' => $content_id));
 
     return true;
 }

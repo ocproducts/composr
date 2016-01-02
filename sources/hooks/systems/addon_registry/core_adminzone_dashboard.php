@@ -121,8 +121,10 @@ class Hook_addon_registry_core_adminzone_dashboard
             'lang/EN/tips.ini',
             'sources/hooks/systems/snippets/checklist_task_manage.php',
             'sources/hooks/blocks/main_staff_checklist/.htaccess',
+            'sources_custom/hooks/blocks/main_staff_checklist/.htaccess',
             'sources/hooks/blocks/main_staff_checklist/forum.php',
             'sources/hooks/blocks/main_staff_checklist/index.html',
+            'sources_custom/hooks/blocks/main_staff_checklist/index.html',
             'sources/hooks/blocks/main_staff_checklist/copyright.php',
             'sources/hooks/blocks/main_staff_checklist/cron.php',
             'sources/hooks/blocks/main_staff_checklist/open_site.php',
@@ -139,6 +141,9 @@ class Hook_addon_registry_core_adminzone_dashboard
             'themes/default/images/checklist/cross2.png',
             'sources/hooks/systems/notifications/checklist_task.php',
             'themes/default/templates/BLOCK_MAIN_STAFF_ACTIONS.tpl',
+            'sources/hooks/systems/commandr_fs_extended_config/checklist_tasks.php',
+            'sources/hooks/systems/commandr_fs_extended_config/staff_links.php',
+            'sources/hooks/systems/commandr_fs_extended_config/staff_monitoring_sites.php',
         );
     }
 
@@ -321,7 +326,7 @@ class Hook_addon_registry_core_adminzone_dashboard
         foreach (placeholder_array() as $k => $v) {
             $custom_task->attach(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                 'TASK_DONE' => 'checklist0',
-                'ADD_TIME' => placeholder_time(),
+                'ADD_TIME' => placeholder_date(),
                 'RECUR_INTERVAL' => '',
                 'ID' => placeholder_id(),
                 'TASK_TITLE' => lorem_word_2(),

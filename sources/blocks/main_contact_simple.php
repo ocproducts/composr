@@ -37,7 +37,7 @@ class Block_main_contact_simple
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'private', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect');
+        $info['parameters'] = array('param', 'title', 'private', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -45,7 +45,7 @@ class Block_main_contact_simple
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -128,8 +128,10 @@ class Block_main_contact_simple
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('_block_id', $block_id));
 
+        $guid = isset($map['guid']) ? $map['guid'] : 'd35227903b5f786331f6532bce1765e4';
+
         $comment_details = do_template('COMMENTS_POSTING_FORM', array(
-            '_GUID' => 'd35227903b5f786331f6532bce1765e4',
+            '_GUID' => $guid,
             'JOIN_BITS' => '',
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
@@ -146,7 +148,12 @@ class Block_main_contact_simple
             'HIDDEN' => $hidden,
         ));
 
-        $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array('_GUID' => '298a357f442f440c6b42e58d6717e57c', 'EMAIL_OPTIONAL' => true, 'COMMENT_DETAILS' => $comment_details, 'MESSAGE' => $message));
+        $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
+            '_GUID' => $guid,
+            'EMAIL_OPTIONAL' => true,
+            'COMMENT_DETAILS' => $comment_details,
+            'MESSAGE' => $message,
+        ));
 
         return $out;
     }

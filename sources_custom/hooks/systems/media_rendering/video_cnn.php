@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    extended_media_rendering
  */
 class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
 {
@@ -82,7 +83,7 @@ class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null)
     {

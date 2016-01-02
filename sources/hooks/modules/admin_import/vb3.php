@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__hooks__modules__admin_import__vb3()
 {
@@ -143,7 +145,7 @@ class Hook_vb3
             'copyrighttext' => 'copyright',
             'maxposts' => 'forum_posts_per_page',
             'maxthreads' => 'forum_topics_per_page',
-            //'reputationenable'=>'is_on_points',
+            //'reputationenable' => 'is_on_points',
             'gzipoutput' => 'gzip_output',
             'regimagecheck' => 'use_captchas',
             'moderatenewmembers' => 'require_new_member_validation'
@@ -272,7 +274,7 @@ class Hook_vb3
 
             // privileges
             set_privilege($id_new, 'comcode_dangerous', $PROBED_FORUM_CONFIG['allowhtml'] == 1);
-            set_privilege($id_new, 'bypass_word_filter', $PROBED_FORUM_CONFIG['censorwords'] == 0);
+            set_privilege($id_new, 'bypass_wordfilter', $PROBED_FORUM_CONFIG['censorwords'] == 0);
             set_privilege($id_new, 'use_quick_reply', $PROBED_FORUM_CONFIG['quickreply'] == 1);
             set_privilege($id_new, 'vote_in_polls', ($row['forumpermissions'] & 32768) != 0);
             set_privilege($id_new, 'view_member_photos', ($row['genericpermissions'] & 4096) != 0);
@@ -1301,7 +1303,7 @@ class Hook_vb3
          Thread edited. (visible: ?; open: ?; sticky: ?)
          Thread moved to '*'.
          Thread Removed
-        adminlog
+        actionlog
         */
     }
 

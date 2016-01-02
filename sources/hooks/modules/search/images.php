@@ -153,6 +153,11 @@ class Hook_search_images extends FieldsSearchHook
             $where_clause .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('image', 'r.id');
+        }
+
         $table = 'images r';
         $trans_fields = array('' => '', 'r.description' => 'LONG_TRANS__COMCODE', 'r.title' => 'SHORT_TRANS');
         $nontrans_fields = array();
@@ -179,7 +184,7 @@ class Hook_search_images extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {

@@ -15,8 +15,12 @@
 	vertical-align: top;
 	font-size: 12px;
 	display: inline-block;
-	padding: 0.5em 0.25em; /* Vertical gap is bigger because horizontal gap also includes a space between the inline blocks */
+	padding: 0.5em;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;} /* Exact percentage widths are chosen to match the per_row block parameter */
+	min-width: 30em;
+}
+.block_main_members>div>.box {
+	margin: 0;
 }
 
 .block_main_members__avatars>div, .block_main_members__photos>div, .block_main_members__media>div {

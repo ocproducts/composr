@@ -64,7 +64,7 @@ class Hook_whatsnew_comcode_pages
         foreach ($_rows as $row) {
             $rows[$row['the_zone'] . ':' . $row['the_page']] = $row;
         }
-        $_rows2 = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_description'), array('meta_for_type' => 'comcode_page'));
+        $_rows2 = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_description', 'meta_for_id'), array('meta_for_type' => 'comcode_page'));
         $rows2 = array();
         foreach ($_rows2 as $row) {
             $rows2[$row['meta_for_id']] = $row;
@@ -103,7 +103,7 @@ class Hook_whatsnew_comcode_pages
                 if (array_key_exists($id, $rows2)) {
                     $description = get_translated_text($rows2[$id]['meta_description']);
                 }
-                $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => '67f165847dacd54d2965686d561b57ee', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'CONTENT_TYPE' => 'comcode_page', 'CONTENT_ID' => $zone . ':' . $page)), null, false, null, '.txt', 'text');
+                $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => '67f165847dacd54d2965686d561b57ee', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'CONTENT_TYPE' => 'comcode_page', 'CONTENT_ID' => $zone . ':' . $page), null, false, null, '.txt', 'text'));
 
                 handle_has_checked_recently($url); // We know it works, so mark it valid so as to not waste CPU checking within the generated Comcode
             }

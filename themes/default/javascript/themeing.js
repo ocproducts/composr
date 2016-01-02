@@ -1,13 +1,13 @@
 "use strict";
 
-function make_tooltip_func(op,directory)
+function make_tooltip_func(ob,op)
 {
 	return function(event) {
 		if (typeof event=='undefined') event=window.event;
 		if (typeof window.tpl_descrips[op]=='undefined')
 		{
 			var get_descrip=function(callback) {
-				do_ajax_request(window.url+'?theme='+window.encodeURIComponent(window.current_theme)+'&id='+window.encodeURIComponent(op)+'&directory='+window.encodeURIComponent(directory)+keep_stub(),function(loaded_result) {
+				do_ajax_request(window.url+'?theme='+window.encodeURIComponent(window.current_theme)+'&id='+window.encodeURIComponent(op)+keep_stub(),function(loaded_result) {
 					if (!loaded_result) return '';
 					window.tpl_descrips[op]=loaded_result.responseText;
 					callback('<div class="whitespace_visible">'+escape_html(window.tpl_descrips[op])+'</div>');
@@ -17,8 +17,9 @@ function make_tooltip_func(op,directory)
 		{
 			var get_descrip=function(callback) { callback('<div class="whitespace_visible">'+escape_html(window.tpl_descrips[op])+'</div>'); };
 		}
-		if (typeof window.activate_tooltip!='undefined')
-			get_descrip(function(text) { activate_tooltip(this,event,text,'20%',null,'130px'); });
+		if (typeof window.activate_tooltip!='undefined') {
+			get_descrip(function(text) { activate_tooltip(ob,event,text,'20%',null,'130px'); });
+		}
 	}
 }
 
@@ -28,7 +29,7 @@ if (typeof window.tpl_descrips=='undefined')
 	window.url='{$FIND_SCRIPT_NOHTTP;,load_template}';
 }
 
-function load_template_previews(directory)
+function load_template_previews()
 {
 	var elements=document.getElementById('f0file').options;
 	var ob;
@@ -37,9 +38,9 @@ function load_template_previews(directory)
 		ob=elements[i];
 		if ((ob.value=='') || (ob.disabled)) continue;
 		ob.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
-		ob.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event); };
+		ob.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
 		var op=ob.value;
-		ob.onmouseover=make_tooltip_func(op,directory);
+		ob.onmouseover=make_tooltip_func(ob,op);
 	}
 }
 
@@ -58,7 +59,7 @@ function preview_generator_mousemove(event)
 function preview_generator_mouseout(event)
 {
 	if (typeof event=='undefined') event=window.event;
-	if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event);
+	if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 }
 
 function load_previews()
@@ -280,7 +281,7 @@ function set_up_parent_page_highlighting()
 		{
 			cssText=cssText.toLowerCase().replace(/; /,';<br />\n');
 		}
-		li.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event); };
+		li.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
 		li.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
 		li.onmouseover=function(cssText) { return function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,cssText,'auto'); } } (cssText);
 

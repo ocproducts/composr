@@ -24,7 +24,7 @@ class Hook_addon_registry_less
      *
      * @return array File permissions to set
      */
-    function get_chmod_array()
+    public function get_chmod_array()
     {
         return array();
     }
@@ -34,7 +34,7 @@ class Hook_addon_registry_less
      *
      * @return float Version number
      */
-    function get_version()
+    public function get_version()
     {
         return cms_version_number();
     }

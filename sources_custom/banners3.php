@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    banners
+ * @package    charity_banners
  */
 
 /**
@@ -85,7 +85,7 @@ function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remai
 
         if (function_exists('decache')) {
             decache('main_banner_wave');
-            decache('main_topsites');
+            decache('main_top_sites');
         }
 
         log_it('ADD_BANNER', $name, $caption);

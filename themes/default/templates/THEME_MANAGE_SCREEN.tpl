@@ -40,7 +40,9 @@
 <h2>{!ADD_THEME}</h2>
 
 <ul role="navigation" class="actions_list">
-	<li><a href="{$PAGE_LINK*,adminzone:admin_themewizard:browse}">{!THEMEWIZARD}</a></li>
+	{+START,IF,{$ADDON_INSTALLED,themewizard}}
+		<li><a href="{$PAGE_LINK*,adminzone:admin_themewizard:browse}">{!THEMEWIZARD}</a></li>
+	{+END}
 	<li><a href="{$PAGE_LINK*,adminzone:admin_themes:add_theme}">{!ADD_EMPTY_THEME}</a></li>
 </ul>
 

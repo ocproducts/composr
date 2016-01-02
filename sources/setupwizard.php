@@ -26,6 +26,8 @@
  * @param  boolean $collapse_zones Whether we have zone collapsing on
  * @param  ID_TEXT $installprofile ID of the install profile
  * @return array Structure of pages
+ *
+ * @ignore
  */
 function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones, $installprofile)
 {
@@ -42,6 +44,7 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
             }
         }
     }
+    $zone_blocks[''] = $zone_blocks['site'];
 
     // Order them according to profile
     foreach ($installprofileblocks as $set) {
@@ -130,9 +133,6 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
             }
         }
         $comcode .= $left;
-        if ($installprofile == '') {
-            $comcode .= "[block]side_personal_stats[/block]";
-        }
         if (post_param_integer('include_cms_advert', 0) == 1) {
             $comcode .= '[center][url="' . get_brand_base_url() . '/?from=logo"][img="Powered by Composr"]' . get_brand_base_url() . '/uploads/website_specific/compo.sr/logos/a.png[/img][/url][/center]';
         }

@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class installer_test_set extends cms_test_case
+class _installer_test_set extends cms_test_case
 {
     public function testQuickInstaller()
     {
@@ -25,8 +25,8 @@ class installer_test_set extends cms_test_case
         $_GET['skip_bundled'] = '0';
         $_GET['skip_mszip'] = '0';
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
 
         require_code('version2');
@@ -79,7 +79,7 @@ class installer_test_set extends cms_test_case
                 'table_prefix' => 'cms_unit_test_',
                 'admin_password' => '',
                 'admin_password_confirm' => '',
-                'allow_reports_default' => '1',
+                'send_error_emails_ocproducts' => '1',
                 'admin_username' => 'admin',
                 'cns_admin_password' => '',
                 'cns_admin_password_confirm' => '',

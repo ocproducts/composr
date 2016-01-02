@@ -33,7 +33,7 @@ function catalogue_file_script()
     $file = filter_naughty(get_param_string('file', false, true));
     $_full = get_custom_file_base() . '/uploads/catalogues/' . filter_naughty(rawurldecode($file));
     if (!file_exists($_full)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('FILE')));
     }
     $size = filesize($_full);
 
@@ -137,8 +137,8 @@ function catalogue_file_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -149,7 +149,7 @@ function catalogue_file_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size==$new_length)    Uses a lot of memory :S
+    /*if ($size == $new_length)    Uses a lot of memory :S
     {
         fpassthru($myfile);
     } else*/
@@ -230,7 +230,7 @@ function get_catalogue_fields($catalogue_name = null)
         if (!is_null($catalogue_name)) {
             $where += array('c_name' => $catalogue_name);
         }
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), $where, 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), $where, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
     }
     return $fields;
@@ -288,7 +288,7 @@ function manage_custom_fields_donext_link($content_type)
         $ob = get_content_object($content_type);
         $info = $ob->info();
 
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
+        if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
             $exists = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)));
 
             return array(
@@ -315,7 +315,7 @@ function manage_custom_fields_entry_points($content_type)
         $ob = get_content_object($content_type);
         $info = $ob->info();
 
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
+        if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
             $count = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array('c_name' => '_' . $content_type));
             $exists = ($count != 0);
 
@@ -343,7 +343,7 @@ function has_tied_catalogue($content_type)
         require_code('content');
         $ob = get_content_object($content_type);
         $info = $ob->info();
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields'])) {
+        if ((array_key_exists('support_custom_fields', $info)) && ($info['support_custom_fields'])) {
             $exists = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)));
             if ($exists) {
                 $first_cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $content_type));
@@ -393,12 +393,13 @@ function get_bound_content_entry($content_type, $id)
  *
  * @param  ID_TEXT $content_type Content type hook codename
  * @param  ?ID_TEXT $id Content entry ID (null: new entry)
- * @param  tempcode $fields Fields (passed by reference)
- * @param  tempcode $hidden Hidden Fields (passed by reference)
+ * @param  Tempcode $fields Fields (passed by reference)
+ * @param  Tempcode $hidden Hidden Fields (passed by reference)
  * @param  ?array $field_filter Limit fields to a set (null: no limit)
  * @param  boolean $field_filter_whitelist Whether $field_filter is a whitelist (if false, it is a blacklist)
+ * @param  boolean $add_separate_header Whether to add a separate header above the fields, so long as not all the fields are already under some other header
  */
-function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $field_filter = null, $field_filter_whitelist = true)
+function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $field_filter = null, $field_filter_whitelist = true, $add_separate_header = false)
 {
     require_code('catalogues');
 
@@ -406,7 +407,7 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
     if (!is_null($catalogue_entry_id)) {
         $special_fields = get_catalogue_entry_field_values('_' . $content_type, $catalogue_entry_id);
     } else {
-        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order');
+        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     }
 
     $field_groups = array();
@@ -455,8 +456,6 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
             $field_groups[$field_cat]->attach($result);
         }
 
-        $hidden->attach(form_input_hidden('label_for__field_' . strval($field['id']), $_cf_name));
-
         unset($result);
         unset($ob);
     }
@@ -465,6 +464,10 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
         $field_groups_blank = $field_groups[''];
         unset($field_groups['']);
         $field_groups = array_merge(array($field_groups_blank), $field_groups);
+    }
+
+    if ($add_separate_header) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('MORE'))));
     }
     foreach ($field_groups as $field_group_title => $extra_fields) {
         if (is_integer($field_group_title)) {
@@ -500,7 +503,7 @@ function save_form_custom_fields($content_type, $id, $old_id = null)
     require_code('catalogues');
 
     // Get field values
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order');
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     $map = array();
     require_code('fields');
     foreach ($fields as $field) {
@@ -562,7 +565,7 @@ function delete_form_custom_fields($content_type, $id)
  *
  * @param  ID_TEXT $type Field type to select
  * @param  boolean $limit_to_storage_set Whether to only show options in the same storage set as $type
- * @return tempcode List of field types
+ * @return Tempcode List of field types
  */
 function create_selection_list_field_type($type = '', $limit_to_storage_set = false)
 {

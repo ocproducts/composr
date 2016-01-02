@@ -16,10 +16,10 @@
 /**
  * Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.
  *
- * @param  string $a_language_string_code Language string code
- * @param  string $a_label_1 Label 1 (given as a parameter to the language string code)
- * @param  string $a_label_2 Label 2 (given as a parameter to the language string code)
- * @param  string $a_label_3 Label 3 (given as a parameter to the language string code)
+ * @param  string $a_language_string_code Language string ID
+ * @param  string $a_label_1 Label 1 (given as a parameter to the language string ID)
+ * @param  string $a_label_2 Label 2 (given as a parameter to the language string ID)
+ * @param  string $a_label_3 Label 3 (given as a parameter to the language string ID)
  * @param  string $a_page_link_1 Page-link 1
  * @param  string $a_page_link_2 Page-link 2
  * @param  string $a_page_link_3 Page-link 3
@@ -97,7 +97,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
         $username = $GLOBALS['FORUM_DRIVER']->get_username($a_member_id);
         $displayname = $GLOBALS['FORUM_DRIVER']->get_username($a_member_id, true);
         $subject = do_lang('ACTIVITY_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $username, strip_html($message->evaluate()));
-        $mail = do_lang('ACTIVITY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array('[semihtml]' . $message->evaluate() . '[/semihtml]', $displayname));
+        $mail = do_notification_lang('ACTIVITY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array('[semihtml]' . $message->evaluate() . '[/semihtml]', $displayname));
         dispatch_notification('activity', strval($a_member_id), $subject, $mail);
     }
 
@@ -225,7 +225,7 @@ function activities_ajax_update_list_handler()
                     '_GUID' => '02dfa8b02040f56d76b783ddb8fb382f',
                     'LANG_STRING' => 'RAW_DUMP',
                     'ADDON' => $row['a_addon'],
-                    'ADDON_ICON' => find_addon_icon($row['a_addon']),
+                    'ADDON_ICON' => ($row['a_addon'] == '') ? '' : find_addon_icon($row['a_addon']),
                     'MESSAGE' => $message,
                     'AVATAR' => $member_avatar,
                     'MEMBER_ID' => strval($row['a_member_id']),

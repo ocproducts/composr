@@ -41,7 +41,7 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum_grouping', strval($forum_grouping_id), null, null, true);
+        generate_resource_fs_moniker('forum_grouping', strval($forum_grouping_id), null, null, true);
     }
 
     return $forum_grouping_id;
@@ -63,9 +63,10 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
  * @param  SHORT_TEXT $redirection Either blank for no redirection, the ID of another forum we are mirroring, or a URL to redirect to.
  * @param  ID_TEXT $order The order the topics are shown in, by default.
  * @param  BINARY $is_threaded Whether the forum is threaded.
+ * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
  * @return AUTO_LINK The ID of the newly created forum.
  */
-function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0)
+function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0)
 {
     require_code('global4');
     prevent_double_submit('ADD_FORUM', null, $name);
@@ -105,6 +106,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
         'f_redirection' => $redirection,
         'f_order' => $order,
         'f_is_threaded' => $is_threaded,
+        'f_allows_anonymous_posts' => $allows_anonymous_posts,
     );
     $map += insert_lang_comcode('f_description', $description, 2, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('f_intro_question', $intro_question, 3, $GLOBALS['FORUM_DB']);
@@ -146,7 +148,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum', strval($forum_id), null, null, true);
+        generate_resource_fs_moniker('forum', strval($forum_id), null, null, true);
     }
 
     if ((!is_null($parent_forum)) && (!running_script('install'))) {
@@ -156,6 +158,18 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('forum', strval($forum_id));
+
+    require_code('sitemap_xml');
+    if ($forum_id == db_get_first_id()) {
+        $sitemap_priority = SITEMAP_IMPORTANCE_ULTRA;
+    } else {
+        if ($parent_forum == db_get_first_id()) {
+            $sitemap_priority = SITEMAP_IMPORTANCE_HIGH;
+        } else {
+            $sitemap_priority = SITEMAP_IMPORTANCE_MEDIUM;
+        }
+    }
+    notify_sitemap_node_add('SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 
     return $forum_id;
 }

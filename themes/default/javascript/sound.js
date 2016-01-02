@@ -347,6 +347,8 @@ function SoundManager(smURL, smID) {
 
     if (options) {
 
+      if (typeof options.html5Only !== 'undefined') this.html5Only = options.html5Only;
+
       if (noURL && didDCLoaded && options.url !== _undefined) {
         sm2.beginDelayedInit();
       }
@@ -3459,6 +3461,7 @@ function SoundManager(smURL, smID) {
   // additional soundManager properties that soundManager.setup() will accept
 
   extraOptions = {
+    'html5Only' : 1,
     'onready': 1,
     'ontimeout': 1,
     'defaultOptions': 1,

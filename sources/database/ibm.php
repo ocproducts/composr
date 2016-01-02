@@ -68,7 +68,7 @@ class Database_Static_ibm
         if ($index_name[0] == '#') {
             return;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, 10000)) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**
@@ -123,7 +123,6 @@ class Database_Static_ibm
             'IP' => 'varchar(40)',
             'LANGUAGE_NAME' => 'varchar(5)',
             'URLPATH' => 'varchar(255)',
-            'MD5' => 'varchar(33)'
         );
         return $type_remap;
     }
@@ -261,7 +260,7 @@ class Database_Static_ibm
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
@@ -270,7 +269,7 @@ class Database_Static_ibm
             fatal_exit(do_lang_tempcode('ONLY_LOCAL_HOST_FOR_TYPE'));
         }
 
-        // Potential cacheing
+        // Potential caching
         if (isset($this->cache_db[$db_name][$db_host])) {
             return $this->cache_db[$db_name][$db_host];
         }
@@ -431,7 +430,7 @@ class Database_Static_ibm
             $i++;
         }
         odbc_free_result($results);
-        //   echo '<p>End '.microtime(false);
+        //   echo '<p>End ' . microtime(false);
         return $out;
     }
 }

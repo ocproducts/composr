@@ -24,7 +24,7 @@
  * @param  ID_TEXT $content_type The content type
  * @param  ?ID_TEXT $content_id The content ID (null: not added yet)
  * @param  ?ID_TEXT $catalogue_name The catalogue name where to grab default settings from (null: content type has no bound catalogue / try and auto-detect)
- * @return tempcode The fields
+ * @return Tempcode The fields
  */
 function content_review_get_fields($content_type, $content_id = null, $catalogue_name = null)
 {
@@ -185,7 +185,7 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
             $review_freq = $review_freq_years * 60 * 60 * 24 * 365;
         }
 
-        $next_review_time = get_input_date('next_review_time');
+        $next_review_time = post_param_date('next_review_time');
 
         $auto_action = post_param_string('auto_action', 'leave');
 

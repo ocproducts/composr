@@ -45,7 +45,7 @@ class Hook_cleanup_stats
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {

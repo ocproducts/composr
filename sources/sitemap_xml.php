@@ -20,15 +20,16 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__sitemap_xml()
 {
     require_code('xml');
 
-    global $SITEMAPS_OUT_FILE, $SITEMAPS_OUT_PATH, $SITEMAPS_OUT_TEMPPATH;
-    $SITEMAPS_OUT_FILE = null;
-    $SITEMAPS_OUT_PATH = null;
-    $SITEMAPS_OUT_TEMPPATH = null;
+    require_code('sitemap');
+
+    define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
 }
 
 /**
@@ -36,48 +37,157 @@ function init__sitemap_xml()
  */
 function sitemap_xml_build()
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    $last_time = intval(get_value('last_sitemap_time_calc_inner', null, true));
+    $time = time();
 
-    if (!is_guest()) {
-        warn_exit('Will not generate sitemap as non-Guest');
+    // Build from sitemap_cache table
+    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, ' WHERE last_updated>=' . strval($last_time));
+    if (count($set_numbers) > 0) {
+        foreach ($set_numbers as $set_number) {
+            rebuild_sitemap_set($set_number['set_number'], $last_time);
+        }
+
+        // Delete any nodes marked for deletion now they've been reflected in the XML
+        $GLOBALS['SITE_DB']->query_delete('sitemap_cache', array(
+            'is_deleted' => 1,
+        ));
+
+        // Rebuild index file
+        rebuild_sitemap_index();
+
+        // Ping search engines
+        ping_sitemap_xml(get_custom_base_url() . '/data_custom/sitemaps/index.xml');
     }
 
-    $path = get_custom_file_base() . '/cms_sitemap.xml';
-    if (!file_exists($path)) {
-        if (!is_writable_wrap(dirname($path))) {
-            warn_exit(do_lang_tempcode('WRITE_ERROR_CREATE', escape_html('/')));
+    set_value('last_sitemap_time_calc_inner', strval($time), true);
+}
+
+/**
+ * Write out a Sitemap XML set.
+ *
+ * @param  integer $set_number Set number
+ * @param  TIME $last_time Last sitemap generation time
+ */
+function rebuild_sitemap_set($set_number, $last_time)
+{
+    // Open
+    $sitemaps_out_temppath = cms_tempnam('cmssmap'); // We write to temporary path first to minimise the time our target file is invalid (during generation)
+    $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
+    $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($set_number) . '.xml';
+    $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    fwrite($sitemaps_out_file, $blob);
+
+    // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)
+    $where = array('set_number' => $set_number, 'is_deleted' => 0);
+    $nodes = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), $where);
+    foreach ($nodes as $node) {
+        $page_link = $node['page_link'];
+        list($zone, $attributes, $hash) = page_link_decode($page_link);
+
+        if (!has_actual_page_access(get_member(), $attributes['page'], $zone)) {
+            continue;
         }
-    } else {
-        if (!is_writable_wrap($path)) {
-            warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('cms_sitemap.xml')));
+
+        $add_date = $node['add_date'];
+        $edit_date = $node['edit_date'];
+        $priority = $node['priority'];
+
+        $url = _build_url($attributes, $zone, null, false, false, true, $hash);
+
+        $optional_details = '';
+
+        $_lastmod_date = is_null($edit_date) ? $add_date : $edit_date;
+        if (!is_null($_lastmod_date)) {
+            $xml_date = xmlentities(date('Y-m-d\TH:i:s', $_lastmod_date) . substr_replace(date('O', $_lastmod_date), ':', 3, 0));
+            $optional_details = '
+        <lastmod>' . $xml_date . '</lastmod>';
         }
+
+        $langs = find_all_langs();
+        foreach (array_keys($langs) as $lang) {
+            if ($lang != get_site_default_lang()) {
+                $url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
+
+                $optional_details = '
+        <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($url) . '" />';
+            }
+        }
+
+        $url_blob = '
+    <url>
+        <loc>' . xmlentities($url) . '</loc>' . $optional_details . '
+        <changefreq>' . xmlentities($node['refreshfreq']) . '</changefreq>
+        <priority>' . float_to_raw_string($priority) . '</priority>
+    </url>
+';
+        fwrite($sitemaps_out_file, $url_blob);
     }
 
-    require_code('sitemap');
+    // Close
+    $blob = '</urlset>';
+    fwrite($sitemaps_out_file, $blob);
+    fclose($sitemaps_out_file);
+    @unlink($sitemaps_out_path);
+    rename($sitemaps_out_temppath, $sitemaps_out_path);
+    sync_file($sitemaps_out_path);
+    fix_permissions($sitemaps_out_path);
 
-    // Runs via a callback mechanism, so we don't need to load an arbitrary complex structure into memory.
-    _sitemap_xml_initialise($path);
-    $callback = '_sitemap_xml_serialize_sitemap_node';
-    $meta_gather = SITEMAP_GATHER_TIMES;
-    retrieve_sitemap_node(
-        '',
-        $callback,
-        /*$valid_node_types=*/null,
-        /*$child_cutoff=*/null,
-        /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_NONE,
-        /*$zone=*/'_SEARCH',
-        $meta_gather
-    );
-    _sitemap_xml_finished();
+    // Gzip
+    if (function_exists('gzencode')) {
+        file_put_contents($sitemaps_out_path . '.gz', gzencode(file_get_contents($sitemaps_out_path), -1));
+    }
+}
 
-    ping_sitemap_xml(get_custom_base_url() . '/cms_sitemap.xml');
+/**
+ * Write out a Sitemap XML index.
+ */
+function rebuild_sitemap_index()
+{
+    // Open
+    $sitemaps_out_temppath = cms_tempnam('cmssmapindex'); // We write to temporary path first to minimise the time our target file is invalid (during generation)
+    $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
+    $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/index.xml';
+    $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    fwrite($sitemaps_out_file, $blob);
+
+    // Write out each set
+    $sitemap_sets = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('set_number', 'MAX(last_updated) AS last_updated'), null, 'GROUP BY set_number');
+    foreach ($sitemap_sets as $sitemap_set) {
+        $path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
+        $url = get_custom_base_url() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
+        if (is_file($path . '.gz')) {
+            // Point to .gz if we have been gzipping. We cannot assume we have consistently managed that
+            $path .= '.gz';
+            $url .= '.gz';
+        }
+
+        $xml_date = xmlentities(date('Y-m-d\TH:i:s', $sitemap_set['last_updated']) . substr_replace(date('O', $sitemap_set['last_updated']), ':', 3, 0));
+
+        $set_blob = '
+    <sitemap>
+        <loc>' . xmlentities($url) . '</loc>
+        <lastmod>' . $xml_date . '</lastmod>
+    </sitemap>
+';
+        fwrite($sitemaps_out_file, $set_blob);
+    }
+
+    // Close
+    $blob = '</sitemapindex>';
+    fwrite($sitemaps_out_file, $blob);
+    fclose($sitemaps_out_file);
+    @unlink($sitemaps_out_path);
+    rename($sitemaps_out_temppath, $sitemaps_out_path);
+    sync_file($sitemaps_out_path);
+    fix_permissions($sitemaps_out_path);
 }
 
 /**
  * Ping search engines with an updated sitemap.
  *
- * @param  URLPATH $url Sitemap URL.
+ * @param  URLPATH $url Sitemap URL
  * @return string HTTP result output
  */
 function ping_sitemap_xml($url)
@@ -105,24 +215,25 @@ function ping_sitemap_xml($url)
 }
 
 /**
- * Initialise the writing to a Sitemap XML file. You can only call one of these functions per time as it uses global variables for tracking.
- *
- * @param  PATH $file_path Where we will save to.
+ * Our sitemap cache table may need bootstrapping for some reason.
+ * Normally we build it iteratively.
  */
-function _sitemap_xml_initialise($file_path)
+function build_sitemap_cache_table()
 {
-    global $SITEMAPS_OUT_FILE, $SITEMAPS_OUT_PATH, $SITEMAPS_OUT_TEMPPATH, $LOADED_MONIKERS_CACHE;
-    $SITEMAPS_OUT_TEMPPATH = cms_tempnam('cmssmap'); // We write to temporary path first to minimise the time our target file is invalid (during generation)
-    $SITEMAPS_OUT_FILE = fopen($SITEMAPS_OUT_TEMPPATH, 'wb');
-    $SITEMAPS_OUT_PATH = $file_path;
+    if (!is_guest()) {
+        warn_exit('Will not generate sitemap as non-Guest');
+    }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $GLOBALS['MEMORY_OVER_SPEED'] = true;
 
     // Load ALL URL ID monikers (for efficiency)
+    global $LOADED_MONIKERS_CACHE;
     if ($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'COUNT(*)', array('m_deprecated' => 0)) < 10000) {
         $results = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_moniker', 'm_resource_page', 'm_resource_type', 'm_resource_id'), array('m_deprecated' => 0));
         foreach ($results as $result) {
@@ -133,70 +244,138 @@ function _sitemap_xml_initialise($file_path)
     // Load ALL guest permissions (for efficiency)
     load_up_all_module_category_permissions(get_member());
 
-    // Start of file
-    $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ';
-    fwrite($SITEMAPS_OUT_FILE, $blob);
+    // Runs via a callback mechanism, so we don't need to load an arbitrary complex structure into memory.
+    $callback = '_sitemap_cache_node';
+    $meta_gather = SITEMAP_GATHER_TIMES;
+    retrieve_sitemap_node(
+        '',
+        $callback,
+        /*$valid_node_types=*/null,
+        /*$child_cutoff=*/null,
+        /*$max_recurse_depth=*/null,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
+        /*$zone=*/'_SEARCH',
+        $meta_gather
+    );
 }
 
-/**
- * Finalise the writing to a Sitemap XML file.
- */
-function _sitemap_xml_finished()
-{
-    global $SITEMAPS_OUT_FILE, $SITEMAPS_OUT_PATH, $SITEMAPS_OUT_TEMPPATH;
-
-    // End of file
-    $blob = '
-</urlset>
-    ';
-    fwrite($SITEMAPS_OUT_FILE, $blob);
-
-    // Copy to final path / tidy up
-    fclose($SITEMAPS_OUT_FILE);
-    @unlink($SITEMAPS_OUT_PATH);
-    copy($SITEMAPS_OUT_TEMPPATH, $SITEMAPS_OUT_PATH);
-    @unlink($SITEMAPS_OUT_TEMPPATH);
-    sync_file($SITEMAPS_OUT_PATH);
-}
 
 /**
- * Callback for writing a Sitemap node into the Sitemap XML file.
+ * Callback for reference a Sitemap node in the cache.
  *
- * @param  array $node The Sitemap node.
+ * @param  array $node The Sitemap node
+ *
+ * @ignore
  */
-function _sitemap_xml_serialize_sitemap_node($node)
+function _sitemap_cache_node($node)
 {
-    global $SITEMAPS_OUT_FILE;
-
     $page_link = $node['page_link'];
     if ($page_link === null) {
         return;
     }
-    list($zone, $attributes, $hash) = page_link_decode($page_link);
 
     $add_date = $node['extra_meta']['add_date'];
     $edit_date = $node['extra_meta']['edit_date'];
     $priority = $node['sitemap_priority'];
+    $refreshfreq = $node['sitemap_refreshfreq'];
 
-    $langs = find_all_langs();
-    foreach (array_keys($langs) as $lang) {
-        $url = _build_url($attributes + (($lang == get_site_default_lang()) ? array() : array('keep_lang' => $lang)), $zone, null, false, false, true, $hash);
+    $guest_access = true;
 
-        $_lastmod_date = is_null($edit_date) ? $add_date : $edit_date;
-        if (!is_null($_lastmod_date)) {
-            $lastmod_date = '<lastmod>' . xmlentities(date('Y-m-d\TH:i:s', $_lastmod_date) . substr_replace(date('O', $_lastmod_date), ':', 3, 0)) . '</lastmod>';
-        }
-        $lastmod_date = '<changefreq>' . xmlentities($node['sitemap_refreshfreq']) . '</changefreq>';
+    notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access);
+}
 
-        $url_blob = '
-   <url>
-      <loc>' . xmlentities($url) . '</loc>
-      ' . $lastmod_date . '
-      <priority>' . float_to_raw_string($priority) . '</priority>
-   </url>
-        ';
-        fwrite($SITEMAPS_OUT_FILE, $url_blob);
+/**
+ * Add a row to our sitemap cache.
+ *
+ * @param SHORT_TEXT $page_link The page-link
+ * @param ?TIME $add_date The add time (null: unknown)
+ * @param ?TIME $edit_date The edit time (null: same as add time)
+ * @param float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant
+ * @param ID_TEXT $refreshfreq The refresh frequency
+ * @set always hourly daily weekly monthly yearly never
+ * @param boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ */
+function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
+{
+    // Maybe we're still installing
+	if (!$GLOBALS['SITE_DB']->table_exists('sitemap_cache') || running_script('install')) {
+        return;
     }
+
+    $fresh = ($GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'COUNT(*)') == 0);
+
+    // Find set number we will write into
+    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', null, 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
+    if (is_null($set_number)) {
+        // Next set number in sequence
+        $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)');
+        if (is_null($set_number)) {
+            $set_number = 0;
+        } else {
+            $set_number++;
+        }
+    }
+
+    // Save into sitemap
+    $GLOBALS['SITE_DB']->query_delete('sitemap_cache', array(
+        'page_link' => $page_link,
+    ), '', 1);
+    $GLOBALS['SITE_DB']->query_insert('sitemap_cache', array(
+        'page_link' => $page_link,
+        'set_number' => $set_number,
+        'add_date' => is_null($add_date) ? null : $add_date,
+        'edit_date' => is_null($edit_date) ? $add_date : $edit_date,
+        'last_updated' => time(),
+        'is_deleted' => 0,
+        'priority' => $priority,
+        'refreshfreq' => $refreshfreq,
+        'guest_access' => $guest_access ? 1 : 0,
+    ));
+
+    // First population into the table? Do a full build too
+    if ($fresh) {
+        if (is_guest()) {
+            build_sitemap_cache_table();
+        }
+    }
+}
+
+/**
+ * Edit a row in our sitemap cache.
+ *
+ * @param SHORT_TEXT $page_link The page-link
+ * @param boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ */
+function notify_sitemap_node_edit($page_link, $guest_access)
+{
+    $rows = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), array(
+        'page_link' => $page_link,
+    ), '', 1);
+    if (!isset($rows[0])) {
+        return; // Allows us to call a bit lazily when we're not sure even if we added in the first place
+    }
+
+    $GLOBALS['SITE_DB']->query_delete('sitemap_cache', array(
+        'page_link' => $page_link,
+    ), '', 1);
+    $GLOBALS['SITE_DB']->query_insert('sitemap_cache', array(
+        'edit_date' => time(),
+        'last_updated' => time(),
+        'guest_access' => $guest_access ? 1 : 0,
+    ) + $rows[0]);
+}
+
+/**
+ * Mark a row from our sitemap cache as for deletion.
+ * It won't be immediately deleted, as we use this as a signal that the XML sitemap will need updating too.
+ * Updates are done in batch, via CRON.
+ *
+ * @param SHORT_TEXT $page_link The page-link
+ */
+function notify_sitemap_node_delete($page_link)
+{
+    $GLOBALS['SITE_DB']->query_update('sitemap_cache', array(
+        'last_updated' => time(),
+        'is_deleted' => 1,
+    ), array('page_link' => $page_link), '', 1);
 }

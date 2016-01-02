@@ -19,6 +19,44 @@
  */
 
 /**
+ * Find whether a member's field must be filled in.
+ *
+ * @param  ?MEMBER $member_id The member being edited (null: new member).
+ * @param  string $field_class Special code representing what kind of field it is.
+ * @set email_address dob required_cpfs
+ * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF).
+ * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member).
+ * @return boolean Whether the field must be filled in.
+ */
+function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null)
+{
+    if (($field_class == 'dob') && (get_option('dobs') == '0')) {
+        return false;
+    }
+
+    if (is_null($editing_member)) {
+        $editing_member = get_member();
+    }
+
+    if (has_privilege($editing_member, 'bypass_' . $field_class)) {
+        return false;
+    }
+
+    // Existing member, allow blank to persist if such a privilege
+    if (!is_null($member_id)) {
+        if (is_null($current_value)) {
+            $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, ($field_class == 'dob') ? ('m_' . $field_class . '_day') : ('m_' . $field_class));
+        }
+
+        if ((empty($current_value)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * Add a member.
  *
  * @param  SHORT_TEXT $username The username.
@@ -59,9 +97,10 @@
  * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member.
  * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member.
  * @param  ?TIME $on_probation_until When the member is on probation until (null: not on probation)
+ * @param  BINARY $auto_mark_read Mark topics as read automatically
  * @return AUTO_LINK The ID of the new member.
  */
-function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null)
+function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = 1)
 {
     require_code('form_templates');
 
@@ -89,8 +128,16 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     if (is_null($timezone)) {
         $timezone = get_site_timezone();
     }
+    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    if (!$doing_email_option) {
+        $allow_emails = 1;
+    }
     if (is_null($allow_emails)) {
         $allow_emails = 1;
+    }
+    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    if (!$doing_email_from_staff_option) {
+        $allow_emails_from_staff = 1;
     }
     if (is_null($allow_emails_from_staff)) {
         $allow_emails_from_staff = 1;
@@ -172,7 +219,6 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         $password_compatibility_scheme = 'plain';
         $salt = '';
     }
-
     if (($salt == '') && (($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary'))) {
         require_code('crypt');
         $salt = produce_salt();
@@ -236,6 +282,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         'm_on_probation_until' => $on_probation_until,
         'm_profile_views' => 0,
         'm_total_sessions' => 0,
+        'm_auto_mark_read' => $auto_mark_read,
     );
     $map += insert_lang_comcode('m_signature', $signature, 4, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('m_pt_rules_text', $pt_rules_text, 4, $GLOBALS['FORUM_DB']);
@@ -279,6 +326,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
         $row['field_' . strval($field_num)] = $value;
     }
+    require_code('locations_cpfs');
+    autofill_geo_cpfs();
 
     // Set custom field row
     $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default'));
@@ -342,7 +391,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('member', strval($member_id), null, null, true);
+        generate_resource_fs_moniker('member', strval($member_id), null, null, true);
     }
 
     $password_change_days = get_option('password_change_days');
@@ -359,6 +408,9 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     if (function_exists('decache')) {
         decache('main_members');
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:members:view:' . strval($member_id), $join_time, null, SITEMAP_IMPORTANCE_LOW, 'monthly', true);
 
     return $member_id;
 }
@@ -403,6 +455,8 @@ function cns_make_boiler_custom_field($type)
 
     global $CUSTOM_FIELD_CACHE;
     $CUSTOM_FIELD_CACHE = array();
+
+    require_lang('cns_special_cpf');
 
     if (substr($type, 0, 4) == 'cms_') {
         $title = do_lang('SPECIAL_CPF__' . $type);
@@ -552,7 +606,9 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
+
     $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Default will be made explicit when we insert rows
+
     $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
     if ($indices_count < 60) { // Could be 64 but trying to be careful here...
         if ($index) {
@@ -571,7 +627,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('cpf', strval($id), null, null, true);
+        generate_resource_fs_moniker('cpf', strval($id), null, null, true);
     }
 
     if (function_exists('decache')) {

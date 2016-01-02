@@ -262,7 +262,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         $tutorial_path = get_custom_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial_name . '.txt';
-        $c = file_get_contents($tutorial_path);
+        $c = remove_code_block_contents(file_get_contents($tutorial_path));
         $matches = array();
 
         if (preg_match('#\[title sub="Written by ([^"]*)"\]([^\[\]]*)\[/title\]#', $c, $matches) != 0) {
@@ -356,7 +356,7 @@ function tutorial_sql_likes_recent($field)
     return '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE rating_for_type=\'tutorial\' AND rating_for_id=' . $field . ' AND rating=10 AND rating_time>' . strval(time() - 60 * 60 * 24 * 31) . ') AS likes_recent';
 }
 
-function find_tutorial_image($icon, $tags)
+function find_tutorial_image($icon, $tags, $get_theme_image = false)
 {
     if ($icon != '') {
         $ret = find_theme_image($icon);
@@ -366,19 +366,36 @@ function find_tutorial_image($icon, $tags)
     }
 
     foreach ($tags as $tag) {
-        $img = find_theme_image('tutorial_icons/' . _find_tutorial_image_for_tag($tag), true);
+        $theme_image = 'tutorial_icons/' . _find_tutorial_image_for_tag($tag);
+        $img = find_theme_image($theme_image, true);
         if ($img != '') {
+            if ($get_theme_image) {
+                return $theme_image;
+            }
             return $img;
         }
     }
 
-    return find_theme_image('tutorial_icons/advice_and_guidance');
+    $theme_image = 'tutorial_icons/advice_and_guidance';
+    $img = find_theme_image($theme_image);
+    if ($get_theme_image) {
+        return $theme_image;
+    }
+    return $img;
 }
 
 function _find_tutorial_image_for_tag($tag)
 {
     $tag = str_replace(' ', '_', $tag);
+    $tag = str_replace('+', '', $tag); // E.g. Wiki+
     $tag = str_replace('&', 'and', $tag);
     $tag = strtolower($tag);
     return $tag;
+}
+
+function remove_code_block_contents($code)
+{
+    $code = preg_replace('#(\[code=[^\[\]]*\]).*(\[/code\])#Us', '$1$2', $code);
+    $code = preg_replace('#(\[codebox=[^\[\]]*\]).*(\[/codebox\])#Us', '$1$2', $code);
+    return $code;
 }

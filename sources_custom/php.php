@@ -24,6 +24,8 @@ Here is the code used to extract phpdoc style function comments  from PHP code.
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__php()
 {
@@ -108,7 +110,6 @@ function get_php_file_api($filename, $include_code = true)
             }
             $current_class = substr($ltrim2, $space_pos + 1, $space_pos_2 - $space_pos - 1);
             $current_class_level = strlen($line) - strlen($ltrim);
-
             $functions = array();
         } elseif (($current_class != '__global') && (substr($line, 0, $current_class_level + 1) == str_repeat(' ', $current_class_level) . '}')) {
             if (count($functions) != 0) {
@@ -317,7 +318,7 @@ function get_php_file_api($filename, $include_code = true)
                 // Check that null is fully specified
                 if ($return['type'][0] == '?') {
                     if (strpos($return['description'], '(null: ') === false) {
-                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('NULL'))), 'warn');
+                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('null'))), 'warn');
                     }
                 }
                 if ($return['type'][0] == '~') {
@@ -355,7 +356,7 @@ function get_php_file_api($filename, $include_code = true)
     // See if there are any functions with blank lines above them
     for ($i = 0; array_key_exists($i, $lines); $i++) {
         $line = ltrim($lines[$i]);
-        if ((substr($line, 0, 9) == 'function ') && ((trim($lines[$i - 1]) == '') || (trim($lines[$i - 1]) == '{'))) {
+        if ((preg_match('#^((public|private|protected|static|abstract) )*function (.*)#', $line) != 0) && ((trim($lines[$i - 1]) == '') || (trim($lines[$i - 1]) == '{'))) {
             // Infer some parameters from the function line, given we have no phpdoc
             if (substr($lines[$i], 0, 9) == 'function ') { // Only if not class level (i.e. global)
                 $function_name = preg_replace('#function\s+(\w+)\s*\(.*#s', '${1}', $line);
@@ -577,7 +578,6 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'LANGUAGE_NAME',
         'URLPATH',
         'PATH',
-        'MD5',
         'EMAIL',
         'string',
         'integer',
@@ -586,7 +586,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'map',
         'boolean',
         'float',
-        'tempcode',
+        'Tempcode',
         'object',
         'resource',
         'mixed'
@@ -708,7 +708,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;
-        case 'tempcode':
+        case 'Tempcode':
             if ((!is_object($value)) || (!is_a($value, 'Tempcode'))) {
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
@@ -749,13 +749,8 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;
-        case 'MD5':
-            if ((!is_string($value)) || (strlen($value) > 33)) {
-                _fail_php_type_check($type, $function_name, $name, $value, $echo);
-            }
-            break;
         case 'EMAIL':
-            if ((!is_string($value)) || (is_email_address($value))) {
+            if ((!is_string($value)) || ((!is_email_address($value)) && ($value != ''))) {
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;
@@ -806,7 +801,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
             break;
         case 'AUTO_LINK':
             if ((!is_integer($value)) || ($value < -1)) {
-                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to NULL
+                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to null
             }
             break;
         case 'BINARY':
@@ -841,7 +836,7 @@ function _fail_php_type_check($type, $function_name, $name, $value, $echo = fals
     if ($echo) {
         echo 'TYPE_MISMATCH in \'' . $function_name . '\' (' . $name . ' is ' . (is_string($value) ? $value : strval($value)) . ' which is not a ' . $type . ')<br />';
     } else {
-        attach_message(do_lang_tempcode('TYPE_MISMATCH', escape_html($function_name), escape_html($name), is_string($value) ? $value : strval($value)/*,$type*/), 'warn');
+        attach_message(do_lang_tempcode('TYPE_MISMATCH', escape_html($function_name), escape_html($name), is_string($value) ? $value : strval($value)/*, $type*/), 'warn');
     }
 }
 
@@ -858,7 +853,7 @@ function render_php_function($function, $class, $show_filename = false)
     $parameters = new Tempcode();
     $full_parameters = new Tempcode();
     foreach ($function['parameters'] as $parameter) {
-        //           if (!array_key_exists('type',$parameter)) exit($function['name']);
+        //if (!array_key_exists('type', $parameter)) exit($function['name']);
 
         $parameters->attach(do_template('PHP_PARAMETER_LIST', array('_GUID' => '03e76c19ec2cf9cb7f283db72728fc13', 'TYPE' => $parameter['type'], 'NAME' => $parameter['name'])));
 
@@ -877,7 +872,7 @@ function render_php_function($function, $class, $show_filename = false)
 
     $description = comcode_to_tempcode($function['description']);
 
-    if ((function_exists('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
+    if ((php_function_allowed('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
         $_code = "<" . "?php\n" . $function['code'] . "\n?" . ">";
 
         ob_start();
@@ -917,7 +912,7 @@ function render_php_function($function, $class, $show_filename = false)
  * Get a PHP function parameter line.
  *
  * @param  array $parameter A map containing: name, description, default, type, set, range
- * @return tempcode The line
+ * @return Tempcode The line
  */
 function render_php_function_do_bits($parameter)
 {
@@ -1037,10 +1032,10 @@ function cms_type_to_hhvm_type($t)
     if (in_array($t, array('MEMBER', 'SHORT_INTEGER', 'UINTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
         $t = 'integer';
     }
-    if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'MD5', 'EMAIL'))) {
+    if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
         $t = 'string';
     }
-    if (in_array($t, array('tempcode'))) {
+    if (in_array($t, array('Tempcode'))) {
         $t = 'Tempcode';
     }
     if (in_array($t, array('list', 'map'))) {

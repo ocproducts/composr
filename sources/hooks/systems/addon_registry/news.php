@@ -175,7 +175,6 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_MAIN_IMAGE_FADER_NEWS.tpl',
             'sources/blocks/main_image_fader_news.php',
             'sources/news_sitemap.php',
-            'cms_news_sitemap.xml',
             'sources/hooks/systems/tasks/import_rss.php',
             'sources/hooks/systems/tasks/import_wordpress.php',
         );
@@ -224,7 +223,7 @@ class Hook_addon_registry_news
             'IMAGE_URL' => placeholder_image_url(),
             'URL' => placeholder_url(),
             'BODY' => lorem_paragraph_html(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'SUBMITTER' => placeholder_id(),
             'AUTHOR' => lorem_phrase(),
@@ -356,8 +355,8 @@ class Hook_addon_registry_news
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
                 'DATE_RAW' => lorem_word(),
                 'GIVE_CONTEXT' => false,
                 'TAGS' => '',
@@ -413,7 +412,7 @@ class Hook_addon_registry_news
     public function tpl_preview__news_archive_screen()
     {
         $content = do_lorem_template('NEWS_BRIEF', array(
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE_PLAIN' => lorem_word(),
             'ID' => placeholder_id(),
@@ -470,7 +469,7 @@ class Hook_addon_registry_news
                 'NEWS' => lorem_paragraph(),
                 'NEWS_TITLE' => lorem_phrase(),
                 '_DATE' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
             )));
         }
 
@@ -500,7 +499,7 @@ class Hook_addon_registry_news
             $contents->attach(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY', array(
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
-                'COUNT' => placeholder_random(),
+                'COUNT' => placeholder_number(),
             )));
         }
         return array(
@@ -512,12 +511,19 @@ class Hook_addon_registry_news
         );
     }
 
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
     public function tpl_preview__block_bottom_news()
     {
         $contents_arr = array();
         foreach (placeholder_array() as $k => $v) {
             $contents_arr[] = array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_word(),
             );
@@ -591,7 +597,7 @@ class Hook_addon_registry_news
                 'COMMENT_DETAILS' => $comment_details,
                 'RATING_DETAILS' => lorem_sentence(),
                 'TRACKBACK_DETAILS' => lorem_sentence(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'AUTHOR' => lorem_word(),
                 'AUTHOR_URL' => placeholder_url(),
                 'NEWS_FULL' => lorem_paragraph(),

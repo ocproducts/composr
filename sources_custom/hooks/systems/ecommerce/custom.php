@@ -38,7 +38,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
     require_code('notifications');
     $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());
     $username = $GLOBALS['FORUM_DRIVER']->get_username($purchase_id);
-    $message_raw = do_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
+    $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
     dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, 3, true);
 
     // Email member
@@ -122,7 +122,7 @@ class Hook_ecommerce_custom
      * Get the message for use in the purchase wizard.
      *
      * @param  string $type_code The product in question.
-     * @return tempcode The message.
+     * @return Tempcode The message.
      */
     public function get_message($type_code)
     {

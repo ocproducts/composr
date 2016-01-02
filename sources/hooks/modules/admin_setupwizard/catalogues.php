@@ -46,7 +46,7 @@ class Hook_sw_catalogues
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return tempcode An input field.
+     * @return Tempcode An input field.
      */
     public function get_fields($field_defaults)
     {
@@ -89,6 +89,7 @@ class Hook_sw_catalogues
                 require_code('catalogues2');
                 actual_delete_catalogue('projects');
                 require_lang('catalogues');
+                require_code('menus2');
                 delete_menu_item_simple(do_lang('DEFAULT_CATALOGUE_PROJECTS_TITLE'));
                 delete_menu_item_simple('_SEARCH:catalogues:projects:index');
                 delete_menu_item_simple('_SEARCH:cms_catalogues:add_entry:catalogue_name=projects');
@@ -100,6 +101,7 @@ class Hook_sw_catalogues
             if (!is_null($test)) {
                 require_code('catalogues2');
                 actual_delete_catalogue('faqs');
+                require_code('menus2');
                 delete_menu_item_simple('_SEARCH:catalogues:index:faqs');
             }
         }
@@ -108,6 +110,7 @@ class Hook_sw_catalogues
             if (!is_null($test)) {
                 require_code('catalogues2');
                 actual_delete_catalogue('links');
+                require_code('menus2');
                 delete_menu_item_simple('_SEARCH:catalogues:index:links');
             }
         }
@@ -116,6 +119,7 @@ class Hook_sw_catalogues
             if (!is_null($test)) {
                 require_code('catalogues2');
                 actual_delete_catalogue('contacts');
+                require_code('menus2');
                 delete_menu_item_simple('_SEARCH:catalogues:index:contacts');
             }
         }

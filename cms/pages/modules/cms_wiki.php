@@ -49,12 +49,13 @@ class Module_cms_wiki
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
+            'browse' => array('MANAGE_WIKI', 'menu/rich_content/wiki'),
             'add_page' => array('WIKI_ADD_PAGE', 'menu/rich_content/wiki'),
         );
 
@@ -86,7 +87,7 @@ class Module_cms_wiki
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -140,7 +141,7 @@ class Module_cms_wiki
 
             $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $pages)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
             }
             $page = $pages[0];
 
@@ -159,7 +160,7 @@ class Module_cms_wiki
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -199,7 +200,7 @@ class Module_cms_wiki
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -237,7 +238,13 @@ class Module_cms_wiki
         }
 
         require_lang('notifications');
-        $notify = ($page_id == -1) || ($GLOBALS['SITE_DB']->query_select_value_if_there('wiki_changes', 'MAX(date_and_time)', array('the_page' => $page_id)) < time() - 60 * 10);
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_database');
+            $revision_engine = new RevisionEngineDatabase(false);
+            $notify = ($page_id == -1) || ($revision_engine->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
+        } else {
+            $notify = true;
+        }
         $radios = form_input_radio_entry('send_notification', '0', !$notify, do_lang_tempcode('NO'));
         $radios->attach(form_input_radio_entry('send_notification', '1', $notify, do_lang_tempcode('YES')));
         $fields2->attach(form_input_radio(do_lang_tempcode('SEND_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SEND_NOTIFICATION'), 'send_notification', $radios));
@@ -269,7 +276,7 @@ class Module_cms_wiki
     /**
      * The UI for adding a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function add_page()
     {
@@ -304,7 +311,7 @@ class Module_cms_wiki
     /**
      * The actualiser for adding a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _add_page()
     {
@@ -314,6 +321,8 @@ class Module_cms_wiki
         $meta_data = actual_meta_data_get_fields('wiki_page', null);
 
         $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $meta_data['submitter'], $meta_data['add_time'], $meta_data['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
+
+        set_url_moniker('wiki_page', strval($id));
 
         require_code('permissions2');
         set_category_permissions_from_environment('wiki_page', strval($id), 'cms_wiki');
@@ -345,7 +354,7 @@ class Module_cms_wiki
     /**
      * The UI for choosing a Wiki+ page to edit (not normally used).
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function choose_page_to_edit()
     {
@@ -366,17 +375,13 @@ class Module_cms_wiki
     /**
      * The UI for editing a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function edit_page()
     {
         $__id = get_param_string('id', '', true);
-        if (($__id == '') || (strpos($__id, '/') !== false)) {
-            $_id = get_param_wiki_chain('id');
-            $id = intval($_id[0]);
-        } else {
-            $id = intval($__id);
-        }
+        $_id = get_param_wiki_chain('id');
+        $id = intval($_id[0]);
 
         check_edit_permission('cat_low', null, array('wiki_page', $id));
 
@@ -386,7 +391,7 @@ class Module_cms_wiki
 
         $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $pages)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
         }
         $page = $pages[0];
 
@@ -416,34 +421,13 @@ class Module_cms_wiki
             $fields2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
         }
 
-        $revision_history = new Tempcode();
-        if (multi_lang_content()) {
-            $restore_from = get_param_integer('restore_from', -1);
-            if ($restore_from != -1) {
-                $description = $GLOBALS['SITE_DB']->query_select_value('translate_history', 'text_original', array('id' => $restore_from, 'lang_id' => $page['description'])); // Double selection to stop hacking
-                $_description = null;
-            }
-
-            // Revision history
-            require_code('files');
-            $revisions = $GLOBALS['SITE_DB']->query_select('translate_history', array('*'), array('lang_id' => $page['description']), 'ORDER BY action_time DESC');
-            $last_description = $description;
-            foreach ($revisions as $revision) {
-                $time = $revision['action_time'];
-                $date = get_timezoned_date($time);
-                $editor = $GLOBALS['FORUM_DRIVER']->get_username($revision['action_member']);
-                $restore_url = build_url(array('page' => '_SELF', 'type' => 'edit_page', 'id' => get_param_string('id', false, true), 'restore_from' => $revision['id']), '_SELF');
-                $size = strlen($revision['text_original']);
-                require_code('diff');
-                $rendered_diff = diff_simple_2($revision['text_original'], $last_description);
-                $last_description = $revision['text_original'];
-                $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => 'a46de8a930ecfb814695a50b1c4931ac', 'RENDERED_DIFF' => $rendered_diff, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => '', 'SIZE' => clean_file_size($size))));
-            }
-            if ((!$revision_history->is_empty()) && ($restore_from == -1)) {
-                $revision_history = do_template('REVISION_HISTORY_WRAP', array('_GUID' => '1fc38d9d7ec57af110759352446e533d', 'CONTENT' => $revision_history));
-            } elseif (!$revision_history->is_empty()) {
-                $revision_history = do_template('REVISION_RESTORE');
-            }
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_database');
+            $revision_engine = new RevisionEngineDatabase();
+            $revision_loaded = mixed();
+            $revisions = $revision_engine->ui_revision_undoer('wiki_page', strval($id), $description, $revision_loaded);
+        } else {
+            $revisions = new Tempcode();
         }
 
         $posting_form = get_posting_form(do_lang('SAVE'), 'menu___generic_admin__edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, null, null, false);
@@ -454,7 +438,7 @@ class Module_cms_wiki
             '_GUID' => 'de53b8902ab1431e0d2d676f7d5471d3',
             'PING_URL' => $ping_url,
             'WARNING_DETAILS' => $warning_details,
-            'REVISION_HISTORY' => $revision_history,
+            'REVISIONS' => $revisions,
             'POSTING_FORM' => $posting_form,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
@@ -465,7 +449,7 @@ class Module_cms_wiki
     /**
      * The actualiser for editing a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _edit_page()
     {
@@ -504,7 +488,7 @@ class Module_cms_wiki
             }
 
             if (addon_installed('content_reviews')) {
-                require_code('content_reviews');
+                require_code('content_reviews2');
                 content_review_set('wiki_page', strval($id));
             }
 
@@ -523,7 +507,7 @@ class Module_cms_wiki
     /**
      * The UI for managing the Wiki+ children of a page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function edit_tree()
     {
@@ -562,7 +546,8 @@ class Module_cms_wiki
         require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        require_code('form_templates');
+        require_javascript('tree_list');
+
         $fields = new Tempcode();
         $fields->attach(form_input_text(do_lang_tempcode('CHILD_PAGES'), new Tempcode(), 'children', $children, false, null, true));
         $form = do_template('FORM', array('_GUID' => 'b908438ccfc9be6166cf7c5c81d5de8b', 'FIELDS' => $fields, 'URL' => $post_url, 'HIDDEN' => '', 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'SUPPORT_AUTOSAVE' => true));
@@ -573,7 +558,7 @@ class Module_cms_wiki
     /**
      * The actualiser for managing the Wiki+ children of a page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _edit_tree()
     {
@@ -596,6 +581,7 @@ class Module_cms_wiki
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
 
         $hide_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'hide_posts', array('id' => $id));
+        $page_title = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $id));
         if (get_option('wiki_enable_content_posts') == '0') {
             $hide_posts = 1;
         }
@@ -664,7 +650,7 @@ class Module_cms_wiki
             }
         }
 
-        $GLOBALS['SITE_DB']->query_insert('wiki_changes', array('the_action' => 'WIKI_EDIT_TREE', 'the_page' => $id, 'date_and_time' => time(), 'ip' => get_ip_address(), 'member_id' => $member));
+        log_it('WIKI_EDIT_TREE', strval($id), $page_title);
 
         // Show it worked / Refresh
         $url = get_param_string('redirect');

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom fields[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Custom fields[/title]
 
 When building catalogues, custom fields for inbuilt content types, and Custom Profile Fields, you have a unified set of fields to choose from.
 This tutorial describes all the different fields and their options.
@@ -9,7 +9,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]short_trans[/title]
 
-{|
+{| 15em wide
 ! Title
 | A brief line of translatable/Comcode text
 |-
@@ -23,15 +23,15 @@ This tutorial describes all the different fields and their options.
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_trans.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__short_trans.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_trans.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__short_trans.png[/media]
 |}
 
 [title="3"]short_trans_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple brief lines of translatable/Comcode text
 |-
@@ -49,15 +49,15 @@ This tutorial describes all the different fields and their options.
 [tt]cms_type=line|codename|integer|float|email[/tt] (which Composr styling and validation code to use; default is line)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_trans_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__short_trans_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_trans_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__short_trans_multi.png[/media]
 |}
 
 [title="3"]short_text[/title]
 
-{|
+{| 15em wide
 ! Title
 | A brief line of text (no Comcode support)
 |-
@@ -71,15 +71,15 @@ This tutorial describes all the different fields and their options.
 | [tt]maxlength[/tt] (the number of characters to have as a maximum; default is 255)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_text.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__short_text.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_text.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__short_text.png[/media]
 |}
 
 [title="3"]short_text_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple brief lines of text (no Comcode support)
 |-
@@ -97,15 +97,15 @@ This tutorial describes all the different fields and their options.
 [tt]cms_type=line|codename|integer|float|email[/tt] (which Composr styling and validation code to use; default is line)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_text_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__short_text_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_text_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__short_text_multi.png[/media]
 |}
 
 [title="3"]long_trans[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of translatable/Comcode text
 |-
@@ -125,15 +125,15 @@ This tutorial describes all the different fields and their options.
 [tt]maxlength[/tt] (the number of characters to have as a maximum; default is to have no limit)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__long_trans.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__long_trans.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__long_trans.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_trans.png[/media]
 |}
 
 [title="3"]long_text[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of text (no Comcode support)
 |-
@@ -153,15 +153,17 @@ This tutorial describes all the different fields and their options.
 [tt]maxlength[/tt] (the number of characters to have as a maximum; default is to have no limit)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__long_text.png[/media]
+| [media description="Text widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__long_text.png[/media]
+[media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__long_text__huge.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__long_text.png[/media]
+| [media description="Textdescription="Huge widget"  widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
+[media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text__huge.png[/media]
 |}
 
 [title="3"]posting_field[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of Comcode, with attachment support
 |-
@@ -175,15 +177,15 @@ This tutorial describes all the different fields and their options.
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__posting_field.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__posting_field.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__posting_field.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__posting_field.png[/media]
 |}
 
 [title="3"]codename[/title]
 
-{|
+{| 15em wide
 ! Title
 | A codename (short sequence of numbers and letters, no spaces)
 |-
@@ -197,15 +199,16 @@ This tutorial describes all the different fields and their options.
 | [i]None[/i]
 |-
 ! Back-end UI
-| codename When adding there is no UI if 'RANDOM' was used.
+| When adding there is no UI if 'RANDOM' was used.
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__codename.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__codename.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__codename.png[/media]
 |}
 
 [title="3"]password[/title]
 
-{|
+{| 15em wide
 ! Title
 | A password (i.e. masked input)
 |-
@@ -219,15 +222,15 @@ This tutorial describes all the different fields and their options.
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__password.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__password.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__password.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__password.png[/media]
 |}
 
 [title="3"]email[/title]
 
-{|
+{| 15em wide
 ! Title
 | An e-mail address
 |-
@@ -241,17 +244,17 @@ This tutorial describes all the different fields and their options.
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__email.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__email.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__email.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__email.png[/media]
 |}
 
 [title="2"]Numbers[/title]
 
 [title="3"]integer[/title]
 
-{|
+{| 15em wide
 ! Title
 | An integer (whole number, e.g. 5)
 |-
@@ -265,16 +268,16 @@ This tutorial describes all the different fields and their options.
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__integer.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__integer.png[/media]
 NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__integer.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__integer.png[/media]
 |}
 
 [title="3"]float[/title]
 
-{|
+{| 15em wide
 ! Title
 | A float (decimal number, e.g. 3.2)
 |-
@@ -288,17 +291,17 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__float.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__float.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__float.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__float.png[/media]
 |}
 
 [title="2"]Choices[/title]
 
 [title="3"]list[/title]
 
-{|
+{| 15em wide
 ! Title
 | A value chosen from a list
 |-
@@ -308,7 +311,9 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 ! Special default values
 | Options are delimited by "|" (e.g. "This|That|Other"), with the real default value coming first. If you want the real default to be blank, start the list with a blank (it won't allow actual selection unless the list is set as non-required).
 
-The pathname relative to a .csv file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
+You can also do like "a=This|b=That|c=Other" if you need the saved values to be different from the values displayed for selection.
+
+You can input a pathname relative to a [tt].csv[/tt] file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
 |-
 ! Supported field options
 | [tt]custom_values=on|off[/tt] (whether to allow a custom typed value; if enabled then inline list widgets will not be available; default is off)
@@ -323,26 +328,26 @@ The pathname relative to a .csv file (relative to base directory), if the non-bu
 
 [tt]widget=radio|inline|dropdown|inline_huge|dropdown_huge[/tt] (whether to use a radio buttons, an inline list, or a dropdown list; default is dropdown)
 
-[tt]csv_heading[/tt] (the column from the .csv file to use, if the default was set as a .csv file; default is to use the first column)
+[tt]csv_heading[/tt] (the column from the [tt].csv[/tt] file to use, if the default was set as a [tt].csv[/tt] file; default is to use the first column)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__dropdown.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__inline.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__inline_huge.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__radio.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list__dropdown.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list__inline.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list__inline_huge.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list__radio.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__dropdown.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__inline.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__inline_huge.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__radio.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list__dropdown.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list__inline.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list__inline_huge.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list__radio.png[/media]
 |}
 
 [title="3"]list_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple values chosen from a list
 |-
@@ -352,7 +357,7 @@ The pathname relative to a .csv file (relative to base directory), if the non-bu
 ! Special default values
 | Options are delimited by "|" (e.g. "This|That|Other").
 
-The pathname relative to a .csv file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
+The pathname relative to a [tt].csv[/tt] file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
 |-
 ! Supported field options
 | [tt]auto_sort=off|frontend|backend|both[/tt] (choose front-end to sort the selected choices, choose back-end to sort the list options, choose both to sort both; default is off)
@@ -368,21 +373,21 @@ The pathname relative to a .csv file (relative to base directory), if the non-bu
 [tt]input_size[/tt] (the number of options shown in the list before scrolling is required, applies only to the 'inline' widget type; default is 5)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__horizontal_checkboxes.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__vertical_checkboxes.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__multilist.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list_multi.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list_multi__horizontal_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list_multi__vertical_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__list_multi__multilist.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__horizontal_checkboxes.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__vertical_checkboxes.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__multilist.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi__horizontal_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi__vertical_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi__multilist.png[/media]
 |}
 
 [title="3"]tick[/title]
 
-{|
+{| 15em wide
 ! Title
 | Checkbox ('Yes' or 'No')
 |-
@@ -396,12 +401,12 @@ The pathname relative to a .csv file (relative to base directory), if the non-bu
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__tick__required.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0" description="If set as non-required it will actually be a drop-down input with 3 possible values (N/A, No, Yes)"]data_custom/images/docs/core_fields_backend__tick__not_required.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__tick__required.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600" description="If set as non-required it will actually be a drop-down input with 3 possible values (N/A, No, Yes)"]data_custom/images/docs/tut_fields/core_fields_backend__tick__not_required.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tick__required.png[/media]
-[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tick__not_required.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__tick__required.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__tick__not_required.png[/media]
 |}
 
 [title="2"]Uploads/URLs[/title]
@@ -412,7 +417,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]upload[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded file
 |-
@@ -423,18 +428,18 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 | [i]None[/i]
 |-
 ! Supported field options
-| [tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+| [tt]filetype_filter[/tt] (comma-separated list of file extensions; default is not to have a filter)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__upload.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__upload.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__upload.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__upload.png[/media]
 |}
 
 [title="3"]upload_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded files
 |-
@@ -447,18 +452,18 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 ! Supported field options
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 
-[tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+[tt]filetype_filter[/tt] (comma-separated list of file extensions; default is not to have a filter)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__upload_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__upload_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__upload_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__upload_multi.png[/media]
 |}
 
 [title="3"]picture[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded picture
 |-
@@ -474,15 +479,15 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 [tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__picture.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__picture.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__picture.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__picture.png[/media]
 |}
 
 [title="3"]picture_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded pictures
 |-
@@ -498,15 +503,15 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 [tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__picture_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__picture_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__picture_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__picture_multi.png[/media]
 |}
 
 [title="3"]video[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded video
 |-
@@ -522,15 +527,15 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 [tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__video.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__video.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__video.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__video.png[/media]
 |}
 
 [title="3"]video_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded videos
 |-
@@ -546,16 +551,16 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 [tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__video_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__video_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__video_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__video_multi.png[/media]
 NB: You can see I uploaded a non-web-safe video as the first video. We do support these, but they'll only play on browsers with an appropriate plugin installed (unlike mine).
 |}
 
 [title="3"]url[/title]
 
-{|
+{| 15em wide
 ! Title
 | An URL
 |-
@@ -569,15 +574,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__url.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__url.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__url.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__url.png[/media]
 |}
 
 [title="3"]url_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple URLs
 |-
@@ -591,15 +596,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__url_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__url_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__url_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__url_multi.png[/media]
 |}
 
 [title="3"]page_link[/title]
 
-{|
+{| 15em wide
 ! Title
 | A page-link (i.e. in-site link)
 |-
@@ -613,15 +618,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__page_link.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__page_link.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__page_link.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__page_link.png[/media]
 |}
 
 [title="3"]theme_image[/title]
 
-{|
+{| 15em wide
 ! Title
 | An image from the xxx directory of theme images
 |-
@@ -637,17 +642,17 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 [tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__theme_image.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__theme_image.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__theme_image.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__theme_image.png[/media]
 |}
 
 [title="2"]Magic fields[/title]
 
 [title="3"]guid[/title]
 
-{|
+{| 15em wide
 ! Title
 | A GUID (Globally-Unique Identifier)
 |-
@@ -664,14 +669,14 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | When adding there is no UI. When editing it looks like [tt]codename[/tt]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__guid.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__guid.png[/media]
 |}
 
 [title="2"]References[/title]
 
 [title="3"]isbn[/title]
 
-{|
+{| 15em wide
 ! Title
 | ISBN code
 |-
@@ -685,15 +690,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__isbn.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__isbn.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__isbn.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__isbn.png[/media]
 |}
 
 [title="3"]reference[/title]
 
-{|
+{| 15em wide
 ! Title
 | A reference to a catalogue entry in xxx catalogue
 |-
@@ -707,15 +712,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__reference.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__reference.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__reference.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__reference.png[/media]
 |}
 
 [title="3"]reference_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple references to a catalogue entry in xxx catalogue
 |-
@@ -729,15 +734,15 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__reference_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__reference_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__reference_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__reference_multi.png[/media]
 |}
 
 [title="3"]content_link[/title]
 
-{|
+{| 15em wide
 ! Title
 | A link to an item of 'xxx' content
 |-
@@ -751,16 +756,16 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__content_link.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__content_link.png[/media]
 NB: Where we support Composr tree-list inputters (like shown for 'reference') for the content types that use them. This screenshot shows input for a 'poll', which is a flat structure and hence just works via a normal drop-down list.
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__content_link.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__content_link.png[/media]
 |}
 
 [title="3"]content_link_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple links to an item of 'xxx' content
 |-
@@ -774,16 +779,16 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__content_link_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__content_link_multi.png[/media]
 NB: Where we support Composr tree-list inputters (like shown for 'reference') for the content types that use them. This screenshot shows input for a 'poll', which is a flat structure and hence just works via a normal drop-down list.
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__content_link_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__content_link_multi.png[/media]
 |}
 
 [title="3"]member[/title]
 
-{|
+{| 15em wide
 ! Title
 | A member ID
 |-
@@ -797,15 +802,15 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__member.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__member.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__member.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__member.png[/media]
 |}
 
 [title="3"]member_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple member IDs
 |-
@@ -819,15 +824,15 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__member_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__member_multi.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__member_multi.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__member_multi.png[/media]
 |}
 
 [title="3"]author[/title]
 
-{|
+{| 15em wide
 ! Title
 | An author configured on the system
 |-
@@ -841,22 +846,22 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__author.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__author.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__author.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__author.png[/media]
 |}
 
 [title="2"]Other[/title]
 
 [title="3"]color[/title]
 
-{|
+{| 15em wide
 ! Title
 | A colour
 |-
 ! Storage format (for programmer reference)
-| Colour hex code with no “#” (e.g. AAAAAA), or blank
+| Colour hex code with no "#" (e.g. AAAAAA), or blank
 |-
 ! Special default values
 | [i]None[/i]
@@ -865,16 +870,16 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__color.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__color.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__color.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__color.png[/media]
 NB: There is no special styling by default: this field exists so as to provide a colour-picker field input for those who will then take the data and use it in a useful way.
 |}
 
 [title="3"]date[/title]
 
-{|
+{| 15em wide
 ! Title
 | A date/time
 |-
@@ -892,15 +897,15 @@ NB: There is no special styling by default: this field exists so as to provide a
 [tt]range_search=on|off[/tt]: search forms will allow a range-based search
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__date.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__date.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__date.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__date.png[/media]
 |}
 
 [title="3"]just_date[/title]
 
-{|
+{| 15em wide
 ! Title
 | A date
 |-
@@ -918,15 +923,15 @@ NB: There is no special styling by default: this field exists so as to provide a
 [tt]range_search=on|off[/tt]: search forms will allow a range-based search
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__just_date.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__just_date.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__just_date.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__just_date.png[/media]
 |}
 
 [title="3"]just_time[/title]
 
-{|
+{| 15em wide
 ! Title
 | A time
 |-
@@ -940,15 +945,15 @@ NB: There is no special styling by default: this field exists so as to provide a
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__just_time.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__just_time.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__just_time.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__just_time.png[/media]
 |}
 
 [title="3"]tel[/title]
 
-{|
+{| 15em wide
 ! Title
 | A telephone number
 |-
@@ -962,10 +967,10 @@ NB: There is no special styling by default: this field exists so as to provide a
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__tel.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__tel.png[/media]
 |-
 ! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tel.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__tel.png[/media]
 |}
 
 [title="2"]Blank fields[/title]

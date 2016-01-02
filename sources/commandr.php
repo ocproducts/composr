@@ -20,12 +20,15 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__commandr()
 {
     require_lang('commandr');
     require_code('users_active_actions');
     require_code('commandr_fs');
+    require_code('xml');
 }
 
 /**
@@ -33,11 +36,11 @@ function init__commandr()
  */
 function commandr_script()
 {
-    $cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
 
     if ($cli) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
     }
 
@@ -55,7 +58,7 @@ function commandr_script()
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        if (!has_actual_page_access(get_member(), 'admin_commandr')) {
+        if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
             fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
         }
     }
@@ -121,8 +124,32 @@ function commandr_script()
             fclose($stderr);
             fclose($stdout);
         } else {
-            $temp = new Virtual_shell(trim($command));
-            $temp->output_xml();
+            require_code('failure');
+            set_throw_errors();
+            try {
+                $temp = new Virtual_shell(trim($command));
+                $temp->output_xml();
+            } catch (Exception $e) {
+                header('HTTP/1.0 200 Ok');
+                header('Content-type: text/xml; charset=' . get_charset());
+                $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+                    <response>
+                    	<result>
+                    		<command>' . xmlentities(post_param_string('command', '')) . '</command>
+                    		<stdcommand></stdcommand>
+                    		<stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
+                    		<stdout>' . xmlentities($e->getMessage()) . '</stdout>
+                    		<stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
+                    		<stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
+                    	</result>
+                    </response>';
+
+                if ($GLOBALS['XSS_DETECT']) {
+                    ocp_mark_as_escaped($output);
+                }
+
+                exit($output);
+            }
         }
         if (get_option('commandr_chat_announce') == '1') {
             http_download_file('http://compo.sr/data_custom/commandr.php?title=' . urlencode(get_site_name()) . '&url=' . urlencode(get_custom_base_url()), null, false, true);
@@ -202,7 +229,7 @@ class Virtual_shell
     /**
      * Returns the parse tree for the command just parsed.
      *
-     * @return ~array                   The parse tree (false: failure)
+     * @return ~array The parse tree (false: failure)
      */
     public function return_parse_tree()
     {
@@ -216,7 +243,7 @@ class Virtual_shell
     /**
      * Returns the output for the command just parsed.
      *
-     * @return ~array                   The output (false: failure)
+     * @return ~array The output (false: failure)
      */
     public function return_output()
     {
@@ -234,8 +261,6 @@ class Virtual_shell
      */
     public function output_xml()
     {
-        require_code('xml');
-
         if (count($this->parsed_input) < 1) {
             return false;
         }
@@ -258,7 +283,6 @@ class Virtual_shell
 
         // Make the HTML not use non-XML entities
         $html_bak = $this->output[STREAM_STDHTML];
-        require_code('xml');
         $this->output[STREAM_STDHTML] = convert_bad_entities($this->output[STREAM_STDHTML], get_charset());
 
         $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
@@ -315,7 +339,7 @@ class Virtual_shell
      * Return the HTML rendering of the parsed command's output.
      *
      * @param  boolean $blank_ok Whether it is okay to have blank output
-     * @return ~tempcode                The HTML (false: error)
+     * @return ~Tempcode The HTML (false: error)
      */
     public function output_html($blank_ok = false)
     {
@@ -948,7 +972,7 @@ class Virtual_shell
                 if (file_exists(get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true))) {
                     $script_file = get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND]); // It's in the main script dir
                 } else {
-                    $script_file = $this->_find_script_file(filter_naughty_harsh($this->parsed_input[SECTION_COMMAND])); // Exhaustive search
+                    $script_file = $this->_find_script_file($this->parsed_input[SECTION_COMMAND]); // Exhaustive search
                 }
 
                 if (($script_file !== false) && (is_readable($script_file))) {
@@ -982,7 +1006,7 @@ class Virtual_shell
             $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, null, false, true);
             $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
-                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, null, true, true);
+                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, true, true);
                 $commandr_output[] = array('...' => '...');
             }
 
@@ -1057,7 +1081,7 @@ class Virtual_shell
      */
     protected function _combine_streams($stream1, $stream2)
     {
-        // Combine two streams, taking account of arrays, tempcode and other stuff
+        // Combine two streams, taking account of arrays, Tempcode and other stuff
         $stream_identifiers = array(STREAM_STDCOMMAND, STREAM_STDHTML, STREAM_STDOUT, STREAM_STDERR);
 
         foreach ($stream_identifiers as $identifier) {
@@ -1099,10 +1123,10 @@ class Virtual_shell
     }
 
     /**
-     * Convert an array to tempcode for display.
+     * Convert an array to Tempcode for display.
      *
      * @param  array $array Array to display
-     * @return tempcode Tempcode for array
+     * @return Tempcode Tempcode for array
      */
     protected function _array_to_html($array)
     {
@@ -1113,7 +1137,7 @@ class Virtual_shell
             if (is_array($value)) {
                 $value = protect_from_escaping($this->_array_to_html($value));
             }
-            $output->attach(do_template('COMMANDR_ARRAY_ELEMENT', array('_GUID' => '18c9700c05fbe9c8b45f454376deda05', 'KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'NULL' : (is_object($value) ? $value : strval($value))))));
+            $output->attach(do_template('COMMANDR_ARRAY_ELEMENT', array('_GUID' => '18c9700c05fbe9c8b45f454376deda05', 'KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'null' : (is_object($value) ? $value : strval($value))))));
         }
         return do_template('COMMANDR_ARRAY', array('_GUID' => 'ab75cdb77fa797d2e42185b51e34d857', 'ELEMENTS' => $output));
     }
@@ -1161,13 +1185,17 @@ class Virtual_shell
      */
     protected function _handle_php_command()
     {
+        $commandr_output = mixed();
+
         // NOTE: Variables throughout this function use the $commandr_ prefix to avoid conflicts with any created through executing PHP commands from the CL
         if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
             if (array_key_exists('commandr_state', $_COOKIE)) {
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state'] = stripslashes($_COOKIE['commandr_state']);
                 }
-                $commandr_state_diff = @unserialize(base64_decode($_COOKIE['commandr_state']));
+                $_commandr_state_diff = base64_decode($_COOKIE['commandr_state']);
+                secure_serialized_data($_commandr_state_diff);
+                $commandr_state_diff = @unserialize($_commandr_state_diff);
                 if (!is_array($commandr_state_diff)) {
                     $commandr_state_diff = array();
                 }
@@ -1179,7 +1207,9 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_lang'] = stripslashes($_COOKIE['commandr_state_lang']);
                 }
-                $commandr_state_lang_diff = @unserialize(base64_decode($_COOKIE['commandr_state_lang']));
+                $_commandr_state_lang_diff = base64_decode($_COOKIE['commandr_state_lang']);
+                secure_serialized_data($_commandr_state_lang_diff);
+                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff);
                 if (!is_array($commandr_state_lang_diff)) {
                     $commandr_state_lang_diff = array();
                 }
@@ -1191,7 +1221,9 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_code'] = stripslashes($_COOKIE['commandr_state_code']);
                 }
-                $commandr_state_code_diff = @unserialize(base64_decode($_COOKIE['commandr_state_code']));
+                $_commandr_state_code_diff = base64_decode($_COOKIE['commandr_state_code']);
+                secure_serialized_data($_commandr_state_code_diff);
+                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff);
                 if (!is_array($commandr_state_code_diff)) {
                     $commandr_state_code_diff = array();
                 }
@@ -1202,6 +1234,9 @@ class Virtual_shell
             $already_required = array_keys($GLOBALS['REQUIRED_CODE']);
             foreach ($commandr_state_diff as $commandr_key => $commandr_val) {
                 if (!is_scalar($commandr_val)) {
+                    continue;
+                }
+                if (preg_match('#^\w+$#', $commandr_key) != 0) {
                     continue;
                 }
 
@@ -1251,10 +1286,24 @@ class Virtual_shell
                 }
             }
 
-            cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
-            cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));
-            cms_setcookie('commandr_state_lang', base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED']))));
-            // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
+            $cookie_size = strlen(serialize($_COOKIE));
+            if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
+                $data = base64_encode(serialize($commandr_state_diff));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state', $data);
+                }
+                $data = base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE'])));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_code', $data);
+                }
+                $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_lang', $data);
+                }
+                // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
+            } else {
+                cms_eatcookie('commandr_state');
+            }
         } else {
             // Fake the PHP evaluation, because it's prohibited by a shared install
             $this->output[STREAM_STDERR] = do_lang('SHARED_INSTALL_PROHIBIT');
@@ -1286,7 +1335,7 @@ class Virtual_shell
      *
      * @param  string $script_name Script name
      * @param  ?string $dir Directory (null: Commandr module data dir)
-     * @return ~string                  Path or failure (false: failure)
+     * @return ~string Path or failure (false: failure)
      */
     protected function _find_script_file($script_name, $dir = null)
     {
@@ -1317,7 +1366,7 @@ class Virtual_shell
 /**
  * Returns a string containing the XML for any messages queued to be sent to the client.
  *
- * @param  boolean $xml Output as XML or tempcode?
+ * @param  boolean $xml Output as XML or Tempcode?
  * @return string The queued message XML
  */
 function get_queued_messages($xml = true)
@@ -1364,7 +1413,7 @@ function get_queued_messages($xml = true)
  * @param  string $command Command name
  * @param  array $options Options
  * @param  array $parameters Parameters (keys are the parameters, values are always set to true, i.e. it is an array of as many trues as there are parameters)
- * @return tempcode Help template
+ * @return Tempcode Help template
  */
 function do_command_help($command, $options, $parameters)
 {
@@ -1406,7 +1455,7 @@ function do_command_help($command, $options, $parameters)
  * Put something non-Commandr in a standard box so it looks OK.
  *
  * @param  mixed $html HTML (string or Tempcode)
- * @return tempcode Boxed HTML
+ * @return Tempcode Boxed HTML
  */
 function commandr_make_normal_html_visible($html)
 {

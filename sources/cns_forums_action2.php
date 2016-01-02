@@ -48,7 +48,7 @@ function cns_edit_forum_grouping($forum_grouping_id, $title, $description, $expa
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum_grouping', strval($forum_grouping_id));
+        generate_resource_fs_moniker('forum_grouping', strval($forum_grouping_id));
     }
 }
 
@@ -66,7 +66,7 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
 
     $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'c_title', array('id' => $forum_grouping_id));
     if (is_null($title)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum_grouping'));
     }
 
     $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_forum_grouping_id' => $target_forum_grouping_id), array('f_forum_grouping_id' => $forum_grouping_id));
@@ -76,7 +76,7 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('forum_grouping', strval($forum_grouping_id));
+        expunge_resource_fs_moniker('forum_grouping', strval($forum_grouping_id));
     }
 }
 
@@ -96,9 +96,10 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
  * @param  SHORT_TEXT $redirection Either blank for no redirection, the ID of another forum we are mirroring, or a URL to redirect to.
  * @param  ID_TEXT $order The order the topics are shown in, by default.
  * @param  BINARY $is_threaded Whether the forum is threaded.
+ * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
  * @param  boolean $reset_intro_acceptance Whether to force forum rules to be re-agreed to, if they've just been changed.
  */
-function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $reset_intro_acceptance = false)
+function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $reset_intro_acceptance = false)
 {
     if ($forum_grouping_id == -1) {
         $forum_grouping_id = null;
@@ -119,7 +120,7 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
 
     $forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
     if (!array_key_exists(0, $forum_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
     $old_parent = $forum_info[0]['f_parent_forum'];
     $old_name = $forum_info[0]['f_name'];
@@ -148,6 +149,7 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         'f_redirection' => $redirection,
         'f_order' => $order,
         'f_is_threaded' => $is_threaded,
+        'f_allows_anonymous_posts' => $allows_anonymous_posts,
     );
     $map += lang_remap_comcode('f_description', $forum_info[0]['f_description'], $description, $GLOBALS['FORUM_DB']);
     $map += lang_remap_comcode('f_intro_question', $forum_info[0]['f_intro_question'], $intro_question, $GLOBALS['FORUM_DB']);
@@ -167,10 +169,10 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         $num_topics_forum = $forum_info[0]['f_cache_num_topics']; // This is valid, because we move all this forums subforums too
         $num_posts_forum = $forum_info[0]['f_cache_num_posts'];
         if (!is_null($old_parent)) {
-            cns_force_update_forum_cacheing($old_parent, -$num_topics_forum, -$num_posts_forum);
+            cns_force_update_forum_caching($old_parent, -$num_topics_forum, -$num_posts_forum);
         }
         if (!is_null($new_parent)) {
-            cns_force_update_forum_cacheing($new_parent, $num_topics_forum, $num_posts_forum);
+            cns_force_update_forum_caching($new_parent, $num_topics_forum, $num_posts_forum);
         }
     }
 
@@ -178,8 +180,11 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum', strval($forum_id));
+        generate_resource_fs_moniker('forum', strval($forum_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:forumview:id=' . strval($forum_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 }
 
 /**
@@ -211,7 +216,7 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
 
     $forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
     if (!array_key_exists(0, $forum_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
     delete_lang($forum_info[0]['f_description'], $GLOBALS['FORUM_DB']);
     delete_lang($forum_info[0]['f_intro_question'], $GLOBALS['FORUM_DB']);
@@ -235,8 +240,11 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('forum', strval($forum_id));
+        expunge_resource_fs_moniker('forum', strval($forum_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:forumview:id=' . strval($forum_id));
 }
 
 /**
@@ -250,7 +258,7 @@ function cns_ping_forum_read_all($forum_id)
     if ($or_list == '') {
         return;
     }
-    $topics = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))));
+    $topics = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
     $member_id = get_member();
     $or_list = '';
     foreach ($topics as $topic) {
@@ -280,7 +288,7 @@ function cns_ping_forum_read_all($forum_id)
 function cns_ping_forum_unread_all($forum_id)
 {
     $or_list = cns_get_all_subordinate_forums($forum_id, 't_forum_id');
-    $topics = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))));
+    $topics = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
     $or_list_2 = '';
     foreach ($topics as $topic) {
         if ($or_list_2 != '') {
@@ -303,7 +311,7 @@ function cns_ensure_forum_grouping_exists($forum_grouping_id)
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('id' => $forum_grouping_id));
     if (is_null($test)) {
-        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($forum_grouping_id)));
+        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($forum_grouping_id)), 'forum_grouping'));
     }
 }
 

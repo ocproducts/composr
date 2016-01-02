@@ -49,7 +49,7 @@ class Block_main_cns_involved_topics
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -128,7 +128,7 @@ class Block_main_cns_involved_topics
             if (!$topics->is_empty()) {
                 $action_url = build_url(array('page' => 'topics'), get_module_zone('topics'), null, false, true);
 
-                $forum_name = do_lang_tempcode('TOPICS_PARTICIPATED_IN', integer_format($start + 1) . '-' . integer_format($start + $max));
+                $forum_name = do_lang_tempcode('TOPICS_PARTICIPATED_IN', escape_html(integer_format($start + 1)) . '-' . integer_format($start + $max));
                 $marker = '';
                 $breadcrumbs = new Tempcode();
                 require_code('templates_pagination');

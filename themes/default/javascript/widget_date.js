@@ -14,6 +14,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
       var decrement, increment, makeDateDisplayString, makeDateString, readDate, stepNormalize;
       readDate = function(d_str) {
         var dateObj, dayPart, matchData, monthPart, yearPart;
+        if (d_str == '') return new Date();
         if (/^\d\{4,}-\d\d-\d\d$/.test(d_str)) {
           matchData = /^(\d+)-(\d+)-(\d+)$/.exec(d_str);
           yearPart = parseInt(matchData[1], 10);
@@ -26,6 +27,8 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         }
       };
       makeDateString = function(date_obj) {
+        if (date_obj === null) return '';
+
         var d_arr;
         d_arr = [date_obj.getFullYear().toString()];
         d_arr.push('-');
@@ -41,6 +44,8 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         return d_arr.join('');
       };
       makeDateDisplayString = function(date_obj, elem) {
+        if (date_obj === null) return '';
+
         var $elem, date_arr, day_names, month_names;
         $elem = $(elem);
         day_names = $elem.datepicker("option", "dayNames");
@@ -134,17 +139,17 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         if ((value != null) && /^\d\{4,}-\d\d-\d\d$/.test(value)) {
           value = readDate(value);
         } else {
-          value = new Date();
+          value = null;
         }
         if (min != null) {
           min = readDate(min);
-          if (value < min) {
+          if (value !== null && value < min) {
             value.setTime(min.getTime());
           }
         }
         if (max != null) {
           max = readDate(max);
-          if (value > max) {
+          if (value !== null && value > max) {
             value.setTime(max.getTime());
           }
         }
@@ -187,7 +192,19 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         $dateBtn.appendTo(calendarContainer);
         $calendarDiv.appendTo(calendarContainer);
         $calendarDiv.datepicker({
+          dayNames: ['{!dates:SUNDAY;}','{!dates:MONDAY;}','{!dates:TUESDAY;}','{!dates:WEDNESDAY;}','{!dates:THURSDAY;}','{!dates:FRIDAY;}','{!dates:SATURDAY;}'],
+          dayNamesMin: ['{$SUBSTR,{!dates:SUNDAY;},0,2}','{$SUBSTR,{!dates:MONDAY;},0,2}','{$SUBSTR,{!dates:TUESDAY;},0,2}','{$SUBSTR,{!dates:WEDNESDAY;},0,2}','{$SUBSTR,{!dates:THURSDAY;},0,2}','{$SUBSTR,{!dates:FRIDAY;},0,2}','{$SUBSTR,{!dates:SATURDAY;},0,2}'],
+          dayNamesShort: ['{$SUBSTR,{!dates:SUNDAY;},0,3}','{$SUBSTR,{!dates:MONDAY;},0,3}','{$SUBSTR,{!dates:TUESDAY;},0,3}','{$SUBSTR,{!dates:WEDNESDAY;},0,3}','{$SUBSTR,{!dates:THURSDAY;},0,3}','{$SUBSTR,{!dates:FRIDAY;},0,3}','{$SUBSTR,{!dates:SATURDAY;},0,3}'],
+          monthNames: ['{!dates:JANUARY;}','{!dates:FEBRUARY;}','{!dates:MARCH;}','{!dates:APRIL;}','{!dates:MAY;}','{!dates:JUNE;}','{!dates:JULY;}','{!dates:AUGUST;}','{!dates:SEPTEMBER;}','{!dates:OCTOBER;}','{!dates:NOVEMBER;}','{!dates:DECEMBER;}'],
+          monthNamesShort: ['{$SUBSTR,{!dates:JANUARY;},0,3}','{$SUBSTR,{!dates:FEBRUARY;},0,3}','{$SUBSTR,{!dates:MARCH;},0,3}','{$SUBSTR,{!dates:APRIL;},0,3}','{$SUBSTR,{!dates:MAY;},0,3}','{$SUBSTR,{!dates:JUNE;},0,3}','{$SUBSTR,{!dates:JULY;},0,3}','{$SUBSTR,{!dates:AUGUST;},0,3}','{$SUBSTR,{!dates:SEPTEMBER;},0,3}','{$SUBSTR,{!dates:OCTOBER;},0,3}','{$SUBSTR,{!dates:NOVEMBER;},0,3}','{$SUBSTR,{!dates:DECEMBER;},0,3}'],
+          prevText: '{!PREVIOUS;}',
+          nextText: '{!NEXT;}',
+          currentText: '{!TODAY;}',
+          firstDay: {$?,{$CONFIG_OPTION,ssw},0,1},
           dateFormat: 'MM dd, yy',
+          changeMonth: true,
+          changeYear: true,
+          yearRange: (min && max) ? (min.getFullYear()+":"+max.getFullYear()) : "-100:+30",
           showButtonPanel: true,
           beforeShowDay: function(dateObj) {
             var dateDays, minDays;
@@ -213,15 +230,20 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         if (Modernizr.csstransitions) {
           calendarDiv.className = "date-calendar-dialog date-closed";
           $dateBtn.click(function(event) {
-            $calendarDiv.off('transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd');
-            calendarDiv.style.display = 'block';
-            calendarDiv.className = "date-calendar-dialog date-open";
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              closeFunc();
+ 				} else {
+              $calendarDiv.off('transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd');
+              calendarDiv.style.display = 'block';
+              calendarDiv.className = "date-calendar-dialog date-open";
+ 				}
             event.preventDefault();
             return false;
           });
           closeFunc = function(event) {
             var transitionend_function;
-            if (calendarDiv.className === "date-calendar-dialog date-open") {
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              calendarDiv = $('.date-calendar-dialog.date-open')[0];
               transitionend_function = function(event, ui) {
                 calendarDiv.style.display = 'none';
                 $calendarDiv.off("transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd", transitionend_function);
@@ -237,7 +259,11 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
           };
         } else {
           $dateBtn.click(function(event) {
-            $calendarDiv.fadeIn('fast');
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              closeFunc();
+				} else {
+              $calendarDiv.fadeIn('fast');
+				}
             event.preventDefault();
             return false;
           });
@@ -249,7 +275,6 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
             return null;
           };
         }
-        $calendarDiv.mouseleave(closeFunc);
         $calendarDiv.datepicker("option", "onSelect", function(dateText, inst) {
           var dateObj;
           dateObj = $.datepicker.parseDate('MM dd, yy', dateText);
@@ -294,7 +319,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.date) {
+      if (!Modernizr.inputtypes.date || navigator.userAgent.indexOf('Firefox/') != -1) {
         $('input[type="date"]').inputDate();
       }
       return null;
@@ -318,19 +343,21 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
     $.fn.inputTime = function() {
       var decrement, increment, makeTimeDisplayString, makeTimeString, readTime, stepNormalize;
       readTime = function(t_str) {
+        if (t_str == '') return new Date();
+
         var hourPart, matchData, millisecondPart, minutePart, secondPart, timeObj;
         if (/^\d\d:\d\d(?:\:\d\d(?:\.\d+)?)?$/.test(t_str)) {
           matchData = /^(\d+):(\d+)(?:\:(\d+)(?:\.(\d+))?)?$/.exec(t_str);
           hourPart = parseInt(matchData[1], 10);
           minutePart = parseInt(matchData[2], 10);
           secondPart = matchData[3] != null ? parseInt(matchData[3], 10) : 0;
-          millisecondPart = matchData[4] != null ? matchData[4] : '0';
-          while (millisecondPart.length < 3) {
+          millisecondPart = /*matchData[4] != null ? matchData[4] : */'0';
+          /*while (millisecondPart.length < 3) {
             millisecondPart += '0';
           }
           if (millisecondPart.length > 3) {
             millisecondPart = millisecondPart.substring(0, 3);
-          }
+          }*/
           millisecondPart = parseInt(millisecondPart, 10);
           timeObj = new Date();
           timeObj.setHours(hourPart);
@@ -343,6 +370,8 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         }
       };
       makeTimeString = function(time_obj) {
+        if (time_obj === null) return '';
+
         var t_arr;
         t_arr = new Array();
         if (time_obj.getHours() < 10) {
@@ -360,7 +389,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
             t_arr.push('0');
           }
           t_arr.push(time_obj.getSeconds().toString());
-          if (time_obj.getMilliseconds() > 0) {
+          /*if (time_obj.getMilliseconds() > 0) {
             t_arr.push('.');
             if (time_obj.getMilliseconds() < 100) {
               t_arr.push('0');
@@ -369,11 +398,13 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
               t_arr.push('0');
             }
             t_arr.push(time_obj.getMilliseconds().toString());
-          }
+          }*/
         }
         return t_arr.join('');
       };
       makeTimeDisplayString = function(time_obj) {
+        if (time_obj === null) return '';
+
         var ampm, time_arr;
         time_arr = new Array();
         if (time_obj.getHours() === 0) {
@@ -407,7 +438,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
           time_arr.push('0');
         }
         time_arr.push(time_obj.getSeconds().toString());
-        if (time_obj.getMilliseconds() > 0) {
+        /*if (time_obj.getMilliseconds() > 0) {
           time_arr.push('.');
           if (time_obj.getMilliseconds() % 100 === 0) {
             time_arr.push((time_obj.getMilliseconds() / 100).toString());
@@ -423,7 +454,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
             }
             time_arr.push(time_obj.getMilliseconds().toString());
           }
-        }
+        }*/
         time_arr.push(' ');
         time_arr.push(ampm);
         return time_arr.join('');
@@ -504,17 +535,17 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         if ((value != null) && /^\d\d:\d\d(?:\:\d\d(?:\.\d+)?)?$/.test(value)) {
           value = readTime(value);
         } else {
-          value = new Date();
+          value = null;
         }
         if (min != null) {
           min = readTime(min);
-          if (value < min) {
+          if (value !== null && value < min) {
             value.setTime(min.getTime());
           }
         }
         if (max != null) {
           max = readTime(max);
-          if (value > max) {
+          if (value !== null && value > max) {
             value.setTime(max.getTime());
           }
         }
@@ -577,7 +608,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
             event.preventDefault();
             return null;
           },
-          keypress: function(event) {
+          keydown: function(event) {
             var _ref, _ref1;
             if (event.keyCode === 38) {
               increment(hiddenField, timeField);
@@ -596,10 +627,10 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
               hours = parseInt(matchData[1], 10);
               minutes = parseInt(matchData[2], 10);
               seconds = parseInt(matchData[3], 10) || 0;
-              milliseconds = matchData[4];
-              if (milliseconds == null) {
+              /*milliseconds = matchData[4];
+              if (milliseconds == null) {*/
                 milliseconds = 0;
-              } else if (milliseconds.length > 3) {
+              /*} else if (milliseconds.length > 3) {
                 milliseconds = parseInt(milliseconds.substring(0, 3), 10);
               } else if (milliseconds.length < 3) {
                 while (milliseconds.length < 3) {
@@ -608,7 +639,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
                 milliseconds = parseInt(milliseconds, 10);
               } else {
                 milliseconds = parseInt(milliseconds, 10);
-              }
+              }*/
               ampm = matchData[5].toUpperCase();
               timeObj = readTime($hiddenField.val());
               if (ampm === 'AM' && hours === 12) {
@@ -680,7 +711,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.time) {
+      if (!Modernizr.inputtypes.time || navigator.userAgent.indexOf('Firefox/') != -1) {
         $('input[type="time"]').inputTime();
       }
       return null;

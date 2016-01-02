@@ -45,7 +45,7 @@ class Block_main_bottom_bar
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -108,7 +108,7 @@ class Block_main_bottom_bar
             if ($num_guests != 0) {
                 if (!$users_online->is_empty() && do_lang('NUM_GUESTS') != '') {
                     $users_online->attach(do_lang_tempcode('LIST_SEP'));
-                    $users_online->attach(do_lang_tempcode('NUM_GUESTS', integer_format($num_guests)));
+                    $users_online->attach(do_lang_tempcode('NUM_GUESTS', escape_html(integer_format($num_guests))));
                 }
             }
         }

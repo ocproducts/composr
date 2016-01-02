@@ -55,7 +55,7 @@ function booking_price_ajax_script()
  *
  * @param  array $request Booking details structure to check, passed by reference as statuses get added.
  * @param  array $ignore_bookings Existing bookings to ignore (presumably the booking we're trying to make - if this is an edit).
- * @return ?tempcode Error message (null: no issue).
+ * @return ?Tempcode Error message (null: no issue).
  */
 function check_booking_dates_available(&$request, $ignore_bookings)
 {
@@ -112,17 +112,17 @@ function get_booking_request_from_form()
 
         $quantity = post_param_integer('bookable_' . strval($bookable_id) . '_quantity', 0);
         if ($quantity > 0) {
-            $start = get_input_date('bookable_' . strval($bookable_id) . '_date_from');
+            $start = post_param_date('bookable_' . strval($bookable_id) . '_date_from');
             if (is_null($start)) {
-                $start = get_input_date('bookable_date_from');
+                $start = post_param_date('bookable_date_from');
             }
             $start_day = intval(date('d', $start));
             $start_month = intval(date('m', $start));
             $start_year = intval(date('Y', $start));
             if ($bookable['dates_are_ranges'] == 1) {
-                $end = get_input_date('bookable_' . strval($bookable_id) . '_date_to');
+                $end = post_param_date('bookable_' . strval($bookable_id) . '_date_to');
                 if (is_null($end)) {
-                    $end = get_input_date('bookable_date_to');
+                    $end = post_param_date('bookable_date_to');
                 }
                 $end_day = intval(date('d', $end));
                 $end_month = intval(date('m', $end));
@@ -399,7 +399,7 @@ function days_in_range($start_day, $start_month, $start_year, $end_day, $end_mon
  * @param  integer $year Year.
  * @param  integer $quantity Quantity needed.
  * @param  array $ignore_bookings Existing bookings to ignore (presumably the booking we're trying to make - if this is an edit).
- * @return ?tempcode Error message (null: no issue).
+ * @return ?Tempcode Error message (null: no issue).
  */
 function booking_date_available($bookable_id, $day, $month, $year, $quantity, $ignore_bookings)
 {
@@ -486,7 +486,7 @@ function send_booking_emails($request)
     );
 
     // Send receipt to customer
-    $receipt = do_template('BOOKING_CONFIRM_FCOMCODE', $tpl_map);
+    $receipt = do_notification_template('BOOKING_CONFIRM_FCOMCODE', $tpl_map);
     $subject = do_lang('SUBJECT_BOOKING_CONFIRM', get_site_name());
     $body = static_evaluate_tempcode($receipt);
     if (get_option('member_booking_only') == '1') {
@@ -498,7 +498,7 @@ function send_booking_emails($request)
 
     // Send notice to staff
     $subject = do_lang('SUBJECT_BOOKING_NOTICE', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true), get_site_name(), $GLOBALS['FORUM_DRIVER']->get_username(get_member()));
-    $notice = do_template(
+    $notice = do_notification_template(
         'BOOKING_NOTICE_FCOMCODE',
         array(
             '_GUID' => 'd223b42f024f853f63cd9908155667a8',

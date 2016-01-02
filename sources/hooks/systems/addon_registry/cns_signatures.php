@@ -206,6 +206,7 @@ class Hook_addon_registry_cns_signatures
             'ATTACHMENTS' => lorem_phrase(),
             'SPECIALISATION' => new Tempcode(),
             'SPECIALISATION2' => new Tempcode(),
+            'DESCRIPTION' => lorem_paragraph(),
             'REQUIRED' => true,
         ));
 

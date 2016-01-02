@@ -47,7 +47,7 @@ class Hook_admin_stats_downloads
      *
      * @param  object $ob The stats module object
      * @param  string $type The screen type
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function downloads($ob, $type)
     {
@@ -62,8 +62,8 @@ class Hook_admin_stats_downloads
 
             return $ob->get_between($title, false, null, do_lang_tempcode('DOWNLOAD_STATS_RANGE'));
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
@@ -100,8 +100,8 @@ class Hook_admin_stats_downloads
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;

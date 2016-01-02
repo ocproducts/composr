@@ -1,34 +1,46 @@
 ; Similar to stuff defined in sources/files.php, but defined in terms of what we want never to be in git
+/cgi-bin
 *.bak
+*.old
 ._*
 test_a
 /safe_mode_temp/*.dat
+/safe_mode_temp/subs.inc
 /sources_custom/user_sync__customise.php
 /www.pid
 .DS_Store
+/.ftaccess
+/.ftpquota
 *.lcd
 *.tcp
 *.tcd
 *.gcd
+/caches/*/*.htm
+/caches/*/*.xml
 /themes/*/templates_cached/*/*.js
 /themes/*/templates_cached/*/*.css
 /themes/*/templates_cached/*/*.tcp
 /themes/*/templates_cached/*/*.gz
+/data_custom/rate_limiter.php
 /data_custom/*log.php
 /exports/*/*.tar
 /exports/builds/*/*
 /imports/*/*.tar
+/mobiquo/logging.dat
+/mobiquo/include/request_helper.dat
+/data_custom/ckeditor
+/data_custom/sitemaps/*.xml
+/data_custom/sitemaps/*.gz
 /data_custom/modules/chat/*.dat
 /data_custom/modules/admin_stats/*.xml
+/data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
-/*.tmproj
 /.project
 /data_custom/latest_activity.txt
 /hphp-static-cache
 /hphp.files.list
 /hphp
-/*.dll
 tmpfile__*
 *.tmp
 *~
@@ -54,6 +66,8 @@ default/images/*/*__*.jpg
 /uploads/*/*__*.jpeg
 images_custom/*/*__*.jpeg
 default/images/*/*__*.jpeg
+/data_custom/failover_rewritemap.txt
+/data_custom/failover_rewritemap__mobile.txt
 
 ; The matched files should be blocked for the main Composr dev repository but not for Composr projects
 /.htaccess
@@ -71,7 +85,7 @@ default/images/*/*__*.jpeg
 /uploads/*/*
 !/uploads/*/index.html
 !/uploads/*/.htaccess
-!/uploads/website_specific/*.csv
+!/uploads/website_specific/example.csv
 !/uploads/website_specific/*.sql
 !/uploads/website_specific/compo.sr
 /uploads/website_specific/compo.sr/private.pem
@@ -80,7 +94,7 @@ default/images/*/*__*.jpeg
 *.[1234567890][1234567890][1234567890]*
 pages/comcode_custom/*/*.txt
 */pages/comcode_custom/*/*.txt
-!docs/pages/comcode_custom/*.txt
+!docs/pages/comcode_custom/*/*.txt
 !adminzone/pages/comcode_custom/EN/comcode_whitelist.txt
 !adminzone/pages/comcode_custom/EN/insults.txt
 !adminzone/pages/comcode_custom/EN/referrals.txt
@@ -95,9 +109,6 @@ pages/comcode_custom/*/*.txt
 !pages/comcode_custom/EN/_unslider_slide4.txt
 !pages/comcode_custom/EN/_unslider_slide5.txt
 !pages/comcode_custom/EN/_unslider_slide6.txt
-!pages/comcode_custom/EN/keymap.txt
-!pages/comcode_custom/EN/panel_right.txt
-!pages/comcode_custom/EN/rules.txt
 !site/pages/comcode_custom/EN/topsites.txt
 pages/html_custom/*/*.htm
 */pages/html_custom/*/*.htm
@@ -115,3 +126,5 @@ pages/html_custom/*/*.htm
 *.tempfile
 /data_custom/modules/user_export/out.csv
 /data_custom/execute_temp.php
+cms.sql
+

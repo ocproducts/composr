@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_forums()
 {
@@ -45,7 +47,7 @@ function init__cns_forums()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The forum box
+ * @return Tempcode The forum box
  */
 function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -233,14 +235,18 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
     return $subordinates;
 }
 
-/*function cns_is_up_to_date_on_forum($forum_id,$member_id=NULL)     Interesting function, not currently needed
+/* Interesting function, not currently needed
+function cns_is_up_to_date_on_forum($forum_id, $member_id = null)
 {
-    $_last_topic=$GLOBALS['FORUM_DB']->query_select('f_forums',array('f_cache_last_time','f_cache_last_topic_id'),array('id'=>$forum_id));
-    if (!array_key_exists(0,$_last_topic)) return false; // Data error, but let's just trip past
-    $topic_last_time=$_last_topic[0]['f_cache_last_time'];
-    $topic_id=$_last_topic[0]['f_cache_last_topic_id'];
-    return cns_has_read_topic($topic_id,$topic_last_time,$member_id);
-}*/
+    $_last_topic = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_cache_last_time', 'f_cache_last_topic_id'), array('id' => $forum_id));
+    if (!array_key_exists(0, $_last_topic)) {
+        return false; // Data error, but let's just trip past
+    }
+    $topic_last_time = $_last_topic[0]['f_cache_last_time'];
+    $topic_id = $_last_topic[0]['f_cache_last_topic_id'];
+    return cns_has_read_topic($topic_id, $topic_last_time, $member_id);
+}
+*/
 
 /**
  * Find whether a member may moderate a certain forum.
@@ -291,12 +297,12 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
 /**
  * Get breadcrumbs for a forum.
  *
- * @param  mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be NULL).
+ * @param  mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be null).
  * @param  ?mixed $this_name The name of the given forum as string or Tempcode (null: find it from the DB).
  * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB).
  * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call).
  * @param  ?AUTO_LINK $root Virtual root (null: none).
- * @return tempcode The breadcrumbs.
+ * @return Tempcode The breadcrumbs.
  * @return array The breadcrumbs.
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)
@@ -317,7 +323,7 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
     if (is_null($this_name)) {
         $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_name', 'f_parent_forum'), array('id' => $end_point_forum), '', 1);
         if (!array_key_exists(0, $_forum_details)) {
-            //warn_exit(do_lang_tempcode('_MISSING_RESOURCE','forum#'.strval($end_point_forum)));
+            //warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($end_point_forum)), 'forum'));
             return array();
         }
         $forum_details = $_forum_details[0];
@@ -358,4 +364,18 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
     }
 
     return $out;
+}
+
+/**
+ * Whether a forum supports anonymous posts.
+ *
+ * @param  ?AUTO_LINK $forum_id The ID of the forum (null: private topics).
+ * @return boolean Whether it does.
+ */
+function cns_forum_allows_anonymous_posts($forum_id)
+{
+    if (is_null($forum_id)) {
+        return (get_option('is_on_anonymous_posts') == '1');
+    }
+    return ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_allows_anonymous_posts', array('id' => $forum_id)) === 1);
 }

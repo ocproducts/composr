@@ -37,7 +37,7 @@ class Hook_config_downloads_default_sort_order
             'group' => 'SECTION_DOWNLOADS',
             'explanation' => 'CONFIG_OPTION_downloads_default_sort_order',
             'shared_hosting_restricted' => '0',
-            'list_options' => 't.text_original ASC|file_size ASC|file_size DESC|num_downloads DESC|average_rating DESC|compound_rating DESC|add_date ASC|add_date DESC|fixed_random ASC',
+            'list_options' => 'title ASC|file_size ASC|file_size DESC|num_downloads DESC|average_rating DESC|compound_rating DESC|add_date ASC|add_date DESC|fixed_random ASC',
 
             'addon' => 'downloads',
         );
@@ -50,6 +50,6 @@ class Hook_config_downloads_default_sort_order
      */
     public function get_default()
     {
-        return 'name ASC';
+        return 'title ASC';
     }
 }

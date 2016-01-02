@@ -9,7 +9,7 @@
 
 			<p>{!facebook:LOGIN_USING_FACEBOOK}</p>
 
-			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_stream,offline_access{+END}"></div>
+			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email,user_birthday,user_about_me,user_hometown,user_location,user_website{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
 		{+END}
 
 		<h2>{!facebook:LOGIN_NATIVE_HEADER,{$SITE_NAME*}}</h2>
@@ -19,7 +19,7 @@
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 	</div></div>
 
-	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="autocomplete">
+	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 		<div>
 			{PASSION}
 
@@ -61,7 +61,7 @@
 					<div class="login_page_options">
 						<p>
 							<label for="remember">
-							  <input id="remember" type="checkbox" value="1" name="remember" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}}checked="checked" {+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }" {+END}/>
+							  <input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} />
 							  <span class="field_name">{!REMEMBER_ME}</span>
 							</label>
 							<span class="associated_details">{!REMEMBER_ME_TEXT}</span>

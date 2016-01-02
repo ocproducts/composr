@@ -1,1 +1,0 @@
-[semihtml][block]main_newsletter_signup[/block][/semihtml]

@@ -90,7 +90,7 @@ class Hook_addon_registry_data_mappr
 The different catalogue entries are shown as pins on a Google map. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
 Example:
-[code=\"Comcode\"][block title=\"store locater\" description=\"This is a Store Locater\" latfield=\"lat\" longfield=\"long\" catalogue=\"stores\" width=\"100%\" height=\"300px\" zoom=\"6\" latitude=\"24.2135\" longitude=\"-1.4654\"]main_google_map[/block][/code]
+[code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="lat" longfield="long" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
 
 You will need to create a catalogue with at least 1 entry which has the latitude and longitude fields filled in. You can call the fields in the catalogue latitude and longitude field anything you like and you can find the coordinates by using the option in Google Maps Labs or via http://itouchmap.com/latlong.html.
 
@@ -156,8 +156,6 @@ When you add the block you see various block parameters to be filled in includin
             'sources_custom/blocks/main_google_map.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP.tpl',
             'sources_custom/hooks/systems/fields/float.php',
-            'sources_custom/hooks/systems/fields/.htaccess',
-            'sources_custom/hooks/systems/fields/index.html',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'themes/default/images_custom/star_highlight.png',
             'sources_custom/catalogues2.php',

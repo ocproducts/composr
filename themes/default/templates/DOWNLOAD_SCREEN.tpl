@@ -19,8 +19,8 @@
 					</p>
 
 					<div class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!_I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!_I_AGREE}</a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!I_AGREE}</a>
 					</div>
 
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated_link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}}onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');" {+END}rel="nofollow" href="{$FIND_SCRIPT*,dload}?id={ID*}{$KEEP*,0,1}{+START,IF,{$EQ,{$CONFIG_OPTION,anti_leech},1}}&amp;for_session={$SESSION_HASHED*}{+END}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download_link associated_link suggested_link"><a{+START,IF,{$NOT,{$INLINE_STATS}}} onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
@@ -97,11 +97,14 @@
 							</td>
 						</tr>
 
-						<tr>
-							<td colspan="2">
-								{$REVIEW_STATUS,download,{ID}}
-							</td>
-						</tr>
+						{$SET,review_status,{$REVIEW_STATUS,download,{ID}}}
+						{+START,IF_NON_EMPTY,{$GET,review_status}}
+							<tr>
+								<td colspan="2">
+									{$GET,review_status}
+								</td>
+							</tr>
+						{+END}
 					</tbody>
 				</table></div>
 			</div>

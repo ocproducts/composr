@@ -61,7 +61,7 @@ class Hook_addon_registry_windows_helper_scripts
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_adv_installation',
+            'tut_adv_install',
             'tut_windows',
         );
     }

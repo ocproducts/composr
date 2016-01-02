@@ -4,7 +4,7 @@
 	<input type="hidden" name="upload" value="1" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
 	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:from=paypal}" />
-	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce}?from=paypal" />
+	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce,1}?from=paypal" />
 	<input type="hidden" name="no_shipping" value="0" />
 	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:cancel=1:from=paypal}" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />

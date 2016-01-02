@@ -33,40 +33,39 @@ class Hook_syndication_facebook
             var fb_button=document.getElementById('syndicate_start__facebook');
             if (fb_button)
             {
-                    var fb_input;
-                    if (typeof fb_button.form.elements['facebook_syndicate_to_page']=='undefined')
-                    {
-                            fb_input=document.createElement('input');
-                            fb_input.type='hidden';
-                            fb_input.name='facebook_syndicate_to_page';
-                            fb_input.value='0';
-                            fb_button.form.appendChild(fb_input);
-                    } else
-                    {
-                            fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
-                    }
-                    fb_button.onclick=function() {
-                            generate_question_ui(
-                                        '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
+                var fb_input;
+                if (typeof fb_button.form.elements['facebook_syndicate_to_page']=='undefined')
+                {
+                    fb_input=document.createElement('input');
+                    fb_input.type='hidden';
+                    fb_input.name='facebook_syndicate_to_page';
+                    fb_input.value='0';
+                    fb_button.form.appendChild(fb_input);
+                } else
+                {
+                    fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
+                }
+                fb_button.onclick=function() {
+                    generate_question_ui(
+                        '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
 
-                                        ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],
+                        ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],
 
-                                        '" . addslashes(do_lang('HOW_TO_SYNDICATE')) . "',
+                        '" . addslashes(do_lang('HOW_TO_SYNDICATE')) . "',
 
-                                        '" . addslashes(do_lang('SYNDICATE_TO_OWN_WALL', get_site_name())) . "',
+                        '" . addslashes(do_lang('SYNDICATE_TO_OWN_WALL', get_site_name())) . "',
 
-                                        function(val) {
-                                                        if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "')
-                                                        {
-                                                                            fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
-                                                                            fb_button.onclick=null;
-                                                                            click_link(fb_button);
-                                                        }
-                                        }
-                            );
+                        function(val) {
+                            if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "') {
+                                fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
+                                fb_button.onclick=null;
+                                click_link(fb_button);
+                            }
+                        }
+                    );
 
-                            return false;
-                    };
+                    return false;
+                };
             }
         ";
     }
@@ -77,7 +76,7 @@ class Hook_syndication_facebook
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return get_long_value($save_to) !== null;
+        return get_value($save_to, null, true) !== null;
     }
 
     public function auth_set($member_id, $oauth_url)
@@ -89,7 +88,7 @@ class Hook_syndication_facebook
         $code = get_param_string('code', '', true);
 
         if ($code == '') {
-            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_stream', 'offline_access')));
+            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_actions')));
             require_code('site2');
             smart_redirect($oauth_redir_url);
         }
@@ -107,7 +106,7 @@ class Hook_syndication_facebook
         }
 
         if (is_null($member_id)) {
-            $FACEBOOK_CONNECT->setExtendedAccessToken();
+            /*$FACEBOOK_CONNECT->setExtendedAccessToken();
             $FACEBOOK_CONNECT->api('/oauth/access_token', 'POST',
                 array(
                     'grant_type' => 'fb_exchange_token',
@@ -115,7 +114,7 @@ class Hook_syndication_facebook
                     'client_secret' => get_option('facebook_secret_code'),
                     'fb_exchange_token' => $access_token
                 )
-            );
+            );*/
 
             if (get_option('facebook_uid') == '') {
                 require_code('config2');
@@ -157,9 +156,9 @@ class Hook_syndication_facebook
     public function syndicate_user_activity($member_id, $row)
     {
         if (($this->is_available()) && ($this->auth_is_set($member_id))) {
-            $page_syndicate = (get_option('facebook_member_syndicate_to_page') == '1' && get_option('facebook_uid') != '' && get_long_value('facebook_syndicate_to_page__' . strval($member_id)) === '1');
+            $page_syndicate = (get_option('facebook_member_syndicate_to_page') == '1' && get_option('facebook_uid') != '' && get_value('facebook_syndicate_to_page__' . strval($member_id), null, true) === '1');
             return $this->_send(
-                get_long_value('facebook_oauth_token__' . strval($member_id)),
+                get_value('facebook_oauth_token__' . strval($member_id), null, true),
                 $row,
                 $page_syndicate ? get_option('facebook_uid') : 'me',
                 $member_id,
@@ -241,7 +240,7 @@ class Hook_syndication_facebook
         try {
             $ret = $fb->api('/' . $post_to_uid . '/feed', 'POST', $attachment);
         } catch (Exception $e) {
-            if ((!is_null($member_id)) && (count($_POST) == 0)) {
+            if ((!is_null($member_id)) && (count($_POST) == 0) && (running_script('index')) && (!headers_sent())) {
                 $this->auth_set($member_id, get_self_url());
             }
 

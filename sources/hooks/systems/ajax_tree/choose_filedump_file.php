@@ -39,12 +39,12 @@ class Hook_choose_filedump_file
 
         require_code('files2');
         require_code('images');
-        $fullpath = get_custom_file_base() . '/uploads/filedump';
+        $full_path = get_custom_file_base() . '/uploads/filedump';
         if ($id != '') {
-            $fullpath .= '/' . $id;
+            $full_path .= '/' . $id;
         }
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         $images_only = array_key_exists('images_only', $options) ? ($options['images_only'] == '1') : false;
@@ -55,8 +55,8 @@ class Hook_choose_filedump_file
 
         $out .= '<options>' . serialize($options) . '</options>';
 
-        if ((has_actual_page_access(null, 'filedump')) && (file_exists($fullpath))) {
-            $files = get_directory_contents($fullpath, '', false, false);
+        if ((has_actual_page_access(null, 'filedump')) && (file_exists($full_path))) {
+            $files = get_directory_contents($full_path, '', false, false);
             natsort($files);
             foreach ($files as $f) {
                 if ($images_only && !is_image($f)) {
@@ -67,8 +67,8 @@ class Hook_choose_filedump_file
 
                 $entry_id = 'uploads/filedump/' . (($id == '') ? '' : (rawurlencode($id) . '/')) . rawurlencode($f);
 
-                if (is_dir($fullpath . '/' . $f)) {
-                    $has_children = (count(get_directory_contents($fullpath . '/' . $f, '', false, false)) > 0);
+                if (is_dir($full_path . '/' . $f)) {
+                    $has_children = (count(get_directory_contents($full_path . '/' . $f, '', false, false)) > 0);
 
                     if ($has_children) {
                         $out .= '<category id="' . xmlentities((($id == '') ? '' : ($id . '/')) . $f) . '" title="' . xmlentities($f) . '" has_children="' . ($has_children ? 'true' : 'false') . '" selectable="' . ($folder ? 'true' : 'false') . '"></category>';
@@ -115,7 +115,7 @@ class Hook_choose_filedump_file
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null)
     {
@@ -124,11 +124,11 @@ class Hook_choose_filedump_file
         if (has_actual_page_access(null, 'filedump')) {
             require_code('images');
             require_code('files2');
-            $fullpath = get_custom_file_base() . '/uploads/filedump';
+            $full_path = get_custom_file_base() . '/uploads/filedump';
             if ($id != '') {
-                $fullpath .= '/' . $id;
+                $full_path .= '/' . $id;
             }
-            $tree = get_directory_contents($fullpath, '');
+            $tree = get_directory_contents($full_path, '');
 
             foreach ($tree as $f) {
                 if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f))) {

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    classifieds
+ * @package    classified_ads
  */
 
 /**
@@ -35,7 +35,7 @@ class Hook_config_max_classified_listings_per_page
             'list_options' => '',
             'required' => true,
 
-            'addon' => 'classifieds',
+            'addon' => 'classified_ads',
         );
     }
 

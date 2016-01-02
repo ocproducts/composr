@@ -46,7 +46,7 @@ class Module_admin_zones
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -69,22 +69,28 @@ class Module_admin_zones
      */
     public function uninstall()
     {
-        /*     $zones=find_all_zones(true);     We don't really want to throw away on-disk data on reinstalls
+        /* We don't really want to throw away on-disk data on reinstalls
+        $zones = find_all_zones(true);
         require_code('files');
-        foreach ($zones as $zone)
-        {
-            //if (!in_array($zone,array('','docs','adminzone','collaboration','forum','cms','site'))) deldir_contents(get_file_base().'/'.$zone,true);
-            $langs=find_all_langs(true);
-            foreach (array_keys($langs) as $lang)
-            {
-                    $path=get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/comcode_custom/'.$lang;
-                    if (file_exists($path)) deldir_contents($path,true);
-                    $path=get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/html_custom/'.$lang;
-                    if (file_exists($path)) deldir_contents($path,true);
+        foreach ($zones as $zone) {
+            //if (!in_array($zone, array('', 'docs', 'adminzone', 'collaboration', 'forum', 'cms', 'site'))) {
+            //    deldir_contents(get_file_base() . '/' . $zone, true);
+            //}
+            $langs = find_all_langs(true);
+            foreach (array_keys($langs) as $lang) {
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang;
+                if (file_exists($path)) {
+                    deldir_contents($path, true);
+                }
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/html_custom/' . $lang;
+                if (file_exists($path)) {
+                    deldir_contents($path, true);
+                }
             }
-            //deldir_contents(get_file_base().(($zone=='')?'':'/').$zone.'/pages/minimodules_custom',true);
+            // deldir_contents(get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/minimodules_custom', true);
             // modules_custom purposely left
-        }*/
+        }
+        */
     }
 
     public $title;
@@ -94,7 +100,7 @@ class Module_admin_zones
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -115,14 +121,14 @@ class Module_admin_zones
         }
 
         if ($type == '_editor') {
-            $id = get_param_string('id', ''); // '' needed for short URLs
+            $id = get_param_string('id', ''); // '' needed for URL Schemes
             if ($id == '/') {
                 $id = '';
             }
 
             $nice_zone_name = ($id == '') ? do_lang('_WELCOME') : $id;
 
-            breadcrumb_set_parents(array(array('_SELF:_SELF:misc', do_lang_tempcode('ZONES')), array('_SELF:_SELF:editor', do_lang_tempcode('ZONE'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ZONES')), array('_SELF:_SELF:editor', do_lang_tempcode('ZONE'))));
             breadcrumb_set_self($nice_zone_name);
 
             $this->title = get_screen_title('_ZONE_EDITOR', true, array(escape_html($nice_zone_name)));
@@ -173,7 +179,7 @@ class Module_admin_zones
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -218,7 +224,7 @@ class Module_admin_zones
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -235,7 +241,7 @@ class Module_admin_zones
     /**
      * The UI to choose a zone to edit using the zone editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function editor()
     {
@@ -245,7 +251,7 @@ class Module_admin_zones
     /**
      * The UI for the zone editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _editor()
     {
@@ -279,7 +285,7 @@ class Module_admin_zones
         // Zone editing stuff
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'zone'));
         }
         $row = $rows[0];
         $header_text = get_translated_text($row['zone_header_text'], null, $lang);
@@ -343,16 +349,22 @@ class Module_admin_zones
             $current_zone = is_null($redirecting_to) ? $id : $redirecting_to;
             $default_parsed = null;
             if ($is_comcode) {
-                $fullpath = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
-                if (!file_exists($fullpath)) {
-                    $fullpath = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
+                $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
+                if (!file_exists($full_path)) {
+                    $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
                 }
-                if (file_exists($fullpath)) {
-                    $tmp = fopen($fullpath, 'rb');
+                if (file_exists($full_path)) {
+                    $tmp = fopen($full_path, 'rb');
                     @flock($tmp, LOCK_SH);
-                    $comcode = file_get_contents($fullpath);
+                    $comcode = file_get_contents($full_path);
                     @flock($tmp, LOCK_UN);
                     fclose($tmp);
+
+                    if (strpos($full_path, '_custom/') === false) {
+                        global $LANG_FILTER_OB;
+                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+                    }
+
                     $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, null, true);
                 } else {
                     $comcode = '';
@@ -378,8 +390,8 @@ class Module_admin_zones
                 $comcode_editor = get_comcode_editor($field_name);
             } else {
                 $settings = null;
-                $button = 'block';
                 $comcode_editor = new Tempcode();
+                $button = 'block';
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
                 $button = 'comcode';
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
@@ -398,6 +410,11 @@ class Module_admin_zones
                         $_preview .= do_lang('BROKEN_XHTML_FIXED');
                     }
                 }
+
+
+                if ($GLOBALS['XSS_DETECT']) {
+                    ocp_mark_as_escaped($_preview);
+                }
             } else {
                 $_preview = null;
             }
@@ -405,8 +422,7 @@ class Module_admin_zones
             $is_panel = (substr($for, 0, 6) == 'panel_');
 
             require_code('zones3');
-            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode() /*not simple so leave field out*/
-            ;
+            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
 
             $editor[$for] = static_evaluate_tempcode(do_template('ZONE_EDITOR_PANEL', array(
                 '_GUID' => 'f32ac84fe18b90497acd4afa27698bf0',
@@ -445,7 +461,7 @@ class Module_admin_zones
     /**
      * The actualiser to edit a zone (via zone editor).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __editor()
     {
@@ -496,24 +512,24 @@ class Module_admin_zones
             $comcode = post_param_string($for, null);
             if (!is_null($comcode)) {
                 // Where to save to
-                $fullpath = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
                 // Make dir if needed
-                if (!file_exists(dirname($fullpath))) {
+                if (!file_exists(dirname($full_path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($fullpath));
+                    make_missing_directory(dirname($full_path));
                 }
 
                 // Store revision
-                if ((file_exists($fullpath)) && (get_option('store_revisions') == '1')) {
-                    $time = time();
-                    @copy($fullpath, $fullpath . '.' . strval($time)) or intelligent_write_error($fullpath . '.' . strval($time));
-                    fix_permissions($fullpath . '.' . strval($time));
-                    sync_file($fullpath . '.' . strval($time));
+                require_code('revisions_engine_files');
+                $revision_engine = new RevisionEngineFiles();
+                list(, , $existing_path) = find_comcode_page($lang, $for, $id);
+                if ($existing_path != '') {
+                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
                 }
 
                 // Save
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($fullpath);
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($full_path);
                 @flock($myfile, LOCK_EX);
                 if (!GOOGLE_APPENGINE) {
                     ftruncate($myfile, 0);
@@ -523,8 +539,8 @@ class Module_admin_zones
                 }
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
-                fix_permissions($fullpath);
-                sync_file($fullpath);
+                fix_permissions($full_path);
+                sync_file($full_path);
 
                 // De-cache
                 $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => is_null($redirect) ? $id : $redirect, 'the_page' => $for));
@@ -543,7 +559,7 @@ class Module_admin_zones
     }
 
     /**
-     * Get tempcode for a zone adding/editing form.
+     * Get Tempcode for a zone adding/editing form.
      *
      * @param  boolean $in_zone_editor Whether the zone editor will be used
      * @param  SHORT_TEXT $title The zone title
@@ -552,7 +568,7 @@ class Module_admin_zones
      * @param  ?ID_TEXT $theme The theme (null: no override)
      * @param  BINARY $require_session Whether the zone requires a session for pages to be used
      * @param  ?ID_TEXT $zone Name of the zone (null: unknown)
-     * @return array A tuple: The tempcode for the fields, hidden fields, and extra JavaScript
+     * @return array A tuple: The Tempcode for the fields, hidden fields, and extra JavaScript
      */
     public function get_form_fields($in_zone_editor = false, $title = '', $default_page = 'start', $header_text = '', $theme = null, $require_session = 0, $zone = null)
     {
@@ -560,9 +576,13 @@ class Module_admin_zones
 
         $javascript = "
             var zone=document.getElementById('new_zone');
-            zone.onblur=function() {
+            if (!zone) zone=document.getElementById('zone');
+            if (zone)
+            {
+                zone.onblur=function() {
                     var title=document.getElementById('title');
                     if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
+                }
             }
         ";
 
@@ -652,7 +672,7 @@ class Module_admin_zones
     /**
      * The UI to add a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_zone()
     {
@@ -689,19 +709,18 @@ class Module_admin_zones
         $javascript .= "
             var form=document.getElementById('main_form');
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            document.getElementById('submit_button').disabled=true;
-                            var url='" . addslashes($script) . "?snippet=exists_zone&name='+window.encodeURIComponent(form.elements['zone'].value);
-                            if (!do_ajax_field_test(url))
-                            {
-                                        document.getElementById('submit_button').disabled=false;
-                                        return false;
-                            }
-                            document.getElementById('submit_button').disabled=false;
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                document.getElementById('submit_button').disabled=true;
+                var url='" . addslashes($script) . "?snippet=exists_zone&name='+window.encodeURIComponent(form.elements['zone'].value);
+                if (!do_ajax_field_test(url))
+                {
+                    document.getElementById('submit_button').disabled=false;
+                    return false;
+                }
+                document.getElementById('submit_button').disabled=false;
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c', 'JAVASCRIPT' => $javascript, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
@@ -710,7 +729,7 @@ class Module_admin_zones
     /**
      * The actualiser to add a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add_zone()
     {
@@ -749,8 +768,8 @@ class Module_admin_zones
      * The UI to choose a zone to edit.
      *
      * @param  string $type The follow-on type
-     * @param  ?tempcode $title The title to use (null: the EDIT_ZONE title)
-     * @return tempcode The UI
+     * @param  ?Tempcode $title The title to use (null: the EDIT_ZONE title)
+     * @return Tempcode The UI
      */
     public function edit_zone($type = '_edit', $title = null)
     {
@@ -817,20 +836,20 @@ class Module_admin_zones
     /**
      * The UI to edit a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_zone()
     {
         require_lang('themes');
 
-        $zone = get_param_string('id', ''); // '' needed for short URLs
+        $zone = get_param_string('id', ''); // '' needed for URL Schemes
         if ($zone == '/') {
             $zone = '';
         }
 
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $zone), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'zone'));
         }
         $row = $rows[0];
 
@@ -871,7 +890,7 @@ class Module_admin_zones
     /**
      * The actualiser to edit a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit_zone()
     {

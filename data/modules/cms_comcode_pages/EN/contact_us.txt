@@ -1,5 +1,5 @@
 [semihtml]
-[title="1"]Contact Us[/title]
+[title]Contact Us[/title]
 
 [surround="fp_col_blocks_wrap"]
     [surround="fp_col_block left"]

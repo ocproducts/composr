@@ -46,7 +46,7 @@ class Module_groups
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -69,7 +69,7 @@ class Module_groups
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -91,7 +91,7 @@ class Module_groups
             $map = has_privilege(get_member(), 'see_hidden_groups') ? array('id' => $id) : array('id' => $id, 'g_hidden' => 0);
             $groups = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), $map, '', 1);
             if (!array_key_exists(0, $groups)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
             }
             $group = $groups[0];
 
@@ -113,7 +113,7 @@ class Module_groups
                 'image' => find_theme_image('icons/48x48/menu/social/groups'),
             ));
 
-            $this->title = get_screen_title($club ? 'CLUB' : 'USERGROUP', true, array(make_fractionable_editable('group', $id, $group_name)));
+            $this->title = get_screen_title($club ? 'CLUB' : 'VIEW_USERGROUP', true, array(make_fractionable_editable('group', $id, $group_name)));
 
             $this->id = $id;
             $this->group = $group;
@@ -138,7 +138,7 @@ class Module_groups
                 } else { // Collaboration zone has a text link like this
                     $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_id));
                     if (is_null($id)) {
-                        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
                     }
                 }
                 if ($id == db_get_first_id()) {
@@ -148,7 +148,7 @@ class Module_groups
                 $group_name = cns_get_group_name($id);
 
                 breadcrumb_set_self(do_lang_tempcode('DONE'));
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS')), array('_SELF:_SELF:view:' . strval($id), do_lang_tempcode('USERGROUP', escape_html($group_name)))));
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS')), array('_SELF:_SELF:view:' . strval($id), do_lang_tempcode('VIEW_USERGROUP', escape_html($group_name)))));
             } else {
                 $group_name = cns_get_group_name($id);
             }
@@ -177,7 +177,7 @@ class Module_groups
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -224,7 +224,7 @@ class Module_groups
     /**
      * The UI to show the usergroup directory.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function directory()
     {
@@ -242,7 +242,7 @@ class Module_groups
             $sql .= ' OR g.id=' . strval($g_id);
         }
         $sql .= ')';
-        $sql .= ' ORDER BY g_order,id';
+        $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
         $groups = $GLOBALS['FORUM_DB']->query($sql);
 
         foreach ($groups as $g_id => $row) {
@@ -304,7 +304,14 @@ class Module_groups
         $start = get_param_integer('staff_start', 0);
         $max = get_param_integer('staff_max', intval(get_option('important_groups_per_page')));
         $max_rows = count($_staff);
-        $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS')), $sortables);
+        $has_images = false;
+        foreach ($_staff as $row) {
+            if ($row['g_rank_image'] != '') {
+                $has_images = true;
+            }
+        }
+        list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
+        $fields_title = results_field_title($titles, $sortables);
         $staff = new Tempcode();
         $i = 0;
         foreach ($_staff as $row) {
@@ -315,13 +322,31 @@ class Module_groups
             if ($i > $start + $max) {
                 break;
             }
+
             $group_name = $row['_name'];
+
+            $rank_image = $row['g_rank_image'];
+            if ($rank_image != '') {
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+            } else {
+                $rank_image_tpl = new Tempcode();
+            }
+
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
             $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
-            $staff->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true), escape_html($num_members)), false));
+
+            $entry = array();
+            $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+            if ($has_images) {
+                $entry[] = $rank_image_tpl;
+            }
+            $entry[] = escape_html($num_members);
+
+            $staff->attach(results_entry($entry, false));
             $i++;
         }
-        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, array('200'));
+        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths);
 
         //-Ranks
         $ranks = array();
@@ -329,7 +354,14 @@ class Module_groups
             $start = get_param_integer('rank_start_' . strval($g_id), 0);
             $max = get_param_integer('rank_max_' . strval($g_id), intval(get_option('important_groups_per_page')));
             $max_rows = count($_rank);
-            $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS'), do_lang_tempcode('PROMOTION_THRESHOLD')), $sortables);
+            $has_images = false;
+            foreach ($_rank as $row) {
+                if ($row['g_rank_image'] != '') {
+                    $has_images = true;
+                }
+            }
+            list($col_widths, $titles) = $this->_find_table_headings($has_images, true);
+            $fields_title = results_field_title($titles, $sortables);
             $rank = new Tempcode();
             $i = 0;
             foreach ($_rank as $row) {
@@ -340,17 +372,37 @@ class Module_groups
                 if ($i > $start + $max) {
                     break;
                 }
+
                 $group_name = $row['_name'];
+
+                $rank_image = $row['g_rank_image'];
+                if ($rank_image != '') {
+                    $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+                } else {
+                    $rank_image_tpl = new Tempcode();
+                }
+
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
                 $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
+
                 $_p_t = $row['g_promotion_threshold'];
                 $p_t = new Tempcode();
                 if ((!is_null($_p_t)) && (array_key_exists($row['g_promotion_target'], $_rank))) {
                     $p_t = do_lang_tempcode('PROMOTION_TO', escape_html(integer_format($_p_t)), escape_html($_rank[$row['g_promotion_target']]['_name']));
                 }
-                $rank->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members), $p_t), false));
+
+                $entry = array();
+                $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+                if ($has_images) {
+                    $entry[] = $rank_image_tpl;
+                }
+                $entry[] = escape_html($num_members);
+                $entry[] = $p_t;
+
+                $rank->attach(results_entry($entry, false));
             }
-            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, array('200'));
+            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, $col_widths);
             $ranks[] = $rank;
         }
 
@@ -370,20 +422,43 @@ class Module_groups
         }
         $sql .= ' AND g.id<>' . strval(db_get_first_id());
         $sql .= ')';
-        $sql .= ' ORDER BY g_order,id';
+        $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
         $_others = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
         $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there(str_replace('SELECT * ', 'SELECT COUNT(*) ', $sql));
-        $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS')), $sortables);
+        $has_images = false;
+        foreach ($_others as $row) {
+            if ($row['g_rank_image'] != '') {
+                $has_images = true;
+            }
+        }
+        list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
+        $fields_title = results_field_title($titles, $sortables);
         $others = new Tempcode();
         foreach ($_others as $row) {
             $group_name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
+            $rank_image = $row['g_rank_image'];
+            if ($rank_image != '') {
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+            } else {
+                $rank_image_tpl = new Tempcode();
+            }
+
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
             $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
-            $others->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members)), false));
+
+            $entry = array();
+            $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+            if ($has_images) {
+                $entry[] = $rank_image_tpl;
+            }
+            $entry[] = escape_html($num_members);
+
+            $others->attach(results_entry($entry, false));
         }
         if (!$others->is_empty()) {
-            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, array('200'));
+            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths);
         }
 
         $tpl = do_template('CNS_GROUP_DIRECTORY_SCREEN', array('_GUID' => '39aebd8fcb618c2ae45e867d0c96a4cf', 'TITLE' => $this->title, 'STAFF' => $staff, 'OTHERS' => $others, 'RANKS' => $ranks));
@@ -393,9 +468,59 @@ class Module_groups
     }
 
     /**
+     * Find table column widths and headings.
+     *
+     * @param boolean $has_images Whether there are rank images
+     * @param boolean $has_rank Whether there are rank promotions
+     * @return array A pair: column widths, table headings
+     */
+    private function _find_table_headings($has_images, $has_rank)
+    {
+        if ($has_images) {
+            if ($has_rank) {
+                $col_widths = array('157', '157', '77', '157');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('IMAGE'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                );
+            } else {
+                $col_widths = array('314', '157', '77');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('IMAGE'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                );
+            }
+        } else {
+            if ($has_rank) {
+                $col_widths = array('314', '77', '157');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                );
+            } else {
+                $col_widths = array('471', '77');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                );
+            }
+        }
+
+        return array($col_widths, $titles);
+    }
+
+    /**
      * The UI to show a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function usergroup()
     {
@@ -420,7 +545,7 @@ class Module_groups
         // Promotion
         if ((addon_installed('points')) && (!is_null($group['g_promotion_threshold'])) && (!is_null($group['g_promotion_target']))) {
             $promote_link = cns_get_group_link($group['g_promotion_target']);
-            $promotion_info = do_lang_tempcode('CNS_PROMOTION_INFO', integer_format($group['g_promotion_threshold']), $promote_link->evaluate());
+            $promotion_info = do_lang_tempcode('CNS_PROMOTION_INFO', escape_html(integer_format($group['g_promotion_threshold'])), $promote_link->evaluate());
         } else {
             $promotion_info = new Tempcode();
         }
@@ -433,7 +558,7 @@ class Module_groups
         }
 
         // To apply
-        $my_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member());
+        $my_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, false);
         if (is_guest()) {
             $apply_url = new Tempcode();
             $apply_text = new Tempcode();
@@ -564,7 +689,7 @@ class Module_groups
      *
      * @param  boolean $special_permission Whether to skip checking permission for usergroup control
      * @param  ?string $username Username to add (null: read from environment)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_to($special_permission = false, $username = null)
     {
@@ -574,7 +699,7 @@ class Module_groups
         } else { // Collaboration zone has a text link like this
             $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('f_description') => $_id));
             if (is_null($id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
             }
         }
 
@@ -599,7 +724,7 @@ class Module_groups
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
 
-        $test = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id);
+        $test = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id, false, false);
         if (in_array($id, $test)) {
             warn_exit(do_lang_tempcode('ALREADY_IN_GROUP'));
         }
@@ -613,7 +738,7 @@ class Module_groups
     /**
      * The actualiser to remove a member from a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function remove_from()
     {
@@ -646,7 +771,7 @@ class Module_groups
     /**
      * The actualiser to apply to join a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function apply()
     {
@@ -703,7 +828,7 @@ class Module_groups
     /**
      * The actualiser to accept a member into a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function accept()
     {
@@ -730,7 +855,7 @@ class Module_groups
     /**
      * The actualiser to decline a members joining of a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function decline()
     {
@@ -765,7 +890,7 @@ class Module_groups
     /**
      * The actualiser to resign from a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function resign()
     {

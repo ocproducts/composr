@@ -145,13 +145,15 @@ class Hook_addon_registry_sms
             add_privilege('GENERAL_SETTINGS', 'sms_higher_limit', false);
             add_privilege('GENERAL_SETTINGS', 'sms_higher_trigger_limit', false);
 
-            /*$GLOBALS['SITE_DB']->create_table('confirmed_mobiles',array(    Not currently implemented
-                    'm_phone_number'=>'*SHORT_TEXT',
-                    'm_member_id'=>'MEMBER',
-                    'm_time'=>'TIME',
-                    'm_confirm_code'=>'IP',
-            ));*/
-            /*$GLOBALS['SITE_DB']->create_index('confirmed_mobiles','confirmed_numbers',array('m_confirm_code'));*/
+            /* Not currently implemented
+            $GLOBALS['SITE_DB']->create_table('confirmed_mobiles', array(
+                'm_phone_number' => '*SHORT_TEXT',
+                'm_member_id' => 'MEMBER',
+                'm_time' => 'TIME',
+                'm_confirm_code' => 'IP',
+            ));
+            */
+            /*$GLOBALS['SITE_DB']->create_index('confirmed_mobiles', 'confirmed_numbers', array('m_confirm_code'));*/
         }
     }
 }

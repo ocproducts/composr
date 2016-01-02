@@ -27,8 +27,8 @@ function bookables_ical_script()
     //header('Content-Type: text/calendar');
     //header('Content-Disposition: inline; filename="bookables_export.ics"');
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if (cms_srv('REQUEST_METHOD') == 'HEAD') {
@@ -170,8 +170,8 @@ function bookings_ical_script()
         return '';
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $time = get_param_integer('from', time());
@@ -238,7 +238,7 @@ function bookings_ical_script()
                 echo "DTSTAMP:" . date('Ymd', $booking['booked_at']) . "T" . date('His', $booking['booked_at']) . "\n";
                 echo "CREATED:" . date('Ymd', $booking['booked_at']) . "T" . date('His', $booking['booked_at']) . "\n";
 
-                echo "SUMMARY:" . ical_escape($bookable_category/*do_lang('TAKEN',$codes)*/) . "\n";
+                echo "SUMMARY:" . ical_escape($bookable_category/*do_lang('TAKEN', $codes)*/) . "\n";
                 echo "DESCRIPTION:" . ical_escape($description) . "\n";
 
                 if (!is_guest($booking['member_id'])) {

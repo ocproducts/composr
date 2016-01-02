@@ -119,6 +119,9 @@ class Hook_addon_registry_securitylogging
             'lang/EN/submitban.ini',
             'adminzone/pages/modules/admin_lookup.php',
             'sources/lookup.php',
+            'sources/hooks/systems/commandr_fs_extended_member/banned_from_submitting.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_banned.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_unbannable.php',
         );
     }
 
@@ -250,11 +253,10 @@ class Hook_addon_registry_securitylogging
         foreach (placeholder_array() as $value) {
             $inner_ip_list->attach(do_lorem_template('LOOKUP_IP_LIST_ENTRY', array(
                 'LOOKUP_URL' => placeholder_url(),
-                'DATE' => placeholder_time(),
-                '_DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
+                '_DATE' => placeholder_date(),
                 'IP' => placeholder_ip(),
                 'BANNED' => do_lang_tempcode('YES'),
-                'UNIQID' => placeholder_random(),
             )));
         }
 
@@ -263,7 +265,6 @@ class Hook_addon_registry_securitylogging
             'MASK' => placeholder_ip(),
             'GROUP' => $inner_ip_list,
             'OPEN_DEFAULT' => true,
-            'UNIQID' => placeholder_random(),
         ));
         return array(
             lorem_globalise(do_lorem_template('LOOKUP_SCREEN', array(

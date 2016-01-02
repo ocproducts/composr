@@ -127,10 +127,10 @@ function reprocess_url($url, $operation_base_url)
                         }
                     }
                 }
-                //$parts['domain']=$url_bits_2['host']; // To fix an inconvenience caused by mismatching cookie settings (e.g. cookie on subdomain)
-                //echo($key.'->'.trim(rawurldecode($parts[0])));
-                //print_r($parts);
-                //exit();
+                /*$parts['domain'] = $url_bits_2['host']; // To fix an inconvenience caused by mismatching cookie settings (e.g. cookie on subdomain)
+                echo($key . '->' . trim(rawurldecode($parts[0])));
+                print_r($parts);
+                exit();*/
                 $parts['domain'] = get_cookie_domain();
                 setcookie($key, trim(rawurldecode($parts[0])), array_key_exists('expires', $parts) ? strtotime($parts['expires']) : 0, array_key_exists('path', $parts) ? $parts['path'] : '', array_key_exists('domain', $parts) ? $parts['domain'] : '');
             }

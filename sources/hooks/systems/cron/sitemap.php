@@ -39,8 +39,8 @@ class Hook_cron_sitemap
             return;
         }
 
-        if (($last_time > time() - 60 * 60 * 24) && (@filesize(get_custom_file_base() . '/cms_sitemap.xml') > 10)) {
-            return; // Every day
+        if ($last_time > time() - 60 * 60 * 24) {
+            return; // Every day. The news sitemap is are built and pinged instantly, so content needing instant promotion should go via news
         }
 
         set_value('last_sitemap_time_calc', strval($time), true);

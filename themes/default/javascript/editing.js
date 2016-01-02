@@ -242,7 +242,7 @@ function load_html_edit(posting_form,ajax_copy)
 
 	if (typeof window.do_ajax_request=='undefined') return;
 	if (typeof window.merge_text_nodes=='undefined') return;
-	if (typeof window.CKEDITOR=='undefined') return;
+	if (typeof window.CKEDITOR=='undefined' || window.CKEDITOR==null) return;
 	if (!browser_matches('wysiwyg')) return;
 	if (!wysiwyg_on()) return;
 
@@ -394,7 +394,8 @@ function wysiwyg_editor_init_for(element,id)
 			info.get('txtCellPad')['default']='0';
 		}
 	});
-	window.lang_PREFER_CMS_ATTACHMENTS='{!javascript:PREFER_CMS_ATTACHMENTS;}';
+	if (document.getElementById('attachment_store'))
+		window.lang_PREFER_CMS_ATTACHMENTS='{!javascript:PREFER_CMS_ATTACHMENTS;}';
 	window.lang_SPELLCHECKER_ENABLED='{!javascript:SPELLCHECKER_ENABLED;}';
 	window.lang_SPELLCHECKER_DISABLED='{!javascript:SPELLCHECKER_DISABLED;}';
 	window.lang_SPELLCHECKER_TOGGLE='{!javascript:SPELLCHECKER_TOGGLE;}';
@@ -403,10 +404,10 @@ function wysiwyg_editor_init_for(element,id)
 
 	// Mainly used by autosaving
 	editor.on('key', function (event) {
-		if (typeof element.externalonKeyPress!='undefined')
+		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
-			element.externalonKeyPress(event,element);
+			element.externalOnKeyPress(event,element);
 		}
 	});
 
@@ -459,19 +460,8 @@ function find_tags_in_editor(editor,element)
 		if (!comcodes[i].onmouseout)
 		{
 			comcodes[i].orig_title=comcodes[i].title;
-			comcodes[i].onmouseout=function(event) {
-				if (typeof event=='undefined') event=editor.window.$.event;
-
-				var eventCopy={};
-				if (event)
-				{
-					if (event.pageX) eventCopy.pageX=3000;
-					if (event.clientX) eventCopy.clientX=3000;
-					if (event.pageY) eventCopy.pageY=3000;
-					if (event.clientY) eventCopy.clientY=3000;
-
-					if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,eventCopy);
-				}
+			comcodes[i].onmouseout=function() {
+				if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 			};
 			comcodes[i].onmousemove=function(event) {
 				if (typeof event=='undefined') event=editor.window.$.event;
@@ -696,6 +686,9 @@ html: HTML to insert (if not passed then 'text' will be escaped)
 */
 function insert_textbox(element,text,sel,plain_insert,html)
 {
+	if (typeof plain_insert=='undefined') plain_insert=false;
+	if (typeof html=='undefined') html=null;
+
 	if (is_wysiwyg_field(element))
 	{
 		var editor=window.wysiwyg_editors[element.id];
@@ -994,4 +987,14 @@ function show_upload_syndication_options(name,syndication_json,no_quota)
 	html='<div>'+html+'</div>';
 
 	set_inner_html(html_spot,html);
+}
+
+function clear_attachment(i,post_field)
+{
+	var new_contents=get_textbox(post_field);
+	new_contents=new_contents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_'+i+'\\[/(attachment|attachment_safe)\\]'),'');
+	new_contents=new_contents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'),''); // Shell of the above
+	set_textbox(post_field,new_contents,new_contents);
+	document.getElementById('file'+i).value='';
+	return false;
 }

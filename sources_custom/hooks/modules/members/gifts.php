@@ -10,14 +10,19 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    giftr
+ */
+
+/**
+ * Hook class.
  */
 class Hook_members_gifts
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
     public function run($member_id)
     {
@@ -60,15 +65,15 @@ class Hook_members_gifts
                 if ($gift['is_anonymous'] == 0) {
                     $sender_displayname = $GLOBALS['FORUM_DRIVER']->get_username($gift['from_member_id'], true);
                     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($gift['from_member_id']);
-                    $sender_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($gift['from_member_id'], true);
-                    $gift_explanation = do_lang_tempcode('GIFT_EXPLANATION', escape_html($sender_displayname), escape_html($gift_row['name']), array(escape_html($sender_url->evaluate()), escape_html($sender_username)));
+                    $sender_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($gift['from_member_id'], true, true);
+                    $gift_explanation = do_lang_tempcode('GIFT_EXPLANATION', escape_html($sender_displayname), escape_html($gift_row['name']), array(escape_html(is_object($sender_url) ? $sender_url->evaluate() : $sender_url), escape_html($sender_username)));
                 } else {
                     $gift_explanation = do_lang_tempcode('GIFT_EXPLANATION_ANONYMOUS', escape_html($gift_row['name']));
                 }
 
                 $image_url = '';
-                if (is_file(get_file_base() . '/' . urldecode($gift_row['image']))) {
-                    $image_url = get_base_url() . '/' . $gift_row['image'];
+                if (is_file(get_custom_file_base() . '/' . urldecode($gift_row['image']))) {
+                    $image_url = get_custom_base_url() . '/' . $gift_row['image'];
                 }
 
                 $gifts[] = array(

@@ -32,17 +32,47 @@ class Module_cms_tutorials extends Standard_crud_module
     public $table = 'tutorials_external';
 
     /**
+     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     *
+     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
+     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     */
+    public function pre_run($top_level = true, $type = null)
+    {
+        $type = get_param_string('type', 'browse');
+
+        require_lang('tutorials');
+
+        return parent::pre_run($top_level);
+    }
+
+    /**
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_code('tutorials');
-        require_lang('tutorials');
+
+        if (!module_installed('tutorials')) {
+            require_code('zones2');
+
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'docs'));
+            if (is_null($test)) {
+                actual_add_zone('docs', do_lang('TUTORIALS'), 'tutorials');
+            }
+
+            reinstall_module('docs', 'tutorials');
+        }
+
+        if ($type == 'browse') {
+            return $this->browse();
+        }
 
         return new Tempcode();
     }
@@ -53,7 +83,7 @@ class Module_cms_tutorials extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -64,9 +94,27 @@ class Module_cms_tutorials extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for an external tutorial adding/editing form.
+     * The do-next manager for before content management.
      *
-     * @param  ?AUTO_LINK $id ID (NULL: not added yet)
+     * @return Tempcode The UI
+     */
+    public function browse()
+    {
+        require_code('templates_donext');
+        require_code('fields');
+        return do_next_manager(get_screen_title('TUTORIALS'), new Tempcode(),
+            array(
+                has_privilege(get_member(), 'submit_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_TUTORIAL')) : null,
+                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_TUTORIAL')) : null,
+            ),
+            do_lang('TUTORIALS')
+        );
+    }
+
+    /**
+     * Get Tempcode for an external tutorial adding/editing form.
+     *
+     * @param  ?AUTO_LINK $id ID (null: not added yet)
      * @param  URLPATH $url URL
      * @param  SHORT_TEXT $title Title
      * @param  LONG_TEXT $summary Summary
@@ -78,7 +126,7 @@ class Module_cms_tutorials extends Standard_crud_module
      * @param  BINARY $pinned Whether is pinned
      * @param  ID_TEXT $author Author
      * @param  array $tags List of tags
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $url = '', $title = '', $summary = '', $icon = '', $media_type = 'document', $difficulty_level = 'regular', $pinned = 0, $author = '', $tags = null)
     {
@@ -152,7 +200,7 @@ class Module_cms_tutorials extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {

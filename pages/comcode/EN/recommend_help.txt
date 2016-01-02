@@ -1,8 +1,10 @@
 [title sub="Recommending {$SITE_NAME}"]Help[/title]
 
 When you recommend our site or a piece of content on our site, you can either:
- - type in the details of your contacts manually
- - upload a [abbr="comma-separated Values"]CSV[/abbr] file of contact details
+[list="a"]
+[*] type in the details of your contacts manually
+[*] upload a [abbr="comma-separated Values"]CSV[/abbr] file of contact details
+[/list]
 
 [title="2"]CSV files[/title]
 
@@ -19,7 +21,7 @@ Our recommend tool should work with all major software and web applications that
 5) Select the fields you want to save; click Finish.
 6) You will see a progress window that tells you the export is being actioned; the window closes.
 7) You can now close the Windows Live Contacts window. The process is complete.
-8) Find the .csv file in the location in which you saved it.
+8) Find the [tt].csv[/tt] file in the location in which you saved it.
 
 [title="3"]Windows Mail[/title]
 
@@ -96,3 +98,5 @@ Our recommend tool should work with all major software and web applications that
 5) Type the security image in the text box;
 6) Click the "Export" button;
 7) Save the file.
+
+[block]main_comcode_page_children[/block]

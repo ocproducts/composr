@@ -26,10 +26,10 @@ class Hook_config_stealr_points
     public function get_details()
     {
         return array(
-            'human_name' => 'OCTHIEF_POINTS',
+            'human_name' => 'STEALR_POINTS',
             'type' => 'integer',
             'category' => 'POINTSTORE',
-            'group' => 'OCTHIEF_TITLE',
+            'group' => 'STEALR_TITLE',
             'explanation' => 'CONFIG_OPTION_stealr_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

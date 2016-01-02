@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: exif_read_data*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -57,6 +59,8 @@ function get_exif_data($path, $filename = null)
  *
  * @param  array $exif EXIF data
  * @return array Extra derived EXIF data
+ *
+ * @ignore
  */
 function _get_simple_gps($exif)
 {
@@ -249,7 +253,7 @@ function store_exif($content_type, $content_id, $exif, $map = null)
     }
 
     // Get field values
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order');
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     if (is_null($map)) {
         $map = array();
     }

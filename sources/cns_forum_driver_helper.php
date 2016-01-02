@@ -26,6 +26,8 @@
  * @param  object $this_ref Link to the real forum driver
  * @param  ?MEMBER $member_id Only emoticons the given member can see (null: don't care)
  * @return array The map
+ *
+ * @ignore
  */
 function _helper_apply_emoticons($this_ref, $member_id = null)
 {
@@ -88,7 +90,9 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
  * @param  ?TIME $time_post The post time (null: use current time)
  * @param  ?MEMBER $spacer_post_member_id Owner of comment topic (null: Guest)
- * @return array Topic ID (may be NULL), and whether a hidden post has been made
+ * @return array Topic ID (may be null), and whether a hidden post has been made
+ *
+ * @ignore
  */
 function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url, $time, $ip, $validated, $topic_validated, $skip_post_checks, $poster_name_if_guest, $parent_id, $staff_only, $no_notify_for__notification_code, $no_notify_for__code_category, $time_post, $spacer_post_member_id)
 {
@@ -190,7 +194,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id), 'forum', null, false, false, true, 'post_' . strval($post_id));
     $url = $_url->evaluate();
     if (addon_installed('cns_forum')) {
-        cns_send_topic_notification($url, $topic_id, $forum_id, $member_id, !$is_new, $post, $content_title, null, false, $no_notify_for__notification_code, $no_notify_for__code_category);
+        cns_send_topic_notification($url, $topic_id, $forum_id, $member_id, $is_new, $post, $content_title, null, false, $no_notify_for__notification_code, $no_notify_for__code_category);
     }
 
     $is_hidden = false;
@@ -198,7 +202,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
         $validated_actual = $this_ref->connection->query_select_value('f_posts', 'p_validated', array('id' => $post_id));
         if ($validated_actual == 0) {
             require_code('site');
-            attach_message(do_lang_tempcode('SUBMIT_UNVALIDATED'), 'inform');
+            attach_message(do_lang_tempcode('SUBMIT_UNVALIDATED', 'topic'), 'inform');
             $is_hidden = true;
         }
     }
@@ -229,6 +233,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
  * @param  boolean $hot Whether to limit to hot topics
  * @param  boolean $open_only Open tickets only
  * @return ?array The array of topics (null: error/none)
+ * @ignore
  */
 function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows, $filter_topic_title, $filter_topic_description, $show_first_posts, $date_key, $hot, $open_only)
 {
@@ -419,6 +424,7 @@ function not_like_spacer_posts($field)
  * @param  ID_TEXT $sort Preferred sort order (appropriate will use rating if threaded, other
  * @set date compound_rating average_rating
  * @return mixed The array of maps (Each map is: title, message, member, date) (-1 for no such forum, -2 for no such topic)
+ * @ignore
  */
 function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $start, $mark_read = true, $reverse = false, $light_if_threaded = false, $post_ids = null, $load_spacer_posts_too = false, $sort = 'date')
 {
@@ -473,19 +479,12 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select = 'p.id,p.p_parent_id,p.p_intended_solely_for,p.p_poster';
     } else {
         $select = 'p.*';
-        if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-            $select .= ',h.h_post_id';
-        }
     }
     if ((($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) && (db_has_subqueries($this_ref->connection->connection_read))) {
         $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
         $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
     }
-    if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-        $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON (h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time) WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    } else { // Can use subquery to avoid having to assume p_last_edit_time was not chosen as null during avoidance of duplication of rows
-        $rows = $this_ref->connection->query('SELECT ' . $select . ', (SELECT h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h WHERE (h.h_post_id=p.id) LIMIT 1) AS h_post_id FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    }
+    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
     $count = $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
 
     $out = array();
@@ -506,6 +505,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
                 }
                 $temp['date'] = $myrow['p_time'];
                 $temp['staff_only'] = ($myrow['p_intended_solely_for'] !== null);
+                $temp['skip_sig'] = $myrow['p_skip_sig'];
             }
 
             $out[] = $temp;
@@ -514,7 +514,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
 
     if ($mark_read) {
         require_code('cns_topics');
-        if ((get_option('post_history_days') != '0') && (get_value('avoid_normal_topic_history') !== '1')) {
+        if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
                 cns_ping_topic_read($topic_id);
             }
@@ -531,6 +531,8 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
  * @param  AUTO_LINK $topic_id Topic the posts come from
  * @param  array $post_ids List of post IDs
  * @return array Extra details
+ *
+ * @ignore
  */
 function _helper_get_post_remaining_details($this_ref, $topic_id, $post_ids)
 {
@@ -547,7 +549,9 @@ function _helper_get_post_remaining_details($this_ref, $topic_id, $post_ids)
  *
  * @param  object $this_ref Link to the real forum driver
  * @param  string $field_name The ID of the form field the emoticon chooser adds to
- * @return tempcode The emoticon chooser template
+ * @return Tempcode The emoticon chooser template
+ *
+ * @ignore
  */
 function _helper_get_emoticon_chooser($this_ref, $field_name)
 {

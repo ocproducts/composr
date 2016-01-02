@@ -29,7 +29,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     public $file_resource_type = 'menu_item';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -47,7 +47,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -72,34 +72,24 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array();
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['i_menu']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_MENU') . ' OR ' . db_string_equal_to('the_type', 'EDIT_MENU') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['i_menu']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_MENU') . ' OR ' . db_string_equal_to('the_type', 'EDIT_MENU') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error)
+     * @return ~ID_TEXT The resource ID (false: error)
      */
     public function folder_add($filename, $path, $properties)
     {
@@ -107,14 +97,14 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('menus2');
 
         $menu = $this->_create_name_from_label($label);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_menu', array('i_menu' => $menu));
         if (!is_null($test)) {
-            $menu .= '_' . uniqid('', true); // uniqify
+            $menu .= '_' . uniqid('', false); // uniqify
         }
 
         $order = db_get_first_id();
@@ -133,41 +123,45 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         if ((addon_installed('commandr')) && (!running_script('install'))) {
             require_code('resource_fs');
-            generate_resourcefs_moniker('menu', $menu, null, null, true);
+            generate_resource_fs_moniker('menu', $menu, null, null, true);
         }
 
         log_it('ADD_MENU', $menu);
+
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $filename, $label, $properties);
 
         return $menu;
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function folder_load($filename, $path)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
 
-        return array(
+        $properties = array(
             'label' => $resource_id,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_edit($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         $menu = $this->_create_name_from_label($label);
 
@@ -176,11 +170,13 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             return false;
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $filename, $label, $properties);
+
         return $menu;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -197,50 +193,29 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'order' => 'INTEGER',
-            'parent' => '?menu_item',
-            'caption_long' => 'SHORT_TRANS',
-            'url' => 'SHORT_TEXT',
-            'check_permissions' => 'BINARY',
-            'expanded' => 'BINARY',
-            'new_window' => 'BINARY',
-            'page_only' => 'ID_TEXT',
-            'theme_img_code' => 'ID_TEXT',
-            'include_sitemap' => 'SHORT_INTEGER',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_MENU_ITEM') . ' OR ' . db_string_equal_to('the_type', 'EDIT_MENU_ITEM') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_MENU_ITEM') . ' OR ' . db_string_equal_to('the_type', 'EDIT_MENU_ITEM') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -260,15 +235,18 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         $include_sitemap = $this->_default_property_int($properties, 'include_sitemap');
 
         $id = add_menu_item($category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -280,7 +258,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['i_caption'],
             'order' => $row['i_order'],
             'parent' => $row['i_parent'],
@@ -293,21 +271,23 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             'theme_img_code' => $row['i_theme_img_code'],
             'include_sitemap' => $row['i_include_sitemap'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -329,11 +309,13 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         edit_menu_item(intval($resource_id), $category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

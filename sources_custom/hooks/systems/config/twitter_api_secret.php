@@ -28,7 +28,7 @@ class Hook_config_twitter_api_secret
         return array(
             'human_name' => 'TWITTER_API_SECRET',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'COMPOSR_APIS',
             'group' => 'TWITTER_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_twitter_api_secret',
             'shared_hosting_restricted' => '0',

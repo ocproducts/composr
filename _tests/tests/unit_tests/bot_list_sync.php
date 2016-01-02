@@ -38,6 +38,7 @@ class bot_list_sync_test_set extends cms_test_case
         global $BOT_MAP_CACHE;
         ksort($BOT_MAP_CACHE);
 
-        $this->assertTrue($BOT_MAP_CACHE == $file_bots);
+        require_code('diff');
+        $this->assertTrue($BOT_MAP_CACHE == $file_bots, diff_simple_2(implode("\n", $BOT_MAP_CACHE), implode("\n", $file_bots), true));
     }
 }

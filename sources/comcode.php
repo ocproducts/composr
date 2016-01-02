@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__comcode()
 {
@@ -65,10 +67,11 @@ function init__comcode()
 
     define('WYSIWYG_COMCODE__BUTTON', 1);
     define('WYSIWYG_COMCODE__XML_BLOCK', 2);
-    define('WYSIWYG_COMCODE__XML_INLINE', 3);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', 4);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', 5);
-    define('WYSIWYG_COMCODE__HTML', 6);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', 3);
+    define('WYSIWYG_COMCODE__XML_INLINE', 4);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', 5);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', 6);
+    define('WYSIWYG_COMCODE__HTML', 7);
 }
 
 /**
@@ -113,7 +116,7 @@ function apply_emoticons($text)
 }
 
 /**
- * Convert the specified Comcode (unknown format) into a tempcode tree. You shouldn't output the tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the tempcode object, to convert it into a string.
+ * Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.
  *
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  ?MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)
@@ -128,7 +131,7 @@ function apply_emoticons($text)
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
- * @return tempcode The tempcode generated
+ * @return Tempcode The Tempcode generated
  */
 function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
@@ -175,29 +178,42 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
  *
  * @param  string $text Plain-text/Comcode
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
+ * @param  ?array $tags_to_preserve List of tags to preserve (null: none)
  * @return string Purified plain-text
  */
-function strip_comcode($text, $for_extract = false)
+function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
 {
+    if (is_null($tags_to_preserve)) {
+        $tags_to_preserve = array();
+    }
+
     if ($text == '' || preg_match('#^[\w\d\-\_\(\) \.,:;/"\'\!\?]*$$#', $text) != 0) {
         return $text; // Optimisation
     }
 
     require_code('mail');
     if (function_exists('comcode_to_clean_text')) {// For benefit of installer, which disables mail.php
-        $text = comcode_to_clean_text($text, $for_extract);
+        $text = comcode_to_clean_text($text, $for_extract, $tags_to_preserve);
     }
 
-    global $VALID_COMCODE_TAGS;
-    foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-        if ($tag == 'i') {
-            $text = preg_replace('#\[/?' . $tag . '\]#', '', $text);
-        } else {
-            $text = preg_replace('#\[/?' . $tag . '[^\]]*\]#', '', $text);
+    if (strpos($text, '[') !== false) {
+        global $VALID_COMCODE_TAGS;
+        foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
+            if (in_array($tag, $tags_to_preserve)) {
+                continue;
+            }
+
+            if ($tag == 'i') {
+                $text = preg_replace('#\[/?' . $tag . '\]#i', '', $text);
+            } else {
+                $text = preg_replace('#\[/?' . $tag . '([ =][^\]]*)?\]#i', '', $text);
+            }
         }
     }
 
-    $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
+    if (strpos($text, '&') !== false) {
+        $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
+    }
 
     return $text;
 }

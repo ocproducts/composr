@@ -41,7 +41,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -62,7 +62,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -92,7 +92,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -116,21 +116,20 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             require_javascript('ajax');
             $script = find_script('snippet');
             $this->javascript = "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_emoticon&name='+window.encodeURIComponent(form.elements['code'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                var form=document.getElementById('main_form');
+                form.old_submit=form.onsubmit;
+                form.onsubmit=function() {
+                    document.getElementById('submit_button').disabled=true;
+                    var url='" . addslashes($script) . "?snippet=exists_emoticon&name='+window.encodeURIComponent(form.elements['code'].value);
+                    if (!do_ajax_field_test(url))
+                    {
+                        document.getElementById('submit_button').disabled=false;
+                        return false;
+                    }
+                    document.getElementById('submit_button').disabled=false;
+                    if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                    return true;
+                };
             ";
         }
 
@@ -149,7 +148,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -167,11 +166,11 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     /**
      * The UI to import in bulk from an archive file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import()
     {
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 
@@ -188,11 +187,10 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         $text = paragraph(do_lang_tempcode('IMPORT_EMOTICONS_WARNING'));
         require_code('images');
         $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
-        /*if ($max<1.0) Ok - this is silly! Emoticons are tiny.
-        {
+        /*if ($max < 1.0) { Ok - this is silly! Emoticons are tiny.
             require_code('files2');
-            $config_url=get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(is_null($config_url)?'MAXIMUM_UPLOAD':'MAXIMUM_UPLOAD_STAFF',escape_html(($max>10.0)?integer_format(intval($max)):float_format($max)),escape_html(is_null($config_url)?'':$config_url))));
+            $config_url = get_upload_limit_config_url();
+            $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(is_null($config_url) ? '' : $config_url))));
         }*/
 
         $hidden = build_keep_post_fields();
@@ -205,7 +203,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     /**
      * The actualiser to import in bulk from an archive file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import()
     {
@@ -347,7 +345,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a post template adding/editing form.
+     * Get Tempcode for a post template adding/editing form.
      *
      * @param  SHORT_TEXT $code The emoticon code
      * @param  SHORT_TEXT $theme_img_code The theme image code
@@ -359,7 +357,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      */
     public function get_form_fields($code = ':-]', $theme_img_code = '', $relevance_level = 1, $use_topics = 1, $is_special = 0)
     {
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 
@@ -409,7 +407,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_radio_entries()
     {

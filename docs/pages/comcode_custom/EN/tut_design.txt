@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Introduction to web design[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Introduction to web design[/title]
 
 This tutorial is an introduction to the artistic side of web development -- web design.
 
@@ -6,7 +6,7 @@ This tutorial is an introduction to the artistic side of web development -- web 
 
 [title="2"]Introduction[/title]
 
-With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blurring into the commercial design industry.
+With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blending into the wider commercial design industry.
 
 Nowadays visitors expect an important website to be as impressive as a glossy magazine, or a TV show, and good design is the route to this.
 
@@ -18,7 +18,7 @@ Design is about communication: communicating style, communicating a brand, commu
 
 [title="3"]Style and brand[/title]
 
-What does a design say? Colour, pattern, language, and many other factors, all imply things about a website and organisation. A well conceived brand consists of certain tenants, and the design implementation of that brand effectively communicates them.
+What does a design say? Colour, pattern, language, and many other factors, all imply things about a website and organisation. A well conceived brand consists of certain tenets, and the design implementation of that brand effectively communicates them.
 
 Consider a simple example: a website with a dark background, smooth gradients around shades of brown, and vivid and short pieces of text, might be great for a website selling chocolates. It would communicate the simple pleasure of chocolate, and subliminally reinforce the concept via the chocolate-like colours. On every mental level it puts chocolate fully into the mind of the visitor, and can work to trigger the right feelings, and the overall richness and effect works to leave a lasting impression (lasting mental imprint).
 
@@ -29,7 +29,7 @@ However, for this kind of design to be used on an environmental website might be
 
 Brands also have their own distinct 'personalities' which should be reflected. What's the difference between a Reebok and a Nike? The brands will aim to influence a specific group of people in a way that resonates with what is important to them, and use their unique identity to establish a feeling of authenticity, a fashion, and customer loyalty.
 
-Of course, different people think in different ways. As a programmer I think in terms of logics all the time and am very much a "left-brained" thinker (more inclined to study words than pick up from visual cues and emotive techniques). As a software user reading this tutorial you may well be the same. It is critical with design that you learn to appreciate how different people think, and come up with a design that hits all the right spots -- that works with different people's psychologies.
+Of course, different people think in different ways. As a programmer I think in terms of logics all the time and am very much a "left-brained" thinker (more inclined to study words than pick up from visual cues and emotive techniques). As a software user reading this tutorial you may well be the same. It is critical with design that you learn to appreciate how different people think, and come up with a design that hits all the right spots -- that works with different peoples' psychologies.
 
 A brand will typically include a logo, specification of what fonts to use in what circumstances (e.g. headers may have a special font), a colour scheme, a set of reusable styles (e.g. a way to show a box, or a pull-quote), suggested style of language, and a set of brand principles.
 
@@ -39,7 +39,7 @@ Oh... also when it comes to style, things should look pretty! ;)
 
 How do you communicate complex ideas effectively (we live in an increasingly complex, rushed, media-saturated, world)? One way is just to start typing and hope people will read everything you say. That's a good start, but for important pages of a website you should go a lot further than this.
 
-Your text should be organised to draw the right people in, whilst simultaneously allowing people who won't be interested to not read anything. For example, a good large headline can capture the attention of people, immediately guiding people who are interested to read on, and allowing people who won't be interested to not. Often a web design will have lots of these headlines in different places -- such as as titles of boxes placed in highly visible areas.
+Your text should be organised to draw the right people in, while simultaneously allowing people who won't be interested to not read anything. For example, a good large headline can capture the attention of people, immediately guiding people who are interested to read on, and allowing people who won't be interested to not. Often a web design will have lots of these headlines in different places -- such as as titles of boxes placed in highly visible areas.
 A common technique is the 'inverted pyramid', and this works very well for front pages. You start with a simple headline, then a longer summary, and continue to the full article. In other words, as people read on they get to see a more thorough version of what you're trying to say. There are many other techniques you can use, such as "pull quotes" (pulling out key parts of text as excerpts, shown in large text near where they appear in the article), or use of bold.
 
 You've undoubtedly heard the phrase "A picture speaks a thousand words" -- it's very true, and important to bear in mind. Would you rather read 3 paragraphs, or see a diagram that you can understand at a glance?
@@ -71,6 +71,7 @@ The following is true of just about every attractive design:
 
 [title="3"]Practical example for beginners: how to make an attractive box[/title]
 
+[media width="150" description="Our box. It's not going to win any awards, but it does the job." float="right"]data_custom/images/docs/tut_design/simple_box.png[/media]
 A simple way to make an attractive box is:
  - give the box a background colour.
  - put a border around the box with a colour that is half way between the box's background colour and the background colour of what is adjacent to the box. This will highlight and smooth the transition.
@@ -79,7 +80,7 @@ A simple way to make an attractive box is:
  - make the box float to the right.
 
 In [abbr="Cascading Style Sheets"]CSS[/abbr], this would be implemented with something like the following:
-[code]
+[code="HTML"]
 <div style="float: right; padding: 10px; margin: 20px; background: #d0e0a3; border: 1px solid #98c126;">
 	Text in box
 </div>
@@ -95,9 +96,11 @@ I recommend the following:
  - Universal principles of design (ISBN: [tt]1-59253-007-9[/tt])
  - Site-seeing (ISBN: [tt]0-7645-3674-5[/tt])
 
+To decide on a colour scheme consider an online tool like [url="http://www.colorschemer.com/online.html"]ColorSchemer[/url].
+
 [title="2"]Web Technologies[/title]
 
-Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our "Introduction to XHTML, CSS and JavaScript" tutorial.
+Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript) tutorial[/page].
 
 [title="2"]Software[/title]
 
@@ -107,7 +110,6 @@ Instead of Photoshop you could consider:
  - [url="Paint.net"]http://www.getpaint.net/[/url] (free, Windows-only)
  - [url="GIMP"]http://www.gimp.org/[/url] / [url="GIMPshop"]http://plasticbugs.com/[/url] (free)
  - [url="Corel Paint Shop Pro"]http://www.jasc.com/[/url] (cheaper than Photoshop -- but less powerful)
- - [url="Adobe Fireworks"]http://www.adobe.com/products/fireworks/[/url] (more web-orientated, but less powerful)
 
 There is an enormous amount to know when it comes to using this kind of software, including:
  - Colour spaces
@@ -123,7 +125,72 @@ You may find the best way to learn is through tutorials. Here are some sites fea
  - http://www.good-tutorials.com/
  - http://www.tutorialized.com/tutorials/Photoshop/1
  - http://www.photoshopstar.com/
- - http://psd.tutsplus.com/
+ - http://design.tutsplus.com/
+
+
+[title="2"]Tradeoff[/title]
+
+It's important to be able to take in, and balance, multiple competing design viewpoints. Let's consider the front page of a website and the "hats you need to wear" from the point of viewpoints of experts in different fields at their most selfish.
+
+[quote="Artist"]
+Just leave me alone to create a pixel-perfect work of inspirational art. I'll show you when I'm done.
+[/quote]
+
+[quote="Salesman"]
+The whole front page should be sales letter intended to brainwash the reader into making a purchase.
+[/quote]
+
+[quote="Community Advocate"]
+The front page should be a space dedicated to the members of the community. A community hub and collaborative work. To not give the visitors a front and centre space makes the website closed and proprietary.
+[/quote]
+
+[quote="Search-Engine Optimiser"]
+The front page is the natural 'landing page' for search engines. Pick a set of target keywords and write all your text around them, such as to get the perfect keyword density and placement.
+[/quote]
+
+[quote="Accountant"]
+Don't waste too much money on the front page. All investment should be cost-justifiable, otherwise your project might be dumped for not giving a big enough return.
+[/quote]
+
+[quote="Legislator"]
+The web page must meet our non-discrimination legislation, or you might be taken to court for being prejudiced. It must be understandable for people with:
+ - cognitive disorders
+ - blindness
+ - hearing problems
+ - alternative control interfaces
+Make a separate version of the page for different user types if these are not possible to simultaneously achieve.
+[/quote]
+
+[quote="Usability Consultant"]
+Everything should feel natural and obvious. The interface should exactly meet conventions and key navigation elements should never be unique.
+[/quote]
+
+[quote="Privacy Advocate"]
+The web page must not take or track anything relating to browsing it. Otherwise my human rights are being violated.
+[/quote]
+
+All these experts are making great points, but are taking them to extremes. Therefore it's important to give them all consideration in the design. We can't just follow their advice though, because there are loads of conflicts -- the art of tradeoff is our tool.
+
+Let's consider a few of those conflicts:
+ - The privacy and community advocates could argue forever, as they have completely opposing points of view. Privacy is to keep things secret, while community is to express.
+ - Accountants and artists could certainly argue over the financial incentive to the art. Artists naturally think in terms of elegance, while for an accountant, art serves a specific need and serves, with a certain effectiveness, to generate revenue that outweighs it's investment.
+ - Artists and usability consultants could argue over the purpose of art. A usability consultant would see it as something to stimulate understanding, while a pure artist would see it as something that might even be intended to stimulate confusion.
+ - SEO and salesmen would argue over the language used. SEO would wish to write for a search engine, while a salesman would want absolute control over the wording to carefully place a trail of exact thoughts into the readers head.
+ - (and I could go on for a long time here)
+
+A good designer/engineer understands all factors relating to their subject, and takes everything on board, with some expertise in all of it, and then creates a design that balances multiple design factors while simultaneously pushing overall excellence and innovation.
+
+[title="2"]Prioritisation[/title]
+
+You also need to decide on your priorities and focus.
+
+People in any profession will have strong views about how things should be done, but you need to take a few steps back from this when in business and really think what you're trying to achieve. If you're trying to build a brand, or get repeat business, image is very important. If you're trying to get direct sales, copy and SEO is probably important and imagery would just waste good screen space. You can make a great design with great copy and pretty good SEO, but you need to think whether it will create a return on investment, and that really depends on context.
+
+Some professionals will object really strongly to this kind of pragmatic approach, and throw out loads of terms like 'engagement' or 'brand image' or 'differentiation', but these kinds of marketing technique do not apply to every business (a professional is not necessarily very business-savvy, so may not understand this). Does a market stall need brand image? Do you really care to build an engaging relationship with your favourite cheese producer? Do you care about your bank's differentiation?
+
+What's really important is to see what matters in the market you are in and let this guide your decision process. If you can get quick wins in areas that are not key then it's worth it, because everyone consistently cares about relationships and design and authority to some basic extent, but don't waste time and money trying to be all things to all people.
+
+If in doubt, you could survey what is important, but chances are you won't get an accurate result using this technique (people tend to say 'yes' to most “would you like” kind of questions). A better approach is to step through some scenarios with your customers, as that will really show you what they care about, and probably also where your competitors have exploitable weak points.
 
 [concepts
  1_key="Photoshop"                 1_value="The de-facto standard software for web designers"
@@ -134,9 +201,32 @@ You may find the best way to learn is through tutorials. Here are some sites fea
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - http://webdesignledger.com/10-super-useful-tools-for-choosing-the-right-color-palette
+ - http://uxchecklist.github.io/
+ - http://adrien-heury.net/designers-checklists/
+ - http://www.slideshare.net/stephenpa/eye-candy-is-a-critical-business-requirement
+ - http://www.smashingmagazine.com/2011/12/designing-for-the-mind/
+ - http://www.smashingmagazine.com/2008/05/applying-divine-proportion-to-web-design/
+ - http://www.creativebloq.com/web-design/10-design-concepts-developers-9134391
+ - https://web.archive.org/web/20090604122807/http://wefunction.com/2009/04/quality-within-web-design
+ - http://webdesignfromscratch.com/
+ - http://www.thedesignedtree.com/
+ - http://findicons.com/
+ - http://www.freeimages.com/
+ - http://www.welie.com/patterns/
+ - http://patterntap.com/
+ - http://www.designyourway.net/drb/web-designers-should-focus-more-on-typography/
+ - http://www.creativebloq.com/netmag/6-questions-every-homepage-should-answer-101413151
+ - http://www.userfocus.co.uk/resources/guidelines.html
+ - http://www.webdesignerdepot.com/2013/11/4-essential-ux-rules-taught-by-eye-tracking-research/
+ - http://www.getfinch.com/2011/03/ux-is-mostly-desirability/
+ - http://www.designyourway.net/drb/small-design-and-usability-details-matter-a-lot-more-than-you-think/
+ - https://econsultancy.com/blog/62892-the-a-z-of-ux-design-principles-from-the-big-tech-firms-experts
+ - http://www.uxaxioms.com/
+ - http://thedesignblitz.com/web-design-mistakes-to-avoid/
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
- - [page="_SEARCH:tut_fringe"]Favicons, Web fonts, Media file compatibility[/page]
+ - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
 
 {$SET,tutorial_tags,core_themeing,Design & Themeing,regular}{$SET,tutorial_add_date,May 2009}{$SET,tutorial_summary,This tutorial is an introduction to the artistic side of web design.}[block]main_tutorial_rating[/block]

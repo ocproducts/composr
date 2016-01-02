@@ -74,6 +74,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
         $zone_default_page = get_zone_default_page($zone);
 
         $details = $this->_request_page_details($page, $zone);
+        if ($details === false) {
+            return null;
+        }
 
         $path = end($details);
         $row = $this->_load_row_from_page_groupings($row, $zone, $page);
@@ -210,6 +213,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
         $has_entry_points = true;
 
         $require_permission_support = (($options & SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT) != 0);
+        $check_perms = (($options & SITEMAP_GEN_CHECK_PERMS) != 0);
 
         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth) || (!isset($row[1]))) {
             // Look for entry points to put under this
@@ -219,17 +223,16 @@ class Hook_sitemap_page extends Hook_sitemap_base
                 $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0);
 
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
-                    true, // $check_perms
+                    $check_perms, // $check_perms
                     null, // $member_id
-                    $use_page_groupings, // $be_deferential
-                    $simplified
+                    true, // $support_crosslinks
+                    $simplified || $use_page_groupings // $be_deferential
                 ));
 
                 $has_entry_points = false;
 
                 if (!is_null($functions[0])) {
                     $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
-
                     if ((!is_null($entry_points)) && (count($entry_points) > 0)) {
                         $struct['has_possible_children'] = true;
 
@@ -306,7 +309,6 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (strpos($extra, ':catalogue_name=') !== false) {
                                         $child_page_link .= preg_replace('#^:\w+#', '', $extra);
                                     }
-
                                     $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
                                 } else {
                                     $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
@@ -349,7 +351,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     $child_node['extra_meta']['image_2x'] = $struct['extra_meta']['image_2x'];
                                 }
                                 $struct = $child_node;
-                                if ($struct['children'] !== null) {
+                                if (!empty($struct['children'])) {
                                     $children = array_merge($children, $struct['children']);
                                 }
                                 $struct['children'] = null;

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__caches()
 {
@@ -38,35 +40,35 @@ function init__caches()
     define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
 
     global $PERSISTENT_CACHE, $SITE_INFO;
-    /** The persistent cache access object (NULL if there is no persistent cache).
+    /** The persistent cache access object (null if there is no persistent cache).
      *
      * @global ?object $PERSISTENT_CACHE
      */
     $PERSISTENT_CACHE = null;
 
-    $use_persistent_cache = ((array_key_exists('use_persistent_cache', $SITE_INFO)) && ($SITE_INFO['use_persistent_cache'] != '') && ($SITE_INFO['use_persistent_cache'] != '0'));// Default to off because badly configured caches can result in lots of very slow misses and lots of lost sessions || ((!array_key_exists('use_persistent_cache',$SITE_INFO)) && ((function_exists('xcache_get')) || (function_exists('wincache_ucache_get')) || (function_exists('apc_fetch')) || (function_exists('eaccelerator_get')) || (function_exists('mmcache_get'))));
+    $use_persistent_cache = ((array_key_exists('use_persistent_cache', $SITE_INFO)) && ($SITE_INFO['use_persistent_cache'] != '') && ($SITE_INFO['use_persistent_cache'] != '0'));// Default to off because badly configured caches can result in lots of very slow misses and lots of lost sessions || ((!array_key_exists('use_persistent_cache', $SITE_INFO)) && ((function_exists('xcache_get')) || (function_exists('wincache_ucache_get')) || (function_exists('apc_fetch')) || (function_exists('eaccelerator_get')) || (function_exists('mmcache_get'))));
     if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/memcached');
-            $PERSISTENT_CACHE = new Persistent_cacheing_memcached();
+            require_code('persistent_caching/memcached');
+            $PERSISTENT_CACHE = new Persistent_caching_memcached();
         } elseif ((class_exists('Memcache')) && (($SITE_INFO['use_persistent_cache'] == 'memcache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/memcache');
-            $PERSISTENT_CACHE = new Persistent_cacheing_memcache();
+            require_code('persistent_caching/memcache');
+            $PERSISTENT_CACHE = new Persistent_caching_memcache();
         } elseif ((function_exists('apc_fetch')) && (($SITE_INFO['use_persistent_cache'] == 'apc') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/apc');
-            $PERSISTENT_CACHE = new Persistent_cacheing_apccache();
+            require_code('persistent_caching/apc');
+            $PERSISTENT_CACHE = new Persistent_caching_apccache();
         } elseif (((function_exists('eaccelerator_put')) || (function_exists('mmcache_put'))) && (($SITE_INFO['use_persistent_cache'] == 'eaccelerator') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/eaccelerator');
-            $PERSISTENT_CACHE = new Persistent_cacheing_eacceleratorcache();
+            require_code('persistent_caching/eaccelerator');
+            $PERSISTENT_CACHE = new Persistent_caching_eacceleratorcache();
         } elseif ((function_exists('xcache_get')) && (($SITE_INFO['use_persistent_cache'] == 'xcache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/xcache');
-            $PERSISTENT_CACHE = new Persistent_cacheing_xcache();
+            require_code('persistent_caching/xcache');
+            $PERSISTENT_CACHE = new Persistent_caching_xcache();
         } elseif ((function_exists('wincache_ucache_get')) && (($SITE_INFO['use_persistent_cache'] == 'wincache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/wincache');
-            $PERSISTENT_CACHE = new Persistent_cacheing_wincache();
+            require_code('persistent_caching/wincache');
+            $PERSISTENT_CACHE = new Persistent_caching_wincache();
         } elseif ((file_exists(get_custom_file_base() . '/caches/persistent/')) && (($SITE_INFO['use_persistent_cache'] == 'filesystem') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
-            require_code('persistent_cacheing/filesystem');
-            $PERSISTENT_CACHE = new Persistent_cacheing_filecache();
+            require_code('persistent_caching/filesystem');
+            $PERSISTENT_CACHE = new Persistent_caching_filecache();
         }
     }
 
@@ -77,7 +79,7 @@ function init__caches()
     global $SMART_CACHE, $RELATIVE_PATH;
     if (running_script('index') || running_script('iframe')) {
         $zone = $RELATIVE_PATH;
-        $page = get_page_name();
+        $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
         $screen = get_param_string('type', 'browse');
         $bucket_name = $zone . ':' . $page . ':' . $screen;
         if ($page != 'topicview' && $screen == 'browse') {
@@ -127,6 +129,7 @@ class Self_learning_cache
     private $path = null;
     private $data = null; // null means "Nothing loaded"
     private $keys_inital = array();
+    private $pending_save = false;
 
     /**
      * Constructor. Initialise our cache.
@@ -231,7 +234,7 @@ class Self_learning_cache
         if (!isset($this->data[$key]) || $this->data[$key] !== $value) {
             $this->data[$key] = $value;
 
-            $this->save();
+            $this->save(false);
         }
     }
 
@@ -253,7 +256,7 @@ class Self_learning_cache
         if ((!isset($this->data[$key][$value])) && !array_key_exists($value, $this->data[$key]) || $this->data[$key][$value] !== $value_2) {
             $this->data[$key][$value] = $value_2;
 
-            $this->save();
+            $this->save(false);
 
             return true;
         }
@@ -263,11 +266,21 @@ class Self_learning_cache
 
     /**
      * Save the cache, after some change has happened.
+     *
+     * @param  boolean $do_immediately Immediately save the cache change (slow...)
      */
-    private function save()
+    private function save($do_immediately = false)
     {
         if (!$this->is_on()) {
             return;
+        }
+
+        if (!$do_immediately) {
+            if (!$this->pending_save) {
+                // Mark to save later
+                register_shutdown_function(array($this, '_page_cache_resave'));
+            }
+            $this->pending_save = true;
         }
 
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
@@ -338,12 +351,12 @@ class Self_learning_cache
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {
     global $PERSISTENT_CACHE;
-    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0,3) == 1)) return NULL;  Annoying when doing performance tests, but you can enable to test persistent cache more
+    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0, 3) == 1)) return null;  Annoying when doing performance tests, but you can enable to test persistent cache more
     if ($PERSISTENT_CACHE === null) {
         return null;
     }
@@ -352,9 +365,9 @@ function persistent_cache_get($key, $min_cache_date = null)
     if ($test !== null) {
         return $test;
     }
-    if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+    /*if (!is_a($PERSISTENT_CACHE, 'Persistent_caching_filecache')) {  Server-wide bad idea
         $test = $PERSISTENT_CACHE->get(('cms' . float_to_raw_string(cms_version_number())) . serialize($key), $min_cache_date); // And last we'll try server-wide
-    }
+    }*/
     return $test;
 }
 
@@ -376,9 +389,10 @@ function persistent_cache_set($key, $data, $server_wide = false, $expire_secs = 
         $expire_secs = $server_wide ? 0 : (60 * 60);
     }
 
-    if (is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+    /*if (is_a($PERSISTENT_CACHE, 'Persistent_caching_filecache')) {   Server-wide bad idea
         $server_wide = false;
-    }
+    }*/
+    $server_wide = false;
 
     $PERSISTENT_CACHE->set(($server_wide ? ('cms' . float_to_raw_string(cms_version_number())) : get_file_base()) . serialize($key), $data, 0, $expire_secs);
 }
@@ -411,9 +425,9 @@ function persistent_cache_delete($key, $substring = false)
         }
     } else {
         $PERSISTENT_CACHE->delete(get_file_base() . serialize($key));
-        if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+        /*if (!is_a($PERSISTENT_CACHE, 'Persistent_caching_filecache')) {  Server-wide bad idea
             $PERSISTENT_CACHE->delete('cms' . float_to_raw_string(cms_version_number()) . serialize($key));
-        }
+        }*/
     }
 }
 
@@ -438,7 +452,7 @@ function erase_persistent_cache()
         $d = opendir($path);
         while (($e = readdir($d)) !== false) {
             if (substr($e, -4) == '.gcd') {
-                // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+                // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
                 @unlink(get_custom_file_base() . '/caches/persistent/' . $e);
             }
         }
@@ -452,7 +466,7 @@ function erase_persistent_cache()
     $d = opendir($path);
     while (($e = readdir($d)) !== false) {
         if (substr($e, -4) == '.htm') {
-            // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
             @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
         }
     }
@@ -468,9 +482,31 @@ function erase_persistent_cache()
 }
 
 /**
+ * Check to see if caching is enabled.
+ *
+ * @param  string $type Cache type
+ * @set block lang comcode_page template
+ * @return boolean Whether it has the caching
+ */
+function has_caching_for($type)
+{
+    if (!function_exists('get_option')) {
+        return false;
+    }
+
+    $setting = (get_option('is_on_' . $type . '_cache') == '1');
+
+    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
+
+    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0) && (get_param_integer('cache', null) !== 0);
+
+    return ($setting || $positive) && (strpos(get_param_string('special_page_type', ''), 't') === false) && $not_negative;
+}
+
+/**
  * Remove an item from the general cache (most commonly used for blocks).
  *
- * @param  mixed $cached_for The type of what we are cacheing (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
+ * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
  * @param  ?MEMBER $member Member to only decache for (null: no limit)
  */
@@ -485,9 +521,9 @@ function decache($cached_for, $identifier = null, $member = null)
 }
 
 /**
- * Find the cache-on parameters for 'codename's cacheing style (prevents us needing to load up extra code to find it).
+ * Find the cache-on parameters for 'codename's caching style (prevents us needing to load up extra code to find it).
  *
- * @param  ID_TEXT $codename The codename of what will be checked for cacheing
+ * @param  ID_TEXT $codename The codename of what will be checked for caching
  * @return ?array The cached result (null: no cached result)
  */
 function find_cache_on($codename)
@@ -510,11 +546,11 @@ function find_cache_on($codename)
 /**
  * Find the cached result of what is named by codename and the further constraints.
  *
- * @param  ID_TEXT $codename The codename to check for cacheing
+ * @param  ID_TEXT $codename The codename to check for caching
  * @param  LONG_TEXT $cache_identifier The further restraints (a serialized map)
  * @param  integer $special_cache_flags Special cache flags
  * @param  integer $ttl The TTL for the cache entry. Defaults to a very big ttl
- * @param  boolean $tempcode Whether we are cacheing Tempcode (needs special care)
+ * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  boolean $caching_via_cron Whether to defer caching to CRON. Note that this option only works if the block's defined cache signature depends only on $map (timezone and bot-type are automatically considered)
  * @param  ?array $map Parameters to call up block with if we have to defer caching (null: none)
  * @return ?mixed The cached result (null: no cached result)
@@ -540,6 +576,8 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
  *
  * @param  array $dets An array of tuples of parameters (as per get_cache_entry, almost)
  * @return array Array of results
+ *
+ * @ignore
  */
 function _get_cache_entries($dets)
 {

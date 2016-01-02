@@ -1,6 +1,5 @@
-[title sub="Written by Chris Graham, ocProducts"]Code Book, part 3[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 3[/title]
 
-[surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
 [contents][/contents]
@@ -22,9 +21,9 @@ Output:
  - Find character set (fast default case: hard-coded character set optimisation)
  - CSS and JavaScript inclusion/merging
  - Breadcrumbs (disableable)
- - Comcode-page rendering (fast default case: Comcode cache)
- - Date/time rendering
- - Time period rendering
+ - Comcode-page display (fast default case: Comcode cache)
+ - Date/time display
+ - Time period display
  - Output framing
  - Tempcode assembly
  - Tempcode rendering
@@ -32,7 +31,7 @@ Output:
  - Tempcode output escaping
  - Theme images (fast default case: persistent cache)
  - Output state management
- - Primitive types rendering
+ - Primitive type displaying
  - Locales
  - Basic template bindings
 Internal dispatch:
@@ -109,7 +108,7 @@ Anything not marked with a specific bypass optimisation (in brackets) will still
 
 Note that while we have a lot of user-specific and security features in the above list, but these can be bypassed when not needed via the static cache.
 
-Various hidden optimisation flags are described later in the Code Book, and also in the Composr optimisation tutorial.
+Various hidden optimisation flags are described later in the Code Book, and also in the [page="_SEARCH:tut_optimisation"]Optimising Performance[/page].
 
 [title="2"]Why not more object-orientation?[/title]
 
@@ -139,6 +138,7 @@ Regarding '3', OOP-heavy architectures try to abstract away details to make thin
 
 '6' is something OOP-heavy systems do very well, but read on.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_3/4.jpg[/media]
 As you can see, simpler designs solve the most important concerns best, and then remaining concerns are well served by OOP-heavy designs. However, our Composr design is not actually a naive simple design at all -- it's actually very carefully structured, and has a high degree of strictness/discipline in many areas. Composr is definitely not anti-OOP by any means, it is only anti-over-engineering -- we actually rely on the strengths of OOP in many key areas of the system. Here's how our approach works to achieve the commonly-cited OOP-heavy advantages (flexibility, maintainability, clarity, and stability) without slowing development, complicating code, or hurting performance:
  - We can achieve the equivalence to dependency injection as our output and execution context states support a stack-based switching mechanism, allowing us to create sandboxes very effectively for those few cases where it is useful. The critical difference is we achieve it in far less code, with better performance, in a way that is easier to understand, and where the burden for it is only felt when you actually need this advanced functionality, rather every time you use any component of the system.
  - We can achieve inheritance via our code overrides system, which also provides the ability for users to override components without having to get down and dirty with coding. Different versions of code can be placed and tested as overrides, and new functionality can be placed using overrides. This does not suffer from the same problems as copy and paste coding, as overrides are designed to work on the function level, via some clever code we have in place, and we can even make line-by-line changes should we need to, or extend individual functions.
@@ -156,14 +156,14 @@ Rant over ;).
 
 Deploying to a live server using git is a great idea. However, be aware some caveats...
 [list="1"]
-[*]Disable dev-mode in the config file using:
+[*] Disable dev-mode in the config file using:
 [code="PHP"]
-$SITE_INFO['dev_mode']='0';
+$SITE_INFO['dev_mode'] = '0';
 [/code]
-git automatically enables dev mode, which intentionally inteferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
-[*]Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
-[*]Either keep the config file out of git, or put code in there to differentiate between machines via checking [tt]$_SERVER['SERVER_ADDR'][/tt] ([tt]$_SERVER['LOCAL_ADDR'][/tt] on a Windows server).
-[*]Make heavy use of git branches so that you don't get stuck having to perfect all code before you can update anything onto the server.
+git automatically enables dev mode, which intentionally interferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
+[*] Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
+[*] Either keep the config file out of git, or put code in there to differentiate between machines via checking [tt]$_SERVER['SERVER_ADDR'][/tt] ([tt]$_SERVER['LOCAL_ADDR'][/tt] on a Windows server).
+[*] Make heavy use of git branches so that you don't get stuck having to perfect all code before you can update anything onto the server.
 [/list]
 
 You can consider a half-way house, by having a full checkout on the server, then separately symlinking specific directories into the main public_html. This is useful if you only want certain directories in git, such as a docs zone (docs in this example being managed offline, and pushed live using git).
@@ -208,7 +208,7 @@ Sometimes this advice will not help: if there is an "@" (error suppression opera
 
 If you get errors about query limits consider optimising your code to use less queries. If you cannot do this, you can set:
 [code="PHP"]
-$GLOBALS['NO_QUERY_LIMIT']=true;
+$GLOBALS['NO_QUERY_LIMIT'] = true;
 [/code]
 in your code.
 
@@ -218,11 +218,11 @@ You can also put [tt]&keep_no_query_limit=1[/tt] into the URL to have query limi
 
 If development mode is running then the [tt]inspect[/tt] function will be available in PHP. You can run commands like:
 [code="PHP"]
-inspect($a,$b,$c);
+inspect($a, $b, $c);
 [/code]
 and Composr will output the contents of these variables very neatly for you, and give a stack trace.
 
-If output has already started then Composr will give you your details in an info box at the bottom of the rendered screen; otherwise you'll get a text dump.
+If output has already started then Composr will give you your details in an info box at the bottom of the displayed screen; otherwise you'll get a text dump.
 
 This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack dumps are not available or do not reveal the real cause of the problem.
 
@@ -230,14 +230,15 @@ If you have an IDE with a debugger then this is better, but we find most develop
 
 [title="2"]Tips[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 This section contains a number of general programming tips. Much of this applies to all programming, not just Composr programming. However there are also a number of tips for Composr that will help you on a day-to-day basis.
 
 [title="3"]Deployment[/title]
 
-Be very careful deploying these two files:
- - [tt]_config.php[/tt]
- - [tt].htaccess[/tt]
- - [tt]php.ini[/tt]
+Be very careful deploying these three files:
+1) [tt]_config.php[/tt]
+2) [tt].htaccess[/tt]
+3) [tt]php.ini[/tt]
 
 [tt]_config.php[/tt] is obvious, you don't want to overwrite the live server environment settings with development ones.
 Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what server it is on, then share that file across all platforms. This is mainly a personal choice.
@@ -316,12 +317,13 @@ Composr's git repository contains the [tt]testing_platform[/tt] addon, which is 
 Writing new tests is really easy, just write a [tt]_tests/tests/unit_tests/whatever.php[/tt] file. Use the SimpleTest assert system to verify test results match expectations.
 If you are coding for core Composr, make sure the new test file is added to the [tt]sources_custom/hooks/systems/addon_registry/testing_platform.php[/tt] file (so that the [tt]testing_platform[/tt] addon will bundle your test).
 
-You can browse/run tests via [tt]http://yoursite/_tests[/tt].
+You can browse/run tests via [tt]http://yourbaseurl/_tests[/tt].
 
 Never install the testing platform on a live site, or at least if you do block public access to it via the web server configuration.
 
 [title="3"]Debugging[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/3.jpg[/media]
 When programming bear in mind that it is human to make lots of mistakes. Don't blame yourself for errors. The key is having a rigorous practices to identify and deal with them.
 
 If you are stuck with a problem you haven't been able to quickly resolve, consider these logical steps for resolving it:
@@ -343,7 +345,7 @@ Here are some general tips:
 If you are debugging a standalone PHP script (i.e. outside Composr), make sure you have errors turned on:
 [code="PHP"]
 error_reporting(E_ALL);
-ini_set('display_errors','1');
+ini_set('display_errors', '1');
 [/code]
 Having full reporting of all PHP notices, and display of them on screen, helps greatly in finding causes of issues.
 
@@ -359,16 +361,16 @@ Other very useful logs:
  - The web server's own access log; look carefully in it and you are likely to see things like HTTP response codes (e.g. 500 means Internal Server Error)
  - Any [tt]errorlog[/tt] files the web server may leave behind (native PHP error logs, which may or may not be enabled)
 Correlate times and IP addresses to get a model of what happened.
-Also the Compsor 'SU' (switch user) feature can be very useful for testing under different users without having to know their passwords.
+Also the Compsor 'SU' feature (see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section) can be very useful for testing under different users without having to know their passwords.
 
-If it is acceptable to debug code on a live server, putting 'exit' and 'vardump' commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
+If it is acceptable to debug code on a live server, putting [tt]exit[/tt] and [tt]var_dump[/tt] commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
 
 [title="4"]Logging into live sites[/title]
 
 It is common to need to log in as an administrator on a live site and not know the admin password (only knowing the hosting access).
 If you add a line to [tt]_config.php[/tt] like the following:
-[code]
-$SITE_INFO['backdoor_ip']='1.2.3.4';
+[code="PHP"]
+$SITE_INFO['backdoor_ip'] = '1.2.3.4';
 [/code]
 It will automatically log you in under the first administrator account. You can find your IP address from [url="common websites"]http://myipaddress.com[/url].
 
@@ -396,42 +398,47 @@ If you put a file called [tt]closed.html[/tt] then this will be shown to people 
 
 [title="3"]Hidden 'values'[/title]
 
-Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (under the 'tools' section in the Admin Zone or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
+Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (Admin Zone > Tools > Commandr -- or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
 
 We have the following which are either unlikely to be useful, or potentially unstable or unpolished:
  - Integrations
-  - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://base_url/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
+  - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://yourbaseurl/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]xhtml_strict[/tt] -- set this to '1' to do some magic to make Composr's output XHTML strict. This is slow and not really advisable as it will degrade the user experience if JavaScript is not available (new-window links would break)
   - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file
+  - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the [tt]allow_member_mail_relay[/tt] parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
+  - [tt]windows_auth_is_enabled[/tt] -- set to '1' to enable Integrated Windows Kerberos Authentication for automatic desktop client logins
  - Unsupported functionality
   - [tt]unofficial_ecommerce[/tt] -- set to '1' if your forum driver contains usergroup manipulation functions (we don't support this, but wanted to be able to allow those willing to extend forum drivers to use our full eCommerce framework)
  - Workarounds for difficult server configurations
   - [tt]disable_iconv[/tt] -- set this to '1' if your iconv extension causes PHP to crash
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
-  - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about it's memory limit
-  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
+  - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about its memory limit
+  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
   - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
-  - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare.
+  - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
   - [tt]disable_ssl_for__<domain>[/tt] -- set this to '1' to disable SSL certificate checking for the given domain name. This is not a great idea, but may be necessary if a required service has a broken certificate yet it only supports HTTPS.
   - [tt]manualproc_mail[/tt] -- set this to '1' to debug problems with the PHP mail command (the PHP mail command won't relay error information from the sendmail process, this will replace it with something that does); it only works on servers that allow PHP process control
  - Used internally by Composr
   - [tt]cdn[/tt] -- this is used for storage of autodetected CDNs, prior to the config option for them being properly filled in
-  - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is compo.sr but may be changed)
+  - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is {$BRAND_BASE_URL} but may be changed)
   - [tt]rebrand_name[/tt] -- if Composr is called something else as far as the site staff are concerned, set the name here
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)
  - Developer testing
-  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get mistargeted/over-sent
+  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get misdirected/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to enable the Composr profiler, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
+  - [tt]monitor_slow_urls[/tt] -- set this to '1' to log any requests taking at least 5 seconds to [tt]data_custom/time_log.txt[/tt]
+  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permissioncheckslog.php[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
  - For system-integrators
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
  - For back-end developers
   - [tt]textmate[/tt] -- set this to '1' if you are developing on a local machine and use the Apple Mac TextMate editor. It will cause TextMate editing links to come up in stack traces
-  - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and it's short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials)
+  - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and its short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials)
+  - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the CRON interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
  - Low-level tuning
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
   - [tt]root_cat__images[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Image form (root is not shown as an option). Alternatively, it can be an Selectcode string.
@@ -440,7 +447,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_confirm_url_spec_cats[/tt] -- set this to '1' if you don't want to have to confirm the category for a new catalogue entry when the category was specified in a URL parameter already
   - [tt]no_spec_cat__<catalogue-name>[/tt] -- set this to '1' if you don't want to have to confirm the category for a new catalogue entry when the category was specified in a URL parameter already
   - [tt]comment_forum__galleries[/tt] / [tt]comment_forum__images[/tt] / [tt]comment_forum__videos[/tt] / [tt]comment_forum__downloads[/tt] / [tt]comment_forum__calendar[/tt] / [tt]comment_forum__news[/tt] / [tt]comment_forum__polls[/tt] -- override the comment forum for a particular content type. Make sure you refresh the page with the comment form in your browser after changing this, as the settings also get saved into the page HTML
-  - [tt]comment_forum__catalogues_<catalogue-name>[/tt] -- define a comment forum for a specific catalogue
+  - [tt]comment_forum__catalogues__<catalogue-name>[/tt] -- define a comment forum for a specific catalogue
   - [tt]allow_no_lang_selection[/tt] -- set this to '1' if you want members to be able to leave their language selection as 'Unset' (otherwise normally it'll copy the auto-detected language into their profile or they can change it, but it never stays as unset). This option is useful on multi-site-networks, with each site having a different language
   - [tt]no_base_check[/tt] -- set this to '1' if you do not want Composr to empty caches if the base URL gets changed (this is if the base URL is not defined, and someone accesses from something different)
   - [tt]pagination_when_not_needed[/tt] -- set this to '1' if you want the pagination wrapper template to load even if there is no pagination (useful for collecting result meta data via Tempcode)
@@ -448,14 +455,14 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_password_change_notifications_for_staff[/tt] -- set this to '1' if you want staff password edits to not result in notifications to users
   - [tt]commercial_spellchecker[/tt] -- set this to '1' if you want to enable the WYSIWYG editor's spellcheck.net spellchecker
   - [tt]filtercode_protected_fields[/tt] -- a comma-separated list of fields Filtercode cannot work on (above the ones hard-coded as forbidden)
-  - [tt]memory_limit[/tt] -- set this to a memory limit to override Composr's built in one (e.g. "128M"). This will make memory bugs on your server more dangerous, so use at your own risk (a memory usage problem can take down a whole server) -- although memory bugs are unlikely given that Composr users report if they ever see this error
+  - [tt]memory_limit[/tt] -- set this to a memory limit to override Composr's built-in one (e.g. "128M"). This will make memory bugs on your server more dangerous, so use at your own risk (a memory usage problem can take down a whole server) -- although memory bugs are unlikely given that Composr users report if they ever see this error
   - [tt]canonical_keep_params[/tt] -- set this to a comma-separated list of keep_ parameters that should be allowed to propagate within search engines
   - [tt]no_tech_login_messages[/tt] -- set to '1' if you don't want technical explanations attaching when a user is forced to login
   - [tt]cc_sort_date__<catalogue-name>[/tt] -- set this to '1' if you want catalogue category children to be sorted by date rather than title
   - [tt]resize_rep_images[/tt] -- set this to '0' if you do not want uploaded rep-images to be sized down automatically to the standard thumbnail size
   - [tt]default_event_type[/tt] -- set this to the ID of the default event type to select for new events
-  - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should render with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
-  - [tt]site_location[/tt] -- an address for where your website is, sometimes used in meta-data.
+  - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should display with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
+  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in meta-data.
   - [tt]google_news_urls[/tt] -- set this to '1' if news URLs should contain a Google-News-friendly entry ID.
   - [tt]enable_delayed_inserts[/tt] -- set this to '1' to enable MySQL delayed inserts. Delayed inserts can cause a very small performance improvement if log calculations happen quite regularly; however they only work on MyISAM tables and are deprecated as of MySQL 5.6
   - [tt]really_want_highlighting[/tt] -- set this to '1' if you want to force HTML to be converted to Comcode when searches happen, so keyword highlighting works better.
@@ -478,30 +485,29 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_block_timeout[/tt] -- set this to '1' if blocks should never timeout (stops stuttered performance if a site is not used regularly)
   - [tt]disable_sitemap_for__*[/tt] -- disable sitemap generation for a particular page (e.g. if there's too much data in it and the server can't cope, and the data isn't so important anyway). Replace '*' with the page name
   - [tt]no_view_counts[/tt] -- set this to '1' if you don't want view counts to be maintained (reduces database writes). You will probably want to disable the normal "Reveal usage figures" option too, to hide all the zero counts
-  - [tt]avoid_normal_topic_history[/tt] -- set this to '1' if you don't want topic-read history to be maintained for things other than private topics
+  - [tt]avoid_normal_topic_read_history[/tt] -- set this to '1' if you don't want topic-read history to be maintained for things other than private topics
   - [tt]no_member_tracking[/tt] -- set this to '1' if you want to disable the member tracking feature where it's supported (it shows who is viewing a forum topic, for example)
   - [tt]min_lastvisit_frequency[/tt] -- set this to the number of seconds waited between the last-visit time being updated (performance tweak, minimises database writes)
   - [tt]no_flood_control[/tt] -- set this to '1' if you will not have flood control
-  - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the advanced members tutorial for more information)
+  - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page] for more information)
   - [tt]shortened_tempcode[/tt] -- set this to '1' to not store parameter reference origins in Tempcode, which makes Tempcode use less memory/storage/CPU
-  - [tt]advanced_admin_cache[/tt] -- set this to '1' to enable the Advanced Admin Cache (AAC). The AAC loads fully cached pages for administrators whilst checking the server for any updates. The result is that you see a cached page for about 1 second until the latest version is retrieved, making browsing feel much snappier. This feature is highly experimental, and only works on the very fast modern web browsers: Google Chrome, Opera, and Safari. It may be unstable even in these browsers though. If your site is on a shared domain where other users can run their own JavaScript code then you should not use it as it will lead to a serious security vulnerability.
   - [tt]save_jpegs_as_png[/tt] -- set this to '1' to allow Composr to detect when JPEG files would be smaller, and save JPEG data into PNG file extensions. It is a bit of a hack, and goes against standards, but works well
   - [tt]maximum_result_count_point[/tt] -- the number of search results to count up to (defaults to '1000'); a higher figure means that for multi-condition searches extra computation will be required to see which result rows match the search conditions (single-condition search counting is usually fast because an index gives an instant answer)
   - [tt]search_days__<search-hook>[/tt] -- (see "Low-level tuning")
+  - [tt]js_keep_params[/tt] -- handle keep variable propagation via JavaScript. Used in conjunction with [tt]$SITE_INFO['no_keep_params'] = '1';[/tt]
  - Performance tuning (negative)
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs
-  - [tt]stupidity_mode[/tt] -- set to 'leet' or 'bork', for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
- - Debugging
-  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permissioncheckslog.php[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
+  - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
 
 [title="3"]Hidden 'keep' parameters[/title]
 
 'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and short-URLs are not enabled, use a '?' instead of a '&'.
 
 The 'keep' parameters available are:
- - [tt]keep_cache[/tt] -- set to '1' to temporarily enable cacheing or '0' to temporarily disable. You can also use 'cache' so it works on a per-page basis, with the exception of this not affecting the template and language cacheing.
+ - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use [tt]cache[/tt] so it works on a per-page basis, with the exception of this not affecting the template and language caching.
  - [tt]keep_no_dev_mode[/tt] -- set to '1' to disable development mode (which only runs if you're working out of a subversion repository anyway)
+ - [tt]keep_hide_dev_mode_message[/tt] -- set to '1' if you don't want the "Dev-mode is on" message to show if dev-mode is on (maybe you're taking screenshots?)
  - [tt]keep_no_ext_check[/tt] -- set to '1' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
  - [tt]keep_textonly[/tt] -- set to '1' if the 'text only' stylesheet is to be used
@@ -515,20 +521,21 @@ The 'keep' parameters available are:
  - [tt]keep_just_show_query[/tt] -- set to '1' if you want Composr to echo out the query as above, but then to exit before running it
  - [tt]keep_currency[/tt] -- set to an ISO currency code to tell Composr which currency you use
  - [tt]keep_country[/tt] -- set to an ISO country code to tell Composr which currency you're in
+ - [tt]keep_region[/tt] -- similar to above, but supports whatever regions are configured on the website
  - [tt]keep_cat_display_type[/tt] -- set to a number representing the catalogue category display-type to try out (0=entry-tables, 1=lists, 2=matrix)
- - [tt]keep_id_order[/tt] -- use this in conjunction with the admin_cns_groups page to force a usergroup reordering based on the named DB field of your choice
+ - [tt]keep_id_order[/tt] -- use this in conjunction with the [tt]admin_cns_groups[/tt] module to force a usergroup reordering based on the named DB field of your choice
  - [tt]keep_backup_alien[/tt] -- set this to '1' if the backup module should only be backing up non-Composr files (i.e. do a backup of the website, but not the software)
  - [tt]keep_module_dangerous[/tt] -- set this to '1' to allow uninstallation of modules that are locked
- - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve ID's in the import (and not import duplicated ID's); this is not supported officially
+ - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve IDs in the import (and not import duplicated IDs); this is not supported officially
  - [tt]keep_theme[/tt] -- set this to a theme name, to temporarily try out a different theme
  - [tt]keep_safe_mode[/tt] -- set this to '1' so that where possible, any customised files will be ignored; the default theme will be used
  - [tt]keep_no_output_streaming[/tt] -- set this to '1' to disable output streaming (i.e. enable full pre-processing)
  - [tt]keep_fatalistic[/tt] -- set this to '1' if terminal warning errors should be handled as terminal fatal errors (which include stack traces); useful for debugging the origin of an error message
- - [tt]keep_firephp[/tt] -- set this to '1' to dump permissions checks that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using '[tt]keep_su[/tt]' to masquerade as another user it will work (which is particularly useful for debugging permissions problems).
- - [tt]keep_firephp_queries[/tt] -- set this to '1' to dump queries that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using '[tt]keep_su[/tt]' to masquerade as another user it will work.
+ - [tt]keep_firephp[/tt] -- set this to '1' to dump permissions checks that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using [tt]keep_su[/tt] to masquerade as another user it will work (which is particularly useful for debugging permissions problems).
+ - [tt]keep_firephp_queries[/tt] -- set this to '1' to dump queries that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using [tt]keep_su[/tt] to masquerade as another user it will work.
  - [tt]keep_show_parse_errors[/tt] -- set this to '1' if you think you have a corrupt PHP file but you can't tell which as your PHP display errors option isn't on (and hence just get blank screens). This will allow Composr to generate stack traces for most corrupt files it tries to include. Note another cause of blank screens can be the PHP memory limit being exceeded.
  - [tt]keep_send_immediately[/tt] -- set this to '1' if you want to debug newsletter code, and not have newsletters sent in the background
- - [tt]keep_su_online[/tt] -- set this to '1' if you want the user '[tt]keep_su[/tt]' is used with to also show as online, and for their last online/submit statuses to be updated
+ - [tt]keep_su_online[/tt] -- set this to '1' if you want the user [tt]keep_su[/tt] is used with to also show as online, and for their last online/submit statuses to be updated
  - [tt]keep_no_minify[/tt] -- set this to '1' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable)
  - [tt]keep_show_loading[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as server-side scripts load
  - [tt]keep_avoid_memory_limit[/tt] -- do not put on a memory limit (admins only); using this will also add in the option to remove paginations, for those with the remove_page_split privilege
@@ -543,34 +550,38 @@ The 'keep' parameters available are:
  - [tt]keep_memory_limit_test[/tt] -- set to a number of megabytes under 32 to reduce the memory limit to this value; useful for performance debugging
  - [tt]keep_no_chain[/tt] -- useful when working with the XML forum driver, tells it to not do reads from the configured chain database
  - [tt]keep_realtime_test[/tt] -- used for testing the realtime feature's display (it injects random data)
- - [tt]keep_simpleurls[/tt] -- disable short URLs
  - [tt]keep_wide[/tt] -- remove panels
  - [tt]keep_wide_high[/tt] -- remove panels, as well as the header and footer
  - [tt]keep_rating_test[/tt] -- set this to '1' if you are testing rating and don't want to be locked out for having already rated
  - [tt]keep_all_cpfs[/tt] -- set this to '1' if you want to edit bundled CPFs that aren't currently marked as editable
  - [tt]keep_oembed_cache[/tt] -- set this to '0' to disable the oembed URL cache temporarily, when debugging oembed endpoints
- - [tt]keep_no_short_url[/tt] -- set this to '1' to temporarily disable short URLs. This is useful for working out page-links/match-keys
+ - [tt]keep_urlmonikers[/tt] -- set to '0' to disable URL monikers
+ - [tt]keep_no_url_scheme[/tt] -- set this to '1' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_no_frames[/tt] -- set this to '1' to disable optional iframes / AJAX frame-simulation
+ - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr
- - [tt]keep_no_webstandards_check[/tt] -- set this to '1' to force page webstandards checking to not occur
+ - [tt]keep_webstandards_check[/tt] -- set this to '1' to perform advanced output checking (for staff only), giving errors if technology guidelines are broken (such as XHTML5, CSS, and WCAG). If you enable this flag you will be informed of any accessibility problems on your website, but it severely effects performance as well as your administration experience.
  - [tt]keep_su[/tt] -- set this to a username or member ID when logged in as admin, to pretend to be that member. May choose the guest member ('Guest' on Conversr by default).
  - [tt]keep_theme_seed[/tt] -- set this to kiddie or random or a 6-character HTML colour code, to get dynamic themegen going for your page view (this is very slow, but fun!); you must be staff, with a confirmed session, for this to work
  - [tt]keep_theme_dark[/tt] -- used in conjunction with keep_theme_seed; set to '1' if it is a dark seed
  - [tt]keep_theme_source[/tt] -- used in conjunction with keep_theme_seed; set to the name of the theme being used as the source
- - [tt]keep_theme_algorithm[/tt] -- used in conjunction with keep_theme_seed; set this to 'equations' or 'hsv' to set the theme algoritm
- - [tt]keep_print[/tt] -- set this to '1' to render a 'printer friendly' version of the page
+ - [tt]keep_theme_algorithm[/tt] -- used in conjunction with keep_theme_seed; set this to 'equations' or 'hsv' to set the theme algorithm
+ - [tt]keep_print[/tt] -- set this to '1' to display a 'printer friendly' version of the page
  - [tt]keep_lang[/tt] -- set to a two-letter ISO language code to tell Composr which language to use
  - [tt]keep_session[/tt] -- this isn't useful for manual editing, but it is used to note session-IDs when [session-]cookies are not working
  - [tt]keep_timezone[/tt] -- this is the timezone code (tz style) to view in
- - [tt]keep_catalogue_<catalogue-name>_root[/tt] -- set to a category ID for the current viewed content type to trick the breadcrumbs into showing a 'virtual root'; this can also be activated by browsing to the category you'd like to be virtual root (as staff) and then clicking on the final link in the breacrumb chain (the link representing the current category)
+ - [tt]keep_catalogue_<catalogue-name>_root[/tt] -- set to a category ID for the current viewed content type to trick the breadcrumbs into showing a 'virtual root'; this can also be activated by browsing to the category you'd like to be virtual root (as staff) and then clicking on the final link in the breadcrumb chain (the link representing the current category)
  - [tt]keep_wiki_root[/tt] -- as above, but used to propagate Wiki+ virtual roots
  - [tt]keep_gallery_root[/tt] -- as above, but used to propagate gallery virtual roots
  - [tt]keep_download_root[/tt] -- as above, but used to propagate download virtual roots
  - [tt]keep_forum_root[/tt] -- as above, but used to propagate forum virtual roots
  - [tt]keep_page_root[/tt] -- as above, but used to propagate Comcode page virtual roots
+
+The following 'keep' parameters have interface triggers and are not useful for manual use:
+ - [tt]keep_full_structure[/tt] -- whether to avoid merging nodes together in the Sitemap, used by the Permissions tree editor so that permissions on non-accessible nodes are settable
 
 The following aren't 'keep' parameters, but are still useful and otherwise behave in the same way:
  - [tt]auth[/tt] -- set to '1' to make Composr request HTTP authentication. This is useful for RSS URLs, if you want the feeds to be generated as authenticated.
@@ -584,23 +595,24 @@ The following aren't 'keep' parameters, but are still useful and otherwise behav
 [title="3"]Extra _config.php settings[/title]
 
 Setting,
-[code]
-$SITE_INFO['no_email_output']='1';
+[code="PHP"]
+$SITE_INFO['no_email_output'] = '1';
 [/code]
 in [tt]_config.php[/tt] will disable emails. This is useful on a development server running with live user accounts.
 
 [title="3"]Hints for making websites for other people[/title]
 
-Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seeminly-bespoke sites such as property directories.
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/2.jpg[/media]
+Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seemingly-bespoke sites such as property directories.
 
 However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
 
 Here are some hints:
- - You might want to use the 'debranding' feature in the Admin Zone (Tools section)
- - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify it's interface to compensate.
+ - You might want to use the debranding feature, Admin Zone > Style > Debranding
+ - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
  - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
  - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
- - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a .htaccess file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
+ - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
  - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
  - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
  - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
@@ -624,112 +636,95 @@ Bear in mind that some sites need maintenance or have multiple people working on
 
 Many forms in Composr accept GET parameters for specifying default field values. This includes most 'add' forms in the system. Generally the GET parameter is exactly the same as the actual field name in the HTML, so it's easy to work it out.
 
-We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then 'type', then parameter name.
-[code]
-topics
- new_post
-  quote
-  intended_solely_for
-
-warnings
- add
-  member_id
-  post_id
-
-admin_aggregate_types
- add
-  aggregate_type
- sync
-  type
-
-admin_ecommerce_logs
- add
-  group_id
- trigger
-  type_code
-
-admin_cns_forums
- add
-  parent_forum
-  forum_grouping_id
-
-admin_cns_merge_members
- browse
-  from
-  to
-
-cms_authors
- _add
-  author
-
-cms_banners
- add
-  b_type
-
-cms_blogs
- add
-  cat
-  validated
-
-cms_booking
- add_booking
-  bookable_id
-  day
-  month
-  year
-
-cms_catalogues
- add_entry
-  catalogue_name
-  category_id / category_id_suggest
-  field_*
-  validated
- add_category
-  catalogue_name
-  parent_id
- add_catalogue
-  id
-
-cms_calendar
- add
-  date
-  e_type
-  validated
-
-cms_downloads
- add
-  cat
-  validated
- add_category
-  parent_id
-
-cms_galleries
- import
-  member_id
-  cat
- add
-  cat
-  validated
- add_other
-  cat
-  validated
- add_category
-  parent_id
-
-cms_news
- add
-  cat
-
-cms_quiz
- add
-  validated
-[/code]
+We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then [tt]type[/tt], then parameter name.
+ - [tt]topics[/tt]
+  - [tt]new_post[/tt]
+   - [tt]quote[/tt]
+   - [tt]intended_solely_for[/tt]
+ - [tt]warnings[/tt]
+  - [tt]add[/tt]
+   - [tt]member_id[/tt]
+   - [tt]post_id[/tt]
+ - [tt]admin_aggregate_types[/tt]
+  - [tt]add[/tt]
+   - [tt]aggregate_type[/tt]
+  - [tt]sync[/tt]
+  - [tt]type[/tt]
+ - [tt]admin_ecommerce_logs[/tt]
+ - [tt]add[/tt]
+   - [tt]group_id[/tt]
+   - [tt]trigger[/tt]
+   - [tt]type_code[/tt]
+ - [tt]admin_cns_forums[/tt]
+  - [tt]add[/tt]
+   - [tt]parent_forum[/tt]
+   - [tt]forum_grouping_id[/tt]
+ - [tt]admin_cns_merge_members[/tt]
+  - [tt]browse[/tt]
+   - [tt]from[/tt]
+   - [tt]to[/tt]
+ - [tt]cms_authors[/tt]
+  - [tt]_add[/tt]
+   - [tt]author[/tt]
+ - [tt]cms_banners[/tt]
+  - [tt]add[/tt]
+   - [tt]b_type[/tt]
+ - [tt]cms_blogs[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+ - [tt]cms_booking[/tt]
+  - [tt]add_booking[/tt]
+   - [tt]bookable_id[/tt]
+   - [tt]day[/tt]
+   - [tt]month[/tt]
+   - [tt]year[/tt]
+ - [tt]cms_catalogues[/tt]
+  - [tt]add_entry[/tt]
+   - [tt]catalogue_name[/tt]
+   - [tt]category_id / category_id_suggest[/tt]
+   - [tt]field_*[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]catalogue_name[/tt]
+   - [tt]parent_id[/tt]
+  - [tt]add_catalogue[/tt]
+   - [tt]id[/tt]
+ - [tt]cms_calendar[/tt]
+  - [tt]add[/tt]
+   - [tt]date[/tt]
+   - [tt]e_type[/tt]
+   - [tt]validated[/tt]
+ - [tt]cms_downloads[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]parent_id[/tt]
+ - [tt]cms_galleries[/tt]
+  - [tt]import[/tt]
+   - [tt]member_id[/tt]
+   - [tt]cat[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_other[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]parent_id[/tt]
+ - [tt]cms_news[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+ - [tt]cms_quiz[/tt]
+  - [tt]add[/tt]
+   - [tt]validated[/tt]
 
 All default parameters are flagged as 'non-canonical' to search engines, so that the search engine knows that variations in value are not indicative of entirely separate web pages.
 
 [title="3"]Overriding files[/title]
 
-If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of it's original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
+If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of its original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
 
 This said, It's best to avoid completely overriding default files if possible, so that any bug fixes from upgrades are more likely to work. Composr provides some techniques so you can override just stuff you want to change rather than a whole file.
 This is explained in the [page="docs:tut_framework"]The Composr programming framework[/page] tutorial (there are two techniques: replacing/supplementing, and programmatic alternation).
@@ -738,6 +733,7 @@ If you are considering overriding a file just so that you can add some new funct
 
 [title="3"]Composr version naming[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/1.jpg[/media]
 In order to have a consistent upgrade system, Composr versions are named according to a rigid scheme. This is best shown by example...
 
 The following are examples of valid names:
@@ -772,6 +768,5 @@ Rules:
 [title="2"]Conclusion[/title]
 
 We're glad you've made it to the end of our Code Book. Thanks for reading this far, and we hope you find Composr an effective and enjoyable environment to code for.
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,debrand,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Miscellaneous technical guidance.}[block]main_tutorial_rating[/block]

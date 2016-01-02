@@ -87,21 +87,21 @@ class Hook_addon_registry_activity_feed
      */
     public function get_description()
     {
-        return 'Displays a self-updating feed of logged site activity, with options to filter the contents. Also includes a block for entering new activities directly into the feed, allowing a \"status update\" functionality.
+        return 'Displays a self-updating feed of logged site activity, with options to filter the contents. Also includes a block for entering new activities directly into the feed, allowing a "status update" functionality.
 
 These blocks are put on the member profile tabs by default, but may also be called up on other areas of the site.
 
-If the chat addon is installed, \"status\" posts can be restricted to only show for buddies.
+If the chat addon is installed, "status" posts can be restricted to only show for buddies.
 
 If the Facebook of Twitter addons are installed then the system can syndicate out activities to the user\'s Twitter and Facebook followers.
 
 The blocks provided are [tt]main_activities[/tt] and the status entry box is called [tt]main_activities_state[/tt].
 
-[code=\"Comcode\"][block=\"Goings On\" max=\"20\" grow=\"0\" mode=\"all\"]main_activities[/block][/code]
-...will show a feed with a title \"Goings On\" containing the last 20 activities, old activities will \"fall off the bottom\" (grow=\"0\") as new ones are loaded via AJAX and there is no filtering on what is shown. (mode=\"all\").
+[code="Comcode"][block="Goings On" max="20" grow="0" mode="all"]main_activities[/block][/code]
+...will show a feed with a title "Goings On" containing the last 20 activities, old activities will "fall off the bottom" (grow="0") as new ones are loaded via AJAX and there is no filtering on what is shown. (mode="all").
 
-[code=\"Comcode\"][block=\"Say Something\"]main_activities_state[/block][/code]
-...will show a status update box with the title \"Say Something\".';
+[code="Comcode"][block="Say Something"]main_activities_state[/block][/code]
+...will show a status update box with the title "Say Something".';
     }
 
     /**
@@ -111,7 +111,9 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
      */
     public function get_applicable_tutorials()
     {
-        return array();
+        return array(
+            'tut_facebook',
+        );
     }
 
     /**
@@ -149,7 +151,6 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'themes/default/images_custom/icons/24x24/tabs/member_account/activity.png',
             'themes/default/images_custom/icons/48x48/tabs/member_account/activity.png',
             'sources_custom/hooks/systems/addon_registry/activity_feed.php',
-            'sources_custom/hooks/systems/activities/.htaccess',
             'sources_custom/hooks/systems/notifications/activity.php',
             'sources_custom/hooks/systems/rss/activities.php',
             'data_custom/activities_updater.php',
@@ -162,21 +163,17 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'sources_custom/activities_submission.php',
             'sources_custom/hooks/systems/activities/activities.php',
             'themes/default/javascript_custom/base64.js',
-            'themes/default/javascript_custom/activities_state.tpl',
+            'themes/default/javascript_custom/activities_state.js',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES_STATE.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES_XML.tpl',
-            'themes/default/javascript_custom/activities.tpl',
+            'themes/default/javascript_custom/activities.js',
             'themes/default/templates_custom/ACTIVITY.tpl',
             'themes/default/templates_custom/CNS_MEMBER_PROFILE_ACTIVITIES.tpl',
             'themes/default/images_custom/stop12.png',
             'themes/default/images_custom/stop12_hover.png',
-            'themes/default/images_custom/stop12_active.png',
             'themes/default/css_custom/activities.css',
-            'sources_custom/hooks/systems/syndication/index.html',
             'sources_custom/hooks/systems/profiles_tabs/activities.php',
-            'sources_custom/hooks/systems/profiles_tabs/.htaccess',
-            'sources_custom/hooks/systems/profiles_tabs/index.html',
             'sources_custom/hooks/systems/profiles_tabs/posts.php',
             'uploads/addon_avatar_normalise/index.html',
             'uploads/addon_icon_normalise/index.html',

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__global4()
 {
@@ -30,7 +32,7 @@ function init__global4()
 /**
  * Attach a message mentioning how the site is closed.
  *
- * @param  tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message.
  */
 function attach_message_site_closed(&$messages_bottom)
 {
@@ -46,7 +48,7 @@ function attach_message_site_closed(&$messages_bottom)
 /**
  * Attach a message mentioning SU is active.
  *
- * @param  tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message.
  */
 function attach_message_su(&$messages_bottom)
 {
@@ -67,6 +69,8 @@ function attach_message_su(&$messages_bottom)
  * @set .css .js
  * @param  PATH $write_path Write path
  * @return boolean If the merge happened
+ *
+ * @ignore
  */
 function _save_web_resource_merging($resources, $type, $write_path)
 {
@@ -141,43 +145,10 @@ function make_xhtml_strict($global)
 }
 
 /**
- * Find the country an IP address long is located in
- *
- * @param  ?IP $ip The IP to geolocate (null: current user's IP)
- * @return ?string The country initials (null: unknown)
- */
-function geolocate_ip($ip = null)
-{
-    if (is_null($ip)) {
-        $ip = get_ip_address();
-    }
-
-    if (!addon_installed('stats')) {
-        return null;
-    }
-
-    $long_ip = ip2long($ip);
-    if ($long_ip === false) {
-        return null; // No IP6 support
-    }
-
-    $query = 'SELECT * FROM ' . get_table_prefix() . 'ip_country WHERE begin_num<=' . sprintf('%u', $long_ip) . ' AND end_num>=' . sprintf('%u', $long_ip);
-    $results = $GLOBALS['SITE_DB']->query($query);
-
-    if (!array_key_exists(0, $results)) {
-        return null;
-    } elseif (!is_null($results[0]['country'])) {
-        return $results[0]['country'];
-    } else {
-        return null;
-    }
-}
-
-/**
  * Get links and details related to a member.
  *
  * @param  MEMBER $member_id A member ID
- * @return array A tuple: links (Tempcode), details (Tempcode), number of unread inline personal posts or private topics
+ * @return array A tuple: links (Tempcode), eCommerce links (Tempcode), details (Tempcode), number of unread inline personal posts or private topics
  */
 function member_personal_links_and_details($member_id)
 {
@@ -188,6 +159,7 @@ function member_personal_links_and_details($member_id)
 
     $details = new Tempcode();
     $links = new Tempcode();
+    $links_ecommerce = new Tempcode();
 
     if (get_forum_type() != 'none') {
         // Post count
@@ -217,7 +189,7 @@ function member_personal_links_and_details($member_id)
             $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '6241e58edfdsf735f3a2618fd7fff', 'KEY' => do_lang_tempcode('COUNT_POINTS_USED'), 'VALUE' => integer_format(points_used($member_id)))));
         }
         if (get_option('points_show_personal_stats_total_points') == '1') {
-            $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '3e6183abf9054574c0cd292d25a4fe5c', 'KEY' => do_lang_tempcode('COUNT_POINTS_EVER'), 'VALUE' => integer_format(total_points($member_id)))));
+            $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '3e6183abf9054574c0cd292d25a4fe5c', 'KEY' => do_lang_tempcode((get_option('points_show_personal_stats_points_left') == '1') ? 'COUNT_POINTS_EVER' : 'COUNT_POINTS'), 'VALUE' => integer_format(total_points($member_id)))));
         }
         if (get_option('points_show_personal_stats_gift_points_left') == '1') {
             $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '6241e5ssd45ddsdsdsa2618fd7fff', 'KEY' => do_lang_tempcode('COUNT_GIFT_POINTS_LEFT'), 'VALUE' => integer_format(get_gift_points_to_give($member_id)))));
@@ -235,9 +207,9 @@ function member_personal_links_and_details($member_id)
             if (get_forum_type() == 'cns') {
                 $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'));
                 $hyperlink = hyperlink($group_url, $usergroups[$group_id], false, true);
-                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array('_GUID' => 'sas41eddsd4sdddssdsa2618fd7fff', 'KEY' => do_lang_tempcode('GROUP'), 'VALUE' => $hyperlink)));
+                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array('_GUID' => 'sas41eddsd4sdddssdsa2618fd7fff', 'KEY' => do_lang_tempcode('USERGROUP'), 'VALUE' => $hyperlink)));
             } else {
-                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '65180134fbc4cf7e227011463d466677', 'KEY' => do_lang_tempcode('GROUP'), 'VALUE' => $usergroups[$group_id])));
+                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '65180134fbc4cf7e227011463d466677', 'KEY' => do_lang_tempcode('USERGROUP'), 'VALUE' => $usergroups[$group_id])));
             }
         }
     }
@@ -294,15 +266,20 @@ function member_personal_links_and_details($member_id)
             sort_maps_by($usergroup_subs, 's_cost');
             foreach ($usergroup_subs as $sub) {
                 $url = build_url(array('page' => 'purchase', 'type' => 'message', 'type_code' => 'USERGROUP' . strval($sub['id'])), get_module_zone('purchase'));
-                $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));
+                $links_ecommerce->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));
             }
         }
     }
 
     // Admin Zone link
-    if ((get_option('show_personal_adminzone_link') == '1') && (has_zone_access($member_id, 'adminzone'))) {
-        $url = build_url(array('page' => ''), 'adminzone');
-        $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
+    if (get_option('show_personal_adminzone_link') == '1') {
+        if (has_zone_access($member_id, 'adminzone')) {
+            $url = build_url(array('page' => ''), 'adminzone');
+            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
+        } else {
+            $url = build_url(array('page' => ''), 'cms');
+            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
+        }
     }
 
     // Conceded mode link
@@ -333,7 +310,7 @@ function member_personal_links_and_details($member_id)
         $num_unread_pps = 0;
     }
 
-    $cache[$member_id] = array($links, $details, $num_unread_pps);
+    $cache[$member_id] = array($links, $links_ecommerce, $details, $num_unread_pps);
     return $cache[$member_id];
 }
 
@@ -360,15 +337,16 @@ function handle_has_checked_recently($id_code)
 /**
  * Convert a string to an array, with utf-8 awareness where possible/required.
  *
- * @param  string $str Input
- * @return array Output
+ * @param  string $str Input.
+ * @param  boolean $force Whether to force unicode as on.
+ * @return array Output.
  */
-function cms_mb_str_split($str)
+function cms_mb_str_split($str, $force = false)
 {
-    $len = cms_mb_strlen($str);
+    $len = cms_mb_strlen($str, $force);
     $array = array();
     for ($i = 0; $i < $len; $i++) {
-        $array[] = cms_mb_substr($str, $i, 1);
+        $array[] = cms_mb_substr($str, $i, 1, $force);
     }
     return $array;
 }
@@ -379,14 +357,15 @@ function cms_mb_str_split($str)
  * @param  string $str The input string.
  * @param  integer $len The maximum chunking length.
  * @param  string $glue Split character.
+ * @param  boolean $force Whether to force unicode as on.
  * @return string The chunked version of the input string.
  */
-function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n")
+function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n", $force = false)
 {
     if ($str == '') {
         return '';
     }
-    $array = cms_mb_str_split($str);
+    $array = cms_mb_str_split($str, $force);
     $n = -1;
     $new = '';
     foreach ($array as $char) {
@@ -404,8 +383,8 @@ function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n")
 /**
  * Prevent double submission, by reference to recent matching admin log entries by the current member.
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none / cannot match against)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. ID) (null: none / cannot match against)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none / cannot match against)
  */
 function prevent_double_submit($type, $a = null, $b = null)
@@ -443,7 +422,7 @@ function prevent_double_submit($type, $a = null, $b = null)
         );
     }
     $time_window = 60 * 5; // 5 minutes seems reasonable
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
     if (!is_null($test)) {
         warn_exit(do_lang_tempcode('DOUBLE_SUBMISSION_PREVENTED', display_time_period($time_window), display_time_period($time_window - (time() - $test))));
     }
@@ -452,18 +431,20 @@ function prevent_double_submit($type, $a = null, $b = null)
 /**
  * Log an action.
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. ID) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
+ * @return ?AUTO_LINK Log ID (null: did not save a log)
+ * @ignore
  */
 function _log_it($type, $a = null, $b = null)
 {
     if (!function_exists('get_member')) {
-        return; // If this is during installation
+        return null; // If this is during installation
     }
 
     if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
-        return;
+        return null;
     }
 
     // Run hooks, if any exist
@@ -477,10 +458,18 @@ function _log_it($type, $a = null, $b = null)
         $ob->run($type, $a, $b);
     }
 
+    $log_id = mixed();
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
         $ip = get_ip_address();
-        $GLOBALS['SITE_DB']->query_insert('adminlogs', array('the_type' => $type, 'param_a' => is_null($a) ? '' : substr($a, 0, 80), 'param_b' => is_null($b) ? '' : substr($b, 0, 80), 'date_and_time' => time(), 'member_id' => get_member(), 'ip' => $ip));
+        $log_id = $GLOBALS['SITE_DB']->query_insert('actionlogs', array(
+            'the_type' => $type,
+            'param_a' => is_null($a) ? '' : substr($a, 0, 80),
+            'param_b' => is_null($b) ? '' : substr($b, 0, 80),
+            'date_and_time' => time(),
+            'member_id' => get_member(),
+            'ip' => $ip,
+        ), true);
     }
 
     static $logged = 0;
@@ -501,21 +490,24 @@ function _log_it($type, $a = null, $b = null)
 
     if ((get_page_name() != 'admin_themewizard') && (get_page_name() != 'admin_import') && ($ADMIN_LOGGING_ON)) {
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
-            require_all_lang();
-            if (is_null($a)) {
-                $a = do_lang('NA');
-            }
-            if (is_null($a)) {
-                $a = do_lang('NA');
-            }
-            require_code('notifications');
-            $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
-            $mail = do_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
             if (addon_installed('actionlog')) {
+                require_all_lang();
+                if (is_null($a)) {
+                    $a = do_lang('NA');
+                }
+                if (is_null($a)) {
+                    $a = do_lang('NA');
+                }
+                require_code('notifications');
+                require_lang('actionlog');
+                $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
+                $mail = do_notification_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
                 dispatch_notification('actionlog', $type, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
             }
         }
     }
+
+    return $log_id;
 }
 
 /**

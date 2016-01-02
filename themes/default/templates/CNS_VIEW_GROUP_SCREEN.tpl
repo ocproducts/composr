@@ -35,7 +35,7 @@
 
 				<div>
 					<label for="vga_username">{!USERNAME}: </label>
-					<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" alt="{!USERNAME}" type="text" id="vga_username" name="username" value="" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" alt="{!USERNAME}" type="text" id="vga_username" name="username" value="" />
 					<input class="menu___generic_admin__add_one button_screen_item" type="submit" value="{!ADD}" />
 				</div>
 			</form>
@@ -63,7 +63,7 @@
 
 	{$BLOCK,block=main_forum_topics,param={FORUM}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
 {+END}{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

@@ -42,11 +42,11 @@ class Block_side_galleries
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'depth\',$map)?intval($map[\'depth\']):0,array_key_exists(\'param\',$map)?$map[\'param\']:\'root\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',array_key_exists(\'show_empty\',$map)?($map[\'show_empty\']==\'1\'):false)';
@@ -59,7 +59,7 @@ class Block_side_galleries
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -110,7 +110,7 @@ class Block_side_galleries
      * @param  array $galleries A list of gallery rows
      * @param  ID_TEXT $tpl The template to use to show each subgallery
      * @param  boolean $show_empty Whether to show empty galleries
-     * @return tempcode The shown galleries
+     * @return Tempcode The shown galleries
      */
     public function inside($zone, $galleries, $tpl, $show_empty)
     {

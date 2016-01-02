@@ -100,6 +100,20 @@ class Module_admin_stats
                 'end_num' => 'UINTEGER',
                 'country' => 'SHORT_TEXT'
             ));
+
+            require_lang('stats');
+
+            require_code('crypt');
+            $secure_ref = produce_salt();
+            $id = $GLOBALS['SITE_DB']->query_insert('task_queue', array(
+                't_title' => do_lang('INSTALL_GEOLOCATION_DATA'),
+                't_hook' => 'install_geolocation_data',
+                't_args' => serialize(array()),
+                't_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
+                't_secure_ref' => $secure_ref, // Used like a temporary password to initiate the task
+                't_send_notification' => 0,
+                't_locked' => 0,
+            ), true);
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
@@ -122,7 +136,7 @@ class Module_admin_stats
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -139,8 +153,13 @@ class Module_admin_stats
             'page' => array('PAGES_STATISTICS', 'menu/adminzone/audit/statistics/page_views'),
             'load_times' => array('LOAD_TIMES', 'menu/adminzone/audit/statistics/load_times'),
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
-            'install_data' => array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate'),
         );
+
+        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
+        if ($test == 0) {
+            $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
+        }
+
         $hooks = find_all_hooks('modules', 'admin_stats');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
@@ -153,6 +172,7 @@ class Module_admin_stats
                 $ret += $info[0];
             }
         }
+
         return $ret;
     }
 
@@ -161,7 +181,7 @@ class Module_admin_stats
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -241,7 +261,7 @@ class Module_admin_stats
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -252,6 +272,8 @@ class Module_admin_stats
 
         if (get_param_integer('csv', 0) == 1) {
             require_code('files2');
+        } else {
+            send_http_output_ping();
         }
 
         $type = get_param_string('type', 'browse');
@@ -301,12 +323,12 @@ class Module_admin_stats
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
         require_code('templates_donext');
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
+
         $actions = array(
             array('menu/adminzone/audit/statistics/statistics', array('_SELF', array('type' => 'overview'), '_SELF'), do_lang('OVERVIEW_STATISTICS'), 'DESCRIPTION_OVERVIEW_STATISTICS'),
             array('menu/adminzone/audit/statistics/page_views', array('_SELF', array('type' => 'page'), '_SELF'), do_lang('PAGES_STATISTICS'), 'DOC_PAGE_STATISTICS'),
@@ -316,6 +338,7 @@ class Module_admin_stats
             array('menu/adminzone/audit/statistics/top_referrers', array('_SELF', array('type' => 'referrers'), '_SELF'), do_lang('TOP_REFERRERS'), 'DOC_TOP_REFERRERS'),
             array('menu/adminzone/audit/statistics/top_keywords', array('_SELF', array('type' => 'keywords'), '_SELF'), do_lang('TOP_SEARCH_KEYWORDS'), 'DOC_TOP_SEARCH_KEYWORDS'),
         );
+
         $hooks = find_all_hooks('modules', 'admin_stats');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
@@ -328,10 +351,14 @@ class Module_admin_stats
                 $actions = array_merge($actions, array($info[1]));
             }
         }
+
+        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
         if ($test == 0) {
             $actions[] = array('menu/adminzone/audit/statistics/geolocate', array('_SELF', array('type' => 'install_data'), '_SELF'), do_lang('INSTALL_GEOLOCATION_DATA'), 'DOC_INSTALL_GEOLOCATION_DATA');
         }
+
         $actions[] = array('menu/adminzone/audit/statistics/clear_stats', array('_SELF', array('type' => 'clear'), '_SELF'), do_lang('CLEAR_STATISTICS'), do_lang_tempcode('DESCRIPTION_CLEAR_STATISTICS'));
+
         return do_next_manager(get_screen_title('SITE_STATISTICS'), comcode_lang_string('DOC_STATISTICS'),
             $actions,
             do_lang('SITE_STATISTICS')
@@ -341,11 +368,11 @@ class Module_admin_stats
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
+     * @param  Tempcode $title The title to display.
      * @param  boolean $stats_table Whether display is dependent on what we kept in our stats table.
-     * @param  ?tempcode $extra_fields Extra fields to request (null: none).
-     * @param  ?tempcode $message The message to show for date selection (null: default).
-     * @return tempcode The result of execution.
+     * @param  ?Tempcode $extra_fields Extra fields to request (null: none).
+     * @param  ?Tempcode $message The message to show for date selection (null: default).
+     * @return Tempcode The result of execution.
      */
     public function get_between($title, $stats_table = false, $extra_fields = null, $message = null)
     {
@@ -393,7 +420,7 @@ class Module_admin_stats
     /**
      * The UI to show user online statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function users_online()
     {
@@ -403,8 +430,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -478,7 +505,7 @@ class Module_admin_stats
     /**
      * The UI to show submission rates.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function submission_rates()
     {
@@ -487,8 +514,8 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
@@ -503,11 +530,11 @@ class Module_admin_stats
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('date_and_time', 'COUNT(*) AS cnt'), null, 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('date_and_time', 'COUNT(*) AS cnt'), null, 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
-        //$max_rows=$GLOBALS['SITE_DB']->query_select_value('adminlogs','COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
+        //$max_rows = $GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
 
         $data = array();
         $base = $rows[0]['date_and_time'];
@@ -559,7 +586,7 @@ class Module_admin_stats
     /**
      * The UI to show page load times.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function load_times()
     {
@@ -567,8 +594,8 @@ class Module_admin_stats
         if (get_param_integer('dated', 0) == 0) {
             return $this->get_between($this->title, true);
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
@@ -587,13 +614,13 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -660,7 +687,7 @@ class Module_admin_stats
             make_csv($real_data, 'load_times.csv');
         }
 
-        $output = create_bar_chart($data, do_lang('PAGE'), do_lang('LOAD_TIME'), '', do_lang('_SECONDS'));
+        $output = create_bar_chart($data, do_lang('PAGE'), do_lang('LOAD_TIME'), '', do_lang('dates:DPLU_SECONDS'));
         $this->save_graph('Global-Load-times', $output);
 
         $graph = do_template('STATS_GRAPH', array('_GUID' => '3f1ef4ebbed1e064c0ec89481dc39afc', 'GRAPH' => get_custom_base_url() . '/data_custom/modules/admin_stats/Global-Load-times.xml', 'TITLE' => do_lang_tempcode('LOAD_TIMES'), 'TEXT' => do_lang_tempcode('DESCRIPTION_LOAD_TIMES')));
@@ -674,7 +701,7 @@ class Module_admin_stats
     /**
      * The UI to show referrers.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function referrers()
     {
@@ -682,8 +709,8 @@ class Module_admin_stats
         if (get_param_integer('dated', 0) == 0) {
             return $this->get_between($this->title, true);
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
@@ -702,13 +729,13 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('TOP_REFERRERS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -806,7 +833,7 @@ class Module_admin_stats
     /**
      * The UI to show top search keywords.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function keywords()
     {
@@ -814,8 +841,8 @@ class Module_admin_stats
         if (get_param_integer('dated', 0) == 0) {
             return $this->get_between($this->title, true);
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
@@ -834,13 +861,13 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -948,7 +975,7 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function page_stats()
     {
@@ -958,8 +985,8 @@ class Module_admin_stats
         if (get_param_integer('dated', 0) == 0) {
             return $this->get_between($this->title, true);
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
@@ -978,13 +1005,13 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('PAGES_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -1062,7 +1089,7 @@ class Module_admin_stats
                 do_lang('COUNT_TOTAL') => $value,
             );
 
-            $fields->attach(results_entry(array(is_null($page) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value), false, true), false));
+            $fields->attach(results_entry(array(is_null($page) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value)), false));
 
             $i++;
         }
@@ -1086,17 +1113,12 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics for the front page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function overview()
     {
-        $page = 'pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
-        if (!file_exists(get_custom_file_base() . '/' . $page)) {
-            $page = 'pages/comcode/' . get_site_default_lang() . '/start.txt';
-        }
-        if (!file_exists(get_file_base() . '/' . $page)) {
-            $page = 'pages/comcode/' . fallback_lang() . '/start.txt';
-        }
+        $page_request = _request_page(get_zone_default_page(''), '');
+        $page = $page_request[count($page_request) - 1];
 
         list($graph_views_monthly, $list_views_monthly) = array_values($this->views_per_x($page, 'views_hourly', 'VIEWS_PER_MONTH', 'DESCRIPTION_VIEWS_PER_MONTH', 730, 8766));
 
@@ -1160,11 +1182,13 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics for a single page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function show_page()
     {
         $page = get_param_string('iscreen');
+
+        require_code('locations');
 
         //************************************************************************************************
         // Views per hour/day/week/month
@@ -1305,7 +1329,6 @@ class Module_admin_stats
                 $regions = array();
                 $data = array();
                 $degrees = 360 / count($rows);
-                require_code('global4');
                 foreach ($rows as $value) {
                     $region = geolocate_ip($value['ip']);
                     if ((is_null($region)) || ($region == '')) {
@@ -1448,7 +1471,7 @@ class Module_admin_stats
     /**
      * The UI to clear statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function clear()
     {
@@ -1479,7 +1502,7 @@ class Module_admin_stats
     /**
      * The actualiser to clear statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _clear()
     {
@@ -1512,86 +1535,24 @@ class Module_admin_stats
     /**
      * Install geolocation data.
      *
-     * @return tempcode The UI, showing the result of the installation
+     * @return Tempcode The UI, showing the result of the installation
      */
     public function install_geolocation_data()
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
-
-        $last = 104295 - 1; // Index of the last line in the IP_Country.txt file
-
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test >= $last) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-        }
-
-        // We need to read in IP_Country.txt, line-by-line, for x lines
-        $lines = get_param_integer('lines', 2000);
-        $position = get_param_integer('position', 0);
-        $i = 0;
-
-        if ($position == 0) {
-            $GLOBALS['SITE_DB']->query_delete('ip_country');
-        }
-
-        $path = get_file_base() . '/data/modules/admin_stats/IP_Country.txt';
-        $file = @fopen($path, GOOGLE_APPENGINE ? 'rb' : 'rt');
-        if ($file === false) {
-            warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)));
-        }
-        $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
-        while ((!feof($file)) && ($i < ($position + $lines))) {
-            $data = fgets($file, 1024);
-            if ($data === false) {
-                continue;
-            }
-            if ($i >= $position) {
-                if ($data !== false) {
-                    $_data = explode(',', $data);
-                    if (count($_data) == 3) {
-                        $to_insert['begin_num'][] = $_data[0]; // FUDGEFUDGE. Intentionally passes in as strings, to workaround problem in PHP integer sizes (can't store unsigned data type)
-                        $to_insert['end_num'][] = $_data[1];
-                        $to_insert['country'][] = substr($_data[2], 0, 2);
-
-                        if (count($to_insert['begin_num']) == 100) {
-                            $GLOBALS['SITE_DB']->query_insert('ip_country', $to_insert);
-                            $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
-                        }
-                    }
-                }
-            }
-
-            $i++;
-        }
-        fclose($file);
-        fix_permissions($path);
-        if (count($to_insert['begin_num']) != 0) {
-            $GLOBALS['SITE_DB']->query_insert('ip_country', $to_insert);
-        }
-
-        if ($i >= $last) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-        }
-
-        global $FORCE_META_REFRESH;
-        $FORCE_META_REFRESH = true;
-        require_code('site2');
-        assign_refresh(build_url(array('page' => '_SELF', 'type' => 'install_data', 'lines' => $lines, 'position' => $position + $lines), 'adminzone'), ($position == 0) ? 1.0 : 0.0);
-        return inform_screen($this->title, do_lang_tempcode('INSTALLING_GEOLOCATION_DATA'));
+        require_code('tasks');
+        return call_user_func_array__long_task(do_lang('INSTALL_GEOLOCATION_DATA'), $this->title, 'install_geolocation_data');
     }
 
     /**
-     * Create a bar chart of the views the specified page has received in relation to the specified hours. The bar chart is stored in /data_custom/admin_stats/ as an SVG image, and the tempcode for display of the graph and results table is returned.
+     * Create a bar chart of the views the specified page has received in relation to the specified hours. The bar chart is stored in /data_custom/admin_stats/ as an SVG image, and the Tempcode for display of the graph and results table is returned.
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic type (for use in sort parameters and such)
-     * @param  string $graph_title Language identifier for the graph title
-     * @param  string $graph_description Language identifier for the graph description
+     * @param  string $graph_title Language string ID for the graph title
+     * @param  string $graph_description Language string ID for the graph description
      * @param  integer $hours The steps of hours to use
      * @param  integer $total The total hours to plot
-     * @return array A linear array containing the graph and list tempcode objects, respectively
+     * @return array A linear array containing the graph and list Tempcode objects, respectively
      */
     public function views_per_x($page, $type, $graph_title, $graph_description, $hours = 1, $total = 24)
     {
@@ -1667,21 +1628,21 @@ class Module_admin_stats
     }
 
     /**
-     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the tempcode for display of the graph and results table is returned
+     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the Tempcode for display of the graph and results table is returned
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic to use
-     * @param  string $graph_title Language identifier for the graph title
-     * @param  string $graph_description Language identifier for the graph description
-     * @param  string $list_title Language identifier for the list title
-     * @return array A linear array containing the graph and list tempcode objects, respectively
+     * @param  string $graph_title Language string ID for the graph title
+     * @param  string $graph_description Language string ID for the graph description
+     * @param  string $list_title Language string ID for the list title
+     * @return array A linear array containing the graph and list Tempcode objects, respectively
      */
     public function page_x_share($page, $type, $graph_title, $graph_description, $list_title)
     {
         // Return a pie chart with the $type used to view this page
         $start = get_param_integer('start_' . $type, 0);
         $max = get_param_integer('max_' . $type, 25);
-        $sortables = array('views' => do_lang_tempcode('_VIEWS'));
+        $sortables = array('views' => do_lang_tempcode('COUNT_VIEWS'));
         list($sortable, $sort_order) = explode(' ', get_param_string('sort', 'views ASC'), 2);
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');

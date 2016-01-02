@@ -1,14 +1,16 @@
 {$SET,js_block_id,js_block_{$RAND%}}
 
-<div id="{$GET%,js_block_id}" aria-busy="true">
-	<div aria-busy="true" class="spaced">
-		<div class="ajax_loading vertical_alignment">
-			<img id="loading_image" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
-			<span>{!LOADING}</span>
+<div>
+	<div id="{$GET%,js_block_id}">
+		<div aria-busy="true" class="spaced">
+			<div class="ajax_loading vertical_alignment">
+				<img id="loading_image" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
+				<span>{!LOADING}</span>
+			</div>
 		</div>
-	</div>
 
-	<!-- Block will load in here -->
+		<!-- Block will load in here -->
+	</div>
 </div>
 
 <script>// <![CDATA[

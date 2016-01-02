@@ -23,7 +23,7 @@ Some of the services we may offer ([b]DEFAULT. PLEASE EDIT AS REQUIRED[/b]):
 {+START,IF,{$ADDON_INSTALLED,filedump}}
 [title="2"]The file/media library[/title]
 
-{$ANCHOR,FILEDUMP}[semihtml]<a href="{$PAGE_LINK*,_SELF:filedump}">The file/media library</a>[/semihtml] is a place where you may store files to share with other super-members.
+{$ANCHOR,FILEDUMP}[semihtml]<a href="{$PAGE_LINK*,_SEARCH:filedump}">The file/media library</a>[/semihtml] is a place where you may store files to share with other super-members.
 
 Feel free to create personal folders in here for your own use.
 
@@ -35,3 +35,5 @@ Please use our public download system for releasing final (public) files, as thi
 
 Most members will only be able to delete their own files, but all files are viewable to all other super-members, and may be downloaded by anyone who knows the URL.
 {+END}
+
+[block]main_comcode_page_children[/block]

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__hooks__modules__admin_import__smf2()
 {
@@ -768,7 +770,7 @@ class Hook_smf2
             $title = $row['name'];
             $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
 
-            $test = $GLOBALS['FORUM_DB']->query_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
             if (!is_null($test)) {
                 import_id_remap_put('category', strval($row['id_cat']), $test);
                 continue;
@@ -1714,6 +1716,7 @@ class Hook_smf2
      */
     public function import_banners($db, $table_prefix, $file_base)
     {
+        require_code('banners');
         require_code('banners2');
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ads', null, null, true);
@@ -1724,7 +1727,7 @@ class Hook_smf2
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $row['NAME']));
             if (is_null($test)) {
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-                add_banner(fix_id($row['NAME']), '', '', $row['NAME'], stripslashes($row['CONTENT']), null, '', 1, '', 1, null, $submitter, $row['show_topofpage'], '', time(), 0, $row['HITS'], 0, $row['HITS'], null);
+                add_banner(fix_id($row['NAME']), '', '', $row['NAME'], stripslashes($row['CONTENT']), null, '', 1, '', BANNER_PERMANENT, null, $submitter, $row['show_topofpage'], '', array(), array(), time(), 0, $row['HITS'], 0, $row['HITS'], null);
             }
         }
     }

@@ -74,6 +74,7 @@ class Module_purchase
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
                 'e_amount' => 'SHORT_TEXT',
+                'e_currency' => 'ID_TEXT',
                 'e_ip_address' => 'IP',
                 'e_session_id' => 'ID_TEXT',
                 'e_time' => 'TIME',
@@ -84,11 +85,11 @@ class Module_purchase
             require_code('currency');
             $cpf = array('currency' => array(3, 'list', implode('|', array_keys(get_currency_map()))));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 1, 0, 1, 0, '', $l[1], 0, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
             }
             $cpf = array('payment_cardholder_name' => array(100, 'short_text', ''), 'payment_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'), 'payment_card_number' => array(20, 'integer', ''), 'payment_card_start_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_expiry_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_issue_number' => array(2, 'short_text', ''), 'payment_card_cv2' => array(4, 'short_text', ''));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 1, 0, 1, 0, '', $l[1], 1, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
             }
 
             $GLOBALS['SITE_DB']->create_table('transactions', array(
@@ -116,6 +117,8 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'item', 'SHORT_TEXT', 't_type_code');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
         }
     }
@@ -126,7 +129,7 @@ class Module_purchase
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -141,7 +144,7 @@ class Module_purchase
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -150,6 +153,7 @@ class Module_purchase
         require_lang('ecommerce');
 
         $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('PURCHASE_STAGE_' . $type)));
+        breadcrumb_set_self(do_lang_tempcode('PURCHASE_STAGE_' . $type));
 
         if ($type == 'browse') {
             breadcrumb_set_self(do_lang_tempcode('PURCHASING'));
@@ -163,7 +167,7 @@ class Module_purchase
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -197,8 +201,8 @@ class Module_purchase
         if ($type == 'message') {
             return $this->message();
         }
-        if ($type == 'licence') {
-            return $this->licence();
+        if ($type == 'terms') {
+            return $this->terms();
         }
         if ($type == 'details') {
             return $this->details();
@@ -215,11 +219,11 @@ class Module_purchase
     /**
      * Wrap-up so as to remove redundancy in templates.
      *
-     * @param  tempcode $content To wrap.
-     * @param  tempcode $title The title to use.
+     * @param  Tempcode $content To wrap.
+     * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
-     * @return tempcode Wrapped.
+     * @return Tempcode Wrapped.
      */
     public function _wrap($content, $title, $url, $get = false)
     {
@@ -233,7 +237,7 @@ class Module_purchase
     /**
      * Choose product step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function choose()
     {
@@ -269,7 +273,7 @@ class Module_purchase
 
             if ($wizard_supported && $is_available) {
                 require_code('currency');
-                $currency = get_option('currency');
+                $currency = isset($details[5]) ? $details[5] : get_option('currency');
                 $price = currency_convert(floatval($details[1]), $currency, null, true);
 
                 $description = $details[4];
@@ -290,7 +294,7 @@ class Module_purchase
     /**
      * Message about product step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function message()
     {
@@ -310,12 +314,12 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $licence = method_exists($object, 'get_agreement') ? $object->get_agreement($type_code) : '';
+        $terms = method_exists($object, 'get_terms') ? $object->get_terms($type_code) : '';
         $fields = method_exists($object, 'get_needed_fields') ? $object->get_needed_fields($type_code) : null;
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => ($licence == '') ? (is_null($fields) ? 'pay' : 'details') : 'licence', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
 
         if (method_exists($object, 'product_info')) {
             $text->attach($object->product_info(get_param_integer('type_code'), $this->title));
@@ -331,11 +335,11 @@ class Module_purchase
     }
 
     /**
-     * Licence agreement step.
+     * Terms and conditions step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
-    public function licence()
+    public function terms()
     {
         require_lang('installer');
 
@@ -351,24 +355,28 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $licence = $object->get_agreement($type_code);
+        $terms = $object->get_terms($type_code);
         $fields = $object->get_needed_fields($type_code);
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $licence)), $this->title, null);
+        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $terms)), $this->title, null);
     }
 
     /**
      * Details about purchase step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function details()
     {
         require_code('form_templates');
+
+        if (get_param_integer('accepted', 0) == 1) {
+            attach_message(do_lang_tempcode('LICENCE_WAS_ACCEPTED'), 'inform');
+        }
 
         $type_code = get_param_string('type_code');
 
@@ -389,7 +397,7 @@ class Module_purchase
     /**
      * Payment step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function pay()
     {
@@ -408,6 +416,7 @@ class Module_purchase
         $temp = $object->get_products(true, $type_code);
         $price = $temp[$type_code][1];
         $item_name = $temp[$type_code][4];
+        $currency = isset($temp[$type_code][5]) ? $temp[$type_code][5] : get_option('currency');
 
         if (method_exists($object, 'set_needed_fields')) {
             $purchase_id = $object->set_needed_fields($type_code);
@@ -455,12 +464,11 @@ class Module_purchase
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
-            $mc_currency = get_option('currency');
             $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
             $parent_txn_id = '';
             $memo = 'Free';
             $mc_gross = '';
-            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
+            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
             return inform_screen($this->title, do_lang_tempcode('FREE_PURCHASE'));
         }
 
@@ -480,16 +488,16 @@ class Module_purchase
 
         if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
             if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, get_option('currency'), $via);
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $via);
             } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), get_option('currency'), $via);
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
             }
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
             $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
             $result = do_template($tpl, array(
                 'LOGOS' => $logos,
                 'TRANSACTION_BUTTON' => $transaction_button,
-                'CURRENCY' => get_option('currency'),
+                'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
                 'TITLE' => $this->title,
                 'LENGTH' => is_null($length) ? '' : strval($length),
@@ -503,7 +511,7 @@ class Module_purchase
                 warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
             }
 
-            list($fields, $hidden) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
+            list($fields, $hidden) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), $currency, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
 
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
 
@@ -516,7 +524,7 @@ class Module_purchase
     /**
      * Finish step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function finish()
     {
@@ -540,6 +548,7 @@ class Module_purchase
                 $amount = $transaction_row['e_amount'];
                 $length = $transaction_row['e_length'];
                 $length_units = $transaction_row['e_length_units'];
+                $currency = $transaction_row['e_currency'];
 
                 $name = post_param_string('name');
                 $card_number = post_param_string('card_number');
@@ -549,17 +558,17 @@ class Module_purchase
                 $card_type = post_param_string('card_type');
                 $cv2 = post_param_string('cv2');
 
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
+                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
-                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
+                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
                 }
 
                 if ($success) {
                     $member_id = $transaction_row['e_member_id'];
                     require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
                 }
             }
 
@@ -592,7 +601,7 @@ class Module_purchase
      * Check to see if a product is available to the current user.
      *
      * @param  ID_TEXT $type_code The product code.
-     * @return ?tempcode Error screen (null: no error).
+     * @return ?Tempcode Error screen (null: no error).
      */
     public function _check_availability($type_code)
     {

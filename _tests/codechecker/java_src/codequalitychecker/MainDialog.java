@@ -251,7 +251,7 @@ public class MainDialog extends JFrame {
             last_m = tmpFile.lastModified() / 1000 + 60 * 60 * 24;
 
             if (tmpFile.isDirectory()) {
-		if ((skip_custom) && ((thefiles[i].equals("transcoder")) || (thefiles[i].equals("uploads")) || (thefiles[i].equals("_tests")) || (thefiles[i].equals("buildr")) || (thefiles[i].equals("tracker")) || (thefiles[i].equals("exports")) || (thefiles[i].equals("simpletest")) || (thefiles[i].indexOf("_custom") != -1))) {
+                if ((skip_custom) && ((thefiles[i].equals("transcoder")) || (thefiles[i].equals("uploads")) || (thefiles[i].equals("_tests")) || (thefiles[i].equals("mobiquo")) || (thefiles[i].equals("ocproducts")) || (thefiles[i].equals("buildr")) || (thefiles[i].equals("tracker")) || (thefiles[i].equals("exports")) || (thefiles[i].equals("simpletest")) || (thefiles[i].indexOf("_custom") != -1))) {
                     continue;
                 }
 

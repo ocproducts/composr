@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__forum__cns()
 {
@@ -48,7 +50,7 @@ function init__forum__cns()
 class Forum_driver_cns extends Forum_driver_base
 {
     /**
-     * Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for NULL. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
+     * Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for null. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
      */
     public function forum_layer_initialise()
     {
@@ -154,7 +156,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
-     * @param  integer $length The length of the new custom field
+     * @param  integer $length The length of the new custom field (ignored for Conversr, $type used instead)
      * @param  BINARY $locked Whether the field is locked
      * @param  BINARY $viewable Whether the field is for viewing
      * @param  BINARY $settable Whether the field is for setting
@@ -233,7 +235,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
      * @param  ?TIME $time_post The post time (null: use current time)
      * @param  ?MEMBER $spacer_post_member_id Owner of comment topic (null: Guest)
-     * @return array Topic ID (may be NULL), and whether a hidden post has been made
+     * @return array Topic ID (may be null), and whether a hidden post has been made
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $time_post = null, $spacer_post_member_id = null)
     {
@@ -313,6 +315,10 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function topic_is_threaded($topic_id)
     {
+        if (get_param_integer('threaded', null) === 1) {
+            return true;
+        }
+
         global $TOPIC_IS_THREADED_CACHE;
         if (array_key_exists($topic_id, $TOPIC_IS_THREADED_CACHE)) {
             return $TOPIC_IS_THREADED_CACHE[$topic_id] == 1;
@@ -326,7 +332,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Get an emoticon chooser template.
      *
      * @param  string $field_name The ID of the form field the emoticon chooser adds to
-     * @return tempcode The emoticon chooser template
+     * @return Tempcode The emoticon chooser template
      */
     public function get_emoticon_chooser($field_name = 'post')
     {
@@ -369,7 +375,7 @@ class Forum_driver_cns extends Forum_driver_base
 
     /**
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
-     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, whilst others made the humanly readeable name.
+     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
      * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
      * @return ID_TEXT The theme
@@ -396,10 +402,10 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Set a custom profile field's value. It should not be called directly.
+     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
-     * @param  string $field The field name
+     * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname") (e.g. "firstname" for the CPF with a title of "cms_firstname")
      * @param  string $value The value
      */
     public function set_custom_field($member, $field, $value)
@@ -421,13 +427,8 @@ class Forum_driver_cns extends Forum_driver_base
                 return; // Possible on an MSN, and there's an inconsistency (e.g. no points addon)
             }
         }
-        $field_type = $field_bits[0]['cf_type'];
         $field_id = $field_bits[0]['id'];
-        if ($field_type == 'integer') {
-            cns_set_custom_field($member, $field_id, intval($value));
-        } else {
-            cns_set_custom_field($member, $field_id, $value);
-        }
+        cns_set_custom_field($member, $field_id, $value);
     }
 
     /**
@@ -715,7 +716,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (is_numeric($forum)) {
             $result = intval($forum);
         } else {
-            $result = $this->connection->query_select_value_if_there('f_forums', 'id', array('f_name' => $forum));
+            $result = $this->forum_id_from_name($forum);
             if ($forum == get_option('comments_forum_name')) { // Fix performance for next time
                 require_code('config2');
                 set_option('comments_forum_name', strval($result));
@@ -878,7 +879,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Get the member ID of the next member after the given one, or NULL.
+     * Get the member ID of the next member after the given one, or null.
      * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
      *
      * @param  MEMBER $member The member ID to increment
@@ -910,7 +911,7 @@ class Forum_driver_cns extends Forum_driver_base
 
     /**
      * Get the name relating to the specified member ID.
-     * If this returns NULL, then the member has been deleted. Always take potential NULL output into account.
+     * If this returns null, then the member has been deleted. Always take potential null output into account.
      *
      * @param  MEMBER $member The member ID
      * @return ?SHORT_TEXT The member name (null: member deleted)
@@ -1116,7 +1117,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members';
         if ($friends) {
-            $sql .= ' JOIN ' . $this->connection->get_table_prefix() . 'chat_buddies ON member_liked=id AND member_likes=' . strval(get_member());
+            $sql .= ' JOIN ' . $this->connection->get_table_prefix() . 'chat_friends ON member_liked=id AND member_likes=' . strval(get_member());
         }
         $sql .= ' WHERE ' . $like . 'id<>' . strval($this->get_guest_id());
         $sql .= ' ORDER BY m_last_submit_time DESC';
@@ -1375,7 +1376,7 @@ class Forum_driver_cns extends Forum_driver_base
         $where = $only_permissive ? ' WHERE g_is_private_club=0' : '';
 
         $select = 'g.id,g_name,g.g_hidden';
-        $sup = ' ORDER BY g_order,g.id';
+        $sup = ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
         if (running_script('upgrader')) {
             $sup = '';
         }
@@ -1502,21 +1503,21 @@ class Forum_driver_cns extends Forum_driver_base
         if ((!cns_is_ldap_member($member_id)) && (!is_null($member_id))) {
             return md5($password);
         } else {
-            return $password; //cns_ldap_hash($member_id,$password); Can't do hash checks under all systems
+            return $password; //cns_ldap_hash($member_id, $password); Can't do hash checks under all systems
         }
     }
 
     /**
-     * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+     * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
      * @param  ?MEMBER $userid The member ID (null: use member name)
-     * @param  MD5 $password_hashed The md5-hashed password
+     * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
-     * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+     * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {
@@ -1599,7 +1600,7 @@ class Forum_driver_cns extends Forum_driver_base
                     require_code('failure');
                     add_ip_ban($ip, do_lang('SPAM_REPORT_SITE_FLOODING'));
                     require_code('notifications');
-                    dispatch_notification('auto_ban', null, do_lang('AUTO_BAN_SUBJECT', $ip, null, null, get_site_default_lang()), do_lang('AUTO_BAN_DOS_MESSAGE', $ip, integer_format($count_threshold), integer_format($time_threshold), get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
+                    dispatch_notification('auto_ban', null, do_lang('AUTO_BAN_SUBJECT', $ip, null, null, get_site_default_lang()), do_notification_lang('AUTO_BAN_DOS_MESSAGE', $ip, integer_format($count_threshold), integer_format($time_threshold), get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
                     syndicate_spammer_report($ip, is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), do_lang('SPAM_REPORT_SITE_FLOODING'));
                 }
                 if (!function_exists('require_lang')) {
@@ -1610,7 +1611,9 @@ class Forum_driver_cns extends Forum_driver_base
                 }
                 require_lang('cns');
 
-                warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', integer_format($wait_time)));
+                set_http_status_code('429');
+
+                warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', escape_html(integer_format($wait_time))));
             }
         } else {
             $restrict_answer = 0;
@@ -1715,6 +1718,6 @@ class Forum_driver_cns extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return ($row === null) ? null : $row[$field];
+        return ($row === null) ? null : (isset($row[$field]) ? $row[$field] : null);
     }
 }

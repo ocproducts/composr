@@ -98,6 +98,8 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
         $target_theme = $theme;
     }
 
+    $made_change = true;
+
     $images = array_merge(find_images_do_dir($theme, 'images/', $langs), find_images_do_dir($theme, 'images_custom/', $langs));
 
     foreach (array_keys($langs) as $lang) {
@@ -118,8 +120,17 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
                 $correct_path = find_theme_image($id, false, true, $theme, $lang);
                 $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+
+                $made_change = false;
             }
         }
+    }
+
+    if ($made_change) {
+        // Reset this so they can all load in in one go
+        global $THEME_IMAGES_CACHE, $THEME_IMAGES_SMART_CACHE_LOAD;
+        $THEME_IMAGES_CACHE = array();
+        $THEME_IMAGES_SMART_CACHE_LOAD = 1;
     }
 
     Self_learning_cache::erase_smart_cache();

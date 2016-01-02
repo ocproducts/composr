@@ -56,7 +56,7 @@ if ($type == 'auto_probe') {
         global $SITE_INFO;
         $backup = $SITE_INFO;
         require_once($probe_dir . '/_config.php');
-        $linked_db = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $linked_db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
         $auto_probe += collapse_1d_complexity('addon_name', $linked_db->query_select('addons', array('addon_name')));
         $SITE_INFO = $backup;
 
@@ -155,7 +155,7 @@ if ($type == 'auto_probe') {
                     }
                 }
             } else {
-                if (!should_ignore_file($file, IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES | IGNORE_BUNDLED_VOLATILE)) {
+                if (!should_ignore_file($file, IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES | IGNORE_BUNDLED_VOLATILE)) {
                     $manual_changes['maybe_delete'][$file] = null;
                 }
             }
@@ -164,12 +164,12 @@ if ($type == 'auto_probe') {
         echo '
             <h2>Advice</h2>
         ';
-        foreach (
-            array(
-                'maybe_delete' => 'The following files might need deleting',
-                'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
-                'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an adhoc upgrader'
-            ) as $d => $message) {
+        $advice_parts = array(
+            'maybe_delete' => 'The following files might need deleting',
+            'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
+            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an ad hoc upgrader'
+        );
+        foreach ($advice_parts as $d => $message) {
             echo '
                     <p>
                             ' . $message . '&hellip;
@@ -183,9 +183,9 @@ if ($type == 'auto_probe') {
                     if (!is_null($caption)) {
                         echo ':<br /><br />';
                         /*require_code('geshi');   If you want to see it highlighted
-                                        $geshi=new GeSHi($caption,'diff');
-                                        $geshi->set_header_type(GESHI_HEADER_DIV);
-                                        echo $geshi->parse_code();*/
+                        $geshi = new GeSHi($caption, 'diff');
+                        $geshi->set_header_type(GESHI_HEADER_DIV);
+                        echo $geshi->parse_code();*/
                         echo '<div style="overflow: auto; width: 100%; white-space: pre">' . ($caption) . '</div>';
                     }
                     echo '</li>';
@@ -196,7 +196,7 @@ if ($type == 'auto_probe') {
                             <p class="nothing_here">
                                         None
                             </p>
-                    ';
+                ';
             }
         }
 

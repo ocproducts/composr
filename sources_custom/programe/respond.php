@@ -534,13 +534,13 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 		$children = $xmlnode["children"];
 
 		for ($randomc=0;$randomc<sizeof($children);$randomc++){
-			if (strtoupper($children[$randomc]["tag"]) == "LI"){
+			if (is_array($children[$randomc]) && strtoupper($children[$randomc]["tag"]) == "LI"){
 				$liarray[]=$randomc;
 			}
 		}
 
 		// Pick a random number from 0 to sizeof($liarray)-1
-		mt_srand ((float) microtime() * 1000000);
+		mt_srand ((int) microtime() * 1000000);
 		$lirandom= mt_rand(0,(sizeof($liarray)-1));
 
 

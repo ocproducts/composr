@@ -69,7 +69,7 @@
 Licensing note by ocProducts...
 
 The "Good, not Evil" bit was inserted to this MIT-derived licence by Douglas Crockford, as a joke [reference: his talk, "The JSON Saga"].
-Therefore we can interpret this in a very moderate way. Also it's definition is clear, so no one could rule a particular usage as evil as there is no legal definition of evil.
+Therefore we can interpret this in a very moderate way. Also its definition is clear, so no one could rule a particular usage as evil as there is no legal definition of evil.
 Lastly, this cogent point has been made:
 "The terms of Evil are not outlined. And to use license to stop freedom is Evil [in the spirit of the original MIT licence the statement is written into], therefore the only Evil is using the software to stop its free use..."
 */
@@ -123,6 +123,10 @@ class JSMin
                         $this->output .= $this->a;
                         $this->a = $this->get();
 
+                        if ($this->a === null) {
+                            return null;
+                        }
+
                         if ($this->a === $this->b) {
                             break;
                         }
@@ -156,6 +160,10 @@ class JSMin
 
                         while (true) {
                             $this->a = $this->get();
+
+                            if ($this->a === null) {
+                                return null;
+                            }
 
                             if ($this->a === '/') {
                                 break;
@@ -193,6 +201,7 @@ class JSMin
         if ($ptr < $this->inputLength) {
             $c = '';
             do {
+                if (!isset($this->input[$ptr])) break;
                 $_c = $this->input[$ptr];
                 $o = ord($_c);
                 $alphanumeric = ($o >= 65 && $o <= 90 || $o >= 97 && $o <= 122 || $o >= 48 && $o <= 57 || $c == '\\' || $c == '_' || $c == '$' || $o > 126);
@@ -348,6 +357,10 @@ class JSMin
                     $chr_lf = 10;
                     while (true) {
                         $c = $this->get();
+
+                        if ($c === null) {
+                            return null;
+                        }
 
                         if (ord($c) <= $chr_lf) {
                             return $c;

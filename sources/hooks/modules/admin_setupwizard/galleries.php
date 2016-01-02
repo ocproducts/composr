@@ -40,7 +40,7 @@ class Hook_sw_galleries
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return tempcode An input field.
+     * @return Tempcode An input field.
      */
     public function get_fields($field_defaults)
     {

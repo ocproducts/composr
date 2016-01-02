@@ -40,7 +40,7 @@ class Hook_choose_image
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
         $tree = get_gallery_content_tree('images', $only_owned, $id, null, null, is_null($id) ? 0 : 1, false, $editable_filter);
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'galleries')) {
@@ -63,7 +63,7 @@ class Hook_choose_image
             if ($id === $_id) { // Possible when we look under as a root
                 foreach ($t['entries'] as $eid => $etitle) {
                     if (is_object($etitle)) {
-                        $etitle = @html_entity_decode(strip_tags($etitle->evaluate()), ENT_QUOTES, get_charset());
+                        $etitle = strip_html($etitle->evaluate());
                     }
 
                     $thumb_url = ensure_thumbnail($t['entries_rows'][$eid]['url'], $t['entries_rows'][$eid]['thumb_url'], 'galleries', 'images', $eid);
@@ -101,7 +101,7 @@ class Hook_choose_image
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null)
     {

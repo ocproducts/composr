@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__users()
 {
@@ -57,16 +59,18 @@ function init__users()
     $DOING_USERS_INIT = true;
     global $IS_VIA_BACKDOOR;
     $IS_VIA_BACKDOOR = false;
+    global $DID_CHANGE_SESSION_ID;
+    $DID_CHANGE_SESSION_ID = false;
 
     // Load all sessions into memory, if possible
-    if (get_option('session_prudence') != '1') {
+    if (get_option('session_prudence') == '0') {
         $SESSION_CACHE = persistent_cache_get('SESSION_CACHE');
     } else {
         $SESSION_CACHE = null;
     }
     global $IN_MINIKERNEL_VERSION;
     if ((!is_array($SESSION_CACHE)) && (!$IN_MINIKERNEL_VERSION)) {
-        if (get_option('session_prudence') != '1') {
+        if (get_option('session_prudence') == '0') {
             $where = '';
         } else {
             $where = ' WHERE ' . db_string_equal_to('the_session', get_session_id()) . ' OR ' . db_string_equal_to('ip', get_ip_address(3));
@@ -80,7 +84,7 @@ function init__users()
         } else {
             $SESSION_CACHE = list_to_map('the_session', $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions' . $where));
         }
-        if (get_option('session_prudence') != '1') {
+        if (get_option('session_prudence') == '0') {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -115,7 +119,8 @@ function handle_logins()
     }
 
     // If it was a log out
-    if ((get_page_name() == 'login') && (get_param_string('type', '', true) == 'logout')) {
+    $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
+    if (($page == 'login') && (get_param_string('type', '', true) == 'logout')) {
         require_code('users_active_actions');
         handle_active_logout();
     }
@@ -164,7 +169,7 @@ function get_member($quick_only = false)
         delete_expired_sessions_or_recover();
     }
 
-    // Try via backdoor that someone with full server access can place
+    // Try via restricted_manually_enabled_backdoor that someone with full server access can place
     $backdoor_ip_address = mixed(); // Enable to a real IP address to force login from FTP access (if lost admin password)
     if (array_key_exists('backdoor_ip', $SITE_INFO)) {
         if (!empty($SITE_INFO['backdoor_ip'])) {
@@ -224,9 +229,9 @@ function get_member($quick_only = false)
             $member = $member_row['member_id'];
 
             if (($member !== null) && ((time() - $member_row['last_activity']) > 10)) { // Performance optimisation. Pointless re-storing the last_activity if less than 3 seconds have passed!
-                //$GLOBALS['SITE_DB']->query_update('sessions',array('last_activity'=>time(),'the_zone'=>get_zone_name(),'the_page'=>get_page_name()),array('the_session'=>$session),'',1);  Done in get_screen_title now
+                //$GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time(), 'the_zone' => get_zone_name(), 'the_page' => get_page_name()), array('the_session' => $session), '', 1);  Done in get_screen_title now
                 $SESSION_CACHE[$session]['last_activity'] = time();
-                if (get_option('session_prudence') != '1') {
+                if (get_option('session_prudence') == '0') {
                     persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
                 }
             }
@@ -234,7 +239,7 @@ function get_member($quick_only = false)
             $SESSION_CONFIRMED_CACHE = ($member_row['session_confirmed'] == 1);
 
             if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member)) && (!$GLOBALS['IS_VIA_BACKDOOR'])) { // All hands to the guns
-                warn_exit(do_lang_tempcode('MEMBER_BANNED'));
+                warn_exit(do_lang_tempcode('YOU_ARE_BANNED'));
             }
 
             // Test this member still exists
@@ -411,9 +416,7 @@ function get_session_id()
 {
     $cookie_var = get_session_cookie();
 
-    if ((!isset($_COOKIE[$cookie_var])) || (/*To work around Commandr's development mode trick*/
-            $GLOBALS['DEV_MODE'] && running_script('commandr'))
-    ) {
+    if ((!isset($_COOKIE[$cookie_var])) || (/*To work around Commandr's development mode trick*/$GLOBALS['DEV_MODE'] && running_script('commandr'))) {
         if (array_key_exists('keep_session', $_GET)) {
             return get_param_string('keep_session');
         }
@@ -459,7 +462,7 @@ function enforce_sessioned_url($url)
 /**
  * Find what sessions are expired and delete them, and recover an existing one for $member if there is one.
  *
- * @param  ?MEMBER $member User to get a current session for (null: do not try, which guarantees a return result of NULL also)
+ * @param  ?MEMBER $member User to get a current session for (null: do not try, which guarantees a return result of null also)
  * @return ?AUTO_LINK The session ID we rebound to (null: did not rebind)
  */
 function delete_expired_sessions_or_recover($member = null)
@@ -499,7 +502,7 @@ function delete_expired_sessions_or_recover($member = null)
         }
     }
     if ($dirty_session_cache) {
-        if (get_option('session_prudence') != '1') {
+        if (get_option('session_prudence') == '0') {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -553,7 +556,7 @@ function get_pass_cookie()
  * Get a cookie value.
  *
  * @param  string $name The name of the cookie
- * @param  ?string $default The default value (null: just use the value NULL)
+ * @param  ?string $default The default value (null: just use the value null)
  * @return ?string The value stored in the cookie (null: the default default)
  */
 function cms_admirecookie($name, $default = null)

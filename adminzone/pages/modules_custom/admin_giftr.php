@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    oc_gifts
+ * @package    giftr
  */
 
 require_code('crud_module');
@@ -129,7 +129,7 @@ class Module_admin_giftr extends Standard_crud_module
         $GLOBALS['SITE_DB']->drop_table_if_exists('members_gifts');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/uploads/giftr_addon',true);
+        //deldir_contents(get_custom_file_base() . '/uploads/giftr_addon', true);
     }
 
     /**
@@ -138,7 +138,7 @@ class Module_admin_giftr extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -155,7 +155,7 @@ class Module_admin_giftr extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -179,7 +179,7 @@ class Module_admin_giftr extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -205,7 +205,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -223,7 +223,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * The UI to view details of a gift.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view()
     {
@@ -249,7 +249,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
 
         require_code('templates_map_table');
-        return map_table(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
+        return map_table_screen(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
     }
 
     public function get_form_fields($id = null, $name = '', $category = '', $image = '', $price = 10, $enabled = 1)
@@ -275,7 +275,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -339,7 +339,7 @@ class Module_admin_giftr extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return ?tempcode Confirm message (null: continue)
+     * @return ?Tempcode Confirm message (null: continue)
      */
     public function edit_actualisation($id)
     {

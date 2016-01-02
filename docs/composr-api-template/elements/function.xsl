@@ -1,4 +1,7 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:php="http://php.net/xsl"
+>
     <xsl:output indent="yes" method="html" />
 
     <!-- Method/Function display name -->
@@ -49,14 +52,18 @@
             <xsl:variable name="name" select="name"/>
             <xsl:variable name="tag" select="../docblock/tag[@name='param' and @variable=$name]" />
             <h4><xsl:value-of select="name"/></h4>
-            <code><xsl:apply-templates select="$tag/type" /></code>
+            <xsl:apply-templates select="$tag/type" mode="contents" />
             <xsl:value-of select="$tag/@description" disable-output-escaping="yes" />
         </div>
     </xsl:template>
 
     <xsl:template match="function|method" mode="contents">
-        <a name="{name}" id="{name}"></a>
-        <div class="element clickable {local-name(.)} {@visibility} {name}" data-toggle="collapse" data-target=".{name} .collapse">
+        <a id="{local-name(.)}_{name}"></a>
+        <xsl:variable name="inherited">
+            <xsl:if test="inherited_from"><xsl:value-of select="'inherited'" /></xsl:if>
+        </xsl:variable>
+
+        <div class="element clickable {local-name(.)} {@visibility} {local-name(.)}_{name} {$inherited}" data-toggle="collapse" data-target=".{local-name(.)}_{name} .collapse" title="{@visibility}">
             <h2><xsl:apply-templates select="name" /></h2>
             <xsl:apply-templates select="name" mode="signature" />
             <div class="labels">
@@ -65,6 +72,9 @@
                 </xsl:if>
                 <xsl:if test="inherited_from">
                     <span class="label">Inherited</span>
+                </xsl:if>
+                <xsl:if test="@static='true' or docblock/tag[@name='static']">
+                    <span class="label">Static</span>
                 </xsl:if>
             </div>
 
@@ -75,9 +85,9 @@
                         <xsl:if test="not(docblock/tag[@name='example'])">detail-description</xsl:if>
                     </xsl:attribute>
 
-                    <p class="long_description">
-                        <xsl:value-of select="docblock/long-description" disable-output-escaping="yes" />
-                    </p>
+                    <div class="long_description">
+                        <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
+                    </div>
 
                     <xsl:if test="count(docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']) > 0">
                         <table class="table table-bordered">

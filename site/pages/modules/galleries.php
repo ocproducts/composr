@@ -55,6 +55,13 @@ class Module_galleries
         delete_privilege('high_personal_gallery_limit');
         delete_privilege('no_personal_gallery_limit');
 
+        delete_privilege('autocomplete_keyword_gallery');
+        delete_privilege('autocomplete_title_gallery');
+        delete_privilege('autocomplete_keyword_image');
+        delete_privilege('autocomplete_title_image');
+        delete_privilege('autocomplete_keyword_videos');
+        delete_privilege('autocomplete_title_videos');
+
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'galleries'));
 
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'galleries'));
@@ -232,7 +239,7 @@ class Module_galleries
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -260,7 +267,7 @@ class Module_galleries
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -298,7 +305,7 @@ class Module_galleries
                     }
                 }
                 if (!array_key_exists(0, $gallery_rows)) {
-                    return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE'));
+                    return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
                 }
                 $myrow = $gallery_rows[0];
                 $myrow['is_member_synched'] = 0;
@@ -322,7 +329,7 @@ class Module_galleries
             // Breadcrumbs
             $breadcrumbs = gallery_breadcrumbs($cat, $root, true, get_module_zone('galleries'), true);
             if ((has_privilege(get_member(), 'open_virtual_roots')) && ($cat != $root)) {
-                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'misc', 'id' => $cat, 'keep_gallery_root' => $cat), '_SELF');
+                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'keep_gallery_root' => $cat), '_SELF');
                 $breadcrumbs[] = array($page_link, $fullname, do_lang_tempcode('VIRTUAL_ROOT'));
             } else {
                 $breadcrumbs[] = array('', $fullname);
@@ -387,7 +394,7 @@ class Module_galleries
             // Pic up some info
             $rows = $GLOBALS['SITE_DB']->query_select($type . 's', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE', $type));
             }
             $myrow = $rows[0];
             $cat = $myrow['cat'];
@@ -417,7 +424,7 @@ class Module_galleries
                     array(
                         make_string_tempcode(get_translated_text($myrow['title'])),
                         make_string_tempcode('title'),
-                        make_string_tempcode('_SEARCH:cms_galleries:__edit:' . strval($id)),
+                        make_string_tempcode((($type == 'video') ? '_SEARCH:cms_galleries:__edit_other' : '_SEARCH:cms_galleries:__edit:') . strval($id)),
                         make_string_tempcode('1'),
                         make_string_tempcode('1'),
                         make_string_tempcode(has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat)) ? '1' : '0'),
@@ -486,7 +493,7 @@ class Module_galleries
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -512,7 +519,7 @@ class Module_galleries
     /**
      * The UI to show a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_gallery()
     {
@@ -641,24 +648,24 @@ class Module_galleries
     /**
      * The UI for a "flow mode" gallery.
      *
-     * @param  tempcode $rating_details Rating area
-     * @param  tempcode $comment_details Commenting area
+     * @param  Tempcode $rating_details Rating area
+     * @param  Tempcode $comment_details Commenting area
      * @param  ID_TEXT $cat Our gallery ID
      * @param  ID_TEXT $root Virtual root gallery
-     * @param  tempcode $description The description of the gallery
-     * @param  tempcode $children The tempcode for our visible child galleries
+     * @param  Tempcode $description The description of the gallery
+     * @param  Tempcode $children The Tempcode for our visible child galleries
      * @param  boolean $may_download Whether may "download this gallery"
-     * @param  tempcode $edit_url The URL to "edit this gallery"
-     * @param  tempcode $add_gallery_url The URL to "add a gallery"
-     * @param  tempcode $submit_image_url The URL to "submit an image to this gallery"
-     * @param  tempcode $submit_video_url The URL to "submit a video to this gallery"
-     * @param  tempcode $title The title of the page (our of get_screen_title)
+     * @param  Tempcode $edit_url The URL to "edit this gallery"
+     * @param  Tempcode $add_gallery_url The URL to "add a gallery"
+     * @param  Tempcode $submit_image_url The URL to "submit an image to this gallery"
+     * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
+     * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  URLPATH $rep_image The representative image for the gallery
      * @param  integer $start The start position we are in browsing through child galleries
      * @param  integer $max The maximum number of child galleries we can display per page
      * @param  string $fullname The gallery title
-     * @param  tempcode $sorting Sorting UI
-     * @return tempcode The UI
+     * @param  Tempcode $sorting Sorting UI
+     * @return Tempcode The UI
      */
     public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting)
     {
@@ -700,6 +707,12 @@ class Module_galleries
             $extra_where_video .= $privacy_where_video;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
         if ($probe_type == 'first') {
             $where = db_string_equal_to('cat', $cat);
             if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
@@ -734,7 +747,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '5500ce574232db1e1577b3d69bbc0d6d', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '5500ce574232db1e1577b3d69bbc0d6d',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'gallery'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -751,7 +767,7 @@ class Module_galleries
                     }
                     $rows = $GLOBALS['SITE_DB']->query_select('videos', array('*'), $map, '', 1);
                     if (!array_key_exists(0, $rows)) {
-                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'warn'));
+                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'video'), 'warn');
                         break;
                     }
                     $row = $rows[0];
@@ -810,7 +826,7 @@ class Module_galleries
                     }
                     $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, '', 1);
                     if (!array_key_exists(0, $rows)) {
-                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'warn'));
+                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'image'), 'warn');
                         break;
                     }
                     $row = $rows[0];
@@ -1009,21 +1025,21 @@ class Module_galleries
     /**
      * The UI for an "regular mode" gallery.
      *
-     * @param  tempcode $rating_details Rating area
-     * @param  tempcode $comment_details Commenting area
+     * @param  Tempcode $rating_details Rating area
+     * @param  Tempcode $comment_details Commenting area
      * @param  ID_TEXT $cat Our gallery ID
      * @param  ID_TEXT $root Virtual root gallery
-     * @param  tempcode $description The description of the gallery
-     * @param  tempcode $children The tempcode for our visible child galleries
+     * @param  Tempcode $description The description of the gallery
+     * @param  Tempcode $children The Tempcode for our visible child galleries
      * @param  boolean $may_download Whether may "download this gallery"
-     * @param  tempcode $edit_url The URL to "edit this gallery"
-     * @param  tempcode $add_gallery_url The URL to "add a gallery"
-     * @param  tempcode $submit_image_url The URL to "submit an image to this gallery"
-     * @param  tempcode $submit_video_url The URL to "submit a video to this gallery"
-     * @param  tempcode $title The title of the page (our of get_screen_title)
+     * @param  Tempcode $edit_url The URL to "edit this gallery"
+     * @param  Tempcode $add_gallery_url The URL to "add a gallery"
+     * @param  Tempcode $submit_image_url The URL to "submit an image to this gallery"
+     * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
+     * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
-     * @param  tempcode $sorting Sorting UI
-     * @return tempcode The UI
+     * @param  Tempcode $sorting Sorting UI
+     * @return Tempcode The UI
      */
     public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting)
     {
@@ -1075,8 +1091,8 @@ class Module_galleries
      * The UI to show an image.
      *
      * @param  ?string $category_name Alternate category name to use (null: use standard one). This is useful if you are overriding this code to show images in virtual galleries.
-     * @param  ?tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
-     * @return tempcode The UI
+     * @param  ?Tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
+     * @return Tempcode The UI
      */
     public function show_image($category_name = null, $breadcrumbs = null)
     {
@@ -1133,7 +1149,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'c32faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'c32faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'image'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -1193,8 +1212,8 @@ class Module_galleries
      * The UI to show a video.
      *
      * @param  ?string $category_name Alternate category name to use (null: use standard one). This is useful if you are overriding this code to show images in virtual galleries.
-     * @param  ?tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
-     * @return tempcode The UI
+     * @param  ?Tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
+     * @return Tempcode The UI
      */
     public function show_video($category_name = null, $breadcrumbs = null)
     {
@@ -1248,7 +1267,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'b32faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'b32faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'video'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -1319,9 +1341,9 @@ class Module_galleries
      *
      * @param  string $where Where clause for doing set query
      * @param  string $join Join clause for doing set query
-     * @param  tempcode $category_name The actual title for the gallery we are using
+     * @param  Tempcode $category_name The actual title for the gallery we are using
      * @param  ?AUTO_LINK $current_id The ID of the current entry of the type we are browsing in the gallery we are using (null: assume first)
-     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an adhoc root, to allow gallery splitting-up)
+     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an ad hoc root, to allow gallery splitting-up)
      * @param  ?ID_TEXT $current_type The current type being browsed (null: assume first)
      * @set image video
      * @param  BINARY $slideshow If in slideshow
@@ -1368,6 +1390,12 @@ class Module_galleries
             $extra_join_video .= $privacy_join_video;
             $extra_where_image .= $privacy_where_image;
             $extra_where_video .= $privacy_where_video;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
         $total_images = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'images r' . $join . $extra_join_image . ' WHERE ' . $where_images . $extra_where_image, false, true);
@@ -1433,14 +1461,14 @@ class Module_galleries
     /**
      * Show gallery navigation bits used when viewing images/videos.
      *
-     * @param  tempcode $category_name The actual title for the gallery we are using
+     * @param  Tempcode $category_name The actual title for the gallery we are using
      * @param  string $where Where clause for doing set query
      * @param  string $join Join clause for doing set query
      * @param  AUTO_LINK $current_id The ID of the current entry of the type we are browsing in the gallery we are using
      * @param  AUTO_LINK $first_id The ID of the first entry of the type we are browsing in the gallery we are using (null: no previous)
      * @param  ?AUTO_LINK $back_id The ID of the previous entry of the type we are browsing in the gallery we are using (null: no previous)
      * @param  ?AUTO_LINK $next_id As above, except next entry (null: no next)
-     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an adhoc root, to allow gallery splitting-up)
+     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an ad hoc root, to allow gallery splitting-up)
      * @param  integer $x Position in collection
      * @param  integer $n Total in collection
      * @param  ID_TEXT $current_type The first type being browsed
@@ -1462,7 +1490,7 @@ class Module_galleries
      * @param  string $sql_suffix_videos Select clause query suffix for videos
      * @param  string $image_select Selectcode for limiting images displayed
      * @param  string $video_select Selectcode for limiting videos displayed
-     * @return tempcode The navigation bits
+     * @return Tempcode The navigation bits
      */
     public function show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $x, $n, $current_type, $first_type, $back_type, $next_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
     {

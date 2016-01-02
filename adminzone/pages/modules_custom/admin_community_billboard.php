@@ -94,7 +94,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -113,7 +113,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -133,7 +133,7 @@ class Module_admin_community_billboard extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -153,7 +153,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -207,7 +207,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']));
 
             $activation_time = $row['activation_time'];
-            $days = is_null($activation_time) ? '' : float_format(round((time() - $activation_time) / 60 / 60 / 24, 3));
+            $days = is_null($activation_time) ? '' : float_format(floatval(time() - $activation_time) / 60.0 / 60.0 / 24.0, 3);
 
             $fields->attach(results_entry(array(protect_from_escaping(get_translated_tempcode('community_billboard', $row, 'the_message')), integer_format($row['days']), get_timezoned_date($row['order_time']), ($row['active_now'] == 1) ? $days : do_lang_tempcode('NA_EM'), $username, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
@@ -216,7 +216,7 @@ class Module_admin_community_billboard extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a community billboard message adding/editing form.
+     * Get Tempcode for a community billboard message adding/editing form.
      *
      * @param  SHORT_TEXT $message The message
      * @param  integer $days The number of days to display for
@@ -224,7 +224,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      * @param  BINARY $validated Whether the message is for immediate use
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($message = '', $days = 1, $notes = '', $validated = 0)
+    public function get_form_fields($message = '', $days = 1, $notes = '', $validated = 1)
     {
         $fields = new Tempcode();
         require_code('form_templates');
@@ -233,7 +233,7 @@ class Module_admin_community_billboard extends Standard_crud_module
         if (get_option('enable_staff_notes') == '1') {
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
-        $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $validated == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($message == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $validated == 1));
 
         return array($fields, new Tempcode());
     }

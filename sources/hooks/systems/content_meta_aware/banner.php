@@ -32,9 +32,9 @@ class Hook_content_meta_aware_banner
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
-            'content_type_label' => 'BANNER',
+            'content_type_label' => 'global:BANNER',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'banners',
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_banner
             'title_field_dereference' => false,
             'description_field' => 'caption',
             'thumb_field' => 'img_url',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:banners:view:source=_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_banners:_edit:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_banner
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => 'submitter',
+            'author_field' => null,
             'add_time_field' => 'add_date',
             'edit_time_field' => 'edit_date',
             'date_field' => 'add_date',
@@ -75,9 +78,14 @@ class Hook_content_meta_aware_banner
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'banners',
+            'notification_hook' => null,
+            'sitemap_hook' => 'banner',
 
             'addon_name' => 'banners',
 
@@ -87,7 +95,11 @@ class Hook_content_meta_aware_banner
             'commandr_filesystem_hook' => 'banners',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_BANNER',
         );
@@ -103,7 +115,7 @@ class Hook_content_meta_aware_banner
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

@@ -40,7 +40,7 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('post_template', strval($id));
+        generate_resource_fs_moniker('post_template', strval($id));
     }
 }
 
@@ -57,7 +57,7 @@ function cns_delete_post_template($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('post_template', strval($id));
+        expunge_resource_fs_moniker('post_template', strval($id));
     }
 }
 
@@ -136,6 +136,11 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
     require_code('themes2');
     tidy_theme_img_code($theme_img_code, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
 
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resource_fs_moniker('emoticon', $code);
+    }
+
     log_it('EDIT_EMOTICON', $code, $theme_img_code);
 }
 
@@ -155,6 +160,11 @@ function cns_delete_emoticon($code)
 
     require_code('themes2');
     tidy_theme_img_code(null, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resource_fs_moniker('emoticon', $code);
+    }
 
     log_it('DELETE_EMOTICON', $code);
 }
@@ -189,6 +199,12 @@ function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsle
     $map += lang_remap('w_subject', $_subject, $subject);
     $map += lang_remap('w_text', $_text, $text);
     $GLOBALS['SITE_DB']->query_update('f_welcome_emails', $map, array('id' => $id), '', 1);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resource_fs_moniker('welcome_email', strval($id));
+    }
+
     log_it('EDIT_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
 }
 
@@ -204,17 +220,24 @@ function cns_delete_welcome_email($id)
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $_text = $GLOBALS['SITE_DB']->query_select_value('f_welcome_emails', 'w_text', array('id' => $id));
-    log_it('DELETE_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
+
     $GLOBALS['SITE_DB']->query_delete('f_welcome_emails', array('id' => $id), '', 1);
     delete_lang($_subject);
     delete_lang($_text);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resource_fs_moniker('welcome_email', strval($id));
+    }
+
+    log_it('DELETE_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
 }
 
 /**
  * Get a form field for editing a forum multi code, set up with a default of the given forum multi code.
  *
  * @param  SHORT_TEXT $forum_multi_code The multi code.
- * @return tempcode The form field.
+ * @return Tempcode The form field.
  */
 function cns_get_forum_multi_code_field($forum_multi_code)
 {
@@ -240,6 +263,7 @@ function cns_get_forum_multi_code_field($forum_multi_code)
  * @param  LONG_TEXT $reason The reason for the moderation (may be blank).
  * @param  ?MEMBER $by The member performing the moderation (null: current member).
  * @param  ?TIME $date_and_time The time of the moderation (null: just now).
+ * @return AUTO_LINK The log ID.
  */
 function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $by = null, $date_and_time = null)
 {
@@ -250,12 +274,12 @@ function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $
         $by = get_member();
     }
 
-    $GLOBALS['FORUM_DB']->query_insert('f_moderator_logs', array(
+    return $GLOBALS['FORUM_DB']->query_insert('f_moderator_logs', array(
         'l_the_type' => $the_type,
         'l_param_a' => $param_a,
         'l_param_b' => $param_b,
         'l_date_and_time' => $date_and_time,
         'l_reason' => $reason,
         'l_by' => $by
-    ));
+    ), true);
 }

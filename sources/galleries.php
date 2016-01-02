@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__galleries()
 {
@@ -42,7 +44,7 @@ function init__galleries()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered box
+ * @return Tempcode The rendered box
  */
 function render_image_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -113,7 +115,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered box
+ * @return Tempcode The rendered box
  */
 function render_video_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -191,7 +193,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The preview
+ * @return Tempcode The preview
  */
 function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_appropriate = false, $zone = '_SEARCH', $quit_if_empty = true, $preview = false, $give_context = true, $include_breadcrumbs = true, $attach_to_url_filter = false, $guid = '')
 {
@@ -235,19 +237,19 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     list($num_children, $num_images, $num_videos) = get_recursive_gallery_details($myrow['name']);
     if ($num_children == 0) {
         if ($myrow['accept_videos'] == 0) {
-            $lang = do_lang_tempcode('_SUBGALLERY_BITS_IMAGES', integer_format($num_images), integer_format($num_videos), integer_format($num_images + $num_videos));
+            $lang = do_lang_tempcode('_SUBGALLERY_BITS_IMAGES', escape_html(integer_format($num_images)), escape_html(integer_format($num_videos)), escape_html(integer_format($num_images + $num_videos)));
         } elseif ($myrow['accept_images'] == 0) {
-            $lang = do_lang_tempcode('_SUBGALLERY_BITS_VIDEOS', integer_format($num_images), integer_format($num_videos), integer_format($num_images + $num_videos));
+            $lang = do_lang_tempcode('_SUBGALLERY_BITS_VIDEOS', escape_html(integer_format($num_images)), escape_html(integer_format($num_videos)), escape_html(integer_format($num_images + $num_videos)));
         } else {
-            $lang = do_lang_tempcode('_SUBGALLERY_BITS', integer_format($num_images), integer_format($num_videos), integer_format($num_images + $num_videos));
+            $lang = do_lang_tempcode('_SUBGALLERY_BITS', escape_html(integer_format($num_images)), escape_html(integer_format($num_videos)), escape_html(integer_format($num_images + $num_videos)));
         }
     } else {
         if ($myrow['accept_videos'] == 0) {
-            $lang = do_lang_tempcode('SUBGALLERY_BITS_IMAGES', integer_format($num_children), integer_format($num_images), array(integer_format($num_videos), integer_format($num_images + $num_videos)));
+            $lang = do_lang_tempcode('SUBGALLERY_BITS_IMAGES', escape_html(integer_format($num_children)), escape_html(integer_format($num_images)), array(integer_format($num_videos), escape_html(integer_format($num_images + $num_videos))));
         } elseif ($myrow['accept_images'] == 0) {
-            $lang = do_lang_tempcode('SUBGALLERY_BITS_VIDEOS', integer_format($num_children), integer_format($num_images), array(integer_format($num_videos), integer_format($num_images + $num_videos)));
+            $lang = do_lang_tempcode('SUBGALLERY_BITS_VIDEOS', escape_html(integer_format($num_children)), escape_html(integer_format($num_images)), array(integer_format($num_videos), escape_html(integer_format($num_images + $num_videos))));
         } else {
-            $lang = do_lang_tempcode('SUBGALLERY_BITS', integer_format($num_children), integer_format($num_images), array(integer_format($num_videos), integer_format($num_images + $num_videos)));
+            $lang = do_lang_tempcode('SUBGALLERY_BITS', escape_html(integer_format($num_children)), escape_html(integer_format($num_images)), array(integer_format($num_videos), escape_html(integer_format($num_images + $num_videos))));
         }
     }
 
@@ -391,7 +393,7 @@ function gallery_has_content($name)
  *
  * @param  ID_TEXT $gallery_name The name of the gallery
  * @param  ?array $row Gallery row (null: look it up)
- * @param  boolean $only_if_personal_gallery Only non-NULL if it is a personal gallery
+ * @param  boolean $only_if_personal_gallery Only non-null if it is a personal gallery
  * @return ?MEMBER The owner of the gallery (null: not a member owned gallery)
  */
 function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_personal_gallery = false)
@@ -405,7 +407,7 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
         if (is_null($row)) {
             $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('g_owner'), array('name' => $gallery_name));
             if (!isset($rows[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
             }
             $row = $rows[0];
         }
@@ -419,7 +421,7 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
  * Get preview detailing for a video.
  *
  * @param  array $myrow The database row of the video
- * @return tempcode The preview
+ * @return Tempcode The preview
  */
 function show_video_details($myrow)
 {
@@ -536,7 +538,7 @@ function only_member_galleries_of_id($cat, $member_id, $child_count)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The tree list
+ * @return Tempcode The tree list
  */
 function create_selection_list_gallery_tree($it = null, $filter = null, $must_accept_images = false, $must_accept_videos = false, $purity = false, $use_compound_list = false, $member_id = null, $addable_filter = false, $editable_filter = false, $updated_since = null)
 {
@@ -601,7 +603,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
     if (is_null($gallery_info)) {
         $_gallery_info = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'is_member_synched', 'accept_images', 'accept_videos'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $_gallery_info)) {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('gallery:' . $gallery)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($gallery), 'gallery'));
         }
         $gallery_info = $_gallery_info[0];
     }
@@ -801,7 +803,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
  * See whether the current member can submit to the named *member* gallery. Note - this function assumes that members have general submit permission, and does not check for gallery read access.
  *
  * @param  ID_TEXT $name The gallery name
- * @return ~integer                     The owner of the gallery (false: we aren't allowed to submit to it) (-2: not a member gallery)
+ * @return ~integer The owner of the gallery (false: we aren't allowed to submit to it) (-2: not a member gallery)
  */
 function can_submit_to_gallery($name)
 {
@@ -868,7 +870,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         $category_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'fullname'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $category_rows)) {
             return array();
-        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery)));
+        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery), 'gallery'));
         $PT_PAIR_CACHE_G[$gallery] = $category_rows[0];
     }
 
@@ -880,7 +882,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery), 'gallery'));
     }
 
     if ((get_option('personal_under_members') == '1') && (get_forum_type() == 'cns')) {
@@ -915,7 +917,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
  * @param  ?AUTO_LINK $submitter Only show images/videos submitted by this member (null: no filter)
  * @param  boolean $use_compound_list Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return tempcode The list of entries
+ * @return Tempcode The list of entries
  */
 function create_selection_list_gallery_content_tree($table, $it = null, $submitter = null, $use_compound_list = false, $editable_filter = false)
 {
@@ -1038,7 +1040,7 @@ function get_gallery_content_tree($table, $submitter = null, $gallery = null, $b
  * @param  integer $height Height
  * @param  integer $length Length
  * @param  MEMBER $submitter The entry submitter
- * @return tempcode Displayed media
+ * @return Tempcode Displayed media
  */
 function show_gallery_video_media($url, $thumb_url, $width, $height, $length, $submitter)
 {

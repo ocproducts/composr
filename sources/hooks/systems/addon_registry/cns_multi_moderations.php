@@ -61,7 +61,7 @@ class Hook_addon_registry_cns_multi_moderations
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_forum_helpdesk',
+            'tut_moderation',
         );
     }
 

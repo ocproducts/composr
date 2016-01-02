@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__tempcode_compiler()
 {
@@ -99,6 +101,8 @@ function init__tempcode_compiler()
  * @param  array $bits Compiler tokens
  * @param  integer $i How far we are through the token list
  * @return integer The sum length of tokens passed
+ *
+ * @ignore
  */
 function _length_so_far($bits, $i)
 {
@@ -188,7 +192,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     if ($tolerate_errors) {
                         continue;
                     }
-                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                 }
                 $current_level_data = array();
                 switch (isset($next_token[0]) ? $next_token[0] : '') {
@@ -241,14 +245,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $past_level_mode = $current_level_mode;
                 if ($stack == array()) {
                     if (!$tolerate_errors) {
-                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + _length_so_far($bits, $i))));
+                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + _length_so_far($bits, $i)))));
                     }
                 } else {
                     list($current_level_mode, $current_level_data, $current_level_params, , , , $num_preprocessable_bits) = array_pop($stack);
                 }
 
                 // Handle the level we just closed
-                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in lang strings does not get considered an escape
+                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in language string IDs does not get considered an escape
                 $escaped = array();
                 foreach ($_escaped as $e) {
                     switch ($e) {
@@ -460,7 +464,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if ($escaped == array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
-                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':NULL';
+                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';
                             if ((!function_exists('get_value')) || (get_value('shortened_tempcode') !== '1')) {
                                 $temp .= ',"' . php_addslashes($parameter . '/' . $template_name) . '"';
                             }
@@ -477,7 +481,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $s_escaped .= strval($esc);
                                 }
                                 if (($s_escaped == strval(ENTITY_ESCAPED)) && (!$GLOBALS['XSS_DETECT'])) {
-                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?str_replace($GLOBALS[\'HTML_ESCAPE_1_STRREP\'],$GLOBALS[\'HTML_ESCAPE_2\'],' . $temp . '):' . $temp . ')';
+                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES,get_charset()):' . $temp . ')';
                                 } else {
                                     if ($s_escaped == strval(ENTITY_ESCAPED)) {
                                         $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?apply_tempcode_escaping_inline(array(' . $s_escaped . '),' . $temp . '):' . $temp . ')';
@@ -518,21 +522,21 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         list($current_level_mode, $current_level_data, $current_level_params, $directive_level_mode, $directive_level_data, $directive_level_params, $num_preprocessable_bits) = array_pop($stack);
                         if (!is_array($directive_level_params)) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         $directive_opener_params = array_merge($directive_level_params, array($directive_level_data));
                         if (($directive_level_mode != PARSE_DIRECTIVE) || ($directive_opener_params[0][0] != '"START"')) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
 
                         // Handle directive
@@ -540,7 +544,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         $directive_params = '';
                         $first_directive_param = '""';
@@ -580,8 +584,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 break;
                         }
                         if ($directive_name == 'SET_NOPREEVAL') { // Needs to be dynamic
-                            $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/
-                            ;
+                            $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
                             $_past_level_data = implode('.', $past_level_data);
                             $unset_code = '';
                             if (strpos($_past_level_data, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
@@ -708,14 +711,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $found = find_template_place($eval, '', $theme, '.tpl', 'templates', $template_name == $eval);
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {
-                                        $fullpath = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
-                                        if (!is_file($fullpath)) {
-                                            $fullpath = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        $full_path = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        if (!is_file($full_path)) {
+                                            $full_path = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
                                         }
-                                        if (is_file($fullpath)) {
-                                            $tmp = fopen($fullpath, 'rb');
+                                        if (is_file($full_path)) {
+                                            $tmp = fopen($full_path, 'rb');
                                             @flock($tmp, LOCK_SH);
-                                            $filecontents = file_get_contents($fullpath);
+                                            $filecontents = file_get_contents($full_path);
                                             @flock($tmp, LOCK_UN);
                                             fclose($tmp);
                                         } else {
@@ -784,7 +787,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     if ((!array_key_exists('LAX_COMCODE', $GLOBALS)) || ($GLOBALS['LAX_COMCODE'] === false)) {
         if ($stack != array()) {
             if (!$tolerate_errors) {
-                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
             }
         }
     }
@@ -797,7 +800,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
-        if (preg_match('#^"((?<!\\\\)\\\\"|[^"])*"$#', $c) != 0) {
+        $c_stripped_down = str_replace(array('\\\\', '\\"'), array('', ''), $c); // Remove literal slashes and literal quotes so we can do an accurate scan to ensure it is all one string
+    	if ($c_stripped_down[0] == '"' && strpos($c_stripped_down, '"', 1) == strlen($c_stripped_down) - 1) {
             if ($just_done_string) {
                 $pi = count($merged) - 1;
                 $merged[$pi] = substr($merged[$pi], 0, strlen($merged[$pi]) - 1) . substr($c, 1, strlen($c) - 1);
@@ -827,7 +831,9 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  * @param  LANGUAGE_NAME $lang The language the template is in the context of
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  ?ID_TEXT $theme_orig The theme to cache in (null: main theme)
- * @return tempcode The compiled tempcode
+ * @return Tempcode The compiled Tempcode
+ *
+ * @ignore
  */
 function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $theme_orig = null)
 {
@@ -841,6 +847,9 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE;
+    if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
+        fill_template_preview_op_cache();
+    }
 
     //$final_css_path = null;
 
@@ -858,8 +867,8 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     // LESS support
     if ((addon_installed('less')) && ($suffix == '.less')) {
         // Up our resources
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
         disable_php_memory_limit();
 
@@ -904,7 +913,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     cms_profile_start_for('_do_template');
-    $result = template_to_tempcode($template_contents, 0, false, ($suffix != '.tpl') ? '' : $codename, $theme_orig, $lang);
+    $result = template_to_tempcode($template_contents, 0, false, $codename, $theme_orig, $lang);
     cms_profile_end_for('_do_template', $codename . $suffix);
     if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (($suffix == '.tpl') || ($codename == 'no_cache'))) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
@@ -959,16 +968,16 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
 }
 
 /**
- * Convert template text into tempcode format.
+ * Convert template text into Tempcode format.
  *
  * @param  string $text The template text
  * @param  integer $symbol_pos The position we are looking at in the text
- * @param  boolean $inside_directive Whether this text is infact a directive, about to be put in the context of a wider template
+ * @param  boolean $inside_directive Whether this text is in fact a directive, about to be put in the context of a wider template
  * @param  ID_TEXT $codename The codename of the template (e.g. foo)
  * @param  ?ID_TEXT $theme The theme it is for (null: current theme)
  * @param  ?ID_TEXT $lang The language it is for (null: current language)
  * @param  boolean $tolerate_errors Whether to tolerate errors
- * @return mixed The converted/compiled template as tempcode, OR if a directive, encoded directive information
+ * @return mixed The converted/compiled template as Tempcode, OR if a directive, encoded directive information
  */
 function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false, $codename = '', $theme = null, $lang = null, $tolerate_errors = false)
 {
@@ -1005,7 +1014,7 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
     $funcdefs = array();
     $seq_parts = array();
     foreach ($parts_groups as $parts_group) {
-        $myfunc = 'tcpfunc_' . (($codename == '') ? fast_uniqid() : $codename) . '_' . strval(count($seq_parts) + 1);
+        $myfunc = 'tcpfunc_' . fast_uniqid() . '_' . strval(count($seq_parts) + 1);
         $funcdef = build_closure_function($myfunc, $parts_group);
         $funcdefs[$myfunc] = $funcdef;
         $seq_parts[] = array(array($myfunc, array(/* Is currently unbound */), TC_KNOWN, '', ''));

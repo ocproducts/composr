@@ -26,7 +26,7 @@ class Hook_snippet_checklist_task_manage
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
@@ -44,10 +44,10 @@ class Hook_snippet_checklist_task_manage
             case 'add':
                 $recurinterval = get_param_integer('recurinterval', 0);
 
-                $task_title = get_param_string('tasktitle', false, true);
+                $tasktitle = get_param_string('tasktitle', false, true);
 
                 $id = $GLOBALS['SITE_DB']->query_insert('customtasks', array(
-                    'tasktitle' => $task_title,
+                    'tasktitle' => $tasktitle,
                     'datetimeadded' => time(),
                     'recurinterval' => $recurinterval,
                     'recurevery' => get_param_string('recurevery'),
@@ -55,9 +55,13 @@ class Hook_snippet_checklist_task_manage
                 ), true);
 
                 require_code('notifications');
-                $subject = do_lang('CT_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $task_title);
-                $mail = do_lang('CT_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($task_title));
+                $subject = do_lang('CT_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $tasktitle);
+                $mail = do_notification_lang('CT_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($tasktitle));
                 dispatch_notification('checklist_task', null, $subject, $mail);
+
+                log_it('SITE_WATCHLIST');
+
+                log_it('CHECK_LIST_ADD', strval($id), $tasktitle);
 
                 return do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                     '_GUID' => 'e95228a3740dc7eda2d1b0ccc7d3d9d3',
@@ -70,17 +74,35 @@ class Hook_snippet_checklist_task_manage
                 ));
 
             case 'delete':
+                $id = get_param_integer('id');
+                $tasktitle = $GLOBALS['SITE_DB']->query_select_value('customtasks', 'tasktitle', array('id' => $id));
+
                 $GLOBALS['SITE_DB']->query_delete('customtasks', array(
-                    'id' => get_param_integer('id'),
+                    'id' => $id,
                 ), '', 1);
+
+                log_it('CHECK_LIST_DELETE', strval($id), $tasktitle);
+
                 break;
 
             case 'mark_done':
-                $GLOBALS['SITE_DB']->query_update('customtasks', array('taskisdone' => time()), array('id' => get_param_integer('id')), '', 1);
+                $id = get_param_integer('id');
+                $tasktitle = $GLOBALS['SITE_DB']->query_select_value('customtasks', 'tasktitle', array('id' => $id));
+
+                $GLOBALS['SITE_DB']->query_update('customtasks', array('taskisdone' => time()), array('id' => $id), '', 1);
+
+                log_it('CHECK_LIST_MARK_DONE', strval($id), $tasktitle);
+
                 break;
 
             case 'mark_undone':
-                $GLOBALS['SITE_DB']->query_update('customtasks', array('taskisdone' => null), array('id' => get_param_integer('id')), '', 1);
+                $id = get_param_integer('id');
+                $tasktitle = $GLOBALS['SITE_DB']->query_select_value('customtasks', 'tasktitle', array('id' => $id));
+
+                $GLOBALS['SITE_DB']->query_update('customtasks', array('taskisdone' => null), array('id' => $id), '', 1);
+
+                log_it('CHECK_LIST_MARK_UNDONE', strval($id), $tasktitle);
+
                 break;
         }
 

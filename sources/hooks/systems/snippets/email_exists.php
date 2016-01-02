@@ -26,7 +26,7 @@ class Hook_snippet_email_exists
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
@@ -39,6 +39,6 @@ class Hook_snippet_email_exists
 
         require_lang('cns');
 
-        return make_string_tempcode(strip_tags(strip_html(do_lang('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name())))));
+        return make_string_tempcode(strip_html(do_lang('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name()))));
     }
 }

@@ -42,11 +42,11 @@ class Block_main_awards
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)!=0 || get_param_integer(\'keep_non_rated\',0)==1)?null:array(array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',(array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',(array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',array_key_exists(\'param\',$map)?$map[\'param\']:strval(db_get_first_id()),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\')';
@@ -59,7 +59,7 @@ class Block_main_awards
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -75,7 +75,7 @@ class Block_main_awards
 
         $_award_type_row = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => $award), '', 1);
         if (!array_key_exists(0, $_award_type_row)) {
-            return do_lang_tempcode('MISSING_RESOURCE');
+            return do_lang_tempcode('MISSING_RESOURCE', 'award_type');
         }
         $award_type_row = $_award_type_row[0];
         $award_title = get_translated_text($award_type_row['a_title']);
@@ -106,12 +106,7 @@ class Block_main_awards
             $submit_url = '';
         }
         if ($submit_url != '') {
-            if (strpos($submit_url, '?') === false) {
-                $submit_url .= '?';
-            } else {
-                $submit_url .= '&';
-            }
-            $submit_url .= 'award=' . strval($award);
+            extend_url($submit_url, 'award=' . strval($award));
         }
 
         require_code('content');

@@ -1,0 +1,72 @@
+[title sub="Written by kenno, Edited by Chris Graham (ocProducts)"]Composr Supplementary: Separate forums for separate zones[/title]
+
+This tutorial will show how to set up separate forums on individual zones using the Composr virtual roots feature.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]My goal[/title]
+
+What I wanted to achieve was the look and feel that I had separate forums for certain zones, which in my eyes looks a little better then just giving them a subforum on the main forum pages.
+
+I also wanted it so that you could not view the main forum pages any more.
+
+[title="2"]Basic outline[/title]
+
+The forum pages (modules) in Composr are:
+ - [tt]forumview[/tt]
+ - [tt]topicview[/tt]
+ - [tt]topics[/tt]
+These are located in the forum zone.
+
+What I had to do was set up transparent redirects and virtual-root the forum modules for each of my zones. This gives the look to the user that the forum pages run separately. In actuality they do not run separately, but it is an effective illusion.
+
+[title="2"]Instructions you can follow[/title]
+
+[title="3"]Create our zone-specific forum[/title]
+
+Go to Admin Zone > Structure > Forums.
+
+In the normal way, create a forum for our zone, underneath the forum root.
+
+[title="3"]Set up redirects[/title]
+
+Go to Admin Zone > Structure > Redirects.
+
+Let's imagine our new zone is called [tt]foo[/tt]...
+
+You'd set up these redirects:
+[list="a"]
+[*] [tt]foo:forumview[/tt] --> [tt]forum:forumview[/tt], with transparent checked.
+[*] [tt]foo:topicview[/tt] --> [tt]forum:topicview[/tt], with transparent checked.
+[*] [tt]foo:topics[/tt] --> [tt]forum:topics[/tt], with transparent checked.
+[/list]
+
+Now we have the forum pages running from our [tt]foo[/tt] zone :)!
+
+[title="3"]Set up virtual roots[/title]
+
+We could now naively edit the menus inside our [tt]foo[/tt] zone to have a link to [tt]foo:forumview[/tt].
+
+However, if we were to link to them directly, it'd go to the forum root. We want to go to the forum we created.
+
+This is where virtual roots come in.
+
+You can generate a URL that "pretends" that it is the root of the forum tree, and then use this URL on that menu:
+1) Browse to your new forum.
+2) In the breadcrumbs, click the final node in it, which corresponds to the forum you are at.
+3) After clicking it you will see magically the breadcrumbs change so it appears this is the root forum.
+4) Copy the current address bar URL to the clipboard.
+5) Go edit your foo zone's menu, and putting the URL from your clipboard in as your new menu link.
+
+[title="3"]Remove main forum links[/title]
+
+You will probably want to remove all links to the main forum, as we want users to access forums via our individual zones.
+Do this via normal menu editing techniques.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
+ - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
+
+{$SET,tutorial_tags,redirects_editor,Structure and navigation,expert}{$SET,tutorial_add_date,April 2013}{$SET,tutorial_summary,How to set up separate forums for separate website zones.}[block]main_tutorial_rating[/block]

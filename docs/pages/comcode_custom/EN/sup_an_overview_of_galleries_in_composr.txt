@@ -1,0 +1,59 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: An Overview of Galleries in Composr[/title]
+
+[media width="150" description="Viewing a gallery image in Composr" float="right"]data_custom/images/docs/sup_an_overview_of_galleries_in_composr/97351cdb4a76efab304ccf68af4b7c32.png[/media]
+Like many other key elements of popular websites, Composr Galleries are included as a core feature of the CMS. The Gallery in Composr supports both Images and Videos.
+
+The Gallery system supports most popular image formats. As well as the popular image formats, Composr also has support for a range of video formats too including ram, wmv, avi, mov & mp4.
+
+As well as uploading videos directly to your Composr website you can also link to a YouTube video to help you save on bandwidth, also save on duplication of videos online, and get better cross-device media compatibility.
+
+[title="2"]More Gallery options[/title]
+
+As well as the above in Composr you can also:
+[list]
+[*] Allow your members to have their own personal gallery to show off their own Videos/Pictures
+[*] Upload audio files such as podcasts
+[*] Auto detect length and resolution of a multitude of video formats
+[*] Upload your files and manage a full tree structure of galleries with support for unlimited sub-galleries and categories
+[*] Automatically generate thumbnails for your content or upload your own images
+[*] Import or export multiple images via a ZIP file
+[*] Watermark your images to protect them from online theft
+[*] Create slideshows of your images on your website
+[*] Upload e-cards to your Composr website
+[*] Easily syndicate content to Facebook
+[*] Fill in Search engine optimisation information to help aid users to find your content through search engines
+[/list]
+
+As you can see the core feature of galleries in Composr is a well-rounded part of the software and can be a really powerful tool. The benefit of utilising a built in gallery rather than having to rely on a third party plugin means all of the elements of the feature are coded to the same standards of code quality and security levels. It also means that when you come to change the style and design of your website you can change the gallery style and the main design of the website at the same time. Additionally, the gallery pulls many of the style elements from the main CSS file and not from a separate file which helps reduce duplication.
+
+[title="2"]Managing your gallery in Composr[/title]
+
+[media width="150" description="Managing galleries" float="right"]data_custom/images/docs/sup_an_overview_of_galleries_in_composr/2a3d0e421e2721b9c45626b636a76d2b.png[/media]
+You will find the manage galleries screen within the content section of your Admin Zone. You will need to log in to the Admin Zone and navigate there.
+
+Within this section there are ten options which cover four distinct elements. These elements are:
+[list]
+[*] Adding and editing a gallery which is, as it sounds, related to adding and editing your galleries. You can add multiple levels of galleries in a tree structure. For example you could section your gallery into different sections then have sub-galleries to cover more specific items.
+[*] Adding, editing and mass adding images. These three options cover adding image to your gallery including mass uploading images as part of a ZIP file. Being able to upload multiple images at once can save a lot of time when adding new images to your gallery.
+[*] Adding and editing videos. Just like the first point this is straight forward and gives the options to add new videos and edit the existing videos within your galleries.
+[*] Choosing custom fields for images, videos and galleries. Composr allows you to add extra fields and choose which will be displayed for each image, video and for the galleries themselves. For example you might choose to add a photo location option for each image.
+[/list]
+
+[title="2"]Embedding galleries in a page[/title]
+
+As well as linking directly to one of your galleries in the menus of via a text link there are several blocks which can be simply embedded into your websites pages. These include:
+[list]
+[*] Embed a gallery into a page
+[*] A listing of all your galleries. This is a Side block but can also be displayed in the main section of a page
+[*] An image fader which fades between images in a specific gallery
+[*] Via the generic [tt]main_multi_content[/tt] block you can achieve things like:[list]
+[*] Show all the galleries which are added as sub galleries to a specific top level gallery
+[*] A listing of the most popular galleries on your website which is worked out from the ratings given to the galleries by your website visitors
+[*] A listing of the most recent galleries which have been added. This can help you promote new galleries and images
+[/list][/list]
+
+Blocks can be easily added to pages using the Block construction assistant.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Content,Galleries,galleries,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,Like many other key elements of popular websites, Composr Galleries are included as a core feature of the CMS. The Gallery in Composr supports both Images and Videos.}[block]main_tutorial_rating[/block]

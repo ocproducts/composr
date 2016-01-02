@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: error_get_last*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -28,6 +30,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__minikernel()
 {
@@ -110,9 +114,25 @@ function sync_file($filename)
 }
 
 /**
+ * Find whether a particular PHP function is blocked.
+ *
+ * @param  string $function Function name.
+ * @return boolean Whether it is.
+ */
+function php_function_allowed($function)
+{
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            return false;
+        }
+    }
+    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+}
+
+/**
  * Return a debugging back-trace of the current execution stack. Use this for debugging purposes.
  *
- * @return tempcode Debugging backtrace
+ * @return Tempcode Debugging backtrace
  */
 function get_html_trace()
 {
@@ -126,7 +146,7 @@ function get_html_trace()
     $trace = new Tempcode();
     foreach ($_trace as $i => $stage) {
         $traces = new Tempcode();
-//    if (in_array($stage['function'],array('get_html_trace','composr_error_handler','fatal_exit'))) continue;
+        //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;
         $file = '';
         $line = '';
         $__value = mixed();
@@ -191,7 +211,7 @@ function get_html_trace()
  */
 function fatal_exit($text)
 {
-    //   if (is_object($text)) $text=$text->evaluate();
+    //if (is_object($text)) $text = $text->evaluate();
 
     // To break any looping of errors
     global $EXITING;
@@ -373,7 +393,7 @@ function get_charset()
     $contents = unixify_line_format(fread($file, 100));
     fclose($file);
     $matches = array();
-    if (preg_match('#charset=([\w\-]+)\n#', $contents, $matches) != 0) {
+    if (preg_match('#charset=([\w\-]+)\r?\n#', $contents, $matches) != 0) {
         return strtolower($matches[1]);
     }
     return strtolower('utf-8');
@@ -382,13 +402,10 @@ function get_charset()
 /**
  * Echo an error message, and a debug back-trace of the current execution stack. Use this for debugging purposes.
  *
- * @param  mixed $message An error message
+ * @param  string $message An error message
  */
 function die_html_trace($message)
 {
-    if (is_object($message)) {
-        $message = $message->evaluate();
-    }
     critical_error('PASSON', $message);
 }
 
@@ -474,7 +491,7 @@ function cms_version_pretty()
 }
 
 /**
- * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults amongst other things.
+ * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults among other things.
  *
  * @return string The domain of the website
  */
@@ -529,7 +546,7 @@ function get_site_name()
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our installation).
+ * Get the base URL (the minimum fully qualified URL to our installation).
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  string $zone_for What zone this is running in
@@ -550,7 +567,7 @@ function get_base_url($https = null, $zone_for = '')
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base-url.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @return URLPATH The base-url
@@ -563,7 +580,7 @@ function get_custom_base_url($https = null)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @return mixed Never returns (i.e. exits)
@@ -584,7 +601,7 @@ function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_word_filter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
 {
     return $a;
 }
@@ -594,7 +611,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function either_param_string($name, $default = null)
 {
@@ -607,7 +624,7 @@ function either_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function post_param_string($name, $default = null)
 {
@@ -620,7 +637,7 @@ function post_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function get_param_string($name, $default = null)
 {
@@ -636,7 +653,8 @@ function get_param_string($name, $default = null)
  * @param  ?mixed $default The default value to use for the parameter (null: no default)
  * @param  boolean $must_integer Whether the parameter has to be an integer
  * @param  boolean $is_post Whether the parameter is a POST parameter
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
+ * @ignore
  */
 function __param($array, $name, $default, $must_integer = false, $is_post = false)
 {
@@ -808,7 +826,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {

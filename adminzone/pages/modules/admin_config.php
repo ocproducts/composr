@@ -47,7 +47,7 @@ class Module_admin_config
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -56,7 +56,7 @@ class Module_admin_config
             'browse' => array('CONFIGURATION', 'menu/adminzone/setup/config/config'),
         );
 
-        $ret['base'] = array('BASE_CONFIGURATION', $support_crosslinks/*The virtual nodes for categories don't have an icon so match that*/ ? null : 'menu/adminzone/setup/config/base_config');
+        $ret['base'] = array('BASE_CONFIGURATION', $support_crosslinks && $be_deferential/*The virtual nodes for categories don't have an icon so match that*/ ? null : 'menu/adminzone/setup/config/base_config');
 
         if (!$be_deferential) {
             if (addon_installed('xml_fields')) {
@@ -89,7 +89,7 @@ class Module_admin_config
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -164,7 +164,7 @@ class Module_admin_config
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -225,10 +225,27 @@ class Module_admin_config
     /**
      * The UI to choose what configuration page to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_choose()
     {
+        // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
+        if (count($_POST) == 0) {
+            $proper_url = build_url(array('page' => ''), '');
+            $_proper_url = $proper_url->evaluate();
+            $test_a = http_download_file($_proper_url, 0, false, true);
+            $message_a = $GLOBALS['HTTP_MESSAGE'];
+            if ($message_a == '200')
+            {
+                $test_b = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
+                $message_b = $GLOBALS['HTTP_MESSAGE'];
+                if ($message_b != '200')
+                {
+                    attach_message(do_lang_tempcode('MOD_SECURITY', escape_html($message_b)), 'warn');
+                }
+            }
+        }
+
         // Find all categories
         $hooks = find_all_hooks('systems', 'config');
         $categories = array();
@@ -315,7 +332,7 @@ class Module_admin_config
     /**
      * The UI to edit a configuration page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_category()
     {
@@ -396,12 +413,18 @@ class Module_admin_config
             foreach ($rows as $myrow) {
                 $name = $myrow['name']; // Can't get from array key, as sorting nuked it
 
-                // Lang strings
+                // Language strings
                 $human_name = do_lang_tempcode($myrow['human_name']);
                 $_explanation = do_lang($myrow['explanation'], null, null, null, null, false);
                 if (is_null($_explanation)) {
-                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
-                    $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group'], null, null, null, null, false);
+                    if (is_null($_explanation)) {
+                        // So an error shows
+                        $_explanation = do_lang($myrow['explanation']);
+                        $explanation = do_lang_tempcode($myrow['explanation']);
+                    } else {
+                        $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    }
                 } else {
                     $explanation = do_lang_tempcode($myrow['explanation']);
                 }
@@ -531,7 +554,7 @@ class Module_admin_config
                             require_code('cns_forums2');
                             $_list = new Tempcode();
                             if (!$required) {
-                                $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
                             $_list->attach(cns_create_selection_list_forum_groupings(null, $tmp_value));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
@@ -541,15 +564,16 @@ class Module_admin_config
                         break;
 
                     case 'usergroup':
+                    case 'usergroup_not_guest':
                         if (get_forum_type() == 'cns') {
                             $tmp_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => get_option($name)));
 
                             require_code('cns_groups');
                             $_list = new Tempcode();
                             if (!$required) {
-                                $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
-                            $_list->attach(cns_create_selection_list_usergroups($tmp_value));
+                            $_list->attach(cns_create_selection_list_usergroups($tmp_value, $myrow['type'] == 'usergroup'));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
@@ -594,7 +618,7 @@ class Module_admin_config
     /**
      * The actualiser to edit a configuration page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_set()
     {
@@ -605,12 +629,12 @@ class Module_admin_config
 
         $category = get_param_string('id', 'MAIN');
 
-        if (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST') {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        // Make sure we haven't locked ourselves out due to short URL support
-        if ((post_param_string('url_scheme', 'RAW') != 'RAW') && (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) || (http_download_file(get_base_url() . '/sitemap.htm', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404'))) {
+        // Make sure we haven't locked ourselves out due to URL Scheme support
+        if ((post_param_string('url_scheme', 'RAW') != 'RAW') && (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) || ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules()))) || (http_download_file(get_base_url() . '/sitemap.htm', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404'))) {
             warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
         }
 
@@ -677,7 +701,7 @@ class Module_admin_config
             if ($myrow['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($myrow['type'] == 'date') {
-                $date_value = get_input_date($name);
+                $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
             } elseif ((($myrow['type'] == 'forum') || ($myrow['type'] == '?forum')) && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);
@@ -695,8 +719,8 @@ class Module_admin_config
                 if (is_null($value)) {
                     $value = '';
                 }
-            } elseif (($myrow['type'] == 'usergroup') && (get_forum_type() == 'cns')) {
-                $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'name', array('id' => post_param_integer($name)));
+            } elseif ((($myrow['type'] == 'usergroup') || ($myrow['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
+                $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
                 if (is_null($_value)) {
                     $value = '';
                 } else {
@@ -718,7 +742,7 @@ class Module_admin_config
             }
         }
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
@@ -729,7 +753,7 @@ class Module_admin_config
         // Show it worked / Refresh
         $redirect = get_param_string('redirect', null);
         if ($redirect === null) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // ,'type'=>'category','id'=>$category
+            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // , 'type' => 'category', 'id' => $category
         } else {
             $url = make_string_tempcode($redirect);
         }
@@ -739,7 +763,7 @@ class Module_admin_config
     /**
      * Redirect to the config_editor script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function base()
     {
@@ -751,7 +775,7 @@ class Module_admin_config
     /**
      * Redirect to the upgrader script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function upgrader()
     {
@@ -763,7 +787,7 @@ class Module_admin_config
     /**
      * Redirect to the backend script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function backend()
     {
@@ -775,7 +799,7 @@ class Module_admin_config
     /**
      * Redirect to the code_editor script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function code_editor()
     {
@@ -787,7 +811,7 @@ class Module_admin_config
     /**
      * The UI to edit the fields XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function xml_fields()
     {
@@ -804,7 +828,7 @@ class Module_admin_config
     /**
      * The UI actualiser edit the fields XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _xml_fields()
     {
@@ -838,7 +862,7 @@ class Module_admin_config
     /**
      * The UI to edit the breadcrumbs XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function xml_breadcrumbs()
     {
@@ -855,7 +879,7 @@ class Module_admin_config
     /**
      * The UI actualiser edit the breadcrumbs XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _xml_breadcrumbs()
     {

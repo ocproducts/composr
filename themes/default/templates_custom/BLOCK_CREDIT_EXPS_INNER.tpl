@@ -2,7 +2,7 @@
 	<label for="product">{LABEL_BUY}</label>
 	<select name="product" id="product" onchange="update_product_info_display();">
 		{+START,LOOP,CREDIT_KINDS}
-			<option {+START,IF,{$EQ,{NUM_CREDITS},50}}selected="selected" {+END}value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
+			<option{+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
 		{+END}
 	</select>
 </div>

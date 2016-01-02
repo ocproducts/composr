@@ -1,9 +1,15 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Installing on Google App Engine[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Installing on Google App Engine[/title]
 
-[b]This functionality is currently not working. It works on the development server, but a GAE crash has prevented us making it work live. Google are investigating the issue.[/b]
+[b]This functionality is currently not working. It works on the development server, but a GAE crash has prevented us making it work live. Google were investigating the issue at the time of writing.[/b] Many of the improvements made for this functionality are of general advantage on other cloud hosts (e.g. the task queue improves general scalability). We still love App Engine, so we can put the functionality through to a new testing cycle based on customer demand.
+
+---
+
+[media thumb="0" framed="0" float="right" width="450"]data_custom/images/docs/tut_google_appengine/composr_with_gae.jpg[/media]
 
 Composr can run on Google App Engine (GAE). GAE is a cloud hosting service designed for high scalability. Unlike almost all other cloud services, it does not require significant preparation and ongoing maintenance in order to scale (you do not need to set up Virtual Machine images, or manually start/stop server instances).
+
 Most people don't realise how much work the normal "cloud" services are to properly utilise, as the marketing can be really very misleading, and successful customers are development teams rather than webmasters.
+
 The easy Composr scalability with App Engine is possible because it is a locked-down environment. Essentially the Composr developers have done up-front work to ensure Composr meets certain restraints that allow Google to automatically copy things across different servers without it being noticeable.
 
 All the above said, hosting a large scale cloud deployment is still not simple. Some restraints will affect you, and you will need to be comfortable working on the command line, and staging your changes on a local development machine. We'll save you having to have a programming/IT team to get Composr running, or the need to fork Composr, but it still requires some level of expertise.
@@ -16,7 +22,7 @@ This tutorial explains how the Composr GAE support works.
 [title="2"]Limitations[/title]
 
 The following are known limitations with GAE:
- - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. ocProducts can bring non-bundled addons up to scratch in most cases, under our development services. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
+ - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. Most commercial developers will be happy to bring non-bundled third-party addons up to scratch. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
  - The comments above extend to other applications you may wish to integrate. You need to be comfortable of their compatibility, or that you will get them updated, or that you will run them on another server.
  - LDAP will not work (LDAP would typically be used on a local corporate network anyway).
  - There is a 32MB upload limit, which means uploading large files is not realistic. This could be worked around, [url="with investment"]http://compo.sr/tracker/view.php?id=1426[/url].
@@ -31,11 +37,11 @@ The following are known limitations with GAE:
  - The feature to e-mail in support tickets is not supported, although [url="it could be added via an alternative mechanism"]http://compo.sr/tracker/view.php?id=1429[/url].
 
 The following Composr bundled addons will not work:
- - (All the addons mentioned for uninstallation in the Setup Wizard, further down in this tutorial)
+ - (All the addons mentioned for uninstallation in the Setup Wizard, further down in this tutorial, under "Setup Wizard: Step 4")
 
 [title="2"]Costs[/title]
 
-GAE is charged based on usage. Google provide documents that explain what is chargeable, and by how much.
+GAE is charged based on usage. Google provide documents that explain what is chargeable, and at what price.
 
 It is hard to compare GAE costs to those of shared hosting. Typically a shared host will assume you won't max out your resource allocation fully (and if you tried, they'd ban you, often regardless of their advertised terms). Therefore you would need to compare averaged typical resource usage on shared hosting, to the costs on GAE.
 Anecdotally, we have heard the costs are similar, but we have not tested this. It will of course vary greatly on a case-by-case basis.
@@ -56,35 +62,31 @@ You will also need to install MySQL, as this doesn't come with the SDK. MySQL is
 
 [title="2"]Composr installation[/title]
 
-Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
+(the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
 
 [media width="150" description="The application launcher, after the application has been created.
 
-I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/appengine_launcher.png[/media]Start up the GAE launcher.
-
-(the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
-
-Add the in the launcher. Simple add the directory you extracted Composr to, and it should automatically configure it from that.
-
-Select your application row in the list of applications, and click "Run".
-
-In your web browser, go to [tt]http://localhost:8080/install.php[/tt]
-(your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
-
+I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/tut_google_appengine/appengine_launcher.png[/media]
+[list="1"]
+[*] Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
+[*] Start up the GAE launcher.
+[*] Add Composr in the launcher: simply add the directory you extracted Composr to, and it should automatically configure it from that.
+[*] Select your application row in the list of applications, and click "Run".
+[*] In your web browser, go to [tt]http://localhost:8080/install.php[/tt] (your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
 Ignore any "There is no PHP GD extension on the server" error. The PHP SDK (at the time of writing does not have GD), but the live environment does.
-
-The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
-
+[*] The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
 A top-level view of what you'll be setting up:
  - App Engine application ID -- The identifier for the live GAE application; Google will automatically also use this as the Google Cloud project name
  - Google Cloud Storage bucket name -- The identifier for the live Google Cloud Storage (this is basically the live filesystem, which is stored separately to the application itself)
  - Database hostname -- This includes the identifier for the Google Cloud SQL database's Google Cloud Platform project and the identifier for the Google Cloud SQL instance
  - Database name -- The name of the Google Cloud SQL database, which you must create manually
 The default settings assume all the different identifier's are the same, but they don't have to be. These are separate services that are linked together for your live application to run. That said, this tutorial assumes you are using the same identifiers because it simplifies things considerably.
+[/list]
 
 [title="3"]Live setup instructions / notes[/title]
 
-[media width="150" description="Creating a Google App Engine application." float="left"]data_custom/images/docs/appengine_create.png[/media][media width="150" description="Enabling necessary services." float="right"]data_custom/images/docs/google_cloud_services.png[/media]
+[media width="150" description="Creating a Google App Engine application." float="left"]data_custom/images/docs/tut_google_appengine/appengine_create.png[/media]
+[media width="150" description="Enabling necessary services." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_services.png[/media]
 When adding your GAE application, ignore any settings relating to authentication for users. Composr uses its own authentication, not Google authentication settings. That said, an administrator of the GAE app will automatically be logged in as the first admin on the Composr site (unless you choose to explicitly log in to a different user from the login screen).
 
 You want your datastore to be set for "High Replication". This is the default.
@@ -99,7 +101,10 @@ To enable Google Cloud Storage and Google Cloud SQL, go to 'Services' in the lef
 Once enabled, options to configure the services will be shown on the left-hand menu.
 
 [surround]
-[media width="150" description="Setting Google Cloud Storage permissions (2)." float="right"]data_custom/images/docs/cloud_storage_permissions_2.png[/media][media width="150" description="Setting Google Cloud Storage permissions (1)." float="right"]data_custom/images/docs/cloud_storage_permissions_1.png[/media][media width="150" description="Enabling Google Cloud Storage (2)." float="right"]data_custom/images/docs/google_cloud_storage.png[/media][media width="150" description="Enabling Google Cloud Storage (1)." float="right"]data_custom/images/docs/google_cloud_storage_link.png[/media]
+[media width="150" description="Setting Google Cloud Storage permissions (2)." float="right"]data_custom/images/docs/tut_google_appengine/cloud_storage_permissions_2.png[/media]
+[media width="150" description="Setting Google Cloud Storage permissions (1)." float="right"]data_custom/images/docs/tut_google_appengine/cloud_storage_permissions_1.png[/media]
+[media width="150" description="Enabling Google Cloud Storage (2)." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_storage.png[/media]
+[media width="150" description="Enabling Google Cloud Storage (1)." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_storage_link.png[/media]
 When you go to Google Cloud Storage, you will see a link to go to "online browser". From there you can set up a bucket.
 
 Annoyingly it takes you to the beta version of Google Cloud Console, which you'll need to exit out of when you're done (did I mention it is a jumble?).
@@ -114,9 +119,10 @@ Next, we need to grant GAE permissions on the bucket:
 [/surround]
 
 [surround]
-[media width="150" description="Creating a Google Cloud SQL database, within the instance." float="right"]data_custom/images/docs/cloud_sql_database.png[/media][media width="150" description="Creating a Google Cloud SQL instance." float="right"]data_custom/images/docs/cloud_sql.png[/media]
+[media width="150" description="Creating a Google Cloud SQL database, within the instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql_database.png[/media]
+[media width="150" description="Creating a Google Cloud SQL instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql.png[/media]
 Next set up your Google Cloud SQL instance. You should leave the "Replication mode" as "Synchronous", for stability reasons. You have to authorise your GAE application when you add the Google Cloud SQL instance. The instance does not itself contain a database, so when added click the 'SQL Prompt' tab and enter an SQL command:
-[code]
+[code="SQL"]
 CREATE DATABASE <application>;
 [/code]
 (where [tt]<application>[/tt] is the name of your application, or a different database name if you prefer)
@@ -200,8 +206,10 @@ In given code samples replace [tt]<application>[/tt] with the name of your appli
 [title="3"]Storage[/title]
 
 You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:
-a) [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
-b) Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
+[list="a"]
+[*] [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
+[*] Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
+[/list]
 
 If you are going to use [tt]gsutil[/tt], this is the process...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url]
@@ -214,12 +222,14 @@ Now consider your plans for world domination while your files upload (or, read a
 
 [title="3"]Database[/title]
 
+(in the below instructions obviously substitute [tt]<application>[/tt] for the real name of the application)
+ 
 To copy your initial database to live, you need to follow a rather complex procedure of exporting, copying to live Google Cloud Storage, then importing from live Google Cloud Storage...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
 3) Open a command prompt in your project directory
-4) Take an SQL dump of your local MySQL database. Typically you will do this with:[code]mysqldump --databases <application> -uroot > dump.sql[/code]Note that I found I had to use "--databases" to force a [tt]USE <application>;[/tt] command, which the import seems to need.
-5) Run this command:[code]gsutil cp dump.sql gs://<application>[/code]
+4) Take an SQL dump of your local MySQL database. Typically you will do this with:[code="Bash"]mysqldump --databases <application> -uroot > dump.sql[/code]Note that I found I had to use "--databases" to force a [tt]USE <application>;[/tt] command, which the import seems to need.
+5) Run this command:[code="Bash"]gsutil cp dump.sql gs://<application>[/code]
 6) Sign into the [url="Google Cloud Console"]https://cloud.google.com/console[/url], enter your project, and go to the Cloud SQL section
 7) Enter the instance into which to import data
 8) Click the [b]Import[/b] button at the top
@@ -240,13 +250,15 @@ Note that you should ignore any "Could not guess mimetype for ..." errors.
 
 To view the live project, go to [tt]http://<application>.appspot.com[/tt] in your web browser.
 
+(obviously substitute [tt]<application>[/tt] for the real name of the application)
+
 [title="4"]Developers[/title]
 
 Developers may be interested in GAE's [url="Push-to-deploy"]https://developers.google.com/appengine/docs/push-to-deploy[/url] system.
 
 [title="3"]Notes and considerations[/title]
 
-Note that the Composr scheduler will have been automatically set up.
+Note that the CRON bridge scheduler will have been automatically set up.
 
 An appropriate PHP configuration has also been provided for you (no [tt].htaccess[/tt] file setup needed).
 
@@ -285,21 +297,21 @@ You could do an upgrade two ways...
 [title="4"]Fully local upgrade (simplest, longest)[/title]
 
 Go through this process:
- - Close the live site temporarily
- - Export the live Cloud Database and import it into your development machine
- - Perform the upgrade on your development machine
- - Do a code deploy
- - Copy the Cloud database back to live
- - Re-open the live site
+1) Close the live site temporarily
+2) Export the live Cloud Database and import it into your development machine
+3) Perform the upgrade on your development machine
+4) Do a code deploy
+5) Copy the Cloud database back to live
+6) Re-open the live site
 
 [title="4"]Split upgrade[/title]
 
 Go through this process:
- - Perform the upgrade on your development machine
- - Close the live site temporarily
- - Do a code deploy
- - Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you re-deployed)
- - Re-open the live site
+1) Perform the upgrade on your development machine
+2) Close the live site temporarily
+3) Do a code deploy
+4) Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you re-deployed)
+5) Re-open the live site
 
 [title="2"]Configuration considerations[/title]
 
@@ -313,9 +325,14 @@ Of course you would also need to set up [url="your own SSL certificate"]https://
 [title="3"]Error pages[/title]
 
 To enable a custom page for 404 errors, in [tt]app.yaml[/tt] uncomment (i.e. remove the [tt]#[/tt]s):
-[code]
+[code="YAML"]
 #- url: .*
 #  script: 404.htm
+[/code]
+-->
+[code="YAML"]
+- url: .*
+  script: 404.htm
 [/code]
 And, then create [tt]404.htm[/tt] by saving out the result of [tt]/index.php?page=404[/tt]
 
@@ -347,7 +364,7 @@ Be advised that Google cannot provide automated "sharding" of data. This means t
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_optimisation"]Optimising[/page]
+ - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
  - [page="_SEARCH:tut_repository"]The Repository[/page]
 
 {$SET,tutorial_tags,google_appengine,Installation,Web hosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]

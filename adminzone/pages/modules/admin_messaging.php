@@ -76,7 +76,7 @@ class Module_admin_messaging
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -91,7 +91,7 @@ class Module_admin_messaging
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -121,7 +121,7 @@ class Module_admin_messaging
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -147,7 +147,7 @@ class Module_admin_messaging
     /**
      * Choose a message.
      *
-     * @return tempcode The message choose screen.
+     * @return Tempcode The message choose screen.
      */
     public function choose_message()
     {
@@ -193,7 +193,7 @@ class Module_admin_messaging
     /**
      * View a message.
      *
-     * @return tempcode The message view screen.
+     * @return Tempcode The message view screen.
      */
     public function view_message()
     {
@@ -274,7 +274,7 @@ class Module_admin_messaging
     /**
      * Take responsibility for handling a message.
      *
-     * @return tempcode Success message.
+     * @return Tempcode Success message.
      */
     public function take_responsibility()
     {

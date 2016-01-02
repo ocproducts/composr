@@ -50,7 +50,7 @@ class Hook_pointstore_topic_pin
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _topic_pin()
     {
@@ -81,41 +81,41 @@ class Hook_pointstore_topic_pin
         $fields->attach(form_input_integer(do_lang_tempcode('TOPIC_PIN_NUMBER_DAYS'), do_lang_tempcode('TOPIC_PIN_NUMBER_DAYS_DESCRIPTION'), 'days', min(7, intval(get_option('topic_pin_max_days'))), true));
 
         $price = intval(get_option('topic_pin'));
-        $text = do_lang_tempcode('PIN_TOPIC_A', integer_format($price));
+        $text = do_lang_tempcode('PIN_TOPIC_A', escape_html(integer_format($price)));
 
         // Return template
         $post_url = build_url(array('page' => '_SELF', 'type' => '__topic_pin', 'id' => 'topic_pin'), '_SELF');
         $javascript = "
             var form=document.getElementById('days').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            var days=form.elements['days'].value;
-                            if (days>" . strval(intval(get_option('topic_pin_max_days'))) . ")
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')) . "'.replace(/xxx/g,days));
-                                        return false;
-                            }
-                            return true;
-                    }
-            ;
+            form.onsubmit=function() {
+                var days=form.elements['days'].value;
+                if (days>" . strval(intval(get_option('topic_pin_max_days'))) . ")
+                {
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')) . "'.replace(/xxx/g,days));
+                    return false;
+                }
+                return true;
+            };
         ";
-        return do_template('FORM_SCREEN', array('_GUID' => '318a1f335fd0d2d9380024eb5438d2d8', 'HIDDEN' => '',
-                                                'TITLE' => $title,
-                                                'ACTION' => do_lang_tempcode('TOPIC_PINNING'),
-                                                'TEXT' => $text,
-                                                'URL' => $post_url,
-                                                'SUBMIT_ICON' => 'buttons__proceed',
-                                                'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
-                                                'FIELDS' => $fields,
-                                                'JAVASCRIPT' => $javascript,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '318a1f335fd0d2d9380024eb5438d2d8',
+            'HIDDEN' => '',
+            'TITLE' => $title,
+            'ACTION' => do_lang_tempcode('TOPIC_PINNING'),
+            'TEXT' => $text,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
+            'FIELDS' => $fields,
+            'JAVASCRIPT' => $javascript,
         ));
     }
 
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __topic_pin()
     {
@@ -147,11 +147,11 @@ class Hook_pointstore_topic_pin
         }
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', integer_format($days), integer_format($total), array(integer_format($points_left))));
+            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), array(integer_format($points_left))));
         }
 
         // The order screen...
-        $action = do_lang_tempcode('CONFIRM_TOPIC_PIN', integer_format($days));
+        $action = do_lang_tempcode('CONFIRM_TOPIC_PIN', escape_html(integer_format($days)));
         $keep = form_input_hidden('topic_id', strval($topic_id));
         $keep->attach(form_input_hidden('days', strval($days)));
         $proceed_url = build_url(array('page' => '_SELF', 'type' => '___topic_pin', 'id' => 'topic_pin'), '_SELF');
@@ -169,7 +169,7 @@ class Hook_pointstore_topic_pin
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function ___topic_pin()
     {
@@ -194,13 +194,13 @@ class Hook_pointstore_topic_pin
         $total = $day_price * $days;
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', integer_format($days), integer_format($total), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), escape_html(integer_format($points_left))));
         }
 
         if (get_forum_type() == 'cns') {
             $currently_pinned = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_pinned', array('id' => $topic_id));
             if (is_null($currently_pinned)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
             if ($currently_pinned == 1) {
                 return warn_screen($title, do_lang_tempcode('TOPIC_PINNED_ALREADY'));

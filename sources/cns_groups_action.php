@@ -73,7 +73,7 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -155,14 +155,14 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('group', strval($group_id), null, null, true);
+        generate_resource_fs_moniker('group', strval($group_id), null, null, true);
     }
 
     if ($is_private_club == 1) {
         require_code('notifications');
         $subject = do_lang('NEW_CLUB_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $name);
         $view_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'), null, false, false, true);
-        $mail = do_lang('NEW_CLUB_NOTIFICATION_MAIL', get_site_name(), comcode_escape($name), array(comcode_escape($view_url->evaluate())));
+        $mail = do_notification_lang('NEW_CLUB_NOTIFICATION_MAIL', get_site_name(), comcode_escape($name), array(comcode_escape($view_url->evaluate())));
         dispatch_notification('cns_club', null, $subject, $mail);
     }
 
@@ -176,6 +176,9 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('group', strval($group_id));
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:groups:view:' . strval($group_id), null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
 
     return $group_id;
 }

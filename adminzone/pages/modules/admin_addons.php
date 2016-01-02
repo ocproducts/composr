@@ -47,7 +47,7 @@ class Module_admin_addons
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -92,7 +92,7 @@ class Module_admin_addons
                 'addon_licence' => 'SHORT_TEXT',
                 'addon_description' => 'LONG_TEXT',
                 'addon_install_time' => 'TIME'
-            ));
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('addons_files', array(
                 'id' => '*AUTO', // Because two SHORT_TEXT's as keys exceeds the 500 mysql key limit
@@ -120,7 +120,7 @@ class Module_admin_addons
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -251,7 +251,7 @@ class Module_admin_addons
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -326,13 +326,14 @@ class Module_admin_addons
     /**
      * The main UI.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(180); // So it can scan inside addons
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(180); // So it can scan inside addons
         }
+        send_http_output_ping();
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
@@ -352,6 +353,10 @@ class Module_admin_addons
 
         // Show installed addons
         foreach ($addons_installed as $row) {
+            if (substr($row['name'], 0, 5) == 'core_' || $row['name'] == 'core') {
+                continue;
+            }
+
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '5a65c9aa87291ecfe46f75e9b2949246', 'GET' => true, 'NAME' => $row['name'], 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $row['name']), '_SELF')));
             $updated = array_key_exists($row['name'], $updated_addons_arr);
             $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
@@ -432,7 +437,7 @@ class Module_admin_addons
     /**
      * The UI to get an addon from some source.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_import()
     {
@@ -477,7 +482,7 @@ class Module_admin_addons
     /**
      * The UI to retrieve a specified addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_import()
     {
@@ -495,7 +500,7 @@ class Module_admin_addons
                 $_POST['url'] = $url; // In case it was submitted in array form, which is possible on some UAs (based on an automated bug report)
             }
 
-            $urls = get_url('url', 'file', 'imports/addons', 0, 0, false, '', '', true);
+            $urls = get_url('url', 'file', 'imports/addons', 0, CMS_UPLOAD_ANYTHING, false, '', '', true);
 
             $full = get_custom_file_base() . '/' . $urls[0];
             if (strtolower(substr($full, -4)) != '.tar') {
@@ -513,7 +518,7 @@ class Module_admin_addons
     /**
      * The UI to confirm a combined action on addons.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function multi_action()
     {
@@ -564,15 +569,16 @@ class Module_admin_addons
     /**
      * The actualiser to perform a combined action on addons.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _multi_action()
     {
         appengine_live_guard();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
+        send_http_output_ping();
 
         require_code('abstract_file_manager');
         force_have_afm_details();
@@ -617,7 +623,7 @@ class Module_admin_addons
             }
         }
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
@@ -633,7 +639,7 @@ class Module_admin_addons
     /**
      * The UI to confirm the install of an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_install()
     {
@@ -670,7 +676,7 @@ class Module_admin_addons
     /**
      * The actualiser to install an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_install()
     {
@@ -710,7 +716,7 @@ class Module_admin_addons
     /**
      * The UI to uninstall an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_uninstall()
     {
@@ -728,7 +734,7 @@ class Module_admin_addons
     /**
      * The UI to uninstall an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_uninstall()
     {
@@ -769,7 +775,7 @@ class Module_admin_addons
 
         uninstall_addon($name);
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
@@ -785,7 +791,7 @@ class Module_admin_addons
     /**
      * The UI to export an addon (1).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_export()
     {
@@ -898,7 +904,7 @@ class Module_admin_addons
     /**
      * The UI to export an addon (2).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_export()
     {
@@ -959,7 +965,7 @@ class Module_admin_addons
         require_code('form_templates');
         $field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR'), 'author', $author, true);
+        $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', do_lang_tempcode('ADDON')), 'author', $author, true);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('ORGANISATION'), do_lang_tempcode('DESCRIPTION_ORGANISATION'), 'organisation', $organisation, false);
         $fields .= $field->evaluate();
@@ -1041,7 +1047,7 @@ class Module_admin_addons
     /**
      * The actualiser to export an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __addon_export()
     {
@@ -1093,7 +1099,7 @@ class Module_admin_addons
     /**
      * The UI to choose a zone (or blocks) to manage.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function modules_interface()
     {
@@ -1113,7 +1119,7 @@ class Module_admin_addons
     /**
      * The UI to manage the modules (or blocks).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function modules_view()
     {
@@ -1213,7 +1219,7 @@ class Module_admin_addons
     /**
      * The actualiser to upgrade a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function upgrade_module()
     {
@@ -1236,7 +1242,7 @@ class Module_admin_addons
     /**
      * The actualiser to uninstall a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function uninstall_module()
     {
@@ -1259,7 +1265,7 @@ class Module_admin_addons
     /**
      * The actualiser to reinstall a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function reinstall_module()
     {

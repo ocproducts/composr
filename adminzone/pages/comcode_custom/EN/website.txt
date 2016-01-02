@@ -1,3 +1,3 @@
 [title]Administrative Guide[/title]
 
-This system is designed to be self-explanatory for those with a high enough level of computer skills. If you need additional help, please contact ocProducts for guidance; you may wish to enquire about hands-on training.
+This system is designed to be self-explanatory for those with a high enough level of computer skills. If you need additional help, please contact your account manager/developer for guidance; you may wish to enquire about hands-on training.

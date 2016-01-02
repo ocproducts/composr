@@ -57,7 +57,7 @@ class Hook_worldpay
     /**
      * Get the card/gateway logos and other gateway-required details.
      *
-     * @return tempcode The stuff.
+     * @return Tempcode The stuff.
      */
     public function get_logos()
     {
@@ -75,7 +75,8 @@ class Hook_worldpay
      */
     public function generate_trans_id()
     {
-        return md5(uniqid(strval(mt_rand(0, 1000)), true));
+        require_code('crypt');
+        return get_rand_password();
     }
 
     /**
@@ -86,7 +87,7 @@ class Hook_worldpay
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
@@ -95,7 +96,7 @@ class Hook_worldpay
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $trans_id = $this->generate_trans_id();
         $digest_option = get_option('ipn_digest');
-        //$digest=md5((($digest_option=='')?($digest_option.':'):'').$trans_id.':'.float_to_raw_string($amount).':'.$currency); Deprecated
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -103,6 +104,7 @@ class Hook_worldpay
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
             'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
             'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
             'e_time' => time(),
@@ -135,7 +137,7 @@ class Hook_worldpay
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @param  ID_TEXT $currency The currency to use.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
@@ -163,7 +165,7 @@ class Hook_worldpay
                 break;
         }
         $digest_option = get_option('ipn_digest');
-        //$digest=md5((($digest_option=='')?($digest_option.':'):'').$trans_id.':'.float_to_raw_string($amount).':'.$currency.$length_units_2.strval($length));   Deprecated
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -171,6 +173,7 @@ class Hook_worldpay
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
             'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
             'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
             'e_time' => time(),
@@ -198,7 +201,7 @@ class Hook_worldpay
      * Make a subscription cancellation button.
      *
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_cancel_button($purchase_id)
     {
@@ -236,8 +239,8 @@ class Hook_worldpay
     public function handle_transaction()
     {
         // Test case...
-        //$_POST=unserialize('a:36:{s:8:"testMode";s:3:"100";s:8:"authCost";s:4:"15.0";s:8:"currency";s:3:"GBP";s:7:"address";s:1:"a";s:13:"countryString";s:11:"South Korea";s:10:"callbackPW";s:10:"s35645dxr4";s:12:"installation";s:5:"84259";s:3:"fax";s:1:"a";s:12:"countryMatch";s:1:"B";s:7:"transId";s:9:"222873126";s:3:"AVS";s:4:"0000";s:12:"amountString";s:11:"&#163;15.00";s:8:"postcode";s:1:"a";s:7:"msgType";s:10:"authResult";s:4:"name";s:1:"a";s:3:"tel";s:1:"a";s:11:"transStatus";s:1:"Y";s:4:"desc";s:15:"Property Advert";s:8:"cardType";s:10:"Mastercard";s:4:"lang";s:2:"en";s:9:"transTime";s:13:"1171243476007";s:16:"authAmountString";s:11:"&#163;15.00";s:10:"authAmount";s:4:"15.0";s:9:"ipAddress";s:12:"84.9.162.135";s:4:"cost";s:4:"15.0";s:6:"instId";s:5:"84259";s:6:"amount";s:4:"15.0";s:8:"compName";s:32:"The Accessible Property Register";s:7:"country";s:2:"KR";s:11:"MC_callback";s:63:"www.kivi.co.uk/ClientFiles/APR/data/ecommerce.php?from=worldpay";s:14:"rawAuthMessage";s:22:"cardbe.msg.testSuccess";s:5:"email";s:16:"vaivak@gmail.com";s:12:"authCurrency";s:3:"GBP";s:11:"rawAuthCode";s:1:"A";s:6:"cartId";s:32:"3ecd645f632f0304067fb565e71b4dcd";s:8:"authMode";s:1:"A";}');
-        //$_GET=unserialize('a:3:{s:4:"from";s:8:"worldpay";s:7:"msgType";s:10:"authResult";s:12:"installation";s:5:"84259";}');
+        //$_POST = unserialize('a:36:{s:8:"testMode";s:3:"100";s:8:"authCost";s:4:"15.0";s:8:"currency";s:3:"GBP";s:7:"address";s:1:"a";s:13:"countryString";s:11:"South Korea";s:10:"callbackPW";s:10:"s35645dxr4";s:12:"installation";s:5:"84259";s:3:"fax";s:1:"a";s:12:"countryMatch";s:1:"B";s:7:"transId";s:9:"222873126";s:3:"AVS";s:4:"0000";s:12:"amountString";s:11:"&#163;15.00";s:8:"postcode";s:1:"a";s:7:"msgType";s:10:"authResult";s:4:"name";s:1:"a";s:3:"tel";s:1:"a";s:11:"transStatus";s:1:"Y";s:4:"desc";s:15:"Property Advert";s:8:"cardType";s:10:"Mastercard";s:4:"lang";s:2:"en";s:9:"transTime";s:13:"1171243476007";s:16:"authAmountString";s:11:"&#163;15.00";s:10:"authAmount";s:4:"15.0";s:9:"ipAddress";s:12:"84.9.162.135";s:4:"cost";s:4:"15.0";s:6:"instId";s:5:"84259";s:6:"amount";s:4:"15.0";s:8:"compName";s:32:"The Accessible Property Register";s:7:"country";s:2:"KR";s:11:"MC_callback";s:63:"www.kivi.co.uk/ClientFiles/APR/data/ecommerce.php?from=worldpay";s:14:"rawAuthMessage";s:22:"cardbe.msg.testSuccess";s:5:"email";s:16:"vaivak@gmail.com";s:12:"authCurrency";s:3:"GBP";s:11:"rawAuthCode";s:1:"A";s:6:"cartId";s:32:"3ecd645f632f0304067fb565e71b4dcd";s:8:"authMode";s:1:"A";}');
+        //$_GET = unserialize('a:3:{s:4:"from";s:8:"worldpay";s:7:"msgType";s:10:"authResult";s:12:"installation";s:5:"84259";}');
 
         $code = post_param_string('transStatus');
         if ($code == 'C') {
@@ -279,7 +282,7 @@ class Hook_worldpay
 
         if ($success) {
             require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
         }
 
         if (addon_installed('shopping')) {

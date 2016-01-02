@@ -43,7 +43,7 @@ function assign_referral_awards($referee, $trigger)
                     $referee_username,
                     $referee_displayname
                 ),
-                do_lang(
+                do_notification_lang(
                     'MAIL_REFERRALS__NONREFERRAL__TOSTAFF_BODY',
                     comcode_escape($referee_username),
                     comcode_escape($referee_displayname)
@@ -98,8 +98,7 @@ function _assign_referral_awards(
     $referrer, $referrer_username, $referrer_displayname, $referrer_email,
 
     $num_total_qualified_by_referrer, $num_total_by_referrer
-)
-{
+) {
     $scheme_title = isset($scheme['title']) ? $scheme['title'] : $scheme_name;
 
     $report_url = find_script('referrer_report') . '?scheme=' . urlencode($scheme_name) . '&csv=1';
@@ -149,7 +148,7 @@ function _assign_referral_awards(
                     if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                         $body_lang_string .= '__' . $scheme_name;
                     }
-                    $body = do_lang(
+                    $body = do_notification_lang(
                         $body_lang_string,
                         comcode_escape($level_description),
                         comcode_escape($referrer_username),
@@ -192,7 +191,7 @@ function _assign_referral_awards(
                     if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                         $body_lang_string .= '__' . $scheme_name;
                     }
-                    $body = do_lang(
+                    $body = do_notification_lang(
                         $body_lang_string,
                         comcode_escape($referrer_username),
                         comcode_escape(integer_format($num_total_qualified_by_referrer)),
@@ -236,7 +235,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape(integer_format($num_total_qualified_by_referrer)),
@@ -280,7 +279,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape($referee_username),
@@ -321,7 +320,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape($referee_username),
@@ -522,7 +521,7 @@ function referrer_report_script($ret = false)
 
         $deleted = false;
         if (is_null($ref['referee'])) {
-            $deleted = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))));
+            $deleted = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))));
         }
         if ($csv) {
             $data_row[do_lang('REFEREE')] = is_null($ref['referee']) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referee'];

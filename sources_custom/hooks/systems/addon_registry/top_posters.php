@@ -87,10 +87,10 @@ class Hook_addon_registry_top_posters
     {
         return 'A block to show the posters with the longest average post length and their total number of posts.
 
-You can configure the total amount of posters to be listed using the [tt]max=\"Number here\"[/tt] parameter.
+You can configure the total amount of posters to be listed using the [tt]max="Number here"[/tt] parameter.
 
 Example:
-[code=\"Comcode\"][block max=\"10\"]main_best_posters[/block][/code]';
+[code="Comcode"][block max="10"]main_best_posters[/block][/code]';
     }
 
     /**
@@ -117,6 +117,16 @@ Example:
             'recommends' => array(),
             'conflicts_with' => array()
         );
+    }
+
+    /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
     }
 
     /**

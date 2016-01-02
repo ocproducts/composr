@@ -26,9 +26,9 @@ class Hook_config_twitterfeed_update_time
     public function get_details()
     {
         return array(
-            'human_name' => 'UPDATE_TIME',
+            'human_name' => 'TWITTER_FEED_UPDATE_TIME',
             'type' => 'integer',
-            'category' => 'BLOCKS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'TWITTER_FEED_INTEGRATION',
             'explanation' => 'CONFIG_OPTION_twitterfeed_update_time',
             'shared_hosting_restricted' => '0',

@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    db_schema
+ */
+
 /*
 Used to generate a database schema in the form of SQL code that can be imported into MySQL Workbench
 
@@ -15,7 +21,7 @@ First run this, then run SQLEditor on the files created in uploads/website_speci
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-require_code('relations');
+require_code('database_relations');
 
 $all_tables = get_all_tables();
 

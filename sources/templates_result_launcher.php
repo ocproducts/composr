@@ -19,16 +19,16 @@
  */
 
 /**
- * Get the tempcode for a results launcher.
+ * Get the Tempcode for a results launcher.
  *
- * @param  tempcode $title The title/name of the resource we are browsing through
+ * @param  Tempcode $title The title/name of the resource we are browsing through
  * @param  ID_TEXT $page The page name we are launching into
  * @param  AUTO_LINK $category_id The category ID we are browsing in
  * @param  integer $max The maximum number of rows to show per browser page
  * @param  integer $max_rows The maximum number of rows in the entire dataset
  * @param  ID_TEXT $type The page type this browser is browsing through (e.g. 'category')
  * @param  integer $max_page_links The maximum number of quick-jump page-links to show
- * @return tempcode The results launcher
+ * @return Tempcode The results launcher
  */
 function results_launcher($title, $page, $category_id, $max, $max_rows, $type, $max_page_links = 5)
 {

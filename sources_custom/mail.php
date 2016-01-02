@@ -16,7 +16,7 @@
  * @range  1 5
  * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
  * @param  boolean $no_cc Whether to NOT CC to the CC address
- * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
+ * @param  ?MEMBER $as Convert Comcode->Tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
  * @param  boolean $as_admin Replace above with arbitrary admin
  * @param  boolean $in_html HTML-only
  * @param  boolean $coming_out_of_queue Whether to bypass queueing, because this code is running as a part of the queue management tools
@@ -25,7 +25,7 @@
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
- * @return ?tempcode A full page (not complete XHTML) piece of tempcode to output (null: it worked so no tempcode message)
+ * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
  */
 function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = false, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
 {
@@ -73,9 +73,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
         }
 
-        $through_queue =
-            (!$bypass_queue) &&
-            ((get_option('mail_queue_debug') === '1') || ((get_option('mail_queue') === '1') && (cron_installed())));
+        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
         if (!is_null($attachments)) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {

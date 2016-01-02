@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__form_templates()
 {
@@ -176,7 +178,7 @@ function attach_wysiwyg()
 /**
  * Insert hidden data for the maximum file size of form fields.
  *
- * @param  tempcode $hidden Hidden fields
+ * @param  Tempcode $hidden Hidden fields
  * @param  ID_TEXT $regular_max_size_type Code representing the media types we are using limits for
  * @set image file
  */
@@ -204,15 +206,19 @@ function handle_max_file_size(&$hidden, $regular_max_size_type = 'file')
  * Get what we need to get attachments in a form-field interface.
  *
  * @param  ID_TEXT $posting_field_name The name of the field attachments are for
- * @return array A pair: the attachments UI (tempcode), the hidden attachment field
+ * @return array A pair: the attachments UI (Tempcode), the hidden attachment field
  */
 function get_attachments($posting_field_name)
 {
     $image_types = str_replace(',', ', ', get_option('valid_images'));
 
     require_lang('javascript');
+    require_lang('comcode');
     require_javascript('plupload');
     require_css('widget_plupload');
+    require_javascript('editing');
+    require_javascript('checking');
+    require_javascript('posting');
 
     require_code('upload_syndication');
     list($syndication_json, $filter) = get_upload_syndication_json(CMS_UPLOAD_ANYTHING);
@@ -270,6 +276,7 @@ function get_attachments($posting_field_name)
         'ATTACHMENTS' => $attachments,
         'MAX_ATTACHMENTS' => strval($max_attachments),
         'NUM_ATTACHMENTS' => strval($num_attachments),
+        'FILTER' => $filter,
     ));
 
     return array($attachments, $attach_size_field);
@@ -282,21 +289,23 @@ function get_attachments($posting_field_name)
  * @param  ID_TEXT $submit_icon The submit icon CSS class.
  * @param  LONG_TEXT $post The default post to put in.
  * @param  mixed $post_url Where the form is sent (URLPATH or Tempcode).
- * @param  tempcode $hidden_fields A form_input_hidden buildup of hidden fields (additional parameters sent to the target URL).
- * @param  tempcode $specialisation A buildup of leading extra fields, in a format compatible with the templates used by this function.
+ * @param  Tempcode $hidden_fields A form_input_hidden buildup of hidden fields (additional parameters sent to the target URL).
+ * @param  Tempcode $specialisation A buildup of leading extra fields, in a format compatible with the templates used by this function.
  * @param  ?mixed $post_comment The post comment (string or Tempcode). This gives information about how you should post. (null: no post comment)
  * @param  string $extra Extra info to put on the posting form
- * @param  ?tempcode $specialisation2 A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)
- * @param  ?tempcode $default_parsed The parsed Comcode. (null: calculate)
+ * @param  ?Tempcode $specialisation2 A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)
+ * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
  * @param  ?string $javascript JavaScript code to include (null: none)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $has_preview Whether the form supports previewing
  * @param  boolean $avoid_wysiwyg Whether to avoid WYSIWYG mode
  * @param  boolean $support_autosave Whether to support auto-save
- * @return tempcode The posting form
+ * @param  boolean $specialisation2_hidden Whether to support auto-save
+ * @param  mixed $description A description for this input field
+ * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true)
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
     require_lang('javascript');
     require_javascript('posting');
@@ -309,6 +318,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
+    $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));
 
@@ -332,7 +342,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $comcode_editor = get_comcode_editor();
     $comcode_editor_small = get_comcode_editor('post', true);
 
-    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg') && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
+    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
     $class = '';
     attach_wysiwyg();
@@ -371,7 +381,9 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'ATTACHMENTS' => $attachments,
         'SPECIALISATION' => $specialisation,
         'SPECIALISATION2' => $specialisation2,
+        'SPECIALISATION2_HIDDEN' => $specialisation2_hidden,
         'SUPPORT_AUTOSAVE' => $support_autosave,
+        'DESCRIPTION' => $description,
     ));
 }
 
@@ -380,7 +392,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
  *
  * @param  string $field_name The name of the field the editor is working for
  * @param  boolean $cut_down Whether to make a cut-down version
- * @return tempcode The Comcode editor
+ * @return Tempcode The Comcode editor
  */
 function get_comcode_editor($field_name = 'post', $cut_down = false)
 {
@@ -408,7 +420,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
     if (has_zone_access(get_member(), 'adminzone')) {
         $_buttons[] = 'page';
     }
-    //if (!$cut_down) $_buttons[]='email';   Not enough space any more
+    //if (!$cut_down) $_buttons[]='email';   Not enough space anymore
 
     // Wrappers
     $_buttons[] = 'quote';
@@ -426,7 +438,13 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
         if (($button == 'url') || ($button == 'quote') || ($i == 0)) {
             $divider = true;
         }
-        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => 'e4fe3bc16cec070e06532fedc598d075', 'DIVIDER' => $divider, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array(
+            '_GUID' => 'e4fe3bc16cec070e06532fedc598d075',
+            'DIVIDER' => $divider,
+            'FIELD_NAME' => $field_name,
+            'TITLE' => ($button == 'thumb' && browser_matches('simplified_attachments_ui')) ? do_lang_tempcode('INPUT_COMCODE_attachment') : do_lang_tempcode('INPUT_COMCODE_' . $button),
+            'B' => $button,
+        )));
     }
 
     $micro_buttons = new Tempcode();
@@ -436,20 +454,49 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             array('t' => 'i'),
         );
         foreach ($_micro_buttons as $button) {
-            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf', 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']), 'B' => $button['t'])));
+            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array(
+                '_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf',
+                'FIELD_NAME' => $field_name,
+                'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']),
+                'B' => $button['t'],
+            )));
         }
     }
-    return do_template('COMCODE_EDITOR', array('_GUID' => 'ebff3145776a0441d115f2e4e13617d6', 'POSTING_FIELD' => $field_name, 'BUTTONS' => $buttons, 'MICRO_BUTTONS' => $micro_buttons));
+    return do_template('COMCODE_EDITOR', array(
+        '_GUID' => 'ebff3145776a0441d115f2e4e13617d6',
+        'POSTING_FIELD' => $field_name,
+        'BUTTONS' => $buttons,
+        'MICRO_BUTTONS' => $micro_buttons,
+    ));
 }
 
 /**
  * Find whether WYSIWYG is currently on.
  *
+ * @param  ?string $default Comcode that might be WYSIWYG edited (null: none)
  * @return boolean Whether it is
  */
-function wysiwyg_on()
+function wysiwyg_on($default = null)
 {
-    return ((browser_matches('wysiwyg')) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
+    return ((browser_matches('wysiwyg', $default)) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
+}
+
+/**
+ * Find if a form field is required via fields.xml filters.
+ *
+ * @param  ID_TEXT $name The codename for this field
+ * @param  boolean $required Whether it is required by default
+ * @return boolean Whether it is required
+ */
+function filter_form_field_required($name, $required)
+{
+    if (!$required) {
+        $minlength = get_field_restrict_property('minlength', $name);
+        if ((!empty($minlength)) && (intval($minlength) > 0)) {
+            $required = true;
+        }
+    }
+    return $required;
 }
 
 /**
@@ -477,8 +524,8 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
             if (simulated_wildcard_match($field, trim($__r), true)) {
                 foreach ($_restrictions as $bits) {
                     list($restriction, $attributes) = $bits;
-                    if (strtolower($restriction) == strtolower($field)) {
-                        return $bits['embed'];
+                    if (strtolower($restriction) == strtolower($property)) {
+                        return $bits[1]['embed'];
                     }
                 }
             }
@@ -488,7 +535,7 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
 }
 
 /**
- * Get the tempcode for a codename input line.
+ * Get the Tempcode for a codename input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -499,7 +546,7 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  ?integer $_maxlength The maximum length of the field (null: default 80)
  * @param  ?array $extra_chars List of extra characters to allow (null: none)
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $extra_chars = null, $placeholder = null)
 {
@@ -512,6 +559,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -525,7 +573,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
 }
 
 /**
- * Get the tempcode for a text input line (an <input type="text" ... />).
+ * Get the Tempcode for a text input line (an <input type="text" ... />).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -538,7 +586,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null)
 {
@@ -547,6 +595,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -560,7 +609,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
 }
 
 /**
- * Get the tempcode for a URL.
+ * Get the Tempcode for a URL.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -568,7 +617,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_url($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -577,6 +626,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -586,7 +636,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
 }
 
 /**
- * Get the tempcode for a username input line.
+ * Get the Tempcode for a username input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -595,7 +645,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $needs_match Whether it is required than a valid username is given
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_username($pretty_name, $description, $name, $default, $required, $needs_match = true, $tabindex = null)
 {
@@ -604,6 +654,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -616,7 +667,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
 }
 
 /**
- * Get the tempcode for a author/username input line.
+ * Get the Tempcode for a author/username input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -624,7 +675,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_author($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -637,6 +688,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -660,7 +712,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
 }
 
 /**
- * Get the tempcode for a email-address input line.
+ * Get the Tempcode for a email-address input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -668,7 +720,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_email($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -677,6 +729,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -686,7 +739,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
 }
 
 /**
- * Get the tempcode for a colour input.
+ * Get the Tempcode for a colour input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -694,7 +747,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_colour($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -706,7 +759,12 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
         $default = '';
     }
 
+    if ($default == 'inherit') {
+        $default = '';
+    }
+
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -715,7 +773,7 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
 }
 
 /**
- * Get the tempcode for a page-link input.
+ * Get the Tempcode for a page-link input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -725,7 +783,7 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ?ID_TEXT $page_type Page type to show (null: all)
  * @param  boolean $get_title_too Whether to also get the title for the page
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_page_link($pretty_name, $description, $name, $default, $required, $tabindex = null, $page_type = null, $get_title_too = false)
 {
@@ -745,7 +803,7 @@ function form_input_page_link($pretty_name, $description, $name, $default, $requ
 }
 
 /**
- * Get the tempcode for a Comcode-enabled text input line.
+ * Get the Tempcode for a Comcode-enabled text input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -753,7 +811,7 @@ function form_input_page_link($pretty_name, $description, $name, $default, $requ
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_line_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -764,6 +822,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -773,7 +832,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
 }
 
 /**
- * Get the tempcode for a DHTML input field that takes multiple lines. A new line is added when the prior one isn't blank.
+ * Get the Tempcode for a DHTML input field that takes multiple lines. A new line is added when the prior one isn't blank.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -785,7 +844,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
  * @set    line email
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_line_multi($pretty_name, $description, $name, $default_array, $num_required, $tabindex = null, $class = 'line', $pattern = null, $pattern_error = null)
 {
@@ -798,6 +857,12 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -836,7 +901,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
 }
 
 /**
- * Get the tempcode for a DHTML input field that takes multiple textareas. A new textarea is added when the prior one isn't blank.
+ * Get the Tempcode for a DHTML input field that takes multiple textareas. A new textarea is added when the prior one isn't blank.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -845,7 +910,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
  * @param  integer $num_required The minimum number of textareas allowed.
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ?integer $maxlength The maximum length of the field (null: unlimited)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_text_multi($pretty_name, $description, $name, $default_array, $num_required, $tabindex = null, $maxlength = null)
 {
@@ -858,6 +923,12 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -876,7 +947,7 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
 }
 
 /**
- * Get the tempcode for a username input line.
+ * Get the Tempcode for a username input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -885,7 +956,7 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
  * @param  integer $num_required The minimum number of inputs allowed
  * @param  boolean $needs_match Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_username_multi($pretty_name, $description, $name, $default_array, $num_required, $needs_match = true, $tabindex = null)
 {
@@ -898,6 +969,13 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
+
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -929,7 +1007,7 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
 }
 
 /**
- * Get the tempcode for a text input (textarea).
+ * Get the Tempcode for a text input (textarea).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -940,13 +1018,14 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
  * @param  boolean $scrolls Whether the field scrolls
  * @param  ?integer $maxlength The maximum length of the field (null: unlimited)
  * @param  ?integer $rows Number of rows for text input (null: default)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_text($pretty_name, $description, $name, $default, $required, $tabindex = null, $scrolls = false, $maxlength = null, $rows = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -967,7 +1046,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
 }
 
 /**
- * Get the tempcode for a Comcode-enabled text input (textarea).
+ * Get the Tempcode for a Comcode-enabled text input (textarea).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -977,14 +1056,14 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $force_non_wysiwyg Force non-WYSIWYG and non default-Comcode parsing
  * @param  mixed $description_side A secondary side description for this input field
- * @param  ?tempcode $default_parsed The parsed Comcode. (null: calculate)
+ * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
  * @param  boolean $scrolls Whether the field scrolls
  * @param  ?integer $rows Number of rows for text input (null: default)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_text_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $force_non_wysiwyg = false, $description_side = '', $default_parsed = null, $scrolls = false, $rows = null)
 {
-    if ((browser_matches('wysiwyg')) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
+    if ((browser_matches('wysiwyg', $default)) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
         return form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex, 10, $description_side, $default_parsed, $scrolls);
     }
 
@@ -998,13 +1077,14 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     $default_parsed = new Tempcode();
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
     if (!$force_non_wysiwyg) {
         attach_wysiwyg();
 
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1035,7 +1115,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 }
 
 /**
- * Get the tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)
+ * Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1045,10 +1125,10 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  integer $rows The number of rows to use
  * @param  mixed $description_side A secondary side description for this input field
- * @param  ?tempcode $default_parsed The parsed Comcode. (null: calculate)
+ * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
  * @param  boolean $scrolls Whether the field scrolls
  * @param  boolean $force_non_wysiwyg Force non-WYSIWYG and non default-Comcode parsing
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $default_parsed = null, $scrolls = false, $force_non_wysiwyg = false)
 {
@@ -1059,6 +1139,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1068,7 +1149,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     attach_wysiwyg();
 
     if (!$force_non_wysiwyg) {
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1105,7 +1186,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
 }
 
 /**
- * Get the tempcode for a huge text input (textarea).
+ * Get the Tempcode for a huge text input (textarea).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1116,13 +1197,14 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
  * @param  integer $rows The number of rows to use
  * @param  mixed $description_side A secondary side description for this input field
  * @param  boolean $scrolls Whether the field scrolls
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_huge($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $scrolls = false)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1146,7 +1228,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
 }
 
 /**
- * Get the tempcode for a password input.
+ * Get the Tempcode for a password input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1154,7 +1236,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  string $default The default value for this input field
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_password($pretty_name, $description, $name, $required, $tabindex = null, $default = '')
 {
@@ -1166,7 +1248,7 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
 }
 
 /**
- * Get the tempcode for a checkbox input.
+ * Get the Tempcode for a checkbox input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1174,7 +1256,7 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  boolean $ticked Whether this is ticked by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1')
 {
@@ -1187,7 +1269,7 @@ function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex =
 }
 
 /**
- * Get the tempcode for a bank of tick boxes.
+ * Get the Tempcode for a bank of tick boxes.
  *
  * @param  array $options A list of tuples: (prettyname, name, value, description)
  * @param  mixed $description A description for this input field
@@ -1196,7 +1278,7 @@ function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex =
  * @param  boolean $simple_style Whether to place each tick on a new line
  * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
  * @param  ?mixed $custom_value Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_various_ticks($options, $description, $_tabindex = null, $_pretty_name = '', $simple_style = false, $custom_name = null, $custom_value = null)
 {
@@ -1229,7 +1311,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
 
             $value = (filter_form_field_default($name, $value ? '1' : '0') == '1');
 
-            $out[] = array('CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
+            $out[] = array('DISABLED' => false, 'CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
         }
 
         if ($custom_value === array()) {
@@ -1252,12 +1334,12 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
 }
 
 /**
- * Get the tempcode for a multi-set upload, allowing selection from multiple different sources.
+ * Get the Tempcode for a multi-set upload, allowing selection from multiple different sources.
  * Mainly for images, used with post_param_image or post_param_multi_source_upload.
  *
  * @param  mixed $set_title A human intelligible name for this input field
  * @param  mixed $set_description A description for this input field
- * @param  tempcode $hidden A reference to where we're putting hidden fields
+ * @param  Tempcode $hidden A reference to where we're putting hidden fields
  * @param  ID_TEXT $set_name The name which this input field is for (actually, this is a prefix put in front of different input types).
  * @param  ?ID_TEXT $theme_image_type The directory of theme images to provide selection from (null: do not support theme images)
  * @param  boolean $required Whether this is a required input field. Set this to false if you are using this field on an edit form and already have an uploaded file -- therefore you'd know no new file would mean not to replace the existing file
@@ -1265,13 +1347,25 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
  * @param  boolean $support_syndication Whether to syndicate the file off
  * @param  ?string $filter File type filter (null: autodetect)
  * @param  boolean $images_only Whether to accept images only
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_upload_multi_source($set_title, $set_description, &$hidden, $set_name = 'image', $theme_image_type = null, $required = true, $default = null, $support_syndication = false, $filter = null, $images_only = true)
 {
     $field_set = alternate_fields_set__start($set_name);
 
     require_code('images');
+
+    // Remap theme image to URL if needed
+    if ($images_only) {
+        if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
+            require_code('themes2');
+            $ids = get_all_image_ids_type($theme_image_type);
+
+            if (in_array($default, $ids)) {
+                $default = find_theme_image($default);
+            }
+        }
+    }
 
     // ---
 
@@ -1312,11 +1406,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ((addon_installed('filedump')) && (has_actual_page_access(null, 'filedump'))) {
         require_code('files2');
-        $fullpath = get_custom_file_base() . '/uploads/filedump';
-        $files = get_directory_contents($fullpath, '', false, false);
+        $full_path = get_custom_file_base() . '/uploads/filedump';
+        $files = get_directory_contents($full_path, '', false, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
-            if (is_image($file) || is_dir($fullpath . '/' . $file)) {
+            if (is_image($file) || is_dir($full_path . '/' . $file)) {
                 $has_image_or_dir = true;
                 break;
             }
@@ -1343,9 +1437,6 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ($images_only) {
         if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
-            require_code('themes2');
-            $ids = get_all_image_ids_type($theme_image_type);
-
             if (count($ids) > 0) {
                 $field_choose = $set_name . '__theme_image';
 
@@ -1360,7 +1451,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 }
 
 /**
- * Get the tempcode for a file upload input.
+ * Get the Tempcode for a file upload input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1371,7 +1462,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
  * @param  boolean $plupload Whether plupload-style is preferred
  * @param  string $filter File-type filter to limit to, comma-separated file extensions (might not be supported)
  * @param  ?string $syndication_json JSON structure of what uploader syndications there will be (null: none)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_upload($pretty_name, $description, $name, $required, $default = null, $tabindex = null, $plupload = true, $filter = '', $syndication_json = null)
 {
@@ -1420,7 +1511,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
 }
 
 /**
- * Get the tempcode for a multiple file upload input.
+ * Get the Tempcode for a multiple file upload input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1431,7 +1522,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
  * @param  boolean $plupload Whether plupload-style is preferred
  * @param  string $filter File-type filter to limit to, comma-separated file extensions (might not be supported)
  * @param  ?string $syndication_json JSON structure of what uploader syndications there will be (null: none)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_upload_multi($pretty_name, $description, $name, $required, $tabindex = null, $default = null, $plupload = true, $filter = '', $syndication_json = null)
 {
@@ -1474,18 +1565,18 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
 }
 
 /**
- * Get the tempcode for a listbox.
+ * Get the Tempcode for a listbox.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  tempcode $content The list entries for our list
+ * @param  Tempcode $content The list entries for our list
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
  * @param  boolean $required Whether this is required
  * @param  ?array $images List of theme images that $content is allowing selection of (so that we can show the images within the list, if JS is enabled) (null: none)
  * @param  integer $size How much space the list takes up (inline lists only)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $images = null, $size = 5)
 {
@@ -1497,7 +1588,28 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
 }
 
 /**
- * Get the tempcode for an AJAX-powered tree listbox.
+ * Get the Tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available.
+ *
+ * @param  mixed $pretty_name A human intelligible name for this input field
+ * @param  mixed $description A description for this input field
+ * @param  ID_TEXT $name The name which this input field is for
+ * @param  string $default Current selection
+ * @param  Tempcode $options The list entries for our list
+ * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  boolean $required Whether this is required
+ * @return Tempcode The input field
+ */
+function form_input_combo($pretty_name, $description, $name, $default, $options, $tabindex = null, $required = true)
+{
+    $tabindex = get_form_field_tabindex($tabindex);
+
+    $_required = ($required) ? '_required' : '';
+    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+}
+
+/**
+ * Get the Tempcode for an AJAX-powered tree listbox.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1511,7 +1623,7 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $multi_select Whether multiple selections are allowed
  * @param  ?string $nice_label Label for default value (null: just use the literal)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook, $options, $required, $default = null, $use_server_id = false, $tabindex = null, $multi_select = false, $nice_label = null)
 {
@@ -1546,6 +1658,18 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         $nice_label = $default;
     }
 
+    require_code('content');
+    $content_type = preg_replace('#^choose_#', '', $hook);
+    if ($content_type != '') {
+        $cma_ob = get_content_object($content_type);
+        if (!is_null($cma_ob)) {
+            $cma_info = $cma_ob->info();
+            if (!is_null($cma_info['parent_category_meta_aware_type'])) {
+                $content_type = $cma_info['parent_category_meta_aware_type'];
+            }
+        }
+    }
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
         '_GUID' => '21e9644eeac24356f38459ebe37f693a',
@@ -1555,27 +1679,29 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         'TABINDEX' => strval($tabindex),
         'NAME' => $name,
         'REQUIRED' => $_required,
+        '_REQUIRED' => $required,
         'DEFAULT' => is_null($default) ? '' : $default,
         'HOOK' => $hook,
         'ROOT_ID' => is_null($root_id) ? '' : $root_id,
         'OPTIONS' => serialize($options),
         'DESCRIPTION' => $description,
+        'CONTENT_TYPE' => $content_type,
     ));
     return _form_input($name, $pretty_name, '', $input, $required, false, $tabindex);
 }
 
 /**
- * Get the tempcode for a huge listbox.
+ * Get the Tempcode for a huge listbox.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  tempcode $content The list entries for our list
+ * @param  Tempcode $content The list entries for our list
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
  * @param  boolean $required Whether this is required
  * @param  ?integer $size Size of list (null: default)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null)
 {
@@ -1597,18 +1723,18 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
 }
 
 /**
- * Get the tempcode for a listbox with multiple selections.
+ * Get the Tempcode for a listbox with multiple selections.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  tempcode $content The list entries for our list
+ * @param  Tempcode $content The list entries for our list
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  integer $size How much space the list takes up
  * @param  boolean $required Whether at least one must be selected
  * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
  * @param  ?mixed $custom_value Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_multi_list($pretty_name, $description, $name, $content, $tabindex = null, $size = 5, $required = false, $custom_name = null, $custom_value = null)
 {
@@ -1628,16 +1754,16 @@ function form_input_multi_list($pretty_name, $description, $name, $content, $tab
 }
 
 /**
- * Get the tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these').
+ * Get the Tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these').
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  string $base The base name which this input field is for
- * @param  tempcode $list A list culmulation to select against
+ * @param  Tempcode $list A list culmulation to select against
  * @param  string $type The current type of partial selection
  * @set    + - *
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_all_and_not($pretty_name, $description, $base, $list, $type = '+', $tabindex = null)
 {
@@ -1654,16 +1780,16 @@ function form_input_all_and_not($pretty_name, $description, $base, $list, $type 
 }
 
 /**
- * Get the tempcode for a radio group.
+ * Get the Tempcode for a radio group.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  tempcode $content The radio buttons for our radio group
+ * @param  Tempcode $content The radio buttons for our radio group
  * @param  boolean $required Whether a radio selection is required
  * @param  boolean $picture_contents Whether this is a picture-based radio list
  * @param  string $selected_path Default value (only appropriate if has picture contents)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_radio($pretty_name, $description, $name, $content, $required = false, $picture_contents = false, $selected_path = '')
 {
@@ -1676,7 +1802,7 @@ function form_input_radio($pretty_name, $description, $name, $content, $required
 }
 
 /**
- * Get the tempcode for a radio input. (You would gather together the outputs of several of these functions, then put them in as the $content in a form_input_radio function call).
+ * Get the Tempcode for a radio input. (You would gather together the outputs of several of these functions, then put them in as the $content in a form_input_radio function call).
  *
  * @param  string $name The name of the radio button group this will be put in (i.e. the name the value presented here will be possibly matched against)
  * @param  string $value The value for this entry
@@ -1684,7 +1810,7 @@ function form_input_radio($pretty_name, $description, $name, $content, $required
  * @param  mixed $text The text associated with this choice (blank: just use value for text)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  mixed $description An additional long description (blank: no description)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_radio_entry($name, $value, $selected = false, $text = '', $tabindex = null, $description = '')
 {
@@ -1700,7 +1826,7 @@ function form_input_radio_entry($name, $value, $selected = false, $text = '', $t
 }
 
 /**
- * Get the tempcode to choose a picture from the given list of images in the theme image system, with sub-categorisation.
+ * Get the Tempcode to choose a picture from the given list of images in the theme image system, with sub-categorisation.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1715,7 +1841,7 @@ function form_input_radio_entry($name, $value, $selected = false, $text = '', $t
  * @param  ?ID_TEXT $lang Language to use (null: current language)
  * @param  boolean $linear Whether choices are presented in a list (as opposed to a grid); useful when sizes are irregular
  * @param  boolean $direct_titles Whether to show direct codenames, rather than trying to prettify them into titles
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_theme_image($pretty_name, $description, $name, $ids, $selected_url = null, $selected_code = null, $tabindex = null, $allow_none = false, $db = null, $theme = null, $lang = null, $linear = false, $direct_titles = false)
 {
@@ -1841,7 +1967,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $height = null;
             }
 
-            $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '10005e2f08b44bfe17fce68685b4c884', 'LINEAR' => $linear, 'CHECKED' => $selected, 'PRETTY' => $pretty, 'NAME' => $name, 'CODE' => $id, 'URL' => $url, 'WIDTH' => strval($width), 'HEIGHT' => strval($height)));
+            $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '10005e2f08b44bfe17fce68685b4c884', 'LINEAR' => $linear, 'CHECKED' => $selected, 'PRETTY' => $pretty, 'NAME' => $name, 'CODE' => $id, 'URL' => $url, 'WIDTH' => is_null($width) ? '' : strval($width), 'HEIGHT' => is_null($height) ? '' : strval($height)));
             $_category->attach($temp);
 
             $i++;
@@ -1851,13 +1977,13 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
         $content->attach($_category);
     }
 
-    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => false, 'NAME' => $name, 'CODE' => is_null($selected_code) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
+    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => is_null($selected_code) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
 
-    return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, false);
+    return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, !$allow_none);
 }
 
 /**
- * Get the tempcode for a date input, or if cron is not on, return blank.
+ * Get the Tempcode for a date input, or if cron is not on, return blank.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1869,7 +1995,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
  * @param  integer $total_years_to_show The number of years to allow selection from (all into the future, as this field type is not meant for inputting past dates)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_date__scheduler($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null)
 {
@@ -1880,7 +2006,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
 }
 
 /**
- * Get the tempcode for a date input. Use get_input_date to read the result.
+ * Get the Tempcode for a date input. Use post_param_date to read the result.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1895,7 +2021,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
  * @param  boolean $do_date Whether to input date for this field (if false, will just do time)
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_date($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
 {
@@ -1904,7 +2030,7 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
 }
 
 /**
- * Get the tempcode for a date input, raw.
+ * Get the Tempcode for a date input, raw.
  *
  * @param  ID_TEXT $name The parameter name for this input field
  * @param  boolean $required Whether this is a required field
@@ -1917,7 +2043,9 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  boolean $do_date Whether to input date for this field (if false, will just do time)
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
- * @return tempcode The input field
+ * @return Tempcode The input field
+ *
+ * @ignore
  */
 function _form_input_date($name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
 {
@@ -1928,6 +2056,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     $default_month = mixed();
     $default_day = mixed();
     $default_year = mixed();
+
+    $required = filter_form_field_required($name, $required);
 
     if ((is_array($default_time)) && ($default_time[4] < 1970) && (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963')) { // Some systems can't do negative timestamps. Actually the maximum negative integer size is also an issue
         list($default_minute, $default_hour, $default_month, $default_day, $default_year) = $default_time;
@@ -1964,18 +2094,26 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         $default_year = is_null($default_time) ? null : intval(date('Y', $default_time));
     }
 
-    if ((!is_null($year_start)) && (!is_null($default_year))) {
-        if ($default_year < $year_start) {
-            $year_start = $default_year;
-        }
+    if ($total_years_to_show < 0) {
+        // Assumes $year_start = null; if it is not, weird parameters were passed
+        $year_start = intval(date('Y')) + $total_years_to_show;
+    }
+    // Fix if out of range
+    if ((!is_null($year_start)) && (!is_null($default_year)) && ($default_year < $year_start)) {
+        $year_start = $default_year;
     }
 
     $year_end = mixed();
-    if (!is_null($total_years_to_show)) {
-        $year_end = $year_start + $total_years_to_show;
-        if ((!is_null($default_year)) && ($default_year > $year_end)) {
-            $year_end = $default_year;
+    if ((!is_null($total_years_to_show)) && (!is_null($year_start))) {
+        if ($total_years_to_show >= 0) {
+            $year_end = $year_start + $total_years_to_show;
+        } else {
+            $year_end = $year_start - $total_years_to_show;
         }
+    }
+    // Fix if out of range
+    if ((!is_null($default_year)) && (!is_null($year_end)) && ($default_year > $year_end)) {
+        $year_end = $default_year;
     }
 
     if ($null_default) {
@@ -2005,17 +2143,17 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         'HOUR' => is_null($default_hour) ? '' : strval($default_hour),
         'MINUTE' => is_null($default_minute) ? '' : strval($default_minute),
 
-        'MIN_DATE_DAY' => '1',
-        'MIN_DATE_MONTH' => '1',
+        'MIN_DATE_DAY' => is_null($year_start) ? '' : '1',
+        'MIN_DATE_MONTH' => is_null($year_start) ? '' : '1',
         'MIN_DATE_YEAR' => is_null($year_start) ? '' : strval($year_start),
-        'MAX_DATE_DAY' => '1',
-        'MAX_DATE_MONTH' => '1',
+        'MAX_DATE_DAY' => is_null($year_end) ? '' : '31',
+        'MAX_DATE_MONTH' => is_null($year_end) ? '' : '12',
         'MAX_DATE_YEAR' => is_null($year_end) ? '' : strval($year_end),
     ));
 }
 
 /**
- * Get the tempcode for an integer-only input.
+ * Get the Tempcode for an integer-only input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -2023,7 +2161,7 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
  * @param  ?integer $default The default value for this input field (null: no default)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -2032,13 +2170,15 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : intval($_default);
 
+    $required = filter_form_field_required($name, $required);
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_INTEGER', array('_GUID' => 'da09e21f329f300f71dd4dd518cb6242', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : strval($default)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
 /**
- * Get the tempcode for an width/height input.
+ * Get the Tempcode for an width/height input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -2048,7 +2188,7 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
  * @param  ?integer $default_height The default value for this input field: height part (null: no default)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_dimensions($pretty_name, $description, $name_width, $name_height, $default_width, $default_height, $required, $tabindex = null)
 {
@@ -2072,7 +2212,7 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
 }
 
 /**
- * Get the tempcode for a float-only input.
+ * Get the Tempcode for a float-only input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -2080,7 +2220,7 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
  * @param  ?float $default The default value for this input field (null: no default)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_float($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
@@ -2088,6 +2228,8 @@ function form_input_float($pretty_name, $description, $name, $default, $required
 
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : floatval($_default);
+
+    $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_to_raw_string($default, 10, true)));
@@ -2100,7 +2242,7 @@ function form_input_float($pretty_name, $description, $name, $default, $required
  * IMPORTANT: Note that this function uses global state -- any fields generated between alternate_fields_set__start and alternate_fields_set__end will be rendered using field set templating.
  *
  * @param  ID_TEXT $set_name The codename for this field set
- * @return tempcode Tempcode to start attaching the field set to
+ * @return Tempcode Tempcode to start attaching the field set to
  */
 function alternate_fields_set__start($set_name)
 {
@@ -2118,11 +2260,11 @@ function alternate_fields_set__start($set_name)
  * @param  ID_TEXT $set_name The codename for this field set (blank: just collect raw fields, no actual field set)
  * @param  mixed $pretty_name The human-readable name for this field set
  * @param  mixed $description The human-readable description for this field set
- * @param  tempcode $fields The field set tempcode
+ * @param  Tempcode $fields The field set Tempcode
  * @param  boolean $required Whether it is required that this field set be filled in
  * @param  ?URLPATH $existing_image_preview_url Image URL to show, of the existing selection for this field (null: N/A) (blank: N/A)
  * @param  boolean $raw Whether we just want the raw set contents, without any wrapper field row
- * @return tempcode The field set
+ * @return Tempcode The field set
  */
 function alternate_fields_set__end($set_name, $pretty_name, $description, $fields, $required, $existing_image_preview_url = null, $raw = false)
 {
@@ -2170,11 +2312,11 @@ function single_field__end()
 }
 
 /**
- * Used to create a NULL option for field sets.
+ * Used to create a null option for field sets.
  *
  * @param  mixed $pretty_name The human-readable name for this field
  * @param  ?integer $tabindex The tab index (null: none specified)
- * @return tempcode The field
+ * @return Tempcode The field
  */
 function form_input_na($pretty_name, $tabindex = null)
 {
@@ -2187,7 +2329,7 @@ function form_input_na($pretty_name, $tabindex = null)
  * @param  ID_TEXT $name The codename for this field (blank: N/A)
  * @param  mixed $pretty_name The human-readable name for this field
  * @param  mixed $description The human-readable description for this field
- * @param  tempcode $input The actual raw input field
+ * @param  Tempcode $input The actual raw input field
  * @param  boolean $required Whether it is required that this field be filled in
  * @param  boolean $comcode Whether this field may contain Comcode
  * @param  ?integer $tabindex The tab index (null: none specified)
@@ -2195,7 +2337,9 @@ function form_input_na($pretty_name, $tabindex = null)
  * @param  boolean $skip_label Whether to skip displaying a label for the field
  * @param  mixed $description_side A secondary side description for this input field
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
- * @return tempcode The field
+ * @return Tempcode The field
+ *
+ * @ignore
  */
 function _form_input($name, $pretty_name, $description, $input, $required, $comcode = false, $tabindex = null, $w = false, $skip_label = false, $description_side = '', $pattern_error = null)
 {

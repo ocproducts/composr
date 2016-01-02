@@ -114,7 +114,6 @@ class Hook_addon_registry_ldap
             'sources/hooks/systems/config/ldap_member_search_qualifier.php',
             'sources/hooks/systems/config/ldap_none_bind_logins.php',
             'sources/hooks/systems/config/ldap_version.php',
-            'sources/hooks/systems/config/windows_auth_is_enabled.php',
             'sources/hooks/systems/addon_registry/ldap.php',
             'themes/default/templates/CNS_LDAP_LIST_ENTRY.tpl',
             'themes/default/templates/CNS_LDAP_SYNC_SCREEN.tpl',
@@ -150,7 +149,7 @@ class Hook_addon_registry_ldap
         $members_delete = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $members_delete->attach($tpl);
@@ -159,7 +158,7 @@ class Hook_addon_registry_ldap
         $groups_delete = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $groups_delete->attach($tpl);
@@ -168,7 +167,7 @@ class Hook_addon_registry_ldap
         $groups_add = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $groups_add->attach($tpl);

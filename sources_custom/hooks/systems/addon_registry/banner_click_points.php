@@ -116,6 +116,16 @@ class Hook_addon_registry_banner_click_points
     }
 
     /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+    }
+
+    /**
      * Get a list of files that belong to this addon
      *
      * @return array List of files
@@ -124,7 +134,7 @@ class Hook_addon_registry_banner_click_points
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/banner_click_points.php',
-            'sources_custom/hooks/systems/upon_query/banner_points.php',
+            'sources_custom/hooks/systems/upon_query/banner_click_points.php',
         );
     }
 }

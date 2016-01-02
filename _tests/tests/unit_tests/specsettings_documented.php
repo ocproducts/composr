@@ -20,8 +20,8 @@ class specsettings_documented_test_set extends cms_test_case
 {
     public function setUp()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         require_code('files2');
@@ -32,7 +32,7 @@ class specsettings_documented_test_set extends cms_test_case
     public function testSymbols()
     {
         $symbols_file = file_get_contents(get_file_base() . '/sources/symbols.php');
-        $directives_start_pos = strpos($symbols_file, 'if ($type==TC_DIRECTIVE)');
+        $directives_start_pos = strpos($symbols_file, 'if ($type == TC_DIRECTIVE)');
 
         $tempcode_tutorial = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/tut_tempcode.txt');
 

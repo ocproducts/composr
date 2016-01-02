@@ -74,7 +74,7 @@ class Hook_cron_content_reviews
             $edit_url = build_url($attributes + array('validated' => 1), $zone, null, false, false, true);
             require_code('notifications');
             $subject = do_lang('NOTIFICATION_SUBJECT_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str);
-            $message = do_lang('NOTIFICATION_BODY_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str, $edit_url->evaluate());
+            $message = do_notification_lang('NOTIFICATION_BODY_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str, $edit_url->evaluate());
             dispatch_notification('content_reviews', $content_type, $subject, $message, null, null, 4, false);
             if (!is_null($submitter)) {
                 dispatch_notification('content_reviews__own', $content_type, $subject, $message, array($submitter), null, 4, false);
@@ -90,7 +90,7 @@ class Hook_cron_content_reviews
 
                 case 'delete':
                     require_code('resource_fs');
-                    $object_fs = get_resource_commandrfs_object($content_type);
+                    $object_fs = get_resource_commandr_fs_object($content_type);
                     if (!is_null($object_fs)) {
                         $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
                         if (!is_null($filename)) {

@@ -3,9 +3,15 @@
  Composr
  Copyright (c) ocProducts, 2004-2015
 
- See text/en/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_release_build
+ */
 
 /*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
 
@@ -37,7 +43,7 @@ if (strpos($git_result, 'git: command not found') !== false) {
 // Actualisation
 // =============
 
-if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+if (cms_srv('REQUEST_METHOD') == 'POST') {
     $git_commit_id = post_param_string('git_commit_id', '');
 
     $done = array();
@@ -108,7 +114,7 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
         }
     }
     if ($git_commit_id !== null) {
-        $git_url = 'https://github.com/chrisgraham/Composr/commit/' . $git_commit_id;
+        $git_url = 'https://github.com/ocproducts/composr/commit/' . $git_commit_id;
         if (post_param_string('git_commit_id', '') == '') {
             $done['Commited to git'] = $git_url;
         }
@@ -128,18 +134,6 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
     // The tracker issue gets closed
     close_tracker_issue($tracker_id);
     $done[(post_param_string('tracker_id', '') == '') ? 'Created new tracker issue' : 'Responded to existing tracker issue'] = $tracker_url;
-
-    // A bug is posted in the bugs catalogue, linking to the tracker
-    $post_to_bug_catalogue = !is_null(post_param_string('post_to_bug_catalogue', null));
-    if ($post_to_bug_catalogue) {
-        $ce_title = $title;
-        $ce_description = $notes;
-        $ce_affects = $affects;
-        $ce_fix = 'This issue is properly filed (and managed) on the tracker. See issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url].';
-        $entry_id = post_in_bugs_catalogue(get_version_pretty__from_dotted($version_dotted), $ce_title, $ce_description, $ce_affects, $ce_fix);
-        $ce_url = $REMOTE_BASE_URL . '/site/catalogues/entry/' . strval($entry_id) . '.htm';
-        $done['Added to bugs catalogue'] = $ce_url;
-    }
 
     // If a forum post ID was given, an automatic reply is given pointing to the tracker issue
     $post_id = post_param_integer('post_id', null);
@@ -215,8 +209,8 @@ if ((count($files) == 0) && (@$_GET['full_scan'] != '1')) {
     if (count($files) == 0) {
         $files = push_bugfix_do_dir(get_file_base(), $git_found, 24 * 60 * 60 * 14);
     }
-    /*$git_status='required="required"';
-    $git_status_2='';*/
+    /*$git_status = 'required="required"';
+    $git_status_2 = '';*/
     $git_status_3 = '<strong>Git commit ID</strong>';
     $choose_files_label = '<strong>Choose files</strong>';
 }
@@ -282,11 +276,6 @@ echo <<<END
         <div>
             <label for="tracker_id">Tracker ID to attach to <span style="font-size: 0.8em">(if not entered a new one will be made)</span></label>
             <input name="tracker_id" id="tracker_id" type="number" value="" placeholder="optional" />
-        </div>
-
-        <div>
-            <label for="post_to_bug_catalogue">Post to bug catalogue <span style="font-size: 0.8em">(if hotfix is worth advertising and issue is new)</span></label>
-            <input checked="checked" type="checkbox" id="post_to_bug_catalogue" name="post_to_bug_catalogue" />
         </div>
 
         <div>
@@ -416,12 +405,6 @@ function create_hotfix_tar($tracker_id, $files)
     return $tar_path;
 }
 
-function post_in_bugs_catalogue($version_pretty, $ce_title, $ce_description, $ce_affects, $ce_fix)
-{
-    $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
-}
-
 function create_forum_post($replying_to_post, $post_reply_title, $post_reply_message, $post_important)
 {
     $args = func_get_args();
@@ -488,7 +471,7 @@ function make_call($call, $params, $file = null)
                     <input class="buttons__proceed button_screen" type="submit" value="Action failed: Try manually" />
             </form>
         ';
-        $result='';
+        $result = '';
     }
     if ($result == 'Access Denied') {
         echo '<p>Access denied</p>';
@@ -544,7 +527,7 @@ function push_bugfix_do_dir($dir, $git_found, $seconds_since)
     $dh = opendir($_dir);
     if ($dh) {
         while (($file = readdir($dh)) !== false) {
-            if (($file != 'push_bugfix.php') && (!should_ignore_file(str_replace(get_file_base() . '/', '', $_dir . '/' . $file), IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE))) {
+            if (($file != 'push_bugfix.php') && (!should_ignore_file(str_replace(get_file_base() . '/', '', $_dir . '/' . $file), IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE))) {
                 $path = $dir . ((substr($dir, -1) != '/') ? '/' : '') . $file;
                 if (is_file($_dir . '/' . $file)) {
                     if ((filemtime($path) < time() - $seconds_since) && (!isset($git_found[$path]))) {

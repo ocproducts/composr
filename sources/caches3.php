@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__caches3()
 {
@@ -53,7 +55,7 @@ function auto_decache($changed_base_url)
  * Rebuild the specified caches.
  *
  * @param  ?array $caches The caches to rebuild (null: all)
- * @return tempcode Any messages returned
+ * @return Tempcode Any messages returned
  */
 function composr_cleanup($caches = null)
 {
@@ -61,10 +63,11 @@ function composr_cleanup($caches = null)
 
     $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
     if ($max_time < 60 * 4) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
     }
+    send_http_output_ping();
     $messages = new Tempcode();
     $hooks = find_all_hooks('systems', 'cleanup');
     if ((array_key_exists('cns', $hooks)) && (array_key_exists('cns_topics', $hooks))) {
@@ -184,7 +187,7 @@ function erase_cached_language()
     cms_profile_start_for('erase_cached_language');
 
     $langs = find_all_langs(true);
-    foreach (array_keys($langs) as $lang) {
+    foreach (array_merge(array_keys($langs), array('')) as $lang) {
         $path = get_custom_file_base() . '/caches/lang/' . $lang;
         $_dir = @opendir($path);
         if ($_dir === false) {
@@ -251,8 +254,9 @@ function erase_cached_templates($preserve_some = false)
     $themes = find_all_themes();
     $langs = find_all_langs(true);
     foreach (array_keys($themes) as $theme) {
-        $using_less = (!addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
-                      (!is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') && !is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less'));
+        $using_less = (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
+                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
+                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
 
         foreach (array_keys($langs) as $lang) {
             $path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/';
@@ -272,11 +276,17 @@ function erase_cached_templates($preserve_some = false)
                                 ||
                                 ((substr($file, -4) == '.css') && ((!$using_less) || (($file != 'global.css') && ($file != 'global_mobile.css'))))
                             ))
+                        ||
+                        ((!$preserve_some) && (
+                                (substr($file, -6) == '.js.gz')
+                                ||
+                                ((substr($file, -7) == '.css.gz') && ((!$using_less) || (($file != 'global.css.gz') && ($file != 'global_mobile.css.gz'))))
+                            ))
                     ) {
                         $i = 0;
                         while ((@unlink($path . $file) === false) && ($i < 5)) {
                             if (!file_exists($path . $file)) {
-                                break; // Race condition, gone already
+                                break; // Successful delete
                             }
                             sleep(1); // May be race condition, lock
                             $i++;
@@ -348,4 +358,25 @@ function erase_comcode_page_cache()
     erase_persistent_cache();
 
     $GLOBALS['NO_QUERY_LIMIT'] = false;
+}
+
+/**
+ * Erase the theme images cache
+ */
+function erase_theme_images_cache()
+{
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/%\'');
+
+    Self_learning_cache::erase_smart_cache();
+
+    $paths = $GLOBALS['SITE_DB']->query_select('theme_images', array('path', 'id'));
+    foreach ($paths as $path) {
+        if ($path['path'] == '') {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
+        } elseif (preg_match('#^themes/[^/]+/images_custom/#', $path['path']) != 0) {
+            if ((!file_exists(get_custom_file_base() . '/' . $path['path'])) && (!file_exists(get_file_base() . '/' . $path['path']))) {
+                $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
+            }
+        }
+    }
 }

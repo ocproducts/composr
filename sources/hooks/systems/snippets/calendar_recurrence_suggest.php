@@ -26,17 +26,20 @@ class Hook_snippet_calendar_recurrence_suggest
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {
         require_code('calendar');
 
-        $day_of_month = get_param_integer('day');
-        $month = get_param_integer('month');
-        $year = get_param_integer('year');
-        $hour = get_param_integer('hour');
-        $minute = get_param_integer('minute');
+        $date = post_param_date('date', true, false);
+
+        $day_of_month = intval(gmdate('d', $date));
+        $month = intval(gmdate('m', $date));
+        $year = intval(gmdate('Y', $date));
+        $hour = intval(gmdate('H', $date));
+        $minute = intval(gmdate('i', $date));
+
         $do_timezone_conv = get_param_integer('do_timezone_conv');
         $all_day_event = get_param_integer('all_day_event');
 

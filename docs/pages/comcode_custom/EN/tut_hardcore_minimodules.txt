@@ -1,0 +1,128 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Writing mini-modules[/title]
+
+The Composr mini-module feature lets you create new Composr pages very easily. You don't need to code to any particular structure or API, just write plain PHP and output as normal from it. You have full access to Composr's APIs for when you need to interface with the rest of Composr.
+
+This very practical tutorial shows you how via a number of simple examples.
+
+[contents]decimal,lower-alpha[/contents]
+
+Mini-modules allow:
+ - PHP programmers with no experience with Composr to hit the ground running
+ - experienced Composr developers to develop simple pages without any coding overhead
+ - easier porting of third-party PHP scripts into Composr (you may need to change some links around, and remove HTML header tags -- but it's a lot easier than doing a rewrite)
+
+We will present 3 examples. To try each out, simply save the code into a [tt]site/pages/mini-modules_custom/example_page.php[/tt] file, then call it up via [tt]http://yourbaseurl/site/index.php?page=example_page[/tt].
+As you can see, [tt]site/pages/mini-modules_custom/example_page.php[/tt] corresponds to a page called [tt]example_page[/tt], in the [tt]site[/tt] zone.
+
+As mini-modules are just a kind of Composr page, you can control access to them using normal Composr page permissions (i.e. set from Admin Zone > Security > Permissions tree editor).
+
+[title="2"]Example 1[/title]
+
+The standard introductory example, Hello World.
+
+[code="PHP"]
+<?php
+
+echo 'Hello World';
+[/code]
+
+[title="2"]Example 2[/title]
+
+Now let's do some simple Composr API calls.
+
+[code="PHP"]
+<?php
+
+$username=$GLOBALS['FORUM_DRIVER']->get_username(get_member());
+echo '<p>Hello, ' . htmlentities($username) . '.</p>';
+
+$time=get_timezoned_date(time());
+echo '<p>It is ' . htmlentities($time) . '.</p>';
+[/code]
+
+[title="2"]Example 3[/title]
+
+Need to output a simple spreadsheet? You are allowed to set headers and [tt]exit();[/tt] within your page, so that Composr doesn't continue doing anything more after your spreadsheet has output and your code has run.
+
+[code="PHP"]
+<?php
+
+header('Content-type: text/plain');
+header('Content-disposition: attachment; filename="example.csv"');
+
+// Some arbitrary data to output
+$example_data = array(
+	array(
+		'country' => 'UK',
+		'capital' => 'London',
+	),
+	array(
+		'country' => 'France',
+		'capital' => 'Paris',
+	),
+);
+
+foreach ($example_data as $i => $row)
+{
+	// If first row, show show headings
+	if ($i == 0)
+	{
+		foreach (array_keys($row) as $heading)
+		{
+			echo csv_escape($heading) . ',';
+		}
+		echo "\n";
+	}
+
+	// Show values
+	foreach ($row as $value)
+	{
+		echo csv_escape($value) . ',';
+	}
+	echo "\n";
+}
+
+exit();
+
+function csv_escape($value)
+{
+	return str_replace('"', '""', $value);
+}
+[/code]
+
+[title="2"]Integrations[/title]
+
+You may wish to integrate with another database (i.e. not Composr's main database), third-party web-services, or other programming languages.
+
+These complexities can be dealt with in the same way as any PHP programmer would deal with them, while making use of Composr's APIs only as is convenient.
+
+For example, you can use:
+ - standard PHP database functionality to open a new connection (MySQL, SQL Server, Oracle, ...)
+ - PHP's [tt]file_get_contents[/tt] function to download from REST web services
+ - PHP's [tt]file_get_contents[/tt] function to download from scripts written in another language, bridging their output over into the Composr page
+ - PHP's [url="SOAP support"]http://php.net/manual/en/book.soap.php[/url] to integrate with more complex REST services (assuming the PHP SOAP extension is installed)
+ - PHP's [url="COM support"]http://php.net/manual/en/book.com.php[/url] to integrate to ASP code (assuming the PHP COM extension is installed)
+
+[title="2"]Example 4[/title]
+
+This simple example shows how to bridge one web system, to another. The example embeds Google into your page. Naturally, this is a silly example, but the same technique can be used to bridge your own scripts, should you be more comfortable programming in a language other than PHP.
+
+[code="PHP"]
+<?php
+
+echo '<div style="position: relative; overflow: hidden">';
+echo file_get_contents('http://google.com/');
+echo '</div>';
+[/code]
+
+Note I had to add a little CSS to stop Google trying to render parts of its layout on-top of the Composr website.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
+ - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
+ - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:sup_hardcore_blocks"]A PHP/Composr coding primer[/page]
+ - [url="PHP website"]http://www.php.net[/url]
+
+{$SET,tutorial_tags,Development,PHP,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,How to code simple PHP pages in Composr.}[block]main_tutorial_rating[/block]

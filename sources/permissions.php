@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__permissions()
 {
@@ -99,7 +101,7 @@ function handle_permission_check_logging($member, $op, $params, $result)
     if (array_key_exists($sz, $PERMISSIONS_ALREADY_LOGGED)) {
         return;
     }
-    $PERMISSIONS_ALREADY_LOGGED[$sz] = 1;
+    $PERMISSIONS_ALREADY_LOGGED[$sz] = true;
     if ($result) {
         return;
     }
@@ -432,7 +434,7 @@ function load_up_all_module_category_permissions($member, $module = null)
  */
 function has_category_access($member, $module, $category)
 {
-    if (running_script('upgrader')) {
+    if (running_script('upgrader') || running_script('install')) {
         return true;
     }
 
@@ -457,9 +459,13 @@ function has_category_access($member, $module, $category)
     global $SMART_CACHE;
     $where = ' AND (1=0';
     if (($module != 'forums') || (!is_on_multi_site_network())) {
-        $SMART_CACHE->append('category_access_needed', $module . '/' . $category, true);
-        $test = $SMART_CACHE->get('category_access_needed');
-        if ($test === null) {
+        if (isset($SMART_CACHE)) {
+            $SMART_CACHE->append('category_access_needed', $module . '/' . $category, true);
+            $test = $SMART_CACHE->get('category_access_needed');
+            if ($test === null) {
+                $test = array();
+            }
+        } else {
             $test = array();
         }
     } else {
@@ -475,7 +481,7 @@ function has_category_access($member, $module, $category)
     $sql = 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') ' . $where;
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-    $rows = $db->query($sql, 1, null, false, true);
+    $rows = $db->query($sql, null, null, false, true);
 
     foreach ($rows as $row) {
         $CATEGORY_ACCESS_CACHE[$member][$row['module_the_name'] . '/' . $row['category_name']] = true;
@@ -498,6 +504,7 @@ function has_category_access($member, $module, $category)
  * @param  MEMBER $member The member who's usergroups will be OR'd
  * @param  boolean $consider_clubs Whether to consider clubs (pass this false if considering page permissions, which work via explicit-denys across all groups, which could not happen for clubs as those denys could not have been set in the UI)
  * @return ?string The SQL query fragment (null: admin, so permission regardless)
+ * @ignore
  */
 function _get_where_clause_groups($member, $consider_clubs = true)
 {
@@ -657,7 +664,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     }
 
     if ($page === null) {
-        $page = get_page_name();
+        $page = str_replace('-', '_', get_param_string('page', '')); // Not get_page_name for bootstrap order reasons
     }
 
     global $SPAM_REMOVE_VALIDATION;
@@ -1002,7 +1009,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member = n
  * Check to see if a member has permission to edit a Comcode page
  *
  * @param  integer $scope A bitmask of COMCODE_EDIT_* constants, identifying what kind of editing permission we are looking for
- * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a NULL zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
+ * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a null zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
  * @param  ?MEMBER $member The member being checked for access (null: current member)
  * @return boolean If the permission is there
  */

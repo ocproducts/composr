@@ -49,7 +49,7 @@ class Module_cms_news extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -112,7 +112,7 @@ class Module_cms_news extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -146,7 +146,7 @@ class Module_cms_news extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -172,7 +172,7 @@ class Module_cms_news extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -272,7 +272,7 @@ class Module_cms_news extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -281,7 +281,7 @@ class Module_cms_news extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a news adding/editing form.
+     * Get Tempcode for a news adding/editing form.
      *
      * @param  ?AUTO_LINK $id The news ID (null: new)
      * @param  ?AUTO_LINK $main_news_category The primary category for the news (null: personal)
@@ -297,9 +297,10 @@ class Module_cms_news extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the video
      * @param  URLPATH $image URL to the image for the news entry (blank: use cat image)
      * @param  ?array $scheduled Scheduled go-live time (null: N/A)
+     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
      * @return array A tuple of lots of info (fields, hidden fields, trailing fields, tabindex for posting form)
      */
-    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null)
+    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null, $regions = null)
     {
         if (is_null($id)) {
             // Cloning support
@@ -377,7 +378,7 @@ class Module_cms_news extends Standard_crud_module
         }
         if (has_some_cat_privilege(get_member(), 'bypass_validation_' . $this->permissions_require . 'range_content', null, $this->permissions_cat_require)) {
             if (addon_installed('unvalidated')) {
-                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'news'), 'validated', $validated == 1));
             }
         }
 
@@ -385,7 +386,12 @@ class Module_cms_news extends Standard_crud_module
 
         $fields2->attach(form_input_text_comcode(do_lang_tempcode('NEWS_SUMMARY'), do_lang_tempcode('DESCRIPTION_NEWS_SUMMARY'), 'news', $news, false));
 
-        $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES'), 'news_category', $cats2));
+        $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES', 'news'), 'news_category', $cats2));
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields2->attach(form_input_regions($regions));
+        }
 
         $hidden = new Tempcode();
 
@@ -402,7 +408,7 @@ class Module_cms_news extends Standard_crud_module
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2, false, true, false);
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2, false, true, false);
         $fields2->attach(meta_data_get_fields('news', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
@@ -448,7 +454,7 @@ class Module_cms_news extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }
         return strval($temp);
     }
@@ -468,7 +474,7 @@ class Module_cms_news extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }
         $myrow = $rows[0];
 
@@ -494,7 +500,9 @@ class Module_cms_news extends Standard_crud_module
             $scheduled = null;
         }
 
-        $ret = $this->get_form_fields($id, $cat, $categories, get_translated_text($myrow['title']), get_translated_text($myrow['news']), $myrow['author'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], 0, $myrow['notes'], $myrow['news_image'], $scheduled);
+        $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($id))));
+
+        $ret = $this->get_form_fields($id, $cat, $categories, get_translated_text($myrow['title']), get_translated_text($myrow['news']), $myrow['author'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], 0, $myrow['notes'], $myrow['news_image'], $scheduled, $regions);
 
         $ret[2] = new Tempcode();
         $ret[3] = '';
@@ -537,9 +545,9 @@ class Module_cms_news extends Standard_crud_module
         $notes = post_param_string('notes', '');
 
         require_code('themes2');
-        $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+        $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && (!is_null($schedule)) && ($schedule > time())) {
             $validated = 0;
         } else {
@@ -555,7 +563,11 @@ class Module_cms_news extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news', null);
 
-        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $url);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $image, '', '', $regions);
+
+        set_url_moniker('news', strval($id));
 
         $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'news_category', array('id' => $id));
         $this->donext_type = $main_news_category;
@@ -640,9 +652,9 @@ class Module_cms_news extends Standard_crud_module
 
         if (!fractional_edit()) {
             require_code('themes2');
-            $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+            $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
         } else {
-            $url = STRING_MAGIC_NULL;
+            $image = STRING_MAGIC_NULL;
         }
 
         $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => $main_news_category)); // if_there in case somehow category setting corrupted
@@ -650,7 +662,7 @@ class Module_cms_news extends Standard_crud_module
             check_privilege('can_submit_to_others_categories', array('news', $main_news_category));
         }
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
 
         if ((addon_installed('calendar')) && (!fractional_edit()) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
             require_code('calendar2');
@@ -704,7 +716,9 @@ class Module_cms_news extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news', strval($id));
 
-        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], true);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $image, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('news', strval($id));
@@ -731,10 +745,10 @@ class Module_cms_news extends Standard_crud_module
     /**
      * The do-next manager for after download content management (events only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -744,7 +758,7 @@ class Module_cms_news extends Standard_crud_module
     /**
      * The UI to import news
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_news()
     {
@@ -770,7 +784,7 @@ class Module_cms_news extends Standard_crud_module
     /**
      * The actualiser to import news
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import_news()
     {
@@ -830,6 +844,7 @@ class Module_cms_news_cat extends Standard_crud_module
     public $table = 'news_categories';
     public $orderer = 'nc_title';
     public $title_is_multi_lang = true;
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module table function.
@@ -872,7 +887,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
             $fields->attach(results_entry(array(
                 protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'archive', 'filter' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true)),
-                protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(find_theme_image($row['nc_img'])) . '" />')), // XHTMLXHTML
+                protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(get_news_category_image_url($row['nc_img'])) . '" />')), // XHTMLXHTML
                 integer_format($total),
                 protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
             ), true));
@@ -884,7 +899,7 @@ class Module_cms_news_cat extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -892,7 +907,7 @@ class Module_cms_news_cat extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a news category adding/editing form.
+     * Get Tempcode for a news category adding/editing form.
      *
      * @param  ?AUTO_LINK $id The news category ID (null: new)
      * @param  SHORT_TEXT $title The title of the news category
@@ -940,7 +955,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news_category'));
         }
         $myrow = $rows[0];
 
@@ -966,6 +981,8 @@ class Module_cms_news_cat extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('news_category', null);
 
         $id = add_news_category($title, $img, $notes);
+
+        set_url_moniker('news_category', strval($id));
 
         $this->set_permissions($id);
 
@@ -998,7 +1015,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news_category', $id);
 
-        if (is_null($meta_data['submitter'])) { // We need to interpret this - if we didn't have specification permission, we need to copy through existing setting, as a NULL would imply a de-set
+        if (is_null($meta_data['submitter'])) { // We need to interpret this - if we didn't have specification permission, we need to copy through existing setting, as a null would imply a de-set
             $meta_data['submitter'] = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => intval($id)));
         }
 
@@ -1035,10 +1052,10 @@ class Module_cms_news_cat extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -1048,11 +1065,11 @@ class Module_cms_news_cat extends Standard_crud_module
     /**
      * The do-next manager for after news content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
      * @param  ?AUTO_LINK $cat The category ID we were working in (null: deleted)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id = null, $cat = null)
     {

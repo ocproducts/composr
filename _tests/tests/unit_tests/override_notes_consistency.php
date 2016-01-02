@@ -28,7 +28,7 @@ class override_notes_consistency_test_set extends cms_test_case
                 continue;
             }
 
-            if (should_ignore_file($file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS)) {
+            if (should_ignore_file($file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
                 continue;
             }
 

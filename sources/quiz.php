@@ -25,7 +25,7 @@
  * @param  string $zone The zone to show in
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered quiz link
+ * @return Tempcode The rendered quiz link
  */
 function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -127,7 +127,7 @@ function get_quiz_data_for_csv($quiz_id)
  * Get quiz data for exporting it as CSV.
  *
  * @param   array $questions The quiz questions
- * @return  tempcode    The rendered quiz
+ * @return  Tempcode    The rendered quiz
  */
 function render_quiz($questions)
 {
@@ -139,14 +139,14 @@ function render_quiz($questions)
     $fields = new Tempcode();
     foreach ($questions as $i => $q) {
         $name = 'q_' . strval($q['id']);
-        $question = protect_from_escaping((!is_string($q['q_question_text']) && !isset($q['q_question_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_text'));
-        $description = protect_from_escaping((!is_string($q['q_question_extra_text']) && !isset($q['q_question_extra_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_extra_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_extra_text'));
+        $question = protect_from_escaping((is_string($q['q_question_text']) && !isset($q['q_question_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_text'));
+        $description = protect_from_escaping((is_string($q['q_question_extra_text']) && !isset($q['q_question_extra_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_extra_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_extra_text'));
 
         switch ($q['q_type']) {
             case 'MULTIPLECHOICE':
                 $radios = new Tempcode();
                 foreach ($q['answers'] as $a) {
-                    $answer_text = (!is_string($a['q_answer_text']) && !isset($a['q_answer_text__text_parsed'])) ? comcode_to_tempcode($a['q_answer_text']) : get_translated_tempcode('quiz_question_answers', $a, 'q_answer_text');
+                    $answer_text = (is_string($a['q_answer_text']) && !isset($a['q_answer_text__text_parsed'])) ? comcode_to_tempcode($a['q_answer_text']) : get_translated_tempcode('quiz_question_answers', $a, 'q_answer_text');
                     $radios->attach(form_input_radio_entry($name, strval($a['id']), false, protect_from_escaping($answer_text)));
                 }
                 $fields->attach(form_input_radio($question, $description, $name, $radios, $q['q_required'] == 1));
@@ -155,7 +155,7 @@ function render_quiz($questions)
             case 'MULTIMULTIPLE':
                 $content = array();
                 foreach ($q['answers'] as $a) {
-                    $content[] = array(protect_from_escaping((!is_string($a['q_answer_text']) && !isset($a['q_answer_text__text_parsed'])) ? comcode_to_tempcode($a['q_answer_text']) : get_translated_tempcode('quiz_question_answers', $a, 'q_answer_text')), $name . '_' . strval($a['id']), false, '');
+                    $content[] = array(protect_from_escaping((is_string($a['q_answer_text']) && !isset($a['q_answer_text__text_parsed'])) ? comcode_to_tempcode($a['q_answer_text']) : get_translated_tempcode('quiz_question_answers', $a, 'q_answer_text')), $name . '_' . strval($a['id']), false, '');
                 }
                 $fields->attach(form_input_various_ticks($content, $description, null, $question, true));
                 break;
@@ -195,7 +195,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     if (is_null($quiz_id)) {
         $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
         if (!array_key_exists(0, $quizzes)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
         $quiz = $quizzes[0];
     }

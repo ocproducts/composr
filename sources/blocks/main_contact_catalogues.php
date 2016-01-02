@@ -37,19 +37,19 @@ class Block_main_contact_catalogues
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('to', 'param', 'subject', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect');
+        $info['parameters'] = array('to', 'param', 'subject', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
         return $info;
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(post_param_string(\'subject\',\'\')!=\'\')?null:array(array_key_exists(\'param\',$map)?$map[\'param\']:\'\',array_key_exists(\'to\',$map)?$map[\'to\']:\'\',array_key_exists(\'redirect\',$map)?$map[\'redirect\']:\'\',array_key_exists(\'subject\',$map)?$map[\'subject\']:\'\',array_key_exists(\'body_prefix\',$map)?$map[\'body_prefix\']:\'\',array_key_exists(\'body_suffix\',$map)?$map[\'body_suffix\']:\'\',array_key_exists(\'subject_prefix\',$map)?$map[\'subject_prefix\']:\'\',array_key_exists(\'subject_suffix\',$map)?$map[\'subject_suffix\']:\'\')';
+        $info['cache_on'] = '(post_param_string(\'subject\',\'\')!=\'\')?null:array(array_key_exists(\'param\',$map)?$map[\'param\']:\'\',array_key_exists(\'to\',$map)?$map[\'to\']:\'\',array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',array_key_exists(\'redirect\',$map)?$map[\'redirect\']:\'\',array_key_exists(\'subject\',$map)?$map[\'subject\']:\'\',array_key_exists(\'body_prefix\',$map)?$map[\'body_prefix\']:\'\',array_key_exists(\'body_suffix\',$map)?$map[\'body_suffix\']:\'\',array_key_exists(\'subject_prefix\',$map)?$map[\'subject_prefix\']:\'\',array_key_exists(\'subject_suffix\',$map)?$map[\'subject_suffix\']:\'\')';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24 * 7;
         return $info;
     }
@@ -58,7 +58,7 @@ class Block_main_contact_catalogues
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -74,7 +74,7 @@ class Block_main_contact_catalogues
             $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_name'); // Random/arbitrary (first one that comes out of the DB)
         }
 
-        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         require_code('fields');
 
         $subject = array_key_exists('subject', $map) ? $map['subject'] : '';
@@ -173,8 +173,6 @@ class Block_main_contact_catalogues
                 $field_groups[$field_cat]->attach($result);
             }
 
-            $hidden->attach(form_input_hidden('label_for__field_' . strval($field['id']), $_cf_name));
-
             if (($field['cf_type'] == 'email') && (!$found_email)) {
                 $hidden->attach(form_input_hidden('field_tagged__field_' . strval($field['id']), 'email'));
                 $found_email = true;
@@ -207,6 +205,17 @@ class Block_main_contact_catalogues
 
         $url = get_self_url();
 
-        return do_template('FORM', array('_GUID' => '7dc3957edf3b47399b688d72fae54128', 'FIELDS' => $fields, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__send', 'SUBMIT_NAME' => do_lang_tempcode('SEND'), 'URL' => $url, 'TEXT' => $text, 'SECONDARY_FORM' => true));
+        $guid = isset($map['guid']) ? $map['guid'] : '7dc3957edf3b47399b688d72fae54128';
+
+        return do_template('FORM', array(
+            '_GUID' => $guid,
+            'FIELDS' => $fields,
+            'HIDDEN' => $hidden,
+            'SUBMIT_ICON' => 'buttons__send',
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
+            'URL' => $url,
+            'TEXT' => $text,
+            'SECONDARY_FORM' => true,
+        ));
     }
 }

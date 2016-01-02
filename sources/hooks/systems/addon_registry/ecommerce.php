@@ -157,13 +157,16 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_BUTTON_VIA_SECPAY.tpl',
             'themes/default/templates/ECOM_BUTTON_VIA_WORLDPAY.tpl',
+            'themes/default/templates/ECOM_BUTTON_VIA_CCBILL.tpl',
             'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_SECPAY.tpl',
             'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_WORLDPAY.tpl',
+            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_CCBILL.tpl',
             'themes/default/templates/ECOM_LOGOS_WORLDPAY.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl',
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl',
@@ -190,7 +193,9 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/modules/members/ecommerce.php',
             'sources/hooks/systems/page_groupings/ecommerce.php',
             'sources/hooks/systems/ecommerce/.htaccess',
+            'sources_custom/hooks/systems/ecommerce/.htaccess',
             'sources/hooks/systems/ecommerce/index.html',
+            'sources_custom/hooks/systems/ecommerce/index.html',
             'sources/hooks/systems/ecommerce/interest.php',
             'sources/hooks/systems/ecommerce/other.php',
             'sources/hooks/systems/ecommerce/tax.php',
@@ -198,10 +203,13 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/ecommerce/wage.php',
             'sources/hooks/systems/ecommerce/work.php',
             'sources/hooks/systems/ecommerce_via/.htaccess',
+            'sources_custom/hooks/systems/ecommerce_via/.htaccess',
             'sources/hooks/systems/ecommerce_via/index.html',
+            'sources_custom/hooks/systems/ecommerce_via/index.html',
             'sources/hooks/systems/ecommerce_via/paypal.php',
             'sources/hooks/systems/ecommerce_via/secpay.php',
             'sources/hooks/systems/ecommerce_via/worldpay.php',
+            'sources/hooks/systems/ecommerce_via/ccbill.php',
             'sources/hooks/systems/cns_cpf_filter/ecommerce.php',
             'site/pages/modules/purchase.php',
             'site/pages/modules/subscriptions.php',
@@ -210,6 +218,9 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/primary_paypal_email.php',
             'sources/hooks/systems/config/max_ip_addresses_per_subscriber.php',
             'sources/hooks/systems/notifications/ip_address_sharing.php',
+            'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
+            'sources/hooks/systems/commandr_fs_extended_member/invoices.php',
+            'sources/hooks/systems/commandr_fs_extended_member/subscriptions.php',
         );
     }
 
@@ -237,6 +248,9 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_BUTTON_VIA_SECPAY.tpl' => 'ecom_button_via_secpay',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_subscription_button_via_secpay',
             'templates/ECOM_CANCEL_BUTTON_VIA_SECPAY.tpl' => 'ecom_cancel_button_via_secpay',
+            'templates/ECOM_BUTTON_VIA_CCBILL.tpl' => 'ecom_button_via_ccbill',
+            'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_subscription_button_via_ccbill',
+            'templates/ECOM_CANCEL_BUTTON_VIA_CCBILL.tpl' => 'ecom_cancel_button_via_ccbill',
             'templates/PURCHASE_WIZARD_STAGE_GUEST.tpl' => 'purchase_wizard_stage_guest',
             'templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl' => 'purchase_wizard_stage_choose',
             'templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl' => 'purchase_wizard_stage_message',
@@ -271,7 +285,7 @@ class Hook_addon_registry_ecommerce
                 'ID' => placeholder_id(),
                 'STATE' => lorem_phrase(),
                 'AMOUNT' => placeholder_number(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_phrase(),
             );
@@ -493,7 +507,7 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
                 'TYPE_CODE' => lorem_phrase(),
-                'ITEM_NAME' => lorem_word_html(),
+                'ITEM_NAME' => lorem_phrase(),
                 'LENGTH' => lorem_phrase(),
                 'LENGTH_UNITS' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
@@ -536,7 +550,7 @@ class Hook_addon_registry_ecommerce
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
                 'TRANS_ID' => placeholder_id(),
-                'ITEM_NAME' => lorem_word_html(),
+                'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
@@ -564,7 +578,7 @@ class Hook_addon_registry_ecommerce
                 'FIRST_REPEAT' => lorem_phrase(),
                 'LENGTH' => lorem_phrase(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
-                'ITEM_NAME' => lorem_word_html(),
+                'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
@@ -586,6 +600,83 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_SECPAY', array(
+                'CANCEL_URL' => placeholder_url(),
+                'PURCHASE_ID' => placeholder_id(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_button_via_ccbill()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_BUTTON_VIA_CCBILL', array(
+                'TYPE_CODE' => lorem_phrase(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
+                'AMOUNT' => placeholder_number(),
+                'CURRENCY' => lorem_phrase(),
+                'PAYMENT_ADDRESS' => lorem_paragraph(),
+                'IPN_URL' => placeholder_url(),
+                'TRANS_ID' => placeholder_id(),
+                'MEMBER_ADDRESS' => placeholder_array(),
+                'ACCOUNT_NUM' => placeholder_id(),
+                'SUBACCOUNT_NUM' => placeholder_id(),
+                'FORM_NAME' => placeholder_id(),
+                'FORM_PERIOD' => placeholder_id(),
+                'DIGEST' => lorem_phrase(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_subscription_button_via_ccbill()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
+                'TYPE_CODE' => lorem_phrase(),
+                'ITEM_NAME' => lorem_phrase(),
+                'LENGTH' => lorem_phrase(),
+                'LENGTH_UNITS_2' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
+                'AMOUNT' => placeholder_number(),
+                'CURRENCY' => lorem_phrase(),
+                'PAYMENT_ADDRESS' => lorem_paragraph(),
+                'IPN_URL' => placeholder_url(),
+                'TRANS_ID' => placeholder_id(),
+                'MEMBER_ADDRESS' => placeholder_array(),
+                'ACCOUNT_NUM' => placeholder_id(),
+                'SUBACCOUNT_NUM' => placeholder_id(),
+                'FORM_NAME' => placeholder_id(),
+                'FORM_PERIOD' => placeholder_id(),
+                'DIGEST' => lorem_phrase(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_cancel_button_via_ccbill()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_CCBILL', array(
                 'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
@@ -714,7 +805,7 @@ class Hook_addon_registry_ecommerce
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'INVOICE_TITLE' => lorem_phrase(),
-                'ID' => placeholder_id(),
+                'INVOICE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),

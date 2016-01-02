@@ -12,6 +12,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    addon_publish
+ */
+
 /*EXTRA FUNCTIONS: json_decode,json_encode*/
 
 function init__transifex()
@@ -47,8 +53,8 @@ function push_to_transifex()
     require_code('lang2');
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
@@ -71,7 +77,7 @@ function push_to_transifex()
     }
 
     // Find language string descriptions
-    $descriptions = get_lang_file_descriptions(fallback_lang());
+    $descriptions = get_lang_file_section(fallback_lang());
 
     // Create project if it does not already exist
     $args = array(
@@ -230,8 +236,8 @@ function pull_from_transifex($version)
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     require_code('lang2');

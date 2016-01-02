@@ -10,3 +10,11 @@
 	</div>
 </div>
 
+{+START,IF_PASSED,BACK_URL}
+	<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post">
+		<div>
+			{+START,IF_PASSED,FIELDS}{FIELDS}{+END}
+			<button class="button_icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></button>
+		</div>
+	</form>
+{+END}

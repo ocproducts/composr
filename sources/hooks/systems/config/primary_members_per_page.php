@@ -34,7 +34,7 @@ class Hook_config_primary_members_per_page
             'human_name' => 'PRIMARY_MEMBERS_PER_PAGE',
             'type' => 'integer',
             'category' => 'USERS',
-            'group' => 'GROUPS',
+            'group' => 'USERGROUPS',
             'explanation' => 'CONFIG_OPTION_primary_members_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

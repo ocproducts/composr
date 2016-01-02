@@ -11,7 +11,7 @@
 	<div class="inline_lined_up">
 		{+START,IF,{$NOT,{$MOBILE}}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<img class="cns_member_box_avatar" src="{AVATAR_URL*}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
+				<img class="cns_member_box_avatar" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
 			{+END}
 		{+END}
 

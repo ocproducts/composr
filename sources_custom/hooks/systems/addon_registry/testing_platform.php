@@ -65,7 +65,7 @@ class Hook_addon_registry_testing_platform
      */
     public function get_copyright_attribution()
     {
-        return array();
+        return array('Marcus Baker', 'Jason Sweat', 'Travis Swicegood', 'Perrick Penet', 'Edward Z. Yang', 'ocProducts');
     }
 
     /**
@@ -75,7 +75,7 @@ class Hook_addon_registry_testing_platform
      */
     public function get_licence()
     {
-        return 'Licensed on the same terms as Composr';
+        return 'LGPL (SimpleTest), tests licensed on the same terms as Composr';
     }
 
     /**
@@ -155,9 +155,6 @@ class Hook_addon_registry_testing_platform
             '_tests/codechecker/lex.php',
             '_tests/codechecker/lib.php',
             '_tests/codechecker/netbeans/.htaccess',
-            '_tests/codechecker/netbeans/build/.htaccess',
-            '_tests/codechecker/netbeans/build/classes/.htaccess',
-            '_tests/codechecker/netbeans/build/classes/codequalitychecker/.htaccess',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/AboutDialog.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/Dialog1_aboutBtn_actionAdapter.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/Dialog1_ClearErrorsBtn_actionAdapter.class',
@@ -190,20 +187,10 @@ class Hook_addon_registry_testing_platform
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/ProcessingDialog.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/SearchFile.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/VerticalFlowLayout.class',
-            '_tests/codechecker/netbeans/build/classes/index.html',
-            '_tests/codechecker/netbeans/build/index.html',
-            '_tests/codechecker/netbeans/build/test/.htaccess',
-            '_tests/codechecker/netbeans/build/test/classes/.htaccess',
-            '_tests/codechecker/netbeans/build/test/classes/index.html',
-            '_tests/codechecker/netbeans/build/test/index.html',
-            '_tests/codechecker/netbeans/build/test/results/.htaccess',
-            '_tests/codechecker/netbeans/build/test/results/index.html',
+            '_tests/codechecker/netbeans/build/built-jar.properties',
             '_tests/codechecker/netbeans/build.xml',
-            '_tests/codechecker/netbeans/dist/.htaccess',
             '_tests/codechecker/netbeans/dist/Code_Quality_Checker.jar',
-            '_tests/codechecker/netbeans/dist/index.html',
             '_tests/codechecker/netbeans/dist/README.TXT',
-            '_tests/codechecker/netbeans/index.html',
             '_tests/codechecker/netbeans/manifest.mf',
             '_tests/codechecker/netbeans/nbproject/build-impl.xml',
             '_tests/codechecker/netbeans/nbproject/genfiles.properties',
@@ -212,17 +199,14 @@ class Hook_addon_registry_testing_platform
             '_tests/codechecker/netbeans/nbproject/private/private.xml',
             '_tests/codechecker/netbeans/nbproject/project.properties',
             '_tests/codechecker/netbeans/nbproject/project.xml',
-            '_tests/codechecker/netbeans/src/.htaccess',
-            '_tests/codechecker/netbeans/src/codequalitychecker/.htaccess',
-            '_tests/codechecker/netbeans/src/codequalitychecker/AboutDialog.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/index.html',
-            '_tests/codechecker/netbeans/src/codequalitychecker/Main.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/MainDialog.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/OptionsDialog.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/ProcessingDialog.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/SearchFile.java',
-            '_tests/codechecker/netbeans/src/codequalitychecker/VerticalFlowLayout.java',
-            '_tests/codechecker/netbeans/src/index.html',
+            '_tests/codechecker/java_src/codequalitychecker/AboutDialog.java',
+            '_tests/codechecker/java_src/codequalitychecker/index.html',
+            '_tests/codechecker/java_src/codequalitychecker/Main.java',
+            '_tests/codechecker/java_src/codequalitychecker/MainDialog.java',
+            '_tests/codechecker/java_src/codequalitychecker/OptionsDialog.java',
+            '_tests/codechecker/java_src/codequalitychecker/ProcessingDialog.java',
+            '_tests/codechecker/java_src/codequalitychecker/SearchFile.java',
+            '_tests/codechecker/java_src/codequalitychecker/VerticalFlowLayout.java',
             '_tests/codechecker/netbeans/test/.htaccess',
             '_tests/codechecker/netbeans/test/index.html',
             '_tests/codechecker/non_errors.txt',
@@ -337,6 +321,9 @@ class Hook_addon_registry_testing_platform
             //   Whatever we can quickly achieve as a testing win for our total platform stability/coherence, we go with.
             //   Contributions for deeper, detailed, testing, are very welcome.
             '_tests/tests/unit_tests/.htaccess',
+            '_tests/tests/unit_tests/calendar_event.php',
+            '_tests/tests/unit_tests/calendar_event_type.php',
+            '_tests/tests/unit_tests/gallery_images.php',
             '_tests/tests/unit_tests/template_xss.php',
             '_tests/tests/unit_tests/notifications_all_coded.php',
             '_tests/tests/unit_tests/specsettings_documented.php',
@@ -349,16 +336,15 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/clean_reinstall.php',
             '_tests/tests/unit_tests/authors.php',
             '_tests/tests/unit_tests/awards.php',
-            '_tests/tests/unit_tests/lang_ini_file.php',
             '_tests/tests/unit_tests/banners.php',
             '_tests/tests/unit_tests/_bash_parser.php',
             '_tests/tests/unit_tests/bookmark.php',
             '_tests/tests/unit_tests/bump_member_group_timeout.php',
-            '_tests/tests/unit_tests/calendarevent.php',
-            '_tests/tests/unit_tests/calendareventtype.php',
             '_tests/tests/unit_tests/catalogues.php',
             '_tests/tests/unit_tests/catalogues_category.php',
             '_tests/tests/unit_tests/wiki.php',
+            '_tests/tests/unit_tests/cma_hooks.php',
+            '_tests/tests/unit_tests/database_integrity.php',
             '_tests/tests/unit_tests/chatroom.php',
             '_tests/tests/unit_tests/comcode.php',
             '_tests/tests/unit_tests/comcode_to_text.php',
@@ -383,6 +369,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/sitemap.php',
             '_tests/tests/unit_tests/blocks.php',
             '_tests/tests/unit_tests/commandr_fs.php',
+            '_tests/tests/unit_tests/config.php',
             '_tests/tests/unit_tests/downloads.php',
             '_tests/tests/unit_tests/downloads_category.php',
             '_tests/tests/unit_tests/ecommerce.php',
@@ -391,10 +378,11 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/forum.php',
             '_tests/tests/unit_tests/forum_grouping.php',
             '_tests/tests/unit_tests/galleries.php',
-            '_tests/tests/unit_tests/galleries_1.php',
             '_tests/tests/unit_tests/forum_poll.php',
             '_tests/tests/unit_tests/git_conflicts.php',
             '_tests/tests/unit_tests/html_safe_lang.php',
+            '_tests/tests/unit_tests/lang_duplication.php',
+            '_tests/tests/unit_tests/phpstub_accuracy.php',
             '_tests/tests/unit_tests/index.html',
             '_tests/tests/unit_tests/iotd.php',
             '_tests/tests/unit_tests/lang.php',
@@ -403,6 +391,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/addon_screenshots.php',
             '_tests/tests/unit_tests/missing_block_params.php',
             '_tests/tests/unit_tests/missing_colour_equations.php',
+            '_tests/tests/unit_tests/tutorial_image_consistency.php',
             '_tests/tests/unit_tests/moderation.php',
             '_tests/tests/unit_tests/modularisation.php',
             '_tests/tests/unit_tests/news.php',
@@ -415,7 +404,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/posts.php',
             '_tests/tests/unit_tests/quiz.php',
             '_tests/tests/unit_tests/rating.php',
-            '_tests/tests/unit_tests/relations.php',
+            '_tests/tests/unit_tests/database_relations.php',
             '_tests/tests/unit_tests/rss.php',
             '_tests/tests/unit_tests/shopping.php',
             '_tests/tests/unit_tests/standard_dir_files.php',
@@ -442,8 +431,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/xss.php',
             '_tests/tests/unit_tests/core_fields.php',
             '_tests/tests/regression_tests/input_filter_post_block.php',
-
-            'sources_custom/hooks/systems/commandr_commands/find_function.php',
+            '_tests/tests/unit_tests/tutorials_codebox.php',
         );
     }
 }

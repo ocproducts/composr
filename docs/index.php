@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cns_forum
+ * @package    composr_tutorials
  */
 
 // This is the standard zone bootstrap file. Zone: forum.

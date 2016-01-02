@@ -43,7 +43,7 @@ class Hook_notification_cns_topic_invite extends Hook_Notification
      */
     public function get_initial_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**
@@ -55,7 +55,7 @@ class Hook_notification_cns_topic_invite extends Hook_Notification
      */
     public function get_default_auto_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**

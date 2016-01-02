@@ -48,7 +48,7 @@ class Hook_choose_gallery
         $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
         $tree = get_gallery_tree(is_null($id) ? 'root' : $stripped_id, '', null, true, $filter, false, false, $purity, $compound_list, is_null($id) ? 0 : 1, $member_id, $addable_filter, $editable_filter);
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'galleries')) {
@@ -77,7 +77,7 @@ class Hook_choose_gallery
             }
             $title = $t['title'];
             if (is_object($title)) {
-                $title = @html_entity_decode(strip_tags($title->evaluate()), ENT_QUOTES, get_charset());
+                $title = strip_html($title->evaluate());
             }
             $has_children = ($t['child_count'] != 0);
             $selectable =
@@ -123,7 +123,7 @@ class Hook_choose_gallery
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null)
     {

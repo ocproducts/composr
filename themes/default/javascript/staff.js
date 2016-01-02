@@ -55,7 +55,7 @@ function script_load_stuff_staff()
 		}
 	}
 
-	// Local cacheing for improved perceived performance
+	// Local caching for improved perceived performance
 	var has_local_storage=false;
 	try
 	{
@@ -117,7 +117,7 @@ function script_load_stuff_staff()
 					{
 						add_event_listener_abstract(link,'mouseout',function(event) {
 							if (typeof event=='undefined') event=window.event;
-							if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link,event);
+							if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
 						});
 						add_event_listener_abstract(link,'mousemove',function(event) {
 							if (typeof event=='undefined') event=window.event;
@@ -204,7 +204,7 @@ function local_page_caching(html)
 
 function contextual_css_edit()
 {
-	var spt=document.getElementById('special_page_type'),css_option,i,l,sheet;
+	var spt=document.getElementById('spacer_1'),css_option,i,l,sheet;
 	if (!spt) return;
 	var possibilities=find_css_sheets(window);
 	for (i=0;i<possibilities.length;i++)
@@ -217,7 +217,7 @@ function contextual_css_edit()
 			css_option.value=sheet+'.css';
 			css_option.id='opt_for_sheet_'+sheet;
 			if (find_active_selectors(sheet,window).length!=0)
-				spt.options[2].parentNode.insertBefore(css_option,spt.options[2]);
+				spt.appendChild(css_option);
 		}
 	}
 }
@@ -429,13 +429,22 @@ function load_software_chat(event)
 	cancel_bubbling(event);
 	if (typeof event.preventDefault!='undefined') event.preventDefault();
 
+	var url='https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
+	if (typeof window.cms_username!='undefined' && window.cms_username!='admin')
+	{
+		url+=window.encodeURIComponent(window.cms_username.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+	} else
+	{
+		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+	}
+	url+='#composrcms';
 	var html=' \
 		<div class="software_chat"> \
 			<h2>{!CMS_COMMUNITY_HELP}</h2> \
 			<ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;}</ul> \
-			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW}" target="_blank" href="http://chat.zoho.com/guest.sas?k=%7B%22g%22%3A%22Anonymous%22%2C%22c%22%3A%2299b05040669de8c406b674d2366ff9b0401fe3523f0db988%22%2C%22o%22%3A%22e89335657fd675dcfb8e555ea0615984%22'+'%7D'+'&amp;participants=true">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
+			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
 		</div> \
-		<iframe class="software_chat_iframe" frameborder="0" style="border: 0" src="http://chat.zoho.com/shout.sas?k=%7B%22g%22%3A%22Anonymous%22%2C%22c%22%3A%2299b05040669de8c406b674d2366ff9b0401fe3523f0db988%22%2C%22o%22%3A%22e89335657fd675dcfb8e555ea0615984%22'+'%7D'+'&amp;chaturl=Composr%20chat&amp;V=000000-70a9e1-eff4f9-70a9e1-Composr%20chat&amp;user={$SITE_NAME.*}'+((typeof window.cms_username!='undefined')?window.encodeURIComponent('/'+window.cms_username):'')+'&amp;participants=true"></iframe> \
+		<iframe class="software_chat_iframe" frameborder="0" style="border: 0" src="'+escape_html(url)+'"></iframe> \
 	'.replace(/\\{1\\}/,escape_html((window.location+'').replace(get_base_url(),'http://baseurl')));
 
 	var box=document.getElementById('software_chat_box');
@@ -448,16 +457,18 @@ function load_software_chat(event)
 	{
 		box=document.createElement('div');
 
+		var width=950;
+		var height=550;
 		box.id='software_chat_box';
-		box.style.width='750px';
+		box.style.width=width+'px';
+		box.style.height=height+'px';
 		box.style.background='#EEE';
 		box.style.color='#000';
 		box.style.padding='5px';
 		box.style.border='3px solid #AAA';
-		box.style.height='420px';
 		box.style.position='absolute';
 		box.style.zIndex=2000;
-		box.style.left=(get_window_width()-650)/2+'px';
+		box.style.left=(get_window_width()-width)/2+'px';
 		var top_temp=100;
 		box.style.top=top_temp+'px';
 
@@ -497,6 +508,22 @@ function staff_actions_select(ob)
 		if (test) form.setAttribute('target',test.name);
 		if (!is_form_submit)
 			form.submit();
+	}
+}
+
+function staff_actions_change(ob)
+{
+	var value=ob.options[ob.selectedIndex].value;
+	if (value=='templates' || value=='tree')
+	{
+		/*
+		This is not actually needed, see code in PHP has_caching_for function
+		var hidden=document.createElement('input');
+		hidden.type='hidden';
+		hidden.name='cache_templates';
+		hidden.value='0';
+		ob.form.appendChild(hidden);
+		*/
 	}
 }
 

@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: curl_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -20,6 +22,8 @@
 
 /**
  * Script to make a nice textual image, vertical writing.
+ *
+ * @ignore
  */
 function gd_text_script()
 {
@@ -179,6 +183,8 @@ function gd_text_script()
 
 /**
  * Script to track clicks to external sites.
+ *
+ * @ignore
  */
 function simple_tracker_script()
 {
@@ -199,6 +205,8 @@ function simple_tracker_script()
 
 /**
  * Script to show previews of content being added/edited.
+ *
+ * @ignore
  */
 function preview_script()
 {
@@ -222,11 +230,13 @@ function preview_script()
  * Script to perform Composr CRON jobs called by the real CRON.
  *
  * @param  PATH $caller File path of the cron_bridge.php script
+ *
+ * @ignore
  */
 function cron_bridge_script($caller)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(1000); // May get overridden lower later on
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(1000); // May get overridden lower later on
     }
 
     // In query mode, Composr will just give advice on CRON settings to use
@@ -252,9 +262,17 @@ function cron_bridge_script($caller)
         }
     }
 
-    decache('main_staff_checklist'); // So the block knows CRON has run
+    if (intval(get_value('last_cron')) < time() - 60 * 60 * 12) {
+        decache('main_staff_checklist'); // So the block knows CRON has run
+    }
 
     $limit_hook = get_param_string('limit_hook', '');
+
+    $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
+    $log_file = mixed();
+    if (is_file($_log_file)) {
+        $log_file = fopen($_log_file, 'at');
+    }
 
     // Call the hooks which do the real work
     set_value('last_cron', strval(time()));
@@ -269,7 +287,20 @@ function cron_bridge_script($caller)
         if (is_null($object)) {
             continue;
         }
+
+        if (!is_null($log_file)) {
+            fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
+        }
+
         $object->run();
+
+        if (!is_null($log_file)) {
+            fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");
+        }
+    }
+
+    if (!is_null($log_file)) {
+        fclose($log_file);
     }
 
     if (!headers_sent()) {
@@ -279,11 +310,13 @@ function cron_bridge_script($caller)
 
 /**
  * Script to handle iframe.
+ *
+ * @ignore
  */
 function iframe_script()
 {
     $zone = get_param_string('zone');
-    $page = get_param_string('page');
+    $page = get_page_name();
     $ajax = (get_param_integer('ajax', 0) == 1);
 
     process_url_monikers($page);
@@ -301,7 +334,7 @@ function iframe_script()
     if ($zones[0]['zone_require_session'] == 1) {
         header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
     }
-    if (($zones[0]['zone_name'] != '') && (get_option('windows_auth_is_enabled') != '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
+    if (($zones[0]['zone_name'] != '') && (get_value('windows_auth_is_enabled') !== '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
         access_denied('ZONE_ACCESS_SESSION');
     }
     if (!has_actual_page_access(get_member(), $page, $zone)) {
@@ -335,10 +368,15 @@ function iframe_script()
     $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '04cf4ef7aac4201bb985327ec0e04c87', 'OPENS_BELOW' => get_param_integer('opens_below', 0) == 1, 'FRAME' => true, 'TARGET' => '_top', 'CONTENT' => $output));
     $tpl->handle_symbol_preprocessing();
     $tpl->evaluate_echo();
+
+    require_code('site');
+    save_static_caching($tpl);
 }
 
 /**
  * Redirect the browser to where a page_link specifies.
+ *
+ * @ignore
  */
 function page_link_redirect_script()
 {
@@ -356,6 +394,8 @@ function page_link_redirect_script()
 
 /**
  * Outputs the page-link chooser popup.
+ *
+ * @ignore
  */
 function page_link_chooser_script()
 {
@@ -381,6 +421,8 @@ function page_link_chooser_script()
 
 /**
  * Shows an HTML page of all emoticons clickably.
+ *
+ * @ignore
  */
 function emoticons_script()
 {
@@ -423,7 +465,7 @@ function emoticons_script()
         }
 
         $code_esc = $myrow['e_code'];
-        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => get_param_string('field_name', 'post'), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
+        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => filter_naughty_harsh(get_param_string('field_name', 'post')), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
     }
     if (!$current_row->is_empty()) {
         $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => 'd13e74f7febc560dc5fc241dc7914a03', 'CELLS' => $current_row)));
@@ -441,6 +483,8 @@ function emoticons_script()
 
 /**
  * Allows conversion of a URL to a thumbnail via a simple script.
+ *
+ * @ignore
  */
 function thumb_script()
 {
@@ -476,6 +520,8 @@ function thumb_script()
 
 /**
  * Outputs a modal question dialog.
+ *
+ * @ignore
  */
 function question_ui_script()
 {
@@ -498,4 +544,66 @@ function question_ui_script()
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '8d72daa4c9f922656b190b643a6fe61d', 'TITLE' => escape_html($title), 'POPUP' => true, 'CONTENT' => $message));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
+}
+
+/**
+ * Proxy an external URL.
+ *
+ * @ignore
+ */
+function external_url_proxy_script()
+{
+    $url = get_param_string('url', false, true);
+
+    // Don't allow loops
+    if (strpos($url, 'external_url_proxy.php') !== false) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // Don't allow non-HTTP(S)
+    if (preg_match('#^https?://#', $url) == 0) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // No time-limits wanted
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
+    }
+
+    // Can't add in compression
+    safe_ini_set('zlib.output_compression', 'Off');
+
+    // No ocProducts XSS filter
+    safe_ini_set('ocproducts.xss_detect', '0');
+
+    // Stream
+    $content_type = 'application/octet-stream';
+    $f = @fopen($url, 'rb');
+    if (isset($http_response_header)) {
+        // Work out appropriate content type (with restrictions)
+        require_code('mime_types');
+        $mime_types = array_flip(get_mime_types(false));
+        $matches = array();
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header, $matches) != 0) {
+                $content_type = $matches[1];
+            }
+        }
+        if (!isset($mime_types[$content_type])) {
+            $content_type = 'application/octet-stream';
+        }
+        header('Content-Type: ' . $content_type);
+
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header) == 0) {
+                header($header);
+            }
+        }
+    } else {
+        header('Content-Type: ' . $content_type);
+    }
+    if ($f !== false) {
+        fpassthru($f);
+        @fclose($f);
+    }
 }

@@ -27,7 +27,7 @@ class Hook_commandr_notification_chat
      * Run function for Commandr notification hooks.
      *
      * @param  ?integer $timestamp The "current" time on which to base queries (null: now)
-     * @return ~array                    Array of section, type and message responses (false: nothing)
+     * @return ~array Array of section, type and message responses (false: nothing)
      */
     public function run($timestamp = null)
     {

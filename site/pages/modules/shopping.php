@@ -53,14 +53,6 @@ class Module_shopping
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_addresses');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
-
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('firstname');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('lastname');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('building_name_or_number');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('city');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('state');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('post_code');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('country');
     }
 
     /**
@@ -150,26 +142,6 @@ class Module_shopping
                                                                                  'last_name' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('order_id'));
-
-            // CPFs for ecommerce purchase (may also be used by other things, so we will store in our generic format)...
-
-            require_lang('shopping');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('building_name_or_number', 100, 1, 0, 0, 0, '', 'long_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 1, 0, 0, 0, '', 'short_text');
-            require_code('currency');
-            $currencies = get_currency_map();
-            $_countries = array();
-            foreach ($currencies as $c) {
-                $_countries = array_merge($_countries, $c);
-            }
-            $_countries = array_unique($_countries);
-            sort($_countries);
-            $countries = '|' . implode('|', $_countries);
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 100, 1, 0, 0, 0, '', 'list', 0, $countries);
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
@@ -190,7 +162,7 @@ class Module_shopping
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -211,7 +183,7 @@ class Module_shopping
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -220,8 +192,16 @@ class Module_shopping
         require_lang('shopping');
         require_lang('catalogues');
 
+        $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
+        $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
+        $ecom_catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $ecom_catalogue));
+
         if ($type == 'browse') {
-            breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
+            if ($ecom_catalogue_count == 1) {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
+            } else {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
+            }
 
             $this->title = get_screen_title('SHOPPING');
         }
@@ -239,7 +219,11 @@ class Module_shopping
         }
 
         if ($type == 'finish') {
-            breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            if ($ecom_catalogue_count == 1) {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            } else {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            }
 
             $this->title = get_screen_title('_PURCHASE_FINISHED');
         }
@@ -261,7 +245,7 @@ class Module_shopping
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -315,7 +299,7 @@ class Module_shopping
     /**
      * The UI to show shopping cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_shopping_cart()
     {
@@ -346,14 +330,14 @@ class Module_shopping
             $fields_title = results_field_title(
                 array(
                     '',
-                    do_lang_tempcode('_PRODUCT_NAME'),
+                    do_lang_tempcode('PRODUCT'),
                     do_lang_tempcode('UNIT_PRICE'),
                     do_lang_tempcode('QUANTITY'),
                     do_lang_tempcode('ORDER_PRICE_AMT'),
                     do_lang_tempcode('TAX'),
                     do_lang_tempcode('SHIPPING_PRICE'),
                     do_lang_tempcode('TOTAL_PRICE'),
-                    do_lang_tempcode('REMOVE_FROM_CART')
+                    do_lang_tempcode('REMOVE')
                 ), null
             );
 
@@ -420,9 +404,14 @@ class Module_shopping
             $proceed_box = new Tempcode();
         }
 
+        $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
         $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
-
-        $cont_shopping_url = is_null($ecom_catalogue) ? new Tempcode() : build_url(array('page' => 'catalogues', 'type' => 'category', 'catalogue_name' => $ecom_catalogue), get_module_zone('catalogues'));
+        $ecom_catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $ecom_catalogue));
+        if ($ecom_catalogue_count == 1) {
+            $cont_shopping_url = build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $ecom_catalogue_id), get_module_zone('catalogues'));
+        } else {
+            $cont_shopping_url = build_url(array('page' => 'catalogues', 'type' => 'browse', 'ecommerce' => 1), get_module_zone('catalogues'));
+        }
 
         // Product ID string for hidden field in Shopping cart
         $pro_ids_val = is_array($pro_ids) ? implode(',', $pro_ids) : '';
@@ -452,7 +441,7 @@ class Module_shopping
     /**
      * Function to add item to cart.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_item_to_cart()
     {
@@ -475,7 +464,7 @@ class Module_shopping
     /**
      * Function to Update cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function update_cart()
     {
@@ -529,7 +518,7 @@ class Module_shopping
     /**
      * Function to empty shopping cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function empty_cart()
     {
@@ -545,11 +534,11 @@ class Module_shopping
     /**
      * Wrap-up so as to remove redundancy in templates.
      *
-     * @param  tempcode $content To wrap.
-     * @param  tempcode $title The title to use.
+     * @param  Tempcode $content To wrap.
+     * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
-     * @return tempcode Wrapped.
+     * @return Tempcode Wrapped.
      */
     public function wrap($content, $title, $url, $get = false)
     {
@@ -564,7 +553,7 @@ class Module_shopping
     /**
      * Finish step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function finish()
     {
@@ -597,6 +586,7 @@ class Module_shopping
                 $amount = $transaction_row['e_amount'];
                 $length = $transaction_row['e_length'];
                 $length_units = $transaction_row['e_length_units'];
+                $currency = $transaction_row['e_currency'];
 
                 $name = post_param_string('name');
                 $card_number = post_param_string('card_number');
@@ -606,7 +596,7 @@ class Module_shopping
                 $card_type = post_param_string('card_type');
                 $cv2 = post_param_string('cv2');
 
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
+                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
@@ -616,7 +606,7 @@ class Module_shopping
                 if ($success) {
                     $member_id = $transaction_row['e_member_id'];
                     require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
                 }
             }
 
@@ -648,7 +638,7 @@ class Module_shopping
     /**
      * Show all my orders
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function my_orders()
     {
@@ -693,7 +683,7 @@ class Module_shopping
     /**
      * Show an order details
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_det()
     {

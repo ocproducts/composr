@@ -31,7 +31,7 @@ $version_dotted = get_param_string('version');
 require_code('version2');
 $version_pretty = get_version_pretty__from_dotted(get_version_dotted__from_anything($version_dotted));
 
-$is_substantial = (substr($version_dotted, -2) == '.0') || (strpos($version_dotted, 'beta1') !== false) || (strpos($version_dotted, 'RC1') !== false);
+$is_substantial = is_substantial_release($version_dotted);
 
 $is_old_tree = get_param_integer('is_old_tree') == 1;
 
@@ -59,10 +59,7 @@ if (!$is_bleeding_edge) {
     require_code('catalogues');
     require_code('catalogues2');
 
-    $bug_category_id = get_bug_category_id($version_dotted);
-    $urls['Bugs'] = static_evaluate_tempcode(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $bug_category_id), get_module_zone('catalogues'), null, false, false, true));
-} else {
-    $bug_category_id = null;
+    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . $version_dottted;
 }
 
 // Add downloads (assume uploaded already)
@@ -103,7 +100,7 @@ if (is_null($microsoft_category_id)) {
 $all_downloads_to_add = array(
     array(
         'name' => "Composr Version {$version_pretty}{$bleeding1}",
-        'description' => "This is version {$version_pretty}." . (is_null($bug_category_id) ? "" : "\n\nAny [url=\"critical bug fixes\" title=\"{!LINK_NEW_WINDOW}\"]http://compo.sr/site/catalogues/category/" . strval($bug_category_id) . ".htm[/url] for this version are organised on the Composr website."),
+        'description' => "This is version {$version_pretty}."),
         'filename' => 'composr_quick_installer-' . $version_dotted . '.zip',
         'comments' => ($is_bleeding_edge || $is_old_tree) ? '' : 'This is the latest version.',
         'category_id' => $release_category_id,

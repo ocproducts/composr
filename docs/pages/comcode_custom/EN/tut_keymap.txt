@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Composr keyboard shortcuts[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Composr keyboard shortcuts[/title]
 
 Many functions in a Composr website may be activated by key code, rather than clicking or using tab to move between components. This short tutorial will list these key codes.
 
@@ -10,12 +10,13 @@ On most web browsers you can activate a key shortcut by holding down the Alt key
 
 [title="2"]Key map[/title]
 
+[media width="150" description="" float="right"]data_custom/images/docs/tut_keymap/image.png[/media]
 [b][tt]C[/tt][/b] Continue to followup page
 [b][tt]G[/tt][/b] Go back to the top of the page
 [b][tt]I[/tt][/b] Admin Zone (staff only)
 [b][tt]J[/tt][/b] Previous
 [b][tt]K[/tt][/b] Another/Next
-[b][tt]L[/tt][/b] Login/Logout
+[b][tt]L[/tt][/b] Log in/Log out
 [b][tt]M[/tt][/b] Activate the management menu (staff only)
 [b][tt]N[/tt][/b] Activate bookmarks menu
 [b][tt]O[/tt][/b] Open Commandr (staff only)

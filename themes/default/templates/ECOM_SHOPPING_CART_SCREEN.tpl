@@ -6,9 +6,9 @@
 	{RESULTS_TABLE}
 
 	{+START,IF_NON_EMPTY,{PRO_IDS}}
-		{+START,IF,{$EQ,{ALLOW_OPTOUT_TAX},1}}
+		{+START,IF,{ALLOW_OPTOUT_TAX}}
 			<div class="checkout_text">
-				<input type="checkbox" name="tax_opted_out" id="tax_opted_out" value="1"{+START,IF,{$EQ,{ALLOW_OPTOUT_TAX_VALUE},1}} checked="true"{+END} />
+				<input type="checkbox" name="tax_opted_out" id="tax_opted_out" value="1"{+START,IF,{ALLOW_OPTOUT_TAX_VALUE}} checked="true"{+END} />
 				<label for="tax_opted_out">{!CUSTOMER_OPTING_OUT_OF_TAX}</label>
 			</div>
 		{+END}

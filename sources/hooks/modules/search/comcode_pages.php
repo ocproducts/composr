@@ -49,7 +49,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Get a list of entries for the content covered by this search hook. In hierarchical list selection format.
      *
      * @param  string $selected The default selected item
-     * @return tempcode Tree structure
+     * @return Tempcode Tree structure
      */
     public function get_tree($selected)
     {
@@ -260,7 +260,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {
@@ -274,14 +274,14 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * @param  ID_TEXT $zone The zone for the page
      * @param  ID_TEXT $page The page name
      * @param  string $limit_to What search hooks the search is being limited to (blank: not limited)
-     * @return tempcode The tempcode showing the Comcode page
+     * @return Tempcode The Tempcode showing the Comcode page
      */
     public function decide_template($zone, $page, $limit_to)
     {
         global $SEARCH__CONTENT_BITS;
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(30); // This can be slow.
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(30); // This can be slow.
         }
 
         require_code('xhtml');
@@ -292,32 +292,40 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         $summary = $_summary[1];
 
         if ($summary == '') {
-            $comcode_file = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . get_site_default_lang() . '/' . filter_naughty($page) . '.txt');
-            if (!file_exists($comcode_file)) {
-                $comcode_file = zone_black_magic_filterer(get_file_base() . '/' . filter_naughty($zone) . '/pages/comcode/' . get_site_default_lang() . '/' . filter_naughty($page) . '.txt');
+            $page_request = _request_page($page, $zone);
+            if (strpos($page_request[0], 'COMCODE') === false) {
+                return new Tempcode();
             }
+            $comcode_file = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
+
             if (file_exists($comcode_file)) {
                 global $LAX_COMCODE;
                 $LAX_COMCODE = true;
-                /*$temp_summary=comcode_to_tempcode(file_get_contents($comcode_file),NULL,true); Tempcode compiler slowed things down so easier just to show full thing
-                    $_temp_summary=$temp_summary->evaluate();
-                    if (strlen($_temp_summary)<500)
-                    {
-                            $summary=$_temp_summary;
-                    } else
-                    {
-                            $entity='&hellip;';
-                            if (function_exists('ocp_mark_as_escaped')) ocp_mark_as_escaped($entity);
-                            $pos=false;//strpos($_temp_summary,'<span class="comcode_highlight">');
-                            if ($pos===false) $pos=0;
-                            $pos2=max(0,$pos-250);
-                            $summary=(($pos2==0)?'':$entity).xhtml_substr($_temp_summary,$pos2,500).$entity;
-                    }*/
+                /* Tempcode compiler slowed things down so easier just to show full thing
+                $temp_summary = comcode_to_tempcode(file_get_contents($comcode_file), null, true);
+                $_temp_summary = $temp_summary->evaluate();
+                if (strlen($_temp_summary) < 500) {
+                    $summary = $_temp_summary;
+                } else {
+                    $entity = '&hellip;';
+                    if (function_exists('ocp_mark_as_escaped')) {
+                        ocp_mark_as_escaped($entity);
+                    }
+                    $pos = false;//strpos($_temp_summary,'<span class="comcode_highlight">');
+                    if ($pos === false) {
+                        $pos = 0;
+                    }
+                    $pos2 = max(0, $pos - 250);
+                    $summary = (($pos2 == 0) ? '' : $entity) . xhtml_substr($_temp_summary, $pos2, 500) . $entity;
+                }
+                */
                 $GLOBALS['OVERRIDE_SELF_ZONE'] = $zone;
                 $backup_search__contents_bits = $SEARCH__CONTENT_BITS;
                 $SEARCH__CONTENT_BITS = null; // We do not want highlighting, as it'll result in far too much Comcode being parsed (ok for short snippets, not many full pages!)
                 $GLOBALS['TEMPCODE_SETGET']['no_comcode_page_edit_links'] = '1';
+                push_output_state();
                 $temp_summary = request_page($page, true, $zone, strpos($comcode_file, '/comcode_custom/') ? 'comcode_custom' : 'comcode', true);
+                restore_output_state();
                 $SEARCH__CONTENT_BITS = $backup_search__contents_bits;
                 $GLOBALS['OVERRIDE_SELF_ZONE'] = null;
                 $LAX_COMCODE = false;
@@ -331,12 +339,10 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             }
         }
 
-        require_lang('comcode');
-        $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE', escape_html($page));
+        $title = $page;
         global $LAST_COMCODE_PARSED_TITLE;
-
         if ($LAST_COMCODE_PARSED_TITLE != '') {
-            $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE_NICE', $LAST_COMCODE_PARSED_TITLE);
+            $title = $LAST_COMCODE_PARSED_TITLE;
         }
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(comcode_breadcrumbs($page, $zone));

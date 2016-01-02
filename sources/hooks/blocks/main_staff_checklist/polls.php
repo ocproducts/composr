@@ -26,7 +26,7 @@ class Hook_checklist_polls
     /**
      * Find items to include on the staff checklist.
      *
-     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or NULL if not on a timer), the number of things to sort out (or NULL if not on a queue), The name of the config option that controls the schedule (or NULL if no option).
+     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or null if not on a timer), the number of things to sort out (or null if not on a queue), The name of the config option that controls the schedule (or null if no option).
      */
     public function run()
     {
@@ -59,7 +59,7 @@ class Hook_checklist_polls
         $url = build_url(array('page' => 'cms_polls', 'type' => 'edit'), get_module_zone('cms_polls'));
         $num_queue = $this->get_num_poll_queue();
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
-        $info->attach(do_lang_tempcode('NUM_QUEUE', integer_format($num_queue)));
+        $info->attach(do_lang_tempcode('NUM_QUEUE', escape_html(integer_format($num_queue))));
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '5d709aa8a09bbf3e46aefa7fe7e02660', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('PRIVILEGE_choose_poll'), 'INFO' => $info));
         return array(array($tpl, $seconds_due_in, null, 'poll_update_time'));
     }

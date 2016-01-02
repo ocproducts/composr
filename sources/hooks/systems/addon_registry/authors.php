@@ -103,6 +103,7 @@ class Hook_addon_registry_authors
             'themes/default/images/icons/24x24/menu/rich_content/authors.png',
             'themes/default/images/icons/48x48/menu/rich_content/authors.png',
             'themes/default/css/authors.css',
+            'sources/hooks/systems/attachments/author.php',
             'sources/hooks/systems/meta/authors.php',
             'sources/hooks/systems/addon_registry/authors.php',
             'themes/default/templates/AUTHOR_MANAGE_SCREEN.tpl',
@@ -175,7 +176,7 @@ class Hook_addon_registry_authors
         $news_released = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('NEWS_BRIEF', array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE_PLAIN' => lorem_word(),
                 'ID' => placeholder_id(),

@@ -26,7 +26,7 @@ class Hook_stats_chat
     /**
      * Show a stats section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {

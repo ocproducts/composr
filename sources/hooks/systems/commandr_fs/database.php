@@ -24,12 +24,12 @@
 class Hook_commandr_fs_database
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array                   The final directory listing (false: failure)
+     * @return ~array The final directory listing (false: failure)
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
@@ -54,7 +54,7 @@ class Hook_commandr_fs_database
 
                 $listing[] = array(
                     $table_name,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $modification_time,
                 );
@@ -92,7 +92,7 @@ class Hook_commandr_fs_database
                 }
                 $listing[] = array(
                     $x,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );
@@ -111,7 +111,7 @@ class Hook_commandr_fs_database
             foreach ($row as $field_name => $field_value) {
                 $listing[] = array(
                     $field_name,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );
@@ -124,7 +124,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -165,7 +165,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -192,7 +192,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -227,13 +227,13 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  string $file_name The file name
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
@@ -257,7 +257,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -308,7 +308,7 @@ class Hook_commandr_fs_database
      *
      * @param  string $table_name Database table name
      * @param  string $keys Key-value map ("key:value,key2:value2")
-     * @return ~array                   WHERE map array (false: if an invalid key was referenced)
+     * @return ~array WHERE map array (false: if an invalid key was referenced)
      */
     protected function _do_where($table_name, $keys)
     {

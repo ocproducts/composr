@@ -26,7 +26,7 @@ class Hook_checklist_reported_posts
     /**
      * Find items to include on the staff checklist.
      *
-     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or NULL if not on a timer), the number of things to sort out (or NULL if not on a queue), The name of the config option that controls the schedule (or NULL if no option).
+     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or null if not on a timer), the number of things to sort out (or null if not on a queue), The name of the config option that controls the schedule (or null if no option).
      */
     public function run()
     {
@@ -43,8 +43,8 @@ class Hook_checklist_reported_posts
         if (is_null($forum_id)) {
             return array();
         }
-        $where = 't_forum_id=' . strval($forum_id);
-        $query = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics ttop LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ttop.id=l.l_topic_id AND l.l_member_id=' . strval(get_member()) . ' WHERE ' . $where;
+        $where = 't_forum_id=' . strval($forum_id) . ' AND t_is_open=1';
+        $query = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $where;
         $outstanding = $GLOBALS['FORUM_DB']->query_value_if_there($query);
 
         if ($outstanding > 0) {

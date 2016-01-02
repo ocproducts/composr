@@ -59,15 +59,15 @@ class Hook_config_site_closed
      *
      * @param  ID_TEXT $name The config option name
      * @param  array $myrow The config row
-     * @param  tempcode $human_name The field title
-     * @param  tempcode $explanation The field description
-     * @return tempcode The inputter
+     * @param  Tempcode $human_name The field title
+     * @param  Tempcode $explanation The field description
+     * @return Tempcode The inputter
      */
     public function field_inputter($name, $myrow, $human_name, $explanation)
     {
         $list = '';
-        $list .= static_evaluate_tempcode(form_input_radio_entry($name, '0', '0' == get_option($name), do_lang('CLOSED')));
-        $list .= static_evaluate_tempcode(form_input_radio_entry($name, '1', '1' == get_option($name), do_lang('OPEN')));
+        $list .= static_evaluate_tempcode(form_input_radio_entry($name, '0', '0' == get_option($name), do_lang('OPEN')));
+        $list .= static_evaluate_tempcode(form_input_radio_entry($name, '1', '1' == get_option($name), do_lang('CLOSED')));
         return form_input_radio($human_name, $explanation, $name, make_string_tempcode($list), true);
     }
 }

@@ -51,7 +51,7 @@ class Hook_pointstore_permission
      * @param  ID_TEXT $category Permission scope 'category'
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
@@ -95,7 +95,7 @@ class Hook_pointstore_permission
         }
         $fields->attach(form_input_list(do_lang_tempcode('PERMISSION_SCOPE_privilege'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_privilege'), 'permission_privilege' . $name_suffix, $privileges, null, false, false));
         $zones = new Tempcode();
-        //$zones->attach(form_input_list_entry('',false,do_lang_tempcode('NA_EM')));      Will always scope to a zone. Welcome zone would be '' anyway, so we're simplifying the code by having a zone setting which won't hurt anyway
+        //$zones->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));      Will always scope to a zone. Welcome zone would be '' anyway, so we're simplifying the code by having a zone setting which won't hurt anyway
         require_code('zones2');
         require_code('zones3');
         $zones->attach(create_selection_list_zones($zone));
@@ -250,6 +250,8 @@ class Hook_pointstore_permission
             $map += insert_lang('p_mail_body', $mail_body, 2);
             $GLOBALS['SITE_DB']->query_insert('pstore_permissions', $map);
         }
+
+        log_it('POINTSTORE_AMEND_CUSTOM_PERMISSIONS');
     }
 
     /**
@@ -277,7 +279,7 @@ class Hook_pointstore_permission
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -298,7 +300,7 @@ class Hook_pointstore_permission
 
         // Check points
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         return do_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array('_GUID' => '879bd8389dcd6b4b8e0ec610d76bcb35', 'TITLE' => $title, 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
@@ -307,7 +309,7 @@ class Hook_pointstore_permission
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {
@@ -330,7 +332,7 @@ class Hook_pointstore_permission
         // Check points
         $points_left = available_points(get_member());
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         // Test to see if it's been bought

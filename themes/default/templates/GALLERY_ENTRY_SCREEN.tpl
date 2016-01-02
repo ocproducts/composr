@@ -100,7 +100,7 @@
 
 	<div class="media_box">
 		{+START,IF_NON_PASSED,VIDEO}
-			<img class="scale_down" alt="{!IMAGE}" src="{URL*}" itemprop="contentURL" />
+			<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
 			{+START,IF,{$GT,{$META_DATA,video:width},500}}
@@ -169,5 +169,5 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
 <!--DO_NOT_REMOVE_THIS_COMMENT--></div>

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Notifications[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Notifications[/title]
 
 Composr includes a highly-configurable notification system for members to be alerted on what is going on.
 
@@ -6,6 +6,7 @@ Composr includes a highly-configurable notification system for members to be ale
 
 [title="2"]Choosing notifications[/title]
 
+[media width="150" description="Setting notifications" float="right"]data_custom/images/docs/tut_notifications/notifications.png[/media]
 There are a wide number of notification types that members can receive.
 Some are set to be enabled by default, and some are only available based on privileges.
 
@@ -20,21 +21,25 @@ You can receive notifications through a number of means:
  - SMS (if configured, requires payment for each text message sent)
  - As web notifications
 
+Note that private topic receipt is disabled for topic-derived notifications, in order to stop massive growth in database size.
+
 [title="3"]Web notifications[/title]
 
 Web notifications are particularly cool. If you have the website open (or pinned open, which some browsers support), then visitors will be notified directly through the Composr user interface within a matter of seconds. From the list of recent/unread notifications, you can view an overlay with the full notification details, or a full page detailing all enabled web notifications from the last period of days.
 
 Additionally, most platforms will allow native notification display:
- - in the Windows notification center (except on Internet Explorer, which does not support this [at the time of writing, where IE9 is the latest], see below)
+ - in the Windows notification center
  - in the MacOS notification center
  - in the Internet Explorer pinned site notification area
  - [s]in the main notification area of iPhone or Android phones[/s] -- unfortunately this doesn't work at the time of writing, as background pages don't run and most mobile browsers don't support HTML5 notifications
 
-(If you don't want the interface to support this, you can remove the [tt]top_notifications[/tt] block from the default [tt]GLOBAL_HTML_WRAP[/tt] template and disable web notifications.)
+(If you don't want the interface to support this, you can remove the [tt]top_notifications[/tt] block from the default [tt]GLOBAL_HTML_WRAP.tpl[/tt] template and disable web notifications.)
 
 [title="2"]Automatically monitor content you've touched[/title]
 
 This option works to automatically set up a member to receive notifications on content they have interacted with. This happens at the point of them making an interaction -- it automatically sets up a monitor. It is not retroactive.
+
+Members have this set automatically if the global "Auto-monitor posted content" option is enabled.
 
 [title="2"]Smart Topic notification[/title]
 
@@ -46,7 +51,7 @@ You may wish to see what notification e-mails are being sent out.
 
 The best way to debug notifications is to view the e-mail log, from Admin Zone > Audit > E-mail queue/log. You can see exactly what e-mails were sent out.
 
-To see if someone is set up for notifications on some content, use the SU feature (switch user) to pretend to be them. You will see their settings reflected in the interface.
+To see if someone is set up for notifications on some content, use the SU feature (see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section) to pretend to be them. You will see their settings reflected in the interface.
 
 There's a config option, "Carbon-copy e-mail address". This address receives a copy of most e-mails the system sends out.
 Note that it will only CC a notification e-mail to this address once, not once per notification.
@@ -59,26 +64,49 @@ Instead, only the IDs of notification categories that the user has already monit
 
 [title="2"]Lock-down[/title]
 
+[media width="150" description="Setting notification type lock-downs" float="right"]data_custom/images/docs/tut_notifications/lockdown.png[/media]
 In the Admin Zone you can define what notification types are "locked-down". You can use this to:
  - See which notifications are designed for staff only
- - Stop any member from receiving a notification
- - Force members to receive notifications
+ - Stop any member from receiving particular notification types
+ - Force members to receive particular notifications types
+
+Access this from Admin Zone > Setup > Notification lock-down.
 
 You will see the following columns:
  - Notification title (the column title is actually unlabelled, but this is what it is)
  - "Privileged / Restricted" -- this is Yes or No, and shows the general access for this notification type in Composr (it is non-configurable, shown for informative purposes only)
  - "Not locked down, free choice" -- this is a checkbox, defaulting to 'On'. If you uncheck it then the members will have the settings that you choose in the interface (i.e. they can no longer choose their own settings). If it stays checked, the following checkboxes have no effect.
- - "Member's typical notification type" -- specifies that a notification will be forcibly sent out in the member's average way they've set to receive notifications
- - (All the different ways of receiving notifications) -- the checkbox selections here determine [i]specifically[/i] how members will forcibly receive this notification (you will not typically use this in combination with "Member's typical notification type").
+ - "Member's typical notification type" -- specifies that a notification type will be forcibly sent out in the member's average way they've set to receive notifications
+ - (All the different ways of receiving notifications) -- the checkbox selections here determine [i]specifically[/i] how members will forcibly receive this notification type (you will not typically use this in combination with "Member's typical notification type").
  
-If no checkboxes are checked then the members will not be able to recieve the notification at all. This is quite a common configuration, essentially allowing you to turn off a notification for the whole website.
+If no checkboxes are checked then the members will not be able to receive the notification type at all. This is quite a common configuration, essentially allowing you to turn off a notification type for the whole website.
 
-Note that the settings apply to all members (while respecting the notification permissions). You cannot set against specific usergroups.
+Note that the settings apply to all members (while respecting the notification permissions). You cannot set lock-downs against specific usergroups.
+
+[title="2"]Security[/title]
+
+Notifications broadly fall into 3 categories:
+1) Notifications sent directly to a specific member, relating to them
+2) Privilege-affected notifications, e.g. monitoring a download category, and hence needing access to that category to receive the notification
+3) Staff notifications
+
+To stop Composr becoming bloated/over-complex, there is no configurable granularity with Staff notifications. Any one with the "May listen to notifications intended for staff" privilege may receive them.
+
+However, you may come into a situation where you do want some granularity. A nice workaround is to have a staff account with a gmail address, and use gmail forwarding rules to forward to others based upon subject line. Then deny regular staff the "May listen to notifications intended for staff" privilege.
+
+[title="2"]Digests[/title]
+
+Digest e-mails provide combined summaries of activity.
+
+It is possible digest e-mails could become very long. In this case, Composr would struggle to parse their Comcode. Composr therefore implements a 100kb limit per digest.
+
+Members are informed if the limit is exceeded (while still given the subjects of each digest item). The member may then choose to change their settings to something more manageable (such as more regular, or smaller, digests).
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
+ - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
 
 {$SET,tutorial_tags,Members,Administration,sms,core_notifications,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,How different kinds of notifications may be set up in Composr.}[block]main_tutorial_rating[/block]

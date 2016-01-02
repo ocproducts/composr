@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    mentorr
+ */
+
+/**
  * Hook class.
  */
 class Hook_upon_query_add_mentor
@@ -25,7 +31,7 @@ class Hook_upon_query_add_mentor
             return;
         }
 
-        //if (strpos($query,$GLOBALS['FORUM_DB']->get_table_prefix().'f_members')!==false && strpos($query,'BY RAND')==false) // to test without registration
+        //if (strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false && strpos($query, 'BY RAND') == false) // to test without registration
         if (strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) {
             load_user_stuff();
             if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
@@ -56,7 +62,7 @@ class Hook_upon_query_add_mentor
                 return;
             }
 
-            $mentor_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON (g.gm_member_id=m.id AND gm_validated=1) WHERE gm_group_id=' . strval($mentor_usergroup_id) . ' OR m_primary_group=' . strval($mentor_usergroup_id) . ' ORDER BY RAND() LIMIT 1', null, null, true);
+            $mentor_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON (g.gm_member_id=m.id AND gm_validated=1) WHERE gm_group_id=' . strval($mentor_usergroup_id) . ' OR m_primary_group=' . strval($mentor_usergroup_id) . ' ORDER BY RAND()', true);
             if ($mentor_id === null) {
                 return;
             }

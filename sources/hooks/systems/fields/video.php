@@ -80,7 +80,7 @@ class Hook_fields_video
      * @param  ?ID_TEXT $field_id_field Name of the field ID field in the table (null: N/A)
      * @param  ?ID_TEXT $url_field Name of the URL field in the table (null: N/A)
      * @param  ?MEMBER $submitter Submitter (null: current member)
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value(&$field, $ev, $i, $only_fields, $table = null, $id = null, $id_field = null, $field_id_field = null, $url_field = null, $submitter = null)
     {
@@ -176,7 +176,8 @@ class Hook_fields_video
     {
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
         require_code('galleries');
-        $ffield = form_input_upload($_cf_name, $_cf_description, 'field_' . strval($field['id']), $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : preg_replace('# .*$#', '', $actual_value), null, true, get_allowed_video_file_types());
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        $ffield = form_input_upload($_cf_name, $_cf_description, $input_name, $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : preg_replace('# .*$#', '', $actual_value), null, true, get_allowed_video_file_types());
 
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
@@ -189,7 +190,7 @@ class Hook_fields_video
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

@@ -61,7 +61,7 @@ class Module_topicview
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -79,7 +79,7 @@ class Module_topicview
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -201,13 +201,13 @@ class Module_topicview
             foreach ($topic_info['posts'] as $array_id => $_postdetails) {
                 if (($GLOBALS['META_DATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
                     // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' meta-data for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
-                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // HACKHACK: Should we hard-code this?
-                    $GLOBALS['META_DATA']['description'] = html_entity_decode(strip_tags($truncated), ENT_QUOTES, get_charset());
+                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Should we hard-code this?
+                    $GLOBALS['META_DATA']['description'] = strip_html($truncated);
 
                     // Also scan for <img> tag, in case it was put in manually
                     if ((!isset($GLOBALS['META_DATA']['image'])) || ($GLOBALS['META_DATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                         $matches = array();
-                        if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $_postdetails['post'], $matches) != 0) {
+                        if (preg_match('#<img\s[^<>]*src="([^"]*)"#', is_object($_postdetails['post']) ? $_postdetails['post']->evaluate() : $_postdetails['post'], $matches) != 0) {
                             $GLOBALS['META_DATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
                         }
                     }
@@ -260,7 +260,7 @@ class Module_topicview
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -282,8 +282,10 @@ class Module_topicview
             $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member()));
         }
 
+        require_code('users');
+
         // Mark as read
-        if (!is_null($id)) {
+        if ((!is_null($id)) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1)) {
             if (is_null($topic_info['forum_id'])) {
                 $this->_update_read_status(); // Done early because we need to have updated read status set when the pt_notifications show up
             } else {
@@ -355,8 +357,8 @@ class Module_topicview
                     $buttons = cns_render_post_buttons($topic_info, $_postdetails, $may_reply);
                 }
 
-                if (isset($poster_details_cache[$_postdetails['poster']])) { // The cache avoids a lot of potentially duplicated Tempcode structure
-                    list($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature) = $poster_details_cache[$_postdetails['poster']];
+                if (isset($poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']])) { // The cache avoids a lot of potentially duplicated Tempcode structure
+                    list($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature) = $poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']];
                 } else {
                     // User online status
                     $poster_online = mixed();
@@ -427,7 +429,7 @@ class Module_topicview
                         $signature = $_postdetails['signature'];
                     }
 
-                    $poster_details_cache[$_postdetails['poster']] = array($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature);
+                    $poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']] = array($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature);
                 }
 
                 $post_title = $_postdetails['title'];
@@ -456,7 +458,7 @@ class Module_topicview
                 }
 
                 if ((isset($GLOBALS['META_DATA']['description'])) && ($GLOBALS['META_DATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
-                    $GLOBALS['META_DATA']['description'] = html_entity_decode(strip_tags(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left')), ENT_QUOTES, get_charset());
+                    $GLOBALS['META_DATA']['description'] = strip_html(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'));
                 }
 
                 $rendered_post = do_template('CNS_TOPIC_POST', array(
@@ -526,19 +528,37 @@ class Module_topicview
             }
 
             if (!is_guest()) {
-                $too_old = $topic_info['last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
-                if ((get_option('enable_mark_topic_unread') == '1') && (!$too_old)) {
-                    $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
-                    $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                    if (($test != -1) && ($test != 0)) {
-                        $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
-                    }
+                $too_old = $topic_info['last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
+
+                require_code('users');
+
+                if (($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') != 1) && (get_option('enable_mark_topic_unread') === '1') && !cns_has_read_topic($id)) {
                     $test = get_param_integer('threaded', -1);
+                    $redirect_map = array('page' => 'topicview', 'id' => $id);
+                    if ($test != -1) {
+                        $redirect_map['threaded'] = $test;
+                    }
+                    $redirect = build_url($redirect_map, get_module_zone('topicview'));
+                    $map = array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $id, 'redirect' => $redirect->evaluate());
                     if ($test != -1) {
                         $map['threaded'] = $test;
                     }
-                    $mark_unread_url = build_url($map, get_module_zone('topics'));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons__mark_unread_topic');
+                    $mark_read_url = build_url($map, get_module_zone('topics'));
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons__mark_read_topic');
+                } else {
+                    if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
+                        $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
+                        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
+                        if (($test != -1) && ($test != 0)) {
+                            $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
+                        }
+                        $test = get_param_integer('threaded', -1);
+                        if ($test != -1) {
+                            $map['threaded'] = $test;
+                        }
+                        $mark_unread_url = build_url($map, get_module_zone('topics'));
+                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons__mark_unread_topic');
+                    }
                 }
             }
 
@@ -683,7 +703,7 @@ class Module_topicview
                 $private = new Tempcode();
             }
             if ($_poll['maximum_selections'] > 1) {
-                $num_choices = paragraph(($_poll['minimum_selections'] == $_poll['maximum_selections']) ? do_lang_tempcode('POLL_NOT_ENOUGH_ERROR_2', integer_format($_poll['minimum_selections'])) : do_lang_tempcode('POLL_NOT_ENOUGH_ERROR', integer_format($_poll['minimum_selections']), integer_format($_poll['maximum_selections'])), 'dsfsdfsdfs');
+                $num_choices = paragraph(($_poll['minimum_selections'] == $_poll['maximum_selections']) ? do_lang_tempcode('POLL_NOT_ENOUGH_ERROR_2', escape_html(integer_format($_poll['minimum_selections']))) : do_lang_tempcode('POLL_NOT_ENOUGH_ERROR', escape_html(integer_format($_poll['minimum_selections'])), escape_html(integer_format($_poll['maximum_selections']))), 'dsfsdfsdfs');
             } else {
                 $num_choices = new Tempcode();
             }
@@ -706,7 +726,7 @@ class Module_topicview
 
         // Quick reply
         if ((array_key_exists('may_use_quick_reply', $topic_info)) && ($may_reply) && (!is_null($id))) {
-            $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id);
+            $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id, 'timestamp' => time());
             $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
             if (($test != -1) && ($test != 0)) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
@@ -717,7 +737,7 @@ class Module_topicview
             }
             $_post_url = build_url($map, get_module_zone('topics'));
             $post_url = $_post_url->evaluate();
-            $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id);
+            $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'timestamp' => time());
             if (($test != -1) && ($test != 0)) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
@@ -754,10 +774,15 @@ class Module_topicview
                 $post_warning = do_lang('THREADED_REPLY_NOTICE', $post_warning);
             }
 
+            require_code('form_templates');
+            list($attachments, $attach_size_field) = get_attachments('post');
+
             $quick_reply = do_template('COMMENTS_POSTING_FORM', array(
                 '_GUID' => '4c532620f3eb68d9cc820b18265792d7',
                 'JOIN_BITS' => '',
                 'USE_CAPTCHA' => $use_captcha,
+                'ATTACHMENTS' => $attachments,
+                'ATTACH_SIZE_FIELD' => $attach_size_field,
                 'GET_EMAIL' => false,
                 'EMAIL_OPTIONAL' => true,
                 'GET_TITLE' => false,
@@ -843,8 +868,12 @@ class Module_topicview
             if (array_key_exists('may_attach_poll', $topic_info)) {
                 $moderator_actions .= '<option value="add_poll">' . do_lang('ADD_TOPIC_POLL') . '</option>';
             }
-            if ((has_privilege(get_member(), 'view_content_history')) && ($GLOBALS['FORUM_DB']->query_select_value('f_post_history', 'COUNT(*)', array('h_topic_id' => $id)) != 0)) {
-                $moderator_actions .= '<option value="topic_history">' . do_lang('POST_HISTORY') . '</option>';
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_database');
+                $revision_engine = new RevisionEngineDatabase(true);
+                if ($revision_engine->has_revisions(array('post'), null, strval($id))) {
+                    $moderator_actions .= '<option value="topic_history">' . do_lang('actionlog:REVISIONS') . '</option>';
+                }
             }
             if ((array_key_exists('may_make_private', $topic_info)) && (!is_null($topic_info['forum_id']))) {
                 $moderator_actions .= '<option value="make_private">' . do_lang('MAKE_PERSONAL') . '</option>';
@@ -900,7 +929,7 @@ class Module_topicview
 
         // Members viewing this topic
         if (!is_null($topic_info['forum_id'])) {
-            member_tracking_update('forumview', '', strval($topic_info['forum_id']));
+            member_tracking_update('forumview', '', strval($topic_info['forum_id'])); // If we are viewing topic say we are viewing the forum too
         }
         require_code('users2');
         if (is_null($id)) {
@@ -908,11 +937,14 @@ class Module_topicview
             $num_members = mixed();
             $members_viewing = new Tempcode();
         } else {
-            list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true);
+            list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true); // This does a member_tracking_update to the topic internally
         }
 
         if (($topic_info['validated'] == 0) && (addon_installed('unvalidated'))) {
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '313de370c1aeab9545c4bee4e35e7f84', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? '_UNVALIDATED_TEXT_NON_DIRECT' : '_UNVALIDATED_TEXT', do_lang('FORUM_TOPIC'))));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '313de370c1aeab9545c4bee4e35e7f84',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'topic'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -940,12 +972,13 @@ class Module_topicview
             'MODERATOR_ACTIONS' => $moderator_actions,
             'MARKED_POST_ACTIONS' => $marked_post_actions,
             'QUICK_REPLY' => $quick_reply,
-            'BREADCRUMBS' => $this->breadcrumbs,
+            'BREADCRUMBS' => breadcrumbs_get_default_stub(),
             'POLL' => $poll,
             'BUTTON_SCREENS' => $buttons,
             'POSTS' => $posts,
             'THREADED' => $threaded,
             'FORUM_ID' => is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']),
+            'IS_ALREADY_READ' => cns_has_read_topic($id),
         ));
 
         require_code('templates_internalise_screen');
@@ -958,14 +991,10 @@ class Module_topicview
     public function _update_read_status()
     {
         if (!is_guest()) {
-            if ((get_option('post_history_days') != '0') && ((get_value('avoid_normal_topic_history') !== '1') || (is_null($this->forum_id)))) {
-                if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
-                    $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => get_member(), 'l_topic_id' => $this->id), '', 1);
-                    $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => get_member(), 'l_topic_id' => $this->id, 'l_time' => time()), false, true); // race condition
-                    if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
-                        $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $GLOBALS['IS_ACTUALLY'], 'l_topic_id' => $this->id), '', 1);
-                        $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $GLOBALS['IS_ACTUALLY'], 'l_topic_id' => $this->id, 'l_time' => time()), false, true); // race condition
-                    }
+            if ((get_option('post_read_history_days') != '0') && ((get_value('avoid_normal_topic_read_history') !== '1') || (is_null($this->forum_id)))) {
+                cns_ping_topic_read($this->id);
+                if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
+                    cns_ping_topic_read($this->id, $GLOBALS['IS_ACTUALLY']);
                 }
             }
         }

@@ -147,9 +147,7 @@ class Hook_rss_comments
             $start += 1000;
         } while (count($_comments) == 1000);
 
-        if (is_null($title)) {
-            $title = do_lang('COMMENTS');
-        }
+        $title = do_lang('COMMENTS');
 
         return array($content, $title);
     }

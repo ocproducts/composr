@@ -19,11 +19,13 @@ use Sabre\DAV;
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webdav()
 {
-    global $COMMANDRFS_LISTING_CACHE;
-    $COMMANDRFS_LISTING_CACHE = array();
+    global $COMMANDR_FS_LISTING_CACHE;
+    $COMMANDR_FS_LISTING_CACHE = array();
 
     global $WEBDAV_LOG_FILE;
     $WEBDAV_LOG_FILE = null;
@@ -36,7 +38,7 @@ function webdav_script()
 {
     require_code('sabredav/vendor/autoload');
 
-    require_code('webdav_commandrfs');
+    require_code('webdav_commandr_fs');
 
     // Optional logging (create this file and give write access to it)
     $log_path = get_custom_file_base() . '/data_custom/modules/webdav/tmp/debug.log';
@@ -50,7 +52,7 @@ function webdav_script()
 
     // Initialise...
 
-    $root_dir = new webdav_commandrfs\Directory('');
+    $root_dir = new webdav_commandr_fs\Directory('');
     $server = new DAV\Server($root_dir);
 
     $parsed = parse_url(get_base_url());
@@ -64,7 +66,7 @@ function webdav_script()
     $server->setBaseUri($parsed['path'] . $webdav_root);
 
     if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) { // If already admin (e.g. backdoor_ip), no need for access check
-        $auth_backend = new webdav_commandrfs\Auth();
+        $auth_backend = new webdav_commandr_fs\Auth();
         $auth_plugin = new DAV\Auth\Plugin($auth_backend, get_site_name()/*the auth realm*/);
         $server->addPlugin($auth_plugin);
     }

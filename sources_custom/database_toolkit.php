@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    db_schema
+ */
+
+/**
  * Script to handle XML DB/MySQL chain synching.
  */
 function xml_dump_script()
@@ -19,7 +25,7 @@ function xml_dump_script()
     global $SITE_INFO;
     if (array_key_exists('db_chain_type', $SITE_INFO)) {
         require_code('database/' . $SITE_INFO['db_chain_type']);
-        $chain_db = new Database_driver($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
+        $chain_db = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
     } else {
         warn_exit('It makes no sense to run this script if you have not set up the following config options in _config.php: db_chain_type, db_chain_host, db_chain_user, db_chain_password, db_chain');
     }
@@ -29,15 +35,15 @@ function xml_dump_script()
         _general_db_init();
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $GLOBALS['DEV_MODE'] = false;
     $GLOBALS['SEMI_DEV_MODE'] = false;
 
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    if (strtolower(cms_srv('REQUEST_METHOD')) == 'get') { // Interface
+    if (cms_srv('REQUEST_METHOD') == 'GET') { // Interface
         $from = get_param_string('from', null);
         $skip = get_param_string('skip', null);
         $only = get_param_string('only', null);
@@ -215,7 +221,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
             }
         }
 
-        $out[] = db_create_table($table_name, $fields);
+        $out[] = db_create_table_sql($table_name, $fields);
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -304,14 +310,14 @@ function db_get_type_remap()
 {
     $type_remap = array(
         'AUTO' => 'integer unsigned auto_increment',
-        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'INTEGER' => 'integer',
         'UINTEGER' => 'integer unsigned',
         'SHORT_INTEGER' => 'tinyint',
         'REAL' => 'real',
         'BINARY' => 'tinyint(1)',
-        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
-        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
+        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'TIME' => 'integer unsigned',
         'LONG_TRANS' => 'integer unsigned',
         'SHORT_TRANS' => 'integer unsigned',
@@ -324,19 +330,18 @@ function db_get_type_remap()
         'IP' => 'varchar(40)', // 15 for ip4, but we now support ip6
         'LANGUAGE_NAME' => 'varchar(5)',
         'URLPATH' => 'varchar(255)',
-        'MD5' => 'varchar(33)'
     );
     return $type_remap;
 }
 
 /**
- * Create a new table.
+ * SQL to create a new table.
  *
  * @param  ID_TEXT $table_name The table name
  * @param  array $fields A map of field names to Composr field types (with *#? encodings)
  * @return string The SQL for it
  */
-function db_create_table($table_name, $fields)
+function db_create_table_sql($table_name, $fields)
 {
     $type_remap = db_get_type_remap();
 

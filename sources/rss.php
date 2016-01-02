@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: xml_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -113,7 +115,7 @@ class CMS_RSS
             if (function_exists('libxml_disable_entity_loader')) {
                 libxml_disable_entity_loader();
             }
-            $xml_parser = function_exists('xml_parser_create_ns') ? @xml_parser_create_ns($GLOBALS['HTTP_CHARSET']) : @xml_parser_create($GLOBALS['HTTP_CHARSET']);
+            $xml_parser =  @xml_parser_create_ns($GLOBALS['HTTP_CHARSET']);
             if ($xml_parser === false) {
                 $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
                 return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
@@ -122,15 +124,11 @@ class CMS_RSS
             @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, $parser_charset);
             xml_set_element_handler($xml_parser, 'startElement', 'endElement');
             xml_set_character_data_handler($xml_parser, 'startText');
-            //xml_set_external_entity_ref_handler($xml_parser,'extEntity');
-            if (function_exists('xml_set_start_namespace_decl_handler')) {
-                xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
-            }
-            if (function_exists('xml_set_end_namespace_decl_handler')) {
-                xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
-            }
+            //xml_set_external_entity_ref_handler($xml_parser, 'extEntity');
+            xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
+            xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
 
-            //$data=convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
+            //$data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
 
             if (strpos($data, '<!ENTITY') === false) {
                 $extra_data = "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">
@@ -190,7 +188,7 @@ class CMS_RSS
      */
     /*function extEntity($parser, $open_entity_names, $base, $system_id, $public_id)
     {
-        $_open_entity_names=explode(',', $open_entity_names);
+        $_open_entity_names = explode(',', $open_entity_names);
         return 1; // Kludge to skip dodgy entities
     }*/
 
@@ -237,18 +235,16 @@ class CMS_RSS
             // Unfortunately we can't find the version using PHP XML functions
         }
 
-        if (($name == 'FEED') && (!function_exists('xml_set_start_namespace_decl_handler'))) {
-            $this->type = 'ATOM';
-        }
-
         if ($name == 'RSS') {
             $this->type = 'RSS';
-            /*    $version=explode('.',$attributes['VERSION']);      Actually we won't try and detect versions, RSS usage is too much of a mess
-            if ($version[0]=='0') && ($version[1]=='90') $this->version=0.9; // rdf
-            elseif ($version[0]=='0') && ($version[1][0]=='9') $this->version=0.91;
-            elseif ($version[0]=='1') $this->version=1; // rdf
-            elseif ($version[0]=='2') $this->version=2;
-            else fatal_exit(do_lang('RSS_UNKNOWN_VERSION',$version));*/
+            /* Actually we won't try and detect versions, RSS usage is too much of a mess
+                $version = explode('.', $attributes['VERSION']);
+                if ($version[0] == '0') && ($version[1] == '90') $this->version = 0.9; // rdf
+                elseif ($version[0] == '0') && ($version[1][0] == '9') $this->version = 0.91;
+                elseif ($version[0] == '1') $this->version = 1; // rdf
+                elseif ($version[0] == '2') $this->version = 2;
+                else fatal_exit(do_lang('RSS_UNKNOWN_VERSION', $version));
+            */
             $this->version = $attributes['VERSION'];
         }
 
@@ -530,11 +526,7 @@ class CMS_RSS
                 if ($mode == 'BASE64') {
                     $data = base64_decode($data);
                 }
-                if (function_exists('xml_set_start_namespace_decl_handler')) {
-                    $prefix = 'HTTP://PURL.ORG/ATOM/NS#:';
-                } else {
-                    $prefix = '';
-                }
+                $prefix = 'HTTP://PURL.ORG/ATOM/NS#:';
                 if (!is_null($prelast_tag)) {
                     $prelast_tag = str_replace('HTTP://WWW.W3.ORG/2005/ATOM:', $prefix, $prelast_tag);
                 }

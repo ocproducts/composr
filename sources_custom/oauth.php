@@ -12,7 +12,11 @@ function ensure_got_oauth_client_id($service_name, $has_sep_key = false)
     if ($client_id == '') {
         $title = get_screen_title('OAUTH_TITLE', true, array($service_name));
 
-        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE', 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_GALLERY_SYNDICATION');
+        require_code('hooks/systems/config/' . $service_name . '_client_id');
+        $ob = object_factory('Hook_config_' . $service_name . '_client_id');
+        $info = $ob->get_details();
+
+        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_' . $info['group']);
         require_code('site2');
         smart_redirect($config_url);
     }
@@ -81,7 +85,7 @@ function refresh_oauth2_token($service_name, $url, $client_id, $client_secret, $
     $post_params = array(
         'client_id' => get_option($service_name . '_client_id'),
         'client_secret' => get_option($service_name . '_client_secret'),
-        'refresh_token' => get_value($service_name . '_refresh_token', true),
+        'refresh_token' => get_value($service_name . '_refresh_token', null, true),
         'grant_type' => 'refresh_token',
     );
 

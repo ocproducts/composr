@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    giftr
  */
 class Hook_page_groupings_giftr
 {

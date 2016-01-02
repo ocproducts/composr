@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__import()
 {
@@ -75,7 +77,7 @@ function cns_over_msn()
 }
 
 /**
- * Returns the NEW ID of an imported old ID, for the specified importation type. Whether it returns NULL or gives an error message depends on $fail_ok.
+ * Returns the NEW ID of an imported old ID, for the specified importation type. Whether it returns null or gives an error message depends on $fail_ok.
  *
  * @param  ID_TEXT $type An importation type code, from those Composr has defined (E.g. 'download', 'news', ...)
  * @param  string $id_old The source (old, original) ID of the mapping
@@ -186,7 +188,7 @@ function i_force_refresh()
  */
 function post_import_cleanup()
 {
-    // Quick and simple decacheing. No need to be smart about this.
+    // Quick and simple decaching. No need to be smart about this.
     delete_value('cns_member_count');
     delete_value('cns_topic_count');
     delete_value('cns_post_count');

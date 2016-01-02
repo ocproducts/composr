@@ -26,10 +26,6 @@
 	margin-top: 0;
 }
 
-.login_extra_info {
-	margin-top: 60px;
-}
-
 /*{+START,IF,{$MOBILE}}*/
 	.login_page_form label {
 		width: 7em;

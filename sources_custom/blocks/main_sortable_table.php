@@ -32,7 +32,7 @@ class Block_main_sortable_table
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid');
+        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform');
         return $info;
     }
 
@@ -40,7 +40,7 @@ class Block_main_sortable_table
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -48,6 +48,7 @@ class Block_main_sortable_table
 
         require_javascript('sortable_tables');
         require_css('sortable_tables');
+        require_code('json');
 
         disable_php_memory_limit();
 
@@ -119,6 +120,8 @@ class Block_main_sortable_table
         $columns_display = empty($map['columns_display']) ? array() : array_map('intval', explode(',', $map['columns_display']));
         $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', explode(',', $map['columns_tooltip']));
 
+        $transform = empty($map['transform']) ? '' : $map['transform'];
+
         $guid = empty($map['guid']) ? '' : $map['guid'];
 
         // What will we be reading?
@@ -151,6 +154,10 @@ class Block_main_sortable_table
                     foreach ($row as $j => $val) {
                         $val = fix_bad_unicode($val);
                     }
+                }
+
+                if ($transform == 'ucwords') {
+                    $row = array_map('cms_mb_ucwords', $row);
                 }
 
                 if ($i != 0) {
@@ -236,7 +243,7 @@ class Block_main_sortable_table
         } else {
             // Database table...
 
-            if (strpos(strtolower($file), 'f_members') !== false) {
+            if (stripos($file, 'f_members') !== false) {
                 return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', 'red_alert');
             }
 
@@ -360,7 +367,7 @@ class Block_main_sortable_table
                 '_GUID' => $guid,
                 'VALUES' => $row,
                 'TOOLTIP_VALUES' => $tooltip_values,
-                'RAW_DATA' => serialize($_rows_raw[$i]),
+                'RAW_DATA' => json_encode($_rows_raw[$i]),
             )));
         }
 

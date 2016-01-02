@@ -67,7 +67,7 @@ class Hook_rss_filedump
                 break;
             }
 
-            if ($filters != array('')) {
+            if ($filters != array('*')) {
                 $ok = false;
                 foreach ($filters as $filter) {
                     if (substr($file, 0, strlen($filter)) == $filter) {
@@ -81,8 +81,12 @@ class Hook_rss_filedump
 
             $id = $file;
 
+            $mtime = filemtime(get_custom_file_base() . '/uploads/filedump/' . $file);
+            if ($mtime < $cutoff) {
+                continue;
+            }
             $news_date = date($date_string, filectime(get_custom_file_base() . '/uploads/filedump/' . $file));
-            $edit_date = date($date_string, filemtime(get_custom_file_base() . '/uploads/filedump/' . $file));
+            $edit_date = date($date_string, $mtime);
             if ($news_date == $edit_date) {
                 $edit_date = '';
             }

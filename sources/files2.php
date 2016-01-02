@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__files2()
 {
@@ -84,13 +86,7 @@ function cache_and_carry($func, $args)
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
     if (is_file($path)) {
-        $tmp = @unserialize(file_get_contents($path));
-        if ($tmp !== false)
-        {
-            list($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME) = $tmp;
-        } else {
-            $ret = false;
-        }
+        $ret = @unserialize(file_get_contents($path));
     } else {
         $ret = call_user_func_array($func, $args);
         $tmp = array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
@@ -119,10 +115,15 @@ function make_missing_directory($dir)
  * Discern the cause of a file-write error, and show an appropriate error message.
  *
  * @param PATH $path File path that could not be written (full path, not relative)
+ * @ignore
  */
 function _intelligent_write_error($path)
 {
     if (file_exists($path)) {
+        if (filesize($path) == 0) {
+            return; // Probably was OR'd where 0 casted to false
+        }
+
         warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
     } elseif (file_exists(dirname($path))) {
         if (strpos($path, '/templates_cached/') !== false) {
@@ -138,7 +139,9 @@ function _intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return tempcode Message
+ * @return Tempcode Message
+ *
+ * @ignore
  */
 function _intelligent_write_error_inline($path)
 {
@@ -165,7 +168,7 @@ function cms_get_temp_dir()
     }
     $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || (get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
     $path = ($problem_saving ? $local_path : $server_path) . '/';
-    return array($tmp_path, $problem_saving, $server_path, $local_path);
+    return array($path, $problem_saving, $server_path, $local_path);
 }
 
 /**
@@ -173,11 +176,13 @@ function cms_get_temp_dir()
  *
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
+ *
+ * @ignore
  */
 function _cms_tempnam($prefix)
 {
     list($tmp_path, $problem_saving, $server_path, $local_path) = cms_get_temp_dir();
-    if ((function_exists('tempnam')) && (strpos(@ini_get('disable_functions'), 'tempnam') === false)) {
+    if (php_function_allowed('tempnam')) {
         // Create a real temporary file
         $tempnam = tempnam($tmp_path, 'tmpfile__' . $prefix);
         if ((($tempnam === false) || ($tempnam == ''/*Should not be blank, but seen in the wild*/)) && (!$problem_saving)) {
@@ -198,6 +203,7 @@ function _cms_tempnam($prefix)
  * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
  * @param  PATH $filename File/directory name to sync on (full path)
+ * @ignore
  */
 function _sync_file($filename)
 {
@@ -236,6 +242,7 @@ function _sync_file($filename)
  *
  * @param  PATH $old File/directory name to move from (may be full or relative path)
  * @param  PATH $new File/directory name to move to (may be full or relative path)
+ * @ignore
  */
 function _sync_file_move($old, $new)
 {
@@ -260,6 +267,8 @@ function _sync_file_move($old, $new)
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default
  * @param  boolean $just_files Whether to just delete files
+ *
+ * @ignore
  */
 function _deldir_contents($dir, $default_preserve = false, $just_files = false)
 {
@@ -305,12 +314,14 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
  * @param  boolean $headers Whether to output CSV headers
  * @param  boolean $output_and_exit Whether to output/exit when we're done instead of return
  * @param  ?PATH $outfile_path File to spool into (null: none)
- * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not NULL, this will be blank)
+ * @param  ?mixed $callback Callback for dynamic row insertion (null: none). Only implemented for the excel_support addon. Is passed: row just done, next row (or null), returns rows to insert
+ * @param  ?array $meta_data List of maps, each map representing meta-data of a row; supports 'url' (null: none)
+ * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not null, this will be blank)
  */
-function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null)
+function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $meta_data = null)
 {
     if ($headers) {
-        header('Content-type: text/csv; charset=' . get_charset());
+        header('Content-Type: text/csv; charset=' . get_charset());
         header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
@@ -697,8 +708,8 @@ function check_shared_bandwidth_usage($extra)
         }
     }
     if (array_key_exists('throttle_bandwidth_complementary', $SITE_INFO)) {
-        //     $timestamp_start=$SITE_INFO['custom_user_'].current_share_user(); Actually we'll do by views
-//    $days_till_now=(time()-$timestamp_start)/(24*60*60);
+        // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
+        // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_complementary'] + $SITE_INFO['throttle_bandwidth_views_per_meg'] * $views_till_now;
         $total_bandwidth = intval(get_value('download_bandwidth'));
@@ -725,8 +736,8 @@ function check_shared_space_usage($extra)
         }
     }
     if (array_key_exists('throttle_space_complementary', $SITE_INFO)) {
-        //     $timestamp_start=$SITE_INFO['custom_user_'].current_share_user(); Actually we'll do by views
-//    $days_till_now=(time()-$timestamp_start)/(24*60*60);
+        // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
+        // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
         $space_allowed = $SITE_INFO['throttle_space_complementary'] + $SITE_INFO['throttle_space_views_per_meg'] * $views_till_now;
         $total_space = get_directory_size(get_custom_file_base() . '/uploads');
@@ -737,15 +748,15 @@ function check_shared_space_usage($extra)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none). If $raw_post is set, it should be array($data)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -760,6 +771,7 @@ function check_shared_space_usage($extra)
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
  * @return ?string The data downloaded (null: error)
+ * @ignore
  */
 function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
 {
@@ -774,27 +786,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     // Initialisation
-    global $DOWNLOAD_LEVEL;
+    global $DOWNLOAD_LEVEL, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_CHARSET, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_DOWNLOAD_MTIME, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME;
     $DOWNLOAD_LEVEL++;
-    global $HTTP_DOWNLOAD_MIME_TYPE;
     $HTTP_DOWNLOAD_MIME_TYPE = null;
-    global $HTTP_CHARSET;
     $HTTP_CHARSET = null;
-    global $HTTP_DOWNLOAD_SIZE;
     $HTTP_DOWNLOAD_SIZE = 0;
-    global $HTTP_DOWNLOAD_URL;
     $HTTP_DOWNLOAD_URL = $url;
-    global $HTTP_DOWNLOAD_MTIME;
     $HTTP_DOWNLOAD_MTIME = null;
-    global $HTTP_MESSAGE;
     $HTTP_MESSAGE = null;
-    global $HTTP_MESSAGE_B;
     $HTTP_MESSAGE_B = null;
-    global $HTTP_NEW_COOKIES;
     if ($DOWNLOAD_LEVEL == 0) {
         $HTTP_NEW_COOKIES = array();
     }
-    global $HTTP_FILENAME;
     $HTTP_FILENAME = null;
 
     // Prevent DOS loop attack
@@ -806,7 +809,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if ($DOWNLOAD_LEVEL == 8) {
         return '';
-    }//critical_error('FILE_DOS',$url);
+    }//critical_error('FILE_DOS', $url);
 
     // Work out what we'll be doing
     $url_parts = @parse_url($url);
@@ -837,7 +840,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
             $file_path = $file_base . urldecode($parsed['path']);
 
-            if ((function_exists('shell_exec')) && (function_exists('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+            if ((function_exists('shell_exec')) && (php_function_allowed('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (php_function_allowed('shell_exec'))) {
                 $cmd = 'DOCUMENT_ROOT=' . escapeshellarg_wrap(dirname(get_file_base())) . ' PATH_TRANSLATED=' . escapeshellarg_wrap($file_path) . ' SCRIPT_NAME=' . escapeshellarg_wrap($file_path) . ' HTTP_USER_AGENT=' . escapeshellarg_wrap($ua) . ' QUERY_STRING=' . escapeshellarg_wrap($parsed['query']) . ' HTTP_HOST=' . escapeshellarg_wrap($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . escapeshellarg_wrap($file_path);
                 $contents = shell_exec($cmd);
                 $split_pos = strpos($contents, "\r\n\r\n");
@@ -905,11 +908,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         if (is_null($files)) { // If no files, use simple application/x-www-form-urlencoded
             if (!$use_curl) {
                 if ($raw_post) {
-                    $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
+                    if (!isset($extra_headers['Content-Type'])) {
+                        $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
+                    }
                 } else {
-                    $raw_payload .= 'Content-type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
+                    $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
                 }
-                $raw_payload .= 'Content-length: ' . strval(strlen($_postdetails_params)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
                 $raw_payload .= "\r\n";
             } // curl sets the above itself
             $raw_payload .= $_postdetails_params;
@@ -932,12 +937,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $divider = uniqid('', true);
             $raw_payload2 = '';
             if (($put === null) || (count($post_params) != 0) || (count($files) != 1)) {
-                $raw_payload .= 'Content-type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset() . "\r\n";
+                $raw_payload .= 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset() . "\r\n";
             }
             foreach ($post_params as $key => $val) {
                 $raw_payload2 .= '----cms' . $divider . "\r\n";
                 if ($raw_post) {
-                    $raw_payload2 .= 'Content-Type: ' . $raw_content_type . "\r\n\r\n";
+                    if (!isset($extra_headers['Content-Type'])) {
+                        $raw_payload2 .= 'Content-Type: ' . $raw_content_type . "\r\n\r\n";
+                    }
                 } else {
                     $raw_payload2 .= 'Content-Disposition: form-data; name="' . urlencode($key) . '"' . "\r\n\r\n";
                 }
@@ -951,7 +958,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 if (($put === null) || (count($post_params) != 0) || (count($files) != 1)) {
                     $raw_payload2 .= '----cms' . $divider . "\r\n";
                     if (strpos($upload_field, '/') === false) {
-                        $raw_payload2 .= 'Content-Disposition: form-data; name="' . urlencode($upload_field) . '"; filename="' . urlencode(basename($file_path)) . '"' . "\r\n";
+                        $raw_payload2 .= 'Content-Disposition: form-data; name="' . str_replace('"', '\"', $upload_field) . '"; filename="' . urlencode(basename($file_path)) . '"' . "\r\n";
                         $raw_payload2 .= 'Content-Type: application/octet-stream' . "\r\n\r\n";
                     } else {
                         $raw_payload2 .= 'Content-Type: ' . $upload_field . "\r\n\r\n";
@@ -995,9 +1002,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload2 = '';
             }
             if ($put !== null) {
-                $raw_payload .= 'Content-length: ' . strval(filesize($put_path)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(filesize($put_path)) . "\r\n";
             } else {
-                $raw_payload .= 'Content-length: ' . strval(strlen($raw_payload2)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(strlen($raw_payload2)) . "\r\n";
             }
             $raw_payload .= "\r\n" . $raw_payload2;
             if ($use_curl) {
@@ -1059,7 +1066,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
-                                            //if (!$no_redirect) @curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
+                                            if (defined('CURL_SSLVERSION_TLSv1')) {
+                                                curl_setopt($ch,CURLOPT_SSLVERSION,CURL_SSLVERSION_TLSv1);
+                                            } else {
+                                                curl_setopt($ch,CURLOPT_SSL_CIPHER_LIST,'TLSv1');
+                                            }
+                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_USERAGENT, $ua);
@@ -1079,7 +1091,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if (($raw_post) && ((is_null($files)) || ($put !== null))) {
-                                                $curl_headers[] = 'Content-Type: ' . $raw_content_type;
+                                                if (!isset($extra_headers['Content-Type'])) {
+                                                    $curl_headers[] = 'Content-Type: ' . $raw_content_type;
+                                                }
                                             }
                                             if (!is_null($post_params)) {
                                                 $curl_headers[] = 'Expect:';
@@ -1093,7 +1107,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_POST, true);
                                                     curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload);
                                                     if (!is_null($files)) {
-                                                        $curl_headers[] = 'Content-type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
+                                                        $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                     }
                                                 }
                                             }
@@ -1132,107 +1146,97 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if ($line === false) {
                                                 $error = curl_error($ch);
                                                 curl_close($ch);
-                                                $HTTP_MESSAGE_B = make_string_tempcode($error);
-                                                if ($trigger_error) {
-                                                    warn_exit($error);
+                                            } else {
+                                                if (substr($line, 0, 25) == "HTTP/1.1 100 Continue\r\n\r\n") {
+                                                    $line = substr($line, 25);
                                                 }
+                                                if (substr($line, 0, 25) == "HTTP/1.0 100 Continue\r\n\r\n") {
+                                                    $line = substr($line, 25);
+                                                }
+                                                $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                                                $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+                                                $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+                                                $HTTP_MESSAGE = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+                                                if ($HTTP_MESSAGE == '206') {
+                                                    $HTTP_MESSAGE = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
+                                                }
+                                                if (strpos($HTTP_DOWNLOAD_MIME_TYPE, ';') !== false) {
+                                                    $HTTP_CHARSET = substr($HTTP_DOWNLOAD_MIME_TYPE, 8 + strpos($HTTP_DOWNLOAD_MIME_TYPE, 'charset='));
+                                                    $HTTP_DOWNLOAD_MIME_TYPE = substr($HTTP_DOWNLOAD_MIME_TYPE, 0, strpos($HTTP_DOWNLOAD_MIME_TYPE, ';'));
+                                                }
+                                                curl_close($ch);
+                                                if (substr($line, 0, strlen('HTTP/1.0 200 Connection Established')) == 'HTTP/1.0 200 Connection Established') {
+                                                    $line = substr($line, strpos($line, "\r\n\r\n") + 4);
+                                                }
+                                                $pos = strpos($line, "\r\n\r\n");
+
+                                                if (substr($line, 0, strlen('HTTP/1.1 100 ')) == 'HTTP/1.1 100 ' || substr($line, 0, strlen('HTTP/1.0 100 ')) == 'HTTP/1.0 100 ') {
+                                                    $pos = strpos($line, "\r\n\r\n", $pos + 4);
+                                                }
+                                                if ($pos === false) {
+                                                    $pos = strlen($line);
+                                                } else {
+                                                    $pos += 4;
+                                                }
+                                                $lines = explode("\r\n", substr($line, 0, $pos));
+
+                                                foreach ($lines as $lno => $_line) {
+                                                    $_line .= "\r\n";
+                                                    $matches = array();
+
+                                                    if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
+                                                        $HTTP_FILENAME = $matches[1];
+                                                    }
+                                                    if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
+                                                        $HTTP_NEW_COOKIES[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+                                                    }
+                                                    if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
+                                                        if (is_null($HTTP_FILENAME)) {
+                                                            $HTTP_FILENAME = basename($matches[1]);
+                                                        }
+
+                                                        if (strpos($matches[1], '://') === false) {
+                                                            $matches[1] = qualify_url($matches[1], $url);
+                                                        }
+                                                        $HTTP_DOWNLOAD_URL = $matches[1];
+                                                        if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
+                                                            $bak = $HTTP_FILENAME;
+                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                                            if (is_null($HTTP_FILENAME)) {
+                                                                $HTTP_FILENAME = $bak;
+                                                            }
+                                                            $DOWNLOAD_LEVEL--;
+                                                            if ($put !== null) {
+                                                                fclose($put);
+                                                                if (!$put_no_delete) {
+                                                                    @unlink($put_path);
+                                                                }
+                                                            }
+                                                            if (!is_null($text)) {
+                                                                if (!is_null($write_to_file)) {
+                                                                    fwrite($write_to_file, $text);
+                                                                    $text = '';
+                                                                }
+                                                            }
+                                                            return _detect_character_encoding($text);
+                                                        }
+                                                    }
+                                                }
+
+                                                $DOWNLOAD_LEVEL--;
                                                 if ($put !== null) {
                                                     fclose($put);
                                                     if (!$put_no_delete) {
                                                         @unlink($put_path);
                                                     }
                                                 }
-                                                return null;
-                                            }
-                                            if (substr($line, 0, 25) == "HTTP/1.1 100 Continue\r\n\r\n") {
-                                                $line = substr($line, 25);
-                                            }
-                                            if (substr($line, 0, 25) == "HTTP/1.0 100 Continue\r\n\r\n") {
-                                                $line = substr($line, 25);
-                                            }
-                                            $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-                                            $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-                                            $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-                                            $HTTP_MESSAGE = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
-                                            if ($HTTP_MESSAGE == '206') {
-                                                $HTTP_MESSAGE = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
-                                            }
-                                            if (strpos($HTTP_DOWNLOAD_MIME_TYPE, ';') !== false) {
-                                                $HTTP_CHARSET = substr($HTTP_DOWNLOAD_MIME_TYPE, 8 + strpos($HTTP_DOWNLOAD_MIME_TYPE, 'charset='));
-                                                $HTTP_DOWNLOAD_MIME_TYPE = substr($HTTP_DOWNLOAD_MIME_TYPE, 0, strpos($HTTP_DOWNLOAD_MIME_TYPE, ';'));
-                                            }
-                                            curl_close($ch);
-                                            if (substr($line, 0, strlen('HTTP/1.0 200 Connection Established')) == 'HTTP/1.0 200 Connection Established') {
-                                                $line = substr($line, strpos($line, "\r\n\r\n") + 4);
-                                            }
-                                            $pos = strpos($line, "\r\n\r\n");
-
-                                            if (substr($line, 0, strlen('HTTP/1.1 100 ')) == 'HTTP/1.1 100 ' || substr($line, 0, strlen('HTTP/1.0 100 ')) == 'HTTP/1.0 100 ') {
-                                                $pos = strpos($line, "\r\n\r\n", $pos + 4);
-                                            }
-                                            if ($pos === false) {
-                                                $pos = strlen($line);
-                                            } else {
-                                                $pos += 4;
-                                            }
-                                            $lines = explode("\r\n", substr($line, 0, $pos));
-
-                                            foreach ($lines as $lno => $_line) {
-                                                $_line .= "\r\n";
-                                                $matches = array();
-
-                                                if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
-                                                    $HTTP_FILENAME = $matches[1];
+                                                $text = substr($line, $pos);
+                                                if (!is_null($write_to_file)) {
+                                                    fwrite($write_to_file, $text);
+                                                    $text = '';
                                                 }
-                                                if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
-                                                    $HTTP_NEW_COOKIES[trim(rawurldecode($matches[1]))] = trim($matches[2]);
-                                                }
-                                                if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
-                                                    if (is_null($HTTP_FILENAME)) {
-                                                        $HTTP_FILENAME = basename($matches[1]);
-                                                    }
-
-                                                    if (strpos($matches[1], '://') === false) {
-                                                        $matches[1] = qualify_url($matches[1], $url);
-                                                    }
-                                                    $HTTP_DOWNLOAD_URL = $matches[1];
-                                                    if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
-                                                        $bak = $HTTP_FILENAME;
-                                                        $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
-                                                        if (is_null($HTTP_FILENAME)) {
-                                                            $HTTP_FILENAME = $bak;
-                                                        }
-                                                        $DOWNLOAD_LEVEL--;
-                                                        if ($put !== null) {
-                                                            fclose($put);
-                                                            if (!$put_no_delete) {
-                                                                @unlink($put_path);
-                                                            }
-                                                        }
-                                                        if (!is_null($text)) {
-                                                            if (!is_null($write_to_file)) {
-                                                                fwrite($write_to_file, $text);
-                                                                $text = '';
-                                                            }
-                                                        }
-                                                        return _detect_character_encoding($text);
-                                                    }
-                                                }
+                                                return _detect_character_encoding($text);
                                             }
-
-                                            $DOWNLOAD_LEVEL--;
-                                            if ($put !== null) {
-                                                fclose($put);
-                                                if (!$put_no_delete) {
-                                                    @unlink($put_path);
-                                                }
-                                            }
-                                            $text = substr($line, $pos);
-                                            if (!is_null($write_to_file)) {
-                                                fwrite($write_to_file, $text);
-                                                $text = '';
-                                            }
-                                            return _detect_character_encoding($text);
                                         }
                                     }
                                 }
@@ -1242,21 +1246,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 }
             }
         }
-
-        if ($trigger_error) {
-            warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)));
-        } else {
-            $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url));
-        }
-        $DOWNLOAD_LEVEL--;
-        $HTTP_MESSAGE = 'non-HTTP';
-        if ($put !== null) {
-            fclose($put);
-            if (!$put_no_delete) {
-                @unlink($put_path);
-            }
-        }
-        return null;
     }
 
     // Direct sockets method
@@ -1269,8 +1258,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $auth)) . "==\r\n";
     }
     if (!is_null($extra_headers)) {
-        foreach ($extra_headers as $h) {
-            $headers .= $h . "\r\n";
+        foreach ($extra_headers as $key => $val) {
+            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
         }
     }
     if (!is_null($accept)) {
@@ -1289,7 +1278,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $errno = 0;
     $errstr = '';
-    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen')) && (php_function_allowed('shell_exec'))) {
         if (!array_key_exists('host', $url_parts)) {
             $url_parts['host'] = '127.0.0.1';
         }
@@ -1303,8 +1292,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             if ($connect_to == '') {
                 $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
             }
-        } elseif (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
-            $connect_to = gethostbyname($connect_to); // for DNS cacheing
+        } elseif (php_function_allowed('gethostbyname')) {
+            $connect_to = gethostbyname($connect_to); // for DNS caching
         }
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {
@@ -1353,6 +1342,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;
         $out .= $raw_payload;
+        $out .= 'Connection: Close' . "\r\n\r\n";
         @fwrite($mysock, $out);
         if ($put !== null) {
             rewind($put);
@@ -1365,7 +1355,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 }
             }
         }
-        @fwrite($mysock, "Connection: Close\r\n\r\n");
         $data_started = false;
         $input = '';
         $input_len = 0;
@@ -1555,6 +1544,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     }
                                 }
                                 return null;
+                            case '400':
                             case '500':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
@@ -1568,6 +1558,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     }
                                 }
                                 return null;
+                            case '405':
+                                if ($byte_limit == 0 && !$no_redirect && empty($post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
+                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                    $DOWNLOAD_LEVEL--;
+                                    if ($put !== null) {
+                                        fclose($put);
+                                        if (!$put_no_delete) {
+                                            @unlink($put_path);
+                                        }
+                                    }
+                                    return _detect_character_encoding($text);
+                                }
                             default:
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url)));
@@ -1603,6 +1605,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
         @fclose($mysock);
         if (!$data_started) {
+            if ($byte_limit === 0) {
+                return '';
+            }
+
             if ($trigger_error) {
                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)));
             } else {
@@ -1652,7 +1658,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
-        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && (is_null($post_params)) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
+        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
             $timeout_before = @ini_get('default_socket_timeout');
@@ -1660,12 +1666,19 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             if ($put !== null) {
                 $raw_payload .= file_get_contents($put_path);
             }
+            $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             $opts = array(
                 'method' => $http_verb,
                 'header' => $headers,
                 'user_agent' => $ua,
                 'content' => $raw_payload,
                 'follow_location' => $no_redirect ? 0 : 1,
+                'ssl' => array(
+                    'verify_peer' => true,
+                    'cafile' => $crt_path,
+                    'SNI_enabled' => true,
+                    'ciphers' => 'TLSv1',
+                )
             );
             $proxy = get_option('proxy');
             if ($proxy != '') {
@@ -1679,13 +1692,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 }
             }
             $context = stream_context_create(array('http' => $opts));
+            $php_errormsg = mixed();
             if ((is_null($byte_limit)) && (is_null($write_to_file))) {
                 $read_file = @file_get_contents($url, false, $context);
             } else {
                 $_read_file = @fopen($url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
-                    while ((!feof($_read_file)) && (strlen($read_file) < $byte_limit)) {
+                    while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
                         $read_file .= fread($_read_file, 1024);
                         if (!is_null($write_to_file)) {
                             fwrite($write_to_file, $read_file);
@@ -1714,14 +1728,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
+        $errstr = $php_errormsg;
         if ($trigger_error) {
+            if ($errstr == '') {
+                $errstr = strval($errno);
+            }
             $error = do_lang_tempcode('_HTTP_DOWNLOAD_NO_SERVER', escape_html($url), escape_html($errstr));
             warn_exit($error);
         } else {
             $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }
         $DOWNLOAD_LEVEL--;
-        $HTTP_MESSAGE = 'could not connect to host (' . $errstr . ')';
+        $HTTP_MESSAGE = 'could not connect to host'; // Could append  (' . $errstr . ') but only when debugging because we use this string like a constant in some places
         if ($put !== null) {
             fclose($put);
             if (!$put_no_delete) {
@@ -1736,6 +1754,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  * Read in any HTTP headers from an HTTP line, that we probe for.
  *
  * @param  string $line The line
+ *
+ * @ignore
  */
 function _read_in_headers($line)
 {
@@ -1807,13 +1827,13 @@ function get_webpage_meta_details($url)
     }
 
     $result = cache_and_carry('http_download_file', array($url, 1024 * 10, false, false, 'Composr', null, null, null, null, null, null, null, null, 2.0));
-    if ((is_string($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
+    if ((is_array($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
         $html = $result[0];
 
         // In ascending precedence
         $headers = array(
             't_title' => array(
-                '<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>',
+                '<title[^>]*>\s*(.*)\s*</title>',
             ),
             't_meta_title' => array(
                 '<meta\s+name="?DC\.Title"?\s+content="?([^"<>]*)"?\s*/?' . '>',
@@ -1900,6 +1920,8 @@ function get_webpage_meta_details($url)
  *
  * @param  string $out The HTTP stream we will look through
  * @return string Same as $out
+ *
+ * @ignore
  */
 function _detect_character_encoding($out)
 {

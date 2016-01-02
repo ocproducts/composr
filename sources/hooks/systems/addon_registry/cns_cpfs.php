@@ -110,6 +110,7 @@ class Hook_addon_registry_cns_cpfs
             'sources/hooks/systems/profiles_tabs_edit/privacy.php',
             'sources/hooks/systems/addon_registry/cns_cpfs.php',
             'sources/hooks/systems/commandr_fs/cpfs.php',
+            'sources/hooks/systems/commandr_fs_extended_member/cpf_perms.php',
         );
     }
 

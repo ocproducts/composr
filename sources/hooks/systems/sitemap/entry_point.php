@@ -47,7 +47,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                 $path = end($details);
                 if ($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') {
                     $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
-                        true, // $check_perms
+                        false, // $check_perms
                         null, // $member_id
                         true, // $support_crosslinks
                         true // $be_deferential
@@ -119,6 +119,9 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $this->_make_zone_concrete($zone, $page_link);
 
         $details = $this->_request_page_details($page, $zone);
+        if ($details === false) {
+            return null;
+        }
 
         $path = end($details);
 
@@ -132,7 +135,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                 true, // $check_perms
                 null, // $member_id
-                true, //$support_crosslinks
+                false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
                 false //$be_deferential
 
             ));

@@ -37,11 +37,11 @@ class Block_main_tutorials_carousel
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '$map';
@@ -53,11 +53,16 @@ class Block_main_tutorials_carousel
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        if (!module_installed('tutorials')) {
+            require_code('zones2');
+            reinstall_module('docs', 'tutorials');
+        }
 
         $criteria = empty($map['param']) ? '' : $map['param'];
         if ($criteria == '') {

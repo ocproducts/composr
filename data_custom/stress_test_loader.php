@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    stress_test
  */
 
 /*EXTRA FUNCTIONS: gc_enable*/
@@ -38,7 +39,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/sources/global.php');
 
-if (function_exists('set_time_limit')) {
+if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
 safe_ini_set('ocproducts.xss_detect', '0');
@@ -57,7 +58,7 @@ function do_work()
     $num_wanted = 200;
 
     require_code('config2');
-    set_option('post_history_days', '0'); // Needed for a little sanity in recent post retrieval
+    set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
     set_option('enable_sunk', '0');
 
     set_mass_import_mode();
@@ -88,7 +89,7 @@ function do_work()
     // point earn list / gift points to a single member
     require_code('points2');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('gifts', 'COUNT(*)'); $j < $num_wanted; $j++) {
-        give_points(10, $member_id, mt_rand(db_get_first_id(),/*don't want wide distribution as points cacheing then eats RAM*/
+        give_points(10, $member_id, mt_rand(db_get_first_id(),/*don't want wide distribution as points caching then eats RAM*/
             min(100, $num_wanted - 1)), random_line(), false, false);
     }
     // number of friends of a single member
@@ -106,9 +107,10 @@ function do_work()
     }
 
     // banners
+    require_code('banners');
     require_code('banners2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        add_banner(uniqid('', true), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', db_get_first_id(), null, db_get_first_id() + 1, 1);
+        add_banner(uniqid('', true), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', BANNER_PERMANENT, null, db_get_first_id() + 1, 1);
     }
     echo 'done banner stuff' . "\n";
 
@@ -121,9 +123,9 @@ function do_work()
     require_code('files2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $file = uniqid('', true);
-        /*$path=get_custom_file_base().'/site/pages/comcode_custom/'.fallback_lang().'/'.$file.'.txt';
-        $myfile=fopen($path,GOOGLE_APPENGINE?'wb':'wt');
-        fwrite($myfile,random_text());
+        /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
+        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+        fwrite($myfile, random_text());
         fclose($myfile);
         sync_file($path);
         fix_permissions($path);*/

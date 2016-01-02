@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    user_mappr
+ */
+
+/**
+ * Block class.
  */
 class Block_main_google_map_users
 {
@@ -33,15 +38,6 @@ class Block_main_google_map_users
     }
 
     /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('latitude');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('longitude');
-    }
-
-    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -49,16 +45,15 @@ class Block_main_google_map_users
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        //add cpf
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 100, 0, 1, 1, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 100, 0, 1, 1, 0, '', 'short_text');
+        require_code('cpf_install');
+        install_gps_fields();
     }
 
     /**
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -66,6 +61,7 @@ class Block_main_google_map_users
 
         require_javascript('ajax');
         require_lang('google_map_users');
+        require_lang('locations');
 
         // Set up config/defaults
         $geolocate_user = array_key_exists('geolocate_user', $map) ? $map['geolocate_user'] : '1';
@@ -100,7 +96,7 @@ class Block_main_google_map_users
 
             $latitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_latitude'));
             $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
-            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.','','nothing_here');
+            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.', '', 'nothing_here');
         }
 
         // Data query

@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
+
+/**
+ * Block class.
  */
 class Block_main_facebook_like
 {
@@ -35,7 +40,7 @@ class Block_main_facebook_like
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {

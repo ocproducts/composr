@@ -1,0 +1,51 @@
+[title sub="Written by Jim Davidson, Sponsored by Arvixe hosting"]Composr Supplementary: Add a Sub Forum to your Composr Forum[/title]
+
+Forums can be small or large, but you need to think about the structure and the user experience. Thankfully Composr makes it very easy for us to create forums and sub-forums. In [page="_SEARCH:sup_changing_the_composr_forums"]my last tutorial we edited an existing forum[/page] and added a new one called Composr templates. Now I could add another forum called Composr template suggestions and it would be nice if it were a sub-forum of our Composr templates forum so let's create a sub-forum.
+
+There are so many ways to do so many things in Composr but knowing the quick routes is a key to your success. Go to Admin Zone > Structure > Forums > Add forum.
+
+Give the sub-forum a name and description leave grouping as General but in this case for the parent I want to select Composr templates because my sub-forum will be the child of this forum.
+
+[media thumb="1" description="Adding a sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/f7cb8423f1b08dd908a73f26f14268e0.png[/media]
+
+[title="2"]Advanced settings[/title]
+
+We have yet to look at the advanced settings and now is a good time to do so.
+
+[title="2"]Incremental post count[/title]
+
+Leave this checkbox ticked (checked). It is part of Composr's points system.
+
+[title="2"]Order sub-forums alphabetically[/title]
+
+The checkbox is not ticked (checked) by default. If I choose to have more sub-forums here, I may want to list the alphabetically but for now I will leave it as the default.
+
+[title="2"]Introduction question[/title]
+
+An interesting setting and I can see a use for it. I may not have time to respond to all posts in the suggestions forum so rather than have members post and be possibly ignored through lack of time, I could add an introductory question that states this and get the member to agree that he/she understands this.
+
+Type in your text and ask your user to accept the conditions. In my case I ask the user to type YES to proceed. When a user first visits this part of the forum, they will have to type in [tt]YES[/tt].
+
+[media thumb="1" description="Adding an introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/470afb81ba8d30ec3bfc4ac2e7b7f45b.png[/media]
+
+Ignoring everything else scroll down the page and click &ldquo;Add forum&rdquo;
+
+Composr takes care of adding the sub-forum to your forum tree structure. It is possible to add a sub-forum to a sub-forum but I will let you play about with that.
+
+If you view the page for the first time the alert will show and users cannot proceed until they provide an answer to the question.
+
+[media thumb="1" description="Preview introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/ab2ef192aa7a47ed01e1e430057f74b5.png[/media]
+
+Once the user has read the text and typed the answer, they will be able to see the forum.
+
+[media thumb="1" description="Viewing the sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/dc8f52acbb69609dec15a0917bcf4267.png[/media]
+
+[title="2"]Showing the sub-forum[/title]
+
+[media thumb="1" description="Showing sub-forum under the main forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/d3b7b2f5169b53c7a9811916982030c7.png[/media]
+
+By now, you should be well on your way to creating a great forum and the start of your community!
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Forum,Social,Forum,novice}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Forums can be small or large, but you need to think about the structure and the user experience. Thankfully Composr makes it very easy for us to create forums.}[block]main_tutorial_rating[/block]

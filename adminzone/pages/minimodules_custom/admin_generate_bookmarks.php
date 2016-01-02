@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    browser_bookmarks
+ */
+
 /*
 Implementation notes...
 
@@ -49,8 +55,8 @@ $root = retrieve_sitemap_node(
     /*$valid_node_types=*/array('root', 'zone', 'page_grouping', 'page', 'comcode_page'),
     /*$child_cutoff=*/null,
     /*$max_recurse_depth=*/null,
-    /*$options=*/SITEMAP_GEN_NONE,
-    /*$zone=*/'_SEARCH', true
+    /*$options=*/SITEMAP_GEN_CHECK_PERMS,
+    /*$zone=*/'_SEARCH'
 );
 
 if (isset($root['children'])) {

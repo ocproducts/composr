@@ -32,9 +32,9 @@ class Hook_content_meta_aware_author
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
-            'content_type_label' => 'AUTHORS',
+            'content_type_label' => 'global:AUTHOR',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'authors',
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_author
             'title_field_dereference' => false,
             'description_field' => 'description',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:authors:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_authors:_add:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_author
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -75,9 +78,14 @@ class Hook_content_meta_aware_author
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => 'authors',
+            'attachment_hook' => 'author',
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'author',
 
             'addon_name' => 'authors',
 
@@ -87,7 +95,11 @@ class Hook_content_meta_aware_author
             'commandr_filesystem_hook' => 'authors',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'authors',
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_AUTHOR',
         );
@@ -103,7 +115,7 @@ class Hook_content_meta_aware_author
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

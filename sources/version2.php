@@ -21,7 +21,7 @@
 /**
  * Get information about new versions of Composr (or more accurately, what's wrong with this version).
  *
- * @return tempcode Information about the installed Composr version
+ * @return Tempcode Information about the installed Composr version
  */
 function get_future_version_information()
 {
@@ -120,7 +120,7 @@ function get_version_dotted__from_anything($any_format)
  * Analyse a dotted version number into components.
  *
  * @param  string $dotted Dotted version number
- * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (NULL if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components
+ * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components
  */
 function get_version_components__from_dotted($dotted)
 {
@@ -155,4 +155,15 @@ function get_version_components__from_dotted($dotted)
 function get_version_pretty__from_dotted($pretty)
 {
     return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $pretty);
+}
+
+/**
+ * Whether it is a substantial release (i.e. major new version).
+ *
+ * @param  string $dotted Pretty version number
+ * @return boolean Whether it is
+ */
+function is_substantial_release($dotted)
+{
+    return (substr($dotted, -2) == '.0') || (strpos($dotted, 'beta1') !== false) || (strpos($dotted, 'RC1') !== false);
 }

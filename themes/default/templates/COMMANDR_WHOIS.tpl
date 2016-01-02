@@ -11,10 +11,15 @@
 		<tr>
 			<th>{!IP_ADDRESS}</th>
 			<td>
-				<ul>
-					<li class="whois_ip">{IP*}</li>
-					{IP_LIST}
-				</ul>
+				{+START,IF_EMPTY,{IP}{IP_LIST}}
+					{!UNKNOWN}
+				{+END}
+				{+START,IF_NON_EMPTY,{IP}{IP_LIST}}
+					<ul>
+						<li class="whois_ip">{IP*}</li>
+						{IP_LIST}
+					</ul>
+				{+END}
 			</td>
 		</tr>
 		<tr>

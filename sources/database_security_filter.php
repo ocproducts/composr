@@ -24,6 +24,8 @@ This file provides some detection of possible security vulnerabilities at develo
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database_security_filter()
 {
@@ -125,6 +127,8 @@ function has_escaped_dynamic_sql($query)
  * @param  string $string The query
  * @param  boolean $recurse Whether to recurse (for double escaping)
  * @return array List of substrings
+ *
+ * @ignore
  */
 function _get_quoted_substrings($string, $recurse = false)
 {
@@ -167,6 +171,8 @@ function _get_quoted_substrings($string, $recurse = false)
  *
  * @param  string $string Input string
  * @return string Simplified substring
+ *
+ * @ignore
  */
 function _trim_quoted_substrings($string)
 {

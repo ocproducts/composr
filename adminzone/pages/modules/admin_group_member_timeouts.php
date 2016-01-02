@@ -46,7 +46,7 @@ class Module_admin_group_member_timeouts
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -65,7 +65,7 @@ class Module_admin_group_member_timeouts
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -85,7 +85,7 @@ class Module_admin_group_member_timeouts
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -104,7 +104,7 @@ class Module_admin_group_member_timeouts
     /**
      * The UI to manage group member timeouts.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function manage()
     {
@@ -118,7 +118,7 @@ class Module_admin_group_member_timeouts
         if (get_forum_type() == 'cns') {
             $num_usergroups = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
             if ($num_usergroups > 50) {
-                $_usergroups = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id', array('g.id', 'g.g_name'), null, 'ORDER BY g_order', 1);
+                $_usergroups = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id', array('g.id', 'g.g_name'), null, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'), 1);
                 $usergroups = array();
                 foreach ($_usergroups as $g) {
                     $usergroups[$g['id']] = get_translated_text($g['g_name'], $GLOBALS['FORUM_DB']);
@@ -176,7 +176,7 @@ class Module_admin_group_member_timeouts
     /**
      * Save group member timeouts.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function save()
     {
@@ -189,7 +189,7 @@ class Module_admin_group_member_timeouts
                 $old_group_id = post_param_integer('gmt_old_group_id_' . $matches[1], null);
                 $group_id = post_param_integer('gmt_group_id_' . $matches[1], null);
                 $username = post_param_string('gmt_username_' . $matches[1], '');
-                $time = get_input_date('gmt_time_' . $matches[1]);
+                $time = post_param_date('gmt_time_' . $matches[1]);
 
                 $this->_save_group_member_timeout($old_group_id, $group_id, $username, $time);
             }
@@ -199,7 +199,7 @@ class Module_admin_group_member_timeouts
 
         $group_id = post_param_integer('gmt_group_id_new', null);
         $username = post_param_string('gmt_username_new', '');
-        $time = get_input_date('gmt_time_new');
+        $time = post_param_date('gmt_time_new');
 
         if ((!is_null($group_id)) && ($username != '') && (!is_null($time))) {
             $this->_save_group_member_timeout(null, $group_id, $username, $time);

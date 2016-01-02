@@ -304,7 +304,7 @@ function is_non_human_email($subject, $body, $full_header)
         'Undeliverable',
     );
     foreach ($junk_strings as $j) {
-        if ((strpos(strtolower($subject), strtolower($j)) !== false) || (strpos(strtolower($body), strtolower($j)) !== false)) {
+        if ((stripos($subject, $j) !== false) || (stripos($body, $j) !== false)) {
             $junk = true;
         }
     }
@@ -316,6 +316,8 @@ function is_non_human_email($subject, $body, $full_header)
  *
  * @param  array $matches preg Matches
  * @return string The result
+ *
+ * @ignore
  */
 function _convert_text_quote_to_comcode($matches)
 {
@@ -327,6 +329,8 @@ function _convert_text_quote_to_comcode($matches)
  *
  * @param  object $structure Structure
  * @return string Mime type
+ *
+ * @ignore
  */
 function _imap_get_mime_type($structure)
 {
@@ -349,6 +353,7 @@ function _imap_get_mime_type($structure)
  * @param  ?object $structure IMAP message structure (null: look up)
  * @param  string $part_number Message part number (blank: root)
  * @return ?string The message part (null: could not find one)
+ * @ignore
  */
 function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attachment_size_total, $structure = null, $part_number = '')
 {
@@ -559,6 +564,8 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     // Mark that this was e-mailed in
     $body .= "\n\n" . do_lang('TICKET_EMAILED_IN');
 
+    $GLOBALS['LAX_COMCODE'] = true;
+
     // Post
     if (is_null($existing_ticket)) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);
@@ -604,7 +611,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $_ticket_type_id = 1; // These will be returned by reference
         $posts = get_ticket_posts($existing_ticket, $_forum, $_topic_id, $_ticket_type_id);
         if (!is_array($posts)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
         $__title = do_lang('UNKNOWN');
         foreach ($posts as $ticket_post) {
@@ -615,6 +622,6 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         }
 
         // Send email (to staff & to confirm receipt to $member_id)
-        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, -1, $member_id, true);
+        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
     }
 }

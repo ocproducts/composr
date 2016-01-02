@@ -7,13 +7,19 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    xml_db_manage
+ */
+
 /*EXTRA FUNCTIONS: shell_exec*/
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 disable_php_memory_limit();
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 

@@ -37,7 +37,7 @@ class Block_main_contact_us
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect');
+        $info['parameters'] = array('param', 'title', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -45,7 +45,7 @@ class Block_main_contact_us
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -59,7 +59,7 @@ class Block_main_contact_us
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
-        $id = uniqid('', true);
+        $id = uniqid('', false);
         $_self_url = build_url(array('page' => 'admin_messaging', 'type' => 'view', 'id' => $id, 'message_type' => $type), get_module_zone('admin_messaging'));
         $self_url = $_self_url->evaluate();
         $self_title = post_param_string('title', do_lang('CONTACT_US_MESSAGING'));
@@ -91,7 +91,7 @@ class Block_main_contact_us
             // Handle notifications
             require_code('notifications');
             $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $subject_prefix . $title . $subject_suffix, null, null, get_site_default_lang());
-            $notification_message = do_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($body_prefix . $post . $body_suffix, comcode_escape($type), strval(get_member())), get_site_default_lang());
+            $notification_message = do_notification_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($body_prefix . $post . $body_suffix, comcode_escape($type), strval(get_member())), get_site_default_lang());
             dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, 3, true, false, null, null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix);
 
             // Send standard confirmation email to current user
@@ -107,6 +107,8 @@ class Block_main_contact_us
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
             }
+
+    		decache('main_staff_checklist');
         } else {
             $message = new Tempcode();
         }
@@ -145,8 +147,10 @@ class Block_main_contact_us
                 $hidden = new Tempcode();
                 $hidden->attach(form_input_hidden('_block_id', $block_id));
 
+                $guid = isset($map['guid']) ? $map['guid'] : '31fe96c5ec3b609fbf19595a1de3886f';
+
                 $comment_details = do_template('COMMENTS_POSTING_FORM', array(
-                    '_GUID' => '31fe96c5ec3b609fbf19595a1de3886f',
+                    '_GUID' => $guid,
                     'DEFAULT_TEXT' => $default_text,
                     'JOIN_BITS' => '',
                     'FIRST_POST_URL' => '',
@@ -172,7 +176,7 @@ class Block_main_contact_us
                 }
 
                 $out = do_template('BLOCK_MAIN_CONTACT_US', array(
-                    '_GUID' => 'fd269dce5ff984ee558e9052fa0150b0',
+                    '_GUID' => $guid,
                     'COMMENT_DETAILS' => $comment_details,
                     'MESSAGE' => $message,
                     'NOTIFICATIONS_ENABLED' => $notifications_enabled,

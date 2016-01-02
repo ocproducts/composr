@@ -77,7 +77,7 @@ class Hook_pointstore_pop3
     /**
      * Get fields for adding/editing one of these.
      *
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields()
     {
@@ -114,7 +114,7 @@ class Hook_pointstore_pop3
     /**
      * Standard pointstore introspection.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function pop3info()
     {
@@ -141,7 +141,7 @@ class Hook_pointstore_pop3
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newpop3()
     {
@@ -172,16 +172,15 @@ class Hook_pointstore_pop3
         $javascript = "
             var form=document.getElementById('pass1').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            if ((form.elements['pass1'].value!=form.elements['pass2'].value))
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                                        return false;
-                            }
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                if ((form.elements['pass1'].value!=form.elements['pass2'].value))
+                {
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
+                    return false;
+                }
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         // Return template
@@ -202,7 +201,7 @@ class Hook_pointstore_pop3
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _newpop3()
     {
@@ -269,7 +268,7 @@ class Hook_pointstore_pop3
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __newpop3()
     {
@@ -311,7 +310,8 @@ class Hook_pointstore_pop3
 
         // Mail off the order form
         $encoded_reason = do_lang('TITLE_NEWPOP3');
-        $message_raw = do_template('POINTSTORE_POP3_MAIL', array(
+        require_code('notifications');
+        $message_raw = do_notification_template('POINTSTORE_POP3_MAIL', array(
             '_GUID' => '19022c49d0bdde39735245850d04fca7',
             'EMAIL' => $email,
             'ENCODED_REASON' => $encoded_reason,
@@ -324,8 +324,7 @@ class Hook_pointstore_pop3
             'POP3_URL' => $pop3_url,
             'SUFFIX_PRICE' => integer_format($suffix_price),
         ), null, false, null, '.txt', 'text');
-        require_code('notifications');
-        dispatch_notification('pointstore_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang(), false), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+        dispatch_notification('pointstore_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $text = do_lang_tempcode('ORDER_POP3_DONE', escape_html($prefix . '@' . $_suffix));
         return inform_screen($title, $text);
@@ -334,7 +333,7 @@ class Hook_pointstore_pop3
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function buyquota()
     {
@@ -376,7 +375,7 @@ class Hook_pointstore_pop3
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _buyquota()
     {
@@ -409,9 +408,9 @@ class Hook_pointstore_pop3
         $quota_url = get_option('quota_url');
         $_price = $quota * $price;
         $encoded_reason = do_lang('TITLE_QUOTA');
-        $message_raw = do_template('POINTSTORE_QUOTA_MAIL', array('_GUID' => '5a4e0bb5e53e6ccf8e57581c377557f4', 'ENCODED_REASON' => $encoded_reason, 'QUOTA' => integer_format($quota), 'EMAIL' => $prefix . $suffix, 'QUOTA_URL' => $quota_url, 'PRICE' => integer_format($_price)), null, false, null, '.txt', 'text');
         require_code('notifications');
-        dispatch_notification('pointstore_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang(), false), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+        $message_raw = do_notification_template('POINTSTORE_QUOTA_MAIL', array('_GUID' => '5a4e0bb5e53e6ccf8e57581c377557f4', 'ENCODED_REASON' => $encoded_reason, 'QUOTA' => integer_format($quota), 'EMAIL' => $prefix . $suffix, 'QUOTA_URL' => $quota_url, 'PRICE' => integer_format($_price)), null, false, null, '.txt', 'text');
+        dispatch_notification('pointstore_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($title, $url, do_lang_tempcode('ORDER_QUOTA_DONE'));

@@ -61,6 +61,9 @@ function poll_for_notifications(forced_update,delay)
 
 function _poll_for_notifications(raw_ajax_result)
 {
+	if (typeof raw_ajax_result.getElementsByTagName=='undefined')
+		return; // Some kind of error
+
 	var time_node=raw_ajax_result.getElementsByTagName('time')[0];
 	window.notifications_time_barrier=window.parseInt(get_inner_html(time_node));
 
@@ -145,6 +148,7 @@ function display_alert(notification)
 	}
 
 	// Show desktop notification
+	/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 	if (window.notify.isSupported)
 	{
 		var icon='{$IMG;,favicon}'.replace(/^https?:/,window.location.protocol);
@@ -172,6 +176,7 @@ function display_alert(notification)
 			window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
 		}
 	}
+	/*{+END}*/
 
 	// Mark done
 	window.notifications_already_presented[id]=true;
@@ -269,6 +274,8 @@ function _toggle_messaging_box(event,name,hide)
 	return false;
 }
 
+/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
+
 /**
  * Copyright 2012 Tsvetan Tsvetkov
  *
@@ -353,9 +360,11 @@ function _toggle_messaging_box(event,name,hide)
 			});
 		} else if (win.webkitNotifications) { /* FF with html5Notifications plugin installed */
 			notification = win.webkitNotifications.createNotification(options.icon, title, options.body);
+			notification.tag = options.tag || emptyString;
 			notification.show();
 		} else if (navigator.mozNotification) { /* Firefox Mobile */
 			notification = navigator.mozNotification.createNotification(title, options.body, options.icon);
+			notification.tag = options.tag || emptyString;
 			notification.show();
 		} else if (win.external && win.external.msIsSiteMode()) { /* IE9+ */
 			//Clear any previous notifications
@@ -482,3 +491,5 @@ function _toggle_messaging_box(event,name,hide)
 		Object.seal(win.notify);
 	}
 }(window));
+
+/*{+END}*/

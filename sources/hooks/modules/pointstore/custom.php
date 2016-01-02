@@ -41,7 +41,7 @@ class Hook_pointstore_custom
      * @param  BINARY $one_per_member Whether it is restricted to one per member
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
@@ -148,6 +148,8 @@ class Hook_pointstore_custom
             $map += insert_lang('c_mail_body', $mail_body, 2);
             $GLOBALS['SITE_DB']->query_insert('pstore_customs', $map);
         }
+
+        log_it('POINTSTORE_AMEND_CUSTOM_PRODUCTS');
     }
 
     /**
@@ -179,7 +181,7 @@ class Hook_pointstore_custom
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -200,7 +202,7 @@ class Hook_pointstore_custom
 
         // Check points
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         return do_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array('_GUID' => 'bc57d8775b5471935b08f85082ba34ec', 'TITLE' => $title, 'ONE_PER_MEMBER' => ($rows[0]['c_one_per_member'] == 1), 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
@@ -209,7 +211,7 @@ class Hook_pointstore_custom
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {
@@ -232,7 +234,7 @@ class Hook_pointstore_custom
         // Check points
         $points_left = available_points(get_member());
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         if ($row['c_one_per_member'] == 1) {
@@ -250,7 +252,7 @@ class Hook_pointstore_custom
         require_code('notifications');
         $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $message_raw = do_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
+        $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
         dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $member = get_member();

@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2015
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    installprofile_generator
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -58,7 +71,7 @@ class Hook_admin_setupwizard_installprofiles_mycustomprofile
     function info()
     {
         return array(
-            'title'=>'My Custom installprofile',
+            'title' => 'My Custom installprofile',
         );
     }
 
@@ -107,7 +120,7 @@ $profile .= <<<END
 END;
 $hooks = find_all_hooks('modules', 'admin_setupwizard');
 foreach (array_keys($hooks) as $hook) {
-    $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+    $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
     if (!file_exists($path)) {
         $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
     }
@@ -214,7 +227,7 @@ foreach ($config_options as $option) {
     }
     $_name = php_addslashes($name);
     $_value = php_addslashes($value);
-    $profile .= "\t\tif (get_option(\"{$_name}\",true)!==NULL) set_option(\"{$_name}\",\"{$_value}\");\n";
+    $profile .= "\t\tif (get_option(\"{$_name}\", true) !== null) set_option(\"{$_name}\", \"{$_value}\");\n";
 }
 $profile .= <<<END
     }

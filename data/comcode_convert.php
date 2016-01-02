@@ -51,5 +51,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('ajax');
+require_code('comcode_tools');
 comcode_convert_script();

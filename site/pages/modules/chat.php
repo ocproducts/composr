@@ -100,7 +100,7 @@ class Module_chat
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'room_name', array('room_name'));
-            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im', 'room_name'));
+            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im'/*, 'room_name' makes key too long*/));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'first_public', array('is_im', 'id'));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'allow_list', array('allow_list(30)'));
 
@@ -166,7 +166,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->create_index('chat_events', 'event_ordering', array('e_date_and_time'));
 
             $GLOBALS['SITE_DB']->create_table('chat_active', array(
-                'id' => '*AUTO', // serves no purpose really, but needed as room_id can be NULL but is in compound key
+                'id' => '*AUTO', // serves no purpose really, but needed as room_id can be null but is in compound key
                 'member_id' => 'MEMBER',
                 'room_id' => '?AUTO_LINK',
                 'date_and_time' => 'TIME',
@@ -235,7 +235,7 @@ class Module_chat
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
-            $GLOBALS['SITE_DB']->query_update('adminlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
+            $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
         }
     }
 
@@ -245,7 +245,7 @@ class Module_chat
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -268,7 +268,7 @@ class Module_chat
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -289,7 +289,7 @@ class Module_chat
 
             $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'room_name', 'is_im', 'allow_list', 'allow_list_groups', 'disallow_list', 'disallow_list_groups', 'room_owner'), array('id' => $room_id), '', 1);
             if (!array_key_exists(0, $room_check)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
             }
             $this->room_row = $room_check[0];
             $this->room_name = $this->room_row['room_name'];
@@ -363,7 +363,7 @@ class Module_chat
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -436,7 +436,7 @@ class Module_chat
     /**
      * The UI to choose a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_lobby()
     {
@@ -585,7 +585,7 @@ class Module_chat
     /**
      * The UI for a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_room()
     {
@@ -609,14 +609,15 @@ class Module_chat
         $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . get_zone_name() . $keep->evaluate();
         $buttons = new Tempcode();
         $_buttons = array(
-            'url',
+            //'url', Bloat
             'thumb',
-            'email',
+            //'email', Bloat
+            'quote',
             'code',
             'hide'
         );
         if (has_privilege(get_member(), 'comcode_dangerous')) {
-            $_buttons[] = 'html';
+            //$_buttons[] = 'html'; Bloat
         }
         foreach ($_buttons as $button) {
             $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
@@ -625,9 +626,11 @@ class Module_chat
         if (!is_guest()) {
             $_buttons = array(
                 'private_message',
-                'invite',
-                'new_room'
+                'invite'
             );
+            if (has_privilege(get_member(), 'create_private_room')) {
+                $_buttons[] = 'new_room';
+            }
             foreach ($_buttons as $button) {
                 $buttons->attach(do_template('CHATCODE_EDITOR_BUTTON', array('_GUID' => 'f1c3ccc2b6f0b68d71b7d256b3817cf3', 'TITLE' => do_lang_tempcode('INPUT_CHATCODE_' . $button), 'B' => $button)));
             }
@@ -703,7 +706,7 @@ class Module_chat
     /**
      * The UI to create a private chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_private()
     {
@@ -734,7 +737,7 @@ class Module_chat
     /**
      * The actualiser to add a chat room.
      *
-     * @return tempcode The UI to choose a chat room (probably what was just added, but...)
+     * @return Tempcode The UI to choose a chat room (probably what was just added, but...)
      */
     public function _chat_private()
     {
@@ -756,6 +759,8 @@ class Module_chat
         $meta_data = actual_meta_data_get_fields('chat', null);
 
         $new_room_id = add_chatroom(post_param_string('c_welcome'), $room_name, get_member(), $allow2, $allow2_groups, $disallow2, $disallow2_groups, $room_lang);
+
+        set_url_moniker('chat', strval($new_room_id));
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -793,7 +798,7 @@ class Module_chat
     /**
      * The UI to manage who is blocked.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_interface()
     {
@@ -829,7 +834,7 @@ class Module_chat
     /**
      * Change blocking settings.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_set()
     {
@@ -864,9 +869,9 @@ class Module_chat
     /**
      * Certain add/remove actions may be triggered by hyperlinks, but they need confirming because a link click should never constitute a state change.
      *
-     * @param  ID_TEXT $action The language code of our action
+     * @param  ID_TEXT $action The language string ID of our action
      * @param  string $param Parameter of action
-     * @return ?tempcode If a confirm page is being output, this is it (null: continue as before)
+     * @return ?Tempcode If a confirm page is being output, this is it (null: continue as before)
      */
     public function handle_repost($action, $param)
     {
@@ -895,7 +900,7 @@ class Module_chat
     /**
      * Change blocking settings (add one specific to block list, and then redirect).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_add()
     {
@@ -928,7 +933,7 @@ class Module_chat
     /**
      * Change blocking settings (remove one specific member from block list, and then redirect).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_remove()
     {
@@ -957,7 +962,7 @@ class Module_chat
     /**
      * Add a friend.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function friend_add()
     {
@@ -1002,7 +1007,7 @@ class Module_chat
     /**
      * Remove a friend.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function friend_remove()
     {
@@ -1051,7 +1056,7 @@ class Module_chat
     /**
      * Save the user's options into a cookie.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_save_options()
     {
@@ -1066,7 +1071,7 @@ class Module_chat
     /**
      * The UI to download chat logs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_download_logs()
     {
@@ -1096,12 +1101,12 @@ class Module_chat
     /**
      * The actualiser to download chat logs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _chat_download_logs()
     {
-        $start_date_and_time = get_input_date('start', true);
-        $finish_date_and_time = get_input_date('finish', true);
+        $start_date_and_time = post_param_date('start', true);
+        $finish_date_and_time = post_param_date('finish', true);
 
         $room = get_param_integer('room_name');
 
@@ -1115,7 +1120,7 @@ class Module_chat
     /**
      * The interface for setting sound effects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_effects()
     {
@@ -1207,7 +1212,7 @@ class Module_chat
     /**
      * The actualiser to set sound effects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _set_effects()
     {
@@ -1240,7 +1245,7 @@ class Module_chat
                     continue;
                 }
 
-                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (is_null(post_param_string('hidFileID_upload_' . $effect . $suffix, null))) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
+                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (is_null(post_param_string('hidFileID_upload_' . $effect . $suffix, null))) && (isset($_FILES['upload_' . $effect . $suffix])) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
                     $url = '-1';
                 } else {
                     $url_bits = get_url('select_' . $effect . $suffix, 'upload_' . $effect . $suffix, 'uploads/personal_sound_effects', 0, CMS_UPLOAD_AUDIO);

@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    workflows
+ */
+
+/**
  * Inject workflow code into the galleries module.
  *
  * @param   string $code Original code
@@ -70,7 +76,7 @@ function init__cms__pages__modules_custom__cms_galleries($code)
         $code
     );
 
-    $code = str_replace("function run_start(\$type)\n    {", "function run_start(\$type)\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $code);
+    $code = str_replace("function pre_run(\$top_level = true, \$type = null)\n    {", "function pre_run(\$top_level = true, \$type = null)\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $code);
 
     return $code;
 }

@@ -32,7 +32,7 @@ class Hook_content_meta_aware_event
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'calendar:EVENT',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_event
             'title_field_dereference' => true,
             'description_field' => 'e_content',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:calendar:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_event
             'support_url_monikers' => true,
 
             'views_field' => 'e_views',
+            'order_field' => null,
             'submitter_field' => 'e_submitter',
+            'author_field' => null,
             'add_time_field' => 'e_add_date',
             'edit_time_field' => 'e_edit_date',
             'date_field' => 'e_add_date',
@@ -75,9 +78,14 @@ class Hook_content_meta_aware_event
 
             'feedback_type_code' => 'events',
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'calendar',
+            'rss_hook' => 'calendar',
+            'attachment_hook' => 'calendar',
+            'unvalidated_hook' => 'calendar',
+            'notification_hook' => 'calendar_event',
+            'sitemap_hook' => 'event',
 
             'addon_name' => 'calendar',
 
@@ -87,11 +95,13 @@ class Hook_content_meta_aware_event
             'commandr_filesystem_hook' => 'calendar',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'calendar',
+            'support_revisions' => false,
+
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_EVENT',
-
-            'supports_privacy' => true,
         );
     }
 
@@ -105,7 +115,7 @@ class Hook_content_meta_aware_event
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

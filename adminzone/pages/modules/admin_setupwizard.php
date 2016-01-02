@@ -46,7 +46,7 @@ class Module_admin_setupwizard
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -61,7 +61,7 @@ class Module_admin_setupwizard
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -78,7 +78,7 @@ class Module_admin_setupwizard
         }
 
         if ($type != 'browse') {
-            //breadcrumb_set_parents(array(array('_SELF:_SELF:browse',do_lang_tempcode('START'))));
+            //breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('START'))));
 
             $step = min(10, intval(substr($type, 4)));
         }
@@ -91,7 +91,7 @@ class Module_admin_setupwizard
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -141,7 +141,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (welcome).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -185,7 +185,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (information).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -201,7 +201,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (config).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -247,7 +247,7 @@ class Module_admin_setupwizard
         $installprofiles->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
         require_code('zones2');
         foreach (array_keys($hooks) as $hook) {
-            $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
             }
@@ -280,7 +280,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (addons).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {
@@ -314,7 +314,7 @@ class Module_admin_setupwizard
             $addon_list_advanced_on_by_default = array();
         }
 
-        /*$addon_list_on_by_default=array(   These will be put on in individual Setup Wizard profiles; we list them here just so our addon_setupwizard unit test can ensure we haven't forgotten to consider their status
+        /*$addon_list_on_by_default = array(   These will be put on in individual Setup Wizard profiles; we list them here just so our addon_setupwizard unit test can ensure we haven't forgotten to consider their status
             'aggregate_types',
             'authors',
             'calendar',
@@ -409,15 +409,17 @@ class Module_admin_setupwizard
         ));
         // ... unless the install profile really is shunning them
         foreach ($addon_list_override_to_off_by_default as $_to_find) {
-            $_found = array_search($_to_find, $addon_list_on_by_default);
-            unset($addon_list_on_by_default[$_found]);
+            if (!is_null($addon_list_on_by_default)) {
+                $_found = array_search($_to_find, $addon_list_on_by_default);
+                unset($addon_list_on_by_default[$_found]);
+            }
             $_found = array_search($_to_find, $addon_list_advanced_on_by_default);
             unset($addon_list_advanced_on_by_default[$_found]);
         }
 
         $addon_list_advanced_off_by_default = array( // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.
                                                      'installer',
-                                                     'textbased_persistent_cacheing',
+                                                     'textbased_persistent_caching',
                                                      'rootkit_detector',
                                                      'failover',
                                                      'msn',
@@ -447,7 +449,7 @@ class Module_admin_setupwizard
                     $id = $remote_addons[$_mentioned_addon];
                     require_code('uploads');
                     $_POST['url'] = 'http://compo.sr/site/dload.php?id=' . strval($id);
-                    get_url('url', 'file', 'imports/addons', 0, 0, false, '', '', true); // Download it
+                    get_url('url', 'file', 'imports/addons', 0, ADDON_NOT_TAR, false, '', '', true); // Download it
                 }
             }
         }
@@ -462,10 +464,10 @@ class Module_admin_setupwizard
         sort_maps_by($all_addons, 'name');
         require_code('addons');
         foreach ($all_addons as $addon_name => $row) {
-            if ((substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
+            if (($addon_name != 'core') && (substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
-                $install_by_default = ((in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
+                $install_by_default = ((!is_null($addon_list_on_by_default)) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
 
                 $addon_description = $row['description'];
                 if ((substr($addon_description, -1) != '.') && ($addon_description != '')) {
@@ -492,14 +494,14 @@ class Module_admin_setupwizard
         $fields .= static_evaluate_tempcode(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '00948cc876d0ecb8b511800eabd8cae2', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields .= $fields_advanced;
 
-        $inner = do_template('FORM', array('_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4', 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_4', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+        $inner = do_template('FORM', array('_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4', 'NO_SIZING' => true, 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_4', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
         return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '4', 'INNER' => $inner));
     }
 
     /**
      * UI for a setup wizard step (the zone/feature configuration).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step5()
     {
@@ -514,7 +516,7 @@ class Module_admin_setupwizard
 
         $installprofile = post_param_string('installprofile', '');
         if ($installprofile != '') {
-            $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
+            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
             }
@@ -528,8 +530,8 @@ class Module_admin_setupwizard
 
         $hooks = find_all_hooks('modules', 'admin_setupwizard');
         foreach (array_keys($hooks) as $hook) {
-            if (post_param_integer('addon_' . $hook, 0) == 1) {
-                $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+            if ((post_param_integer('addon_' . $hook, 0) == 1) && ($hook != 'core')) {
+                $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                 if (!file_exists($path)) {
                     $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                 }
@@ -546,7 +548,7 @@ class Module_admin_setupwizard
                 }
             }
         }
-        require_code('hooks/modules/admin_setupwizard/core'); // Core one is not named after an addon (so won't run above) and also explicitly goes last
+        require_code('hooks/modules/admin_setupwizard/core'); // Core one explicitly goes last
         $hook = object_factory('Hook_sw_core', true);
         if (method_exists($hook, 'get_fields')) {
             $hook_fields = $hook->get_fields($field_defaults);
@@ -573,7 +575,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (block choice).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step6()
     {
@@ -709,7 +711,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (rules).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step7()
     {
@@ -746,7 +748,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (theme).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step8()
     {
@@ -780,7 +782,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (close-status).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step9()
     {
@@ -813,7 +815,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (done).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step10()
     {
@@ -822,9 +824,10 @@ class Module_admin_setupwizard
         require_code('abstract_file_manager');
         force_have_afm_details();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(600);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(600);
         }
+        send_http_output_ping();
 
         require_code('config2');
         require_code('themes2');
@@ -895,6 +898,7 @@ class Module_admin_setupwizard
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'wt');
             fwrite($myfile, 'title=' . $name . "\n");
             fwrite($myfile, 'description=' . do_lang('NA') . "\n");
+            fwrite($myfile, 'seed=' . post_param_string('seed_hex') . "\n");
             if (fwrite($myfile, 'author=Composr' . "\n") == 0) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
@@ -960,7 +964,7 @@ class Module_admin_setupwizard
                         $addon_info['author'] = ''; // Fudge, to stop it dying on warnings for official addons
 
                         // Check dependencies
-                        $dependencies = $addon_info['dependencies_on_this'];
+                        $dependencies = isset($addon_info['dependencies_on_this']) ? $addon_info['dependencies_on_this'] : array();
                         foreach (array_keys($uninstalling) as $d) {
                             if (in_array($d, $dependencies)) {// Can mark this dependency as irrelevant, as we are uninstalling the addon for it anyway
                                 unset($dependencies[array_search($d, $dependencies)]);
@@ -976,7 +980,7 @@ class Module_admin_setupwizard
             if (!file_exists(get_file_base() . '/.git')) { // Only uninstall if we're not working from a git repository
                 foreach ($uninstalling as $addon_info) {
                     // Archive it off to exports/addons
-                    if ($addon_info['addon_files'] != array()) {
+                    if ($addon_info['files'] != array()) {
                         $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $addon_info['name'])) . '.tar';
                         create_addon(
                             $file,
@@ -1020,7 +1024,7 @@ class Module_admin_setupwizard
             $hooks = find_all_hooks('modules', 'admin_setupwizard');
             foreach (array_keys($hooks) as $hook) {
                 if ((post_param_integer('addon_' . $hook, 0) == 1) || ($hook == 'core')) {
-                    $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+                    $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                     if (!file_exists($path)) {
                         $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                     }
@@ -1038,24 +1042,24 @@ class Module_admin_setupwizard
 
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
-            $fullpath = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt';
-            if (!file_exists(dirname($fullpath))) {
+            $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt';
+            if (!file_exists(dirname($full_path))) {
                 require_code('files2');
-                make_missing_directory(dirname($fullpath));
+                make_missing_directory(dirname($full_path));
             }
-            if (file_exists($fullpath)) {
-                @copy($fullpath, $fullpath . '.' . strval(time()));
-                fix_permissions($fullpath . '.' . strval(time()));
-                sync_file($fullpath . '.' . strval(time()));
+            if (file_exists($full_path)) {
+                @copy($full_path, $full_path . '.' . strval(time()));
+                fix_permissions($full_path . '.' . strval(time()));
+                sync_file($full_path . '.' . strval(time()));
             }
-            $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
+            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
             $rf = $this->get_rules_file(post_param_string('rules'));
             if (fwrite($myfile, $rf) < strlen($rf)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
             fclose($myfile);
-            fix_permissions($fullpath);
-            sync_file($fullpath);
+            fix_permissions($full_path);
+            sync_file($full_path);
         }
 
         $block_options = mixed();
@@ -1070,58 +1074,58 @@ class Module_admin_setupwizard
 
             foreach ($page_structure as $zone => $zone_pages) {
                 // Start
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
-                if (!file_exists(dirname($fullpath))) {
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
+                if (!file_exists(dirname($full_path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($fullpath));
+                    make_missing_directory(dirname($full_path));
                 }
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($fullpath);
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
                 if ($myfile !== false) {
-                    if ($zone_pages['start'] != '') {
-                        if (fwrite($myfile, $zone_pages['start']) == 0) {
+                    if (fwrite($myfile, $zone_pages['start']) == 0) {
+                        if ($zone_pages['start'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
 
                 // Left
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
-                    if ($zone_pages['left'] != '') {
-                        if (fwrite($myfile, $zone_pages['left']) == 0) {
+                    if (fwrite($myfile, $zone_pages['left']) == 0) {
+                        if ($zone_pages['left'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
 
                 // Right
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
-                    if ($zone_pages['right'] != '') {
-                        if (fwrite($myfile, $zone_pages['right']) == 0) {
+                    if (fwrite($myfile, $zone_pages['right']) == 0) {
+                        if ($zone_pages['right'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
             }
         }
@@ -1129,7 +1133,7 @@ class Module_admin_setupwizard
         // We're done
         set_value('setupwizard_completed', '1');
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
@@ -1144,7 +1148,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (done, message after cache emptied - need lower memory usage to rebuild them).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step11()
     {
@@ -1156,7 +1160,7 @@ class Module_admin_setupwizard
         return do_next_manager($this->title, do_lang_tempcode('SUCCESS'),
             array(
                 array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
-                array('menu/pages/help', array(null, array(), '')),
+                array('menu/start', array(null, array(), '')),
                 array('menu/cms/cms', array(null, array(), 'cms')),
                 array('menu/adminzone/adminzone', array(null, array(), 'adminzone')),
             ),

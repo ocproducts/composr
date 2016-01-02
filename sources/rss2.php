@@ -39,11 +39,8 @@ function backend_cloud_script()
     if ($protocol == 'http-post') {
         exit('false');
     }
-    if (($protocol == 'xml-rpc') && (!function_exists('xmlrpc_encode'))) {
-        exit('false');
-    }
     $port = post_param_integer('port', '80');
-// $watching_channel=$_POST['channels'];
+    // $watching_channel = $_POST['channels'];
     $status = _cloud_register_them($path, $procedure, $protocol, $port, get_param_string('type', ''));
     if (!$status) {
         exit('false');
@@ -60,6 +57,8 @@ function backend_cloud_script()
  * @param  integer $port The port to connect to them on
  * @param  string $watching_channel The channel they are interested in
  * @return boolean Success status
+ *
+ * @ignore
  */
 function _cloud_register_them($path, $procedure, $protocol, $port, $watching_channel)
 {
@@ -186,6 +185,10 @@ function rss_backend_script()
         }
         $echo = do_template('OPML_WRAPPER', array('_GUID' => '712b78d1b4c23aefc8a92603477f84ed', 'FEEDS' => $feeds, 'ABOUT' => $site_about, 'DATE' => $date), null, false, null, '.xml', 'xml');
         $echo->evaluate_echo();
+
+        require_code('site');
+        save_static_caching($echo, 'text/xml');
+
         return;
     }
 
@@ -200,7 +203,7 @@ function rss_backend_script()
         $content = is_null($_content) ? array() : $_content;
     }
 
-    if (($type == 'RSS2') && (function_exists('xmlrpc_encode'))) {
+    if ($type == 'RSS2') {
         // Change a full url into constituent parts
         $base_url = get_base_url();
         $port = 80;
@@ -234,6 +237,9 @@ function rss_backend_script()
 
     $echo = do_template($prefix . 'WRAPPER', array('SELECT' => $select, 'CUTOFF' => strval($cutoff), 'MODE' => $mode, 'MODE_NICE' => $mode_nice, 'RSS_CLOUD' => $rss_cloud, 'VERSION' => cms_version_pretty(), 'COPYRIGHT' => $copyright, 'DATE' => $date, 'LOGO_URL' => $logo_url, 'ABOUT' => $site_about, 'CONTENT' => $content, 'SELF_URL' => get_self_url_easy()), null, false, null, '.xml', 'xml');
     $echo->evaluate_echo();
+
+    require_code('site');
+    save_static_caching($echo, 'text/xml');
 }
 
 /**

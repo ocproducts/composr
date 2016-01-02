@@ -44,7 +44,7 @@ For example:
 .menu_type__dropdown li.toplevel.last {
 	border-{!en_right}: 1px solid #cacaca;
 	float: none !important; /* so it eats all space remaining */
-	overflow: hidden; /* so it is shunted against it's left-hand neighbours without overlapping */
+	overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
 	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
 	width: auto;
 }
@@ -67,6 +67,7 @@ For example:
 	text-decoration: none;
 	text-align: center;
 	color: {$GET,area_text};
+	max-width: 107px;
 }
 
 .menu_type__dropdown a.toplevel_link span {
@@ -151,7 +152,7 @@ For example:
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_type__dropdown .nlevel .current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_current}');
 	}

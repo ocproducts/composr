@@ -36,6 +36,10 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
     $old_current_script = current_script();
 
     foreach ($_GET as $key => $val) {
+		if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if ((substr($key, 0, 5) != 'keep_') || ($erase_keep_also)) {
             unset($_GET[$key]);
         }
@@ -46,7 +50,7 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
     }
 
     global $RELATIVE_PATH, $ZONE, $SELF_URL_CACHED;
-    $RELATIVE_PATH = ($new_zone == '_SEARCH') ? get_page_zone(get_param_string('page')) : $new_zone;
+    $RELATIVE_PATH = ($new_zone == '_SEARCH') ? get_page_zone(get_page_name()) : $new_zone;
     if ($new_zone != $old_zone) {
         $ZONE = null; // So zone details will have to reload
     }
@@ -102,7 +106,9 @@ function page_link_as_url($url)
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
- * @return tempcode The builtup hidden form fields
+ * @return Tempcode The builtup hidden form fields
+ *
+ * @ignore
  */
 function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 {
@@ -119,6 +125,10 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
         foreach ($_GET as $key => $val) {
             if (!is_string($val)) {
                 continue;
+            }
+
+    		if (is_integer($key)) {
+                $key = strval($key);
             }
 
             if (get_magic_quotes_gpc()) {
@@ -142,6 +152,8 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
  * @param  ID_TEXT $key Key name to put value under
  * @param  mixed $value Value (string or array)
  * @return string The builtup hidden form fields
+ *
+ * @ignore
  */
 function _fixed_post_parser($key, $value)
 {
@@ -174,17 +186,24 @@ function _fixed_post_parser($key, $value)
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
- * @return tempcode The builtup hidden form fields
+ * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
+ * @return Tempcode The builtup hidden form fields
+ *
+ * @ignore
  */
-function _build_keep_post_fields($exclude = null)
+function _build_keep_post_fields($exclude = null, $force_everything = false)
 {
     $out = '';
     foreach ($_POST as $key => $val) {
-        if ((!is_null($exclude)) && (in_array($key, $exclude))) {
+		if (is_integer($key)) {
+            $key = strval($key);
+        }
+
+        if (((!is_null($exclude)) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
             continue;
         }
 
-        if (count($_POST) > 80) {
+        if (count($_POST) > 80 && !$force_everything) {
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }
@@ -203,6 +222,8 @@ function _build_keep_post_fields($exclude = null)
  *
  * @param  URLPATH $url_full The URL to convert to an encoded filename
  * @return string A usable filename based on the URL
+ *
+ * @ignore
  */
 function _url_to_filename($url_full)
 {
@@ -233,6 +254,8 @@ function _url_to_filename($url_full)
  * @param  URLPATH $url The URL to fully qualified
  * @param  URLPATH $url_base The base-URL
  * @return URLPATH Fully qualified URL
+ *
+ * @ignore
  */
 function _qualify_url($url, $url_base)
 {
@@ -280,15 +303,18 @@ function _qualify_url($url, $url_base)
  *
  * @param  URLPATH $url The value to convert
  * @return ?PATH File path (null: is not local)
+ * @ignore
  */
 function _convert_url_to_path($url)
 {
     if (strpos($url, '?') !== false) {
         return null;
     }
-    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/')) {
-        if (strpos($url, '://') !== false) {
+    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') || (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/')) {
+        if (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') {
             $file_path_stub = urldecode(substr($url, strlen(get_base_url()) + 1));
+        } elseif (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/') {
+            $file_path_stub = urldecode(substr($url, strlen(get_custom_base_url()) + 1));
         } else {
             $file_path_stub = urldecode($url);
         }
@@ -301,7 +327,7 @@ function _convert_url_to_path($url)
             $_file_path_stub = get_file_base() . '/' . $file_path_stub;
         }
 
-        if (!is_file($file_path_stub)) {
+        if (!is_file($_file_path_stub)) {
             return null;
         }
 
@@ -316,6 +342,7 @@ function _convert_url_to_path($url)
  *
  * @param  URLPATH $in The URL to fix
  * @return URLPATH The fixed URL (or original one if no fix was needed)
+ * @ignore
  */
 function _fixup_protocolless_urls($in)
 {
@@ -325,8 +352,8 @@ function _fixup_protocolless_urls($in)
 
     $in = remove_url_mistakes($in); // Chain in some other stuff
 
-    if (strpos($in, '://') !== false) {
-        return $in; // Absolute
+    if (strpos($in, ':') !== false) {
+        return $in; // Absolute (e.g. http:// or mailto:)
     }
 
     if (substr($in, 0, 1) == '#') {
@@ -354,10 +381,12 @@ function _fixup_protocolless_urls($in)
 /**
  * Convert a local URL to a page-link.
  *
- * @param  URLPATH $url The URL to convert. Note it may not be a short URL, and it must be based on the local base URL (else failure WILL occur).
+ * @param  URLPATH $url The URL to convert. Note it may not be a URL Scheme, and it must be based on the local base URL (else failure WILL occur).
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
  * @param  boolean $perfect_only Whether to only allow perfect conversions.
  * @return string The page-link (blank: could not convert).
+ *
+ * @ignore
  */
 function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 {
@@ -382,9 +411,6 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     }
 
     // Parse the URL
-    if ((strpos($url, '&') !== false) && (strpos($url, '?') === false)) {
-        $url = preg_replace('#&#', '?', $url, 1); // Old-style short URLs workl like this (no first ?, just &)
-    }
     $parsed_url = @parse_url($url);
     if ($parsed_url === false) {
         require_code('site');
@@ -404,12 +430,12 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $attributes = array();
     $attributes['page'] = ''; // hopefully will get overwritten with a real one
 
-    // Convert short URL path info into extra implied attribute data
+    // Convert URL Scheme path info into extra implied attribute data
     require_code('url_remappings');
     $does_match = false;
     foreach (array('PG', 'HTM', 'SIMPLE') as $url_scheme) {
         $mappings = get_remappings($url_scheme);
-        foreach ($mappings as $mapping) { // e.g. array(array('page'=>'wiki','id'=>NULL),'pg/s/ID',true),
+        foreach ($mappings as $mapping) { // e.g. array(array('page' => 'wiki', 'id' => null), 'pg/s/ID', true),
             if (is_null($mapping)) {
                 continue;
             }
@@ -474,8 +500,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
+    $page = fix_page_name_dashing($zone, $attributes['page']);
+
     // Put it together
-    $page_link = $zone . ':' . $attributes['page'];
+    $page_link = $zone . ':' . $page;
     if (array_key_exists('type', $attributes)) {
         $page_link .= ':' . $attributes['type'];
     } elseif (array_key_exists('id', $attributes)) {
@@ -485,6 +513,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':' . urldecode($attributes['id']);
     }
     foreach ($attributes as $key => $val) {
+        if (!is_string($val)) {
+            $val = strval($val);
+        }
+
         if (($key != 'page') && ($key != 'type') && ($key != 'id')) {
             $page_link .= ':' . $key . '=' . urldecode($val);
         }
@@ -503,6 +535,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
  *
  * @param  string $page The path.
  * @return string The page-link (blank: could not convert).
+ *
+ * @ignore
  */
 function _page_path_to_page_link($page)
 {
@@ -674,6 +708,8 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
  * @param  ?string $no_exists_check_for Whether to skip the exists check for a certain moniker (will be used to pass "existing self" for edits) (null: nothing existing to check against).
  * @param  ?string $scope_context Where the moniker will be placed in the moniker URL tree (null: unknown, so make so no duplicates anywhere).
  * @return string Chosen moniker.
+ *
+ * @ignore
  */
 function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for = null, $scope_context = null)
 {
@@ -724,6 +760,8 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
  *
  * @param  string $moniker_src Raw string.
  * @return ID_TEXT Moniker.
+ *
+ * @ignore
  */
 function _generate_moniker($moniker_src)
 {
@@ -733,7 +771,7 @@ function _generate_moniker($moniker_src)
 
     $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker_src);
     $moniker = str_replace("'", '', $moniker);
-    $moniker = strtolower(preg_replace('#[^A-Za-z\d\_\-]#', '-', $moniker));
+    $moniker = strtolower(preg_replace('#[^A-Za-z\d\-]#', '-', $moniker));
     if (strlen($moniker) > $max_moniker_length) {
         $pos = strrpos(substr($moniker, 0, $max_moniker_length), '-');
         if (($pos === false) || ($pos < 12)) {
@@ -759,6 +797,8 @@ function _generate_moniker($moniker_src)
  * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
  * @param  string $main Pathless moniker.
  * @return string The fully qualified moniker.
+ *
+ * @ignore
  */
 function _give_moniker_scope($page, $type, $id, $zone, $main)
 {

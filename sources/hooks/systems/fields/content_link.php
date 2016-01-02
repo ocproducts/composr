@@ -83,7 +83,7 @@ class Hook_fields_content_link
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        /*if ($required!==NULL)
+        /*if ($required !== null)
         {
             Nothing special for this hook
         }*/
@@ -95,7 +95,7 @@ class Hook_fields_content_link
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -130,18 +130,20 @@ class Hook_fields_content_link
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
      * @param  boolean $new Whether this is for a new entry
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $options = array();
         $type = substr($field['cf_type'], 3);
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         // Nice tree list selection
         if ((is_file(get_file_base() . '/sources/hooks/systems/ajax_tree/choose_' . $type . '.php')) || (is_file(get_file_base() . '/sources_custom/hooks/systems/ajax_tree/choose_' . $type . '.php'))) {
             require_code('content');
             list($nice_label) = content_get_details($type, $actual_value);
-            return form_input_tree_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), null, 'choose_' . $type, $options, $field['cf_required'] == 1, $actual_value, false, null, false, $nice_label);
+            return form_input_tree_list($_cf_name, $_cf_description, $input_name, null, 'choose_' . $type, $options, $field['cf_required'] == 1, $actual_value, false, null, false, $nice_label);
         }
 
         // Simple list selection...
@@ -182,7 +184,7 @@ class Hook_fields_content_link
             $list_tpl->attach(form_input_list_entry($id, is_null($actual_value) ? false : ($actual_value === $id), $text));
         }
 
-        return form_input_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, false, $field['cf_required'] == 1);
+        return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, false, $field['cf_required'] == 1);
     }
 
     /**
@@ -190,7 +192,7 @@ class Hook_fields_content_link
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

@@ -68,6 +68,9 @@ class Module_calendar
         delete_privilege('sense_personal_conflicts');
         delete_privilege('calendar_add_to_others');
 
+        delete_privilege('autocomplete_keyword_event');
+        delete_privilege('autocomplete_title_event');
+
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'calendar'));
     }
 
@@ -90,14 +93,14 @@ class Module_calendar
             $GLOBALS['SITE_DB']->create_table('calendar_events', array(
                 'id' => '*AUTO',
                 'e_submitter' => 'MEMBER',
-                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if NULL, it shows globally
+                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if null, it shows globally
                 'e_views' => 'INTEGER',
                 'e_title' => 'SHORT_TRANS__COMCODE',
                 'e_content' => 'LONG_TRANS__COMCODE',
                 'e_add_date' => 'TIME',
                 'e_edit_date' => '?TIME',
                 'e_recurrence' => 'ID_TEXT', // [none, daily, weekly, monthly, yearly, xth_dotw_of_monthly] X [fractional-occurrence]. e.g. "daily yyyyynn" for weekdays
-                'e_recurrences' => '?SHORT_INTEGER', // NULL means none/infinite
+                'e_recurrences' => '?SHORT_INTEGER', // null means none/infinite
                 'e_seg_recurrences' => 'BINARY',
                 'e_start_year' => 'INTEGER',
                 'e_start_month' => 'SHORT_INTEGER',
@@ -239,7 +242,7 @@ class Module_calendar
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -263,7 +266,7 @@ class Module_calendar
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -289,7 +292,7 @@ class Module_calendar
             // Read row
             $rows = $GLOBALS['SITE_DB']->query_select('calendar_events e LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON t.id=e.e_type', array('*'), array('e.id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
             }
             $event = $rows[0];
 
@@ -356,9 +359,9 @@ class Module_calendar
             $first_date = date('Y-m-d', $_first_date);
             $date = get_param_string('date', $first_date); // It's year 10,000 compliant when it comes to year display ;).
             $back_type = get_param_string('back', 'day');
-            $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => $back_type, 'id' => $date));
-            $back_url = build_url($map, '_SELF');
-            breadcrumb_set_parents(array(array($back_url, do_lang_tempcode('CALENDAR'))));
+            $back_map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => $back_type, 'id' => $date));
+            $back_url = build_url($back_map, '_SELF');
+            breadcrumb_set_parents(array(array(build_page_link($back_map, '_SELF'), do_lang_tempcode('CALENDAR'))));
 
             seo_meta_load_for('event', strval($id), $title_to_use_2);
 
@@ -385,7 +388,7 @@ class Module_calendar
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -486,7 +489,7 @@ class Module_calendar
     /**
      * View the main calendar screen, with certain filter allowances.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar()
     {
@@ -588,7 +591,7 @@ class Module_calendar
                 $next_timestamp = mktime(0, 0, 0, $next_month, 1, $next_year);
                 $next = date('Y-m', $next_timestamp);
 
-                $title_date = locale_filter(my_strftime(do_lang('calendar_month_in_year_verbose'), $timestamp));
+                $title_date = locale_filter(cms_strftime(do_lang('calendar_month_in_year_verbose'), $timestamp));
                 if ($private !== 1) {
                     $this->title = get_screen_title('CALENDAR_SPECIFIC', true, array(escape_html($title_date)));
                 } else {
@@ -736,7 +739,7 @@ class Module_calendar
         $fields = new Tempcode();
         require_code('form_templates');
         for ($i = 0; $i < 10; $i++) {
-            $fields->attach(form_input_line(do_lang_tempcode('FEED', integer_format($i + 1)), '', 'feed_' . strval($i), cms_admirecookie('feed_' . strval($i)), false));
+            $fields->attach(form_input_line(do_lang_tempcode('FEED', escape_html(integer_format($i + 1))), '', 'feed_' . strval($i), cms_admirecookie('feed_' . strval($i)), false));
         }
         $rss_form = do_template('FORM', array('_GUID' => '1756a3c6a5a105ef8b2b9d2ebc9e4e86', 'HIDDEN' => '', 'TEXT' => do_lang_tempcode('DESCRIPTION_FEEDS_TO_OVERLAY'), 'URL' => get_self_url(), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
 
@@ -770,7 +773,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_day($view_id, $day, $explode, $member_id, $filter)
     {
@@ -790,7 +793,7 @@ class Module_calendar
         foreach ($happenings as $happening) {
             list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
 
-            $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $from));
+            $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
             if (is_numeric($e_id)) {
                 $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id));
                 $url = build_url($map, '_SELF');
@@ -901,7 +904,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_week($view_id, $day, $explode, $member_id, $filter)
     {
@@ -945,7 +948,7 @@ class Module_calendar
                     $date = date('D:H', $from);
                     $explode2 = explode(':', $date);
                     if ((intval($explode2[1]) == $i) && ($day_remap[$explode2[0]] == $j)) {
-                        $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $real_from));
+                        $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
                         if (is_numeric($e_id)) {
                             $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'week'));
                             $url = build_url($map, '_SELF');
@@ -1121,7 +1124,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_month($view_id, $day, $explode, $member_id, $filter)
     {
@@ -1179,7 +1182,7 @@ class Module_calendar
                 list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
                 $date = date('d', $from);
                 if (intval($date) == $i) {
-                    $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $real_from));
+                    $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
 
                     if (is_numeric($e_id)) {
                         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'month'));
@@ -1251,7 +1254,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_year($view_id, $day, $explode, $member_id, $filter)
     {
@@ -1406,8 +1409,7 @@ class Module_calendar
             }
 
             $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries));
-            $months .= $month->evaluate()/*FUDGEFUDGE*/
-            ;
+            $months .= $month->evaluate(); // XHTMLXHTML
         }
 
         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i - 3)));
@@ -1425,7 +1427,7 @@ class Module_calendar
     /**
      * View an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_event()
     {
@@ -1446,7 +1448,10 @@ class Module_calendar
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => '332faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT'))));
+            $warning_details->attach(do_template('WARNING_BOX', array(
+                '_GUID' => '332faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'event'),
+            )));
         }
 
         $just_event_row = db_map_restrict($event, array('id', 'e_content'));
@@ -1510,7 +1515,7 @@ class Module_calendar
         // Work out all our various dates
         $day = get_param_string('day', '');
         if ($day != '') {
-            $event = adjust_event_dates_for_a_recurrence($day, $event);
+            $event = adjust_event_dates_for_a_recurrence($day, $event, get_users_timezone());
         }
         list($time_raw, $from) = find_event_start_timestamp($event);
         $day_formatted = locale_filter(date(do_lang('calendar_date'), $from));
@@ -1524,7 +1529,7 @@ class Module_calendar
             $to = null;
 
             $to_day_formatted = null;
-            $human_readable_time_range = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $from));
+            $human_readable_time_range = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
         }
 
         // Recurrences
@@ -1595,7 +1600,7 @@ class Module_calendar
     /**
      * Interface to subscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function subscribe_event()
     {
@@ -1606,7 +1611,7 @@ class Module_calendar
         check_privilege('view_calendar');
         $rows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
         }
         $event = $rows[0];
         if ($event['e_member_calendar'] !== get_member()) {
@@ -1633,7 +1638,7 @@ class Module_calendar
     /**
      * Subscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _subscribe_event()
     {
@@ -1688,7 +1693,7 @@ class Module_calendar
     /**
      * Unsubscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unsubscribe_event()
     {
@@ -1708,7 +1713,7 @@ class Module_calendar
     /**
      * Declare interests for event types.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interests()
     {
@@ -1730,7 +1735,7 @@ class Module_calendar
     /**
      * Declare interest to an event type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function declare_interest()
     {
@@ -1745,7 +1750,7 @@ class Module_calendar
     /**
      * Undeclare interest to an event type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function undeclare_interest()
     {

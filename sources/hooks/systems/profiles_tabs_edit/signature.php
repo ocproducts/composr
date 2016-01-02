@@ -40,7 +40,7 @@ class Hook_profiles_tabs_edit_signature
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -73,18 +73,17 @@ class Hook_profiles_tabs_edit_signature
         $javascript = "
             var form=document.getElementById('signature').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            var post=form.elements['signature'];
-                            if ((!post.value) && (post[1])) post=post[1];
-                            if (post.value.length>" . strval($size) . ")
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('SIGNATURE_TOO_BIG')) . "');
-                                        return false;
-                            }
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                var post=form.elements['signature'];
+                if ((!post.value) && (post[1])) post=post[1];
+                if (post.value.length>" . strval($size) . ")
+                {
+                            window.fauxmodal_alert('" . php_addslashes(do_lang('SIGNATURE_TOO_BIG')) . "');
+                            return false;
+                }
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         require_code('form_templates');

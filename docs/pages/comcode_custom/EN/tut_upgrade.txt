@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Performing an upgrade[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Performing an upgrade[/title]
 
 This tutorial will give background information for this process of upgrading Composr. The Composr upgrader does step you through the process, but further information will be given here so that you may gain a further understanding.
 
@@ -9,24 +9,27 @@ This tutorial will give background information for this process of upgrading Com
 When the developers make a release they will state whether they recommend users upgrade to it. If they have corrected a security issue, or a major bug (such as one that causes data loss), they are likely to strongly recommend upgrade. You can see the fixes included in a release by looking at the bugs database for the release before it.
 
 Upgrades may be roughly categorised under:
- - patch releases -- these are likely to involve bug fixes, with very few, if any new features. Any new features would have been implemented solely to provide important functionality that was obviously missing. Patch releases are very easy to upgrade to
- - feature releases -- these are likely to include many new features; the quantity of new features will depend on the difference in version numbers between releases. Minor releases are usually easy to upgrade to
- - or, major releases -- these are likely to involve many architectural changes, as well as new features; major releases are less common, as they need to perform additional testing for them which takes a long length of time -- they therefore try to avoid architectural changes other than in large batches
+ - [b]patch releases[/b] -- these are likely to involve bug fixes, with very few, if any new features. Any new features would have been implemented solely to provide important functionality that was obviously missing. Patch releases are very easy to upgrade to
+ - or, [b]feature releases[/b] -- these are likely to include many new features; the quantity of new features will depend on the difference in version numbers between releases. Minor releases are usually easy to upgrade to
+ - or, [b]major releases[/b] -- these are likely to involve many architectural changes, as well as new features; major releases are less common, as they need to perform additional testing for them which takes a long length of time -- they therefore try to avoid architectural changes other than in large batches
 
-It is recommended that you do not 'jump over' major releases (e.g. v2 to v4, jumping over v3) that you do not feel you need (or did not have time to upgrade to), as the chance is higher of an upgrade process bug being present in unusual upgrade jumps. In theory, it should work without issue, as the process has been designed very carefully, but in practice, it is very easy for a very minor glitch to cause major problems that need manual resolution: in such an event, ocProducts would fix the problem, either directly, or by mass provision of a script, but it would be an inconvenience and could take some time.
+[surround]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
+It is recommended that you do not 'jump over' major releases (e.g. v2 to v4, jumping over v3) that you do not feel you need (or did not have time to upgrade to), as the chance is higher of an upgrade process bug being present in unusual upgrade jumps. In theory, it should work without issue, as the process has been designed very carefully, but in practice, it is very easy for a very minor glitch to cause major problems that need manual resolution: in such an event, the developers would fix the problem, either directly, or by mass provision of a script, but it would be an inconvenience and could take some time.
+[/surround]
 
 [title="2"]Some words of caution[/title]
 
-ocProducts cannot make any guarantees about the speed of which any new bugs might be patched, for any upgrade. It is your own responsibility to make and test a full website backup (files and database) before you upgrade, for use in the unlikely event of you wanting to revert your upgrade.
+The developers cannot make any guarantees about the speed of which any new bugs might be patched, for any upgrade. It is your own responsibility to make and test a full website backup (files and database) before you upgrade, for use in the unlikely event of you wanting to revert your upgrade.
 Some users may wish to test upgrades (and pre-fix any theme compatibility problems that could occur) on a staging site (a private mirror of their live site).
 
-[title="3"]Special note- multi-site-networks[/title]
+[title="3"]Special note: multi-site-networks[/title]
 
 If you are using [concept]Conversr[/concept] on a M.S.N. and upgrading to a new major release then you will need to upgrade all the sites together, starting with the one that hosts the forums.
 
-[title="3"]Special note- upgrading third-party forums[/title]
+[title="3"]Special note: upgrading third-party forums[/title]
 
-If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, please [page="site:support"]contact ocProducts[/page].
+If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, commercial developers are available for such work.
 
 [title="3"]Things to check in feature/major releases[/title]
 
@@ -36,29 +39,41 @@ Be aware that a number of things can change significantly across releases. Make 
  - New features will be added, and that could possibly interfere with highly tuned layouts or site flows.
  - Minimum requirements may have changed, for example a newer version of PHP may be required as a baseline.
  - Non-bundled addons may no longer function.
-At the same time, bear in mind that fixes to security holes are not always back-ported to older releases, especially if a newer feature/major version has been out for a while. So ideally you should not stick around on old versions too long. If you want to avoid upgrading but also need to keep your site secure, you should strongly consider getting ocProducts support so that you can be kept up-to-date manually.
+At the same time, bear in mind that fixes to security holes are not always back-ported to older releases, especially if a newer feature/major version has been out for a while. So ideally you should not stick around on old versions too long. If you want to avoid upgrading but also need to keep your site secure, you should strongly consider getting a developers support (such as ocProducts) so that you can be kept up-to-date manually.
 
 [title="2"]The upgrade process[/title]
 
-The upgrade process involves a number of stages (the upgrader will step you through this):
- - taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
- - closing your website
-  - the upgrader will make it easy for you to close your site using the Composr closed-site feature
-  - however, for non-patch upgrades your website may return errors until the full upgrade process is complete, so you may wish to place your own [tt]closed.html[/tt] file on the server that shows a standalone closed-site screen. Composr will redirect to that file for all page requests for as long as it exists on your server (so it does not need to load it's database or templating system)
- - transferring new/updated files (this will copy your customised upgrade file between {$BRAND_BASE_URL} and your server, and then extract it)
-  - if your server's connection to the {$BRAND_BASE_URL} server is slow, you could download the [tt]TAR[/tt] file yourself, upload it to your own server, and then use that copy's URL in step 3
-  - on modern server environments the extraction happens in a separated framed process, so that if timeouts occur it can't leave your website in an inconsistent state
-  - if in the unlikely event that you do end up with an inconsistent state then you can download the TAR file yourself, extract it manually, and then continue; this is not ideal but the file integrity check should help remove files from uninstalled bundled addons that don't belong
- - resolve file integrity issues
-  - if you have made any Composr overrides in place you may need to change these overrides to be consistent with Composr's latest structure; or if the overrides came from addons, you may need to overwrite the addon(s) with a newer version
-  - the above guidance applies to totally new code also, such as new modules from non-bundled addons
-  - resolving any conflicts with templates, as necessary (for example, if there was a change in the verbatim version of a template, and the upgraded website had also changed that template, then changes might [depending on importance] need to be incorporated manually
-  - removing any files from previous versions of Composr that are no longer required
-  - removing any files relating to bundled addons that you have previously uninstalled
- - upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening
- - performing an automatic theme upgrade (if available for the version jump you're doing)
- - clearing caches
- - re-opening your website
+[media width="150" description="The upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade.png[/media]
+[media width="150" description="Logging into the upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade_login.png[/media]
+The upgrade process involves a number of stages (the upgrader will step you through this)...
+
+Pre-steps:
+[list="1"]
+[*] get to the upgrader, either via the upgrade link from the top-right of the Admin Zone dashboard, or going to [tt]http://yourbaseurl/upgrader.php[/tt]
+[*] log in to the upgrader using your master password (the one you set when you installed, different to your admin login) 
+[/list]
+
+Steps:
+[list="1"]
+[*] taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
+[*] closing your website
+ - the upgrader will make it easy for you to close your site using the Composr closed-site feature
+ - however, for non-patch upgrades your website may return errors until the full upgrade process is complete, so you may wish to place your own [tt]closed.html[/tt] file on the server that shows a standalone closed-site screen. Composr will redirect to that file for all page requests for as long as it exists on your server (so it does not need to load its database or templating system)
+[*] transferring new/updated files (this will copy your customised upgrade file between {$BRAND_BASE_URL} and your server, and then extract it)
+ - if your server's connection to the {$BRAND_BASE_URL} server is slow, you could download the [tt]TAR[/tt] file yourself, upload it to your own server, and then use that copy's URL in step 3
+ - on modern server environments the extraction happens in a separated framed process, so that if timeouts occur it can't leave your website in an inconsistent state
+ - if in the unlikely event that you do end up with an inconsistent state then you can download the TAR file yourself, extract it manually, and then continue; this is not ideal but the file integrity check should help remove files from uninstalled bundled addons that don't belong
+[*] resolve file integrity issues
+ - if you have made any Composr overrides in place you may need to change these overrides to be consistent with Composr's latest structure; or if the overrides came from addons, you may need to overwrite the addon(s) with a newer version
+ - the above guidance applies to totally new code also, such as new modules from non-bundled addons
+ - resolving any conflicts with templates, as necessary (for example, if there was a change in the verbatim version of a template, and the upgraded website had also changed that template, then changes might [depending on importance] need to be incorporated manually
+ - removing any files from previous versions of Composr that are no longer required
+ - removing any files relating to bundled addons that you have previously uninstalled
+[*] upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening
+[*] performing an automatic theme upgrade (if available for the version jump you're doing)
+[*] clearing caches
+[*] re-opening your website
+[/list]
 
 [title="2"]Browser cache[/title]
 
@@ -66,19 +81,45 @@ Often browsers will cache CSS and JavaScript files, even when changed on the ser
 
 [title="2"]Assistance[/title]
 
-Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]upgrader.php[/tt]) already does.
+Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]http://yourbaseurl/upgrader.php[/tt]) already does.
 
-If you require assistance for an upgrade, consider the [page="site:support"]Experts by the hour[/page] service.
+If you require assistance for an upgrade, commercial developers may be able to help.
+
+[title="2"]The integrity checker[/title]
+
+[media width="150" description="Results" float="right"]data_custom/images/docs/tut_upgrade/integrity_2.png[/media]
+[media width="150" description="Finding the integrity checker" float="right"]data_custom/images/docs/tut_upgrade/integrity_1.png[/media]
+This section contains standalone details on using the integrity checker.
+
+Composr comes with a built-in "integrity checker" which can be used to repair a corrupted copy of Composr. Integrity checker is a part of the upgrader tool. The integrity checker can be used to find outdated and corrupt files in the Composr system. You can use this tool at any point, regardless of whether you have recently upgraded or not.
+
+You must provide the master password to access the Composr upgrade tool.
+
+The integrity checker is placed in the "Step 4" of the table under the "Upgrade steps" section in upgrader tools page.
+
+The integrity checker will display the following kinds of file (if any):
+ - Files that are actually missing and need uploading
+ - Newer or modified files
+ - Alien files (unrecognised files)
+
+If you want to prove to yourself how it works, create a random php file named [tt]testfile.php[/tt] in the [tt]sources[/tt] directory of Composr and run the integrity checker again. Now it will list the new [tt]testfile.php[/tt] file in the results.
+
+This is very useful for upgrading because it helps identify old files that need removing. Generally though it is useful to make sure unexpected files don't lay around within the system causing potential problems.
+
+The integrity checker has the ability to get rid of the alien files. Check (tick) the checkbox next to the file name and press the "Automatically handle those ticked (checked) – delete/move as needed" button placed below the list of files. The selected files will be deleted or in some rare cases moved.
+
+Obviously you should be careful deleting files, as there may be legitimate reasons you have put alien files there. The upgrader is smart enough to recognise files from old versions and automatically tick (check) those, leaving the ones totally unrecognised unticked (unchecked).
 
 [concepts
- 1_key="upgrader.php"   1_value="The script that manages the upgrading process"
+ 1_key="upgrader.php"        1_value="The script that manages the upgrading process"
+ 2_key="integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
- - [page="site:commercial_support"]ocProducts commercial support services[/page]
+ - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
  - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_installation"]Advanced installation[/page]
+ - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_support"]Getting support, making requests, reporting bugs, registration, and paid consultancy[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]

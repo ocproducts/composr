@@ -159,7 +159,6 @@ class Hook_addon_registry_composr_homesite
             'themes/default/templates_custom/CMS_SITE.tpl',
             'themes/default/templates_custom/CMS_SITES_SCREEN.tpl',
             'uploads/website_specific/compo.sr/.htaccess',
-            'uploads/website_specific/compo.sr/logos',
             'uploads/website_specific/compo.sr/logos/a.png',
             'uploads/website_specific/compo.sr/logos/b.png',
             'uploads/website_specific/compo.sr/logos/choice.php',
@@ -167,12 +166,16 @@ class Hook_addon_registry_composr_homesite
             'uploads/website_specific/compo.sr/logos/index.html',
             'uploads/website_specific/compo.sr/scripts/addon_manifest.php',
             'uploads/website_specific/compo.sr/scripts/errorservice.php',
+            'uploads/website_specific/compo.sr/scripts/goto_release_notes.php',
             'uploads/website_specific/compo.sr/scripts/fetch_release_details.php',
             'uploads/website_specific/compo.sr/scripts/newsletter_join.php',
             'uploads/website_specific/compo.sr/scripts/user.php',
             'uploads/website_specific/compo.sr/scripts/version.php',
+            'uploads/website_specific/compo.sr/ad-banner.swf.zip',
             'uploads/website_specific/compo.sr/upgrades/make_upgrader.php',
-            'uploads/website_specific/compo.sr/upgrades/tarring.log',
+            'uploads/website_specific/compo.sr/index.html',
+            'cmscore.rdf',
+            'pages/minimodules_custom/contact.php',
         );
     }
 }

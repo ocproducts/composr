@@ -20,12 +20,105 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__content2()
 {
     define('META_DATA_HEADER_NO', 0);
     define('META_DATA_HEADER_YES', 1);
     define('META_DATA_HEADER_FORCE', 2);
+
+    define('ORDER_AUTOMATED_CRITERIA', 2147483647); // lowest order, shared for all who care not about order, so other SQL ordering criterias take precedence
+}
+
+/**
+ * Get an order inputter.
+ *
+ * @param  ID_TEXT $entry_type The type of resource being ordered
+ * @param  ?ID_TEXT $category_type The type of resource being ordered within (null: no categories involved)
+ * @param  ?integer $current_order The current order (null: new, so add to end)
+ * @param  ?integer $max Maximum order field (null: work out from content type meta-data)
+ * @param  ?integer $total Number of entries, alternative to supplying $max (null: work out from content type meta-data)
+ * @param  ID_TEXT $order_field The POST field to save under
+ * @param  ?Tempcode $description Description for field input (null: {!ORDER})
+ * @return Tempcode Ordering field
+ */
+function get_order_field($entry_type, $category_type, $current_order, $max = null, $total = null, $order_field = 'order', $description = null)
+{
+    $new = is_null($current_order);
+
+    $min = 0;
+
+    require_code('content');
+    $ob = get_content_object($entry_type);
+    $info = $ob->info();
+
+    $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
+
+    if (is_null($max)) {
+        $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')', null, 'WHERE ' . $order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
+        if (is_null($max)) {
+            $max = 0;
+        }
+    }
+
+    if (is_null($total)) {
+        $total = $info['connection']->query_select_value($info['table'], 'COUNT(*)');
+    }
+
+    if ($total > $max) {
+        // Need to make sure there's always enough slots to pick from
+        $max = $total - 1;
+    }
+
+    if ($new) {
+        $test = $info['connection']->query_select_value($info['table'], 'COUNT(' . $order_field . ')', null, 'WHERE ' . $order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
+
+        if ($test > 0) {
+            $current_order = ORDER_AUTOMATED_CRITERIA; // Ah, we are already in the habit of automated ordering here
+        } else {
+            $max++; // Space for new one on end
+            $current_order = $max;
+        }
+    }
+
+    if (is_null($description)) {
+        if (is_null($category_type)) {
+            $description = do_lang_tempcode('DESCRIPTION_ORDER_NO_CATS', $entry_type);
+        } else {
+            $description = do_lang_tempcode('DESCRIPTION_ORDER', $entry_type, $category_type);
+        }
+    }
+
+    if ($max > 100) {
+        // Too much for a list, so do a typed integer input
+        return form_input_integer(do_lang_tempcode('ORDER'), $description, $order_field, $current_order, false);
+    }
+
+    // List input
+    $order_list = new Tempcode();
+    for ($i = $min; $i <= $max; $i++) {
+        $selected = ($i === $current_order);
+        $order_list->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
+    }
+    $order_list->attach(form_input_list_entry('', $current_order == ORDER_AUTOMATED_CRITERIA, do_lang_tempcode('ORDER_AUTOMATED_CRITERIA')));
+    return form_input_list(do_lang_tempcode('ORDER'), $description, $order_field, $order_list, null, false, false);
+}
+
+/**
+ * Get submitted order value.
+ *
+ * @param  ID_TEXT $order_field The POST field
+ * @return integer The order value
+ */
+function post_param_order_field($order_field = 'order')
+{
+    $ret = post_param_integer($order_field, null);
+    if (is_null($ret)) {
+        $ret = ORDER_AUTOMATED_CRITERIA;
+    }
+    return $ret;
 }
 
 /**
@@ -36,7 +129,7 @@ function init__content2()
  * @param  boolean $allow_no_owner Whether to allow owner to be left blank (meaning no owner)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
  * @param  integer $show_header Whether to show a header (a META_DATA_HEADER_* constant)
- * @return tempcode Form page tempcode fragment
+ * @return Tempcode Form page Tempcode fragment
  */
 function meta_data_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = null, $show_header = 1)
 {
@@ -62,7 +155,7 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
         $views_field = in_array('views', $fields_to_skip) ? null : $info['views_field'];
         if (!is_null($views_field)) {
             $views = is_null($content_row) ? 0 : $content_row[$views_field];
-            $fields->attach(form_input_integer(do_lang_tempcode('_VIEWS'), do_lang_tempcode('DESCRIPTION_META_VIEWS'), 'meta_views', null, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('COUNT_VIEWS'), do_lang_tempcode('DESCRIPTION_META_VIEWS'), 'meta_views', null, false));
         }
 
         $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
@@ -145,7 +238,7 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
  * @param  ?ID_TEXT $content_id The old ID of the resource (null: adding)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
  * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
- * @return array A map of standard meta data fields (name to value). If adding, this map is accurate for adding. If editing, NULLs mean do-not-edit or non-editable.
+ * @return array A map of standard meta data fields (name to value). If adding, this map is accurate for adding. If editing, nulls mean do-not-edit or non-editable.
  */
 function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
 {
@@ -161,7 +254,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             'submitter' => INTEGER_MAGIC_NULL,
             'add_time' => INTEGER_MAGIC_NULL,
             'edit_time' => INTEGER_MAGIC_NULL,
-            /*'url_moniker'=>NULL,, was handled internally*/
+            /*'url_moniker' => null, was handled internally*/
         );
     }
 
@@ -171,7 +264,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             'submitter' => is_null($content_id) ? get_member() : INTEGER_MAGIC_NULL,
             'add_time' => is_null($content_id) ? time() : INTEGER_MAGIC_NULL,
             'edit_time' => time(),
-            /*'url_moniker'=>NULL,, was handled internally*/
+            /*'url_moniker' => null, was handled internally*/
         );
     }
 
@@ -215,7 +308,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
     $add_time = mixed();
     $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
     if (!is_null($add_time_field)) {
-        $add_time = get_input_date('meta_add_time');
+        $add_time = post_param_date('meta_add_time');
         if (is_null($add_time)) {
             if (is_null($content_id)) {
                 $add_time = time();
@@ -228,7 +321,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
     $edit_time = mixed();
     $edit_time_field = in_array('edit_time', $fields_to_skip) ? null : $info['edit_time_field'];
     if (!is_null($edit_time_field)) {
-        $edit_time = get_input_date('meta_edit_time');
+        $edit_time = post_param_date('meta_edit_time');
         if (is_null($edit_time)) {
             if (is_null($content_id)) {
                 $edit_time = null; // No edit time
@@ -237,6 +330,39 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             }
         }
     }
+
+    if (!is_null($content_id)) {
+        set_url_moniker($content_type, $content_id, $fields_to_skip, $new_content_id);
+    }
+
+    return array(
+        'views' => $views,
+        'submitter' => $submitter,
+        'add_time' => $add_time,
+        'edit_time' => $edit_time,
+        /*'url_moniker'=>$url_moniker, was handled internally*/
+    );
+}
+
+/**
+ * Set a URL moniker for a resource.
+ *
+ * @param  ID_TEXT $content_type The type of resource (e.g. download)
+ * @param  ID_TEXT $content_id The old ID of the resource
+ * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
+ * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
+ */
+function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
+{
+    require_lang('meta_data');
+
+    if (is_null($fields_to_skip)) {
+        $fields_to_skip = array();
+    }
+
+    require_code('content');
+    $ob = get_content_object($content_type);
+    $info = $ob->info();
 
     $url_moniker = mixed();
     if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
@@ -258,6 +384,8 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
                 }
                 if ($url_moniker != '') {
                     $url_moniker .= '/' . preg_replace('#^.*:#', '', $content_id);
+                } else {
+                    $url_moniker = null;
                 }
             } else {
                 $url_moniker = null;
@@ -315,14 +443,14 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
                         if (_request_page($test_page, $test, null, get_site_default_lang(), true) !== false) {
                             $ok = false;
                         } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', 'm_resource_page', $conflict_test_map);
+                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
                         }
                     } else {
                         $test2 = content_get_details(convert_composr_type_codes('module', $test_page, 'content_type'), $test);
                         if ($test2[0] !== null) {
                             $ok = false;
                         } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', 'm_resource_page', $conflict_test_map);
+                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
                         }
                     }
                     if (!$ok) {
@@ -414,14 +542,6 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             }
         }
     }
-
-    return array(
-        'views' => $views,
-        'submitter' => $submitter,
-        'add_time' => $add_time,
-        'edit_time' => $edit_time,
-        /*'url_moniker'=>$url_moniker, was handled internally*/
-    );
 }
 
 /**

@@ -61,10 +61,10 @@
 			<p class="associated_details">{!ALL_DATES_IN,{$TIMEZONE*}}</p>
 
 			{+START,LOOP,CATEGORIES}
-				<h2>{CATEGORY_TITLE}</h2>
+				<h2>{CATEGORY_TITLE*}</h2>
 
 				<div class="wide_table_wrap">
-					<table class="wide_table results_table spaced_table">
+					<table class="wide_table results_table columned_table spaced_table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>
@@ -92,7 +92,7 @@
 										<select name="bookable_{BOOKABLE_ID*}_quantity" id="bookable_{BOOKABLE_ID*}_quantity">
 											{$SET,quantity,0}
 											{+START,WHILE,{$LT,{$GET,quantity},{$ADD,{BOOKABLE_QUANTITY_AVAILABLE},1}}}
-												<option {+START,IF,{$EQ,{BOOKABLE_QUANTITY},{$GET,quantity}}}selected="selected" {+END}value="{$GET*,quantity}">{!UNIT_TYPE,{$NUMBER_FORMAT*,{$GET,quantity}}}</option>
+												<option{+START,IF,{$EQ,{BOOKABLE_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{!UNIT_TYPE,{$NUMBER_FORMAT*,{$GET,quantity}}}</option>
 												{$INC,quantity}
 											{+END}
 										</select>
@@ -147,7 +147,7 @@
 									{+END}
 
 									<td class="vertical_alignment">
-										{$CURRENCY_SYMBOL} {$PREG_REPLACE*,\.00$,,{BOOKABLE_PRICE}}
+										{$CURRENCY_SYMBOL}{$PREG_REPLACE*,\.00$,,{BOOKABLE_PRICE}}
 										(<a title="{!CURRENCY_CONVERT} {!LINK_NEW_WINDOW}" target="_blank" href="http://coinmill.com/SOS_calculator.html#{$CONFIG_OPTION,currency}={BOOKABLE_PRICE_RAW*}">{!CURRENCY_CONVERT}</a>)
 										{$,{$COMCODE,[currency bracket="1"]{BOOKABLE_PRICE_RAW}[/currency]}}
 										<span class="associated_details">{!BOOKING_PER}</span>

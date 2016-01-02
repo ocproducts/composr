@@ -26,7 +26,7 @@ class Mx_login extends Module_login
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -39,11 +39,11 @@ class Mx_login extends Module_login
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'GET') {
+        if (cms_srv('REQUEST_METHOD') == 'GET') {
             $redirect_url = get_value('external_login_url', null, true);
             if (!empty($redirect_url)) {
                 header('Location: ' . $redirect_url);

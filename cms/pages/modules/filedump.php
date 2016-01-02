@@ -53,7 +53,7 @@ class Module_filedump
         delete_privilege('upload_anything_filedump');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/uploads/filedump',true);
+        //deldir_contents(get_custom_file_base() . '/uploads/filedump', true);
     }
 
     /**
@@ -93,7 +93,7 @@ class Module_filedump
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -115,7 +115,7 @@ class Module_filedump
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -209,7 +209,7 @@ class Module_filedump
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -248,7 +248,7 @@ class Module_filedump
     /**
      * The main user interface for the file dump.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_gui()
     {
@@ -280,12 +280,12 @@ class Module_filedump
         $GLOBALS['FEED_URL'] = find_script('backend') . '?mode=filedump&select=' . $place;
 
         // Check directory exists
-        $fullpath = get_custom_file_base() . '/uploads/filedump' . $place;
+        $full_path = get_custom_file_base() . '/uploads/filedump' . $place;
         if (!file_exists(get_custom_file_base() . '/uploads/filedump' . $place)) {
             if (has_privilege(get_member(), 'upload_filedump')) {
-                @mkdir($fullpath, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($fullpath), escape_html(dirname($fullpath))));
-                fix_permissions($fullpath, 0777);
-                sync_file($fullpath);
+                @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($full_path), escape_html(dirname($full_path))));
+                fix_permissions($full_path, 0777);
+                sync_file($full_path);
             }
         }
 
@@ -662,7 +662,7 @@ class Module_filedump
     {
         if ($type_filter == '') {
             if ($search != '') {
-                if ((strpos(basename(strtolower($place)), strtolower($search)) !== false) || (strpos(strtolower($description), strtolower($search)) !== false)) {// Directory itself matches
+                if ((stripos(basename($place), $search) !== false) || (stripos($description, $search) !== false)) {// Directory itself matches
                     return true;
                 }
             } else {
@@ -715,7 +715,7 @@ class Module_filedump
     public function _matches_filter($filename, $_description, $search, $type_filter)
     {
         if ($search != '') {
-            if ((strpos(strtolower($filename), strtolower($search)) === false) && (strpos(strtolower($_description), strtolower($search)) === false)) {
+            if ((stripos($filename, $search) === false) && (stripos($_description, $search) === false)) {
                 return false;
             }
         }
@@ -761,7 +761,7 @@ class Module_filedump
     /**
      * The main user interface for the file dump.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_embed()
     {
@@ -776,7 +776,7 @@ class Module_filedump
 
         $generated = mixed();
         $rendered = mixed();
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+        if (cms_srv('REQUEST_METHOD') == 'POST') {
             $generated = '[media';
             $param = post_param_string('description', '');
             if ($param != '') {
@@ -832,7 +832,7 @@ class Module_filedump
 
         $fields = new Tempcode();
 
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_description'), do_lang('COMCODE_TAG_attachment_PARAM_description'), 'description', $description, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_description_TITLE'), do_lang('COMCODE_TAG_attachment_PARAM_description'), 'description', $description, false));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_type');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -840,6 +840,7 @@ class Module_filedump
         }
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', false, do_lang('MEDIA_TYPE_')));
+        require_code('media_renderer');
         $hooks = find_all_hooks('systems', 'media_rendering');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/media_rendering/' . $hook);
@@ -850,23 +851,26 @@ class Module_filedump
         foreach ($hooks as $option_val => $option_label) {
             $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('type', is_image($file) ? 'image_websafe' : '')), $option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_type'), $_description, 'type', $list, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_type_TITLE'), $_description, 'type', $list, null, false, false));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_framed'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed'), 'framed', post_param_integer('framed', 0) == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed_TITLE'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed'), 'framed', post_param_integer('framed', 0) == 1));
 
         $fields->attach(form_input_integer(do_lang_tempcode('WIDTH'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_width'), 'width', post_param_integer('width', null), false));
 
         $fields->attach(form_input_integer(do_lang_tempcode('HEIGHT'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_height'), 'height', post_param_integer('height', null), false));
 
-        /*$_description=do_lang('COMCODE_TAG_attachment_PARAM_align');
-        if (substr($_description,0,strlen($adv)+1)==$adv) $_description=substr($_description,0,strlen($adv)+1);
-        $list=new Tempcode();
-        foreach (explode('|',$_description) as $option)
-        {
-            list($option_val,$option_label)=explode('=',$option,2);
-            $list->attach(form_input_list_entry($option_val,($option_val==post_param_string('align','')),$option_label));
+        /*
+        $_description = do_lang('COMCODE_TAG_attachment_PARAM_align');
+        if (substr($_description, 0, strlen($adv) + 1) == $adv) {
+            $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_align'),'','align',$list,NULL,false,false));*/
+        $list = new Tempcode();
+        foreach (explode('|', $_description) as $option) {
+            list($option_val, $option_label) = explode('=', $option, 2);
+            $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('align', '')), $option_label));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_align_TITLE'), '', 'align', $list, null, false, false));
+        */
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_float');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -877,7 +881,7 @@ class Module_filedump
             list($option_val, $option_label) = explode('=', $option, 2);
             $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('float', '')), $option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_float'), '', 'float', $list, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_float_TITLE'), '', 'float', $list, null, false, false));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_thumb');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -885,16 +889,16 @@ class Module_filedump
         }
         $_description = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $_description);
         $thumb_ticked = true;
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+        if (cms_srv('REQUEST_METHOD') == 'POST') {
             $thumb_ticked = (post_param_integer('thumb', 0) == 1);
         }
-        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_thumb'), ucfirst(substr($_description, 12)), 'thumb', $thumb_ticked));
+        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_TITLE'), ucfirst(substr($_description, 12)), 'thumb', $thumb_ticked));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_thumb_url');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
             $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_thumb_url'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
 
         $form = do_template('FORM', array(
             'FIELDS' => $fields,
@@ -960,7 +964,7 @@ class Module_filedump
     /**
      * The actualiser for handling mass actions.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_mass()
     {
@@ -1126,7 +1130,7 @@ class Module_filedump
                                 'path' => substr($place, 0, 80),
                                 'the_member' => get_member(),
                             );
-                            $map += insert_lang_comcode('description', $description, 3);
+                            $map += insert_lang('description', $description, 3);
                             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
                         }
                         break;
@@ -1185,7 +1189,7 @@ class Module_filedump
     /**
      * The actualiser for adding a folder.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_add_folder()
     {
@@ -1219,7 +1223,7 @@ class Module_filedump
             'path' => substr($place, 0, 80),
             'the_member' => get_member(),
         );
-        $map += insert_lang_comcode('description', $description, 3);
+        $map += insert_lang('description', $description, 3);
         $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
         log_it('FILEDUMP_CREATE_FOLDER', $name, $place);
@@ -1230,7 +1234,7 @@ class Module_filedump
     /**
      * The actualiser for uploading a file.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_upload()
     {
@@ -1238,8 +1242,8 @@ class Module_filedump
             access_denied('I_ERROR');
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
         }
 
         $place = filter_naughty(post_param_string('place'));
@@ -1254,7 +1258,7 @@ class Module_filedump
             if ((!is_plupload()) && (!is_uploaded_file($file['tmp_name']))) {
                 $max_size = get_max_file_size();
                 if (($file['error'] == 1) || ($file['error'] == 2)) {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                 } elseif ((isset($file)) && (($file['error'] == 3) || ($file['error'] == 6) || ($file['error'] == 7))) {
                     warn_exit(do_lang_tempcode('ERROR_UPLOADING_' . strval($file['error'])));
                 } else {
@@ -1277,7 +1281,7 @@ class Module_filedump
             // Too big?
             $max_size = get_max_file_size();
             if ($file['size'] > $max_size) {
-                attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format(intval($max_size))), 'warn');
+                attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(intval($max_size)))), 'warn');
                 continue;
             }
 
@@ -1310,13 +1314,13 @@ class Module_filedump
                 'path' => substr($place, 0, 80),
                 'the_member' => get_member(),
             );
-            $map += insert_lang($description['description'], 3);
+            $map += insert_lang('description', $description, 3);
             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
             // Logging etc
             require_code('notifications');
             $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $place);
-            $mail = do_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
+            $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
             dispatch_notification('filedump', $place, $subject, $mail);
             log_it('FILEDUMP_UPLOAD', $filename, $place);
             require_code('users2');
@@ -1339,7 +1343,7 @@ class Module_filedump
     /**
      * Find URLs referenced that are broken.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function broken()
     {
@@ -1387,7 +1391,7 @@ class Module_filedump
     /**
      * Fix URLs referenced that are broken.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _broken()
     {

@@ -41,7 +41,7 @@ class Module_cms_cns_groups extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -58,7 +58,7 @@ class Module_cms_cns_groups extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -75,7 +75,7 @@ class Module_cms_cns_groups extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -102,7 +102,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -117,7 +117,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a adding/editing form.
+     * Get Tempcode for a adding/editing form.
      *
      * @param  ?GROUP $id The usergroup being edited (null: adding, not editing, and let's choose the current member)
      * @param  SHORT_TEXT $name The usergroup name
@@ -196,7 +196,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -245,7 +245,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     {
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), array('id' => intval($id), 'g_is_private_club' => 1));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
         }
         $myrow = $rows[0];
 
@@ -303,7 +303,8 @@ class Module_cms_cns_groups extends Standard_crud_module
             }
         }
         $is_threaded = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_is_threaded', array('id' => $forum));
-        $forum_id = cns_make_forum($name, do_lang('FORUM_FOR_CLUB', $name), $cat, $access_mapping, $forum, 1, 1, 0, '', '', '', 'last_post', $is_threaded);
+        $allows_anonymous_posts = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_allows_anonymous_posts', array('id' => $forum));
+        $forum_id = cns_make_forum($name, do_lang('FORUM_FOR_CLUB', $name), $cat, $access_mapping, $forum, 1, 1, 0, '', '', '', 'last_post', $is_threaded, $allows_anonymous_posts);
         $this->_set_permissions($id, $forum_id);
 
         require_code('cns_groups_action2');
@@ -352,7 +353,7 @@ class Module_cms_cns_groups extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return ?tempcode Confirm message (null: continue)
+     * @return ?Tempcode Confirm message (null: continue)
      */
     public function edit_actualisation($id)
     {

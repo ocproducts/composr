@@ -46,7 +46,7 @@ class Module_cms_authors
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -82,7 +82,7 @@ class Module_cms_authors
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -133,7 +133,7 @@ class Module_cms_authors
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -164,7 +164,7 @@ class Module_cms_authors
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -183,7 +183,7 @@ class Module_cms_authors
     /**
      * The UI to add an author.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -212,11 +212,14 @@ class Module_cms_authors
             if (get_forum_type() == 'cns') {
                 require_code('cns_members');
                 require_lang('cns');
+                require_lang('cns_special_cpf');
                 $info = cns_get_all_custom_fields_match_member(get_member());
-                if (array_key_exists(do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME'), $info)) {
-                    $description = $info[do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME')]['RENDERED'];
-                    if (is_object($description)) {
-                        $description = $description->evaluate();
+                if (array_key_exists(do_lang('DEFAULT_CPF_about_NAME'), $info)) {
+                    $_description = $info[do_lang('DEFAULT_CPF_about_NAME')]['RENDERED'];
+                    if (is_object($_description)) {
+                        $description = $_description->evaluate();
+                    } else {
+                        $description = $_description;
                     }
                 }
             }
@@ -244,48 +247,51 @@ class Module_cms_authors
         }
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR_URL'), do_lang_tempcode('DESCRIPTION_AUTHOR_URL'), 'url', $url, false));
         $fields->attach(form_input_line_comcode(do_lang_tempcode('SKILLS'), do_lang_tempcode('DESCRIPTION_SKILLS'), 'skills', $skills, false));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'), 'description', $description, false));
+
+        $specialisation2 = new Tempcode();
 
         if (has_privilege(get_member(), 'edit_midrange_content', 'cms_authors')) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => !is_null($handle), 'TITLE' => do_lang_tempcode('ADVANCED'))));
-            $fields->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', is_null($handle) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => !is_null($handle), 'TITLE' => do_lang_tempcode('ADVANCED'))));
+            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', is_null($handle) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
         } else {
             $hidden->attach(form_input_hidden('member_id', strval($handle)));
         }
 
         require_code('fields');
         if (has_tied_catalogue('author')) {
-            append_form_custom_fields('author', $author, $fields, $hidden);
+            append_form_custom_fields('author', $author, $specialisation2, $hidden);
         }
 
         require_code('seo2');
-        $fields->attach(seo_get_fields('authors', $author));
+        $specialisation2->attach(seo_get_fields('authors', $author));
 
         // Awards?
         if (addon_installed('awards')) {
             require_code('awards');
-            $fields->attach(get_award_fields('author', $author));
+            $specialisation2->attach(get_award_fields('author', $author));
         }
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
-            $fields->attach(content_review_get_fields('author', $author));
+            $specialisation2->attach(content_review_get_fields('author', $author));
         }
 
         if ($may_delete) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '8a83b3253a6452c90e92699d629b9d03', 'TITLE' => do_lang_tempcode('ACTIONS'))));
-            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '8a83b3253a6452c90e92699d629b9d03', 'TITLE' => do_lang_tempcode('ACTIONS'))));
+            $specialisation2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
         }
 
         url_default_parameters__disable();
 
-        return do_template('FORM_SCREEN', array('_GUID' => '1d71c934e3e23fe394f5611191089630', 'PREVIEW' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        $posting_form = get_posting_form($submit_name, 'buttons__save', $description, $post_url, $hidden, $fields, do_lang_tempcode('DESCRIPTION'), '', $specialisation2, null, null, null, false, true, false, true, false, do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'));
+
+        return do_template('POSTING_SCREEN', array('_GUID' => '1d71c934e3e23fe394f5611191089630', 'TITLE' => $this->title, 'POSTING_FORM' => $posting_form));
     }
 
     /**
      * The actualiser to add an author.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __ad()
     {
@@ -332,7 +338,9 @@ class Module_cms_authors
 
             $meta_data = actual_meta_data_get_fields('author', null);
 
-            add_author($author, $url, $member_id, post_param_string('description'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
+            add_author($author, $url, $member_id, post_param_string('post'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
+
+            set_url_moniker('author', strval($author));
 
             require_code('fields');
             if (has_tied_catalogue('author')) {
@@ -356,10 +364,10 @@ class Module_cms_authors
     /**
      * The do-next manager for after author content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?SHORT_TEXT $author The author we were working with (null: not working with one)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $author = null)
     {
@@ -388,7 +396,7 @@ class Module_cms_authors
     /**
      * The UI to edit an author (effectively deleting and re-adding them).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -420,7 +428,7 @@ class Module_cms_authors
     /**
      * The actualiser to merge two authors.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _merge()
     {
@@ -438,7 +446,7 @@ class Module_cms_authors
      * Get a list of authors.
      *
      * @param  ?ID_TEXT $it The author to select by default (null: no specific default)
-     * @return tempcode The list
+     * @return Tempcode The list
      */
     public function create_selection_list_authors($it = null)
     {

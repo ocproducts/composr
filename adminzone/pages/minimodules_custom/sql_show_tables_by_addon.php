@@ -7,9 +7,15 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    db_schema
+ */
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-require_code('relations');
+require_code('database_relations');
 $table_descriptions = get_table_descriptions();
 $relation_map = get_relation_map();
 
@@ -31,8 +37,9 @@ foreach ($tables_by as $t => $ts) {
         foreach ($fields as $field) {
             $type = str_replace('?', '', str_replace('*', '', $field['m_type']));
             $extra = '';
-            if (isset($relation_map[$table . '.' . $field['m_name']])) {
-                $extra .= ' ( &rarr; <strong>' . escape_html($relation_map[$table . '.' . $field['m_name']]) . '</strong>)';
+            if (array_key_exists($relation_map, $table . '.' . $field['m_name'])) {
+                $relation = $relation_map[$table . '.' . $field['m_name']];
+                $extra .= ' ( &rarr; <strong>' . escape_html(is_null($relation) ? '*' : $relation) . '</strong>)';
             }
             if (strpos($field['m_type'], '*') !== false) {
                 $extra .= ' (<span style="text-decoration: underline"">Key field</span>)';

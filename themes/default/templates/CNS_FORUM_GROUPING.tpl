@@ -26,10 +26,8 @@
 
 				<thead>
 					<tr>
-						{+START,IF,{$NOT,{$MOBILE}}}
-							<th class="cns_forum_box_left"></th>
-						{+END}
-						<th{+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
+						<th class="ocf_forum_box_left"></th>
+						<th>
 							{!FORUM_NAME}
 						</th>
 						{+START,IF,{$NOT,{$MOBILE}}}

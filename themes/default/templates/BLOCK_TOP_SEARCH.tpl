@@ -2,8 +2,8 @@
 	{$HIDDENS_FOR_GET_FORM,{URL}}
 
 	<div class="inline">
-		<label class="accessibility_hidden" for="search_content">{!SEARCH}</label>
-		<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" size="20" maxlength="255" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="search_content" name="content" value="" /><input class="buttons__search button_micro" type="submit" value="{!SEARCH}" />
+		<label class="accessibility_hidden" for="top_search_content">{!SEARCH}</label>
+		<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="top_search_content" name="content" value="" /><input class="buttons__search button_micro" type="submit" value="{!SEARCH}" />
 
 		{+START,LOOP,LIMIT_TO}
 			<input type="hidden" name="{_loop_var*}" value="1" />

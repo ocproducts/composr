@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__zones2()
 {
@@ -35,7 +37,7 @@ function init__zones2()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode Rendered box
+ * @return Tempcode Rendered box
  */
 function render_comcode_page_box($row, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -98,6 +100,8 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
  */
 function actual_add_zone($zone, $title, $default_page = 'start', $header_text = '', $theme = 'default', $require_session = 0, $uniqify = false, $base_url = '')
 {
+    require_lang('zones');
+
     require_code('type_sanitisation');
     if (!is_alphanumeric($zone, true)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
@@ -112,7 +116,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
     if (!is_null($test)) {
         if (file_exists(get_file_base() . '/' . $zone)) { // Ok it's here completely, so we can't create
             if ($uniqify) {
-                $zone .= '_' . uniqid('', true);
+                $zone .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($zone)));
             }
@@ -137,7 +141,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
             afm_make_directory($zone . '/pages/html_custom/' . $lang, true, true);
             afm_make_directory($zone . '/pages/html/' . $lang, false, true);
         }
-        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/site/index.php'), false);
+        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/adminzone/index.php'), false);
         if (file_exists(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess')) {
             afm_make_file($zone . '/pages/.htaccess', file_get_contents(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess'), false);
         }
@@ -145,7 +149,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
                            'pages/html', 'pages/html/EN', 'pages/html_custom', 'pages/html_custom/EN',
                            'pages/modules', 'pages/modules_custom', 'pages');
         foreach ($index_php as $i) {
-            afm_make_file($zone . '/' . $i . '/index.html', '', false);
+            afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/index.html', '', false);
         }
         afm_make_file($zone . '/pages/comcode_custom/EN/panel_right.txt', '', true);
         $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
@@ -190,7 +194,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('zone', $zone, null, null, true);
+        generate_resource_fs_moniker('zone', $zone, null, null, true);
     }
 
     save_zone_base_url($zone, $base_url);
@@ -215,15 +219,23 @@ function save_zone_base_url($zone, $base_url)
     @flock($tmp, LOCK_UN);
     fclose($tmp);
     $config_file_before = $config_file;
-    $config_file = preg_replace('#\n?\$SITE_INFO[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\']=array\(\'[^\']+\',\'[^\']+\'\);\n?#', '', $config_file); // Strip any old entry
+
+    $regexp = '#\n?\$SITE_INFO\[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\'\] = array\(\'[^\']+\', \'[^\']+\'\);\n?#';
+    $config_file = preg_replace($regexp, '', $config_file); // Strip any old entry
+
     if ($base_url != '') { // Add new entry, if appropriate
-        $parsed = @parse_url($base_url);
-        if ($parsed === false) {
-            warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
+        if (url_is_local($base_url)) {
+            $domain = cms_srv('HTTP_HOST');
+            $path = $base_url;
+        } else {
+            $parsed = @parse_url($base_url);
+            if ($parsed === false) {
+                warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
+            }
+            $domain = $parsed['host'];
+            $path = $parsed['path'];
         }
-        $domain = $parsed['host'];
-        $path = $parsed['path'];
-        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "']=array('" . addslashes($domain) . "','" . addslashes(trim($path, '/')) . "');\n";
+        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
     }
 
     if ($config_file != $config_file_before) {
@@ -448,7 +460,8 @@ function cleanup_block_name($block)
     }
 
     $block = str_replace('_cns_', '_', $block);
-    return titleify(str_replace('block_bottom_', 'Bottom: ', str_replace('block_side_', 'Side: ', str_replace('block_main_', 'Main: ', $block))));
+    $block = preg_replace('#^(main|side|top|bottom)_#', '', $block);
+    return titleify($block);
 }
 
 /**
@@ -462,7 +475,16 @@ function get_block_parameters($block)
     $block_path = _get_block_path($block);
     $info = extract_module_info($block_path);
     if (is_null($info)) {
-        return array();
+        $params = array();
+
+        $contents = file_get_contents($block_path);
+        $matches = array();
+        $num_matches = preg_match_all('#\$map\[\'(\w+)\'\]#', $contents, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $params[$matches[1][$i]] = true;
+        }
+
+        return array_diff(array_keys($params), array('cache'));
     }
 
     $ret = array_key_exists('parameters', $info) ? $info['parameters'] : array();
@@ -655,6 +677,7 @@ function extract_module_info($path)
  * @set 0 1 2
  * @param  ?ID_TEXT $page_type Page type to show (null: all)
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = false, $show_method = 0, $page_type = null)
 {
@@ -716,6 +739,7 @@ function _find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects =
  * @set 0 1 2
  * @param  ?boolean $custom Whether to search under the custom-file-base (null: auto-decide)
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cutoff_time = null, $show_method = 0, $custom = null)
 {
@@ -815,6 +839,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
  *
  * @param  ID_TEXT $zone The zone name
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_modules($zone)
 {

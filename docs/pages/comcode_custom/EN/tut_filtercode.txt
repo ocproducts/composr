@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Filtering using Filtercode syntax[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Filtercode syntax[/title]
 
 Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. It is not to be confused with Selectcode, which is the language for determining what categories to return results from.
 
@@ -7,18 +7,18 @@ Composr contains a filtering system for selecting content based upon defined fil
 [title="2"]An introductory example[/title]
 
 An Filtercode filter string consists of comparisons, separated by commas. Here is an example:
-[codebox]
+[code="Filtercode"]
 something=value,somethingelse>value
-[/codebox]
+[/code]
 This defines two comparisons. Both must hold true for any result returned (i.e. they are ANDd).
 
-In this example, the first is an '=' comparison, and the second is an '>' comparison. Anyone who knows very basic maths will understand what these mean.
+In this example, the first is an [tt]=[/tt] comparison, and the second is an [tt]>[/tt] comparison. Anyone who knows very basic maths will understand what these mean.
 
-'something' and 'somethingelse' would be database field names for the main database table of whatever content type is being filtered.
+[tt]something[/tt] and [tt]somethingelse[/tt] would be database field names for the main database table of whatever content type is being filtered.
 
 [title="2"]The full language[/title]
 
-[box="Security note" width="25em" float="right"]For security reasons, some fields are not available to Filtercode, such as password fields[/box]The field names must match field names in the content type's main database table, or one of the following special values:
+The field names must match field names in the content type's main database table, or one of the following special values:
  - [tt]average_rating[/tt] (the rating)
  - [tt]compound_rating[/tt] (popularity: what has been given most likes/stars by summing up all ratings -- something with lots of 2 star ratings would be more 'popular' than something with only a few 5 star ratings)
  - [tt]meta_keywords[/tt] (the SEO keywords / tagging)
@@ -26,19 +26,89 @@ In this example, the first is an '=' comparison, and the second is an '>' compar
  - [tt]field_<id>[/tt] (custom fields, where [tt]<id>[/tt] is the field ID of the custom field)
 You are allowed to specify that comparisons may work on multiple fields, by separating field names with pipe ([tt]|[/tt]) symbols. This is particular useful for a search filter, to make the typed string look across multiple fields.
 
-[box="GET/POST?" width="25em" float="right"]GET/POST parameters are the technical name for how parameters are passed to web pages. The [tt]&something=value[/tt] stuff you see in URLs are GET parameters, and POST parameters are what forms pass around behind-the-scenes.[/box]We support the following comparison types:
- - [tt]<[/tt] (Less than)
- - [tt]>[/tt] (Greater than)
- - [tt]<=[/tt] (Less than or equal to)
- - [tt]>=[/tt] (Greater than or equal to)
- - [tt]=[/tt] (Equal to, where blank means skip)
- - [tt]==[/tt] (Equal to, where blank means literally a blank value will be matched)
- - [tt]<>[/tt] (Not equal to, where blank means skip)
- - [tt]!=[/tt] (Not equal to, where blank means literally a blank value cannot be matched)
- - [tt]~=[/tt] (Contains substring)
- - [tt]~[/tt] (Seems to match, according to database full-text search matching; minimum of 4 search characters required, matches words not substrings, inexact matching)
- - [tt]@[/tt] (Falls within a range, e.g. 1-4)
- - [tt]#[/tt] (Value on the right is within the comma-separated list field referenced on the left)
+We support the following comparison types...
+[surround="right float_separation"]
+
+[box="Security note" width="25em"]
+For security reasons, some fields are not available to Filtercode, such as password fields
+[/box]
+
+[box="GET/POST?" width="25em"]
+GET/POST parameters are the technical name for how parameters are passed to web pages. The [tt]&something=value[/tt] stuff you see in URLs are GET parameters, and POST parameters are what forms pass around behind-the-scenes.
+[/box]
+[/surround]
+[html]
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol</th>
+			<th>Meaning</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>&lt;</td>
+			<td>Less than</td>
+		</tr>
+
+		<tr>
+			<td>&gt;</td>
+			<td>Greater than</td>
+		</tr>
+
+		<tr>
+			<td>&lt;=</td>
+			<td>Less than or equal to</td>
+		</tr>
+
+		<tr>
+			<td>&gt;=</td>
+			<td>Greater than or equal to</td>
+		</tr>
+
+		<tr>
+			<td>=</td>
+			<td>Equal to, where blank means skip</td>
+		</tr>
+
+		<tr>
+			<td>==</td>
+			<td>Equal to, where blank means literally a blank value will be matched</td>
+		</tr>
+
+		<tr>
+			<td>&lt;&gt;</td>
+			<td>Not equal to, where blank means skip</td>
+		</tr>
+
+		<tr>
+			<td>!=</td>
+			<td>Not equal to, where blank means literally a blank value cannot be matched</td>
+		</tr>
+
+		<tr>
+			<td>~=</td>
+			<td>Contains substring</td>
+		</tr>
+
+		<tr>
+			<td>~</td>
+			<td>Seems to match, according to database full-text search matching; minimum of 4 search characters required, matches words not substrings, inexact matching</td>
+		</tr>
+
+		<tr>
+			<td>@</td>
+			<td>Falls within a range, e.g. 1-4</td>
+		</tr>
+
+		<tr>
+			<td>#</td>
+			<td>Value on the right is within the comma-separated list field referenced on the left</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
 
 The comparison value can either by given directly, like in the introductory example, or it can be written like [tt]<name>[/tt], which will tell it to look within a GET/POST parameter called [tt]filter_<name>[/tt]. This is the mechanism by which you hook up forms to the filter strings.
 
@@ -65,6 +135,8 @@ This would find all locations that was a venue for an event performed by Justin 
 
 [title="2"]Where the filters can be used[/title]
 
+[surround]
+[media width="150" description="An automatic news filter form" float="right"]data_custom/images/docs/tut_filtercode/filtercode_main_content_filtering.png[/media]
 There is an Filtercode-based parameter for the following blocks:
  - [tt]main_multi_content[/tt]
  - [tt]main_gallery_embed[/tt]
@@ -82,7 +154,6 @@ As explained above, Filtercode works by reading GET/POST parameters and matching
 
 [title="2"]Generating filters[/title]
 
-[media width="150" description="Inspecting the block's HTML to get the auto-generated Filtercode filter string, which we'll use as a starting point" float="right"]data_custom/images/docs/filtercode_html[/media][media width="150" description="An automatic news filter form" float="right"]filtercode_main_content_filtering.png[/media]
 The concept of writing Filtercode filter strings, and matching forms, can be a bit daunting. This is why the [tt]main_content_filtering[/tt] block exists. It will automatically construct filters and forms for content types.
 
 You don't actually need to use this block in production at all. It is a good way to build up a default form, which you can then get HTML from as a starting point.
@@ -90,24 +161,28 @@ You don't actually need to use this block in production at all. It is a good way
 There are two steps in getting your HTML ready:
 1) Show the block for your content type, with no parameters
 2) Grab the auto-generated Filtercode filter string and customise it, then show the block using your customised filter
+[/surround]
 
-
+[surround]
+[media width="150" description="Inspecting the block's HTML to get the auto-generated Filtercode filter string, which we'll use as a starting point" float="right"]data_custom/images/docs/tut_filtercode/filtercode_html.png[/media]
 Once you have built a default form for a content type, inspect the HTML to get the auto-generated [tt]active_filter[/tt] value (see the image above).
 
 In our case the auto-generated Filtercode filter string was:
-[codebox]
+[code="Filtercode"]
 allow_comments<allow_comments_op><allow_comments>,allow_rating<allow_rating_op><allow_rating>,allow_trackbacks<allow_trackbacks_op><allow_trackbacks>,author<author_op><author>,date_and_time<date_and_time_op><date_and_time>,edit_date<edit_date_op><edit_date>,news<news_op><news>,news_article<news_article_op><news_article>,news_views<news_views_op><news_views>,notes<notes_op><notes>,submitter<submitter_op><submitter>,title<title_op><title>,validated<validated_op><validated>,average_rating<average_rating_op><average_rating>,meta_keywords<meta_keywords_op><meta_keywords>,meta_description<meta_description_op><meta_description>
-[/codebox]
+[/code]
 
 We will take that and modify it. In this case I think the following filter is much better:
-[codebox]
+[code="Filtercode"]
 author~=<author>,date_and_time><date_and_time>,news|news_article|title|meta_keywords|meta_description~=<news>,submitter=<submitter>,average_rating>=<average_rating>
-[/codebox]
+[/code]
 
-[media width="150" description="A refined filter form" float="right"]data_custom/images/docs/filtercode_refined_filter.png[/media]We then feed into the block's "param" setting to get our refined filter form (see the image below).
+We then feed into the block's [tt]param[/tt] setting to get our refined filter form (see the image below).
+[/surround]
 
 [title="2"]Putting the filter form into the site[/title]
 
+[media width="150" description="A refined filter form" float="right"]data_custom/images/docs/tut_filtercode/filtercode_refined_filter.png[/media]
 If we are happy with how our refined filter form looks, we can continue with the [tt]main_content_filtering[/tt] block.
 Otherwise, we can grab the HTML that the block output and tune it. The only thing that Composr needs is the GET/POST fields to match what the Filtercode filter string wants, otherwise you can use whatever HTML you want.
 
@@ -115,17 +190,17 @@ We'll assume we'll continue to use the [tt]main_content_filtering[/tt] block for
 
 [title="3"]Putting into a panel[/title]
 
-If you want to place a filter on the news page, with it shown in a panel only on the news page, you'd put something like this into your panel's Comcode:
-[codebox]
+If you want to place a filter on the [tt]news[/tt] module, with it shown in a panel only on the [tt]news[/tt] module, you'd put something like this into your panel's Comcode:
+[code="Comcode"]
 {+START,IF,{$MATCH_KEY_MATCH,site:news}}[block="author~=<author>,date_and_time><date_and_time>,news|news_article|title|meta_keywords|meta_description~=<news>,submitter=<submitter>,average_rating>=<average_rating>" content_type="news" labels="date_and_time=Newer than,news=Containing,submitter=Submitted by,average_rating=Minimum rating" types="date_and_time=days"]main_content_filtering[/block]{+END}
-[/codebox]
+[/code]
 
 [title="3"]Putting into a news template[/title]
 
-If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCREEN[/tt] template and add:
-[codebox]
+If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCREEN.tpl[/tt] template and add:
+[code="Tempcode"]
 {$BLOCK,block=main_content_filtering,param=author~=<author>\,date_and_time><date_and_time>\,news|news_article|title|meta_keywords|meta_description~=<news>\,submitter=<submitter>\,average_rating>=<average_rating>,content_type=news,labels=date_and_time=Newer than\,news=Containing\,submitter=Submitted by\,average_rating=Minimum rating,types=date_and_time=days}
-[/codebox]
+[/code]
 
 [concepts
  0_key="Filtercode"  0_value="Composr's syntax for filtering returned content"
@@ -136,7 +211,7 @@ If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCR
  - [page="_SEARCH:tut_fields_filter"]The form field filter system[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 
 {$SET,tutorial_tags,Power tools,expert}{$SET,tutorial_add_date,Aug 2010}{$SET,tutorial_summary,How to filter content based upon field filtering queries.}[block]main_tutorial_rating[/block]

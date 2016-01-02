@@ -34,7 +34,7 @@ class Hook_config_chat_transitory_alert_time
             'human_name' => 'CHAT_TRANSITORY_ALERT_TIME',
             'type' => 'integer',
             'category' => 'FEATURE',
-            'group' => 'CHAT',
+            'group' => 'SECTION_CHAT',
             'explanation' => 'CONFIG_OPTION_chat_transitory_alert_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

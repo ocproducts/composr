@@ -44,7 +44,7 @@ class forum_test_set extends cms_test_case
 
     public function testEditForum()
     {
-        cns_edit_forum($this->forum_id, 'TestEdit', 'Test', db_get_first_id(), db_get_first_id(), 1, 1, 0, '', '', '', 'last_post', 0, false);
+        cns_edit_forum($this->forum_id, 'TestEdit', 'Test', db_get_first_id(), db_get_first_id(), 1, 1, 0, '', '', '', 'last_post', 0, 0, false);
         $this->assertTrue('TestEdit' == $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $this->forum_id)));
     }
 

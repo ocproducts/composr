@@ -28,8 +28,8 @@ function upgrade_script()
     require_lang('upgrade');
     require_code('database_action');
     require_code('config2');
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if ((array_key_exists('given_password', $_POST))) {
@@ -99,6 +99,7 @@ function upgrade_script()
                         $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
+                        secure_serialized_data($news);
                         $details = unserialize($news);
                         if ($details[0] != '') {
                             $l_refer_release_notes = $details[0] . '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
@@ -229,8 +230,8 @@ function upgrade_script()
                     appengine_live_guard();
 
                     require_code('tar');
-                    if (function_exists('set_time_limit')) {
-                        @set_time_limit(0);
+                    if (php_function_allowed('set_time_limit')) {
+                        set_time_limit(0);
                     }
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
@@ -245,7 +246,7 @@ function upgrade_script()
                         fclose($myfile);
                     }
                     $upgrade_resource = tar_open($temp_path, 'rb');
-                    //tar_extract_to_folder($upgrade_resource,'',true);
+                    //tar_extract_to_folder($upgrade_resource, '', true);
                     disable_php_memory_limit();
                     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB
                     $data = array('todo' => array());
@@ -319,7 +320,7 @@ function upgrade_script()
                             //  - it's some file not in an addon (shouldn't actually happen)
                             //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported mod file, and not showing up as uninstalled in log)
                             //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_value_if_there('adminlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     afm_make_directory($upgrade_file['path'], false, true);
                                 } else {
@@ -531,7 +532,11 @@ function fu_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="buttons__proceed button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
+    $class = 'buttons__proceed';
+    if ($text == do_lang('MORE_OPTIONS')) {
+        $class = 'buttons__back';
+    }
+    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
 }
 
 /**
@@ -551,7 +556,7 @@ function up_do_login($message = null)
     }
     if (is_null($ftp_username)) {
         if (!array_key_exists('ftp_username', $SITE_INFO)) {
-            if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+            if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 $ftp_username = $u_info['name'];
             } else {
@@ -785,13 +790,16 @@ function check_perms()
                 }
             }
         }
-        /*if (strpos($chmod,'themes/default')!==false) // chmod ALL theme files
-        {
-            foreach (array_keys($themes) as $theme)
-            {
-                    $_chmod=str_replace('themes/default','themes/'.$theme,$chmod);
-                    if (!file_exists(get_file_base().'/'.$_chmod)) continue;
-                    if (!is_writable_wrap(get_file_base().'/'.$_chmod)) $out.='<li>'.do_lang('FU_NEEDS_CHMOD','<kbd>'.escape_html($_chmod).'</kbd>').'</li>';
+        /*
+        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files
+            foreach (array_keys($themes) as $theme) {
+                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
+                if (!file_exists(get_file_base() . '/' . $_chmod)) {
+                    continue;
+                }
+                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                    $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($_chmod) . '</kbd>') . '</li>';
+                }
             }
         } else
         {*/
@@ -859,14 +867,16 @@ function fix_perms()
                 }
             }
         }
-        /*if (strpos($chmod,'themes/default')!==false)
-        {
-            foreach (array_keys($themes) as $theme)
-            {
-                    $_chmod=str_replace('themes/default','themes/'.$theme,$chmod);
-                    if (!file_exists(get_file_base().'/'.$_chmod)) continue;
-                    if (!is_writable_wrap(get_file_base().'/'.$_chmod))
-                            afm_set_perms($_chmod,true);
+        /*
+        if (strpos($chmod,'themes/default') !== false) {
+            foreach (array_keys($themes) as $theme) {
+                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
+                if (!file_exists(get_file_base() . '/' . $_chmod)) {
+                    continue;
+                }
+                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                    afm_set_perms($_chmod, true);
+                }
             }
         } else
         {*/
@@ -961,10 +971,8 @@ function check_excess_perms($array, $rel = '')
 
             $relpath = $rel . (($rel == '') ? '' : '/') . $file;
             $ok = (in_array($relpath, $array)) || (in_array(preg_replace('#^[^/]+/#', 'site/', $relpath), $array)) || (in_array(preg_replace('#^themes/[^/]+/#', 'themes/default/', $relpath), $array));
-            if ((is_writable_wrap($dir . $file)) && ((!function_exists('posix_getuid')) || (fileowner($dir . $file) != posix_getuid()))) {
-                if (!$ok) {
-                    $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
-                }
+            if ((php_function_allowed('posix_getuid')) && (!$ok) && (is_writable_wrap($dir . $file)) && (fileowner($dir . $file) != posix_getuid())) {
+                $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
             }
 
             if (($is_dir) && (!$ok)) {
@@ -1010,20 +1018,20 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     if ($master_data === false) {
         $master_data = array();
     }
-    $hook_keys = array_keys($hooks);
     $hook_files = array();
-    foreach ($hook_keys as $hook) {
-        if (!isset($master_data['sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php'])) {
-            continue; // Old addon
+    foreach ($hooks as $hook => $hook_type) {
+        if ($hook_type != 'sources_custom') {
+            if (!isset($master_data['sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php'])) {
+                continue; // Old addon
+            }
         }
 
-        $path = get_custom_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+        $path = get_custom_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
         if (!file_exists($path)) {
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+            $path = get_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
         }
         $hook_files[$hook] = file_get_contents($path);
     }
-    unset($hook_keys);
 
     // Moved module handling
     if ($basic) {
@@ -1061,19 +1069,11 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     unset($hook_files);
     sort($files_to_check);
     foreach ($files_to_check as $file) {
-        if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+        if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
             continue;
         }
 
-        if (preg_match('#^[^/]+\.tpl$#', $file) != 0) {
-            $real_file = 'themes/default/templates/' . $file;
-        } elseif (preg_match('#^[^/]+\.css$#', $file) != 0) {
-            $real_file = 'themes/default/css/' . $file;
-        } else {
-            $real_file = $file;
-        }
-
-        if ((!isset($master_data[$real_file])) && (strpos($real_file, '_custom') !== false)) {
+        if ((!isset($master_data[$file])) && (strpos($file, '_custom') !== false)) {
             continue; // These won't be in the manifest
         }
         if ($file == 'data/files.dat') {
@@ -1086,32 +1086,32 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             continue; // May be renamed
         }
 
-        $file_info = @$master_data[$real_file];
+        $file_info = @$master_data[$file];
 
-        if (!file_exists(get_file_base() . '/' . $real_file)) {
-            if (!in_array(get_file_base() . '/' . $real_file, $not_missing)) {
-                $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>';
-                $files_determined_to_upload[] = $real_file;
+        if (!file_exists(get_file_base() . '/' . $file)) {
+            if (!in_array(get_file_base() . '/' . $file, $not_missing)) {
+                $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
+                $files_determined_to_upload[] = $file;
             }
         } elseif (!is_null($file_info)) {
-            if (@filesize(get_file_base() . '/' . $real_file) > 1024 * 1024) {
+            if (@filesize(get_file_base() . '/' . $file) > 1024 * 1024) {
                 continue; // Too big, so special exception
             }
 
-            $file_contents = @file_get_contents(get_file_base() . '/' . $real_file);
+            $file_contents = @file_get_contents(get_file_base() . '/' . $file);
             if ($file_contents === false) {
                 continue;
             }
-            if (strpos($real_file, '/version.php') !== false) {
+            if (strpos($file, '/version.php') !== false) {
                 $file_contents = preg_replace('/\d{10}/', '', $file_contents);
             }
             $true_hash = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $file_contents)));
             if ($true_hash != $file_info[0]) {
-                if (filemtime(get_file_base() . '/' . $real_file) < cms_version_time()) {
-                    $outdated__outdated_original .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>'; //  [disk-hash: '.$true_hash.', required-hash: '.$file_info[0].']
-                    $files_determined_to_upload[] = $real_file;
+                if (filemtime(get_file_base() . '/' . $file) < cms_version_time()) {
+                    $outdated__outdated_original .= '<li><kbd>' . escape_html($file) . '</kbd></li>'; //  [disk-hash: '.$true_hash.', required-hash: '.$file_info[0].']
+                    $files_determined_to_upload[] = $file;
                 } else {
-                    $outdated__future_files .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>';
+                    $outdated__future_files .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
                 }
             }
         }
@@ -1165,7 +1165,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     }
 
     // And some special help for unix geeks
-    if (($unix_help) && (function_exists('escapeshellcmd')) && (strpos(@ini_get('disable_functions'), 'escapeshellcmd') === false)) {
+    if (($unix_help) && (php_function_allowed('escapeshellcmd'))) {
         $unix_out = 'CMS_EXTRACTED_AT="<manual-extracted-at-dir>";' . "\n" . 'cd "<temp-dir-to-upload-from>";' . "\n";
         $directories_to_make = array();
         foreach ($files_determined_to_upload as $file) {
@@ -1207,7 +1207,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
             $ret_str .= '<p class="associated_details"><a href="#" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
-            $ret_str .= '<input class="buttons__proceed button_page" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
+            $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
         }
         $ret_str .= '</form>';
@@ -1239,7 +1239,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
     $dh = @opendir($dir);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_THEMES | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_THEMES | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
                 continue;
             }
 
@@ -1341,6 +1341,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
 function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = false)
 {
     $alien = '';
+    $alien_count = 0;
     $addon = '';
 
     require_code('files');
@@ -1370,7 +1371,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_NON_REGISTERED)) {
+            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
                 continue;
             }
 
@@ -1416,13 +1417,13 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                         preg_match('#(.*)pages/modules#', $rela, $matches);
                         $current_zone = str_replace('/', '', $matches[1]);
                         foreach ($zones as $zone) {
-                            if (array_key_exists(str_replace($current_zone . '/', $zone . '/', $rela . $file), $files)) {
+                            if (array_key_exists(str_replace($current_zone . '/', $zone . (($zone == '') ? '' : '/'), $rela . $file), $files)) {
                                 continue 2;
                             }
                         }
                     }
                     $disabled = '';
-                    //if ((is_dir($dir.'/'.$file=='')) && ()) Not needed as this is only for files
+                    //if ((is_dir($dir . '/' . $file == '')) && ()) Not needed as this is only for files
                     $checked = '';
 
                     if (array_key_exists($rela . $file, $old_files)) {
@@ -1433,12 +1434,13 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                     if (!$raw) {
                         $file_html .= '<input ' . $disabled . $checked . 'type="checkbox" name="' . uniqid('', true) . '" value="delete:' . escape_html($rela . $file) . '" /> ';
                     }
-                    $file_html .= '<kbd>' . escape_html($rela . $file) . '</kbd></li>';
+                    $file_html .= '<kbd>' . escape_html($rela . $file) . '</kbd></li>' . "\n";
                     if (array_key_exists($rela . $file, $addon_files)) {
                         $addon .= $file_html;
                     } else {
-                        if (strlen($alien) <= 100000) {// Reasonable limit
+                        if ($alien_count <= 10000) {// Reasonable limit
                             $alien .= $file_html;
+                            $alien_count++;
                         }
                     }
                 }
@@ -1446,8 +1448,8 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
     }
 
-    if (strlen($alien) > 100000) {
-        $alien = ''; // Reasonable limit
+    if ($alien_count > 10000) {// Reasonable limit
+        $alien = '';
     }
 
     return array($alien, $addon);
@@ -1455,6 +1457,8 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
 
 /**
  * Move/delete certain selected things, in follow up to an integrity scan.
+ *
+ * @ignore
  */
 function _integrity_scan()
 {
@@ -1501,6 +1505,8 @@ function version_specific()
             $GLOBALS['SITE_DB']->add_table_field('config', 'c_value_trans', '?LONG_TRANS');
             $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'config SET c_value_trans=config_value,config_value=\'\' WHERE ' . db_string_not_equal_to('config_value', '') . ' AND (' . db_string_equal_to('the_type', 'transtext') . ' OR ' . db_string_equal_to('the_type', 'transline') . ')');
 
+            $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
+
             $modules_renamed = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
@@ -1510,6 +1516,10 @@ function version_specific()
             }
             persistent_cache_delete('MODULES');
 
+            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_type' => 'browse'), array('m_type' => 'misc'), '', 1);
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'activities SET a_language_string_code=REPLACE(a_language_string_code,\'ocf:\',\'cns:\') WHERE a_language_string_code LIKE \'ocf:%\'');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', 'ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', 'ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
@@ -1520,7 +1530,7 @@ function version_specific()
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_type' => 'USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '?MEMBER'), array('m_type' => '?USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*MEMBER'), array('m_type' => '*USER'));
-            $GLOBALS['SITE_DB']->alter_table_field('adminlogs', 'the_user', 'MEMBER', 'member_id');
+            $GLOBALS['SITE_DB']->alter_table_field('actionlogs', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_session', '*ID_TEXT');
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'FORUMS_AND_MEMBERS'), array('p_section' => 'SECTION_FORUMS'));
@@ -1573,12 +1583,95 @@ function version_specific()
                     $GLOBALS['FORUM_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
                 }
             }
+
+            // For old (and renamed) non-bundled addons
+            if ($GLOBALS['SITE_DB']->table_exists('bank')) {
+                $GLOBALS['SITE_DB']->alter_table_field('bank', 'divident', 'INTEGER', 'dividend');
+                rename_config_option('bank_divident', 'bank_dividend');
+            }
+
+            // File replacements
+            $reps = array(
+                '#([^\w])cedi([^\w])#' => '$1wiki$2',
+                '#([^\w])seedy([^\w])#' => '$1wiki$2',
+                '#ocPortal#' => 'Composr',
+                '#ocp_#' => 'cms_',
+                '#ocf_#' => 'cns_',
+                '# filter="#' => ' select="',
+                '# select="#' => ' filter="',
+                '#main_feedback#' => 'main_contact_us',
+                '#side_ocf_personal_topics#' => 'side_cns_private_topics',
+                '#side_stored_menu#' => 'menu',
+                '#topsites#' => 'top_sites',
+                '#side_root_galleries#' => 'side_galleries',
+                '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
+                '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
+            );
+            perform_search_replace($reps);
         }
 
         return true;
     }
 
     return false;
+}
+
+/**
+ * Perform a big search and replace.
+ *
+ * @param  array $reps Change from/to this
+ */
+function perform_search_replace($reps)
+{
+    // Find directories to do replacements in...
+
+    $target_dirs = array();
+
+    $langs = find_all_langs();
+
+    require_code('themes2');
+    $themes = find_all_themes();
+    foreach (array_keys($themes) as $theme) {
+        $target_dirs[] = 'themes/' . $theme . '/templates_custom';
+        $target_dirs[] = 'themes/' . $theme . '/css_custom';
+        $target_dirs[] = 'themes/' . $theme . '/text_custom';
+        $target_dirs[] = 'themes/' . $theme . '/xml_custom';
+        $target_dirs[] = 'themes/' . $theme . '/javascript_custom';
+    }
+
+    $target_dirs[] = 'text_custom';
+    foreach (array_keys($langs) as $lang) {
+        $target_dirs[] = 'text_custom/' . $lang;
+    }
+
+    $zones = find_all_zones();
+    foreach ($zones as $zone) {
+        foreach (array_keys($langs) as $lang) {
+            $target_dirs[] = $zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang;
+        }
+    }
+
+    // Do replacement...
+
+    foreach ($target_dirs as $_dir) {
+        $dir = get_custom_file_base() . '/' . $_dir;
+        if (is_dir($dir)) {
+            $dh = opendir($dir);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    $path = $dir . '/' . $f;
+                    $contents = file_get_contents($path);
+                    $contents_orig = $contents;
+                    $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
+                    if ($contents != $contents_orig) {
+                        file_put_contents($path, $contents);
+                        sync_file($path);
+                    }
+                }
+                closedir($dh);
+            }
+        }
+    }
 }
 
 /**
@@ -1590,8 +1683,8 @@ function version_specific()
  */
 function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     require_code('zones2');
@@ -1743,14 +1836,14 @@ function fix_mysql_database_charset()
  *
  * @param  ID_TEXT $new_charset Character set
  * @param  object $db Database
- * @param  boolean $reencode Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation whilst leaving the disk data the same)
+ * @param  boolean $reencode Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation while leaving the disk data the same)
  */
 function change_mysql_database_charset($new_charset, $db, $reencode = false)
 {
     @ob_end_clean();
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
@@ -2240,8 +2333,8 @@ function upgrade_sharedinstall_sites($from = 0)
     $total = count($sites);
 
     foreach ($sites as $i => $site) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         if (($i < $from) && ($site != 'shareddemo')) {
@@ -2254,7 +2347,7 @@ function upgrade_sharedinstall_sites($from = 0)
         _general_db_init();
 
         // Reset DB
-        $GLOBALS['SITE_DB'] = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $GLOBALS['SITE_DB'] = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
         $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
 
         // NB: File path will be ok

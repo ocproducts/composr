@@ -33,7 +33,7 @@ class Hook_content_meta_aware_catalogue_entry
     public function info($zone = null, $catalogue_name = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'catalogues:CATALOGUE_ENTRY',
 
@@ -56,6 +56,7 @@ class Hook_content_meta_aware_catalogue_entry
             'title_field_dereference' => false,
             'description_field' => null,
             'thumb_field' => 'CALL: generate_catalogue_thumb_field',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit:_WILD',
@@ -66,7 +67,9 @@ class Hook_content_meta_aware_catalogue_entry
             'support_url_monikers' => true,
 
             'views_field' => 'ce_views',
+            'order_field' => null,
             'submitter_field' => 'ce_submitter',
+            'author_field' => null,
             'add_time_field' => 'ce_add_date',
             'edit_time_field' => 'ce_edit_date',
             'date_field' => 'ce_add_date',
@@ -76,9 +79,14 @@ class Hook_content_meta_aware_catalogue_entry
 
             'feedback_type_code' => 'catalogues',
 
-            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // NULL if has no permissions
+            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // null if has no permissions
 
             'search_hook' => 'catalogue_entries',
+            'rss_hook' => 'catalogues',
+            'attachment_hook' => 'catalogue_entry',
+            'unvalidated_hook' => 'catalogue_entry',
+            'notification_hook' => 'catalogue_entry',
+            'sitemap_hook' => 'catalogue_entry',
 
             'addon_name' => 'catalogues',
 
@@ -91,11 +99,13 @@ class Hook_content_meta_aware_catalogue_entry
             'commandr_filesystem_hook' => 'catalogues',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'catalogues',
+            'support_revisions' => false,
+
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CATALOGUE_ENTRY',
-
-            'supports_privacy' => true,
         );
     }
 
@@ -109,7 +119,7 @@ class Hook_content_meta_aware_catalogue_entry
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {
@@ -123,18 +133,18 @@ class Hook_content_meta_aware_catalogue_entry
  * Find a catalogue entry title.
  *
  * @param  array $url_parts The URL parts to search from.
- * @param  boolean $resourcefs_style Whether to get the field title using resource-fs style.
+ * @param  boolean $resource_fs_style Whether to get the field title using resource-fs style.
  * @return string The field title.
  */
-function generate_catalogue_entry_title($url_parts, $resourcefs_style = false)
+function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 {
     $catalogue_name = mixed();
     $fields = mixed();
 
     $unique_key_num = 0;
-    if ($resourcefs_style) {
+    if ($resource_fs_style) {
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($fields as $i => $f) {
             if ($f['cf_type'] == 'codename') {
                 $unique_key_num = $i;
@@ -164,7 +174,7 @@ function generate_catalogue_thumb_field($url_parts)
     $unique_key_num = mixed();
 
     $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     foreach ($fields as $i => $f) {
         if ($f['cf_type'] == 'picture') {
             $unique_key_num = $i;

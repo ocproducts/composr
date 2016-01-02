@@ -18,10 +18,10 @@
 	</td>
 	<td class="manage_theme_export">
 		{+START,IF,{$NEQ,{NAME},default}}
-			<p><img alt="" src="{$IMG*,icons/24x24/menu/_generic_admin/export}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/export} 2x" /> <a onclick="var t=this; window.fauxmodal_confirm('{!SWITCH_MODULE_WARNING=;}',function(result) { if (result) { click_link(t); } }); return false;" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!EXPORT_THEME_AS_ADDON}</a></p>
+			<p><img alt="" src="{$IMG*,icons/24x24/menu/_generic_admin/export}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/export} 2x" /> <a onclick="var t=this; window.fauxmodal_confirm('{!SWITCH_MODULE_WARNING=;}',function(result) { if (result) { click_link(t); } }); return false;" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!addons:EXPORT_THEME}</a></p>
 		{+END}
-		<p><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <a id="theme_preview__{NAME*}" target="_blank" title="{!PREVIEW_THEME} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme={NAME}}">{!PREVIEW_THEME}</a></p>
-		<p><a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
+		<p><img alt="" src="{$IMG*,icons/24x24/menu/start}" srcset="{$IMG*,icons/48x48/menu/start} 2x" /> <a id="theme_preview__{NAME*}" target="_blank" title="{!PREVIEW_THEME} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme={NAME}}">{!PREVIEW_THEME}</a></p>
+		<p><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
 	</td>
 	<td class="do_theme_item" onclick="click_link(this.getElementsByTagName('a')[0]);" onkeypress="if (enter_pressed(event)) return this.onclick.call(this,event);">
 		<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" src="{$IMG*,icons/48x48/menu/_generic_admin/edit_this}" /></a></div>

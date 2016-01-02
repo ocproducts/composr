@@ -473,7 +473,7 @@ class Client {
 
     /**
      * Returns the full url based on the given url (which may be relative). All
-     * urls are expanded based on the base url as given by the server.
+     * urls are expanded based on the base URL as given by the server.
      *
      * @param string $url
      * @return string
@@ -486,7 +486,7 @@ class Client {
         }
 
         // If the url starts with a slash, we must calculate the url based off
-        // the root of the base url.
+        // the root of the base URL.
         if (strpos($url,'/') === 0) {
             $parts = parse_url($this->baseUri);
             return $parts['scheme'] . '://' . $parts['host'] . (isset($parts['port'])?':' . $parts['port']:'') . $url;

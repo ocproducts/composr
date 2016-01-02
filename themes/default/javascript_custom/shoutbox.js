@@ -31,7 +31,7 @@ function sb_handle_signals(ajax_result)
 		{
 			var id=messages[i].getAttribute("id");
 			if (!id) id=messages[i].id; // Weird fix for Opera
-			if (id>window.sb_last_message_id)
+			if (id>window.sb_last_message_id && window.sb_last_message_id!=-1)
 			{
 				window.sb_last_message_id=id;
 				if (get_inner_html(messages[i]).indexOf('((SHAKE))')!=-1)

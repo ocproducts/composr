@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    oc_gifts
+ * @package    giftr
  */
 
 /**
@@ -42,7 +42,7 @@ class Hook_pointstore_giftr
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -73,8 +73,8 @@ class Hook_pointstore_giftr
             $gift_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'giftr', 'gift' => $gift['id'], 'username' => $username), '_SEARCH');
 
             $image_url = '';
-            if (is_file(get_file_base() . '/' . rawurldecode($gift['image']))) {
-                $image_url = get_base_url() . '/' . $gift['image'];
+            if (is_file(get_custom_file_base() . '/' . rawurldecode($gift['image']))) {
+                $image_url = get_custom_base_url() . '/' . $gift['image'];
             }
 
             $gifts[] = array(
@@ -97,7 +97,7 @@ class Hook_pointstore_giftr
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {
@@ -125,7 +125,7 @@ class Hook_pointstore_giftr
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done2()
     {
@@ -151,7 +151,7 @@ class Hook_pointstore_giftr
             if (array_key_exists(0, $gift_rows)) {
                 $gift_row = $gift_rows[0];
                 $gift_name = $gift_row['name'];
-                $gift_image_url = get_base_url() . '/' . $gift_row['image'];
+                $gift_image_url = get_custom_base_url() . '/' . $gift_row['image'];
 
                 // Check available points and charge
                 $available_points = available_points($from_member);
@@ -173,11 +173,11 @@ class Hook_pointstore_giftr
                     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($from_member);
                     $private_topic_url = $GLOBALS['FORUM_DRIVER']->member_pm_url($from_member);
 
-                    $message = do_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
+                    $message = do_notification_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
 
                     dispatch_notification('gift', null, $subject, $message, array($to_member_id), $member_id, 3, false, false, null, null, '', '', '', '', null, true);
                 } else {
-                    $message = do_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
+                    $message = do_notification_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
 
                     dispatch_notification('gift', null, $subject, $message, array($to_member_id), A_FROM_SYSTEM_UNPRIVILEGED);
                 }

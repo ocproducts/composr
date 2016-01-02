@@ -48,7 +48,7 @@ class Module_admin_ecommerce_logs
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -77,7 +77,7 @@ class Module_admin_ecommerce_logs
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -146,7 +146,7 @@ class Module_admin_ecommerce_logs
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -175,7 +175,7 @@ class Module_admin_ecommerce_logs
         if ($type == 'profit_loss') {
             return $this->profit_loss();
         }
-        //if ($type=='balance_sheet') return $this->balance_sheet();
+        //if ($type == 'balance_sheet') return $this->balance_sheet();
         if ($type == 'trigger') {
             return $this->trigger();
         }
@@ -195,7 +195,7 @@ class Module_admin_ecommerce_logs
     /**
      * The do-next manager for before audit management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -217,7 +217,7 @@ class Module_admin_ecommerce_logs
     /**
      * The UI to view all point transactions ordered by date.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function logs()
     {
@@ -303,7 +303,7 @@ class Module_admin_ecommerce_logs
 
         $results_table = results_table(do_lang('TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*,'start'=>$start,'max'=>$max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start'=>$start, 'max'=>$max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
         $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
@@ -320,7 +320,7 @@ class Module_admin_ecommerce_logs
     /**
      * The UI to take details on a manually triggered transaction.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function trigger()
     {
@@ -341,8 +341,10 @@ class Module_admin_ecommerce_logs
                 $label = $details[4];
                 $label .= ' (' . escape_html($type_code);
 
+                $currency = isset($details[5]) ? $details[5] : get_option('currency');
+
                 if ($details[1] !== null) {
-                    $label .= ', ' . ecommerce_get_currency_symbol() . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1]);
+                    $label .= ', ' . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1] . ' (' . $currency . ')');
                 }
                 $label .= ')';
                 $list->attach(form_input_list_entry($type_code, do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, null, false) === get_param_string('type_code', null), protect_from_escaping($label)));
@@ -401,7 +403,7 @@ class Module_admin_ecommerce_logs
 
         $products = $product_ob->get_products();
         if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-            $fields->attach(form_input_date(do_lang_tempcode('CUSTOM_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
+            $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
@@ -418,7 +420,7 @@ class Module_admin_ecommerce_logs
     /**
      * The actualiser for a manually triggered transaction.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _trigger()
     {
@@ -427,17 +429,20 @@ class Module_admin_ecommerce_logs
         $purchase_id = post_param_string('purchase_id', '');
         $memo = post_param_string('memo');
         $mc_gross = post_param_string('amount', '');
-        $custom_expiry = get_input_date('cexpiry');
+        $custom_expiry = post_param_date('cexpiry');
+        $mc_currency = get_option('currency');
 
         $object = find_product($type_code);
         $products = $object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
+            if (isset($products[$type_code][5])) {
+                $mc_currency = $products[$type_code][5];
+            }
         }
         $payment_status = 'Completed';
         $reason_code = '';
         $pending_reason = '';
-        $mc_currency = get_option('currency');
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
@@ -506,8 +511,8 @@ class Module_admin_ecommerce_logs
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
-     * @return tempcode The result of execution.
+     * @param  Tempcode $title The title to display.
+     * @return Tempcode The result of execution.
      */
     public function _get_between($title)
     {
@@ -641,11 +646,11 @@ class Module_admin_ecommerce_logs
     /**
      * Show a cash flow diagram.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function cash_flow()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -660,11 +665,11 @@ class Module_admin_ecommerce_logs
     /**
      * Show a profit/loss account.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function profit_loss()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -680,7 +685,7 @@ class Module_admin_ecommerce_logs
     /* *
      * Show a balance sheet. NOT REALLY FEASIBLE: REQUIRES HUMAN INTERPRETATION OF ASSETS, and recording of liabilities
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     /*function balance_sheet()
     {
@@ -689,7 +694,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show manual subscriptions.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function view_manual_subscriptions()
     {
@@ -745,7 +750,7 @@ class Module_admin_ecommerce_logs
     /**
      * Cancel a manual subscription.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function cancel_subscription()
     {

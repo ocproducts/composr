@@ -30,6 +30,6 @@ class Hook_sw_search
      */
     public function get_blocks()
     {
-        return array(array(), array('side_tag_cloud' => array('PANEL_NONE', 'PANEL_RIGHT'), 'main_search' => array('PANEL_NONE', 'PANEL_RIGHT')));
+        return array(array(), array('side_tag_cloud' => array('PANEL_NONE', 'PANEL_RIGHT'), 'main_search' => array('PANEL_NONE', 'PANEL_NONE')));
     }
 }

@@ -87,7 +87,7 @@ if (!function_exists('critical_error')) {
             case 'PASSON':
                 $error = $relay;
                 break;
-            case 'MEMBER_BANNED':
+            case 'YOU_ARE_BANNED':
                 $error = 'The member you are masquerading as has been banned. We cannot finish initialising the virtualised environment for this reason.';
                 break;
             case 'BANNED':

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__downloads()
 {
@@ -36,7 +38,7 @@ function download_licence_script()
 
     $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
     }
     $licence_title = $rows[0]['l_title'];
     $licence_text = $rows[0]['l_text'];
@@ -45,7 +47,7 @@ function download_licence_script()
 }
 
 /**
- * Get tempcode for a download 'feature box' for the sgiven row
+ * Get Tempcode for a download 'feature box' for the sgiven row
  *
  * @param  array $row The database field row of this download
  * @param  boolean $pic Whether to show a picture
@@ -55,7 +57,7 @@ function download_licence_script()
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ?AUTO_LINK $root The virtual root (null: read from environment)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for this download, linking to the full download page
+ * @return Tempcode A box for this download, linking to the full download page
  */
 function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zone = null, $text_summary = null, $give_context = true, $root = null, $guid = '')
 {
@@ -78,9 +80,9 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         if (!is_null($root)) {
             $map['keep_download_root'] = ($root == db_get_first_id()) ? null : $root;
         }
-        $download_url = build_url($map, $zone);
+        $view_url = build_url($map, $zone);
     } else {
-        $download_url = new Tempcode();
+        $view_url = new Tempcode();
     }
     $date = get_timezoned_date($row['add_date'], false);
     $date_raw = $row['add_date'];
@@ -109,7 +111,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     // Rating
     require_code('feedback');
-    $rating = ($row['allow_rating'] == 1 && array_key_exists('id', $row)) ? display_rating($download_url, is_string($row['name']) ? $row['name'] : get_translated_text($row['name']), 'downloads', strval($row['id']), 'RATING_INLINE_STATIC', $row['submitter']) : null;
+    $rating = ($row['allow_rating'] == 1 && array_key_exists('id', $row)) ? display_rating($view_url, is_string($row['name']) ? $row['name'] : get_translated_text($row['name']), 'downloads', strval($row['id']), 'RATING_INLINE_STATIC', $row['submitter']) : null;
     if (!is_null($rating)) {
         if (trim($rating->evaluate()) == '') {
             $rating = null;
@@ -134,6 +136,8 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($row['category_id'])));
 
+    $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    
     // Final template
     if (($full_img_url != '') && (url_is_local($full_img_url))) {
         $full_img_url = get_custom_base_url() . '/' . $full_img_url;
@@ -155,7 +159,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'DATE' => $date,
         'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
         'SIZE' => $filesize,
-        'URL' => $download_url,
+        'URL' => $view_url,
         'NAME' => is_string($row['name']) ? $row['name'] : get_translated_text($row['name']),
         'BREADCRUMBS' => $breadcrumbs,
         'IMG_URL' => $thumb_url,
@@ -165,11 +169,12 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'LICENCE_TITLE' => $licence_title,
         'LICENCE_HYPERLINK' => $licence_hyperlink,
         'MAY_DOWNLOAD' => $may_download,
+        'DOWNLOAD_URL' => $download_url,
     ));
 }
 
 /**
- * Get tempcode for a download category 'feature box' for the given row
+ * Get Tempcode for a download category 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -178,7 +183,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_download_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
@@ -232,7 +237,7 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
  * @param  ?AUTO_LINK $shun Download we do not want to show (null: none to not show)
  * @param  boolean $use_compound_list Whether to get a list of child categories (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return tempcode The list of entries
+ * @return Tempcode The list of entries
  */
 function create_selection_list_downloads_tree($it = null, $submitter = null, $shun = null, $use_compound_list = false, $editable_filter = false)
 {
@@ -359,7 +364,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The list of categories
+ * @return Tempcode The list of categories
  */
 function create_selection_list_download_category_tree($it = null, $use_compound_list = false, $addable_filter = false, $updated_since = null)
 {
@@ -424,7 +429,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
     if (is_null($category_info)) {
         $_category_info = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
         }
         $category_info = $_category_info[0];
     }
@@ -478,7 +483,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
  *
  * @param  ?AUTO_LINK $it The currently selected licence (null: none selected)
  * @param  boolean $allow_na Whether to allow an N/A selection
- * @return tempcode The list of categories
+ * @return Tempcode The list of categories
  */
 function create_selection_list_download_licences($it = null, $allow_na = false)
 {
@@ -501,7 +506,7 @@ function create_selection_list_download_licences($it = null, $allow_na = false)
  * @param  boolean $no_link_for_me_sir Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
  * @param  ?ID_TEXT $zone The zone the download module we're using is in (null: find it)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
- * @return tempcode The breadcrumbs
+ * @return Tempcode The breadcrumbs
  * @return array The breadcrumb segments
  */
 function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = true, $zone = null, $attach_to_url_filter = false)
@@ -531,7 +536,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     if (!array_key_exists($category_id, $PT_PAIR_CACHE_D)) {
         $category_rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('parent_id', 'category'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $category_rows)) {
-            warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($category_id)));
+            warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'download_category'));
         }
         $PT_PAIR_CACHE_D[$category_id] = $category_rows[0];
     }
@@ -543,7 +548,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     }
 
     if ($PT_PAIR_CACHE_D[$category_id]['parent_id'] == $category_id) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', strval($category_id)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'download_category'));
     }
 
     $below = download_breadcrumbs($PT_PAIR_CACHE_D[$category_id]['parent_id'], $root, false, $zone, $attach_to_url_filter);
@@ -585,4 +590,34 @@ function count_download_category_children($category_id)
     }
 
     return $out;
+}
+
+/**
+ * Generate a link to a Composr download.
+ *
+ * @param  AUTO_LINK $id The ID of the download to be downloaded
+ * @param  boolean $use_gateway Whether to use the gateway script
+ * @return URLPATH The URL
+ */
+function generate_dload_url($id, $use_gateway)
+{
+    if (get_option('immediate_downloads') == '1') {
+        $use_gateway = false;
+    }
+
+    $keep = symbol_tempcode('KEEP', array('0', '1'));
+
+    if ($use_gateway) {
+        $download_url = find_script('download_gateway');
+    } else {
+        $download_url = find_script('dload');
+    }
+
+    $download_url .= '?id=' . strval($id) . $keep->evaluate();
+
+    if (get_option('anti_leech') == '1') {
+        $download_url .= '&for_session=' . md5(strval(get_session_id()));
+    }
+
+    return $download_url;
 }

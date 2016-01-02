@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database()
 {
@@ -60,7 +62,7 @@ function init__database()
          *
          * @global object $SITE_DB
          */
-        $SITE_DB = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $SITE_DB = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
     }
 
     global $UPON_QUERY_HOOKS_CACHE;
@@ -79,10 +81,10 @@ function db_map_restrict($row, $fields)
     $out = array();
     foreach ($fields as $field) {
         $out[$field] = $row[$field];
-        if (isset($row[$field . '__text_parsed'])) {
+        if (array_key_exists($field . '__text_parsed', $row)) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
-        if (isset($row[$field . '__source_user'])) {
+        if (array_key_exists($field . '__source_user', $row)) {
             $out[$field . '__source_user'] = $row[$field . '__source_user'];
         }
     }
@@ -99,14 +101,15 @@ function multi_lang_content()
     global $HAS_MULTI_LANG_CONTENT;
     if ($HAS_MULTI_LANG_CONTENT === null) {
         global $SITE_INFO;
-        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true/*for LEGACY reasons*/
-        ;
+        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true; // For legacy reasons
     }
     return $HAS_MULTI_LANG_CONTENT;
 }
 
 /**
  * Called once our DB connection becomes active.
+ *
+ * @ignore
  */
 function _general_db_init()
 {
@@ -470,9 +473,25 @@ function get_db_forums_password()
 function is_on_multi_site_network($db = null)
 {
     if ($db !== null) {
-        return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write != $GLOBALS['FORUM_DB']->connection_write));
+        return !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
     }
-    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+}
+
+/**
+ * Find whether a database connection is to the forum database.
+ *
+ * @param  object $db The DB connection to check against
+ * @return boolean Whether we are
+ */
+function is_forum_db($db)
+{
+    if (!is_on_multi_site_network()) {
+        // Not on a multi-site-network
+        return false;
+    }
+
+    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write));
 }
 
 /**
@@ -480,7 +499,7 @@ function is_on_multi_site_network($db = null)
  *
  * @package    core
  */
-class Database_driver
+class DatabaseConnector
 {
     public $table_prefix;
     public $connection_read, $connection_write;
@@ -502,7 +521,7 @@ class Database_driver
      * @param string $db_user The connection username
      * @param string $db_password The connection password
      * @param string $table_prefix The table prefix
-     * @param boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @param ?object         $static Static call object (null: use global static call object)
      */
     public function __construct($db_name, $db_host, $db_user, $db_password, $table_prefix, $fail_ok = false, $static = null)
@@ -546,7 +565,7 @@ class Database_driver
     {
         global $FILECACHE_OBJECT;
         require_code('database/xml');
-        $chain_db = new Database_driver(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
+        $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
         $chain_connection = &$chain_db->connection_write;
         if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
             $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);
@@ -558,30 +577,33 @@ class Database_driver
     /**
      * Check if a table exists.
      *
-     * @param  ID_TEXT $tablename The table name
+     * @param  ID_TEXT $table_name The table name
+     * @param  boolean $really Check direct, not using meta-table (if possible)
      * @return boolean Whether it exists
      */
-    public function table_exists($tablename)
+    public function table_exists($table_name, $really = false)
     {
-        /*
-        // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
-
-        $full_tablename=$this->get_table_prefix().$tablename;
-
-        $rows=$this->query("SHOW TABLES LIKE '".$full_tablename."'");
-        foreach ($rows as $row)
-            foreach ($row as $field)
-                    if ($field==$full_tablename) return true;
-        return false;
-        */
-
-        if (array_key_exists($tablename, $this->table_exists_cache)) {
-            return $this->table_exists_cache[$tablename];
+        if ($really && strpos(get_db_type(), 'mysql') !== false) {
+            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
+            $full_table_name = $this->get_table_prefix() . $table_name;
+            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
+            foreach ($rows as $row) {
+                foreach ($row as $field) {
+                    if ($field == $full_table_name) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
-        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $tablename));
-        $this->table_exists_cache[$tablename] = ($test !== null);
-        return $this->table_exists_cache[$tablename];
+        if (array_key_exists($table_name, $this->table_exists_cache)) {
+            return $this->table_exists_cache[$table_name];
+        }
+
+        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
+        $this->table_exists_cache[$table_name] = ($test !== null);
+        return $this->table_exists_cache[$table_name];
     }
 
     /**
@@ -591,12 +613,13 @@ class Database_driver
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
-     * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+     * @param  boolean $skip_null_check Whether to skip the check for null string fields
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
-    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false)
+    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {
         require_code('database_helper');
-        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check);
+        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check, $save_bytes);
     }
 
     /**
@@ -675,7 +698,7 @@ class Database_driver
         }
 
         if (count($all_values) == 1) { // usually $all_values only has length of 1
-            if ((in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'))) && (substr(get_db_type(), 0, 5) == 'mysql') && (get_value('enable_delayed_inserts') === '1')) {
+            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) == 'mysql')) {
                 $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             } else {
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
@@ -715,7 +738,7 @@ class Database_driver
 
         $select = '';
         foreach ($select_map as $key) {
-            //if (!is_string($key)) $key=strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
+            //if (!is_string($key)) $key = strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
 
             if ($select != '') {
                 $select .= ',';
@@ -801,7 +824,7 @@ class Database_driver
     }
 
     /**
-     * Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present.
+     * Get the specified value from the database, or null if there is no matching row (or if the value itself is null). This is good for detection existence of records, or for use if they might may or may not be present.
      *
      * @param  string $table The table name
      * @param  string $select The field to select
@@ -1013,7 +1036,7 @@ class Database_driver
     public function query($query, $max = null, $start = null, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
-        if (!$skip_safety_check) {
+        if (!$skip_safety_check && stripos($query, 'union') !== false) {
             $_query = preg_replace('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query,'insert into ')+substr_count($_query,'replace into ')+substr_count($_query,'update ')+substr_count($_query,'select ')+substr_count($_query,'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {
@@ -1080,7 +1103,7 @@ class Database_driver
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 
-                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && ($this->connection_write === $GLOBALS['SITE_DB']->connection_write) && (is_cns_satellite_site())) {
+                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!is_forum_db($this)) && (is_cns_satellite_site())) {
                     fatal_exit('Using Conversr queries on the wrong driver');
                 }
             }
@@ -1088,8 +1111,10 @@ class Database_driver
 
         if (!$NO_QUERY_LIMIT) {
             $QUERY_COUNT++;
-            //@exit('!');
-            //if ($QUERY_COUNT>10) @ob_end_clean();@print('Query: '.$query."\n");
+            /*if ($QUERY_COUNT > 10) {
+                @ob_end_clean();
+            }
+            @print('Query: ' . $query . "\n");*/
         }
         static $fb = null;
         if ($fb === null) {
@@ -1240,7 +1265,6 @@ class Database_driver
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE === null) {
-            $UPON_QUERY_HOOKS_CACHE = array();
             if ((!running_script('restore')) && (function_exists('find_all_hooks')) && (!isset($GLOBALS['DOING_USERS_INIT'])/*can't check for safe mode meaning can't get a full hook list yet*/)) {
                 $UPON_QUERY_HOOKS_CACHE = array();
                 $hooks = find_all_hooks('systems', 'upon_query');
@@ -1266,11 +1290,12 @@ class Database_driver
             $out = array('time' => ($after - $before), 'text' => $text, 'rows' => is_array($ret) ? count($ret) : null);
             $QUERY_LIST[] = $out;
         }
-        /*if (microtime_diff($after,$before)>1.0)  Generally one would use MySQL's own slow query log, which will impact Composr performance less
-        {
+        /*  Generally one would use MySQL's own slow query log, which will impact Composr performance less
+        if (microtime_diff($after, $before) > 1.0) {
             cms_profile_start_for('_query:SLOW_ALERT');
-            cms_profile_end_for('_query:SLOW_ALERT',$query);
-        }*/
+            cms_profile_end_for('_query:SLOW_ALERT', $query);
+        }
+        */
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE !== null) {
@@ -1433,7 +1458,7 @@ class Database_driver
                     $where .= $key . ' IS NULL';
                 } else {
                     if ((is_string($value)) && ($value == '') && ($this->static_ob->db_empty_is_null())) {
-                        $where .= $key . ' IS NULL'; // $value=' ';
+                        $where .= $key . ' IS NULL'; // $value = ' ';
                     } else {
                         $where .= db_string_equal_to($key, $value);
                     }

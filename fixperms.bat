@@ -49,8 +49,7 @@ cacls themes\admin\theme.ini /e /g %user%:F
 cacls themes\admin\templates_cached /e /g %user%:F
 cacls themes\admin\templates_cached\* /e /g %user%:F
 cacls data_custom\errorlog.php /e /g %user%:F
-cacls data_custom\cms_sitemap.xml /e /g %user%:F
-cacls data_custom\cms_news_sitemap.xml /e /g %user%:F
+cacls data_custom\sitemaps /e /g %user%:F
 cacls data_custom\modules\admin_stats /e /g %user%:F
 cacls imports\* /e /g %user%:F
 cacls imports\addons\* /e /g %user%:F
@@ -198,7 +197,6 @@ icacls themes\admin\templates_cached /grant %user%:(M)
 icacls themes\admin\templates_cached\* /grant %user%:(M)
 icacls data_custom\xml_config /grant %user%:(M)
 icacls data_custom\errorlog.php /grant %user%:(M)
-icacls cms_sitemap.xml /grant %user%:(M)
 icacls data_custom\modules\admin_stats /grant %user%:(M)
 icacls imports\* /grant %user%:(M)
 icacls imports\addons\* /grant %user%:(M)

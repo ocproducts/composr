@@ -46,12 +46,12 @@ class Module_admin_orders
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 
@@ -72,7 +72,7 @@ class Module_admin_orders
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -157,7 +157,7 @@ class Module_admin_orders
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -212,7 +212,7 @@ class Module_admin_orders
     /**
      * The do-next manager for order module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -229,7 +229,7 @@ class Module_admin_orders
     /**
      * UI to show all orders.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function show_orders()
     {
@@ -352,7 +352,7 @@ class Module_admin_orders
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
-        $widths = mixed();//array('110','70','80','200','120','180','180','200');
+        $widths = mixed();//array('110', '70', '80', '200', '120', '180', '180', '200');
         $results_table = results_table(do_lang_tempcode('ORDERS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $order_entries, $sortables, $sortable, $sort_order, 'sort', null, $widths);
 
         $hidden = build_keep_form_fields('_SELF', true, array('filter'));
@@ -377,7 +377,7 @@ class Module_admin_orders
     /**
      * UI to show details of an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_details()
     {
@@ -504,7 +504,7 @@ class Module_admin_orders
     /**
      * Method to dispatch an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function dispatch()
     {
@@ -524,7 +524,7 @@ class Module_admin_orders
     /**
      * UI to add note to an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function add_note()
     {
@@ -577,7 +577,7 @@ class Module_admin_orders
     /**
      * Actualiser to add a note to an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function _add_note()
     {
@@ -625,7 +625,7 @@ class Module_admin_orders
     /**
      * Method to delete order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function delete_order()
     {
@@ -642,7 +642,7 @@ class Module_admin_orders
     /**
      * Method to return order items.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function return_order()
     {
@@ -659,7 +659,7 @@ class Module_admin_orders
     /**
      * Method to hold an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function hold_order()
     {
@@ -676,7 +676,7 @@ class Module_admin_orders
     /**
      * Method to display export order list filters.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_export()
     {
@@ -729,8 +729,8 @@ class Module_admin_orders
     {
         require_code('shopping');
 
-        $start_date = get_input_date('start_date', true);
-        $end_date = get_input_date('end_date', true);
+        $start_date = post_param_date('start_date', true);
+        $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
         $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';

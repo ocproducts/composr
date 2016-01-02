@@ -77,7 +77,7 @@ class Hook_fields_long_text
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -99,7 +99,7 @@ class Hook_fields_long_text
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
      * @param  boolean $new Whether this is for a new entry
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
@@ -113,14 +113,16 @@ class Hook_fields_long_text
 
         $widget = option_value_from_field_array($field, 'widget', '');
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         if ($widget == 'huge') {
-            return form_input_huge($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1, null, $input_size, '', !$wordwrap);
+            return form_input_huge($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null, $input_size, '', !$wordwrap);
         }
 
         $_maxlength = option_value_from_field_array($field, 'maxlength', '');
         $maxlength = ($_maxlength == '') ? null : intval($_maxlength);
 
-        return form_input_text($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1, null , !$wordwrap, $maxlength, $input_size);
+        return form_input_text($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null , !$wordwrap, $maxlength, $input_size);
     }
 
     /**
@@ -128,7 +130,7 @@ class Hook_fields_long_text
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

@@ -34,7 +34,7 @@ class Hook_config_chat_message_check_interval
             'human_name' => 'CHAT_MESSAGE_CHECK_INTERVAL',
             'type' => 'integer',
             'category' => 'FEATURE',
-            'group' => 'CHAT',
+            'group' => 'SECTION_CHAT',
             'explanation' => 'CONFIG_OPTION_chat_message_check_interval',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced Composr member system[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced Composr member system[/title]
 
 This tutorial will cover some of the more advanced features of the [concept]Conversr[/concept] member system.
 
@@ -14,11 +14,11 @@ If members have not selected a date of birth, no birthday can show for them.
 
 Conversr contains a feature to automatically create/link-to a shared birthday topic for a member. By default, this is linked both from [tt]main_bottom_bar[/tt] and the notifications.
 
-The [tt]CNS_BIRTHDAY_LINK[/tt] template controls how the [tt]main_bottom_bar[/tt] birthday links will be shown.
+The [tt]CNS_BIRTHDAY_LINK.tpl[/tt] template controls how the [tt]main_bottom_bar[/tt] birthday links will be shown.
 You can change this to change what link is provided. For example, the Giftr addon replaces the topic link with a link to send an e-gifts.
 
 The notifications are sent using these language strings, defined in the [tt]cns[/tt] language file:
-[code]
+[code="INI"]
 BIRTHDAY_NOTIFICATION_MAIL_SUBJECT=It's {2}'s birthday
 BIRTHDAY_NOTIFICATION_MAIL=It's {{{2}}}'s birthday. Come congratulate them on {1}:\n{4}
 [/code]
@@ -48,52 +48,51 @@ There is also a usergroup setting, "Open membership", that defines whether membe
 
 [title="2"]Merging members[/title]
 
-[media width="150" description="Merging members" float="left"]data_custom/images/docs/adv_members_merge.png[/media]
+[media width="150" description="Merging members" float="left"]data_custom/images/docs/tut_adv_members/adv_members_merge.png[/media]
 {!cns:DOC_MERGE_MEMBERS}
 It is possible that some reassignments will not be possible, in which case, records may be dropped; for example, if both members share a secondary usergroup, Composr would fail [due to database key constraints] to assign both membership records to the same user, and hence drop one of them. You do not need to worry as this is handled automatically.
 
 [title="2"]Custom profile fields[/title]
+
 [surround]
-[media width="150" description="Adding a custom profile field" float="right"]data_custom/images/docs/adv_members_cpf.png[/media]
-{!cns:DOC_CUSTOM_PROFILE_FIELDS}
+[media width="150" description="Custom profile fields are edited by editing member profiles.
+
+Side note: If you (as staff) edit the profile of another member then none of the CPFs will be set as required regardless of how they are configured, as the assumption is that you should not have to fill in unknown fields of a member that you are editing." float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_edit.png[/media]
+[media width="150" description="Custom profile fields are optionally shown where members post" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png[/media]
+[media width="150" description="Custom profile fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_2.png[/media]
+[media width="150" description="Adding a custom profile field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
+{!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' custom profile field can not be edited or deleted.
 
 You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
-[/surround]
-[media width="150" description="Custom profile fields are edited by editing member profiles" float="right"]data_custom/images/docs/adv_members_cpf_edit.png[/media]
+You can delete a Custom Profile Field from the bottom of its edit form.
+
 There are a number of custom profile field options that you may set that allow CPFs to function for a number of different purposes, including:
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
  - Allowing members to specify details about themselves (for example, their occupation)
- - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non employee from joining and remaining an active member)
- - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, whilst those in the 'Music' usergroup could specify the instrument they play).
-
-There is a 'Privacy' sub-tab in the account settings that allows members to limit access beyond this. If there are more than 15 CPFs it will only give them options for the CPFs they have filled in.
-
-[surround]
-[media width="150" description="Custom profile fields are optionally shown where members post" float="right"]data_custom/images/docs/adv_members_cpf_space_1.png[/media]
-A 'locked' custom profile field can not be edited or deleted.
-
-[media width="150" description="Custom profile fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/adv_members_cpf_space_2.png[/media]
-It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile page, but also:
- - if 'show in posts' is selected, it will also be visible on their forum posts, and their member galleries and member gallery images/videos
- - if 'show in post previews' is selected, it will also be visible when displaying a member sub-gallery in a list of sub-galleries
-
-If you have more than 60 textual CPFs (except Comcode ones), any ones created after the 60th will not be included for searching on the search module's member search form. This is due to a limitation in MySQL.
-Additionally, you could run into problems with large numbers of CPFs on some servers. Some servers limit the number of request variables, either using a PHP setting, the unofficial Suhosin addon, or through other means that may not even be visible. If you notice field values disappearing, or WYSIWYG-edited fields showing in raw HTML after editing, it is likely caused by a server limitation.
-[/surround]
-
-If you (as staff) edit the profile of another member then none of the CPFs will be set as required regardless of how they are configured, as the assumption is that you should not have to fill in unknown fields of a member that you are editing.
+ - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non-employee from joining and remaining an active member)
+ - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, while those in the 'Music' usergroup could specify the instrument they play).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
+[/surround]
+
+[title="3"]Limitations (don't go nuts!)[/title]
+
+If you have more than 60 textual CPFs (except Comcode ones), any ones created after the 60th will not be included for searching on the [tt]search[/tt] module's member search form. This is due to a limitation in MySQL.
+
+Additionally, you could run into problems with large numbers of CPFs on some servers. Some servers limit the number of request variables, either using a PHP setting, the unofficial Suhosin addon, or through other means that may not even be visible. If you notice field values disappearing, or WYSIWYG-edited fields showing in raw HTML after editing, it is likely caused by a server limitation.
 
 [title="3"]Display rules[/title]
 
-CPFs are pulled up according to the following set of rules:
+It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile screen, but also:
+ - if 'show in posts' is selected, it will also be visible on their forum posts, and their member galleries and member gallery images/videos
+ - if 'show in post previews' is selected, it will also be visible when displaying a member sub-gallery in a list of sub-galleries
 
+In more detail:
 [html]
 <div class="wide_table_wrap">
 <table class="results_table wide_table autosized_table"><tbody>
-<tr><th colspan="4">PROFILE FIELD SETTINGS</th><th>&nbsp;</th><th colspan="9">SHOWS IN FOLLOWING CIRCUMSTANCES</th></tr>
-<tr><th>Owner viewable</th><th>Owner settable</th><th>Publicly viewable</th><th>Required</th><th /><th>Join</th><th>Admin add member</th><th>Edit own profile</th><th>Edit others profile</th><th>Edit others profile but has 'View any field' permission</th><th>View own profile</th><th>View others profile</th><th>View own or others profile but has 'View any field' permission</th><th>Member searchable</th></tr>
+<tr><th colspan="4">PROFILE FIELD SETTINGS</th><td></td><th colspan="9">SHOWS IN FOLLOWING CIRCUMSTANCES</th></tr>
+<tr><th>Owner viewable</th><th>Owner settable</th><th>Publicly viewable</th><th>Required</th><td></td><th>Join</th><th>Admin add member</th><th>Edit own profile</th><th>Edit others profile</th><th>Edit others profile but has 'View any field' permission</th><th>View own profile</th><th>View others profile</th><th>View own or others profile but has 'View any field' permission</th><th>Member searchable</th></tr>
 <tr><td><p>N</p></td><td><p>N</p></td><td><p>N</p></td><td><p>N</p></td><td>&nbsp;</td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td></tr>
 <tr><td><p>N</p></td><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td>&nbsp;</td><td><p>Y</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td></tr>
 <tr><td><p>N</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td><td>&nbsp;</td><td><p>N</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>Y</p></td><td><p>N</p></td><td><p>Y</p></td><td><p>Y</p></td><td><p>N</p></td></tr>
@@ -114,28 +113,18 @@ CPFs are pulled up according to the following set of rules:
 </div>
 [/html]
 
-In addition, members may override display settings in their Account, on a per-field basis. They may choose to display fields:
+There is also 'Privacy' sub-tab in the account settings that allows members to limit access beyond this. Members may choose to display fields:
  - Not at all
  - To members
  - To friends
  - To certain usergroups
  - To everyone
 
-[title="3"]Encrypted CPFs[/title]
-
-When creating a custom profile field, it is possible to mark it as encrypted. If you have the OpenSSL PHP extension installed and configured (see the [page="_SEARCH:tut_web_hosting"]Web Hosting for Composr[/page] tutorial), Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
-
-To mark a CPF as encrypted, tick the "Encryption" box when creating the field, making sure to first have encryption set up on your server and on Composr.
-
-When editing the value of an encrypted CPF, the encrypted data will be shown. To change the value, simply overwrite it with the data you want to change it to. Leaving the value alone will not cause it to be doubly-encrypted.
-
-When viewing an encrypted CPF on a member's profile page, the encrypted data will not be decrypted or shown. To decrypt and view the data, click the "Decrypt" JavaScript link for the CPF. A popup will allow the decryption passphrase to be entered and the data decrypted. The decryption passphrase is the passphrase used to unlock the private key, as specified when originally generating the public/private key pair. Typically only staff will have knowledge of the passphrase, since there's only one for the entire site.
-
-Note that encrypted CPFs are not supported for any kind of CPF value that is not typed in (such as list selections).
+(Side-note: If there are more than 15 CPFs their privacy settings will only give them options for the CPFs they have filled in.)
 
 [title="3"]Categorisation of CPFs[/title]
 
-If you prefix CPF names like "Example: Field A" and "Example: Field B", Composr will be smart enough to treat this as a categorisation and render the join/edit-profile forms in a more appropriate way.
+If you prefix CPF names like "Example: Field A" and "Example: Field B", Composr will be smart enough to treat this as a categorisation and display the join/edit-profile forms in a more appropriate way.
 
 [title="3"]Special CPFs[/title]
 
@@ -157,27 +146,99 @@ By default the values of the CPFs are not publicly viewable.
 
 Some CPFS are only activated by certain addons. They are pre-installed as they may be shared between addons, yet may not be used by any. They show so you can know they are there, but are no made available for use to reduce feature-bloat. If no addons currently use them, they show in the list as unused and inaccessible. If you want them, you can install an addon that uses them, or simply add your own alternative CPF. The [tt]ecommerce[/tt] addon uses quite a few.
 
-[title="2"]Welcome E-mails[/title]
+[title="3"]Encrypted CPFs (advanced)[/title]
+
+When creating a custom profile field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured (see the [page="_SEARCH:tut_web_hosting"]Web Hosting for Composr[/page] tutorial), Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
+
+To mark a CPF as encrypted, tick the "Encryption" box when creating the field, making sure to first have encryption set up on your server and on Composr.
+
+When editing the value of an encrypted CPF, the encrypted data will be shown. To change the value, simply overwrite it with the data you want to change it to. Leaving the value alone will [i]not[/i] cause it to be doubly-encrypted so don't worry.
+
+When viewing an encrypted CPF on a member's profile screen, the encrypted data will not be decrypted or shown (the server literally does not know how). To decrypt and view the data, click the "Decrypt" JavaScript link for the CPF. A popup will allow the decryption passphrase to be entered and the data decrypted. The decryption passphrase is the passphrase used to unlock the private key, as specified when originally generating the public/private key pair. Typically only staff will have knowledge of the passphrase, since there's only one for the entire site.
+
+Note that encrypted CPFs are not supported for any kind of CPF value that is not typed in (such as list selections).
+
+[title="3"]Statistics[/title]
+
+You can find a break-down of how CPFs were filled in from:
+Admin Zone > Audit > Custom Profile Field statistics
+
+[title="2"]Required fields[/title]
+
+The following fields usually need filling in:
+ - E-mail address
+ - Date of birth
+ - Any custom profile field set to required
+
+However, there are a selection of privileges to soften this a bit. There are 3 common scenarios that show why we might want to soften the requirements:
+1) A staff-member adding an account on someone else's behalf, and not knowing the full details
+2) (Similar to the above) Members were mass-imported but with partial details, and you don't want staff doing editing of those accounts to have to fill things in
+3) A field was enabled or set to required after members joined, and you don't want to force them to fill it in next time they go to edit their account for some other purpose (potentially annoying!)
+
+The privileges are:
+ - Bypass filling-in required custom profile fields
+ - Bypass filling-in required custom profile fields on existing accounts
+ - Bypass filling-in e-mail address account options
+ - Bypass filling-in e-mail address account options on existing accounts
+ - Bypass filling-in date of birth account options
+ - Bypass filling-in date of birth account options on existing accounts
+
+Note that there are effectively two sets of privileges:
+[list="a"]
+[*] Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
+[*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
+[/list]
+
+The wholesale bypass would typically be granted to staff and mainly exists for scenario 1. If lets staff add new accounts without having to fill everything in that would usually be required. It also is useful to generally remove the required-field status for date of birth and/or e-mail address fields (CPFs have individual required statuses so it is less useful for those).
+The privilege on existing accounts is a weaker privilege that cover scenarios 2 and 3 well. They mean that if someone is editing an account (their own or someone else's) and the field is currently blank, they don't have to fill it in. However, if the field is already filled in then they will [i]not[/i] be allowed to blank it out.
+
+Note that there is an option "Take date of births". If that is disabled then date of birth fields will be completely disabled, and hence the above date of birth privileges won't have any effect. We allow date of birth to be either enabled or disabled because on some sites it would not be an appropriate thing to ask about. If date of birth is enabled but not required then the field will be titled as "Birthday" to indicate the lowered formality.
+
+[title="2"]Bookmarks[/title]
+
 [surround]
-[media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/adv_members_welcome_email.png[/media]
+[media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks.png[/media]
+[media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks_manage.png[/media]
+If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the [tt]bookmarks[/tt] addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
+
+The bookmark feature is particularly useful for:
+ - members who want to keep bookmarks for different websites separate
+ - members who move between computers
+[/surround]
+
+[title="2"]Welcome E-mails[/title]
+
+[surround]
+[media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/tut_adv_members/adv_members_welcome_email.png[/media]
 Composr provides special support for composing a series of welcome e-mails that are sent out to new members on a predefined schedule.
+
+Set these up at:
+Admin Zone > Tools > Welcome E-mails
+
+You can delete a Welcome E-mail from the bottom of its edit form.
+
 The purpose of this feature is to gradually advertise the features of your website to your members in a way that reinforces awareness. As most members will not usually return to a website, welcome e-mails provide a strong tool to keep them aware and entice them to fully embrace whatever service you are providing.
 
-For welcome e-mails to work the Composr cron bridge must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration tutorial[/page]
+For welcome e-mails to work the CRON bridge scheduler must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration tutorial[/page]
 [/surround]
 
 [title="3"]Referencing member-specific data[/title]
 
-As long as you have the newsletters addon installed, welcome emails will piggy-back off the newsletters templating code (regardless of whether the welcome email is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
+As long as you have the newsletters addon installed, welcome emails will piggy-back off the newsletters templating code (regardless of whether the welcome email is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
 
-[title="2"]CSV files[/title]
+[title="2"]Importing/exporting members[/title]
 
-You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data into your website, or to export it.
+[media width="150" description="Importing members from a CSV file" float="right"]data_custom/images/docs/tut_adv_members/member_import.png[/media]
+You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data into your website, or to export it. There are many different reasons you might want to do this, but in simple terms, organisations often need to shuffle member data between different systems and this is a good/normal way to do it.
 
 [title="3"]Exporting[/title]
 
 This is very easy. Just go to...
 Admin Zone > Tools > Members > Download member spreadsheet (CSV)
+
+There are a number of advanced filtering options you can use. Programmers can extend the export system to include "presets" for these options.
+
+The non-bundled [tt]excel_support[/tt] addon allows you to add XLS export support.
 
 [title="3"]Loading into spreadsheet software[/title]
 
@@ -205,7 +266,7 @@ Follow this process to do an import:
 2) Open the spreadsheet in some spreadsheet software (something like Microsoft Excel or LibreOffice)
 3) Blank out the existing rows in the spreadsheet (except the header row of course)
 4) Fill in new rows, as required
-5) Save back to a .csv file (.xls or .xlsx files are [b]not[/b] supported). Make sure that it is a true CSV file (i.e. comma-delimiters between fields, not tab-delimiters or semi-colon delimiters). Opening it in something like Windows Notepad is a good way to confirm this.
+5) Save back to a [tt].csv[/tt] file ([tt].xls[/tt] or [tt].xlsx[/tt] files are [b]not[/b] supported). Make sure that it is a true CSV file (i.e. comma-delimiters between fields, not tab-delimiters or semi-colon delimiters). Opening it in something like Windows Notepad is a good way to confirm this.
 6) Take a full database backup (you can never be too careful, a small typo such as a corruption of the header row, or a regular error in the new user rows, could result in proliferate errors after import)
 7) Import (Admin Zone > Tools > Members > Import member spreadsheet (CSV)). You'll be asked to upload the CSV file and optionally to give a default password. Click the button to run the import.
 
@@ -215,7 +276,7 @@ There is full support for auto-creation of usergroups and custom profile fields 
 i.e. Any column that does not correspond to an existing field will result in a new field being auto-created. Any referenced usergroup that does not correspond to an existing usergroup will result in the usergroup being auto-created.
 The importer will tell you when it does this.
 
-Note that the software will make reasonable/consistent choices if columns are missing or cells are left blank. A missing column implies the default value of a field will be used. A blank field implies blank (or the closest equivalent for that field type) should be used.
+Note that Composr will make reasonable/consistent choices if columns are missing or cells are left blank. A missing column implies the default value of a field will be used. A blank field implies blank (or the closest equivalent for that field type) should be used.
 
 Usergroups are referred to by name. You can put multiple usergroups in the usergroup column, separated by "/" (no spaces around this). The first usergroup provided is considered the primary usergroup. For example "A/B" puts someone in the usergroups named "A" and "B".
 
@@ -237,15 +298,15 @@ All default parts of the Composr member record will be replaced. If certain Comp
 Password is the one exception. If no new password, or hash, is supplied, then the old password remains. That's treated separately as the raw passwords are not saved within Composr, and hashes may not be understood or confidential, so to support reimporting exported records cleanly without the old passwords getting lost we need to be able to skip changing them.
 Custom profile fields get individually saved, so any missing custom profile field in the import will not result in that field getting reset to the default.
 
-[title="2"]Implicit usergroups and external usergroup listings[/title]
+[title="2"]Implicit usergroups and external usergroup listings (advanced)[/title]
 
-Composr has support for 'implicit usergroups' which are usergroup memberships defined by custom code written by programmers. It is useful for using permissions for handling special circumstances. For example, a programmer could create an implicit usergroup for under 18's and remove the bypass-wordfilter permission for that usergroup.
+Composr has support for 'implicit usergroups' which are usergroup memberships defined by custom code written by programmers, and getting usergroup membership from LDAP. It is useful for using permissions for handling special circumstances. For example, a programmer could create an implicit usergroup for under 18's and remove the bypass-wordfilter permission for that usergroup.
 
-In addition Composr can take usergroup memberships from LDAP.
+[title="3"]Limitations and background sync[/title]
 
-Usually when Composr handles checks of when someone is in a usergroup it goes through some fool-proof methods to do it. However for performance sometimes it needs to get a full list of everyone in a usergroup without having to run a lot of calculations. In these situations only natural Composr usergroups are checked.
-This said, Composr automatically syncs LDAP groups and Composr has a CRON hook (scheduler task) that is disabled by default that can be turned on by an Commandr command to synchronise implicit usergroups as normal usergroup memberships:
-[code]
+Usually when Composr handles checks of when someone is in a usergroup it goes through some fool-proof methods to do it by looking at just that particular user. Sometimes Composr needs to efficiently find all members in a usergroup, and bypasses checking implicit groups and LDAP for performance/simplicity.
+To mitigate this, Composr has a CRON hook (CRON bridge scheduler task) that is disabled by default that can be turned on by an Commandr command to synchronise implicit usergroups as normal usergroup memberships. To turn that on:
+[code="Commandr"]
 :set_value('implicit_usergroup_sync','1');
 [/code]
 If this is set then anyone put into the usergroup manually that does not match the implicit usergroup check would end up being removed again.
@@ -264,12 +325,12 @@ If synching is not enabled, or group memberships come from LDAP, then the follow
 [title="2"]Forced password resets[/title]
 
 You can force a member to change their password upon next login (e.g. if you want to promote increased security for some reason), via this Commandr command:
-[code]
+[code="Bash"]
 echo temporary > /members/bob/m_password_compat_scheme
 [/code]
 (this assumes you are doing it for a member, [tt]bob[/tt]).
 You can also run SQL queries. To force all members to change their passwords:
-[code]
+[code="SQL"]
 UPDATE cms_f_members SET m_password_compat_scheme='temporary' WHERE m_password_compat_scheme=''
 [/code]
 

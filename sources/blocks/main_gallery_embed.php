@@ -42,14 +42,14 @@ class Block_main_gallery_embed
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):NULL),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',NULL),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',((is_null($map)) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],((is_null($map)) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):null),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',null),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',((is_null($map)) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],((is_null($map)) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -62,7 +62,7 @@ class Block_main_gallery_embed
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -97,11 +97,11 @@ class Block_main_gallery_embed
         if (!array_key_exists('select', $map)) {
             $map['select'] = '*';
         }
-        $where_sup .= selectcode_to_sqlfragment($map['select'], 'id');
+        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
         if (!array_key_exists('video_select', $map)) {
             $map['video_select'] = '*';
         }
-        $where_sup .= selectcode_to_sqlfragment($map['video_select'], 'id');
+        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
 
         // Day filtering
         $_days = array_key_exists('days', $map) ? $map['days'] : '';
@@ -157,6 +157,12 @@ class Block_main_gallery_embed
             $extra_join_video .= $privacy_join_video;
             $extra_where_image .= $privacy_where_image;
             $extra_where_video .= $privacy_where_video;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
         // Get rows

@@ -11,7 +11,7 @@ var last_timestamp=0;
 var last_event_id=-1;
 var message_checking=false;
 var no_im_html='';
-var picker,picker_node,text_colour;
+var text_colour;
 var opened_popups={};
 var load_from_room_id=null;
 var already_received_room_invites={};
@@ -117,9 +117,6 @@ function hex_to_dec(number)
 
 function update_picker_colour()
 {
-	window.picker.setValue([hex_to_dec(window.text_colour.value.substr(1,2)),hex_to_dec(window.text_colour.value.substr(3,2)),hex_to_dec(window.text_colour.value.substr(5,2))],false);
-	window.picker_node.style.left=find_pos_x(window.text_colour)+'px';
-	window.picker_node.style.top=(find_pos_y(window.text_colour)+25)+'px';
 }
 
 function chat_on_rgb_change(o)
@@ -166,7 +163,18 @@ function do_input_private_message(field_name)
 		'',
 		function(va)
 		{
-			if (va!=null) insert_textbox(document.getElementById(field_name),'[private="'+va+'"][/private]');
+			if (va!=null)
+			{
+				var vb=window.fauxmodal_prompt(
+					'{!MESSAGE;^}',
+					'',
+					function(vb)
+					{
+						if (vb!=null) insert_textbox(document.getElementById(field_name),'[private="'+va+'"]'+vb+'[/private]');
+					},
+					'{!chat:INPUT_CHATCODE_private_message;^}'
+				);
+			}
 		},
 		'{!chat:INPUT_CHATCODE_private_message;^}'
 	);
@@ -188,7 +196,8 @@ function do_input_invite(field_name)
 					function(vb)
 					{
 						if (vb!=null) insert_textbox(document.getElementById(field_name),'[invite="'+va+'"]'+vb+'[/invite]');
-					}
+					},
+					'{!chat:INPUT_CHATCODE_invite;^}'
 				);
 			}
 		},
@@ -212,7 +221,8 @@ function do_input_new_room(field_name)
 					function(vb)
 					{
 						if (vb!=null) insert_textbox(document.getElementById(field_name),'[newroom="'+va+'"]'+vb+'[/newroom]');
-					}
+					},
+					'{!chat:INPUT_CHATCODE_new_room;^}'
 				);
 			}
 		},
@@ -248,8 +258,7 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 			var func=function(result) {
 				window.top_window.currently_sending_message=false;
 				element.disabled=false;
-
-				var responses=result.responseXML.getElementsByTagName('result');
+				var responses=result.getElementsByTagName('result');
 				if (responses[0])
 				{
 					process_chat_xml_messages(responses[0],true);
@@ -884,7 +893,7 @@ function _start_im(people,may_recycle)
 	set_inner_html(div,'{!LOADING;^}');
 	document.body.appendChild(div);
 	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&people='+people+'&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
-		var responses=result.responseXML.getElementsByTagName('result');
+		var responses=result.getElementsByTagName('result');
 		if (responses[0])
 		{
 			window.instant_go=true;

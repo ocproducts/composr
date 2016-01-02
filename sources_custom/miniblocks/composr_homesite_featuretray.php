@@ -15,15 +15,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-$sites_url = build_url(array('page' => 'sites'), 'site');
-if (is_object($sites_url)) {
-    $sites_url = $sites_url->evaluate();
-}
+$_sites_url = build_url(array('page' => 'sites'), 'site');
+$sites_url = $_sites_url->evaluate();
 
-$importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
-if (is_object($importing_tutorial_url)) {
-    $importing_tutorial_url = $importing_tutorial_url->evaluate();
-}
+$_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
+$importing_tutorial_url = $_importing_tutorial_url->evaluate();
 
 $featuretree = array(
     // Ways to help (using same code, bit of a hack)
@@ -49,7 +45,7 @@ $featuretree = array(
                 array('Make addons', 'If you know PHP, or are learning, [page="forum:topicview:browse:11688"]make and release some addons[/page] for the community. It takes a lot of knowledge, but anybody can learn and it\'s fun, fulfilling and makes you employable.'),
                 array('Theme', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are learning, [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
                 array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to make a new language pack.'),
-                //array('Use Composr for your own clients','Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
+                //array('Use Composr for your own clients', 'Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
                 array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_template=general_feedback:cost=free"]contact us[/page] and we will work to try and make it happen.'),
             ),
         ),
@@ -118,6 +114,7 @@ $featuretree = array(
                 array('Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
+                array('Geotargetting'),
             ),
         ),
         'search' => array(
@@ -291,6 +288,7 @@ $featuretree = array(
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
                 array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support', 'Export support, but also support for overlaying news feeds onto the calendar'),
+                array('Geotargetting'),
             ),
         ),
         'news' => array(
@@ -307,6 +305,7 @@ $featuretree = array(
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Easily syndicate to Facebook and Twitter'),
+                array('Geotargetting'),
             ),
         ),
         'quizzes' => array(
@@ -335,6 +334,7 @@ $featuretree = array(
                 array('Automatic thumbnail generation'),
                 array('Import and export easily', 'With <kbd>.zip</kbd> and metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
+                array('Geotargetting'),
             ),
         ),
         'downloads' => array(
@@ -400,7 +400,7 @@ $featuretree = array(
                 null, // divider
                 array('Custom field filters', 'For example, restrict news posts to a minimum length'),
                 array('Stack dumps for easy debugging'),
-                array('Synchronise data between staging and live sites using XML <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of XML transfer tool" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_xml_storage&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Synchronise data between staging and live sites using Resource-fs'),
             ),
         ),
         'integration' => array(
@@ -631,7 +631,6 @@ $featuretree = array(
                 array('Mass-moderation', 'Perform actions on many posts and topics at once'),
                 array('Post templates', 'Use your forum as a database for record gathering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Templates" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_post_templates"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Post preview', 'Read a topics first post directly from the forum-view'),
-                array('Records post edit/delete history <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post History" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_history"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Highlight posts as &lsquo;important&rsquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Highlighted Posts" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;type=findpost&amp;id=13#post_13"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>', 'Your posts will be <a href="http://www.youtube.com/watch?v=lul-Y8vSr0I" target="_blank" title="(Opens in new window)">high as a kite by then</a>'),
             ),
             'Conversr-only',
@@ -751,8 +750,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
             }
             echo '</ul></div>';
             if ($see_more) {
-                echo '<p class="button"><a class="seemore" href="#" onclick="toggle_seemore(this); return false;">See more</a></p>'/*."\n\n"*/
-                ;
+                echo '<p class="button"><a class="seemore" href="#" onclick="toggle_seemore(this); return false;">See more</a></p>'/*."\n\n"*/;
             }
         }
 

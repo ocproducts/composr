@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__crypt()
 {
@@ -34,7 +36,7 @@ function init__crypt()
      * @copyright 2012 The Authors
      */
 
-    if ((!defined('PASSWORD_DEFAULT')) && (function_exists('crypt'))) {
+    if ((!defined('PASSWORD_DEFAULT')) && (version_compare(PHP_VERSION, '5.3.7') >= 0)) { // http://compo.sr/tracker/view.php?id=2011
         define('PASSWORD_BCRYPT', 1);
         define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
 
@@ -44,7 +46,7 @@ function init__crypt()
          * @param  string $password The password to hash
          * @param  integer $algo The algorithm to use (Defined by PASSWORD_* constants)
          * @param  array $options The options for the algorithm to use
-         * @return ~string              The hashed password (false: error)
+         * @return ~string The hashed password (false: error)
          */
         function password_hash($password, $algo, $options)
         {
@@ -54,7 +56,7 @@ function init__crypt()
             }
             $result_length = 0;
             switch ($algo) {
-                case PASSWORD_BCRYPT:
+                case PASSWORD_BCRYPT: // Blowfish
                     // Note that this is a C constant, but not exposed to PHP, so we don't define it here.
                     $cost = 10;
                     if (isset($options['cost'])) {
@@ -68,11 +70,7 @@ function init__crypt()
                     $raw_salt_len = 16;
                     // The length required in the final serialization
                     $required_salt_len = 22;
-                    if (version_compare(PHP_VERSION, '5.3.7') >= 0) {
-                        $hash_format = sprintf("$2y$%02d$", $cost);
-                    } else {
-                        $hash_format = sprintf("$2a$%02d$", $cost);
-                    }
+                    $hash_format = sprintf("$2y$%02d$", $cost);
                     // The expected length of the final crypt() output
                     $result_length = 60;
                     break;
@@ -98,7 +96,7 @@ function init__crypt()
                         $buffer_valid = true;
                     }
                 }
-                if ((!$buffer_valid) && (function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+                if ((function_exists('openssl_random_pseudo_bytes')) && (!$buffer_valid) && (get_value('disable_openssl') !== '1')) {
                     $buffer = openssl_random_pseudo_bytes($raw_salt_len);
                     if ($buffer !== false) {
                         $buffer_valid = true;
@@ -143,7 +141,7 @@ function init__crypt()
 
             $ret = crypt($password, $hash);
 
-            if (!is_string($ret) || _crypt_strlen($ret) == 0/* || _crypt_strlen($ret)!=$result_length  causes problem on mac with old PHP version*/) {
+            if (!is_string($ret) || _crypt_strlen($ret) == 0 || _crypt_strlen($ret) != $result_length) {
                 return false;
             }
 
@@ -180,6 +178,7 @@ function init__crypt()
          *
          * @param  string $binary_string The input string
          * @return integer The number of bytes
+         * @ignore
          */
         function _crypt_strlen($binary_string)
         {
@@ -198,6 +197,7 @@ function init__crypt()
          * @param integer $start Start
          * @param integer $length Length
          * @return string The substring
+         * @ignore
          */
         function _crypt_substr($binary_string, $start, $length)
         {
@@ -220,6 +220,7 @@ function init__crypt()
 function ratchet_hash($password, $salt, $legacy_style = 0)
 {
     if (function_exists('password_hash')) {
+        // NB: We don't pass the salt separately, we let password_hash generate its own internal salt also (that builds into the hash). So it is double salted.
         return password_hash($salt . md5($password), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))));
     }
 
@@ -345,6 +346,11 @@ function check_master_password($password_given)
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
         $salt = 'cms';
+
+        // LEGACY
+        if ($actual_password_hashed != md5($password_given . $salt)) {
+            $salt = 'ocp';
+        }
     }
     return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
 }

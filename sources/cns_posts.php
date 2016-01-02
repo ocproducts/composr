@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_posts()
 {
@@ -79,9 +81,9 @@ function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $cl
  * @param  AUTO_LINK $post_id The post ID.
  * @param  ?TIME $post_time The time of the post (null: lookup).
  * @param  ?MEMBER $resource_owner The owner of the post (null: lookup).
- * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is NULL in which case we look this up too).
+ * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too).
  * @param  ?MEMBER $member_id The member (null: current member).
- * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is NULL in which case we look this up to).
+ * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to).
  * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason).
  * @return boolean The answer.
  */
@@ -148,9 +150,9 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
  * @param  AUTO_LINK $post_id The post ID.
  * @param  ?TIME $post_time The time of the post (null: lookup).
  * @param  ?MEMBER $resource_owner The owner of the post (null: lookup).
- * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is NULL in which case we look this up too).
+ * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too).
  * @param  ?MEMBER $member_id The member (null: current member).
- * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is NULL in which case we look this up to).
+ * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to).
  * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason).
  * @return boolean The answer.
  */
@@ -163,7 +165,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
     $reason = null;
 
     if (is_null($post_time)) {
-        $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('id' => $post_id), '', 1);
+        $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('p.id' => $post_id), '', 1);
         if (!array_key_exists(0, $posts)) {
             $reason = do_lang('INTERNAL_ERROR');
             return false;
@@ -209,7 +211,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
  *
  * @param  ID_TEXT $linked_type Content type.
  * @param  ID_TEXT $linked_id Content ID.
- * @return array A pair: better description (may be NULL), better post (may be NULL).
+ * @return array A pair: better description (may be null), better post (may be null).
  */
 function cns_display_spacer_post($linked_type, $linked_id)
 {

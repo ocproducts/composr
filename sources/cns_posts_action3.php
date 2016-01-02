@@ -26,7 +26,7 @@
  * @param  ?AUTO_LINK $forum_id The forum that the topic containing the post is in (null: find out from the DB).
  * @param  ?MEMBER $poster The member that made the post being validated (null: find out from the DB).
  * @param  ?LONG_TEXT $post The post, in Comcode format (null: It'll have to be looked-up).
- * @return AUTO_LINK The ID of the topic (whilst this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
 function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster = null, $post = null)
 {
@@ -75,10 +75,10 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']));
 
     if (!is_null($forum_id)) {
-        cns_force_update_forum_cacheing($forum_id, 0, 1);
+        cns_force_update_forum_caching($forum_id, 0, 1);
     }
 
-    cns_force_update_topic_cacheing($topic_id, 1, true, true);
+    cns_force_update_topic_caching($topic_id, 1, true, true);
 
     return $topic_id; // Because we might want this
 }
@@ -87,7 +87,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * Edit a post.
  *
  * @param  AUTO_LINK $post_id The ID of the post that we're editing.
- * @param  BINARY $validated Whether the post is validated.
+ * @param  BINARY $validated Whether the post is validated (null: decide based on permissions).
  * @param  SHORT_TEXT $title The title of the post (may be blank).
  * @param  LONG_TEXT $post The post.
  * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.
@@ -97,12 +97,12 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * @param  boolean $mark_as_unread Whether to mark the topic as unread by those previous having read this post.
  * @param  LONG_TEXT $reason The reason for this action.
  * @param  boolean $check_perms Whether to check permissions.
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $run_checks Whether to run checks
- * @return AUTO_LINK The ID of the topic (whilst this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
 function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true)
 {
@@ -110,15 +110,15 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_time', 'p_post', 'p_poster', 'p_cache_forum_id'), array('id' => $post_id));
+    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id));
     if (!array_key_exists(0, $post_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
-    $_postdetails = $post_info[0]['p_post'];
+    $_title = $post_info[0]['p_title'];
+    $_post = $post_info[0]['p_post'];
     $post_owner = $post_info[0]['p_poster'];
     $forum_id = $post_info[0]['p_cache_forum_id'];
     $topic_id = $post_info[0]['p_topic_id'];
-    $update_map = array();
 
     require_code('cns_posts_action');
     require_code('cns_posts');
@@ -132,12 +132,14 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
             access_denied('I_ERROR');
         }
     }
+
     if ((is_null($validated)) || ($validated == 1)) {
         if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
         } else {
             $validated = 1;
         }
+
         if (($mark_as_unread)/* && (cns_may_moderate_forum($forum_id))*/) {
             $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_last_time' => time(), 't_cache_last_post_id' => $post_id, 't_cache_last_title' => $title, 't_cache_last_username' => $GLOBALS['FORUM_DRIVER']->get_username($post_owner, true), 't_cache_last_member_id' => $post_owner), array('id' => $topic_id), '', 1);
 
@@ -145,21 +147,30 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         }
     }
 
-    // Save in history
-    $ticket_forum = get_option('ticket_forum_name', true);
-    if ((is_null($ticket_forum)) || ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum))) {
-        $GLOBALS['FORUM_DB']->query_insert('f_post_history', array(
-            'h_create_date_and_time' => $post_info[0]['p_time'],
-            'h_action_date_and_time' => is_null($edit_time) ? time() : $edit_time,
-            'h_owner_member_id' => $post_owner,
-            'h_alterer_member_id' => get_member(),
-            'h_post_id' => $post_id,
-            'h_topic_id' => $topic_id,
-            'h_before' => get_translated_text($_postdetails, $GLOBALS['FORUM_DB']),
-            'h_action' => 'EDIT_POST'
-        ));
+    // Logging
+    require_code('cns_general_action2');
+    $moderatorlog_id = cns_mod_log_it('EDIT_POST', strval($post_id), $title, $reason);
+    if (addon_installed('actionlog')) {
+        $ticket_forum = get_option('ticket_forum_name', true);
+        if ((is_null($ticket_forum)) || ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum))) {
+            require_code('revisions_engine_database');
+            $revision_engine = new RevisionEngineDatabase(true);
+            $revision_engine->add_revision(
+                'post',
+                strval($post_id),
+                strval($topic_id),
+                $_title,
+                get_translated_text($_post, $GLOBALS['FORUM_DB']),
+                $post_owner,
+                $post_info[0]['p_time'],
+                $moderatorlog_id
+            );
+        }
     }
 
+    // Do edit...
+
+    $update_map = array();
     require_code('attachments2');
     require_code('attachments3');
     if (!addon_installed('unvalidated')) {
@@ -172,7 +183,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         'p_validated' => $validated,
         'p_skip_sig' => $skip_sig,
     );
-    $update_map += update_lang_comcode_attachments('p_post', $_postdetails, $post, 'cns_post', strval($post_id), $GLOBALS['FORUM_DB'], false, $post_owner);
+    $update_map += update_lang_comcode_attachments('p_post', $_post, $post, 'cns_post', strval($post_id), $GLOBALS['FORUM_DB'], $post_owner);
 
     if ($show_as_edited) {
         $update_map['p_last_edit_time'] = $edit_time;
@@ -191,7 +202,8 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
 
     $GLOBALS['FORUM_DB']->query_update('f_posts', $update_map, array('id' => $post_id), '', 1);
 
-    // Update topic cacheing
+    // Update topic caching...
+
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_post_id', 't_cache_first_title'), array('id' => $topic_id), '', 1);
     if ((array_key_exists(0, $info)) && ($info[0]['t_cache_first_post_id'] == $post_id) && ($info[0]['t_cache_first_title'] != $title)) {
         require_code('urls2');
@@ -200,16 +212,13 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_first_title' => $title), array('id' => $topic_id), '', 1);
     }
 
-    require_code('cns_general_action2');
-    cns_mod_log_it('EDIT_POST', strval($post_id), $title, $reason);
-
     if (!is_null($forum_id)) {
         cns_decache_cms_blocks($forum_id);
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('post', strval($post_id));
+        generate_resource_fs_moniker('post', strval($post_id));
     }
 
     return $topic_id; // We may want this
@@ -230,7 +239,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     // Info about source
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $forum_id = $info[0]['t_forum_id'];
 
@@ -248,7 +257,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     }
 
     // Check access
-    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT id,p_post,p_poster,p_time,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
     $num_posts_counted = 0;
     foreach ($_postdetails as $post) {
         if ((is_null($post['p_intended_solely_for'])) && ($post['p_validated'] == 1)) {
@@ -262,24 +271,38 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         }
     }
 
-    // Save in history
-    foreach ($_postdetails as $post) {
-        $GLOBALS['FORUM_DB']->query_insert('f_post_history', array(
-            'h_create_date_and_time' => $post['p_time'],
-            'h_action_date_and_time' => time(),
-            'h_owner_member_id' => $post['p_poster'],
-            'h_alterer_member_id' => get_member(),
-            'h_post_id' => $post['id'],
-            'h_topic_id' => $topic_id,
-            'h_before' => get_translated_text($post['p_post'], $GLOBALS['FORUM_DB']),
-            'h_action' => 'DELETE_POST'
-        ));
+    // Logging
+    require_code('cns_general_action2');
+    if (count($posts) == 1) {
+        $moderatorlog_id = cns_mod_log_it('DELETE_POST', strval($topic_id), strval($posts[0]), $reason);
+    } else {
+        $moderatorlog_id = cns_mod_log_it('DELETE_POSTS', strval($topic_id), strval(count($posts)), $reason);
+    }
+    if (addon_installed('actionlog')) {
+        require_code('revisions_engine_database');
+        foreach ($_postdetails as $post) {
+            $revision_engine = new RevisionEngineDatabase(true);
+            $revision_engine->add_revision(
+                'post',
+                strval($post['id']),
+                strval($topic_id),
+                $post['p_title'],
+                get_translated_text($post['p_post'], $GLOBALS['FORUM_DB']),
+                $post['p_poster'],
+                $post['p_time'],
+                $moderatorlog_id
+            );
+        }
     }
 
     // Update member post counts
     $post_counts = is_null($forum_id) ? 1 : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_post_count_increment', array('id' => $forum_id));
     if ($post_counts == 1) {
-        $_member_post_counts = $GLOBALS['FORUM_DB']->query('SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+        $sql = 'SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ')';
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND p_validated=1';
+        }
+        $_member_post_counts = $GLOBALS['FORUM_DB']->query($sql, null, null, false, true);
         $member_post_counts = array();
         foreach ($_member_post_counts as $_member_post_count) {
             $_member = $_member_post_count['p_poster'];
@@ -291,6 +314,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
 
         foreach ($member_post_counts as $member_id => $member_post_count) {
             if (!is_null($forum_id)) {
+                require_code('cns_posts_action');
                 cns_force_update_member_post_count($member_id, -$member_post_count);
             }
         }
@@ -302,6 +326,8 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     foreach ($_postdetails as $post) {
         delete_lang_comcode_attachments($post['p_post'], 'cns_post', $post['id'], $GLOBALS['FORUM_DB']);
     }
+
+    // Delete everything...
 
     $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
     $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'review_supplement WHERE ' . str_replace('id=', 'r_post_id=', $or_list), null, null, false, true);
@@ -315,18 +341,13 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     } else {
         $ret = false;
 
-        // Update cacheing
-        cns_force_update_topic_cacheing($topic_id, -$num_posts_counted, true, true);
+        // Update caching
+        require_code('cns_posts_action2');
+        cns_force_update_topic_caching($topic_id, -$num_posts_counted, true, true);
     }
     if (!is_null($forum_id)) {
-        cns_force_update_forum_cacheing($forum_id, 0, -$num_posts_counted);
-    }
-
-    require_code('cns_general_action2');
-    if (count($posts) == 1) {
-        cns_mod_log_it('DELETE_POST', strval($topic_id), strval($posts[0]), $reason);
-    } else {
-        cns_mod_log_it('DELETE_POSTS', strval($topic_id), strval(count($posts)), $reason);
+        require_code('cns_posts_action2');
+        cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
     }
 
     if (!is_null($forum_id)) {
@@ -343,7 +364,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
         foreach ($posts as $post) {
-            expunge_resourcefs_moniker('post', strval($post));
+            expunge_resource_fs_moniker('post', strval($post));
         }
     }
 
@@ -354,7 +375,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
  * Move posts from one topic to another.
  *
  * @param  AUTO_LINK $from_topic_id The ID of the source topic.
- * @param  AUTO_LINK $to_topic_id The ID of the destination topic.
+ * @param  ?AUTO_LINK $to_topic_id The ID of the destination topic (null: move to new topic in $forum_id).
  * @param  array $posts A list of post IDs to move.
  * @param  LONG_TEXT $reason The reason for this action.
  * @param  ?AUTO_LINK $to_forum_id The forum the destination topic is in (null: find from DB).
@@ -367,7 +388,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     // Info about source
     $from_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id'), array('id' => $from_topic_id));
     if (!array_key_exists(0, $from_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $from_forum_id = $from_info[0]['t_forum_id'];
 
@@ -378,6 +399,21 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
             $or_list .= ' OR ';
         }
         $or_list .= 'id=' . strval($post);
+    }
+
+    // Check access
+    if (!cns_may_moderate_forum($from_forum_id)) {
+        access_denied('I_ERROR');
+    }
+    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT p_cache_forum_id,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+    $num_posts_counted = 0;
+    foreach ($_postdetails as $post) {
+        if ((is_null($post['p_intended_solely_for'])) && ($post['p_validated'] == 1)) {
+            $num_posts_counted++;
+        }
+        if ($post['p_cache_forum_id'] != $from_forum_id) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
     }
 
     // Is it a support ticket move?
@@ -427,35 +463,29 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     // Info about destination
     $to_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id'), array('id' => $to_topic_id));
     if (!array_key_exists(0, $to_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $to_forum_id = $to_info[0]['t_forum_id'];
 
-    // Check access
-    if (!cns_may_moderate_forum($from_forum_id)) {
-        access_denied('I_ERROR');
-    }
-    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT p_cache_forum_id,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
-    $num_posts_counted = 0;
-    foreach ($_postdetails as $post) {
-        if ((is_null($post['p_intended_solely_for'])) && ($post['p_validated'] == 1)) {
-            $num_posts_counted++;
-        }
-        if ($post['p_cache_forum_id'] != $from_forum_id) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-        }
-    }
-
-    // Update cacheing
+    // Do move
     $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to_forum_id) . ', p_topic_id=' . strval($to_topic_id) . ' WHERE ' . $or_list, null, null, false, true);
+
+    // Update caching
+    if (addon_installed('actionlog')) {
+        require_code('revisions_engine_database');
+        $revision_engine = new RevisionEngineDatabase();
+        foreach ($posts as $post) {
+            $revision_engine->recategorise_old_revisions('post', strval($post), strval($to_topic_id));
+        }
+    }
     require_code('cns_posts_action2');
-    cns_force_update_topic_cacheing($from_topic_id, -$num_posts_counted, true, true);
-    cns_force_update_topic_cacheing($to_topic_id, $num_posts_counted, true, true);
+    cns_force_update_topic_caching($from_topic_id, -$num_posts_counted, true, true);
+    cns_force_update_topic_caching($to_topic_id, $num_posts_counted, true, true);
     if ((!is_null($from_forum_id)) && (!is_null($to_topic_id)) && ($from_forum_id != $to_topic_id)) {
         if ($from_forum_id != $to_forum_id) {
             require_code('cns_forums_action2');
-            cns_force_update_forum_cacheing($from_forum_id, 0, -$num_posts_counted);
-            cns_force_update_forum_cacheing($to_forum_id, 0, $num_posts_counted);
+            cns_force_update_forum_caching($from_forum_id, 0, -$num_posts_counted);
+            cns_force_update_forum_caching($to_forum_id, 0, $num_posts_counted);
 
             // Update member post counts if we've switched between post-count countable forums
             $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($from_forum_id) . ' OR id=' . strval($to_forum_id), 2);
@@ -467,7 +497,11 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
                 $to = $post_count_info[0]['f_post_count_increment'];
             }
             if ($from != $to) {
-                $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query('SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true));
+                $sql = 'SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ')';
+                if (addon_installed('unvalidated')) {
+                    $sql .= ' AND p_validated=1';
+                }
+                $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
                 $member_post_counts = array_count_values($_member_post_counts);
 
                 foreach ($member_post_counts as $member_id => $member_post_count) {
@@ -502,6 +536,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
         }
         $me_link = '[page="' . get_module_zone('members') . ':members:view:' . strval(get_member()) . '"]' . $GLOBALS['CNS_DRIVER']->get_username(get_member(), true) . '[/page]';
         $lang = do_lang('INLINE_POSTS_MOVED_MESSAGE', $me_link, integer_format(count($posts)), array($to_link, get_timezoned_date(time())));
+        require_code('cns_posts_action');
         cns_make_post($from_topic_id, '', $lang, 0, false, 1, 1, null, null, $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_time', array('id' => $posts[0])) + 1, null, null, null, null, false);
 
         require_code('cns_general_action2');

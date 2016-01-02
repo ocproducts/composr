@@ -11,7 +11,7 @@
 
 		<div class="status_controls">
 			{+START,IF,{$ADDON_INSTALLED,chat}}
-				<select class="drop_down" name="privacy" size="1">
+				<select name="privacy" size="1">
 					<option selected="selected">
 						{!PUBLIC}
 					</option>
@@ -23,7 +23,7 @@
 			{+START,IF,{$NOT,{$ADDON_INSTALLED,chat}}}
 				<input type="hidden" name="privacy" value="{!PUBLIC}" />
 			{+END}
-			<input onclick="disable_button_just_clicked(this);" type="submit" class="buttons__save login_but button_micro" name="button" id="button" value="{!UPDATE}" />
+			<input onclick="disable_button_just_clicked(this);" type="submit" class="buttons__save button_screen_item" name="button" id="button" value="{!UPDATE}" />
 			<p id="activities_update_notify" class="activities_update_success">254 {!activities:CHARACTERS_LEFT}</p> {$,Do not remove; the AJAX notifications are inserted here.}
 		</div>
 

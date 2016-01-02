@@ -55,7 +55,7 @@ class Hook_rss_wiki
         foreach ($rows as $row) {
             $id = strval($row['id']);
 
-            if (!has_category_access(get_member(), 'wiki_page', strval($id))) {
+            if (!has_category_access(get_member(), 'wiki_page', strval($row['id']))) {
                 continue;
             }
 
@@ -80,6 +80,6 @@ class Hook_rss_wiki
         }
 
         require_lang('wiki');
-        return array($content, do_lang('WIKI_POSTS'));
+        return array($content, do_lang('WIKI_PAGES'));
     }
 }

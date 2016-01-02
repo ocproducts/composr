@@ -81,10 +81,6 @@ class Hook_search_cns_members
             $rows = cns_get_all_custom_fields_match(null, has_privilege(get_member(), 'view_any_profile_field') ? null : 1, has_privilege(get_member(), 'view_any_profile_field') ? null : 1);
             require_code('fields');
             foreach ($rows as $row) {
-                if (!array_key_exists('field_' . strval($row['id']), $indexes)) {
-                    continue;
-                }
-
                 $ob = get_fields_hook($row['cf_type']);
                 $temp = $ob->get_search_inputter($row);
                 if (is_null($temp)) {
@@ -93,7 +89,7 @@ class Hook_search_cns_members
                     $display = $row['trans_name'];
                     $fields[] = array('NAME' => strval($row['id']), 'DISPLAY' => $display, 'TYPE' => $type, 'SPECIAL' => $special);
                 } else {
-                    $fields = array_merge($fields, $temp);
+                    $fields[] = $temp;
                 }
             }
 
@@ -109,17 +105,18 @@ class Hook_search_cns_members
         if ($map == array()) {
             $map = null;
         }
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order');
-        $groups = form_input_list_entry('', true, '---');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
+        $groups = form_input_list_entry('', false, '---');
         $default_group = get_param_string('option__user_group', '');
         $group_titles = array();
+        $bits = explode(',', $default_group);
         foreach ($rows as $row) {
             $name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
             if ($row['id'] == db_get_first_id()) {
                 continue;
             }
-            $groups->attach(form_input_list_entry(strval($row['id']), strval($row['id']) == $default_group, $name));
+            $groups->attach(form_input_list_entry(strval($row['id']), in_array(strval($row['id']), $bits), $name));
             $group_titles[$row['id']] = $name;
         }
         if (strpos($default_group, ',') !== false) {
@@ -133,7 +130,7 @@ class Hook_search_cns_members
             }
             $groups->attach(form_input_list_entry(strval($default_group), true, do_lang_tempcode('USERGROUP_SEARCH_COMBO', escape_html($combination))));
         }
-        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('GROUP'), 'TYPE' => '_LIST', 'SPECIAL' => $groups);
+        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('USERGROUP'), 'TYPE' => '_MULTI_LIST', 'SPECIAL' => $groups);
         return $fields;
     }
 
@@ -214,10 +211,6 @@ class Hook_search_cns_members
         }
         $index_issue = (get_param_integer('force_like', 0) == 0) && ($non_trans_fields > 16);
         foreach ($rows as $i => $row) {
-            if (!array_key_exists('field_' . strval($row['id']), $indexes)) {
-                continue;
-            }
-
             $ob = get_fields_hook($row['cf_type']);
             list(, , $storage_type) = $ob->get_field_value_row_bits($row);
 
@@ -231,7 +224,7 @@ class Hook_search_cns_members
                     $temp = '?=' . float_to_raw_string(floatval($param));
                 } elseif ($storage_type == 'list') {
                     $temp = db_string_equal_to('?', $param);
-                } elseif ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($param))) {
+                } elseif ((array_key_exists('field_' . strval($row['id']), $indexes)) && (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($param))) {
                     $temp = db_full_text_assemble('"' . $param . '"', true);
                 } else {
                     list($temp,) = db_like_assemble($param);
@@ -252,6 +245,10 @@ class Hook_search_cns_members
             } else {
                 $trans_fields['field_' . strval($row['id'])] = 'LONG_TRANS__COMCODE';
             }
+        }
+        if ($index_issue) {
+            $boolean_search = true;
+            list($content_where) = build_content_where($content, $boolean_search, $boolean_operator);
         }
         $age_range = get_param_string('option__age_range', get_param_string('option__age_range_from', '') . '-' . get_param_string('option__age_range_to', ''));
         if (($age_range != '') && ($age_range != '-')) {
@@ -316,7 +313,7 @@ class Hook_search_cns_members
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {

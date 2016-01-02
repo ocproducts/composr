@@ -170,10 +170,9 @@ class Hook_addon_registry_image_syndication
             'sources_custom/photobucket/PBAPI/Response/xmlserializer.php',
             'sources_custom/photobucket/PBAPI/Response.php',
             'sources_custom/photobucket/PBAPI.php',
-            'sources_custom/hooks/systems/upload_syndication/index.html',
             'sources_custom/hooks/systems/upload_syndication/photobucket.php',
             'sources_custom/hooks/systems/config/photobucket_client_id.php',
-            'sources_custom/hooks/systems/config/photobucket_client_secret.php ',
+            'sources_custom/hooks/systems/config/photobucket_client_secret.php',
             'lang_custom/EN/video_syndication_photobucket.ini',
         );
     }

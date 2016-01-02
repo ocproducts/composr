@@ -73,54 +73,53 @@ function obfuscate_entities($val)
 function obfuscate_email_address($email)
 {
     /* One possibility (conventional, but annoying)...
-    $i=mt_rand(0,strlen($email));
-    $rep='^remove_me^';
-    return substr($email,0,$i).$rep.substr($email,$i);
+    $i = mt_rand(0, strlen($email));
+    $rep = '^remove_me^';
+    return substr($email, 0, $i) . $rep . substr($email, $i);
     */
 
     /* One possibility (conventional, but annoying)...
-    $at_pos=strpos($email,'@');
-    return substr($email,0,$at_pos).'AT'.substr($email,$at_pos+1);
+    $at_pos = strpos($email, '@');
+    return substr($email, 0, $at_pos) . 'AT' . substr($email, $at_pos + 1);
     */
 
     /* Randomly mutated e-mail addresses, so that we can block e-mail address mutations that have become spammed. This would be for webmasters who have default mail for the domain forwarded to themselves.
-    $at_pos=strpos($email,'@');
-    return substr($email,0,$at_pos).mt_rand(0,100000).substr($email,$at_pos);
+    $at_pos = strpos($email, '@');
+    return substr($email, 0, $at_pos) . mt_rand(0, mt_getrandmax()) . substr($email, $at_pos);
     */
 
     /* Another possibility would be to write some JavaScript that scans the page after loading, and re-write algorithmically mangled addresses. (You'd need to write some JavaScript to match this, we haven't)
-    $remap=array('a'=>'alpha',
-                             'b'=>'beta',
-                             'c'=>'no',
-                             'd'=>'delta',
-                             'e'=>'epsilon',
-                             'f'=>'more',
-                             'g'=>'gamma',
-                             'h'=>'eta',
-                             'i'=>'iota',
-                             'j'=>'letters',
-                             'k'=>'kappa',
-                             'l'=>'lambda',
-                             'm'=>'mu',
-                             'n'=>'nu',
-                             'o'=>'omicron',
-                             'p'=>'pi',
-                             'q'=>'xi',
-                             'r'=>'rho',
-                             's'=>'psi',
-                             't'=>'tau',
-                             'u'=>'theta',
-                             'v'=>'sigma',
-                             'w'=>'phi',
-                             'x'=>'chi',
-                             'y'=>'upsilon',
-                             'z'=>'zeta',
-                             );
-    $out='';
-    for ($i=0;$i<strlen($email))
-    {
-        $at=$email[$i];
-        $out.=(array_key_exists($at,$remap))?('{'.$remap[$at].'}'):$at;
+    $remap = array('a' => 'alpha',
+                   'b' => 'beta',
+                   'c' => 'no',
+                   'd' => 'delta',
+                   'e' => 'epsilon',
+                   'f' => 'more',
+                   'g' => 'gamma',
+                   'h' => 'eta',
+                   'i' => 'iota',
+                   'j' => 'letters',
+                   'k' => 'kappa',
+                   'l' => 'lambda',
+                   'm' => 'mu',
+                   'n' => 'nu',
+                   'o' => 'omicron',
+                   'p' => 'pi',
+                   'q' => 'xi',
+                   'r' => 'rho',
+                   's' => 'psi',
+                   't' => 'tau',
+                   'u' => 'theta',
+                   'v' => 'sigma',
+                   'w' => 'phi',
+                   'x' => 'chi',
+                   'y' => 'upsilon',
+                   'z' => 'zeta',
+    );
+    $out = '';
+    for ($i = 0; $i < strlen($email)) {
+        $at = $email[$i];
+        $out .= (array_key_exists($at, $remap)) ? ('{' . $remap[$at] . '}') : $at;
     }
     return $out;
     */

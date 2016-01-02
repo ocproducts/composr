@@ -28,7 +28,7 @@ There are many ways to gain points for use in Buildr:
  - Submitting news.
  - Submitting downloads.
  - Participating in the discussion forums.
- - Participating in the community chat room.
+ - Participating in the community chatroom.
  - Being an active member of the community such that people want to give you gift points.
  - Asking for people to give gifts points in discussion forums for your Buildr project (if you think your project is a 'good thing').
 
@@ -65,7 +65,7 @@ If you scroll down, you will see a link called 'map'. Click on it and a map will
  - The Green lined square represents your current location on the realm.
  - The question marks '?' represent a room that you haven't visited yet.
  - The name you see above the co-ordinates is the name of the owner of the room,the name that appears the most times on the map is the owner of and generally, the realm.
- - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room.... This is why you shouldn't lock off all of the directions.
+ - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room... This is why you shouldn't lock off all of the directions.
 
 [html]<div style="margin-left: 30px">[/html]If you take a look at...
 [url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png[/img][/url]
@@ -85,35 +85,36 @@ this is a room locked on all sides [b]and[/b] the surrounding rooms locked on th
 If you click on the 'realms' link, you will be brought to a page that displays the following information for all of the current realms.
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td><h4>Object</h4></td>
-		  <td><h4>Example</h4></td>
-	 </tr>
-	 <tr>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Name</td>
-		  <td>Deck 8 - Primary Computer Core</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Number</td>
-		  <td>20</td>
-	 </tr>
-	 <tr>
-		  <td>Number of rooms</td>
-		  <td>20 rooms</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Status</td>
-		  <td>Public</td>
-	 </tr>
-	 <tr>
-		  <td>Owner of the Realm</td>
-		  <td>mrdefender</td>
-	 </tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Object</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>Realm Name</td>
+			<td>Deck 8 - Primary Computer Core</td>
+		</tr>
+		<tr>
+			<td>Realm Number</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>Number of rooms</td>
+			<td>20 rooms</td>
+		</tr>
+		<tr>
+			<td>Realm Status</td>
+			<td>Public</td>
+		</tr>
+		<tr>
+			<td>Owner of the Realm</td>
+			<td>mrdefender</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -143,7 +144,7 @@ If you made the room you are currently in, or made the realm you are currently o
 
 [title="3"]The main interface: Interaction[/title]
 
-As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in....
+As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in...
 
 [img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.5.0.png[/img]
 
@@ -162,42 +163,42 @@ When/if this happens, [b]it is important[/b] that you send a reply [b]to him and
 It is possible to format your message or room or realm text using Comcode. To make it easier, we'll show you some examples as well as explaining how to use it. Remember to always close your format code with a / . Of course, you can combine multiple commands... just remember that any command you open, you need to close.
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td>BOLD:</td>
-		  <td>[b]your text[/b]</td>
-		  <td>This will have 'your text' in bold.</td>
-	 </tr>
-	 <tr>
-		  <td>ITALIC:</td>
-		  <td>[i]your text[/i]</td>
-		  <td>This will have 'your text' italicised.</td>
-	 </tr>
-	 <tr>
-		  <td>UNDERLINED:</td>
-		  <td>[u]your text[/u]</td>
-		  <td>This will make 'your text' underlined.</td>
-	 </tr>
-</table>
+<table class="map_table results_table wide_table autosized_table"><tbody>
+	<tr>
+		<th>BOLD:</th>
+		<td>[b]your text[/b]</td>
+		<td>This will have 'your text' in bold.</td>
+	</tr>
+	<tr>
+		<th>ITALIC:</th>
+		<td>[i]your text[/i]</td>
+		<td>This will have 'your text' italicised.</td>
+	</tr>
+	<tr>
+		<th>UNDERLINED:</th>
+		<td>[u]your text[/u]</td>
+		<td>This will make 'your text' underlined.</td>
+	</tr>
+</tbody></table>
 [/html]
 
 [title="4"]Font sizes and colours[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td>COLOR: </td>
-		  <td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>
-	 </tr>
-	 <tr>
-		  <td>SIZE: </td>
-		  <td>[font size="size"]your text[/font] will have the text appear at the size you provided.</td>
-	 </tr>
-	 <tr>
-		  <td>FACE: </td>
-		  <td>[font face="fontname"]your text[/font] will have the text appear as the provided font.</td>
-	 </tr>
-</table>
+<table class="map_table results_table wide_table autosized_table"><tbody>
+	<tr>
+		<th>COLOR:</th>
+		<td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>
+	</tr>
+	<tr>
+		<th>SIZE:</th>
+		<td>[font size="size"]your text[/font] will have the text appear at the size you provided.</td>
+	</tr>
+	<tr>
+		<th>FACE:</th>
+		<td>[font face="fontname"]your text[/font] will have the text appear as the provided font.</td>
+	</tr>
+</tbody></table>
 [/html]
 
 You can combine all of them together also, using any combination of the color, size and face parameters to the font tag.
@@ -210,9 +211,9 @@ You can also make point-form lists by putting " - " at the start of each list it
 
 Follow the following example to create links:
 
-[html]
+[code="Comcode"]
 [url="link text"]http://www.something.com/something[/url]
-[/html]
+[/code]
 
 [title="4"]Using Smilies[/title]
 
@@ -320,16 +321,16 @@ First, open up the map and find a spot where you want the room to be moved. Simp
 Let's say a room is at 25:7:-8 and you want to move your room to right. The co-ordinates would be 25:7:-7.
 
 The more to the right the room needs to be, the greater the X number is. (-10 to 0 to 10).
-The more towards the right, the greater the X number is. (-3,-2,-1... 1,2,3,4....)
-The more towards the left, the lower the X number is. (-1,-2,-3,-4,-5, ....)
-The more upwards a room gets, the lower the Y number gets. (-3,-2,-1... 1,2,3,4....)
-The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, ....)
+The more towards the right, the greater the X number is. (-3,-2,-1... 1,2,3,4...)
+The more towards the left, the lower the X number is. (-1,-2,-3,-4,-5, ...)
+The more upwards a room gets, the lower the Y number gets. (-3,-2,-1... 1,2,3,4...)
+The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, ...)
 
 [title="3"]How to delete your room[/title]
 
 If you wish to remove your room for any reason, the task is simple.
- - Go to the room in question and enter it.
- - Scroll down and click on delete room.
+1) Go to the room in question and enter it.
+2) Scroll down and click on delete room.
 
 [b]Before[/b] Confirming the process, you must know that if you created a unique item, the item copy will be removed as well, but the item itself remains in the database so you can make a copy of said item somewhere else if you need to.
 
@@ -341,7 +342,7 @@ When the room is deleted, you will receive a 70% refund of the original price. T
 
 This short tutorial will show you how to make a realm in Buildr.
 
-Why would you want to make a realm? So many reasons.... To name a few:
+Why would you want to make a realm? So many reasons... To name a few:
  - Make a Small (single realm) or Big (multiple realm) Planet.
  - Make a Mission or 'Quest'
  - Make a Sector in space, or other area
@@ -350,7 +351,7 @@ Why would you want to make a realm? So many reasons.... To name a few:
  - Have Fun
  - Experiment with Buildr
 
-To name a few.... ;)
+To name a few... ;)
 
 Now, let's get cracking!
 
@@ -457,7 +458,7 @@ Make your way to the portal spot then scroll down and select 'add portal'. A new
 [b]Dest. X[/b]: The co-ordinate for X. The only available number here is 0 as only 1 room exists.
 [b]Dest. Y[/b]: The co-ordinate for Y. The only available number here is 0 as only 1 room exists.
 
-After the portal is created, you can click the new link and voil�, you're in your own realm!
+After the portal is created, you can click the new link and voil&#xE0;, you're in your own realm!
 
 [title="3"]Realms: The objective of a troll[/title]
 

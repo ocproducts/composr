@@ -79,7 +79,7 @@ class Hook_fields_picture
      * @param  ?ID_TEXT $id_field Name of the ID field in the table (null: N/A)
      * @param  ?ID_TEXT $field_id_field Name of the field ID field in the table (null: N/A)
      * @param  ?ID_TEXT $url_field Name of the URL field in the table (null: N/A)
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value(&$field, $ev, $i, $only_fields, $table = null, $id = null, $id_field = null, $field_id_field = null, $url_field = null)
     {
@@ -162,7 +162,8 @@ class Hook_fields_picture
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
-        $ffield = form_input_upload($_cf_name, $_cf_description, 'field_' . strval($field['id']), $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : $actual_value, null, true, str_replace(' ', '', get_option('valid_images')));
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        $ffield = form_input_upload($_cf_name, $_cf_description, $input_name, $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : $actual_value, null, true, str_replace(' ', '', get_option('valid_images')));
 
         $hidden = new Tempcode();
         handle_max_file_size($hidden, 'image');
@@ -175,7 +176,7 @@ class Hook_fields_picture
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

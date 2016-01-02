@@ -14,7 +14,7 @@
 	<div class="cns_forum_box_right cns_post_details" role="note">
 		<div class="cns_post_details_date">
 			{$SET,post_date,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
-			{$?,{$MOBILE},{$GET,post_date},{!POST_DATE,{$GET,post_date}}}
+			{$?,{$MOBILE},{$GET,post_date},{!POSTED_TIME_SIMPLE,{$GET,post_date}}}
 		</div>
 
 		{+START,IF_NON_EMPTY,{POSTER}}
@@ -86,7 +86,7 @@
 						<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input {+START,IF,{$NOT,{$IS_GUEST}}}title="{!MARKER} #{ID*}" {+END}value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
+								<input{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
 							</div>
 						</form>
 					</div>
@@ -126,7 +126,7 @@
 						{+END}
 					{+END}
 
-					<a href="#"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
+					<a href="#" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
 				</div>
 			{+END}{+END}
 		{+END}

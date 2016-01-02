@@ -144,15 +144,15 @@ if (strlen($httprange) > 0) {
     }
 }
 header('Content-Length: ' . strval($new_length));
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 error_reporting(0);
 
 // Send actual data
 $myfile = fopen($_full, 'rb');
 fseek($myfile, $from);
-/*if ($size==$new_length)     Uses a lot of memory :S
+/*if ($size == $new_length)     Uses a lot of memory :S
 {
     fpassthru($myfile);
 } else {*/

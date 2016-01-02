@@ -18,12 +18,17 @@ button.date-datepicker-button:after {
   transition: opacity 0.4s linear;
   opacity: 0; }
 .csstransitions div.date-calendar-dialog.date-open {
+  z-index: 1000;
   -moz-transition: opacity 0.4s linear;
   -webkit-transition: opacity 0.4s linear;
   -o-transition: opacity 0.4s linear;
   -ms-transition: opacity 0.4s linear;
   transition: opacity 0.4s linear;
   opacity: 1; }
+
+.ui-datepicker-calendar span {
+   color: black !important;
+}
 
 /* !HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill */
 div.time-spin-btn-container {

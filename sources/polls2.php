@@ -156,8 +156,11 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('poll', strval($id), null, null, true);
+        generate_resource_fs_moniker('poll', strval($id), null, null, true);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:polls:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
 
     return $id;
 }
@@ -184,11 +187,11 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
  * @param  SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style)
  * @param  BINARY $allow_trackbacks Whether to allow trackbacking on this poll
  * @param  LONG_TEXT $notes Notes about this poll
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
 function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
@@ -200,7 +203,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('poll', strval($id));
+        generate_resource_fs_moniker('poll', strval($id));
     }
 
     persistent_cache_delete('POLL');
@@ -263,6 +266,9 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
         $question,
         find_overridden_comment_forum('polls')
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:polls:view:' . strval($id), true);
 }
 
 /**
@@ -287,8 +293,8 @@ function delete_poll($id)
         delete_lang($rows[0]['option' . strval($i)]);
     }
 
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'polls', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'polls', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'polls', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'polls', 'trackback_for_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'polls_' . strval($id));
 
@@ -298,8 +304,11 @@ function delete_poll($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('poll', strval($id));
+        expunge_resource_fs_moniker('poll', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:polls:view:' . strval($id));
 }
 
 /**
@@ -339,6 +348,6 @@ function set_poll($id)
     require_code('notifications');
     $subject = do_lang('POLL_CHOSEN_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $question);
     $poll_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), null, false, false, true);
-    $mail = do_lang('POLL_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(get_translated_text($question)), $poll_url->evaluate());
+    $mail = do_notification_lang('POLL_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(get_translated_text($question)), $poll_url->evaluate());
     dispatch_notification('poll_chosen', null, $subject, $mail);
 }

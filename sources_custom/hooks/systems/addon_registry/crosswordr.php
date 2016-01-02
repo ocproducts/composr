@@ -97,7 +97,7 @@ We suggest sites use this block in a competition and award points to the first m
 
 Note: the crossword does not have any interactivity and requires somewhere for users to reply such as a forum topic.
 
-Usage example: [code=\"Comcode\"][block]main_crossword[/block][/code]';
+Usage example: [code="Comcode"][block]main_crossword[/block][/code]';
     }
 
     /**
@@ -124,6 +124,16 @@ Usage example: [code=\"Comcode\"][block]main_crossword[/block][/code]';
             'recommends' => array(),
             'conflicts_with' => array()
         );
+    }
+
+    /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
     }
 
     /**

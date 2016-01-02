@@ -48,42 +48,42 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
         $replicateable = 0;
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
     }
 
     // Make sure the item does not already exist! (people aren't allowed to arbitarily duplicate items for security reasons)
     $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_itemdef', 'bribable', array('name' => $name));
     if (!is_null($r)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
     }
 
     // Make sure that they aren't in the brig and adding a bribable!
     if (($x == 0) && ($y == 2) && ($bribable == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
         $price = get_price('mud_item');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html($price)), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html($price)), 'warn');
         }
         require_code('points2');
-        charge_member($member_id, $price, do_lang('W_MADE_OCWORLD', $name));
+        charge_member($member_id, $price, do_lang('W_MADE_BUILDR', $name));
     }
 
     add_item($name, $bribable, $healthy, $picture_url, $member_id, $max_per_player, $replicateable, $description);
 
     add_item_to_room($realm, $x, $y, $name, $not_infinite, $cost, $member_id);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_AT', escape_html($name)));
+    buildr_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_AT', escape_html($name)));
 }
 
 /**
@@ -133,32 +133,32 @@ function add_item_wrap_copy($member_id, $name, $cost, $not_infinite)
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'owner', array('name' => $name)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'replicateable', array('name' => $name)) == 0)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Make sure that they aren't in the brig and adding a bribable!
     $bribable = $GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'bribable', array('name' => $name));
     if (($x == 0) && ($y == 2) && ($bribable == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NICE_TRY'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NICE_TRY'), 'warn');
     }
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
         $price = get_price('mud_item_copy');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
-        charge_member($member_id, $price, do_lang('W_MADE_OCWORLD', $name));
+        charge_member($member_id, $price, do_lang('W_MADE_BUILDR', $name));
     }
 
     add_item_to_room($realm, $x, $y, $name, $not_infinite, $cost, $member_id);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_COPY_AT', escape_html($name)));
+    buildr_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_COPY_AT', escape_html($name)));
 }
 
 /**
@@ -198,38 +198,38 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
         $allow_portal = 0;
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     // Get $realm,$x,$y from $member_id, $relative
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ($relative == 0) {
         $l = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'locked_up', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
         if ($l == 1) {
-            ocw_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
         }
     }
     if ($relative == 1) {
         $l = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'locked_down', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
         if ($l == 1) {
-            ocw_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
         }
     }
     if ($relative == 2) {
         $l = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'locked_right', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
         if ($l == 1) {
-            ocw_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
         }
     }
     if ($relative == 3) {
         $l = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'locked_left', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
         if ($l == 1) {
-            ocw_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_WALL_LOCKED'), 'warn');
         }
     }
     if ($relative == 0) {
@@ -252,22 +252,22 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
     // Check there is no room already there
     $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $realm, 'location_x' => $x, 'location_y' => $y));
     if (!is_null($r)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
     }
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
         $price = get_price('mud_room');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
-        charge_member($member_id, $price, do_lang('W_MADE_ROOM_OCWORLD', $name));
+        charge_member($member_id, $price, do_lang('W_MADE_ROOM_BUILDR', $name));
     }
 
     add_room($name, $realm, $x, $y, $text, $password_question, $password_answer, $password_fail_message, $required_item, $locked_up, $locked_down, $locked_right, $locked_left, $picture_url, $member_id, $allow_portal);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_ROOM_CREATED', escape_html($name), strval($realm), array(strval($x), strval($y))));
+    buildr_refresh_with_message(do_lang_tempcode('W_ROOM_CREATED', escape_html($name), strval($realm), array(strval($x), strval($y))));
 }
 
 /**
@@ -337,19 +337,19 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
         $private = 0;
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
     if ($troll_name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_TROLL_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_TROLL_NAME'), 'warn');
     }
     if ($jail_house_name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
     }
     if ($lobby_name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
     }
     if ($jail_name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_SPECIAL_ROOM_NAME'), 'warn');
     }
 
     // Charge them
@@ -358,15 +358,15 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
         $fortnights = (time() - $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($member_id)) / (60 * 60 * 24 * 7 * 2);
         $made = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'COUNT(*)', array('owner' => $member_id));
         if ($fortnights < $made) {
-            ocw_refresh_with_message(do_lang_tempcode('W_MEMBER_NOT_LONG_ENOUGH'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_MEMBER_NOT_LONG_ENOUGH'), 'warn');
         }
 
         $price = get_price('mud_realm');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
-        charge_member($member_id, $price, do_lang('W_MADE_REALM_OCWORLD', $name));
+        charge_member($member_id, $price, do_lang('W_MADE_REALM_BUILDR', $name));
     }
 
     // Find the next available $realm
@@ -399,7 +399,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
     ));
 
     if ($redirect) {
-        ocw_refresh_with_message(do_lang_tempcode('W_REALM_CREATED', escape_html($name), strval($realm)));
+        buildr_refresh_with_message(do_lang_tempcode('W_REALM_CREATED', escape_html($name), strval($realm)));
     }
 }
 
@@ -467,56 +467,56 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
     if (is_null($end_location_realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
     }
     if ((is_null($end_location_x)) || (is_null($end_location_y))) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     // Check $end_location_realm exists
     $allow_portal = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'allow_portal', array('location_x' => $end_location_x, 'location_y' => $end_location_y, 'location_realm' => $end_location_realm));
     if (is_null($allow_portal)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
     }
     if ($allow_portal == 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_BAD_END'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_BAD_END'), 'warn');
     }
 
     // Check we don't have a portal to this realm here already
     $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_portals', 'name', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $end_location_realm));
     if (!is_null($t)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
     }
 
     if ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'allow_portal', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm)) == 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_BAD_START'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_BAD_START'), 'warn');
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
     }
 
     /* if ((!has_privilege($member_id,'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms','owner',array('id'=>$end_location_realm))!=$member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms','r_private',array('id'=>$end_location_realm))==1)) Can make a portal to a realm you don't control
-            ocw_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'),'warn');*/
+            buildr_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'),'warn');*/
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
         require_code('points2');
         $price = get_price('mud_portal');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
-        charge_member($member_id, $price, do_lang('W_MADE_PORTAL_OCWORLD', $name));
+        charge_member($member_id, $price, do_lang('W_MADE_PORTAL_BUILDR', $name));
     }
 
     add_portal($name, $text, $realm, $x, $y, $end_location_realm, $member_id, $end_location_x, $end_location_y);
 
     $destname = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'name', array('id' => $end_location_realm));
 
-    ocw_refresh_with_message(do_lang_tempcode('W_PORTAL_CREATED', escape_html($name), escape_html($destname)));
+    buildr_refresh_with_message(do_lang_tempcode('W_PORTAL_CREATED', escape_html($name), escape_html($destname)));
 }
 
 /**
@@ -556,22 +556,22 @@ function delete_item_wrap($name)
 {
     $attempt_member = get_member();
     if ((!has_privilege($attempt_member, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'owner', array('name' => $name)) != $attempt_member)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
     //if (!has_privilege($attempt_member,'administer_buildr'))
     //{
     if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_inventory WHERE ' . db_string_equal_to('item_name', $name) . ' AND item_owner<>' . strval($attempt_member)) > 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_CONFISCATE_1'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_CONFISCATE_1'), 'warn');
     }
     if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_items WHERE ' . db_string_equal_to('name', $name) . ' AND copy_owner<>' . strval($attempt_member)) > 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_CONFISCATE_2'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_CONFISCATE_2'), 'warn');
     }
     //}
 
     // Refund them
     require_code('points2');
     $price = get_price('mud_item');
-    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_OCWORLD', $name));
+    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_BUILDR', $name));
 
     // Remove item from all rooms and people
     $GLOBALS['SITE_DB']->query_delete('w_items', array('name' => $name));
@@ -580,7 +580,7 @@ function delete_item_wrap($name)
     // Delete from db
     $GLOBALS['SITE_DB']->query_delete('w_itemdef', array('name' => $name), '', 1);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -594,11 +594,11 @@ function delete_room_wrap($member_id)
 
     $attempt_member = $member_id;
     if ((!has_privilege($attempt_member, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'owner', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm)) != $attempt_member)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if (($x == 0) && (($y == 0) || ($y == 1) || ($y == 2))) {
-        ocw_refresh_with_message(do_lang_tempcode('W_DEL_MAIN'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_DEL_MAIN'), 'warn');
     }
 
     $name = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'name', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
@@ -606,7 +606,7 @@ function delete_room_wrap($member_id)
     // Refund them
     require_code('points2');
     $price = get_price('mud_room');
-    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_ROOM_OCWORLD', $name));
+    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_ROOM_BUILDR', $name));
 
     delete_room($x, $y, $realm);
 }
@@ -629,7 +629,7 @@ function delete_room($x, $y, $realm)
     // Delete from db
     $GLOBALS['SITE_DB']->query_delete('w_rooms', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm), '', 1);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -644,7 +644,7 @@ function delete_portal_wrap($member_id, $dest_realm)
 
     $attempt_member = $member_id;
     if ((!has_privilege($attempt_member, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_portals', 'owner', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm)) != $attempt_member)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     $name = $GLOBALS['SITE_DB']->query_select_value('w_portals', 'name', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm));
@@ -652,7 +652,7 @@ function delete_portal_wrap($member_id, $dest_realm)
     // Refund them
     require_code('points2');
     $price = get_price('mud_portal');
-    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_PORTAL_OCWORLD', $name));
+    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_PORTAL_BUILDR', $name));
 
     delete_portal($x, $y, $realm, $dest_realm);
 }
@@ -670,7 +670,7 @@ function delete_portal($x, $y, $realm, $dest_realm)
     // Delete from db
     $GLOBALS['SITE_DB']->query_delete('w_portals', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm), '', 1);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -684,21 +684,21 @@ function delete_realm_wrap($member_id)
 
     $realm = $GLOBALS['SITE_DB']->query_select_value('w_members', 'location_realm', array('id' => $member_id));
     if ($realm == 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_DEL_PRIMARY_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_DEL_PRIMARY_REALM'), 'warn');
     }
 
     if ((!has_privilege($attempt_member, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $attempt_member)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_rooms WHERE location_realm=' . strval($realm) . ' AND owner<>' . strval($attempt_member)) > 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_DEL_OTHERS_ROOMS_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_DEL_OTHERS_ROOMS_REALM'), 'warn');
     }
 
     // Refund them
     require_code('points2');
     $price = get_price('mud_realm');
-    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_REALM_OCWORLD', strval($realm)));
+    charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_REALM_BUILDR', strval($realm)));
 
     delete_realm($realm);
 }
@@ -725,7 +725,7 @@ function delete_realm($realm)
     // Delete from db
     $GLOBALS['SITE_DB']->query_delete('w_realms', array('id' => $realm), '', 1);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -767,31 +767,31 @@ function edit_room_wrap($member_id, $name, $text, $password_question, $password_
         $allow_portal = 0;
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'owner', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm)) != $member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $new_realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $new_realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Make sure the new x,y,realm is free
     if (($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $new_realm, 'location_x' => $new_x, 'location_y' => $new_y));
         if (!is_null($r)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
         }
     }
 
     edit_room($name, $realm, $x, $y, $text, $password_question, $password_answer, $password_fail_message, $required_item, $locked_up, $locked_down, $locked_right, $locked_left, $picture_url, $allow_portal, $new_owner, $new_x, $new_y, $new_realm);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -840,23 +840,23 @@ function edit_realm_wrap($member_id, $name, $troll_name, $qa, $private, $new_own
         $private = 0;
     }
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
     if (is_null($new_owner)) {
         $new_owner = $member_id;
     }
     if ($troll_name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_TROLL_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_TROLL_NAME'), 'warn');
     }
 
     $realm = $GLOBALS['SITE_DB']->query_select_value('w_members', 'location_realm', array('id' => $member_id));
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     edit_realm($realm, $name, $troll_name, $qa, $private, $new_owner);
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -903,59 +903,59 @@ function edit_realm($realm, $name, $troll_name, $qa, $private, $new_owner)
 function edit_portal_wrap($member_id, $dest_realm, $name, $text, $end_location_realm, $end_location_x, $end_location_y, $new_owner, $new_x, $new_y, $new_realm)
 {
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     if (is_null($end_location_realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
     }
     if ((is_null($end_location_x)) || (is_null($end_location_y))) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
     }
     if (is_null($new_realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_START_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_START_REALM'), 'warn');
     }
     if ((is_null($new_x)) || (is_null($new_y))) {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_START'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_START'), 'warn');
     }
 
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_portals', 'owner', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm)) != $member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $new_realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $new_realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_PORTAL_TO_PRIVATE'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_PORTAL_TO_PRIVATE'), 'warn');
     }
 
     if ($new_realm != $realm) {
         if ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'allow_portal', array('location_x' => $new_x, 'location_y' => $new_y, 'location_realm' => $new_realm)) == 0) {
-            ocw_refresh_with_message(do_lang_tempcode('W_BAD_START'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_BAD_START'), 'warn');
         }
     }
 
     // Check $end_location_realm exists
     $allow_portal = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'allow_portal', array('location_x' => $end_location_x, 'location_y' => $end_location_y, 'location_realm' => $end_location_realm));
     if (is_null($allow_portal)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
     }
     if (($allow_portal == 0) && ($dest_realm == $end_location_realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_BAD_END'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_BAD_END'), 'warn');
     }
 
     if (($dest_realm != $end_location_realm) || ($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         // Check we don't have a portal to this realm here already
         $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_portals', 'name', array('start_location_x' => $new_x, 'start_location_y' => $new_y, 'start_location_realm' => $new_realm, 'end_location_realm' => $end_location_realm));
         if (!is_null($t)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
         }
     }
 
     $GLOBALS['SITE_DB']->query_update('w_portals', array('name' => $name, 'p_text' => $text, 'end_location_realm' => $end_location_realm, 'end_location_x' => $end_location_x, 'end_location_y' => $end_location_y, 'start_location_realm' => $new_realm, 'start_location_x' => $new_x, 'start_location_y' => $new_y, 'owner' => $new_owner), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm), '', 1);
 
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -975,11 +975,11 @@ function edit_portal_wrap($member_id, $dest_realm, $name, $text, $end_location_r
 function edit_item_wrap($member_id, $original_name, $name, $bribable, $healthy, $picture_url, $new_owner, $max_per_player, $replicateable, $description)
 {
     if ($name == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'owner', array('name' => $original_name)) != $member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ($healthy != 1) {
@@ -995,7 +995,7 @@ function edit_item_wrap($member_id, $original_name, $name, $bribable, $healthy, 
         $max_per_player = 0;
     }
     edit_item($name, $original_name, $bribable, $healthy, $picture_url, $new_owner, $max_per_player, $replicateable, $description);
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**
@@ -1022,7 +1022,7 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
     if ((strlen($name) > 0) && ($name != $original_name)) {
         $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_itemdef', 'bribable', array('name' => $name));
         if (!is_null($r)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
         }
         $GLOBALS['SITE_DB']->query_update('w_itemdef', array('name' => $name), array('name' => $original_name), '', 1);
         $GLOBALS['SITE_DB']->query_update('w_items', array('name' => $name), array('name' => $original_name), '', 1);
@@ -1052,21 +1052,21 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_items', 'copy_owner', array('name' => $name)) != $member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $new_realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $new_realm)) == 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_ACCESS_MOVE'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_ACCESS_MOVE'), 'warn');
     }
 
     if (($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         // Check we don't have a copy of this item at new dest already
         $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'name', array('location_x' => $new_x, 'location_y' => $new_y, 'location_realm' => $new_realm, 'copy_owner' => $member, 'name' => $name));
         if (!is_null($t)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_COPY_SOURCE_ALREADY'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_COPY_SOURCE_ALREADY'), 'warn');
         }
     }
 
@@ -1082,7 +1082,7 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
     }
 
     edit_item_copy($member, $name, $not_infinite, $cost, $new_x, $new_y, $new_realm, $x, $y, $realm);
-    ocw_refresh_with_message(do_lang_tempcode('SUCCESS'));
+    buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
 /**

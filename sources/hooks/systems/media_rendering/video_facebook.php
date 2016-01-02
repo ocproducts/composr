@@ -63,10 +63,15 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
      */
     public function recognises_url($url)
     {
+        // (Also see patterns defined in render)
+
         if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\w+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         if (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\w+)#', $url) != 0) {
+            return MEDIA_RECOG_PRECEDENCE_HIGH;
+        }
+        if (preg_match('#^https?://www\.facebook\.com/.*/videos/(.*/)?(\d+)/#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         if (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\w+)#', $url) != 0) {
@@ -83,9 +88,10 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
      */
     public function get_video_thumbnail($src_url)
     {
-        $matches = array();
-        if ((preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\w+)#', $src_url, $matches) != 0) || (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\w+)#', $src_url, $matches) != 0) || (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\w+)#', $src_url, $matches) != 0)) {
+        if ($this->recognises_url($src_url)) {
             $contents = http_download_file($src_url);
+
+            $matches = array();
             if (preg_match('#addVariable\("thumb_url", "([^"]*)"\);#', $contents, $matches) != 0) {
                 return rawurldecode(str_replace('\u0025', '%', $matches[1]));
             }
@@ -101,7 +107,7 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null)
     {
@@ -113,7 +119,21 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
         if (is_object($url)) {
             $url = $url->evaluate();
         }
-        $attributes['remote_id'] = preg_replace('#^(https?://www\.facebook\.com/photo\.php|https?://www\.facebook\.com/video\.php|https?://www\.facebook\.com/video/video\.php)\?v=(\w+)#', '${2}', $url);
+
+        $matches = array();
+        if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\w+)#', $url, $matches) != 0) {
+            $attributes['remote_id'] = $matches[1];
+        }
+        if (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\w+)#', $url, $matches) != 0) {
+            $attributes['remote_id'] = $matches[1];
+        }
+        if (preg_match('#^https?://www\.facebook\.com/.*/videos/(.*/)?(\d+)/#', $url, $matches) != 0) {
+            $attributes['remote_id'] = $matches[2];
+        }
+        if (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\w+)#', $url, $matches) != 0) {
+            $attributes['remote_id'] = $matches[1];
+        }
+
         return do_template('MEDIA_VIDEO_FACEBOOK', array('_GUID' => 'f9ba7e3b94d421791233cf3a34508ed7', 'HOOK' => 'video_facebook') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }

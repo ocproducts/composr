@@ -29,7 +29,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
     public $file_resource_type = 'news';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -47,7 +47,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -76,38 +76,24 @@ class Hook_commandr_fs_news extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'rep_image' => 'URLPATH',
-            'notes' => 'LONG_TEXT',
-            'owner' => 'member',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS_CATEGORY') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS_CATEGORY') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error)
+     * @return ~ID_TEXT The resource ID (false: error)
      */
     public function folder_add($filename, $path, $properties)
     {
@@ -115,23 +101,26 @@ class Hook_commandr_fs_news extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('news2');
 
-        $img = $this->_default_property_str($properties, 'rep_image');
+        $img = $this->_default_property_urlpath($properties, 'rep_image');
         $notes = $this->_default_property_str($properties, 'notes');
-        $owner = $this->_default_property_int_null($properties, 'owner');
+        $owner = $this->_default_property_member_null($properties, 'owner');
         $id = add_news_category($label, $img, $notes, $owner);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function folder_load($filename, $path)
     {
@@ -143,40 +132,45 @@ class Hook_commandr_fs_news extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['nc_title'],
-            'rep_image' => $row['nc_img'],
+            'rep_image' => remap_urlpath_as_portable($row['nc_img']),
             'notes' => $row['notes'],
-            'owner' => $row['nc_owner'],
+            'owner' => remap_resource_id_as_portable('member', $row['nc_owner']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('news2');
 
         $label = $this->_default_property_str($properties, 'label');
-        $img = $this->_default_property_str($properties, 'rep_image');
+        $img = $this->_default_property_urlpath($properties, 'rep_image', true);
         $notes = $this->_default_property_str($properties, 'notes');
-        $owner = $this->_default_property_int_null($properties, 'owner');
+        $owner = $this->_default_property_member_null($properties, 'owner');
 
         edit_news_category(intval($resource_id), $label, $img, $notes, $owner);
+
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -193,55 +187,29 @@ class Hook_commandr_fs_news extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'news_summary' => 'LONG_TRANS',
-            'news_article' => 'LONG_TRANS',
-            'author' => 'author',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'views' => 'INTEGER',
-            'image' => 'URLPATH',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -262,26 +230,31 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news_article = $this->_default_property_str($properties, 'article');
         $main_news_category = $this->_integer_category($category);
         $news_category = array();
-        if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
-            $news_category = array_map('intval', explode(',', $properties['categories']));
+        if (!empty($properties['categories'])) {
+            $news_category = $properties['categories'];
         }
-        $time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
-        $image = $this->_default_property_str($properties, 'image');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
+        $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-        $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description);
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
+
+        $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description, $regions);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -295,7 +268,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('news', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['title'],
             'summary' => $row['news'],
             'article' => $row['news_article'],
@@ -306,28 +279,32 @@ class Hook_commandr_fs_news extends Resource_fs_base
             'allow_trackbacks' => $row['allow_trackbacks'],
             'notes' => $row['notes'],
             'views' => $row['news_views'],
-            'image' => $row['news_image'],
+            'image' => remap_urlpath_as_portable($row['news_image']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['submitter'],
-            'add_date' => $row['date_and_time'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['date_and_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))),
+            'categories' => collapse_1d_complexity('news_entry_category', $GLOBALS['SITE_DB']->query_select('news_category_entries', array('news_entry_category'), array('news_entry' => $row['id']))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -349,24 +326,27 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news_article = $this->_default_property_str($properties, 'article');
         $main_news_category = $this->_integer_category($category);
         $news_category = array();
-        if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
-            $news_category = array_map('intval', explode(',', $properties['categories']));
+        if (!empty($properties['categories'])) {
+            $news_category = $properties['categories'];
         }
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
-        $image = $this->_default_property_str($properties, 'image');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
+        $image = $this->_default_property_urlpath($properties, 'image', true);
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
-        edit_news(intval($resource_id), $label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_keywords, $meta_description, $image, $add_time, $edit_time, $views, $submitter, true);
+        edit_news(intval($resource_id), $label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_keywords, $meta_description, $image, $add_time, $edit_time, $views, $submitter, $regions, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

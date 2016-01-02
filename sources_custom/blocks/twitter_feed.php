@@ -10,6 +10,10 @@
  * This addon pulls and displays a user Twitter feed using the Twitter Class provided by Tijs Verkoyen which is included with the
  * Composr Twitter Support non-bundled addon.  PHP5 and PHP CuRL Extension are required.
  */
+ 
+ /**
+ * Block class.
+ */
 class Block_twitter_feed
 {
     /**
@@ -32,11 +36,11 @@ class Block_twitter_feed
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = array('block_twitter_feed__cache_on');
@@ -48,11 +52,13 @@ class Block_twitter_feed
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        safe_ini_set('ocproducts.type_strictness', '0');
 
         // Set up variables from parameters
         $api_key = array_key_exists('consumer_key', $map) ? $map['consumer_key'] : '';
@@ -66,7 +72,7 @@ class Block_twitter_feed
             $token_secret = get_value('twitter_oauth_token_secret', null, true);
         }
         $twitter_name = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
-        $twitter_title = array_key_exists('title', $map) ? $map['title'] : '';
+        $twitter_title = array_key_exists('title', $map) ? $map['title'] : 'Twitter Feed';
         $twitter_tempmain = array_key_exists('template_main', $map) ? $map['template_main'] : '';
         if ($twitter_tempmain) {
             $twitter_tempmain = '_' . $twitter_tempmain;
@@ -77,13 +83,13 @@ class Block_twitter_feed
             $twitter_tempstyle = '_' . $twitter_tempstyle;
         }
         $twitter_templatestyle = 'BLOCK_TWITTER_FEED_STYLE' . $twitter_tempstyle;
-        $twitter_maxstatuses = array_key_exists('max_statuses', $map) ? $map['max_statuses'] : '10';
-        $twitter_showprofileimage = array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1';
-        $twitter_followbuttonsize = array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1';
-        $twitter_style = array_key_exists('style', $map) ? $map['style'] : '1';
+        $twitter_maxstatuses = array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10;
+        $twitter_showprofileimage = array_key_exists('show_profile_image', $map) ? intval($map['show_profile_image']) : 1;
+        $twitter_followbuttonsize = array_key_exists('follow_button_size', $map) ? intval($map['follow_button_size']) : 1;
+        $twitter_style = array_key_exists('style', $map) ? intval($map['style']) : 1;
         $twitter_url = 'http://www.twitter.com/' . $twitter_name;
-        $twitter_logocolorparam = array_key_exists('twitter_logo_color', $map) ? $map['twitter_logo_color'] : '1';
-        $twitter_logosizeparam = array_key_exists('twitter_logo_size', $map) ? $map['twitter_logo_size'] : '2';
+        $twitter_logocolorparam = array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1;
+        $twitter_logosizeparam = array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2;
         $twitter_error = '';
 
         // Sanitize the input - be sure some key values are in range
@@ -118,16 +124,23 @@ class Block_twitter_feed
         } else {
             $twitter_size = '16';
         }
-        //twitter_logo_img_code is set with the code needed for the $IMG tempcode
+        //twitter_logo_img_code is set with the code needed for the $IMG Tempcode
         $twitter_logo_img_code = 'twitter_feed/bird_' . $twitter_color . '_' . $twitter_size;
 
         // Create template object
         $content = new Tempcode();
 
         // Check for Twitter Support addon dependency before we go any further
-        if (!addon_installed('Twitter Support', true)) {
-            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.';
-            return do_template($twitter_templatemain, array('TWITTER_ERROR' => $twitter_error, 'CONTENT' => $content, 'STYLE' => strval($twitter_style), 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code, 'USER_SCREEN_NAME' => $twitter_name));
+        if (!addon_installed('twitter_support', true)) {
+            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
+            return do_template($twitter_templatemain, array(
+                'TWITTER_TITLE' => $twitter_title,
+                'TWITTER_ERROR' => $twitter_error,
+                'CONTENT' => $content,
+                'STYLE' => strval($twitter_style),
+                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
+                'USER_SCREEN_NAME' => $twitter_name
+            ));
         }
 
         // Initiate Twitter connection
@@ -141,7 +154,15 @@ class Block_twitter_feed
             $twitter_statuses = $twitter->statusesUserTimeline(null, $twitter_name, null, null, $twitter_maxstatuses, null, false, true, true);
         } catch (TwitterException $e) {
             $twitter_error = $e->getMessage();
-            return do_template($twitter_templatemain, array('TWITTER_ERROR' => $twitter_error, 'CONTENT' => $content, 'STYLE' => strval($twitter_style), 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code, 'USER_SCREEN_NAME' => $twitter_name));
+            $twitter_error .= '<br />';
+            return do_template($twitter_templatemain, array(
+                'TWITTER_TITLE' => $twitter_title,
+                'TWITTER_ERROR' => $twitter_error,
+                'CONTENT' => $content,
+                'STYLE' => strval($twitter_style),
+                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
+                'USER_SCREEN_NAME' => $twitter_name
+            ));
         }
 
         if (count($twitter_statuses) == 0) {
@@ -152,18 +173,18 @@ class Block_twitter_feed
         foreach ($twitter_statuses as $status) {
             // Process $tweet_text to convert twitter screen names, hashtags, emails and urls into clickable links
             $tweet_text = ' ' . htmlentities($status['text'], ENT_NOQUOTES, 'UTF-8');
-            $tweet_text = preg_replace("#@(\w+)#ise", "'<a href=\"http://www.twitter.com/\\1\" target=\"_blank\" rel=\"nofollow\">@\\1</a>'", $tweet_text);
-            $tweet_text = preg_replace("#\#(\w+)#ise", "'<a href=\"https://twitter.com/#!/search?q=%23\\1\" target=\"_blank\" rel=\"nofollow\">#\\1</a>'", $tweet_text);
-            $tweet_text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#ise", "'\\1<a href=\"\\2\" target=\"_blank\" >\\2</a>'", $tweet_text);
-            $tweet_text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#ise", "'\\1<a href=\"http://\\2\" target=\"_blank\" >\\2</a>'", $tweet_text);
+            $tweet_text = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#is", array($this, '_convert_url_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", array($this, '_convert_website_callback'), $tweet_text);
             $tweet_text = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $tweet_text);
 
             // Process $twitter_userdescription to convert twitter screen names, hashtags, emails and urls into clickable links
             $twitter_userdescription = ' ' . htmlentities($status['user']['description'], ENT_NOQUOTES, 'UTF-8');
-            $twitter_userdescription = preg_replace("#@(\w+)#ise", "'<a href=\"http://www.twitter.com/\\1\" target=\"_blank\" rel=\"nofollow\">@\\1</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#\#(\w+)#ise", "'<a href=\"https://twitter.com/#!/search?q=%23\\1\" target=\"_blank\" rel=\"nofollow\">#\\1</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#ise", "'\\1<a href=\"\\2\" target=\"_blank\" >\\2</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#ise", "'\\1<a href=\"http://\\2\" target=\"_blank\" >\\2</a>'", $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#is", array($this, '_convert_url_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", array($this, '_convert_website_callback'), $twitter_userdescription);
             $twitter_userdescription = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $twitter_userdescription);
 
             // Generate retweet, favorite, reply, and user page URLs
@@ -277,6 +298,50 @@ class Block_twitter_feed
             'USER_PROFILE_IMG_URL' => $status['user']['profile_image_url'],
         ));
     }
+
+    /**
+     * Used to convert a twitter @name to a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_name_callback($matches)
+    {
+        return '<a href="http://www.twitter.com/' . $matches[1] . '" target="_blank" rel="nofollow">@' . $matches[1] . '</a>';
+    }
+
+    /**
+     * Used to convert a twitter #hashtag to a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_hashtag_callback($matches)
+    {
+        return '<a href="https://twitter.com/#!/search?q=%23' . $matches[1] . '" target="_blank" rel="nofollow">#' . $matches[1] . '</a>';
+    }
+
+    /**
+     * Used to convert a full url (i.e. http://www.twitter.com/) into a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_url_callback($matches)
+    {
+        return $matches[1] . '<a href="' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
+    }
+
+    /**
+     * Used to convert a website (i.e. www.twitter.com) into a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_website_callback($matches)
+    {
+        return $matches[1] . '<a href="http://' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
+    }
 }
 
 /**
@@ -287,5 +352,18 @@ class Block_twitter_feed
  */
 function block_twitter_feed__cache_on($map)
 {
-    return array(array_key_exists('api_key', $map) ? $map['api_key'] : '', array_key_exists('api_secret', $map) ? $map['api_secret'] : '', array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2, array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1, array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10, array_key_exists('style', $map) ? intval($map['style']) : 1, array_key_exists('title', $map) ? $map['title'] : '', array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens', array_key_exists('template_main', $map) ? $map['template_main'] : '', array_key_exists('template_style', $map) ? $map['template_style'] : '', array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1', array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1');
+    return array(
+        array_key_exists('api_key', $map) ? $map['api_key'] : '',
+        array_key_exists('api_secret', $map) ? $map['api_secret'] : '',
+        array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2,
+        array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1,
+        array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10,
+        array_key_exists('style', $map) ? intval($map['style']) : 1,
+        array_key_exists('title', $map) ? $map['title'] : '',
+        array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens',
+        array_key_exists('template_main', $map) ? $map['template_main'] : '',
+        array_key_exists('template_style', $map) ? $map['template_style'] : '',
+        array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1',
+        array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1'
+    );
 }

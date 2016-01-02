@@ -24,12 +24,12 @@
 class Hook_commandr_fs_root
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array                   The final directory listing (false: failure)
+     * @return ~array The final directory listing (false: failure)
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
@@ -45,7 +45,7 @@ class Hook_commandr_fs_root
                     if (($file != '.') && ($file != '..') && ($file != '.git') && ((strpos($file, '_custom') === false) || (!file_exists($path . str_replace('_custom', '', $file))))) {
                         $listing[] = array(
                             $file,
-                            is_dir($path . $file) ? COMMANDRFS_DIR : COMMANDRFS_FILE,
+                            is_dir($path . $file) ? COMMANDR_FS_DIR : COMMANDR_FS_FILE,
                             is_dir($path . $file) ? null : filesize($path . $file),
                             filemtime($path . $file),
                         );
@@ -62,7 +62,7 @@ class Hook_commandr_fs_root
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -86,7 +86,7 @@ class Hook_commandr_fs_root
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -111,7 +111,7 @@ class Hook_commandr_fs_root
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -134,13 +134,13 @@ class Hook_commandr_fs_root
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  string $file_name The file name
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
@@ -158,7 +158,7 @@ class Hook_commandr_fs_root
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory

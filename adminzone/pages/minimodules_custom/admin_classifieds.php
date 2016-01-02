@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    classifieds
+ * @package    classified_ads
  */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
@@ -19,6 +19,7 @@ require_lang('classifieds');
 require_lang('catalogues');
 
 require_javascript('checking');
+require_javascript('editing');
 
 // Handle result, if set
 if (count($_POST) != 0) {

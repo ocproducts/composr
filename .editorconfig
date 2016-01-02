@@ -33,6 +33,14 @@ indent_style = tab
 quote_type = single
 tab_width = 3
 
+[*.sh]
+indent_style = tab  
+tab_width = 3
+
+[*.txt]
+indent_style = tab
+tab_width = 3
+
 
 # Some files should not be reformatted (NB: Max .editorconfig line length is 200)...
 # git checkout -- _tests/simpletest data/editarea/edit_area_compressor.php data_custom/upload-crop/upload_crop_v1.2.php sources/diff.php sources/firephp.php sources/jsmin.php \

@@ -22,7 +22,7 @@
 					{!MEMBER}
 				</th>
 				<th>
-					{!GROUP}
+					{!USERGROUP}
 				</th>
 				<th>
 					{!GROUP_MEMBER_TIMEOUT_DATE}
@@ -34,11 +34,11 @@
 				<tr>
 					<td>
 						<label class="accessibility_hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
-						<input size="20" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username_required" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
+						<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username_required" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
 					</td>
 
 					<td>
-						<label class="accessibility_hidden" for="gmt_group_id_{_loop_key*}">{!GROUP}</label>
+						<label class="accessibility_hidden" for="gmt_group_id_{_loop_key*}">{!USERGROUP}</label>
 						<input name="gmt_old_group_id_{_loop_key*}" value="{GROUP_ID*}" type="hidden" />
 						<select id="gmt_group_id_{_loop_key*}" name="gmt_group_id_{_loop_key*}">
 							{+START,LOOP,GROUPS}
@@ -56,11 +56,11 @@
 			<tr>
 				<td>
 					<label class="accessibility_hidden" for="gmt_username_new">{!USERNAME}</label>
-					<input size="20" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username_required" type="text" id="gmt_username_new" name="gmt_username_new" value="" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username_required" type="text" id="gmt_username_new" name="gmt_username_new" value="" />
 				</td>
 
 				<td>
-					<label class="accessibility_hidden" for="gmt_group_id_new">{!GROUP}</label>
+					<label class="accessibility_hidden" for="gmt_group_id_new">{!USERGROUP}</label>
 					<select id="gmt_group_id_new" name="gmt_group_id_new">
 						<option value="">---</option>
 						{+START,LOOP,GROUPS}

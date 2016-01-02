@@ -110,6 +110,10 @@ require_code('zones');
 require_code('comcode');
 require_code('themes');
 
+if (!array_key_exists('type', $_GET)) {
+    send_http_output_ping();
+}
+
 global $CACHE_TEMPLATES;
 if (is_writable(get_file_base() . '/themes/default/templates_cached/' . user_lang())) {
     $CACHE_TEMPLATES = true;
@@ -278,7 +282,7 @@ if (@is_resource($DATADOTCMS_FILE)) {
 /**
  * First installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_1()
 {
@@ -297,7 +301,7 @@ function step_1()
             }
         } else {
             $files = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-            if (($files !== false) && (!file_exists(get_file_base() . '/.svn'))) {
+            if (($files !== false) && (!file_exists(get_file_base() . '/.git'))) {
                 $missing = array();
                 $corrupt = array();
 
@@ -307,12 +311,6 @@ function step_1()
                         continue;
                     }
                     if ($file == 'data_custom/execute_temp.php') {
-                        continue;
-                    }
-                    if ($file == 'cms_sitemap.xml') {
-                        continue;
-                    }
-                    if ($file == 'cms_news_sitemap.xml') {
                         continue;
                     }
                     if ($file == '_config.php') {
@@ -355,14 +353,14 @@ function step_1()
                 }
 
                 if (count($missing) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', integer_format(count($missing))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', escape_html(integer_format(count($missing)))))));
                 } else {
                     foreach ($missing as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('MISSING_INSTALLATION_FILE', $file))));
                     }
                 }
                 if (count($corrupt) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', integer_format(count($corrupt))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', escape_html(integer_format(count($corrupt)))))));
                 } else {
                     foreach ($corrupt as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('CORRUPT_INSTALLATION_FILE', $file))));
@@ -386,14 +384,14 @@ function step_1()
     // Some checks relating to installation permissions
     global $FILE_ARRAY;
     if (!@is_array($FILE_ARRAY)) { // Talk about manual permission setting a bit
-        if ((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
+        if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('SUEXEC_SERVER'))));
         } elseif (is_writable_wrap(get_file_base() . '/install.php')) {
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!function_exists('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
-        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_installation'))))));
+    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
     // Some sanity checks
@@ -470,7 +468,7 @@ function step_1()
 /**
  * Second installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_2()
 {
@@ -502,7 +500,7 @@ function step_2()
 /**
  * Third installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_3()
 {
@@ -601,14 +599,25 @@ function step_3()
             continue; // If they only have experimental XML option, they'll choose it - we don't want that - we want them to get the error
         }
 
+        $selected = false;
+
+        if (($database == 'mysql') && (!function_exists('mysql_connect'))) {
+            continue;
+        }
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
-        if (($database == 'mysql') && (!function_exists('mysql_connect'))) {
-            continue;
+        if ($database == 'mysql') {
+            $selected = true;
+        }
+        if (($database == 'mysqli') && (!function_exists('mysql_connect'))) {
+            $selected = true;
+        }
+        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+            $selected = true;
         }
         if (($database == 'access') && (!function_exists('odbc_connect'))) {
             continue;
@@ -634,7 +643,7 @@ function step_3()
         } else {
             $mapped_name = $database;
         }
-        $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $database == 'mysql', 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
+        $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $selected, 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
 
         if ($database != 'xml') {
             $dbs_found++;
@@ -646,6 +655,8 @@ function step_3()
 
     $js = new Tempcode();
     $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+    $js->attach("\n");
+    $js->attach(do_template('modalwindow', null, null, false, null, '.js', 'javascript'));
     $js->attach("\n");
     $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
@@ -672,7 +683,7 @@ function step_3()
 /**
  * Fourth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_4()
 {
@@ -684,6 +695,8 @@ function step_4()
 
     $js = new Tempcode();
     $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+    $js->attach("\n");
+    $js->attach(do_template('modalwindow', null, null, false, null, '.js', 'javascript'));
     $js->attach("\n");
     $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
@@ -735,13 +748,13 @@ function step_4()
         $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms_member_hash';
     }
 
-    $cookie_domain = '';//(($domain=='localhost') || (strpos($domain,'.')===false))?'':('.'.$domain);
+    $cookie_domain = '';//(($domain == 'localhost') || (strpos($domain, '.') === false)) ? '' : ('.' . $domain);
     $cookie_path = '/';
     $cookie_days = '120';
     $use_persistent = false;
     require_code('version');
     $table_prefix = get_default_table_prefix();
-    if (strpos(strtoupper(PHP_OS), 'WIN') !== false) {
+    if (stripos(PHP_OS, 'win') !== false) {
         $db_site_host = '127.0.0.1';
     } else {
         $db_site_host = 'localhost';
@@ -789,7 +802,7 @@ function step_4()
 
     // Detect FTP settings
 
-    if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+    if (php_function_allowed('posix_getpwuid')) {
         $u_info = posix_getpwuid(fileowner(get_file_base() . '/install.php'));
         if ($u_info !== false) {
             $ftp_username = $u_info['name'];
@@ -857,7 +870,7 @@ function step_4()
     $master_password = '';
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
-    $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'allow_reports_default', 1));
+    $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
     $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', 0));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
@@ -929,7 +942,7 @@ function step_4()
         $hidden->attach(form_input_hidden('table_prefix', $table_prefix));
     }
     /*if (!GOOGLE_APPENGINE) {   Excessive, let user tune later
-        $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'),example('','USE_PERSISTENT_TEXT'),'use_persistent',$use_persistent?1:0));
+        $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'), example('', 'USE_PERSISTENT_TEXT'), 'use_persistent', $use_persistent ? 1 : 0));
     }*/
 
     if (($use_msn == 0) && ($forum_type != 'cns')) { // Merge into one set of options
@@ -1018,7 +1031,7 @@ function step_4()
 /**
  * Fifth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5()
 {
@@ -1026,8 +1039,8 @@ function step_5()
         exit(do_lang('INST_POST_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     $url = 'install.php?step=6';
@@ -1090,10 +1103,34 @@ function step_5()
         }
     }
 
+    // Check table prefix
     $table_prefix = post_param_string('table_prefix');
 
-    // Read in a temporary SITE_INFO, but only so this step has something to run with (the _config.php write doesn't use this data)
+    // Test base URL isn't subject to redirects
+    $test_url = $base_url . '/installer_is_testing_base_urls.php';
+    require_code('files');
+    http_download_file($test_url, null, false);
+    global $HTTP_DOWNLOAD_URL;
+    if ($HTTP_DOWNLOAD_URL != $test_url) {
+        if (preg_replace('#www\.#', '', $HTTP_DOWNLOAD_URL) == $test_url) {
+            warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITH_WWW'));
+        }
+        elseif ($HTTP_DOWNLOAD_URL == preg_replace('#www\.#', '', $test_url)) {
+            warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITHOUT_WWW'));
+        }
+    }
+
     global $SITE_INFO;
+
+    // If this exists, we may as well try and read it - may have some special flags in here during installation that we want to propagate
+    @include(get_file_base() . '/_config.php');
+    foreach ($SITE_INFO as $key => $val) {
+        if (!isset($_POST[$key])) {
+            $_POST[$key] = $val;
+        }
+    }
+
+    // Read in a temporary SITE_INFO, but only so this step has something to run with (the _config.php write doesn't use this data)
     foreach ($_POST as $key => $val) {
         if (in_array($key, array(
             'ftp_password',
@@ -1110,7 +1147,7 @@ function step_5()
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -1121,7 +1158,7 @@ function step_5()
     // Give warning if database contains data
     require_code('database');
     if (post_param_integer('confirm', 0) == 0) {
-        $tmp = new Database_driver(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
         $test = $tmp->query_select_value_if_there('config', 'c_value', array('c_name' => 'is_on_block_cache'), '', true);
         unset($tmp);
         if (!is_null($test)) {
@@ -1151,7 +1188,7 @@ function step_5()
 
     // Give warning if setting up a multi-site-network to a bad database
     if (($_POST['db_forums'] != $_POST['db_site']) && (get_forum_type() == 'cns')) {
-        $tmp = new Database_driver(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), $table_prefix);
         if (is_null($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true))) {
             warn_exit(do_lang_tempcode('MSN_FORUM_DB_NOT_CNS_ALREADY'));
         }
@@ -1179,8 +1216,9 @@ function step_5()
         require_code('comcode');
         require_code('themes');
 
-        $log->attach(step_5_checks());
+        $log->attach(step_5_checks_a());
         $log->attach(step_5_write_config());
+        $log->attach(step_5_checks_b());
         $log->attach(step_5_uninstall());
         $log->attach(step_5_core());
         include_cns();
@@ -1372,8 +1410,7 @@ function step_5_ftp()
 
         if (($filename != '_config.php') || (!in_array('_config.php', $files))) {
             if (
-                (($overwrite_ok) || (!file_exists(get_file_base() . '/' . $filename)) || (/*@ for possible race condition reported in #53910*/
-                        @filemtime(get_file_base() . '/' . $filename) < filemtime(get_file_base() . '/install.php')) || (filesize(get_file_base() . '/' . $filename) != $file_size))
+                (($overwrite_ok) || (!file_exists(get_file_base() . '/' . $filename)) || (/*@ for possible race condition reported in #53910*/@filemtime(get_file_base() . '/' . $filename) < filemtime(get_file_base() . '/install.php')) || (filesize(get_file_base() . '/' . $filename) != $file_size))
                 &&
                 (($filename != 'forum/index.php') || (!file_exists(get_file_base() . '/' . $filename)))
             ) {
@@ -1513,9 +1550,9 @@ function step_5_ftp()
 /**
  * Fifth installation step: sanity checks.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
-function step_5_checks()
+function step_5_checks_a()
 {
     $log = new Tempcode();
 
@@ -1552,9 +1589,34 @@ function step_5_checks()
 }
 
 /**
+ * Fifth installation step: sanity checks (after config written).
+ *
+ * @return Tempcode Progress report / UI
+ */
+function step_5_checks_b()
+{
+    $log = new Tempcode();
+
+    // MySQL check (could not be checked earlier due to lack of active connection)
+    $hooks = find_all_hooks('systems', 'checks');
+    foreach (array_keys($hooks) as $hook) {
+        if ($hook == 'mysql') {
+            require_code('hooks/systems/checks/' . filter_naughty($hook));
+            $ob = object_factory('Hook_check_' . $hook);
+            $warning = $ob->run();
+            foreach ($warning as $_warning) {
+                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));
+            }
+        }
+    }
+
+    return $log;
+}
+
+/**
  * Fifth installation step: writing of configuration.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_write_config()
 {
@@ -1573,6 +1635,26 @@ function step_5_write_config()
         warn_exit(do_lang_tempcode('INSTALL_WRITE_ERROR', escape_html($config_file)));
     }
 
+    fwrite($config_file_handle, '
+
+if (!function_exists(\'git_repos\')) {
+    /**
+     * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
+     *
+     * @return ?ID_TEXT Branch name (null: not in git)
+     */
+    function git_repos()
+    {
+        $path = dirname(__FILE__).\'/.git/HEAD\';
+        if (!is_file($path)) return \'\';
+        $lines = file($path);
+        $parts = explode(\'/\', $lines[0]);
+        return trim(end($parts));
+    }
+}
+
+');
+
     // Write in inputted settings
     foreach ($_POST as $key => $val) {
         if (in_array($key, array(
@@ -1583,7 +1665,7 @@ function step_5_write_config()
             'cns_admin_password_confirm',
 
             'clear_existing_forums_on_install',
-            'allow_reports_default',
+            'send_error_emails_ocproducts',
             'board_path',
             'confirm',
             'email',
@@ -1615,7 +1697,7 @@ function step_5_write_config()
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -1662,25 +1744,6 @@ if (appengine_is_live()) {
 ";
         fwrite($config_file_handle, preg_replace('#^\t\t\t#m', '', $gae_live_code));
     }
-
-    fwrite($config_file_handle, '
-
-if (!function_exists(\'git_repos\')) {
-    /**
-     * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
-     *
-     * @return ?ID_TEXT Branch name (null: not in git)
-     */
-    function git_repos()
-    {
-        $path = dirname(__FILE__).\'/.git/HEAD\';
-        if (!is_file($path)) return \'\';
-        $lines = file($path);
-        $parts = explode(\'/\',$lines[0]);
-        return trim(end($parts));
-    }
-}
-');
 
     // ---
 
@@ -1759,7 +1822,7 @@ if (!function_exists(\'git_repos\')) {
 /**
  * Fifth installation step: uninstallation of old install.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_uninstall()
 {
@@ -1768,7 +1831,7 @@ function step_5_uninstall()
     require_code('config');
 
     if (post_param_string('forum_type') != 'none') {
-        $tmp = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), '');
+        $tmp = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), '');
         unset($tmp);
     }
 
@@ -1787,7 +1850,7 @@ function step_5_uninstall()
 /**
  * Fifth installation step: core tables.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_core()
 {
@@ -1849,11 +1912,11 @@ function step_5_core()
         'module_the_name' => '*ID_TEXT',
         'category_name' => '*ID_TEXT',
         'the_value' => 'BINARY'
-    ));
+    ), false, false, true);
     $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('privilege_list');
-    $GLOBALS['SITE_DB']->create_table('privilege_list', array(
+    $GLOBALS['SITE_DB']->create_table('privilege_list', array( // Why does this table exist? It could be done cleanly in hooks (which are easier to version) like config is, but when we add a privilege we do need to carefully define who gets it (as an immediate-op with potential complex code) -- it is cleaner to just handle definition in same place as that code).
         'p_section' => 'ID_TEXT',
         'the_name' => '*ID_TEXT',
         'the_default' => '*BINARY'
@@ -1863,7 +1926,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('attachments', array(
         'id' => '*AUTO',
         'a_member_id' => 'MEMBER',
-        'a_file_size' => '?INTEGER', // NULL means non-local. Doesn't count to quota
+        'a_file_size' => '?INTEGER', // null means non-local. Doesn't count to quota
         'a_url' => 'SHORT_TEXT',
         'a_description' => 'SHORT_TEXT',
         'a_thumb_url' => 'SHORT_TEXT',
@@ -1889,7 +1952,7 @@ function step_5_core()
 /**
  * Fifth installation step: more core tables.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_core_2()
 {
@@ -1970,7 +2033,7 @@ function step_5_core_2()
     ));
     $GLOBALS['SITE_DB']->create_index('sessions', 'delete_old', array('last_activity'));
     $GLOBALS['SITE_DB']->create_index('sessions', 'member_id', array('member_id'));
-    $GLOBALS['SITE_DB']->create_index('sessions', 'userat', array('the_zone', 'the_page', 'the_type', 'the_id'));
+    $GLOBALS['SITE_DB']->create_index('sessions', 'userat', array('the_zone', 'the_page', 'the_id'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('https_pages');
     $GLOBALS['SITE_DB']->create_table('https_pages', array(
@@ -2011,12 +2074,12 @@ function step_5_core_2()
 /**
  * Sixth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_6()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2050,8 +2113,8 @@ function step_6()
  */
 function big_installation_common()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2066,7 +2129,7 @@ function big_installation_common()
     require_code('forum/' . $forum_type);
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_' . filter_naughty_harsh($forum_type));
     if ($forum_type != 'none') {
-        $GLOBALS['FORUM_DRIVER']->connection = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
+        $GLOBALS['FORUM_DRIVER']->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
     }
     $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
     $GLOBALS['FORUM_DB'] = &$GLOBALS['FORUM_DRIVER']->connection;
@@ -2086,7 +2149,7 @@ function big_installation_common()
 /**
  * Seventh installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_7()
 {
@@ -2100,21 +2163,23 @@ function step_7()
 
     // We must install this module first
     if (reinstall_module('adminzone', 'admin_version')) {
-        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'da46e6eb9069c8f700636ab61f76f895', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', 'admin_version'))));
+        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'da46e6eb9069c8f700636ab61f76f895', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', 'admin_version'))));
     }
     if (reinstall_module('adminzone', 'admin_permissions')) {
-        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '11de3814d6a00a0e015466a0277fa7a1', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', 'admin_permissions'))));
+        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '11de3814d6a00a0e015466a0277fa7a1', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', 'admin_permissions'))));
     }
 
     $modules = find_all_modules('adminzone');
     foreach ($modules as $module => $type) {
         if (($module != 'admin_version') && ($module != 'admin_permissions')) {
-            //echo '<!-- Installing '.escape_html($module).' -->';
+            //echo '<!-- Installing ' . escape_html($module) . ' -->';
             if (reinstall_module('adminzone', $module)) {
-                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ab3', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', escape_html($module)))));
+                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ab3', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
             }
         }
     }
+
+    set_option('send_error_emails_ocproducts', strval(post_param_integer('send_error_emails_ocproducts', 0)));
 
     require_code('addons2');
     $addons = find_all_hooks('systems', 'addon_registry');
@@ -2122,7 +2187,7 @@ function step_7()
         //if ($place == 'sources_custom') continue;  Now we are actually installing custom addons too
 
         reinstall_addon_soft($addon);
-        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ag3', 'SOMETHING' => do_lang_tempcode('INSTALL_ADDON', escape_html($addon)))));
+        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ag3', 'SOMETHING' => do_lang_tempcode('INSTALLED_ADDON', escape_html($addon)))));
     }
 
     $url = 'install.php?step=8';
@@ -2136,7 +2201,7 @@ function step_7()
 /**
  * Eighth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_8()
 {
@@ -2147,7 +2212,7 @@ function step_8()
     $modules = find_all_modules('site');
     foreach ($modules as $module => $type) {
         if (reinstall_module('site', $module)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9b3c23369e8ca719256ae44b3d42fd4c', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', escape_html($module)))));
+            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9b3c23369e8ca719256ae44b3d42fd4c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
         }
     }
 
@@ -2162,7 +2227,7 @@ function step_8()
 /**
  * Ninth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_9()
 {
@@ -2173,13 +2238,13 @@ function step_9()
     $modules = find_all_modules('forum');
     foreach ($modules as $module => $type) {
         if (reinstall_module('forum', $module)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c1d95b9713006acb491b44ff6c79099c', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', escape_html($module)))));
+            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c1d95b9713006acb491b44ff6c79099c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
         }
     }
     $modules = find_all_modules('cms');
     foreach ($modules as $module => $type) {
         if (reinstall_module('cms', $module)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '8fdbc968cae73c47d9faf3b4148ac7e1', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', escape_html($module)))));
+            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '8fdbc968cae73c47d9faf3b4148ac7e1', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
         }
     }
 
@@ -2187,7 +2252,7 @@ function step_9()
     foreach ($blocks as $block => $type) {
         echo '<!-- Installing block: ' . $block . ' -->' . "\n";
         if (reinstall_block($block)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'dc9f833239d501f77729778b5c6681b6', 'SOMETHING' => do_lang_tempcode('INSTALL_BLOCK', escape_html($block)))));
+            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'dc9f833239d501f77729778b5c6681b6', 'SOMETHING' => do_lang_tempcode('INSTALLED_BLOCK', escape_html($block)))));
         }
     }
 
@@ -2202,7 +2267,7 @@ function step_9()
 /**
  * Tenth installation step: wrapper and special interface.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10()
 {
@@ -2237,7 +2302,7 @@ function step_10()
 /**
  * Tenth installation step: main.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10_populate_database()
 {
@@ -2248,17 +2313,20 @@ function step_10_populate_database()
     $ADD_MENU_COUNTER = 100;
 
     $zones = find_all_zones();
+    if (file_exists(get_file_base() . '/docs')) { // installing from git
+        $zones[] = 'docs';
+    }
     foreach ($zones as $zone) {
         if (($zone != 'site') && ($zone != 'adminzone') && ($zone != 'forum') && ($zone != 'cms')) {
             $modules = find_all_modules($zone);
             foreach (array_keys($modules) as $module) {
                 if (reinstall_module($zone, $module)) {
-                    $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '25eb1c88fe122ec5a817f334d5f6bc5e', 'SOMETHING' => do_lang_tempcode('INSTALL_MODULE', escape_html($module)))));
+                    $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '25eb1c88fe122ec5a817f334d5f6bc5e', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
                 }
             }
         }
     }
-// $log->attach(do_template('INSTALLER_DONE_SOMETHING',array('_GUID'=>'6a160da6fd9031e90b37a40aea149137','SOMETHING'=>do_lang('TABLES_CREATED','Composr'))));
+    //$log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '6a160da6fd9031e90b37a40aea149137', 'SOMETHING' => do_lang('TABLES_CREATED', 'Composr'))));
 
     return $log;
 }
@@ -2266,7 +2334,7 @@ function step_10_populate_database()
 /**
  * Tenth installation step: forum part.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10_forum_stuff()
 {
@@ -2275,8 +2343,10 @@ function step_10_forum_stuff()
     $forum_type = post_param_string('forum_type');
 
     if ($forum_type != 'none') {
-        require_lang('cns');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 20, 1, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
+        require_code('cpf_install');
+        install_address_fields();
+        install_name_fields();
+        install_mobile_phone_field();
 
         $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'efdbb0cbc46520fe767c6292465751a1', 'SOMETHING' => do_lang_tempcode('CREATED_CUSTOM_PROFILE_FIELDS'))));
     }
@@ -2305,10 +2375,8 @@ function require_code($codename)
     }
 
     if (!array_key_exists('type', $_GET)) {
-        if (function_exists('memory_get_usage')) {
-            $prior = memory_get_usage();
-            echo '<!-- Memory: ' . number_format(memory_get_usage()) . ' -->' . "\n";
-        }
+        $prior = memory_get_usage();
+        echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n";
         echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
         flush();
     }
@@ -2339,10 +2407,8 @@ function require_code($codename)
             call_user_func('init__' . str_replace('/', '__', $codename));
         }
     }
-    /*if (!array_key_exists('type',$_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
-        if (function_exists('memory_get_usage')) {
-            echo '<!-- Memory diff for '.$codename.' was: '.number_format(memory_get_usage()-$prior).' -->'."\n";
-        }
+    /*if (!array_key_exists('type', $_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
+        echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
     }*/
 }
 
@@ -2362,7 +2428,7 @@ function object_factory($class)
  *
  * @param  string $var Config option.
  * @param  string $value New value of option.
- * @return ~string                      Old value of option (false: error).
+ * @return ~string Old value of option (false: error).
  */
 function safe_ini_set($var, $value)
 {
@@ -2382,122 +2448,163 @@ function handle_self_referencing_embedment()
     if (array_key_exists('type', $_GET)) {
         $type = $_GET['type'];
 
-        if ($type == 'ajax_ftp_details') {
-            header('Content-Type: text/plain');
+        switch ($type) {
+            case 'test_blank_result':
+                exit();
 
-            if (!function_exists('ftp_connect')) {
-                echo do_lang('NO_PHP_FTP');
-                exit();
-            }
-            $conn = false;
-            $domain = trim(get_param_string('ftp_domain'));
-            $port = 21;
-            if (strpos($domain, ':') !== false) {
-                list($domain, $_port) = explode(':', $domain, 2);
-                $port = intval($_port);
-            }
-            if (function_exists('ftp_ssl_connect')) {
-                $conn = @ftp_ssl_connect($domain, $port);
-            }
-            $ssl = ($conn !== false);
-            $username = get_param_string('ftp_username');
-            $password = get_param_string('ftp_password');
-            $ssl = ($conn !== false);
-            if (($ssl) && (!@ftp_login($conn, $username, $password))) {
-                $conn = false;
-                $ssl = false;
-            }
-            if ($conn === false) {
-                $conn = ftp_connect($domain, $port);
-            }
-            if ($conn === false) {
-                echo do_lang('NO_FTP_CONNECT');
-                exit();
-            }
-            if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
-                echo do_lang('NO_FTP_LOGIN', @strval($php_errormsg));
-                ftp_close($conn);
-                exit();
-            }
-            $ftp_folder = get_param_string('ftp_folder');
-            if (substr($ftp_folder, -1) != '/') {
-                $ftp_folder .= '/';
-            }
-            if (!@ftp_chdir($conn, $ftp_folder)) {
-                echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '1');
-                ftp_close($conn);
-                exit();
-            }
-            $files = @ftp_nlist($conn, '.');
-            if ($files === false) { // :(. Weird bug on some systems
-                $files = array();
-                if (@ftp_rename($conn, 'install.php', 'install.php')) {
-                    $files = array('install.php', 'data.cms');
+            case 'ajax_ftp_details':
+                header('Content-Type: text/plain');
+
+                if (!function_exists('ftp_connect')) {
+                    echo do_lang('NO_PHP_FTP');
+                    exit();
                 }
-            }
-            if (!in_array('install.php', $files)) {
-                echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '2');
-            }
-            ftp_close($conn);
-
-            exit();
-        }
-        if ($type == 'ajax_db_details') {
-            header('Content-Type: text/plain');
-            global $SITE_INFO;
-            if (!isset($SITE_INFO)) {
-                $SITE_INFO = array();
-            }
-            $SITE_INFO['db_type'] = get_param_string('db_type');
-            require_code('database');
-            if (get_param_string('db_site') == '') {
-                $db = new Database_driver(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
-            } else {
-                $db = new Database_driver(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
-            }
-            $connection = &$db->connection_write;
-            if (count($connection) > 4) { // Okay, we can't be lazy anymore
-                call_user_func_array(array($db->static_ob, 'db_get_connection'), $connection);
-            }
-
-            exit();
-        }
-        if ($type == 'logo') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
-                $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                $conn = false;
+                $domain = trim(get_param_string('ftp_domain'));
+                $port = 21;
+                if (strpos($domain, ':') !== false) {
+                    list($domain, $_port) = explode(':', $domain, 2);
+                    $port = intval($_port);
+                }
+                if (function_exists('ftp_ssl_connect')) {
+                    $conn = @ftp_ssl_connect($domain, $port);
+                }
+                $ssl = ($conn !== false);
+                $username = get_param_string('ftp_username');
+                $password = get_param_string('ftp_password');
+                $ssl = ($conn !== false);
+                if (($ssl) && (!@ftp_login($conn, $username, $password))) {
+                    $conn = false;
+                    $ssl = false;
+                }
+                if ($conn === false) {
+                    $conn = ftp_connect($domain, $port);
+                }
+                if ($conn === false) {
+                    echo do_lang('NO_FTP_CONNECT');
+                    exit();
+                }
+                if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
+                    echo do_lang('NO_FTP_LOGIN', @strval($php_errormsg));
+                    ftp_close($conn);
+                    exit();
+                }
+                $ftp_folder = get_param_string('ftp_folder');
+                if (substr($ftp_folder, -1) != '/') {
+                    $ftp_folder .= '/';
+                }
+                if (!@ftp_chdir($conn, $ftp_folder)) {
+                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '1');
+                    ftp_close($conn);
+                    exit();
+                }
+                $files = @ftp_nlist($conn, '.');
+                if ($files === false) { // :(. Weird bug on some systems
+                    $files = array();
+                    if (@ftp_rename($conn, 'install.php', 'install.php')) {
+                        $files = array('install.php', 'data.cms');
+                    }
+                }
+                if (!in_array('install.php', $files)) {
+                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '2');
+                }
+                ftp_close($conn);
                 exit();
-            }
 
-            exit();
-        }
-        if ($type == 'contract') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.png')) {
-                $out = file_array_get('themes/default/images/1x/trays/contract.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.png'));
+            case 'ajax_db_details':
+                header('Content-Type: text/plain');
+                global $SITE_INFO;
+                if (!isset($SITE_INFO)) {
+                    $SITE_INFO = array();
+                }
+                $SITE_INFO['db_type'] = get_param_string('db_type');
+                require_code('database');
+                if (get_param_string('db_site') == '') {
+                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
+                } else {
+                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
+                }
+                $connection = &$db->connection_write;
+                if (count($connection) > 4) { // Okay, we can't be lazy anymore
+                    call_user_func_array(array($db->static_ob, 'db_get_connection'), $connection);
+                }
                 exit();
-            }
 
-            exit();
-        }
-        if ($type == 'expand') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.png')) {
-                $out = file_array_get('themes/default/images/1x/trays/expand.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.png'));
+            case 'logo':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
+                    $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                    exit();
+                }
                 exit();
-            }
 
-            exit();
+            case 'contract':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.png')) {
+                    $out = file_array_get('themes/default/images/1x/trays/contract.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.png'));
+                    exit();
+                }
+                exit();
+
+            case 'expand':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.png')) {
+                    $out = file_array_get('themes/default/images/1x/trays/expand.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.png'));
+                    exit();
+                }
+                exit();
+
+            case 'css':
+            case 'css_2'/*So colours are parsed initially*/:
+                header('Content-Type: text/css');
+
+                $output = '';
+
+                $css_files = array('global', 'forms');
+                foreach ($css_files as $css_file) {
+                    if (!file_exists(get_file_base() . '/themes/default/css/' . $css_file . '.css')) {
+                        $file = file_array_get('themes/default/css/' . $css_file . '.css');
+                    } else {
+                        $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
+                    }
+                    $file = preg_replace('#\{\$IMG;?\,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
+
+                    require_code('tempcode_compiler');
+                    $css = template_to_tempcode($file, 0, false, '');
+                    $output .= $css->evaluate();
+                }
+
+                if ($type == 'css') {
+                    print($output);
+                    exit();
+                } else {
+                    header('Content-Type: text/css');
+                    if (!file_exists(get_file_base() . '/themes/default/css/install.css')) {
+                        $file = file_array_get('themes/default/css/install.css');
+                    } else {
+                        $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
+                    }
+                    $file = preg_replace('#\{\$IMG\,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
+
+                    require_code('tempcode_compiler');
+                    $css = template_to_tempcode($file, 0, false, '');
+                    $output = $css->evaluate();
+
+                    print($output);
+                    exit();
+                }
+                break;
         }
+
         if (substr($type, 0, 15) == 'themes/default/') {
             header('Content-type: image/png');
             if (!file_exists(get_file_base() . '/' . $type)) {
@@ -2510,46 +2617,6 @@ function handle_self_referencing_embedment()
 
             exit();
         }
-        if (($type == 'css') || ($type == 'css_2')/*So colours are parsed initially*/) {
-            header('Content-Type: text/css');
-
-            $output = '';
-
-            $css_files = array('global', 'forms');
-            foreach ($css_files as $css_file) {
-                if (!file_exists(get_file_base() . '/themes/default/css/' . $css_file . '.css')) {
-                    $file = file_array_get('themes/default/css/' . $css_file . '.css');
-                } else {
-                    $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
-                }
-                $file = preg_replace('#\{\$IMG;?\,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
-
-                require_code('tempcode_compiler');
-                $css = template_to_tempcode($file, 0, false, '');
-                $output .= $css->evaluate();
-            }
-
-            if ($type == 'css') {
-                print($output);
-                exit();
-            }
-        }
-        if ($type == 'css_2') {
-            header('Content-Type: text/css');
-            if (!file_exists(get_file_base() . '/themes/default/css/install.css')) {
-                $file = file_array_get('themes/default/css/install.css');
-            } else {
-                $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
-            }
-            $file = preg_replace('#\{\$IMG\,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
-
-            require_code('tempcode_compiler');
-            $css = template_to_tempcode($file, 0, false, '');
-            $output = $css->evaluate();
-
-            print($output);
-            exit();
-        }
 
         exit();
     }
@@ -2558,13 +2625,13 @@ function handle_self_referencing_embedment()
 /**
  * Make the UI for an installer textual option.
  *
- * @param  tempcode $nice_name The human readable name for the option
- * @param  tempcode $description A description of the option
+ * @param  Tempcode $nice_name The human readable name for the option
+ * @param  Tempcode $description A description of the option
  * @param  ID_TEXT $name The name of the option
  * @param  string $value The default/current value of the option
  * @param  boolean $hidden Whether the options value should be kept star'red out (e.g. it is a password)
  * @param  boolean $required Whether the option is required
- * @return tempcode The option
+ * @return Tempcode The option
  */
 function make_option($nice_name, $description, $name, $value, $hidden = false, $required = false)
 {
@@ -2592,11 +2659,11 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
 /**
  * Make the UI for an installer tick option.
  *
- * @param  tempcode $nice_name The human readable name for the option
- * @param  tempcode $description A description of the option
+ * @param  Tempcode $nice_name The human readable name for the option
+ * @param  Tempcode $description A description of the option
  * @param  ID_TEXT $name The name of the option
  * @param  BINARY $value The default/current value of the option
- * @return tempcode The list of usergroups
+ * @return Tempcode The list of usergroups
  */
 function make_tick($nice_name, $description, $name, $value)
 {
@@ -2609,7 +2676,7 @@ function make_tick($nice_name, $description, $name, $value)
  *
  * @param  string $example The name of the example text language string (blank: none)
  * @param  string $description The name of the example description language string (blank: none)
- * @return tempcode The text
+ * @return Tempcode The text
  */
 function example($example, $description = '')
 {
@@ -2776,7 +2843,7 @@ function test_htaccess($conn)
     $clauses = array();
 
     $clauses[] = <<<END
-# Disable inaccurate security scanning (Composr has it's own)
+# Disable inaccurate security scanning (Composr has its own)
 <IfModule mod_security.c>
 SecFilterEngine Off
 SecFilterScanPOST Off
@@ -2825,6 +2892,9 @@ php_flag suhosin.sql.union off
 php_flag suhosin.sql.comment off
 php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
+# Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
+php_value auto_prepend_file none
+php_value auto_append_file none
 END;
     }
 
@@ -2844,7 +2914,9 @@ END;
     $clauses[] = <<<END
 # Compress some static resources
 <IfModule mod_deflate.c>
+<IfModule mod_filter.c>
 AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+</IfModule>
 </IfModule>
 
 # We do not want for tar files, due to IE bug http://blogs.msdn.com/b/wndp/archive/2006/08/21/content-encoding-not-equal-content-type.aspx (IE won't decompress again as it thinks it's a mistake)
@@ -2872,7 +2944,7 @@ RewriteRule (.*) - [L]
 # Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.
 RewriteRule ^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$ $1index.php\?page=$3 [L,QSA,R]
 
-# PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+# PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
 RewriteRule ^([^=]*)pg/s/([^\&\?]*)/index\.php$ $1index.php\?page=wiki&id=$2 [L,QSA]
 
 # PG STYLE: These are standard patterns
@@ -2894,7 +2966,7 @@ RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.p
 RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$4&page=$2&type=$3 [L,QSA]
 RewriteRule ^([^=]*)pg/([^/\&\?\.]*)&(.*)$ $1index.php\?$3&page=$2 [L,QSA]
 
-# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
 RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
@@ -2906,7 +2978,7 @@ RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 
-# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
 #RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 #RewriteRule ^s/([^\&\?]*)$ index\.php\?page=wiki&id=$1 [L,QSA]
 
@@ -2922,7 +2994,7 @@ END;
 
     $clauses[] = <<<END
 order allow,deny
-# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with it's own DB-based banning - this makes DOS/hack attack prevention stronger)
+# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
 allow from all
 END;

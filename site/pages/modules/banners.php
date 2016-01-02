@@ -35,7 +35,7 @@ class Module_banners
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = true;
         $info['update_require_upgrade'] = 1;
         return $info;
@@ -47,6 +47,7 @@ class Module_banners
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('banners');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('banners_types');
         $GLOBALS['SITE_DB']->drop_table_if_exists('banner_types');
         $GLOBALS['SITE_DB']->drop_table_if_exists('banner_clicks');
 
@@ -111,7 +112,7 @@ class Module_banners
                 'the_type' => 2,
                 'img_url' => 'data/images/advertise_here.png',
                 'campaign_remaining' => 0,
-                'site_url' => get_base_url() . '/site/index.php?page=advertise',
+                'site_url' => get_base_url() . '/index.php?page=advertise',
                 'hits_from' => 0,
                 'views_from' => 0,
                 'hits_to' => 0,
@@ -136,7 +137,7 @@ class Module_banners
                 'the_type' => 0,
                 'img_url' => 'data/images/donate.png',
                 'campaign_remaining' => 0,
-                'site_url' => get_base_url() . '/site/index.php?page=donate',
+                'site_url' => get_base_url() . '/index.php?page=donate',
                 'hits_from' => 0,
                 'views_from' => 0,
                 'hits_to' => 0,
@@ -179,7 +180,7 @@ class Module_banners
                 't_is_textual' => 0,
                 't_image_width' => 728,
                 't_image_height' => 90,
-                't_max_file_size' => 80,
+                't_max_file_size' => 150,
                 't_comcode_inline' => 0
             ));
 
@@ -192,6 +193,7 @@ class Module_banners
                 'c_banner_id' => 'ID_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'clicker_ip', array('c_ip_address'));
+            $GLOBALS['SITE_DB']->create_index('banner_clicks', 'c_banner_id', array('c_banner_id'));
 
             add_privilege('BANNERS', 'banner_free', false);
         }
@@ -207,6 +209,13 @@ class Module_banners
             add_privilege('BANNERS', 'use_html_banner', false);
             add_privilege('BANNERS', 'use_php_banner', false, true);
         }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
+            $GLOBALS['SITE_DB']->create_table('banners_types', array(
+                'name' => '*ID_TEXT',
+                'b_type' => '*ID_TEXT',
+            ));
+        }
     }
 
     /**
@@ -215,22 +224,24 @@ class Module_banners
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($check_perms && is_guest($member_id)) {
-            return array();
-        }
+        if ($check_perms) {
+            if (is_guest($member_id)) {
+                return array();
+            }
 
-        if (is_null($member_id)) {
-            $member_id = get_member();
-        }
-        if (!has_zone_access($member_id, 'adminzone')) {
-            $num_banners_owned = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('submitter' => $member_id));
-            if ($num_banners_owned == 0) {
-                return null;
+            if (is_null($member_id)) {
+                $member_id = get_member();
+            }
+            if (!has_zone_access($member_id, 'adminzone')) {
+                $num_banners_owned = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('submitter' => $member_id));
+                if ($num_banners_owned == 0) {
+                    return null;
+                }
             }
         }
 
@@ -246,7 +257,7 @@ class Module_banners
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -294,7 +305,7 @@ class Module_banners
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -313,6 +324,9 @@ class Module_banners
         if ($type == 'view') {
             return $this->view_banner();
         }
+        if ($type == 'reset') {
+            return $this->reset_banner();
+        }
 
         return new Tempcode();
     }
@@ -320,7 +334,7 @@ class Module_banners
     /**
      * The UI to choose a banner to view.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_banner()
     {
@@ -333,7 +347,7 @@ class Module_banners
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             'name' => do_lang_tempcode('CODENAME'),
-            'b_type' => do_lang_tempcode('_BANNER_TYPE'),
+            'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
@@ -349,7 +363,7 @@ class Module_banners
 
         $hr = array(
             do_lang_tempcode('CODENAME'),
-            do_lang_tempcode('_BANNER_TYPE'),
+            do_lang_tempcode('BANNER_TYPE'),
             //do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //do_lang_tempcode('HITS_ALLOCATED'),
             do_lang_tempcode('_IMPORTANCE_MODULUS'),
@@ -421,7 +435,7 @@ class Module_banners
     /**
      * The UI to view a banner.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_banner()
     {
@@ -433,22 +447,28 @@ class Module_banners
             check_privilege('view_anyones_banner_stats');
         }
 
+        // Banner details table...
+
         switch ($myrow['the_type']) {
             case BANNER_PERMANENT:
                 $type = do_lang_tempcode('BANNER_PERMANENT');
                 break;
             case BANNER_CAMPAIGN:
-                $type = do_lang_tempcode('_BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
+                $type = do_lang_tempcode('BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
                 break;
             case BANNER_DEFAULT:
                 $type = do_lang_tempcode('BANNER_DEFAULT');
                 break;
         }
 
-        if ($myrow['views_to'] != 0) {
-            $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to'])))));
+        if ($myrow['site_url'] == '') {
+            $click_through = do_lang_tempcode('CANT_TRACK');
         } else {
-            $click_through = do_lang_tempcode('NA_EM');
+            if ($myrow['views_to'] != 0) {
+                $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to']))) . '%'));
+            } else {
+                $click_through = do_lang_tempcode('NA_EM');
+            }
         }
 
         $has_banner_network = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)') != 0.0;
@@ -456,18 +476,30 @@ class Module_banners
         $fields = new Tempcode();
         require_code('templates_map_table');
         $fields->attach(map_table_field(do_lang_tempcode('TYPE'), $type));
-        if ($myrow['b_type'] != '') {
-            $fields->attach(map_table_field(do_lang_tempcode('_BANNER_TYPE'), $myrow['b_type']));
+
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), ($myrow['b_type'] == '') ? do_lang('GENERAL') : $myrow['b_type']));
+
+        $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $myrow['name']))));
+        $fields->attach(map_table_field(do_lang_tempcode('SECONDARY_CATEGORIES'), ($banner_types == '') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($banner_types))));
+
+        if (addon_installed('stats')) {
+            $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $myrow['name']))));
+            $fields->attach(map_table_field(do_lang_tempcode('FILTER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
         }
+
+        $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date($myrow['add_date'])));
+
         $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
+
         if ($has_banner_network) {
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), integer_format($myrow['hits_from']), false, 'hits_from'));
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), integer_format($myrow['views_from']), false, 'views_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
         }
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_CLICKTHROUGH'), $click_through));
+
         $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['submitter']);
         $fields->attach(map_table_field(do_lang_tempcode('SUBMITTER'), $username, true));
 
@@ -480,13 +512,108 @@ class Module_banners
             $edit_url = build_url(array('page' => 'cms_banners', 'type' => '_edit', 'id' => $source), get_module_zone('cms_banners'));
         }
 
+        // Results table...
+
+        if ($myrow['site_url'] != '') {
+            require_lang('dates');
+
+            require_code('templates_results_table');
+
+            $current_ordering = get_param_string('sort', 'month ASC');
+            if (strpos($current_ordering, ' ') === false) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
+            $sortables = array(
+                'day' => do_lang_tempcode('DAY'),
+                'month' => do_lang_tempcode('MONTH'),
+            );
+            if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
+                log_hack_attack_and_exit('ORDERBY_HACK');
+            }
+            global $NON_CANONICAL_PARAMS;
+            $NON_CANONICAL_PARAMS[] = 'sort';
+
+            $hr = array(
+                do_lang_tempcode('DATE'),
+                do_lang_tempcode('BANNER_HITSTO'),
+            );
+            $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+
+            $max = get_param_integer('max', 50);
+            $start = get_param_integer('start', 0);
+            $rows = $GLOBALS['SITE_DB']->query_select('banner_clicks', array('c_date_and_time'), array('c_banner_id' => $source), 'ORDER BY c_date_and_time ' . $sort_order, 10000);
+            $tally_sets = array();
+            foreach ($rows as $row) {
+                if ($sortable == 'day') {
+                    $period = get_timezoned_date($row['c_date_and_time'], false);
+                } else {
+                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                }
+
+                if (!isset($tally_sets[$period])) {
+                    $tally_sets[$period] = 0;
+                }
+                $tally_sets[$period]++;
+            }
+
+            $fields = new Tempcode();
+            foreach ($tally_sets as $period => $hits) {
+                $fr = array(
+                    $period,
+                    integer_format($hits),
+                );
+
+                $fields->attach(results_entry($fr, true));
+            }
+
+            $results_table = results_table(do_lang('BANNER_HITSTO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
+        } else {
+            $results_table = new Tempcode();
+        }
+
+        // Reset feature...
+
+        $reset_url = new Tempcode();
+        if (has_actual_page_access(get_member(), 'admin_banners')) {
+            $reset_url = build_url(array('page' => '_SELF', 'type' => 'reset', 'source' => $source), '_SELF');
+        }
+
+        // ---
+
         return do_template('BANNER_VIEW_SCREEN', array(
             '_GUID' => 'ed923ae0682c6ed679c0efda688c49ea',
             'TITLE' => $this->title,
             'EDIT_URL' => $edit_url,
             'MAP_TABLE' => $map_table,
             'BANNER' => $banner,
+            'RESULTS_TABLE' => $results_table,
+            'RESET_URL' => $reset_url,
             'NAME' => $source,
         ));
+    }
+
+    /**
+     * The actualiser to reset a banner.
+     *
+     * @return Tempcode The UI
+     */
+    public function reset_banner()
+    {
+        $title = get_screen_title('RESET_BANNER_STATS');
+
+        post_param_string('confirm'); // Just to confirm it is a POST request, i.e. not a CSRF
+
+        $source = get_param_string('source');
+
+        if (!has_actual_page_access(get_member(), 'admin_banners')) {
+            access_denied('I_ERROR');
+        }
+
+        $GLOBALS['SITE_DB']->query_delete('banner_clicks', array('c_banner_id' => $source));
+        $GLOBALS['SITE_DB']->query_update('banners', array('hits_from' => 0, 'hits_to' => 0, 'views_from' => 0, 'views_to' => 0), array('name' => $source), '', 1);
+
+        $url = build_url(array('page' => '_SELF', 'type' => 'view', 'source' => $source), '_SELF');
+        return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

@@ -138,6 +138,16 @@ New users should then be assigned a mentor/buddy who will receive an equal amoun
     }
 
     /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+    }
+
+    /**
      * Uninstall the addon.
      */
     public function uninstall()

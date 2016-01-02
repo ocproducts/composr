@@ -12,7 +12,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
 					<th>
-						{!_LOCATION}
+						{!LOCATION}
 					</th>
 				{+END}
 			{+END}

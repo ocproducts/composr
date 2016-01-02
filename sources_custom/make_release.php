@@ -68,10 +68,11 @@ function make_installers($skip_file_grab = false)
 
         // Get file data array
         $out .= '<ul>';
-        $out .= populate_build_files_array();
+        $out .= populate_build_files_list();
         $out .= '</ul>';
 
         make_files_manifest();
+        make_database_manifest();
     }
 
     //header('Content-type: text/plain; charset=' . get_charset());var_dump(array_keys($MAKE_INSTALLERS__FILE_ARRAY));exit(); Useful for testing quickly what files will be built
@@ -88,8 +89,8 @@ function make_installers($skip_file_grab = false)
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     disable_php_memory_limit();
 
@@ -242,7 +243,7 @@ function make_installers($skip_file_grab = false)
         if ($cmd_result !== null) {
             $output2 .= $cmd_result;
         }
-        //$out.=do_build_zip_output($v,$output2);  Don't mention, as will get auto-deleted after gzipping anyway
+        //$out .= do_build_zip_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
         shell_exec($cmd);
@@ -404,7 +405,7 @@ function do_build_zip_output($file, $new_output)
         </div>';
 }
 
-function populate_build_files_array($dir = '', $pretend_dir = '')
+function populate_build_files_list($dir = '', $pretend_dir = '')
 {
     require_code('files');
 
@@ -432,7 +433,7 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir(get_file_base() . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
             continue;
         }
 
@@ -441,7 +442,7 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
             $MAKE_INSTALLERS__DIR_ARRAY[] = $pretend_dir . $file;
             @mkdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
             fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
-            $_out = populate_build_files_array($dir . $file . '/', $pretend_dir . $file . '/');
+            $_out = populate_build_files_list($dir . $file . '/', $pretend_dir . $file . '/');
             if ($num_files == count($MAKE_INSTALLERS__FILE_ARRAY)) { // Empty, effectively (maybe was from a non-bundled addon) - don't use it
                 array_pop($MAKE_INSTALLERS__DIR_ARRAY);
                 rmdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
@@ -455,10 +456,6 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
             } elseif (($pretend_dir . $file) == 'themes/map.ini') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = 'default=default' . "\n";
             } elseif ($pretend_dir . $file == 'data_custom/functions.dat') {
-                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
-            } elseif ($pretend_dir . $file == 'cms_sitemap.xml') {
-                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
-            } elseif ($pretend_dir . $file == 'cms_news_sitemap.xml') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
             } elseif ($pretend_dir . $file == 'data_custom/errorlog.php') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = "<?php return; ?" . ">\n";
@@ -492,7 +489,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
 
     if (count($MAKE_INSTALLERS__FILE_ARRAY) == 0) {
-        populate_build_files_array();
+        populate_build_files_list();
     }
 
     $files = array();
@@ -525,4 +522,176 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     fwrite($tmp, $file_manifest);
     fclose($tmp);
     fix_permissions($builds_path . '/builds/build/' . $version_branch . '/data/files.dat');
+}
+
+function make_database_manifest() // Builds db_meta.dat, which is used for database integrity checks
+{
+    require_code('database_relations');
+
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+
+    // Work out what addons everything belongs to...
+
+    $table_addons = array();
+    $index_addons = array();
+    $privilege_addons = array();
+
+    require_code('files2');
+    $files = get_directory_contents(get_file_base(), '', true);
+    foreach ($files as $file) {
+        if (substr($file, -4) != '.php' && substr($file, -strlen('_custom')) != '_custom') {
+            continue;
+        }
+
+        $contents = file_get_contents(get_file_base() . '/' . $file);
+        $matches = array();
+        if (preg_match('#@package\s+(\w+)\r?\n#', $contents, $matches) != 0) {
+            $addon = $matches[1];
+            if ($addon == 'installer') {
+                $addon = 'core';
+            }
+
+            $table_regexp = '#->create_table\(\'(\w+)\'#';
+            $table_matches = array();
+            $table_num_matches = preg_match_all($table_regexp, $contents, $table_matches);
+            for ($i = 0; $i < $table_num_matches; $i++) {
+                $table_name = $table_matches[1][$i];
+                $table_addons[$table_name] = $addon;
+            }
+
+            $index_regexp = '#->create_index\(\'(\w+)\',\s*\'([\#\w]+)\'#';
+            $index_matches = array();
+            $index_num_matches = preg_match_all($index_regexp, $contents, $index_matches);
+            for ($i = 0; $i < $index_num_matches; $i++) {
+                $table_name = $index_matches[1][$i];
+                $index_name = $index_matches[2][$i];
+                $universal_index_key = $table_name . '__' . $index_name;
+                $index_addons[$universal_index_key] = $addon;
+            }
+
+            if ($file == 'sources/cns_install.php') {
+                $privilege_regexp = '#\'(\w+)\'#';
+            }
+            elseif ($file == 'sources/database_action.php') {
+                $privilege_regexp = '#array\(\'\w+\',\s*\'(\w+)\'\)#';
+            } else {
+                $privilege_regexp = '#add_privilege\(\'\w+\',\s*\'(\w+)\'#';
+            }
+            $privilege_matches = array();
+            $privilege_num_matches = preg_match_all($privilege_regexp, $contents, $privilege_matches);
+            for ($i = 0; $i < $privilege_num_matches; $i++) {
+                $privilege_name = $privilege_matches[1][$i];
+                $privilege_addons[$privilege_name] = $addon;
+            }
+        }
+    }
+
+    // Check we have found everything the database knows about...
+
+    if (get_param_integer('skip_errors', 0) != 1) {
+        $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table')));
+        foreach ($all_tables as $table_name) {
+            if (!array_key_exists($table_name, $table_addons)) {
+                if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                    warn_exit('Table ' . $table_name . ' in meta database could not be sourced.');
+                }
+            }
+        }
+
+        $all_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table'));
+        foreach ($all_indices as $index) {
+            $table_name = $index['i_table'];
+            $index_name = $index['i_name'];
+
+            $universal_index_key = $table_name . '__' . $index_name;
+
+            if (!isset($index_addons[$universal_index_key])) {
+                if (!array_key_exists($table_name, $table_addons)) {
+                    if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                        warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
+                    }
+                } else {
+                    $index_addons[$universal_index_key] = $table_addons[$table_name];
+                }
+            }
+        }
+
+        $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
+        foreach ($all_privileges as $privilege_name) {
+            if (!array_key_exists($privilege_name, $privilege_addons)) {
+                warn_exit('Privilege ' . $privilege_name . ' in meta database could not be sourced.');
+            }
+        }
+    }
+
+    // Build up db_meta.dat structure...
+
+    $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
+    $tables = array();
+    foreach ($field_details as $field) {
+        $table_name = $field['m_table'];
+
+        if (!isset($table_addons[$table_name])) {
+            continue;
+        }
+
+        if (!isset($tables[$table_name])) {
+            $tables[$table_name] = array(
+                'addon' => $table_addons[$table_name],
+                'fields' => array(),
+            );
+        }
+        $tables[$field['m_table']]['fields'][$field['m_name']] = $field['m_type'];
+    }
+
+    $index_details = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
+    $indices = array();
+    foreach ($index_details as $index) {
+        $table_name = $index['i_table'];
+        $index_name = trim($index['i_name'], '#');
+
+        $universal_index_key = $table_name . '__' . $index['i_name'];
+
+        if (!isset($index_addons[$universal_index_key])) {
+            continue;
+        }
+
+        $indices[$universal_index_key] = array(
+            'addon' => $index_addons[$universal_index_key],
+            'name' => $index_name,
+            'table' => $table_name,
+            'fields' => explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields'])),
+            'is_full_text' => (strpos($index['i_name'], '#') !== false),
+        );
+    }
+
+    $privilege_details = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'));
+    $privileges = array();
+    foreach ($privilege_details as $privilege) {
+        if (!isset($privilege_addons[$privilege['the_name']])) {
+            continue;
+        }
+
+        $privileges[$privilege['the_name']] = array(
+            'addon' => $privilege_addons[$privilege['the_name']],
+            'section' => $privilege['p_section'],
+            'default' => $privilege['the_default'],
+        );
+    }
+
+    $data = array(
+        'tables' => $tables,
+        'indices' => $indices,
+        'privileges' => $privileges,
+    );
+
+    // Save
+    $path = get_file_base() . '/data/db_meta.dat';
+    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+    fwrite($myfile, serialize($data));
+    fclose($myfile);
+    fix_permissions($path);
+    sync_file($path);
+
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 }

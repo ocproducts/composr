@@ -112,7 +112,7 @@ class Module_admin_import
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -127,7 +127,7 @@ class Module_admin_import
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -157,7 +157,7 @@ class Module_admin_import
 
         if ($type == 'import') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('IMPORT')), array('_SELF:_SELF:session', do_lang_tempcode('IMPORT_SESSION')), array('_SELF:_SELF:hook:importer=session2:session=' . get_param_string('session'), do_lang_tempcode('IMPORT'))));
-            breadcrumb_set_self(do_lang_tempcode('START'));
+            breadcrumb_set_self(do_lang_tempcode('ACTIONS'));
         }
 
         $this->title = get_screen_title('IMPORT');
@@ -168,7 +168,7 @@ class Module_admin_import
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -210,7 +210,7 @@ class Module_admin_import
     /**
      * The UI to choose an importer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_importer()
     {
@@ -246,7 +246,7 @@ class Module_admin_import
     /**
      * The UI to choose an import session.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_session()
     {
@@ -298,7 +298,7 @@ class Module_admin_import
     /**
      * The UI to choose session details.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_session2()
     {
@@ -380,7 +380,7 @@ class Module_admin_import
      * The UI to choose what to import.
      *
      * @param  mixed $extra Output to show from last action (blank: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_actions($extra = '')
     {
@@ -408,7 +408,7 @@ class Module_admin_import
         if (($db_name == get_db_site()) && ($importer == 'cms_merge') && ($db_table_prefix == $GLOBALS['SITE_DB']->get_table_prefix())) {
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
-        $import_source = is_null($db_name) ? null : new Database_driver($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
         unset($import_source);
 
         // Save data
@@ -466,7 +466,7 @@ class Module_admin_import
                 continue;
             }
 
-            $text = do_lang((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
+            $text = do_lang_tempcode((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
             $_import_list_2[$import] = $text;
         }
         if ((array_key_exists('cns_members', $_import_list_2)) && (get_forum_type() == $importer) && ($db_name == get_db_forums()) && ($db_table_prefix == $GLOBALS['FORUM_DB']->get_table_prefix())) {
@@ -526,16 +526,17 @@ class Module_admin_import
     /**
      * The actualiser to do an import.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_import()
     {
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
         $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
-        if (function_exists('set_time_limit')) {
-            @set_time_limit($refresh_time);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit($refresh_time);
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
+        send_http_output_ping();
         header('Content-type: text/html; charset=' . get_charset());
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
@@ -568,7 +569,7 @@ class Module_admin_import
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
 
-        $import_source = is_null($db_name) ? null : new Database_driver($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
 
         // Some preliminary tests
         $happy = get_param_integer('happy', 0);
@@ -668,7 +669,7 @@ class Module_admin_import
     /**
      * Special import-esque function to aid switching to Conversr after importing forum previously served by a forum driver.
      *
-     * @return tempcode Information about progress
+     * @return Tempcode Information about progress
      */
     public function cns_switch()
     {
@@ -687,7 +688,7 @@ class Module_admin_import
                     continue; // Lots of data and it's not important
                 }
 
-                //echo '(working) '.$field['m_table'].'/'.$field['m_name'].'<br />';
+                //echo '(working) ' . $field['m_table'] . '/' . $field['m_name'] . '<br />';
 
                 $values = $GLOBALS['SITE_DB']->query_select($field['m_table'], array('*'));
                 foreach ($values as $value) {

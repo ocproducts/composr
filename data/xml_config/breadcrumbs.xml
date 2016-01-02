@@ -4,11 +4,19 @@
 	<substitution match_key="forum:forumview">
 		<link label="{!HOME}">:</link>
 	</substitution>
+	<substitution match_key=":_WILD_NOT_START:browse">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key=":_WILD_NOT_START">
+		<link label="{!HOME}">:</link>
+	</substitution>
 	<substitution match_key="site:_WILD_NOT_START:browse">
 		<link label="{!HOME}">:</link>
+		<link label="{!SITE}">site:</link>
 	</substitution>
 	<substitution match_key="site:_WILD_NOT_START">
 		<link label="{!HOME}">:</link>
+		<link label="{!SITE}">site:</link>
 	</substitution>
 	<substitution match_key="site:wiki:browse:1"> <!-- Wiki+ has a special URL structure -->
 		<link label="{!HOME}">:</link>
@@ -20,7 +28,7 @@
 		<link label="{!HOME}">:</link>
 	</substitution>
 	<substitution match_key="docs:_WILD_NOT_START">
-		<link label="{!HELP}">docs:</link>
+		<link label="{!HELP}">docs:tutorials</link>
 	</substitution>
 	<substitution match_key="docs:tutorials">
 		<link label="{!HOME}">:</link>
@@ -28,7 +36,7 @@
 	<substitution match_key="cms:cms">
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="adminzone:_WILD_NOT_START:.*">
+	<substitution match_key="adminzone:_WILD_NOT_START">
 		<link label="{!ADMIN_ZONE}">adminzone:</link>
 	</substitution>
 	<substitution match_key="adminzone:start">
@@ -41,7 +49,10 @@
 	</substitution>
 
 	<!-- Simple catalogue links back to home page (most people don't want to expose catalogues technically as such) -->
-	<substitution match_key="_WILD:catalogues:category:.*">
+	<substitution match_key="_WILD:catalogues:category">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="_WILD:catalogues:index">
 		<link label="{!HOME}">:</link>
 	</substitution>
 

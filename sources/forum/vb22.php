@@ -218,16 +218,16 @@ class Forum_driver_vb22 extends forum_driver_vb_shared
     }
 
     /**
-     * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+     * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
      * @param  MEMBER $userid The member ID
-     * @param  MD5 $password_hashed The md5-hashed password
+     * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
-     * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+     * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {
@@ -250,7 +250,7 @@ class Forum_driver_vb22 extends forum_driver_vb_shared
         }
         $row = $rows[0];
         if ($this->is_banned($row['userid'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('MEMBER_BANNED'));
+            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
             return $out;
         }
         if ($row['password'] != $password_hashed) {

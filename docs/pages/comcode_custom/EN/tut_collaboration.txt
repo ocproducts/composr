@@ -1,14 +1,13 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a collaboration hub: the Collaboration Zone[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a collaboration hub: the Collaboration Zone[/title]
 
 Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool. Many of these features are, by default, pooled together and placed in the 'Collaboration Zone', a Composr zone available, by default, only to staff and Super-Members (if the latter group exists).
 
-A Super-Member is a member who is not staff, but is granted additional access based on their need to access collaborative resources. There is no hard-coded concept of a Super-Member in Composr but the default configuration for the Collaboration Zone is to grant access only to staff and the 'Super Members' usergroup.
+A Super-Member is a member who is not staff, but is granted additional access based on their need to access collaborative resources. There is no hard-coded concept of a Super-Member in Composr but the default configuration for the Collaboration Zone is to grant access only to staff and the 'Super Members' usergroup. You may configure access however you desire.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Virtues of on-line collaboration[/title]
 
-[media width="150" description="The Collaboration Zone menu" float="right"]data_custom/images/docs/collaboration_menu.png[/media]
 The Internet, combined with Composr, is a powerful tool for online-collaboration. It provides the ability for people across the world to work together; but even when used by people working in the same building it can still be a great aid in the sharing and organising of information.
 
 Composr can be used to organise shared documents, provide a forum for discussion, make announcements, structure information, chat from across the world, and a lot more.
@@ -22,30 +21,44 @@ By default, some resources (Comcode pages, menu links, and catalogues), are crea
 These may be used, deleted, or moved, according to your specific needs.
 
 [title="2"]File/Media library[/title]
+
 [surround]
-The File/Media library is a tool to allow sharing of files, located in the CMS zone. It provides the ability to upload, download, and delete files, and organise files into folders.
-[box="Important note" width="25em" float="right"]There is nothing stopping ordinary users from downloading from the file/media library if they have the URL to a file. This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.[/box]
-[media width="150" description="The File Dump" float="left"]data_custom/images/docs/collaboration_filedump.png[/media]
-[/surround]
+[media width="150" description="The File/Media library" float="right"]data_custom/images/docs/tut_collaboration/collaboration_filedump.png[/media]
+The File/Media library is a tool to allow sharing of files, located at:
+Content Management > File/Media library
+
+The library provides the ability to upload, download, and delete files, and organise files into folders.
 
 The File/Media library has two main purposes:
 1) Sharing media with the staff team, for use in content
 2) A general shared drive for collaborators
 
-You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the <kbd>media</kbd> tag.
+There is no pre-determined organisational scheme to the library. However, members may decide by convention to store personal directories under names matching their usernames.
+
+You may wish to embed library files into some other content, such as a news article. You can use a file selector for this. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
+[/surround]
+
+[box="Important -- Security"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
+There is nothing stopping ordinary users from downloading from the file/media library if they have the URL to a file.
+
+This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.
+[/box]
 
 [title="2"]Other Super-members[/title]
+
 [surround]
-[media width="150" description="The Super-members fellows page" float="right"]data_custom/images/docs/collaboration_supermembers.png[/media]
+[media width="150" description="The Super-members fellows page" float="right"]data_custom/images/docs/tut_collaboration/collaboration_supermembers.png[/media]
 The Collaboration Zone includes a page listing all members that have access, with links to information relating to them, and to contact them. It exists to make sure super-members are aware of each other, and to facilitate easy communication between them.
 [/surround]
+
 [title="2"]Additional resources that may be used[/title]
 
 The following are not by default set up for specifically for Super-Members, but may be:
  - Blogs (Personal news categories)
  - Personal galleries
  - Private forums
- - Private chat rooms
+ - Private chatrooms
  - Sole access to any Composr feature, such as the download system, or Wiki+.
 
 If a Composr website is intended solely for collaboration, and the collaborators are trusted, it might be a good idea to make each of them staff, rather than a super-member.
@@ -53,7 +66,7 @@ If a Composr website is intended solely for collaboration, and the collaborators
 [concepts
  1_key="Super-Member"          1_value="A member given access to collaboration facilities"
  2_key="Collaboration Zone"    2_value="The zone where isolated collaboration facilities are located"
- 3_key="File-Dump"             3_value="A tool to allow members to store their own files"
+ 3_key="File/Media Library"    3_value="A tool to allow members to store their own files"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

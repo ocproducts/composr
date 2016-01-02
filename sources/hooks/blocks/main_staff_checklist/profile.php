@@ -26,7 +26,7 @@ class Hook_checklist_profile
     /**
      * Find items to include on the staff checklist.
      *
-     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or NULL if not on a timer), the number of things to sort out (or NULL if not on a queue), The name of the config option that controls the schedule (or NULL if no option).
+     * @return array An array of tuples: The task row to show, the number of seconds until it is due (or null if not on a timer), the number of things to sort out (or null if not on a queue), The name of the config option that controls the schedule (or null if no option).
      */
     public function run()
     {
@@ -40,9 +40,13 @@ class Hook_checklist_profile
         } else {
             $todo = 0;
         }
+
         $_status = ($todo == 1) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
-        $url = $GLOBALS['FORUM_DRIVER']->member_home_url(get_member());
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '276b29a1dac30addf9459fd960a260cd', 'URL' => '', 'STATUS' => $_status, 'TASK' => urlise_lang(do_lang('NAG_SETUP_PROFILE'), $url)));
+
+        $url = $GLOBALS['FORUM_DRIVER']->member_home_url(get_member(), true);
+
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '276b29a1dac30addf9459fd960a260cd', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_SETUP_PROFILE', $url->evaluate())));
+
         return array(array($tpl, null, $todo, null));
     }
 }

@@ -46,7 +46,7 @@ class Module_admin_menus
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -61,7 +61,7 @@ class Module_admin_menus
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -96,7 +96,7 @@ class Module_admin_menus
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -126,18 +126,24 @@ class Module_admin_menus
     /**
      * The UI to choose a menu to edit / create a new menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_menu_name()
     {
         require_code('form_templates');
+
         $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
-        $list = new Tempcode();//form_input_list_entry('',false,do_lang_tempcode('NA_EM'));
+        $rows = list_to_map('i_menu', $rows);
+        $list = new Tempcode();
         foreach ($rows as $row) {
             $item_count = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'COUNT(*)', array('i_menu' => $row['i_menu']));
             $label = do_lang_tempcode('MENU_ITEM_COUNT', escape_html($row['i_menu']), escape_html(integer_format($item_count)));
             $list->attach(form_input_list_entry($row['i_menu'], false, $label));
         }
+        if (!isset($rows['main_menu'])) {
+            $list->attach(form_input_list_entry('', false, do_lang_tempcode('DEFAULT')));
+        }
+
         $fields = new Tempcode();
 
         $set_name = 'menu';
@@ -179,7 +185,7 @@ class Module_admin_menus
     /**
      * The UI to edit a menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_menu()
     {
@@ -214,7 +220,12 @@ class Module_admin_menus
             delete_menu($id);
             copy_from_sitemap_to_new_menu($id, $copy_from);
             if (post_param_integer('switch_over', 0) == 1) {
+                require_code('config2');
                 set_option('header_menu_call_string', $id);
+
+                // Config option saves into templates
+                require_code('caches3');
+                erase_cached_templates();
             }
         }
 
@@ -295,7 +306,7 @@ class Module_admin_menus
         require_code('themes2');
         $list->attach(create_selection_list_theme_images(null, null, false, true, 'icons/'));
         $fields_template->attach(form_input_list(do_lang_tempcode('THEME_IMAGE'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_FOR_MENU_ITEM'), 'theme_img_code', $list, null, false, false, get_all_image_ids_type('icons', true)));
-        $fields_template->attach(form_input_line(do_lang_tempcode('RESTRICT_PAGE_VISIBILITY'), do_lang_tempcode('MENU_ENTRY_MATCH_KEYS'), 'match_tags', '', false));
+        $fields_template->attach(form_input_line(do_lang_tempcode('RESTRICT_PAGE_VISIBILITY'), do_lang_tempcode('MENU_ENTRY_MATCH_KEYS'), 'page_only', '', false));
         $list = new Tempcode();
         $list->attach(form_input_list_entry('0', false, do_lang_tempcode('INCLUDE_SITEMAP_NO')));
         $list->attach(form_input_list_entry('1', false, do_lang_tempcode('INCLUDE_SITEMAP_OVER')));
@@ -339,7 +350,7 @@ class Module_admin_menus
      * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
      * @param  boolean $clickable_sections Whether childed branches themselves can have URLs (etc)
      * @param  array $menu_items All rows on the menu
-     * @return tempcode The part of the UI
+     * @return Tempcode The part of the UI
      */
     public function menu_branch($id, $branch, &$order, $clickable_sections, $menu_items)
     {
@@ -397,7 +408,7 @@ class Module_admin_menus
     /**
      * The actualiser to edit a menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_menu()
     {
@@ -405,54 +416,64 @@ class Module_admin_menus
 
         $menu_id = get_param_string('id');
 
-        // Find what we have on the menu first
-        $ids = array();
-        foreach ($_POST as $key => $val) {
-            if (is_string($val)) {
-                if (substr($key, 0, 7) == 'parent_') {
-                    $ids[intval(substr($key, 7))] = $val;
+        if (post_param_integer('delete_confirm', 0) == 1) {
+            delete_menu($menu_id);
+
+            log_it('DELETE_MENU', $menu_id);
+
+            // Go back to menu editor screen
+            $url = get_param_string('redirect', '!');
+            if ($url == '!') {
+                $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+                $url = $_url->evaluate();
+            }
+        } else {
+            // Find what we have on the menu first
+            $ids = array();
+            foreach ($_POST as $key => $val) {
+                if (is_string($val)) {
+                    if (substr($key, 0, 7) == 'parent_') {
+                        $ids[intval(substr($key, 7))] = $val;
+                    }
                 }
             }
-        }
 
-        $orderings = array_keys($ids);
+            $orderings = array_keys($ids);
 
-        // Get language codes currently used
-        $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
+            // Get language strings currently used
+            $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
-        // Now, process everything on the root
-        $order = 0;
-        foreach ($orderings as $id) {
-            $parent = $ids[$id];
+            // Now, process everything on the root
+            $order = 0;
+            foreach ($orderings as $id) {
+                $parent = $ids[$id];
 
-            if ($parent == '') {
-                $this->add_menu_item($menu_id, $id, $ids, null, $old_menu_bits, $order);
-                $order++;
+                if ($parent == '') {
+                    $this->add_menu_item($menu_id, $id, $ids, null, $old_menu_bits, $order);
+                    $order++;
+                }
             }
-        }
 
-        // Erase old stuff
-        foreach ($old_menu_bits as $menu_item_id => $lang_code) {
-            $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id));
-            delete_lang($lang_code['i_caption']);
-            delete_lang($lang_code['i_caption_long']);
+            // Erase old stuff
+            foreach ($old_menu_bits as $menu_item_id => $lang_code) {
+                $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id));
+                delete_lang($lang_code['i_caption']);
+                delete_lang($lang_code['i_caption_long']);
+            }
+
+            log_it('EDIT_MENU', $menu_id);
+
+            // Go back to editing the menu
+            $url = get_param_string('redirect', '!');
+            if ($url == '!') {
+                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
+                $url = $_url->evaluate();
+            }
         }
 
         decache('menu');
         persistent_cache_delete(array('MENU', $menu_id));
 
-        log_it((count($_POST) == 1) ? 'DELETE_MENU' : 'EDIT_MENU', $menu_id);
-
-        // Go back to editing the menu
-        $url = get_param_string('redirect', '!');
-        if ($url == '!') {
-            if (count($_POST) == 1) {
-                $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            } else {
-                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
-            }
-            $url = $_url->evaluate();
-        }
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
@@ -463,7 +484,7 @@ class Module_admin_menus
      * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
      * @param  array $ids The map of IDs on the menu (ID=>parent)
      * @param  ?integer $parent The ID of the parent branch (null: no parent)
-     * @param  array $old_menu_bits The map of menu id=>string language IDs employed by items before the edit
+     * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
      * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
      */
     public function add_menu_item($menu, $id, &$ids, $parent, &$old_menu_bits, &$order)
@@ -471,7 +492,7 @@ class Module_admin_menus
         // Load in details of menu item
         $caption = post_param_string('caption_' . strval($id), ''); // Default needed to workaround Opera problem
         $caption_long = post_param_string('caption_long_' . strval($id), ''); // Default needed to workaround Opera problem
-        $page_only = post_param_string('match_tags_' . strval($id), ''); // Default needed to workaround Opera problem
+        $page_only = post_param_string('page_only_' . strval($id), ''); // Default needed to workaround Opera problem
         $theme_img_code = post_param_string('theme_img_code_' . strval($id), ''); // Default needed to workaround Opera problem
         $check_permissions = post_param_integer('check_perms_' . strval($id), 0);
         $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus'); // Default needed to workaround Opera problem

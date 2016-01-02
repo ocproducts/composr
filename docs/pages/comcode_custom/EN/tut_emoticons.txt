@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: The Composr emoticon system[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr emoticon system[/title]
 
 {!cns:DOC_EMOTICONS}
 
@@ -9,16 +9,18 @@ If you are using the Composr forum, Conversr, emoticon management features are p
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Conversr emoticons[/title]
-[surround]
-[media width="150" description="Adding an emoticon" float="right"]data_custom/images/docs/emoticons_add.png[/media]
-Conversr emoticons are tied into the theme image system, although you are unlikely to need to know this as the images may be manipulated using direct features (Admin Zoen > Style > Emoticons).
 
-Images are associated with the 'code' that is typed to place the emoticon. You may have multiple codes per image, by using a single image in multiple emoticons: the interface allows you to select from existing images when you add. It is possible to bulk import emoticons from zip files.
+[surround]
+[media width="150" description="Adding an emoticon" float="right"]data_custom/images/docs/tut_emoticons/emoticons_add.png[/media]
+Conversr emoticons are tied into the theme image system, although you are unlikely to need to know this as the images may be manipulated using direct features (Admin Zone > Style > Emoticons). You'll find links to add or edit emoticons. You can delete an emoticon from the bottom of its edit form.
+
+Images are associated with the 'code' that is typed to place the emoticon. You may have multiple codes per image, by using a single image in multiple emoticons: the interface allows you to select from existing images when you add. It is possible to bulk import emoticons from ZIP files.
 
 Emoticons are given a relevancy level, which determines which areas they are listed for use in. The relevancy levels are described in the interface.
 You can also determine whether an emoticon can be used as a 'topic emoticon' (an emoticon placed next to a topic on the forum). It is best to only use standard sized emoticons as topic emoticons.
+
+[block cache="0"]main_emoticon_codes[/block]
 [/surround]
-[block]main_emoticon_codes[/block]
 
 [concepts
  1_key="Emoticon"   1_value="A small graphical of a facial expression placed into the flow of text by typing a special symbol that often resembles the face as laid sideways; provides emotional sub-text"

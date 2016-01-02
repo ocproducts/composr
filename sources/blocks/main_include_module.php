@@ -45,7 +45,7 @@ class Block_main_include_module
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -186,9 +186,10 @@ class Block_main_include_module
             }
             if (strpos($_out, $attributes['page']) !== false) {
                 $_out = str_replace($url_from, $url_to, $_out);
-                $out = make_string_tempcode($_out);
             }
         }
+
+        $out = make_string_tempcode($_out);
 
         // Done
         return $out;

@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    comcode_flip_tag
+ */
+
+/**
+ * Hook class.
  */
 class Hook_comcode_flip
 {

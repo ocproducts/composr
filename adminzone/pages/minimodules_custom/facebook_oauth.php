@@ -13,7 +13,7 @@ $title = get_screen_title('FACEBOOK_OAUTH');
 $facebook_appid = get_option('facebook_appid');
 
 if ($facebook_appid == '') {
-    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE', 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_FACEBOOK_SYNDICATION');
+    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'USERS', 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_FACEBOOK_SYNDICATION');
     $echo = redirect_screen($title, $config_url, do_lang_tempcode('FACEBOOK_SETUP_FIRST'));
     $echo->evaluate_echo();
     return;

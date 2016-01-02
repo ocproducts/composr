@@ -85,8 +85,8 @@ class Hook_profiles_tabs_about
             $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'redirect' => $redir_url), get_module_zone('warnings')), 'links/warning_add');
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'member_id' => $member_id_of), get_module_zone('warnings')), 'tabs/member_account/warnings');
         }
-        if ((has_privilege($member_id_viewing, 'view_content_history')) && (has_actual_page_access($member_id_viewing, 'admin_cns_history'))) {
-            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('POST_HISTORY'), build_url(array('page' => 'admin_cns_history', 'member_id' => $member_id_of), get_module_zone('admin_cns_history')), 'buttons/history');
+        if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {
+            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('POST_HISTORY'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
         }
         if ((addon_installed('securitylogging')) && (has_actual_page_access($member_id_viewing, 'admin_lookup'))) {
             require_lang('lookup');
@@ -109,7 +109,7 @@ class Hook_profiles_tabs_about
             $modules[] = array('content', do_lang_tempcode('SEARCH'), build_url(array('page' => 'search', 'type' => 'results', 'author' => $username), get_module_zone('search')), 'buttons/search', 'search');
         }
         if (addon_installed('authors')) {
-            $author = $GLOBALS['SITE_DB']->query_value_if_there('SELECT author FROM ' . get_table_prefix() . 'authors WHERE (member_id=' . strval($member_id_viewing) . ') OR (member_id IS NULL AND ' . db_string_equal_to('author', $username) . ')');
+            $author = $GLOBALS['SITE_DB']->query_value_if_there('SELECT author FROM ' . get_table_prefix() . 'authors WHERE (member_id=' . strval($member_id_of) . ') OR (member_id IS NULL AND ' . db_string_equal_to('author', $username) . ')');
             if ((has_actual_page_access($member_id_viewing, 'authors')) && (!is_null($author))) {
                 $modules[] = array('content', do_lang_tempcode('AUTHOR'), build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $author), get_module_zone('authors')), 'menu/rich_content/authors', 'me');
             }
@@ -119,7 +119,8 @@ class Hook_profiles_tabs_about
             $modules[] = (!addon_installed('cns_forum')) ? null : array('contact', do_lang_tempcode('ADD_PRIVATE_TOPIC'), build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => $member_id_of), get_module_zone('topics')), 'buttons/send', 'reply');
         }
         $extra_sections = array();
-        $info_details = array();
+        $extra_info_details = array();
+        $extra_tracking_details = array();
         $hooks = find_all_hooks('modules', 'members');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/members/' . filter_naughty_harsh($hook));
@@ -133,7 +134,11 @@ class Hook_profiles_tabs_about
             }
             if (method_exists($object, 'get_info_details')) {
                 $hook_result = $object->get_info_details($member_id_of);
-                $info_details = array_merge($info_details, $hook_result);
+                $extra_info_details = array_merge($extra_info_details, $hook_result);
+            }
+            if (method_exists($object, 'get_tracking_details')) {
+                $hook_result = $object->get_tracking_details($member_id_of);
+                $extra_tracking_details = array_merge($extra_tracking_details, $hook_result);
             }
             if (method_exists($object, 'get_sections')) {
                 $hook_result = $object->get_sections($member_id_of);
@@ -143,13 +148,12 @@ class Hook_profiles_tabs_about
         if (addon_installed('cns_contact_member')) {
             if ((($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_allow_emails') == 1) || (get_option('allow_email_disable') == '0')) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address') != '') && (!is_guest($member_id_of)) && (has_actual_page_access($member_id_viewing, 'contact_member')) && ($member_id_viewing != $member_id_of)) {
                 $redirect = get_self_url(true);
-                $modules[] = array('contact', do_lang_tempcode('_EMAIL_MEMBER'), build_url(array('page' => 'contact_member', 'redirect' => $redirect, 'id' => $member_id_of), get_module_zone('contact_member')), 'links/contact_member', 'reply');
+                $modules[] = array('contact', do_lang_tempcode('_EMAIL_MEMBER'), build_url(array('page' => 'contact_member', 'redirect' => $redirect, 'id' => $member_id_of), get_module_zone('contact_member')), 'links/contact_member', 'reply nofollow');
             }
         }
         require_lang('menus');
         $sections = array('contact' => do_lang_tempcode('CONTACT'), 'profile' => do_lang_tempcode('EDIT_PROFILE'), 'views' => do_lang_tempcode('ACCOUNT'), 'audit' => do_lang_tempcode('AUDIT'), 'content' => do_lang_tempcode('CONTENT'));
         $actions = array();
-
         sort_maps_by($modules, 1);
         foreach ($sections as $section_code => $section_title) {
             $links = new Tempcode();
@@ -181,6 +185,7 @@ class Hook_profiles_tabs_about
         // Custom fields
         $_custom_fields = cns_get_all_custom_fields_match_member($member_id_of, (($member_id_viewing != $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, (($member_id_viewing == $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null);
         $custom_fields = array();
+        $custom_fields_sections = array();
         require_code('encryption');
         $value = mixed();
         $fields_map = array();
@@ -198,8 +203,7 @@ class Hook_profiles_tabs_about
             }
 
             if ((get_option('show_empty_cpfs') == '1') || (((!is_object($value)) && ($value != '')) || ((is_object($value)) && (!$value->is_empty())))) {
-                $custom_fields[] = array(
-                    'NAME' => $name,
+                $custom_field = array(
                     'RAW_VALUE' => $value,
                     'VALUE' => $rendered_value,
                     'ENCRYPTED_VALUE' => $encrypted_value,
@@ -208,6 +212,22 @@ class Hook_profiles_tabs_about
                     'EDITABILITY' => $_value['EDITABILITY'],
                     'EDIT_TYPE' => $_value['EDIT_TYPE'],
                 );
+
+                if (strpos($name, ': ') !== false) {
+                    $parts = explode(': ', $name, 2);
+                    if (!isset($custom_fields_sections[$parts[0]])) {
+                        $custom_fields_sections[$parts[0]] = array('CUSTOM_FIELDS_SECTION' => array());
+                    }
+
+                    $custom_field['NAME'] = $parts[1];
+
+                    $custom_fields_sections[$parts[0]]['CUSTOM_FIELDS_SECTION'][] = $custom_field;
+                } else {
+                    $custom_field['NAME'] = $name;
+
+                    $custom_fields[] = $custom_field;
+                }
+
                 if ($name == do_lang('KEYWORDS')) {
                     $GLOBALS['SEO_KEYWORDS'] = is_object($value) ? $value->evaluate() : $value;
                 }
@@ -252,7 +272,9 @@ class Hook_profiles_tabs_about
         $post_count = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_cache_num_posts');
         $best_post_fraction = ($post_count == 0) ? do_lang_tempcode('NA_EM') : make_string_tempcode(integer_format(100 * $best_yet_forum / $post_count));
         $most_active_forum = is_null($best_yet_forum) ? new Tempcode() : do_lang_tempcode('_MOST_ACTIVE_FORUM', $most_active_forum, make_string_tempcode(integer_format($best_yet_forum)), array($best_post_fraction));
-        $time_for_them_raw = tz_time(time(), get_users_timezone($member_id_of));
+        $users_timezone = get_users_timezone($member_id_of);
+        require_code('temporal2');
+        $time_for_them_raw = tz_time(time(), $users_timezone);
         $time_for_them = get_timezoned_time(time(), true, $member_id_of);
 
         $banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned') == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
@@ -278,13 +300,13 @@ class Hook_profiles_tabs_about
             $days_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0)));
             $months_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0 / 31.0)));
             if ($minutes_ago < 180) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MINUTES', integer_format($minutes_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MINUTES', escape_html(integer_format($minutes_ago)));
             } elseif ($hours_ago < 72) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_HOURS', integer_format($hours_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_HOURS', escape_html(integer_format($hours_ago)));
             } elseif ($days_ago < 93) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_DAYS', integer_format($days_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_DAYS', escape_html(integer_format($days_ago)));
             } else {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MONTHS', integer_format($months_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MONTHS', escape_html(integer_format($months_ago)));
             }
         }
 
@@ -382,6 +404,8 @@ class Hook_profiles_tabs_about
                                                                'MOST_ACTIVE_FORUM' => $most_active_forum,
                                                                'TIME_FOR_THEM' => $time_for_them,
                                                                'TIME_FOR_THEM_RAW' => strval($time_for_them_raw),
+                                                               'USERS_TIMEZONE' => make_nice_timezone_name($users_timezone),
+                                                               'USERS_TIMEZONE_RAW' => $users_timezone,
                                                                'SUBMIT_DAYS_AGO' => integer_format($submit_days_ago),
                                                                'SUBMIT_TIME_RAW' => strval($last_submit_time),
                                                                'LAST_VISIT_TIME_RAW' => strval($last_visit_time),
@@ -404,6 +428,7 @@ class Hook_profiles_tabs_about
                                                                'JOIN_DATE' => $join_date,
                                                                'JOIN_DATE_RAW' => strval($join_time),
                                                                'CUSTOM_FIELDS' => $custom_fields,
+                                                               'CUSTOM_FIELDS_SECTIONS' => $custom_fields_sections,
                                                                'ACTIONS_contact' => $actions['contact'],
                                                                'ACTIONS_profile' => $actions['profile'],
                                                                'ACTIONS_views' => $actions['views'],
@@ -414,7 +439,8 @@ class Hook_profiles_tabs_about
                                                                'SECONDARY_GROUPS' => $secondary_groups,
                                                                'VIEW_PROFILES' => $member_id_viewing == $member_id_of || has_privilege($member_id_viewing, 'view_profiles'),
                                                                'ON_PROBATION' => $on_probation,
-                                                               'EXTRA_INFO_DETAILS' => $info_details,
+                                                               'EXTRA_INFO_DETAILS' => $extra_info_details,
+                                                               'EXTRA_TRACKING_DETAILS' => $extra_tracking_details,
                                                                'EXTRA_SECTIONS' => $extra_sections,
                                                                'VIEWS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_profile_views')),
                                                                'TOTAL_SESSIONS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_total_sessions')),

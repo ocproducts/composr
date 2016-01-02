@@ -1,10 +1,16 @@
 <div>
 	<h2>
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 		<span onclick="/*Access-note: code has other activation*/ return toggleable_tray(this.parentNode.parentNode);">{!TEST_RESULTS}</span>
 	</h2>
 
-	<div class="toggleable_tray" style="display: block" aria-expanded="true">
+	<div class="toggleable_tray" style="display: none" aria-expanded="false">
+		{+START,IF_EMPTY,{CATEGORIES}}
+			<p class="nothing_here">
+				{!NONE}
+			</p>
+		{+END}
+
 		{+START,LOOP,CATEGORIES}
 			{$,If more than one category of quiz entered then show headers}
 			{+START,IF,{$OR,{$GET,want_sections},{$NEQ,{CATEGORIES},1}}}

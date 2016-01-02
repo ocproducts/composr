@@ -46,7 +46,7 @@ class Module_admin_lang
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -82,7 +82,7 @@ class Module_admin_lang
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -133,7 +133,7 @@ class Module_admin_lang
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -162,7 +162,7 @@ class Module_admin_lang
             return $this->set_lang_code();
         }
         if ($type == '_code2') {
-            return $this->set_lang_code_2(); // This is a lang string setter called from an external source. Strings may be from many different files
+            return $this->set_lang_code_2(); // This is a language string setter called from an external source. Strings may be from many different files
         }
 
         return new Tempcode();
@@ -171,13 +171,13 @@ class Module_admin_lang
     /**
      * The UI to choose a language.
      *
-     * @param  tempcode $title The title to show when choosing a language
+     * @param  Tempcode $title The title to show when choosing a language
      * @param  boolean $choose_lang_file Whether to also choose a language file
      * @param  boolean $add_lang Whether the user may add a language
      * @param  mixed $text Text message to show (Tempcode or string)
      * @param  boolean $provide_na Whether to provide an N/A choice
      * @param  ID_TEXT $param_name The name of the parameter for specifying language
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_lang($title, $choose_lang_file = false, $add_lang = false, $text = '', $provide_na = true, $param_name = 'lang')
     {
@@ -274,7 +274,7 @@ class Module_admin_lang
     /**
      * The UI to criticise a language pack.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function criticise()
     {
@@ -349,7 +349,7 @@ class Module_admin_lang
 
             if (!$file->is_empty()) {
                 $file_result = do_template('TRANSLATE_LANGUAGE_CRITICISE_FILE', array('_GUID' => '925ae4a8dc34fed864c3072734a9abe5', 'COMPLAINTS' => $file, 'FILENAME' => $file_base));
-                $files .= $file_result->evaluate();/*FUDGEFUDGE*/
+                $files .= $file_result->evaluate();/*FUDGE*/
             }
         }
 
@@ -359,7 +359,7 @@ class Module_admin_lang
                 $file->attach($crit);
             }
             $file_result = do_template('TRANSLATE_LANGUAGE_CRITICISE_FILE', array('_GUID' => '4ffab9265ea8c5a5e99a7b9fb23d15e1', 'COMPLAINTS' => $file, 'FILENAME' => do_lang_tempcode('NA_EM')));
-            $files .= $file_result->evaluate();/*FUDGEFUDGE*/
+            $files .= $file_result->evaluate();/*FUDGE*/
         }
 
         return do_template('TRANSLATE_LANGUAGE_CRITICISE_SCREEN', array('_GUID' => '62d6f40ca69609a8fd33704a8a38fb6f', 'TITLE' => $this->title, 'FILES' => $files));
@@ -368,7 +368,7 @@ class Module_admin_lang
     /**
      * The UI to translate content.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_content()
     {
@@ -381,6 +381,7 @@ class Module_admin_lang
         }
 
         $max = get_param_integer('max', 100);
+        $start = get_param_integer('start', 0);
 
         $lang = choose_language($this->title);
         if (is_object($lang)) {
@@ -398,11 +399,11 @@ class Module_admin_lang
                 $done_id_list .= strval($done_id);
             }
             $and_clause = ($done_id_list == '') ? '' : 'AND id NOT IN (' . $done_id_list . ')';
-            $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level';
+            $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level,id DESC';
             $to_translate = $GLOBALS['SITE_DB']->query('SELECT * ' . $query, $max/*reasonable limit*/);
         } else {
             $query = 'FROM ' . get_table_prefix() . 'translate a LEFT JOIN ' . get_table_prefix() . 'translate b ON a.id=b.id AND b.broken=0 AND ' . db_string_equal_to('b.language', $lang) . ' WHERE b.id IS NULL AND ' . db_string_not_equal_to('a.language', $lang) . ' AND ' . db_string_not_equal_to('a.text_original', '');
-            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level', $max/*reasonable limit*/);
+            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level,a.id DESC', $max/*reasonable limit*/, $start);
         }
         $total = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
         if (count($to_translate) == 0) {
@@ -425,20 +426,28 @@ class Module_admin_lang
             $ids_to_lookup[] = $it['id'];
         }
         $names = find_lang_content_names($ids_to_lookup);
+        $_to_translate = array();
         foreach ($to_translate as $i => $it) {
             if ($it['importance_level'] == 0) {
                 continue; // Corrupt data
             }
 
             $id = $it['id'];
-            $old = $it['text_original'];
-            $current = $this->find_lang_matches($old, $lang);
-            $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
-
             $name = $names[$id];
             if (is_null($name)) {
                 continue; // Orphaned string
             }
+
+            $_to_translate[] = $it;
+        }
+        $to_translate = $_to_translate;
+        foreach ($to_translate as $i => $it) {
+            $old = $it['text_original'];
+            $current = $this->find_lang_matches($old, $lang);
+            $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
+
+            $id = $it['id'];
+            $name = $names[$id];
 
             if ($google != '') {
                 $actions = do_template('TRANSLATE_ACTION', array('_GUID' => 'f625cf15c9db5e5af30fc772a7f0d5ff', 'LANG_FROM' => $it['language'], 'LANG_TO' => $lang, 'NAME' => 'trans_' . strval($id), 'OLD' => $old));
@@ -446,16 +455,19 @@ class Module_admin_lang
 
             check_suhosin_request_quantity(2, strlen('trans_' . $name));
 
-            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority));
-
+            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority, 'LAST' => !isset($to_translate[$i + 1])));
             $lines .= $line->evaluate(); /*XHTMLXHTML*/
 
             $last_level = $it['importance_level'];
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => '_content', 'lang' => $lang), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => '_content', 'lang' => $lang, 'start' => $start), '_SELF');
 
         require_code('lang2');
+
+        $_GET['lang'] = $lang;
+        require_code('templates_pagination');
+        $pagination = pagination(do_lang('TRANSLATE_CONTENT'), $start, 'start', $max, 'max', $total, true);
 
         return do_template('TRANSLATE_SCREEN_CONTENT_SCREEN', array(
             '_GUID' => 'af732c5e595816db1c6f025c4b8fa6a2',
@@ -470,13 +482,14 @@ class Module_admin_lang
             'LINES' => $lines,
             'TITLE' => $this->title,
             'URL' => $url,
+            'PAGINATION' => $pagination,
         ));
     }
 
     /**
      * The actualiser to translate content.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_content()
     {
@@ -521,7 +534,7 @@ class Module_admin_lang
         // Show it worked / Refresh
         $url = post_param_string('redirect', null);
         if (is_null($url)) {
-            $_url = build_url(array('page' => '_SELF', 'type' => 'content'), '_SELF');
+            $_url = build_url(array('page' => '_SELF', 'type' => 'content', 'lang' => $lang, 'start' => get_param_integer('start', null)), '_SELF');
             $url = $_url->evaluate();
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
@@ -530,7 +543,7 @@ class Module_admin_lang
     /**
      * The UI to translate code.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_code()
     {
@@ -574,7 +587,7 @@ class Module_admin_lang
             $fields = new Tempcode();
             global $LANGUAGE_STRINGS_CACHE;
             foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $key => $value) {
-                if (strpos(strtolower($value), strtolower($search)) !== false) {
+                if (stripos($value, $search) !== false) {
                     $fields->attach(form_input_text($key, '', 'l_' . $key, str_replace('\n', "\n", $value), false));
                 }
             }
@@ -636,7 +649,7 @@ class Module_admin_lang
         // Get some stuff
         $for_lang = get_lang_file_map($lang, $lang_file);
         $for_base_lang = get_lang_file_map($base_lang, $lang_file, true);
-        $descriptions = get_lang_file_descriptions($base_lang, $lang_file);
+        $descriptions = get_lang_file_section($base_lang, $lang_file);
 
         // Make our translation page
         $lines = '';
@@ -649,7 +662,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             if (($current == '') && (strtolower($name) != $name)) {
                 $trans_lot .= str_replace('\n', "\n", str_replace(array('{', '}'), array('(((', ')))'), $old)) . $delimit;
@@ -678,7 +691,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             $description = array_key_exists($name, $descriptions) ? $descriptions[$name] : '';
             if (($current == '') && (strtolower($name) != $name) && (array_key_exists($next, $translated_stuff))) {
@@ -707,7 +720,7 @@ class Module_admin_lang
     }
 
     /**
-     * Convert a standard language code to a google code.
+     * Convert a standard language codename to a google code.
      *
      * @param  LANGUAGE_NAME $in The code to convert
      * @return string The converted code (or blank if none can be found)
@@ -723,7 +736,7 @@ class Module_admin_lang
     /**
      * The actualiser to translate code (called from this module).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_code()
     {
@@ -736,9 +749,10 @@ class Module_admin_lang
 
         $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
         $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-        $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+        $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+        $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
-        if ((count($_POST) == 0) && (strtolower(cms_srv('REQUEST_METHOD')) != 'post')) {
+        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
@@ -763,7 +777,16 @@ class Module_admin_lang
         }
         fwrite($myfile, "[descriptions]\n");
         foreach ($descriptions as $key => $description) {
-            fwrite($myfile, $key . '=' . $description . "\n");
+            if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
+        }
+        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        fwrite($myfile, "[runtime_processing]\n");
+        foreach ($runtime_processing as $key => $flag) {
+            if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
         }
         fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
         fwrite($myfile, "[strings]\n");
@@ -801,7 +824,7 @@ class Module_admin_lang
     /**
      * The actualiser to translate code (called externally, and may operate on many lang files).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_code_2()
     {
@@ -817,7 +840,8 @@ class Module_admin_lang
         foreach (array_keys($lang_files) as $lang_file) {
             $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
             $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-            $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+            $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+            $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
             $out = '';
 
@@ -849,6 +873,14 @@ class Module_admin_lang
                         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                     }
                 }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                fwrite($myfile, "[runtime_processing]\n");
+                foreach ($runtime_processing as $key => $flag) {
+                    if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    }
+                }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 fwrite($myfile, "\n[strings]\n");
                 fwrite($myfile, $out);
                 @flock($myfile, LOCK_UN);

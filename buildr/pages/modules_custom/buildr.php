@@ -76,7 +76,7 @@ class Module_buildr
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
-            add_privilege('OCWORLD', 'administer_buildr');
+            add_privilege('BUILDR', 'administer_buildr');
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
@@ -100,7 +100,7 @@ class Module_buildr
             ));
 
             $GLOBALS['SITE_DB']->create_table('w_inventory', array(
-                'item_name' => '*SHORT_TEXT',
+                'item_name' => '*ID_TEXT',
                 'item_count' => 'INTEGER',
                 'item_owner' => '*MEMBER',
             ));
@@ -139,12 +139,13 @@ class Module_buildr
             ));
 
             $GLOBALS['SITE_DB']->create_table('w_messages', array(
-                'location_realm' => '*INTEGER',
-                'location_x' => '*INTEGER',
-                'location_y' => '*INTEGER',
-                'm_message' => '*SHORT_TEXT',
-                'originator_id' => '*MEMBER',
-                'm_datetime' => '*TIME',
+                'id' => '*AUTO',
+                'location_realm' => 'INTEGER',
+                'location_x' => 'INTEGER',
+                'location_y' => 'INTEGER',
+                'm_message' => 'SHORT_TEXT',
+                'originator_id' => 'MEMBER',
+                'm_datetime' => 'TIME',
                 'destination' => 'MEMBER',
             ));
 
@@ -272,13 +273,13 @@ class Module_buildr
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-            'browse' => array('OCWORLD', 'menu/buildr'),
+            'browse' => array('BUILDR', 'menu/buildr'),
         );
     }
 
@@ -287,7 +288,7 @@ class Module_buildr
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -351,7 +352,7 @@ class Module_buildr
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -364,7 +365,7 @@ class Module_buildr
         $dest_member_id = either_param_integer('member', -1);
         $member_id = get_member();
         if (is_guest($member_id)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_NOT_LOGGED_IN'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_NOT_LOGGED_IN'), 'warn');
             return new Tempcode();
         }
         $item = either_param_string('item', '');
@@ -388,14 +389,14 @@ class Module_buildr
 
         // Check for banning
         if ($member_row['banned'] == 1) {
-            ocw_refresh_with_message(do_lang_tempcode('W_YOU_BANNED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_YOU_BANNED'), 'warn');
         }
 
         // Check for death
         if ($member_row['health'] < 1) {
             take_items($member_id);
             $GLOBALS['SITE_DB']->query_update('w_members', array('location_realm' => 0, 'location_x' => 0, 'location_y' => 0, 'banned' => 0, 'health' => 10), array('id' => $member_id), '', 1);
-            ocw_refresh_with_message(do_lang_tempcode('W_YOU_DIED'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_YOU_DIED'), 'warn');
         }
 
         // Mark as active
@@ -454,9 +455,9 @@ class Module_buildr
                         basic_enter_room($member_id, $realm, 0, 0);
                     }
 
-                    ocw_refresh_with_message(do_lang_tempcode('W_TROLL_YOU', escape_html($penalty)), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('W_TROLL_YOU', escape_html($penalty)), 'warn');
                 } else {
-                    ocw_refresh_with_message(do_lang_tempcode('W_TROLL_THANKYOU', integer_format($pass)));
+                    buildr_refresh_with_message(do_lang_tempcode('W_TROLL_THANKYOU', escape_html(integer_format($pass))));
                 }
             } else { // Answer question screen
                 $troll_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => $realm));
@@ -501,7 +502,7 @@ class Module_buildr
 
         if ($type == 'reallocate') {
             if (!has_privilege(get_member(), 'administer_buildr')) {
-                ocw_refresh_with_message(do_lang_tempcode('W_ONLY_STAFF_REALLOC'), 'warn');
+                buildr_refresh_with_message(do_lang_tempcode('W_ONLY_STAFF_REALLOC'), 'warn');
             }
 
             $out = new Tempcode();
@@ -532,28 +533,28 @@ class Module_buildr
             if (!is_null($tpl)) {
                 return $tpl;
             }
-            ocw_refresh_with_message(new Tempcode());
+            buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'down') {
             $tpl = try_to_enter_room($member_id, 0, 1, '');
             if (!is_null($tpl)) {
                 return $tpl;
             }
-            ocw_refresh_with_message(new Tempcode());
+            buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'right') {
             $tpl = try_to_enter_room($member_id, 1, 0, '');
             if (!is_null($tpl)) {
                 return $tpl;
             }
-            ocw_refresh_with_message(new Tempcode());
+            buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'left') {
             $tpl = try_to_enter_room($member_id, -1, 0, '');
             if (!is_null($tpl)) {
                 return $tpl;
             }
-            ocw_refresh_with_message(new Tempcode());
+            buildr_refresh_with_message(new Tempcode());
         }
 
         if ($type == 'answered') {
@@ -606,7 +607,7 @@ class Module_buildr
 
         if ($type == 'delete-message-by-person') {
             if ((!has_privilege($member_id, 'administer_buildr')) && ($member_id != $dest_member_id)) {
-                ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+                buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
             }
             delete_message($member_id, $dest_member_id, addslashes($param));
         }
@@ -650,7 +651,7 @@ class Module_buildr
                     $items .= "<option value=\"" . escape_html($myrow['name']) . "\">" . escape_html($myrow['name']) . "</option>";
                 }
                 if ($items == '') {
-                    ocw_refresh_with_message(do_lang_tempcode('W_NO_ITEMS_YET'), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('W_NO_ITEMS_YET'), 'warn');
                 }
 
                 if ($GLOBALS['XSS_DETECT']) {
@@ -838,7 +839,7 @@ class Module_buildr
             if ($name == '') {
                 $rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => either_param_string('item')), '', 1);
                 if (!array_key_exists(0, $rows)) {
-                    ocw_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
                 }
                 $row = $rows[0];
 
@@ -902,7 +903,7 @@ class Module_buildr
 
                 $rows = $GLOBALS['SITE_DB']->query_select('w_rooms', array('*'), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $location_realm), '', 1);
                 if (!array_key_exists(0, $rows)) {
-                    ocw_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
                 }
                 $row = $rows[0];
 
@@ -944,7 +945,7 @@ class Module_buildr
 
                 $rows = $GLOBALS['SITE_DB']->query_select('w_realms', array('*'), array('id' => $realm), '', 1);
                 if (!array_key_exists(0, $rows)) {
-                    ocw_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
                 }
                 $row = $rows[0];
 
@@ -984,7 +985,7 @@ class Module_buildr
 
                 $rows = $GLOBALS['SITE_DB']->query_select('w_portals', array('*'), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $end_realm), '', 1);
                 if (!array_key_exists(0, $rows)) {
-                    ocw_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+                    buildr_refresh_with_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
                 }
                 $row = $rows[0];
 
@@ -1013,7 +1014,7 @@ class Module_buildr
             return output_room_screen($member_id);
         }
 
-        ocw_refresh_with_message(do_lang('SUCCESS'));
+        buildr_refresh_with_message(do_lang('SUCCESS'));
         return new Tempcode();
     }
 }

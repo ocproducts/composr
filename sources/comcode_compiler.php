@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__comcode_compiler()
 {
@@ -44,7 +46,7 @@ function init__comcode_compiler()
         'surround' => true, 'cite' => true, 'ins' => true, 'del' => true, 'dfn' => true, 'address' => true, 'abbr' => true, 'acronym' => true, 'list' => true, 'highlight' => true, 'indent' => true, 'b' => true, 'i' => true, 'u' => true, 's' => true, 'sup' => true, 'sub' => true,
         'title' => true, 'size' => true, 'color' => true, 'font' => true, 'tt' => true, 'img' => array('rollover', 'refresh_time'), 'url' => true, 'email' => true,
         'semihtml' => true, 'html' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'var' => true, 'samp' => true, 'q' => true,
-        'page' => true, 'thumb' => true,
+        'page' => true, 'thumb' => true, 'attachment_safe' => true,
     );
     // The following could conceivably not need to be reversed, as they're pure HTML. However, it's better not to let the WYSIWYG'd HTML get too complex.
     // 'tooltip' => true, 'section' => true, 'section_controller' => true, 'big_tab' => true, 'big_tab_controller' => true, 'tabs' => true, 'tab' => true, 'carousel' => true, 'flash' => true, 'media' => true, 'hide' => true, 'quote' => true, 'ticker' => true, 'jumping' => true
@@ -56,7 +58,7 @@ function init__comcode_compiler()
 
     // These tags don't have <br />'s done right after them because they are their own block-end (like a paragraph). They may contain textcode lists and rules
     global $BLOCK_TAGS;
-    $BLOCK_TAGS = array('media_set' => true, 'section' => true, 'section_controller' => true, 'tabs' => true, 'tab' => true, 'big_tab' => true, 'big_tab_controller' => true, 'carousel' => true, 'surround' => true, 'contents' => true, 'concepts' => true, 'codebox' => true, 'code' => true, 'list' => true, 'indent' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'staff_note' => true, 'reference' => true, 'menu' => true, 'title' => true, 'box' => true, 'quote' => true, 'block' => true, 'hide' => true, 'overlay' => true);
+    $BLOCK_TAGS = array('media_set' => true, 'section' => true, 'section_controller' => true, 'tabs' => true, 'tab' => true, 'big_tab' => true, 'big_tab_controller' => true, 'carousel' => true, 'surround' => true, 'contents' => true, 'concepts' => true, 'codebox' => true, 'code' => true, 'list' => true, 'indent' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'staff_note' => true, 'reference' => true, 'menu' => true, 'title' => true, 'box' => true, 'quote' => true, 'block' => true, 'hide' => true, 'overlay' => true, 'media' => true, 'attachment' => true, 'attachment_safe' => true);
 
     // These tags can only be used by privileged members
     global $DANGEROUS_TAGS;
@@ -99,24 +101,28 @@ function init__comcode_compiler()
  *
  * @param  string $tag The Comcode tag
  * @param  ?array $attributes The parameters (null: don't consider)
- * @param  ?tempcode $embed The contents of the tag (null: don't consider)
+ * @param  ?Tempcode $embed The contents of the tag (null: don't consider)
  * @return integer The Comcode integration style
  */
 function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
 {
-    global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS;
-
-    if ((isset($REVERSIBLE_TAGS[$tag])) && (is_bool($REVERSIBLE_TAGS[$tag]))) {
-        return WYSIWYG_COMCODE__HTML;
-    }
-    if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_diff(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
-        return WYSIWYG_COMCODE__HTML;
-    }
+    global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS, $CODE_TAGS;
 
     $_button_edited_tags = $BUTTON_EDITED_TAGS;
+
     if (($tag == 'attachment_safe') && ($embed !== null) && (preg_match('#^new\_\d+$#', $embed->evaluate()) != 0)) {
         $_button_edited_tags['attachment_safe'] = true;
-    } elseif ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe') {
+    } else {
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_bool($REVERSIBLE_TAGS[$tag]))) {
+            return WYSIWYG_COMCODE__HTML;
+        }
+
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_intersect(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
+            return WYSIWYG_COMCODE__HTML;
+        }
+    }
+
+    if ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe') {
         if (($attributes !== null) && ((!array_key_exists('wysiwyg_editable', $attributes)) || ($attributes['wysiwyg_editable'] == '0'))) {
             $_button_edited_tags[$tag] = true;
         } else {
@@ -131,6 +137,10 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
     }
     if ($is_button_edited_tag) {
         return WYSIWYG_COMCODE__BUTTON;
+    }
+
+    if (isset($CODE_TAGS[$tag])) {
+        return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
     }
 
     if ((isset($TEXTUAL_TAGS_WYSIWYG[$tag])) && (isset($BLOCK_TAGS[$tag]))) {
@@ -153,7 +163,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
  *
  * @param  string $tag The Comcode tag
  * @param  array $attributes The parameters
- * @param  tempcode $embed The contents of the tag
+ * @param  Tempcode $embed The contents of the tag
  * @param  boolean $semihtml Whether we are in semihtml mode
  * @param  ?integer $method Display method (null: auto-detect)
  * @return ?string The HTML (null: render as native HTML)
@@ -162,6 +172,10 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 {
     $params_comcode = '';
     foreach ($attributes as $key => $val) {
+        if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if (($key != 'param') || ($val != '')) {
             $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
         }
@@ -186,8 +200,13 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
+        case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
             $params_html = '';
             foreach ($attributes as $key => $val) {
+                if (is_integer($key)) {
+                    $key = strval($key);
+                }
+
                 if (($key != 'param') || ($val != '')) {
                     $params_html .= ' ' . escape_html($key) . '="' . escape_html($val) . '"';
                 }
@@ -198,7 +217,11 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $out .= '&#8203;';
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
-            $out .= $_embed;
+            if ($method == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED) {
+                $out .= escape_html($embed->evaluate());
+            } else {
+                $out .= $embed->evaluate();
+            }
             $out .= '</comcode-' . escape_html($tag) . '>';
             if ($method == WYSIWYG_COMCODE__XML_INLINE) {
                 $out .= '&#8203;';
@@ -224,7 +247,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 }
 
 /**
- * Convert the specified Comcode (text format) into a tempcode tree. You shouldn't output the tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the tempcode object, to convert it into a string.
+ * Convert the specified Comcode (text format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.
  *
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully
@@ -239,7 +262,9 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
- * @return tempcode The tempcode generated
+ * @return Tempcode The Tempcode generated
+ *
+ * @ignore
  */
 function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
 {
@@ -248,16 +273,26 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         $LAX_COMCODE = (get_option('lax_comcode') == '1');
     }
 
-    global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE, $HTML_ESCAPE_1_STRREP;
+    global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
-    $html_escape_1_strrep_inv = array_flip($HTML_ESCAPE_1_STRREP);
+    $html_escape_1_strrep_inv = array('&' => true, '"' => true, '\'' => true, '<' => true, '>' => true);
 
     $print_mode = get_param_integer('wide_print', 0) == 1;
 
+    $preparse_hooks = find_all_hooks('systems', 'comcode_preparse');
+    foreach (array_keys($preparse_hooks) as $preparse_hook) {
+        require_code('hooks/systems/comcode_preparse/' . $preparse_hook);
+        $preparse_ob = object_factory('Hook_comcode_preparse_' . $preparse_hook, true);
+        if (is_null($preparse_ob)) {
+            continue;
+        }
+        $preparse_ob->preparse($comcode);
+    }
+
     $len = strlen($comcode);
 
-    if ((function_exists('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
-        @set_time_limit(300);
+    if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
+        set_time_limit(300);
     }
 
     $allowed_html_seqs = array( // HTML tag may actually be used in very limited conditions: only the following HTML seqs will come out as HTML. This is, unless the blacklist filter is used instead.
@@ -338,7 +373,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         }
     }
     if ($pass_id === null) {
-        $pass_id = strval(mt_rand(0, 32000)); // This is a unique ID that refers to this specific piece of comcode
+        $pass_id = strval(mt_rand(0, mt_getrandmax())); // This is a unique ID that refers to this specific piece of comcode
     }
     global $COMCODE_ATTACHMENTS;
     if (!array_key_exists($pass_id, $COMCODE_ATTACHMENTS)) {
@@ -407,7 +442,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     foreach (array_keys($emoticons) as $emoticon) {
         $emoticon_start_chars[$emoticon[0]] = true;
     }
-    $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '--' => '&ndash;', '...' => '&hellip;', '-->' => '&rarr;', '<--' => '&larr;');
+    $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '-->' => '&rarr;', '<--' => '&larr;', '--' => '&ndash;', '...' => '&hellip;');
 
     // Text syntax possibilities, that get maintained as our cursor moves through the text block
     $list_indent = 0;
@@ -564,7 +599,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $found_list = true;
                             $scan_pos = $pos;
                             $list_type = '1';
-                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' ') && ((($list_type == 'a') && ($list_indent != 0)) || (preg_match('#^[^\n]*\n\d+\) #', substr($comcode, $pos + 1)) != 0))) {
+                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' ') && ((($list_type == 'a') && ($list_indent != 0)) || (preg_match('#^[^\n]*\n[a-z]+\) #', substr($comcode, $pos + 1)) != 0))) {
                             if (($list_indent != 0) && ($list_type != 'a')) {
                                 list($temp_tpl, $old_list_indent) = _close_open_lists($list_indent, $list_type);
                                 if ($GLOBALS['XSS_DETECT']) {
@@ -839,12 +874,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $less_pos = $pos - 1;
                                             $ret->parse_from($comcode, $less_pos, $p_len);
                                             $pos = $p_len;
-                                            if (($ret->parameterless(0)) && ($pos < $len)) { // We want to take the lang string reference as Comcode if it's a simple lang string reference with no parameters
+                                            if (($ret->parameterless(0)) && ($pos < $len)) { // We want to take the language string ID reference as Comcode if it's a simple language string ID reference with no parameters
                                                 $matches = array();
-                                                if (preg_match('#\{\!([\w\d\_\:]+)(\}|$)#U', substr($comcode, $less_pos, $p_len - $less_pos), $matches) != 0) { // Hacky code to extract the lang string name
+                                                if (preg_match('#\{\!([\w\d\_\:]+)(\}|$)#U', substr($comcode, $less_pos, $p_len - $less_pos), $matches) != 0) { // Hacky code to extract the language string ID
                                                     $temp_lang_string = $matches[1];
                                                     $ret = new Tempcode(); // Put into new Tempcode object to attach to, as what comcode_lang_string returns may be cached yet we may append to $ret
-                                                    $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode lang string
+                                                    $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode language string
                                                 }
                                             }
                                         } else {
@@ -1057,7 +1092,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
 
                             // Shortcut lookahead
-                            if (!$differented) {
+                            if (!$differented && !$in_code_tag) {
                                 if (($in_semihtml) && ($next == '-') && (substr($comcode, $pos - 1, 3) == '-->')) { // To stop shortcut interpretation
                                     $continuation .= '-->';
                                     $pos += 2;
@@ -1082,7 +1117,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
 
                             // Table syntax
-                            if (!$differented) {
+                            if (!$differented && !$in_code_tag) {
                                 if (($pos < $len) && ($comcode[$pos] == '|')) {
                                     $end_tbl = strpos($comcode, "\n" . '|}', $pos);
                                     if ($end_tbl !== false) {
@@ -1188,10 +1223,28 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $caption = str_replace($ratios_matches[0], '', $caption);
                                             }
 
+                                            $wide = false;
+                                            $column_sizes = array();
+                                            $caption_bits = explode(' ', $caption);
+                                            $caption = '';
+                                            foreach ($caption_bits as $caption_bit) {
+                                                if (($caption == '') && ($caption_bit == 'wide')) {
+                                                    $wide = true;
+                                                } elseif (($caption == '') && (preg_match('#^\d+(em|px)$#', $caption_bit) != 0)) {
+                                                    $column_sizes[] = $caption_bit;
+                                                } else {
+                                                    if ($caption != '') {
+                                                        $caption .= ' ';
+                                                    }
+                                                    $caption .= $caption_bit;
+                                                }
+                                            }
+
                                             $tag_output->attach(do_template('COMCODE_REAL_TABLE_START', array(
                                                 '_GUID' => '9fca9672b9d069a0c8a40ebc6e88602b',
-                                                'SUMMARY' => preg_replace('#(^|\s)wide($|\s)#', '', $caption),
-                                                'WIDE' => preg_replace('#(^|\s)wide($|\s)#', '', $caption) != $caption,
+                                                'SUMMARY' => $caption,
+                                                'WIDE' => $wide,
+                                                'COLUMN_SIZES' => $column_sizes,
                                                 'COLUMNED_TABLE' => (strpos($rows[0], '|') === false),
                                             )));
                                             $finished_thead = false;
@@ -1247,10 +1300,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                 // Advertising
                                 $b_all = true; // leave true - for test purposes only
-                                if ((!$semiparse_mode) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
+                                if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
-                                        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'banners b LEFT JOIN ' . get_table_prefix() . 'banner_types t ON b.b_type=t.id WHERE t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', ''), null, null, true);
+                                        require_code('banners');
+                                        $banner_sql = banner_select_sql(null, true);
+                                        $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
+                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, null, true);
                                         if (!is_null($rows)) {
                                             // Filter out what we don't have permission for
                                             if (get_option('use_banner_permissions', true) == '1') {
@@ -1287,7 +1343,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 if (strtolower(substr($comcode, $pos - 1, strlen($ad_trigger))) == strtolower($ad_trigger)) {
                                                     $just_banner_row = db_map_restrict($ad_bits, array('name', 'caption'));
 
-                                                    require_code('banners');
                                                     if ($GLOBALS['XSS_DETECT']) {
                                                         ocp_mark_as_escaped($continuation);
                                                     }
@@ -1360,12 +1415,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         foreach (array_keys($link_handlers) as $link_handler) {
                                             require_code('hooks/systems/comcode_link_handlers/' . $link_handler);
                                             $link_handler_ob = object_factory('Hook_comcode_link_handler_' . $link_handler, true);
-                                            if (is_null($link_handler_ob)) {
-                                                continue;
-                                            }
-                                            $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
-                                            if (!is_null($embed_output)) {
-                                                break;
+                                            if (!is_null($link_handler_ob)) {
+                                                $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
                                             }
                                         }
                                     }
@@ -1730,6 +1781,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     $pos--;
                 } elseif (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                        $pos += 5;
+                    }
                     $status = CCP_IN_TAG_ATTRIBUTE_VALUE;
                     $current_attribute_value = '';
                 } elseif ($next != '') {
@@ -1760,6 +1814,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
             case CCP_IN_TAG_ATTRIBUTE_VALUE:
                 if (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                        $pos += 5;
+                    }
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     if ((isset($attribute_map[$current_attribute_name])) && (!$lax)) {
                         return comcode_parse_error($preparse_mode, array('CCP_DUPLICATE_ATTRIBUTES', $current_attribute_name, $current_tag), $pos, $comcode, $check_only);
@@ -1856,6 +1913,8 @@ function in_tag_stack($tag_stack, $tags)
  * @param  integer $len The length of the Comcode
  * @param  LONG_TEXT $comcode The Comcode being parsed
  * @return array A tuple of new parser settings.
+ *
+ * @ignore
  */
 function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $pos, $comcode_dangerous, $comcode_dangerous_html, $in_separate_parse_section, $in_html, $in_semihtml, $close, &$len, &$comcode)
 {
@@ -1873,7 +1932,7 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
     $textual_area = isset($TEXTUAL_TAGS[$current_tag]);
 
     $white_space_area = $textual_area;
-    if (((($current_tag == 'code') || ($current_tag == 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) == 'php') || (file_exists(get_file_base() . '/sources/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html4strict' : strtolower($attribute_map['param'])) . '.php')) || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html4strict' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag == 'attachment') || ($current_tag == 'attachment_safe') || ($current_tag == 'menu')) {
+    if (((($current_tag == 'code') || ($current_tag == 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) == 'php') || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html5' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag == 'attachment') || ($current_tag == 'attachment_safe') || ($current_tag == 'menu')) {
         $in_separate_parse_section = true;
     } else {
         // Code tags are white space area, but not textual area
@@ -1928,11 +1987,11 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         $comcode = preg_replace('#(\\\\)+(\[/(html|semihtml)\])#', '\2', $comcode); // Stops sneaky trying to trick the end of the HTML tag to hack this function
 
         if (($in_html) && ($in_semihtml)) {
-            $ahead_end = max(strpos(strtolower($comcode), '[/html]', $pos), strpos(strtolower($comcode), '[/semihtml]', $pos));
+            $ahead_end = max(stripos($comcode, '[/html]', $pos), stripos($comcode, '[/semihtml]', $pos));
         } elseif ($in_html) {
-            $ahead_end = strpos(strtolower($comcode), '[/html]', $pos);
+            $ahead_end = stripos($comcode, '[/html]', $pos);
         } elseif ($in_semihtml) {
-            $ahead_end = strpos(strtolower($comcode), '[/semihtml]', $pos);
+            $ahead_end = stripos($comcode, '[/semihtml]', $pos);
         } else {
             $ahead_end = false;
         }
@@ -1957,6 +2016,8 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
  * @param  string $list_type List-type code
  * @set    ul a 1
  * @return array The output needed to close the lists, and the new list indentation (always zero). Done like this so we can use 'list' to set both at once in the main parser.
+ *
+ * @ignore
  */
 function _close_open_lists($list_indent, $list_type)
 {

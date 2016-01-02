@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    cleanout
  */
 
 // Find Composr base directory, and chdir into it
@@ -46,8 +46,12 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-// Put code that you temporarily want executed into the function. DELETE THE CODE WHEN YOU'RE DONE.
-// This is useful when performing quick and dirty upgrades (e.g. adding tables to avoid a reinstall)
+/*
+This script cleans up stuff in the database after finishing beta testing a new site.
+
+FUDGE It assumes multi-language content is turned off because it doesn't bother cleaning up translate table references.
+If that feature is needed the code could be improved.
+*/
 
 $out = cleanup();
 if (!headers_sent()) {
@@ -86,15 +90,14 @@ function cleanup()
         'cns_delete_member',
     );
 
-    $aggressive_meta_cleanup = true;
     $log_cache_wip_cleanup = true;
-    $aggressive_action_cleanup = true;
+    $aggressive_cleanup = true;
     $clean_all_attachments = true;
 
     /* Actioning code follows... */
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $GLOBALS['SITE_INFO']['no_email_output'] = '1';
@@ -385,42 +388,42 @@ function cleanup()
             'zones2',
             'zones',
             'zone_name',
-            array('','site','adminzone','cms','collaboration','forum'),
+            array('', 'site', 'adminzone', 'cms', 'collaboration', 'forum'),
         ),*/
 
         /*array(  Probably not wanted
             'delete_cms_page',
             'zones3',
             'comcode_pages',
-            array('the_zone','the_page'),
+            array('the_zone', 'the_page'),
             array(
-                    array('adminzone','netlink'),
-                    array('adminzone','panel_top'),
-                    array('adminzone','quotes'),
-                    array('adminzone','start'),
-                    array('cms','panel_top'),
-                    array('collaboration','about'),
-                    array('collaboration','panel_left'),
-                    array('collaboration','start'),
-                    array('forum','panel_left'),
-                    array('site','help'),
-                    array('site','panel_left'),
-                    array('site','panel_right'),
-                    array('site','start'),
-                    array('site','userguide_chatcode'),
-                    array('site','userguide_comcode'),
-                    array('','404'),
-                    array('','feedback'),
-                    array('','keymap'),
-                    array('','panel_bottom'),
-                    array('','panel_left'),
-                    array('','panel_right'),
-                    array('','panel_top'),
-                    array('','privacy'),
-                    array('','recommend_help'),
-                    array('','rules'),
-                    array('','sitemap'),
-                    array('','start'),
+                    array('adminzone', 'netlink'),
+                    array('adminzone', 'panel_top'),
+                    array('adminzone', 'quotes'),
+                    array('adminzone', 'start'),
+                    array('cms', 'panel_top'),
+                    array('collaboration', 'about'),
+                    array('collaboration', 'panel_left'),
+                    array('collaboration', 'start'),
+                    array('forum', 'panel_left'),
+                    array('site', 'help'),
+                    array('site', 'panel_left'),
+                    array('site', 'panel_right'),
+                    array('site', 'start'),
+                    array('site', 'userguide_chatcode'),
+                    array('site', 'userguide_comcode'),
+                    array('', '404'),
+                    array('', 'feedback'),
+                    array('', 'keymap'),
+                    array('', 'panel_bottom'),
+                    array('', 'panel_left'),
+                    array('', 'panel_right'),
+                    array('', 'panel_top'),
+                    array('', 'privacy'),
+                    array('', 'recommend_help'),
+                    array('', 'rules'),
+                    array('', 'sitemap'),
+                    array('', 'start'),
             ),
         ),*/
 
@@ -481,18 +484,8 @@ function cleanup()
         }
     }
 
-    if ($aggressive_meta_cleanup) {
-        $GLOBALS['SITE_DB']->query_delete('url_id_monikers');
-        $GLOBALS['SITE_DB']->query_delete('chat_friends');
-        $GLOBALS['SITE_DB']->query_delete('transactions');
-        $GLOBALS['SITE_DB']->query_delete('trans_expecting');
-        $GLOBALS['SITE_DB']->query_delete('trackbacks');
-        $GLOBALS['SITE_DB']->query_delete('subscriptions');
-        $GLOBALS['SITE_DB']->query_delete('invoices');
-        $GLOBALS['SITE_DB']->query_delete('review_supplement');
-        $GLOBALS['SITE_DB']->query_delete('rating');
-        $GLOBALS['SITE_DB']->query_delete('notifications_enabled');
-    }
+    require_code('database_relations');
+    $table_purposes = get_table_purpose_flags();
 
     if ($clean_all_attachments) {
         deldir_contents(get_custom_file_base() . '/uploads/attachments', true);
@@ -501,62 +494,32 @@ function cleanup()
     }
 
     if ($log_cache_wip_cleanup) {
-        $GLOBALS['SITE_DB']->query_delete('video_transcoding');
-        $GLOBALS['SITE_DB']->query_delete('stats');
-        $GLOBALS['SITE_DB']->query_delete('f_moderator_logs');
-        $GLOBALS['SITE_DB']->query_delete('adminlogs');
-        $GLOBALS['SITE_DB']->query_delete('import_id_remap');
-        $GLOBALS['SITE_DB']->query_delete('import_parts_done');
-        $GLOBALS['SITE_DB']->query_delete('import_session');
-        $GLOBALS['SITE_DB']->query_delete('incoming_uploads');
         deldir_contents(get_custom_file_base() . '/uploads/incoming_uploads', true);
         deldir_contents(get_custom_file_base() . '/uploads/auto_thumbs', true);
-        $GLOBALS['SITE_DB']->query_delete('hackattack');
-        $GLOBALS['SITE_DB']->query_delete('link_tracker');
-        $GLOBALS['SITE_DB']->query_delete('logged_mail_messages');
-        $GLOBALS['SITE_DB']->query_delete('searches_logged');
-        $GLOBALS['SITE_DB']->query_delete('sessions');
-        $GLOBALS['SITE_DB']->query_delete('failedlogins');
-        $GLOBALS['SITE_DB']->query_delete('autosave');
-        $GLOBALS['SITE_DB']->query_delete('edit_pings');
-        $GLOBALS['SITE_DB']->query_delete('f_read_logs');
-        $GLOBALS['SITE_DB']->query_delete('leader_board');
-        $GLOBALS['SITE_DB']->query_delete('member_tracking');
-        $GLOBALS['SITE_DB']->query_delete('messages_to_render');
-        $GLOBALS['SITE_DB']->query_delete('security_images');
-        $GLOBALS['SITE_DB']->query_delete('sms_log');
-        $GLOBALS['SITE_DB']->query_delete('temp_block_permissions');
-        $GLOBALS['SITE_DB']->query_delete('url_title_cache');
-        delete_value('users_online');
+        foreach ($table_purposes as $table => $purpose) {
+            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) {
+                $GLOBALS['SITE_DB']->query_delete($table);
+            }
+        }
+
         delete_value('user_peak');
-        delete_value('cns_topic_count');
-        delete_value('cns_post_count');
-        delete_value('cns_newest_member_id');
-        delete_value('cns_newest_member_username');
+        delete_value('users_online');
         delete_value('last_space_check');
-        delete_value('cns_member_count');
         delete_value('last_commandr_command');
         delete_value('site_bestmember');
+
+        $hooks = find_all_hooks('systems', 'disposable_values');
+        foreach (array_keys($hooks) as $hook) {
+            $GLOBALS['SITE_DB']->query_delete('values', array('the_name' => $hook), '', 1);
+        }
+        persistent_cache_delete('VALUES');
     }
 
-    if ($aggressive_action_cleanup) {
-        $l = $GLOBALS['SITE_DB']->query_select('gifts', array('reason AS l'));
-        foreach ($l as $_l) {
-            delete_lang($_l['l']);
+    if ($aggressive_cleanup) {
+        foreach ($table_purposes as $table => $purpose) {
+            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE)) {
+                $GLOBALS['SITE_DB']->query_delete($table);
+            }
         }
-        $GLOBALS['SITE_DB']->query_delete('gifts');
-
-        $l = $GLOBALS['SITE_DB']->query_select('chargelog', array('reason AS l'));
-        foreach ($l as $_l) {
-            delete_lang($_l['l']);
-        }
-        $GLOBALS['SITE_DB']->query_delete('chargelog');
-
-        $GLOBALS['SITE_DB']->query_delete('wiki_changes');
-        $GLOBALS['SITE_DB']->query_delete('usersubmitban_ip');
-        $GLOBALS['SITE_DB']->query_delete('usersubmitban_member');
-        $GLOBALS['SITE_DB']->query_delete('usersonline_track');
-        $GLOBALS['SITE_DB']->query_delete('f_saved_warnings');
-        $GLOBALS['SITE_DB']->query_delete('f_special_pt_access');
     }
 }

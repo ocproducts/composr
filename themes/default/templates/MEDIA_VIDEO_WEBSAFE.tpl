@@ -28,8 +28,14 @@
 		{$,Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video}
 		add_event_listener_abstract(window,'load',function() {
 			jwplayer('{$GET%,player_id}').setup({
-				width: {WIDTH%},
-				height: {HEIGHT%},
+				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
+				{+START,IF_NON_EMPTY,{WIDTH}}
+					width: {$MIN,1000,{WIDTH%}},
+				{+END}
+				{+START,IF_NON_EMPTY,{HEIGHT}}
+					height: {$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,1000,{WIDTH}}},{HEIGHT%}},
+				{+END}
+
 				autostart: false,
 				{+START,IF_NON_EMPTY,{LENGTH}}
 					duration: {LENGTH%},
@@ -57,7 +63,7 @@
 {+END}
 {+START,IF,{$GET,raw_video}}
 	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
-		<source src="{URL*}" type="{MIME_TYPE*}" />
+		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>
 {+END}

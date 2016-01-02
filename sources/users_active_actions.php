@@ -175,7 +175,7 @@ function handle_active_login($username)
         enforce_temporary_passwords($member);
     } else {
         $GLOBALS['SITE_DB']->query_insert('failedlogins', array(
-            'failed_account' => substr(trim(post_param_string('login_username')), 0, 255),
+            'failed_account' => substr(trim(post_param_string('login_username')), 0, 80),
             'date_and_time' => time(),
             'ip' => get_ip_address(),
         ));
@@ -224,6 +224,8 @@ function handle_active_logout()
  * Make sure temporary passwords restrict you to the edit account page. May not return, if it needs to do a redirect.
  *
  * @param  MEMBER $member The current member
+ *
+ * @ignore
  */
 function _enforce_temporary_passwords($member)
 {
@@ -323,6 +325,33 @@ function cms_eatcookie($name)
 }
 
 /**
+ * Set invisibility on the current user.
+ *
+ * @param  boolean $make_invisible Whether to make the current user invisible (true=make invisible, false=make visible)
+ */
+function set_invisibility($make_invisible = true)
+{
+    $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => $make_invisible ? 1 : 0), array('member_id' => get_member(), 'the_session' => get_session_id()), '', 1);
+    global $SESSION_CACHE;
+    if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) // A little security
+    {
+        $SESSION_CACHE[get_session_id()]['session_invisible'] = $make_invisible ? 1 : 0;
+        if (get_option('session_prudence') == '0') {
+            persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
+        }
+    }
+
+    decache('side_users_online');
+
+    // Store in cookie, if we have login cookies around
+    if (array_key_exists(get_member_cookie(), $_COOKIE)) {
+        require_code('users_active_actions');
+        cms_setcookie(get_member_cookie() . '_invisible', strval($make_invisible ? 1 : 0));
+        $_COOKIE[get_member_cookie() . '_invisible'] = strval($make_invisible ? 1 : 0);
+    }
+}
+
+/**
  * Create a cookie, inside Composr's cookie environment.
  *
  * @param  string $name The name of the cookie
@@ -334,7 +363,7 @@ function cms_eatcookie($name)
  */
 function cms_setcookie($name, $value, $session = false, $http_only = false, $days = null)
 {
-    /*if (($GLOBALS['DEV_MODE']) && (!running_script('commandr')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {    Annoying, and non-cookie support is very well tested by now
+    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0) && ($name != 'has_referers')) {    Annoying, and non-cookie support is very well tested by now
         return true;
     }*/
 
@@ -361,7 +390,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
                 $output = @setcookie($name, $value, $time, $path, $cookie_domain . '; HttpOnly');
             } else {
                 $output = @call_user_func_array('setcookie', array($name, $value, $time, $path, $cookie_domain, 0, true)); // For Phalanger
-                //$output=@setcookie($name,$value,$time,$path,$cookie_domain,0,true);
+                //$output = @setcookie($name, $value, $time, $path, $cookie_domain, 0, true);
             }
         }
     }

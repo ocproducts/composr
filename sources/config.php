@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__config()
 {
@@ -126,16 +128,20 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
-    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*'), null, '', null, null, true);
+    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
 
     if ($temp === null) {
-        if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
-            $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
-            if ($temp === null) {
+        if (running_script('install')) {
+            $temp = array();
+        } else {
+            if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
+                $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
+                if ($temp === null) {
+                    critical_error('DATABASE_FAIL');
+                }
+            } else {
                 critical_error('DATABASE_FAIL');
             }
-        } else {
-            critical_error('DATABASE_FAIL');
         }
     }
 
@@ -163,14 +169,14 @@ function load_value_options()
  * Find the value of the specified configuration option.
  *
  * @param  ID_TEXT $name The name of the option
- * @param  boolean $missing_ok Where to accept a missing option (and return NULL)
- * @return ?SHORT_TEXT The value (null: either null value, or no option found whilst $missing_ok set)
+ * @param  boolean $missing_ok Where to accept a missing option (and return null)
+ * @return ?SHORT_TEXT The value (null: either null value, or no option found while $missing_ok set)
  */
 function get_option($name, $missing_ok = false)
 {
     global $CONFIG_OPTIONS_CACHE, $CONFIG_OPTIONS_FULLY_LOADED, $SMART_CACHE;
 
-    // Maybe missing a DB row, or has an old NULL one, so we need to auto-create from hook
+    // Maybe missing a DB row, or has an old null one, so we need to auto-create from hook
     if (!isset($CONFIG_OPTIONS_CACHE[$name]['c_value'])) {
         if ((!$CONFIG_OPTIONS_FULLY_LOADED) && (!array_key_exists($name, $CONFIG_OPTIONS_CACHE))) {
             load_config_options();
@@ -198,7 +204,15 @@ function get_option($name, $missing_ok = false)
 
         require_code('config2');
         $value = get_default_option($name);
-        set_option($name, $value, 0);
+        if ($value === null) {
+            if ($missing_ok) {
+                return null;
+            }
+
+            attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+        } else {
+            set_option($name, $value, 0);
+        }
 
         $GET_OPTION_LOOP = false;
     }
@@ -250,10 +264,10 @@ function get_option($name, $missing_ok = false)
  * Find a specified value. Values are set with set_value.
  *
  * @param  ID_TEXT $name The name of the value
- * @param  ?ID_TEXT $default Value to return if value not found (null: return NULL)
+ * @param  ?ID_TEXT $default Value to return if value not found (null: return null)
  * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
  * @param  boolean $env_also Whether to also check server environmental variables. Only use if $elective_or_lengthy is set to false
- * @return ?SHORT_TEXT The value (null: value not found and default is NULL)
+ * @return ?SHORT_TEXT The value (null: value not found and default is null)
  */
 function get_value($name, $default = null, $elective_or_lengthy = false, $env_also = false)
 {
@@ -335,8 +349,9 @@ function get_value_newer_than($name, $cutoff, $elective_or_lengthy = false)
  * Set the specified situational value to the specified value.
  *
  * @param  ID_TEXT $name The name of the value
- * @param  SHORT_TEXT $value The value
+ * @param  ?SHORT_TEXT $value The value (null: delete)
  * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @return SHORT_TEXT The value just set, same as $value (just as a niceity so that Commandr users can see something "happen")
  */
 function set_value($name, $value, $elective_or_lengthy = false)
 {
@@ -345,7 +360,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
         if ($value !== null) {
             $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name));
         }
-        return;
+        return $value;
     }
 
     global $VALUE_OPTIONS_CACHE;
@@ -360,6 +375,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('VALUES', $VALUE_OPTIONS_CACHE);
     }
+    return $value;
 }
 
 /**

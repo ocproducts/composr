@@ -21,7 +21,7 @@
 								<select onchange="recalculate_price(this.form);" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
 									{$SET,quantity,0}
 									{+START,WHILE,{$LT,{$GET,quantity},51}}
-										<option {+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}}selected="selected" {+END}value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>
+										<option{+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>
 										{$INC,quantity}
 									{+END}
 								</select>
@@ -80,7 +80,7 @@
 	<form action="{BACK_URL*}" method="post">
 		<div>
 			{HIDDEN}
-			<input type="image" title="{!_NEXT_ITEM_BACK}" alt="{!_NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
+			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
 		</div>
 	</form>
 {+END}

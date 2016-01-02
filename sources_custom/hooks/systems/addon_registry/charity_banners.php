@@ -92,12 +92,12 @@ The auto-created bundled banners are for \'causes\' and are: Composr, Firefox, W
 To Use the Block go to where you would like the block to be placed (likely either a side panel or the front page) and use the add block button.
 
 You have 3 block parameters to fill in:
- - [tt]param[/tt] will be \"buttons\" as standard but you could create a different banner type and use that if you want.
- - You only need to put something in [tt]extra[/tt] if its a side panel in which case you put \"side\" in there.
+ - [tt]param[/tt] will be "buttons" as standard but you could create a different banner type and use that if you want.
+ - You only need to put something in [tt]extra[/tt] if its a side panel in which case you put "side" in there.
  - [tt]max[/tt] is the maximum number of banners you want to display.
 
 An example:
-[code=\"Comcode\"][block=\"buttons\" extra=\"side\" max=\"5\"]main_buttons[/block][/code]
+[code="Comcode"][block="buttons" extra="side" max="5"]main_buttons[/block][/code]
 If you want to delete some of the banners:
 1) Go to the Banners section under Content Management
 2) Click Edit Banner
@@ -136,6 +136,16 @@ You can add more banners through this section, just make sure they are 120px &ti
     }
 
     /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+    }
+
+    /**
      * Get a list of files that belong to this addon
      *
      * @return array List of files
@@ -144,26 +154,25 @@ You can add more banners through this section, just make sure they are 120px &ti
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/charity_banners.php',
-            'data_custom/causes/index.html',
+            'data_custom/images/causes/index.html',
             'sources_custom/blocks/main_buttons.php',
-            'data_custom/causes/amnestyinternational.gif',
-            'data_custom/causes/bhf.gif',
-            'data_custom/causes/bringdownie6.gif',
-            'data_custom/causes/cancerresearch.gif',
-            'data_custom/causes/cnd.gif',
-            'data_custom/causes/firefox.gif',
-            'data_custom/causes/GNU.gif',
-            'data_custom/causes/greenpeace.gif',
-            'data_custom/causes/helptheaged.gif',
-            'data_custom/causes/nspcc.gif',
-            'data_custom/causes/composr.gif',
-            'data_custom/causes/oxfam.gif',
-            'data_custom/causes/peta.gif',
-            'data_custom/causes/rspca.gif',
-            'data_custom/causes/unicef.gif',
-            'data_custom/causes/w3c-css.gif',
-            'data_custom/causes/w3c-xhtml.gif',
-            'data_custom/causes/wwf.gif',
+            'data_custom/images/causes/amnestyinternational.gif',
+            'data_custom/images/causes/bhf.gif',
+            'data_custom/images/causes/cancerresearch.gif',
+            'data_custom/images/causes/cnd.gif',
+            'data_custom/images/causes/firefox.gif',
+            'data_custom/images/causes/GNU.gif',
+            'data_custom/images/causes/greenpeace.gif',
+            'data_custom/images/causes/helptheaged.gif',
+            'data_custom/images/causes/nspcc.gif',
+            'data_custom/images/causes/composr.gif',
+            'data_custom/images/causes/oxfam.gif',
+            'data_custom/images/causes/peta.gif',
+            'data_custom/images/causes/rspca.gif',
+            'data_custom/images/causes/unicef.gif',
+            'data_custom/images/causes/w3c-css.gif',
+            'data_custom/images/causes/w3c-xhtml.gif',
+            'data_custom/images/causes/wwf.gif',
             'themes/default/templates_custom/BLOCK_MAIN_BANNER_WAVE_BWRAP_CUSTOM.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_BUTTONS.tpl',
             'sources_custom/banners3.php',

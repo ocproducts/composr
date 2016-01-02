@@ -27,7 +27,7 @@ class Hook_ecommerce_interest
      * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
      *
      * @param  ID_TEXT $type_code Product codename.
-     * @return ?tempcode Input field in standard Tempcode format for fields (null: no identifier).
+     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
      */
     public function get_identifier_manual_field_inputter($type_code)
     {

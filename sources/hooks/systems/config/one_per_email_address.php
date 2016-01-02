@@ -34,7 +34,7 @@ class Hook_config_one_per_email_address
             'human_name' => 'ONE_PER_EMAIL_ADDRESS',
             'type' => 'tick',
             'category' => 'USERS',
-            'group' => '_LOGIN',
+            'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_one_per_email_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

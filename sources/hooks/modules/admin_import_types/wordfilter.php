@@ -31,7 +31,7 @@ class Hook_admin_import_types_wordfilter
     public function run()
     {
         return array(
-            'wordfilter' => 'WORD_FILTER',
+            'wordfilter' => 'WORDFILTER',
         );
     }
 }

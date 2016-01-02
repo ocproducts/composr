@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: xml_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -20,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__input_filter()
 {
@@ -39,6 +43,10 @@ function init__input_filter()
  */
 function check_input_field_string($name, &$val, $posted = false)
 {
+    if (preg_match('#^\w*$#', $val) != 0) {
+        return;
+    }
+
     // Security for URL context (not only things that are specifically known URL parameters)
     if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) != 0) && ($name != 'value')/*Don't want autosave triggering this*/) {
         log_hack_attack_and_exit('SCRIPT_URL_HACK_2', $val);
@@ -47,33 +55,31 @@ function check_input_field_string($name, &$val, $posted = false)
     // Security check for known URL fields. Check for specific things, plus we know we can be pickier in general
     $is_url = ($name == 'from') || ($name == 'preview_url') || ($name == 'redirect') || ($name == 'redirect_passon') || ($name == 'url');
     if ($is_url) {
-        if ($is_url) {
-            if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
-                if ($name == 'page') {
-                    $_GET[$name] = '';
-                } // Stop loops
-                log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
-            }
+        if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
+            if ($name == 'page') {
+                $_GET[$name] = '';
+            } // Stop loops
+            log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
+        }
 
-            // Don't allow external redirections
-            if (!$posted) {
-                $_val = str_replace('https://', 'http://', $val);
-                if (looks_like_url($_val)) {
-                    $bus = array(
-                        get_base_url(false),
-                        get_forum_base_url(),
-                        'http://ocportal.com/',
-                    );
-                    $ok = false;
-                    foreach ($bus as $bu) {
-                        if (substr($_val, 0, strlen($bu)) == $bu) {
-                            $ok = true;
-                            break;
-                        }
+        // Don't allow external redirections
+        if (!$posted && !running_script('external_url_proxy')) {
+            $_val = str_replace('https://', 'http://', $val);
+            if (looks_like_url($_val)) {
+                $bus = array(
+                    get_base_url(false),
+                    get_forum_base_url(),
+                    'http://ocportal.com/',
+                );
+                $ok = false;
+                foreach ($bus as $bu) {
+                    if (substr($_val, 0, strlen($bu)) == $bu) {
+                        $ok = true;
+                        break;
                     }
-                    if (!$ok) {
-                        $val = get_base_url(false);
-                    }
+                }
+                if (!$ok) {
+                    $val = get_base_url(false);
                 }
             }
         }
@@ -87,53 +93,76 @@ function check_input_field_string($name, &$val, $posted = false)
         }
 
         // Additional checks for non-privileged users
-        if (function_exists('has_privilege') && $name != 'page'/*Too early in boot if 'page'*/) {
-            if (!has_privilege(get_member(), 'unfiltered_input') || $GLOBALS['FORCE_INPUT_FILTER_FOR_ALL']) {
+        if ((function_exists('has_privilege') || !$posted) && $name != 'page'/*Too early in boot if 'page'*/) {
+            if (!has_privilege(get_member(), 'unfiltered_input') || $GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/) {
                 hard_filter_input_data__html($val);
                 hard_filter_input_data__filesystem($val);
             }
+            @hard_filter_input_data__dynamic_firewall($name, $val); // @'d to stop any internal errors taking stuff down
         }
     }
 }
 
 /**
- * Check a posted field isn't 'evil'.
+ * Check a posted field isn't part of a malicious CSRF attack via referer checking (we do more checks for post fields than get fields).
  *
  * @param  string $name The name of the parameter
  * @param  string $val The value retrieved
  */
 function check_posted_field($name, $val)
 {
-    if (strtolower(cms_srv('REQUEST_METHOD')) == 'post') {
-        // Check referer
-        $true_referer = (substr(cms_srv('HTTP_REFERER'), 0, 7) == 'http://') || (substr(cms_srv('HTTP_REFERER'), 0, 8) == 'https://');
-        $canonical_referer = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', str_replace(':80', '', str_replace('https://', 'http://', str_replace('www.', '', cms_srv('HTTP_REFERER'))))); // Just the domain
-        $canonical_baseurl = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', str_replace(':80', '', str_replace('https://', 'http://', str_replace('www.', '', get_base_url())))); // Just the domain
-        if (($true_referer) && (substr(strtolower($canonical_referer), 0, strlen($canonical_baseurl)) != strtolower($canonical_baseurl)) && (!is_guest())) {
-            if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
-                $allowed_partners = get_allowed_partner_sites();
+    $evil = false;
 
-                $found = false;
-                foreach ($allowed_partners as $partner) {
-                    if (trim($partner) == '') {
-                        continue;
-                    }
+    $referer = cms_srv('HTTP_REFERER');
 
-                    if (strpos(cms_srv('HTTP_REFERER'), '://' . trim($partner) . '/') !== false && strpos(cms_srv('HTTP_REFERER'), '://' . trim($partner) . ':') !== false) {
-                        $found = true;
-                        break;
+    $is_true_referer = (substr($referer, 0, 7) == 'http://') || (substr($referer, 0, 8) == 'https://');
+
+    if ($is_true_referer) {
+        require_code('users_active_actions');
+        cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
+    }
+
+    if ((cms_srv('REQUEST_METHOD') == 'POST') && (!is_guest())) {
+        if ($is_true_referer) {
+            $canonical_referer_domain = strip_url_to_representative_domain($referer);
+            $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
+            if ($canonical_referer_domain != $canonical_baseurl_domain) {
+                if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
+                    $allowed_partners = get_allowed_partner_sites();
+                    $found = false;
+                    foreach ($allowed_partners as $partner) {
+                        $partner = trim($partner);
+
+                        if (($partner != '') && ($canonical_referer_domain == $partner)) {
+                            $found = true;
+                            break;
+                        }
                     }
-                }
-                if (!$found) {
-                    $_POST = array(); // To stop loops
-                    warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_HACK', escape_html(cms_srv('HTTP_REFERER')), escape_html($name)));
+                    if (!$found) {
+                        $evil = true;
+                    }
                 }
             }
+        } elseif (cms_admirecookie('has_referers') === '1') {
+            $evil = true;
         }
     }
 
-    // Custom fields.xml filter system
-    $val = filter_form_field_default($name, $val);
+    if ($evil) {
+        $_POST = array(); // To stop loops
+        log_hack_attack_and_exit('EVIL_POSTED_FORM_HACK', $referer);
+    }
+}
+
+/**
+ * Convert a full URL to a domain name we will consider this a trust on.
+ *
+ * @param  URLPATH $url The URL
+ * @return string The domain
+ */
+function strip_url_to_representative_domain($url)
+{
+    return preg_replace('#^www\.#', '', strtolower(parse_url($url, PHP_URL_HOST)));
 }
 
 /**
@@ -148,6 +177,10 @@ function get_allowed_partner_sites()
         if (substr($key, 0, strlen('ZONE_MAPPING_')) == 'ZONE_MAPPING_') {
             $allowed_partners[] = $_val[0];
         }
+    }
+    $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
+    if (get_custom_base_url() != get_base_url()) {
+        $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
     }
     return $allowed_partners;
 }
@@ -169,6 +202,33 @@ function hard_filter_input_data__filesystem(&$val)
     foreach ($nastiest_path_signals as $signal) {
         if (preg_match('#' . $signal . '#', $val, $matches) != 0) {
             $val = str_replace($matches[0], str_replace('.', '&#46;', $matches[0]), $val); // Break the paths
+        }
+    }
+}
+
+/**
+ * Filter data according to the dynamic firewall.
+ *
+ * @param  string $name The name of the parameter
+ * @param  string $val The value retrieved
+ */
+function hard_filter_input_data__dynamic_firewall($name, &$val)
+{
+    $rules_path = get_custom_file_base() . '/data_custom/firewall_rules.txt';
+    if (is_file($rules_path)) {
+        $rules = file($rules_path);
+        foreach ($rules as $rule) {
+            $parts = explode('=', $rule, 2);
+            if (count($parts) == 2) {
+                list($check_name, $check_val) = $parts;
+                $check_name_is_regexp = (isset($check_name[0]) && $check_name[0] == '#' && $check_name[strlen($check_name) - 1] == '#');
+                $check_val_is_regexp = (isset($check_val[0]) && $check_val[0] == '#' && $check_val[strlen($check_val) - 1] == '#');
+                if ($check_name_is_regexp && preg_match($check_name, $name) != 0 || !$check_name_is_regexp && $check_name == $name) {
+                    if ($check_val_is_regexp && preg_match($check_val, $val) == 0 || !$check_val_is_regexp && $check_val != $val) {
+                        $val = 'filtered';
+                    }
+                }
+            }
         }
     }
 }
@@ -271,9 +331,10 @@ function hard_filter_input_data__html(&$val)
  *
  * @param  string $name The name of the parameter
  * @param  ?string $val The current value of the parameter (null: none)
+ * @param  boolean $live Whether it is running live rather than from some hard-coded value
  * @return string The filtered value of the parameter
  */
-function filter_form_field_default($name, $val)
+function filter_form_field_default($name, $val, $live = false)
 {
     // Read in a default parameter from the GET environment, if this feature is enabled.
     global $URL_DEFAULT_PARAMETERS_ENABLED;
@@ -306,25 +367,29 @@ function filter_form_field_default($name, $val)
 
                     switch (strtolower($restriction)) {
                         case 'minlength':
-                            if (strlen($val) < intval($attributes['embed'])) {
+                            if ($live && strlen($val) < intval($attributes['embed'])) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_TOO_SHORT', escape_html($name), strval(intval($attributes['embed']))));
                             }
                             break;
+
                         case 'maxlength':
-                            if (strlen($val) > intval($attributes['embed'])) {
+                            if ($live && strlen($val) > intval($attributes['embed'])) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_TOO_LONG', escape_html($name), strval(intval($attributes['embed']))));
                             }
                             break;
+
                         case 'shun':
-                            if (simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']), true)) {
+                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']), true)) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED', escape_html($name)));
                             }
                             break;
+
                         case 'pattern':
-                            if (preg_match('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
+                            if ($live && preg_match('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_PATTERN_FAIL', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
+
                         case 'possibilityset':
                             $values = explode(',', $attributes['embed']);
                             $found = false;
@@ -335,28 +400,33 @@ function filter_form_field_default($name, $val)
                             }
                             $secretive = (array_key_exists('secretive', $attributes) && ($attributes['secretive'] == '1'));
                             if (!$found) {
-                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode($secretive ? 'FXML_FIELD_NOT_IN_SET_SECRETIVE' : 'FXML_FIELD_NOT_IN_SET', escape_html($name), escape_html($attributes['embed'])));
+                                if ($live) {
+                                    warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode($secretive ? 'FXML_FIELD_NOT_IN_SET_SECRETIVE' : 'FXML_FIELD_NOT_IN_SET', escape_html($name), escape_html($attributes['embed'])));
+                                }
                             }
                             break;
+
                         case 'disallowedsubstring':
-                            if (simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']))) {
+                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']))) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED_SUBSTRING', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
+
                         case 'disallowedword':
                             if (addon_installed('wordfilter')) {
                                 global $WORDS_TO_FILTER_CACHE;
                                 $temp_remember = $WORDS_TO_FILTER_CACHE;
                                 $WORDS_TO_FILTER_CACHE = array($attributes['embed'] => array('word' => $attributes['embed'], 'w_replacement' => '', 'w_substr' => 0));
-                                require_code('word_filter');
-                                check_word_filter($val, $name, false, true, false);
+                                require_code('wordfilter');
+                                check_wordfilter($val, $name, false, true, false);
                                 $WORDS_TO_FILTER_CACHE = $temp_remember;
                             } else {
-                                if (strpos($val, $attributes['embed']) !== false) {
-                                    warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
+                                if ($live && strpos($val, $attributes['embed']) !== false) {
+                                    warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
                                 }
                             }
                             break;
+
                         case 'replace':
                             if (!array_key_exists('from', $attributes)) {
                                 $val = $attributes['embed'];
@@ -364,9 +434,16 @@ function filter_form_field_default($name, $val)
                                 $val = str_replace($attributes['from'], $attributes['embed'], $val);
                             }
                             break;
+
+                        case 'deepclean':
+                            require_code('deep_clean');
+                            $val = deep_clean($val, isset($attributes['title']) ? $attributes['title'] : '');
+                            break;
+
                         case 'removeshout':
                             $val = preg_replace_callback('#[^a-z]*[A-Z]{4}[^a-z]*#', 'deshout_callback', $val);
                             break;
+
                         case 'sentencecase':
                             if (strlen($val) != 0) {
                                 $val = strtolower($val);
@@ -374,14 +451,17 @@ function filter_form_field_default($name, $val)
                                 $val = preg_replace_callback('#[\.\!\?]\s+[a-z]#m', 'make_sentence_case_callback', $val);
                             }
                             break;
+
                         case 'titlecase':
                             $val = ucwords(strtolower($val));
                             break;
+
                         case 'prepend':
                             if (substr($val, 0, strlen($attributes['embed'])) != $attributes['embed']) {
                                 $val = $attributes['embed'] . $val;
                             }
                             break;
+
                         case 'append':
                             if (substr($val, -strlen($attributes['embed'])) != $attributes['embed']) {
                                 $val .= $attributes['embed'];

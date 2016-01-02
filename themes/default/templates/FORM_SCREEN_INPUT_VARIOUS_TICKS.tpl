@@ -14,7 +14,7 @@
 				{+START,LOOP,OUT}
 					<div class="input_individual_tick">
 						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
-						<input type="hidden" name="label_for__{NAME*}" value="{PRETTY_NAME*}" />
+						<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 						<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 					</div>
 				{+END}
@@ -24,7 +24,7 @@
 				{+START,LOOP,OUT}
 					<p>
 						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
-						<input type="hidden" name="label_for__{NAME*}" value="{PRETTY_NAME*}" />
+						<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 						<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 					</p>
 				{+END}
@@ -47,7 +47,7 @@
 						<div><div>
 							<input value="1" class="input_tick" onclick="document.getElementById('{CUSTOM_NAME%}_value').disabled=!this.checked;" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
 							<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated_details">({!PLEASE_STATE})</span></label>
-							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" onchange="document.getElementById('{CUSTOM_NAME%}').checked=(this.value!=''); this.disabled=(this.value=='');" size="15" type="text" value="" />
+							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" onchange="document.getElementById('{CUSTOM_NAME%}').checked=(this.value!=''); this.disabled=(this.value=='');" size="15" type="text" />
 
 							<script>// <![CDATA[
 								document.getElementById('{CUSTOM_NAME%}_value').onchange();

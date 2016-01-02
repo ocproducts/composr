@@ -45,11 +45,11 @@
 
 					<label for="comments_sort">{!SORT_BY}:</label>
 					<select onchange="/*guarded*/this.form.submit();" id="comments_sort" name="comments_sort">
-						<option {+START,IF,{$EQ,{SORT},relevance}}selected="selected" {+END}value="relevance">{!RELEVANCE}</option>
-						<option {+START,IF,{$EQ,{SORT},newest}}selected="selected" {+END}value="newest">{!NEWEST_FIRST}</option>
-						<option {+START,IF,{$EQ,{SORT},oldest}}selected="selected" {+END}value="oldest">{!OLDEST_FIRST}</option>
-						<option {+START,IF,{$EQ,{SORT},average_rating}}selected="selected" {+END}value="average_rating">{!RATING}</option>
-						<option {+START,IF,{$EQ,{SORT},compound_rating}}selected="selected" {+END}value="compound_rating">{!POPULARITY}</option>
+						<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
+						<option{+START,IF,{$EQ,{SORT},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
+						<option{+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
+						<option{+START,IF,{$EQ,{SORT},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
+						<option{+START,IF,{$EQ,{SORT},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="buttons__sort button_micro" />{+END}
 				</form>
 			</div>

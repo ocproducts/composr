@@ -17,16 +17,23 @@ function add_attachment(start_num,posting_field_name)
 
 	window.num_attachments++;
 
-	var new_div=document.createElement('div');
-	set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
-	add_to.appendChild(new_div);
-	document.getElementById('file'+window.num_attachments).setAttribute('unselectable','on');
-
-	if (window.num_attachments==window.max_attachments)
+	// Add new file input, if we are using naked file inputs
+	if (window.attachment_template.replace(/\s/,'')!='')
 	{
-		var btn=document.getElementById('add_another_button');
-		if (btn) btn.disabled=true;
+		var new_div=document.createElement('div');
+		set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
+		add_to.appendChild(new_div);
 	}
+
+	// Rebuild uploader button, if we have a singular button
+	if (typeof window.rebuild_attachment_button_for_next!='undefined')
+	{
+		rebuild_attachment_button_for_next(posting_field_name);
+	}
+
+	// Previous file input cannot be used anymore, if it exists
+	var element=document.getElementById('file'+window.num_attachments);
+	if (element) element.setAttribute('unselectable','on');
 
 	if (typeof window.trigger_resize!='undefined') trigger_resize();
 }
@@ -36,7 +43,7 @@ function attachment_present(post_value,number)
 	return !(post_value.indexOf('[attachment]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="1"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="1"]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="0"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="0"]new_'+number+'[/attachment_safe]')==-1);
 }
 
-function set_attachment(field_name,number,filename,multi)
+function set_attachment(field_name,number,filename,multi,uploader_settings)
 {
 	if (typeof multi=='undefined') multi=false;
 
@@ -55,7 +62,7 @@ function set_attachment(field_name,number,filename,multi)
 	}
 
 	var post_value=get_textbox(post);
-	var done=attachment_present(post.value,number) || attachment_present(post_value,number) || (tmp_form.getAttribute('itemtype')=='http://schema.org/ContactPage');
+	var done=attachment_present(post.value,number) || attachment_present(post_value,number);
 	if (!done)
 	{
 		var filepath=filename;
@@ -63,6 +70,7 @@ function set_attachment(field_name,number,filename,multi)
 		{
 			filepath=document.getElementById('file'+number).value;
 		}
+
 		if (filepath=='')
 			return; // Upload error
 
@@ -73,6 +81,15 @@ function set_attachment(field_name,number,filename,multi)
 		var is_audio=(',{$CONFIG_OPTION;,valid_audios},'.indexOf(','+ext+',')!=-1);
 		var is_archive=(ext=='tar') || (ext=='zip');
 
+		var prefix='',suffix='';
+		if (multi && is_image)
+		{
+			prefix='[media_set]\n';
+			suffix='[/media_set]';
+		}
+
+		var tag='attachment';
+
 		var show_overlay,defaults={};
 		if (filepath.indexOf('fakepath')==-1) // iPhone gives c:\fakepath\image.jpg, so don't use that
 			defaults.description=filepath; // Default caption to local file path
@@ -80,23 +97,22 @@ function set_attachment(field_name,number,filename,multi)
 
 		if (!show_overlay)
 		{
-			var comcode='[attachment';
+			var comcode='['+tag;
 			for (var key in defaults)
 			{
 				comcode+=' '+key+'="'+(defaults[key].replace(/"/g,'\\"'))+'"';
 			}
-			comcode+=']new_'+number+'[/attachment]';
+			comcode+=']new_'+number+'[/'+tag+']';
+			if (prefix!='') insert_textbox(post,prefix);
 			if (multi)
 			{
 				var split_filename=document.getElementById('txtFileName_file'+window.num_attachments).value.split(/:/);
-				for (var i=1;i<split_filename.length;i++)
+				for (var i=0;i<split_filename.length;i++)
 				{
-					window.num_attachments++;
-					//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped
+					if (i!=0) window.num_attachments++;
 					insert_textbox(
 						post,
-						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'['),
-						document.selection?document.selection:null
+						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'[')
 					);
 				}
 				number=''+(window.parseInt(number)+split_filename.length-1);
@@ -115,6 +131,19 @@ function set_attachment(field_name,number,filename,multi)
 					add_attachment(window.num_attachments+1,field_name);
 				}
 			}
+			if (suffix!='') insert_textbox(post,suffix);
+
+			if (typeof uploader_settings!='undefined')
+			{
+				uploader_settings.callbacks.push(function() {
+					// Do insta-preview
+					if (is_wysiwyg_field(post))
+					{
+						generate_background_preview(post);
+					}
+				});
+			}
+
 			return;
 		}
 
@@ -124,18 +153,11 @@ function set_attachment(field_name,number,filename,multi)
 		var url='{$FIND_SCRIPT;,comcode_helper}';
 		url+='?field_name='+field_name;
 		url+='&type=step2';
-		url+='&tag='+(is_image?'attachment_safe':'attachment');
+		url+='&tag='+tag;
 		url+='&default=new_'+number;
-		if (multi) url+='&default_framed=0';
 		url+='&is_image='+(is_image?'1':'0');
 		url+='&is_archive='+(is_archive?'1':'0');
 		url+='&multi='+(multi?'1':'0');
-		var prefix='',suffix='';
-		if (multi && is_image)
-		{
-			prefix='[media_set]\n';
-			suffix='[/media_set]';
-		}
 		url+='&prefix='+prefix;
 		if (wysiwyg) url+='&in_wysiwyg=1';
 		for (var key in defaults)
@@ -161,7 +183,6 @@ function set_attachment(field_name,number,filename,multi)
 							for (var i=1;i<split_filename.length;i++)
 							{
 								window.num_attachments++;
-								//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped	 Don't want this on new UI
 								var tmp=window.insert_comcode_tag(']new_'+number+'[',']new_'+window.num_attachments+'[',true);
 								comcode_semihtml+=tmp[0];
 								comcode+=tmp[1];
@@ -199,7 +220,7 @@ function set_attachment(field_name,number,filename,multi)
 					}
 				}
 			);
-		},800 ); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
+		},800); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
 	} else
 	{
 		// Add field for next one
@@ -246,7 +267,7 @@ function do_input_code(field_name)
 
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
-	insert_textbox_wrapping(post,'codebox','');
+	insert_textbox_wrapping(post,(post.name=='message')?'tt':'codebox','');
 }
 
 function do_input_quote(field_name)
@@ -393,7 +414,7 @@ function do_input_hide(field_name)
 						element=ensure_true_id(element,field_name);
 						if (vb)
 						{
-							insert_textbox(element,'<hide><hideTitle>'+va+'</hideTitle>'+escape_html(vb)+'</hide>');
+							insert_textbox(element,'[hide=\"'+escape_comcode(va)+'\"]'+escape_comcode(vb)+'[/hide]');
 						}
 					},
 					'{!comcode:INPUT_COMCODE_hide;^}'
@@ -408,6 +429,12 @@ function do_input_thumb(field_name,va)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 
+	if (typeof window.start_simplified_upload!='undefined' && document.getElementById(field_name).name!='message')
+	{
+		var test=start_simplified_upload(field_name);
+		if (test) return;
+	}
+
 	window.fauxmodal_prompt(
 		'{!ENTER_URL;^}',
 		va,
@@ -415,8 +442,10 @@ function do_input_thumb(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_thumb(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va)
@@ -424,7 +453,7 @@ function do_input_thumb(field_name,va)
 				generate_question_ui(
 					'{!THUMB_OR_IMG_2;^}',
 					{buttons__thumbnail: '{!THUMBNAIL;^}',buttons__fullsize: '{!IMAGE;^}'},
-					'{!_ATTACHMENT;^}',
+					'{!comcode:INPUT_COMCODE_img;^}',
 					null,
 					function(vb)
 					{
@@ -447,8 +476,7 @@ function do_input_thumb(field_name,va)
 							},
 							'{!comcode:INPUT_COMCODE_img;^}'
 						);
-					},
-					'{!comcode:INPUT_COMCODE_img;^}'
+					}
 				);
 			}
 		},
@@ -490,8 +518,10 @@ function do_input_url(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_url(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)
@@ -595,8 +625,10 @@ function do_input_email(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('@')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_EMAIL;^}');
-				return do_input_email(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_EMAIL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)
@@ -698,7 +730,7 @@ function init_form_saving(form_id)
 			// Register events for auto-save
 			add_event_listener_abstract(form.elements[i],'keypress',handle_form_saving);
 			add_event_listener_abstract(form.elements[i],'blur',handle_form_saving);
-			form.elements[i].externalonKeyPress=handle_form_saving;
+			form.elements[i].externalOnKeyPress=handle_form_saving;
 		}
 	}
 
@@ -732,7 +764,7 @@ function init_form_saving(form_id)
 				}
 			}
 
-			if ((fields_to_do_counter!=0) && (biggest_length_data!=''))
+			if ((fields_to_do_counter!=0) && (biggest_length_data.length>25))
 			{
 				_restore_form_autosave(form,fields_to_do,biggest_length_data);
 				return; // If we had it locally, we won't let it continue on to try via AJAX
@@ -785,7 +817,7 @@ function _retrieve_form_autosave(result,form)
 		}
 	}
 
-	if ((fields_to_do_counter!=0) && (biggest_length_data!=''))
+	if ((fields_to_do_counter!=0) && (biggest_length_data.length>25))
 	{
 		_restore_form_autosave(form,fields_to_do,biggest_length_data);
 	}
@@ -837,7 +869,8 @@ function _restore_form_autosave(form,fields_to_do,biggest_length_data)
 					}
 				}
 			}
-		}
+		},
+		'{!javascript:AUTO_SAVING;^}'
 	);
 }
 
@@ -849,6 +882,7 @@ function field_supports_autosave(element)
 		element=element[0];
 	}
 
+	if (typeof element.name=='undefined') return false;
 	var name=element.name;
 	if (name=='') return false;
 	if (name.substr(-2)=='[]') return false;
@@ -993,7 +1027,11 @@ function _handle_form_saving(event,element,force)
 
 	if (typeof element=='undefined')
 	{
-		element=(event.element)?event.element:event.srcElement;
+		element=(typeof event.target!='undefined')?event.target:event.srcElement;
+	}
+	if ((typeof element=='undefined') || (element===null))
+	{
+		return null; // Some weird error, perhaps an extension fired this event
 	}
 
 	var value=clever_find_value(element.form,element);
@@ -1036,6 +1074,9 @@ function clever_set_value(form,element,value)
 				if (element.options[i].value==value)
 				{
 					element.selectedIndex=i;
+					if (typeof $(element).select2!='undefined') {
+						$(element).trigger('change');
+					}
 				}
 			}
 			break;

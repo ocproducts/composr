@@ -96,14 +96,14 @@ function friend_add($likes, $liked, $time = null)
         $from_displayname = $GLOBALS['FORUM_DRIVER']->get_username($likes, true);
         $subject_line = do_lang('YOURE_MY_FRIEND_SUBJECT', $from_username, get_site_name(), null, get_lang($liked));
         $befriend_url = build_url(array('page' => 'chat', 'type' => 'friend_add', 'member_id' => $likes), get_module_zone('chat'), null, false, false, true);
-        $message_raw = do_lang('YOURE_MY_FRIEND_BODY', comcode_escape($to_username), comcode_escape(get_site_name()), array($befriend_url->evaluate(), comcode_escape($from_username), comcode_escape($to_displayname), comcode_escape($from_displayname)), get_lang($liked));
+        $message_raw = do_notification_lang('YOURE_MY_FRIEND_BODY', comcode_escape($to_username), comcode_escape(get_site_name()), array($befriend_url->evaluate(), comcode_escape($from_username), comcode_escape($to_displayname), comcode_escape($from_displayname)), get_lang($liked));
         dispatch_notification('new_friend', null, $subject_line, $message_raw, array($liked), $likes);
 
         // Log the action
         log_it('MAKE_FRIEND', strval($likes), strval($liked));
         require_code('activities');
         syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $likes);
-        //syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS',$to_displayname,'','','_SEARCH:members:view:'.strval($liked),'_SEARCH:members:view:'.strval($likes),'','chat',1,$liked); Should only show if the user also does this
+        //syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $liked); Should only show if the user also does this
 
         decache('main_friends_list');
     }
@@ -338,10 +338,15 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('chat', strval($id), null, null, true);
+        generate_resource_fs_moniker('chat', strval($id), null, null, true);
     }
 
     decache('side_shoutbox');
+
+    if ($is_im == 0) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
+    }
 
     return $id;
 }
@@ -384,8 +389,11 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('chat', strval($id));
+        generate_resource_fs_moniker('chat', strval($id));
     }
+
+    require_code('xml_sitemap');
+    notify_sitemap_node_edit('SEARCH:chat:room:' . strval($id), ($allow2 == '') && ($allow2_groups == ''));
 }
 
 /**
@@ -397,7 +405,7 @@ function delete_chatroom($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('c_welcome', 'room_name', 'is_im'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
     }
 
     delete_lang($rows[0]['c_welcome']);
@@ -418,8 +426,11 @@ function delete_chatroom($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('chat', strval($id));
+        expunge_resource_fs_moniker('chat', strval($id));
     }
+
+    require_code('xml_sitemap');
+    notify_sitemap_node_delete('SEARCH:chat:room:' . strval($id));
 }
 
 /**
@@ -429,8 +440,8 @@ function delete_chatroom($id)
  */
 function delete_chat_messages($where)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $messages = $GLOBALS['SITE_DB']->query_select('chat_messages', array('id', 'the_message'), $where, '', 400);
@@ -446,8 +457,8 @@ function delete_chat_messages($where)
  */
 function delete_all_chatrooms()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $c_welcomes = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'c_welcome'), array('is_im' => 0), '', 400);

@@ -34,7 +34,7 @@ class sitemap_test_set extends cms_test_case
         $max_recurse_depth = null;
         $options = SITEMAP_GEN_NONE;
         $zone = '_SEARCH';
-        $meta_gather = SITEMAP_GATHER__ALL;
+        $meta_gather = SITEMAP_GATHER__ALL | SITEMAP_GEN_USE_PAGE_GROUPINGS;
 
         $this->sitemap = retrieve_sitemap_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $options, $zone, $meta_gather);
         $this->flattened = $this->flatten_sitemap($this->sitemap);
@@ -56,8 +56,7 @@ class sitemap_test_set extends cms_test_case
             foreach ($children as $c) {
                 $_c = $this->flatten_sitemap($c);
                 foreach ($_c as $k => $__c) {
-                    if ($k != '' && $k != 'site:members:browse') {
-                        //if (isset($ret[$k])) { @var_dump($ret);@exit($k); }
+                    if ($k != '') {
                         $this->assertTrue(!isset($ret[$k]), 'Duplicated page: ' . $k);
                     }
 
@@ -74,7 +73,7 @@ class sitemap_test_set extends cms_test_case
         $this->assertTrue(isset($this->flattened['adminzone:admin_config:base']));
 
         // Test we have an arbitrary resource, just to ensure things are still generating deeply
-        $this->assertTrue(isset($this->flattened[get_module_zone('calendar') . ':calendar:browse:1']));
+        $this->assertTrue(isset($this->flattened[get_module_zone('downloads') . ':downloads:browse:1']));
     }
 
     public function testPageGroupingHelpDocsDefined()
@@ -131,7 +130,7 @@ class sitemap_test_set extends cms_test_case
                     'site:popup_blockers',
                     'site:userguide_chatcode',
                     'site:userguide_comcode',
-                    'site:topsites',
+                    'site:top_sites',
                     ':recommend_help',
                 ))) {
                     continue;
@@ -153,7 +152,7 @@ class sitemap_test_set extends cms_test_case
     public function testNoOrphans()
     {
         foreach ($this->flattened as $c) {
-            $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . serialize($c));
+            $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . $c['title']->evaluate());
         }
     }
 

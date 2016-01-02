@@ -7,13 +7,21 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    static_export
+ */
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 disable_php_memory_limit();
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+
+$GLOBALS['STATIC_TEMPLATE_TEST_MODE'] = true;
 
 require_code('tar');
 require_code('files');
@@ -90,7 +98,7 @@ if (get_param_integer('save__pages', 1) == 1) {
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_NONE,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );
@@ -237,9 +245,9 @@ $name=post_param_string("name","' . do_lang('UNKNOWN') . '");
 $post=post_param_string("post","");
 
 $fields=array();
-foreach (array_diff(array_keys($_POST),array("MAX_FILE_SIZE","perform_webstandards_check","_validated","posting_ref_id","f_face","f_colour","f_size","x","y","name","subject","email","to_members_email","to_written_name","redirect","http_referer")) as $key)
+foreach (array_diff(array_keys($_POST),array("MAX_FILE_SIZE","perform_webstandards_check","_validated","posting_ref_id","f_face","f_colour","f_size","x","y","name","subject","email","to_members_email","to_written_name","redirect","http_referer","session_id")) as $key)
 {
-    $is_hidden=(strpos($key,"hour")!==false) || (strpos($key,"access_")!==false) || (strpos($key,"minute")!==false) || (strpos($key,"confirm")!==false) || (strpos($key,"pre_f_")!==false) || (strpos($key,"label_for__")!==false) || (strpos($key,"wysiwyg_version_of_")!==false) || (strpos($key,"is_wysiwyg")!==false) || (strpos($key,"require__")!==false) || (strpos($key,"tempcodecss__")!==false) || (strpos($key,"comcode__")!==false) || (strpos($key,"_parsed")!==false) || (substr($key,0,1)=="_") || (substr($key,0,9)=="hidFileID") || (substr($key,0,11)=="hidFileName");
+    $is_hidden=(strpos($key,"hour")!==false) || (strpos($key,"access_")!==false) || (strpos($key,"minute")!==false) || (strpos($key,"confirm")!==false) || (strpos($key,"pre_f_")!==false) || (strpos($key,"tick_on_form__")!==false) || (strpos($key,"label_for__")!==false) || (strpos($key,"description_for__")!==false) || (strpos($key,"wysiwyg_version_of_")!==false) || (strpos($key,"is_wysiwyg")!==false) || (strpos($key,"require__")!==false) || (strpos($key,"tempcodecss__")!==false) || (strpos($key,"comcode__")!==false) || (strpos($key,"_parsed")!==false) || (substr($key,0,1)=="_") || (substr($key,0,9)=="hidFileID") || (substr($key,0,11)=="hidFileName");
     if ($is_hidden) continue;
 
     if (substr($key,0,1)!="_")
@@ -306,8 +314,8 @@ if (get_param_integer('save__warnings', 1) == 1) {
 }
 
 // Sitemap, if it has been built
-if (file_exists(get_custom_file_base() . '/cms_sitemap.xml')) {
-    tar_add_file($STATIC_EXPORT_TAR, 'cms_sitemap.xml', get_custom_file_base() . '/cms_sitemap.xml', 0644, time(), true);
+if (file_exists(get_custom_file_base() . '/data_custom/sitemaps/index.xml')) {
+    tar_add_folder($STATIC_EXPORT_TAR, null, 'data_custom/sitemaps');
 }
 
 tar_close($STATIC_EXPORT_TAR);

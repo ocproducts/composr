@@ -50,6 +50,6 @@ class Hook_config_chat_flood_timelimit
      */
     public function get_default()
     {
-        return '5';
+        return '1';
     }
 }

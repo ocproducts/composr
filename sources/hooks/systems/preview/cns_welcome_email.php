@@ -32,7 +32,7 @@ class Hook_preview_cns_welcome_email
     {
         $member_id = get_param_integer('id', get_member());
 
-        $applies = (get_param_string('page', '') == 'admin_cns_welcome_emails');
+        $applies = (get_page_name() == 'admin_cns_welcome_emails');
         if ($applies) {
             require_lang('cns');
             require_code('mail');

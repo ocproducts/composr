@@ -28,7 +28,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
     public $file_resource_type = 'post_template';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -39,7 +39,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -66,42 +66,28 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'text' => 'LONG_TEXT',
-            'forum_multi_code' => 'SHORT_TEXT',
-            'use_default_forums' => 'BINARY',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_POST_TEMPLATE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_POST_TEMPLATE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_POST_TEMPLATE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_POST_TEMPLATE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action');
 
@@ -110,15 +96,18 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
         $use_default_forums = $this->_default_property_int($properties, 'use_default_forums');
 
         $id = cns_make_post_template($label, $text, $forum_multi_code, $use_default_forums);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -130,26 +119,28 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['t_title'],
             'text' => $row['t_text'],
             'forum_multi_code' => $row['t_forum_multi_code'],
             'use_default_forums' => $row['t_use_default_forums'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action2');
 
@@ -160,11 +151,13 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
 
         cns_edit_post_template(intval($resource_id), $label, $text, $forum_multi_code, $use_default_forums);
 
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

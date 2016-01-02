@@ -42,11 +42,11 @@ class Block_main_image_slider
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '$map';
@@ -59,7 +59,7 @@ class Block_main_image_slider
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -99,6 +99,12 @@ class Block_main_image_slider
             $extra_join_video .= $privacy_join_video;
             $extra_where_image .= $privacy_where_image;
             $extra_where_video .= $privacy_where_video;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
         $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));

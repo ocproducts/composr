@@ -12,11 +12,22 @@
 
 */
 
+/*EXTRA FUNCTIONS: xml_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*
+XML or JSON?
+
+We generally prefer JSON when connecting to 3rd party backend services, where no human touches the data transferred.
+However in some cases particular standards do require XML, we do use XML for our own AJAX, and we generally tend to prefer XML for user-edited file formats.
+
+To use JSON in Composr, use standard PHP functions and do require_code('json'); in advance so we can plug in missing functions for older PHP versions.
+*/
 
 /**
  * Get XML definition of common entities we may use.
@@ -122,8 +133,6 @@ class CMS_simple_xml_reader
      */
     public function __construct($xml_data)
     {
-        require_code('xml');
-
         $this->gleamed = array();
         $this->error = null;
 
@@ -147,7 +156,7 @@ class CMS_simple_xml_reader
         if (function_exists('libxml_disable_entity_loader')) {
             libxml_disable_entity_loader();
         }
-        $xml_parser = function_exists('xml_parser_create_ns') ? @xml_parser_create_ns($parser_charset) : @xml_parser_create($parser_charset);
+        $xml_parser = @xml_parser_create_ns($parser_charset);
         if ($xml_parser === false) {
             $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
             return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error

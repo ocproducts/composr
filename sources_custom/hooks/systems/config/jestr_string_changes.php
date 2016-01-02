@@ -26,10 +26,10 @@ class Hook_config_jestr_string_changes
     public function get_details()
     {
         return array(
-            'human_name' => 'OCJESTER_STRING_CHANGES',
+            'human_name' => 'JESTER_STRING_CHANGES',
             'type' => 'text',
             'category' => 'FEATURE',
-            'group' => 'OCJESTER_TITLE',
+            'group' => 'JESTER_TITLE',
             'explanation' => 'CONFIG_OPTION_jestr_string_changes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -90,7 +90,7 @@
 
 #news_ticker, #time_line:hover {
 	{$BETA_CSS_PROPERTY,opacity: 0.5;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 #news_ticker:hover, #time_line {
@@ -150,7 +150,7 @@
 }
 #pause_but, #pre_but, #next_but, #time_line {
 	cursor: pointer;
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 #next_but, #pre_but, #pause_but, #timer_inner:hover {

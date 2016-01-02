@@ -3,7 +3,7 @@
 /*CQC: No check*/
 
 /**
- * File: Browser.php
+ * File: Browser.php (based on http://chrisschuld.com/projects/browser-php-detecting-a-users-browser-from-php.html)
  * Author: Chris Schuld (http://chrisschuld.com/)
  * Last Modified: August 20th, 2010
  *

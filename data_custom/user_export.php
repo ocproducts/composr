@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    user_simple_csv_sync
  */
 
 // Find Composr base directory, and chdir into it

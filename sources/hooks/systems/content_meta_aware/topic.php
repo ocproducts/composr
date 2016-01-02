@@ -36,7 +36,7 @@ class Hook_content_meta_aware_topic
         }
 
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_TOPIC',
 
@@ -57,10 +57,10 @@ class Hook_content_meta_aware_topic
 
             'title_field' => 't_cache_first_title',
             'title_field_dereference' => false,
-            /*'title_field__resource_fs'=>'t_cache_first_title',
-            'title_field_dereference__resource_fs'=>false,*/
-            'title_field__resource_fs' => 't_description',
+            'title_field__resource_fs' => 't_cache_first_title',
             'title_field_dereference__resource_fs' => false,
+            /*'title_field__resource_fs' => 't_description',
+            'title_field_dereference__resource_fs' => false,*/
             'description_field' => 't_description',
             'thumb_field' => 't_emoticon',
             'thumb_field_is_theme_image' => true,
@@ -74,7 +74,9 @@ class Hook_content_meta_aware_topic
             'support_url_monikers' => true,
 
             'views_field' => 't_num_views',
+            'order_field' => null,
             'submitter_field' => 't_cache_first_member_id',
+            'author_field' => null,
             'add_time_field' => 't_cache_first_time',
             'edit_time_field' => 't_cache_last_time',
             'date_field' => 't_cache_first_time',
@@ -84,9 +86,14 @@ class Hook_content_meta_aware_topic
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'forums', // NULL if has no permissions
+            'permissions_type_code' => 'forums', // null if has no permissions
 
             'search_hook' => 'cns_posts',
+            'rss_hook' => 'cns_forumview',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'cns_topics',
+            'notification_hook' => 'cns_topic',
+            'sitemap_hook' => 'topic',
 
             'addon_name' => 'cns_forum',
 
@@ -96,7 +103,11 @@ class Hook_content_meta_aware_topic
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => 'cns_forumview',
+            'support_revisions' => true,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_TOPIC',
         );
@@ -112,7 +123,7 @@ class Hook_content_meta_aware_topic
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

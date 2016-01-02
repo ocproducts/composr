@@ -10,7 +10,7 @@
 
 {!SEND_EMAIL,[url="{!EMAIL#}"]mailto:{EMAIL@}?subject=Re: {!MAIL_REQUEST_FORWARDING@}[/url],{$USERNAME@}}
 
-[code]
+[code="Text"]
 {!EMAIL_HEAD@,{$USERNAME}}
 
 {!NEWS_MAIL_AVAILABLE@,{PREFIX}@{SUFFIX}}

@@ -31,6 +31,7 @@ class Hook_symbol_CATALOGUE_ENTRY_FIELD_VALUE
      */
     public function run($param)
     {
+        $value = mixed();
         $value = '';
         if ((isset($param[1])) && ($param[0] != '')) {
             $map = null;

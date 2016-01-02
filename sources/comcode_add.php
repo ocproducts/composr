@@ -28,6 +28,8 @@ The default tags need to have a great UI out of the box: we need a great base ex
  * Get some metadata of what Comcode tags we have.
  *
  * @return array A pair: core tags (map to tag parameters), custom tags (map to Custom Comcode row).
+ *
+ * @ignore
  */
 function _get_details_comcode_tags()
 {
@@ -51,7 +53,7 @@ function _get_details_comcode_tags()
         'center' => array(),
         'right' => array(),
         'abbr' => array('param'),
-        'box' => array('float', 'width', 'type', 'options', 'param'),
+        'box' => array('param', 'float', 'width', 'type', 'class', 'options', 'meta', 'links'),
         'quote' => array('param', 'saidless', 'cite'),
         'cite' => array(),
         'samp' => array(),
@@ -95,12 +97,12 @@ function _get_details_comcode_tags()
         'url' => array('param', 'title', 'target', 'rel'),
         'email' => array('param', 'title', 'subject', 'body'),
         'reference' => array('type', 'param'),
-        'page' => array('param'),
+        'page' => array('param', 'external'),
         'snapback' => array('param', 'forum'),
         'post' => array('param', 'forum'),
         'topic' => array('param', 'forum'),
         'attachment' => array('description', 'thumb_url', 'width', 'height', 'framed', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
-        //'attachment_safe'=>array('description','filename','type','width','height','float','thumb_url'),   Merged into attachment in UI
+        //'attachment_safe' => array('description', 'filename', 'type', 'width', 'height', 'float', 'thumb_url'),   Merged into attachment in UI
     );
     ksort($tag_list);
 
@@ -175,6 +177,8 @@ function _get_details_comcode_tags()
  *
  * @param  ?string $group Group Name (null: return a specific group)
  * @return array Returns each Group name as key, values as its tags
+ *
+ * @ignore
  */
 function _get_group_tags($group = null)
 {
@@ -225,6 +229,8 @@ function _get_group_tags($group = null)
  * Get the non-WYSIWYG tags (ones the WYSIWYG cannot do itself, so are needed even if it is on)
  *
  * @return array List of non-WYSIWYG tags
+ *
+ * @ignore
  */
 function _get_non_wysiwyg_tags()
 {
@@ -250,6 +256,7 @@ function _get_non_wysiwyg_tags()
         'surround',
         'tt',
         'no_parse',
+        'code',
         'overlay',
         'random',
         'pulse',
@@ -272,6 +279,8 @@ function _get_non_wysiwyg_tags()
         'post',
         'topic',
         'attachment',
+
+        'box', // Has extra parameters that the WYSIWYG button can't inject
     );
 
     return $ret;
@@ -306,7 +315,7 @@ function comcode_helper_script()
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step1()
 {
@@ -314,7 +323,7 @@ function comcode_helper_script_step1()
 
     list($tag_list, $custom_tag_list) = _get_details_comcode_tags();
 
-    $title = get_screen_title('COMCODE_TAG');
+    $title = get_screen_title('COMCODE_TAGS');
     $keep = symbol_tempcode('KEEP');
     $comcode_groups = '';
     $groups = _get_group_tags();
@@ -339,7 +348,7 @@ function comcode_helper_script_step1()
             if ($custom) {
                 $description = make_string_tempcode(escape_html(is_integer($custom_tag_list[$tag]['tag_description']) ? get_translated_text($custom_tag_list[$tag]['tag_description']) : $custom_tag_list[$tag]['tag_description']));
             } else {
-                $description = do_lang_tempcode('COMCODE_TAG_' . $tag);
+                $description = do_lang_tempcode('COMCODE_TAG_' . $tag . '_DESCRIPTION');
             }
 
             $url = find_script('comcode_helper') . '?type=step2&tag=' . urlencode($tag) . '&field_name=' . get_param_string('field_name') . $keep->evaluate();
@@ -361,7 +370,7 @@ function comcode_helper_script_step1()
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step2()
 {
@@ -407,7 +416,7 @@ function comcode_helper_script_step2()
     if (isset($custom_tag_list[$tag]['tag_description'])) {
         $tag_description = protect_from_escaping($custom_tag_list[$tag]['tag_description']);
     } else {
-        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag));
+        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_DESCRIPTION'));
     }
     $has_full_tag_description = false;
 
@@ -418,13 +427,7 @@ function comcode_helper_script_step2()
             if (count($params) > 0) {
                 require_code('form_templates');
                 foreach ($params as $param) {
-                    $parameter_name = do_lang('COMCODE_TAG_' . $tag . '_NAME_OF_PARAM_' . $param, null, null, null, null, false);
-                    if (is_null($parameter_name)) {
-                        $parameter_name = titleify($param);
-                    }
-                    if ($GLOBALS['XSS_DETECT']) {
-                        ocp_mark_as_escaped($parameter_name);
-                    }
+                    $parameter_name = _get_comcode_tag_param_name($actual_tag, $param);
 
                     $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                     $supports_comcode = (strpos($descriptiont, do_lang('BLOCK_IND_SUPPORTS_COMCODE')) !== false);
@@ -467,7 +470,7 @@ function comcode_helper_script_step2()
                                 }
                             }
                             $field = form_input_list($parameter_name, '', $param, $list, null, false, false);
-                        } elseif (($param == 'width' || $param == 'height') && ((is_null($default)) || (is_numeric($default)))) {
+                        } elseif (($param == 'width' || $param == 'height') && ((empty($default)) || (is_numeric($default)))) {
                             if ($param == 'width') {
                                 $default_width = array_key_exists('width', $defaults) ? $defaults['width'] : get_param_string('default_width', '');
                                 $default_height = array_key_exists('height', $defaults) ? $defaults['height'] : get_param_string('default_height', '');
@@ -503,8 +506,11 @@ function comcode_helper_script_step2()
         $params = ($_params['tag_parameters'] == '') ? array() : explode(',', $_params['tag_parameters']);
         foreach ($params as $param) {
             $description = new Tempcode();
-            $fields->attach(form_input_line(preg_replace('#=.*$#', '', titleify($param)), protect_from_escaping($description), preg_replace('#=.*$#', '', $param), preg_replace('#^.*=#U', '', $param), false));
+            $name = preg_replace('#=.*$#', '', $param);
+            $default = (strpos($param, '=') === false) ? '' : preg_replace('#^.*=#U', '', $param);
+            $fields->attach(form_input_line(titleify($name), protect_from_escaping($description), $name, $default, false));
         }
+
         $tag_description = new Tempcode();
         $tag_description->attach(escape_html(is_integer($_params['tag_description']) ? get_translated_text($_params['tag_description']) : $_params['tag_description']));
         $tag_description->attach(paragraph(escape_html(is_integer($_params['tag_example']) ? get_translated_text($_params['tag_example']) : $_params['tag_example'])));
@@ -527,26 +533,25 @@ function comcode_helper_script_step2()
                 ocp_mark_as_escaped($descriptiont);
             }
 
-            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_FIELD_TITLE', null, null, null, null, false);
+            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_TITLE', null, null, null, null, false);
             if (is_null($field_title)) {
                 $field_title = do_lang('TAG_CONTENTS');
             }
-
             if ($GLOBALS['XSS_DETECT']) {
                 ocp_mark_as_escaped($field_title);
             }
 
             if ($is_advanced) {
                 if ($supports_comcode) {
-                    $fields_advanced->attach(form_input_line_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields_advanced->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 } else {
-                    $fields_advanced->attach(form_input_line(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields_advanced->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 }
             } else {
                 if ($supports_comcode) {
-                    $fields->attach(form_input_line_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 } else {
-                    $fields->attach(form_input_line(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 }
             }
         }
@@ -614,6 +619,8 @@ function comcode_helper_script_step2()
  *
  * @param  ID_TEXT $tag Tag being read.
  * @return boolean Whether it has required contents.
+ *
+ * @ignore
  */
 function _find_comcode_tag_embed_required($tag)
 {
@@ -631,15 +638,17 @@ function _find_comcode_tag_embed_required($tag)
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  boolean $done_tag_contents Whether the tag contents input has also been handled here.
  * @param  array $defaults Default parameter values.
  * @param  array $params List of tag parameters.
  * @param  string $javascript JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, &$done_tag_contents, $defaults, $params, &$javascript, $preview)
 {
@@ -670,37 +679,58 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
     } elseif ($tag == 'concepts') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 1));
+            $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 1));
         }
     } elseif ($tag == 'jumping') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+            $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
         }
     } elseif ($tag == 'shocker') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
             if ($param == 'left' || $param == 'right') {
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             } else {
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '');
-                $fields->attach(form_input_line(titleify($param), protect_from_escaping($description), $param, $default, false));
+                $fields->attach(form_input_line(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, $default, false));
             }
         }
     } elseif ($tag == 'random') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), ($param != 'X') ? 2 : 0));
+
+            $_defaults = array();
+            if ($param == 'X') {
+                foreach ($defaults as $key => $val) {
+                    if (is_string($key)) {
+                        $_defaults[$key] = $val;
+                    }
+                }
+            } else {
+                foreach ($defaults as $key => $val) {
+                    if (is_integer($key)) {
+                        $_defaults[$key] = $val;
+                    }
+                }
+            }
+
+            $field = form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, $_defaults, ($param != 'X') ? 2 : 0, null, ($param == 'X') ? 'integer' : 'line');
+            if ($param == 'X') {
+                $fields_advanced->attach($field);
+            } else {
+                $fields->attach($field);
+            }
         }
     } elseif ($tag == 'sections') {
         foreach ($params as $param) {
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             }
         }
     } elseif ($tag == 'big_tabs') {
@@ -708,14 +738,14 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             } elseif ($param == 'switch_time') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '6000');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             }
         }
     } elseif ($tag == 'tabs') {
@@ -723,10 +753,10 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             }
         }
     } else {
@@ -744,11 +774,13 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
  * @param  ID_TEXT $param The parameter.
  * @param  string $parameter_name Default human-readable name of the parameter.
  * @param  string $descriptiont Default description of the parameter.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  string $default Default parameter value.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $param, $parameter_name, $descriptiont, &$fields, &$fields_advanced, $hidden, $default)
 {
@@ -797,14 +829,34 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
 }
 
 /**
+ * Get the title for a Comcode tag parameter title.
+ *
+ * @param  ID_TEXT $actual_tag Actual tag being read.
+ * @param  ID_TEXT $param Parameter name.
+ * @return string Title.
+ *
+ * @ignore
+ */
+function _get_comcode_tag_param_name($actual_tag, $param)
+{
+    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_PARAM_' . $param . '_TITLE', null, null, null, null, false);
+    if (is_null($parameter_name)) {
+        $parameter_name = titleify($param);
+    }
+    return $parameter_name;
+}
+
+/**
  * See if we have specialisation code for inserting an extra Comcode tag parameter input.
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  array $defaults Default parameter values.
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $defaults)
 {
@@ -821,19 +873,23 @@ function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  string $default_embed Default embed contents.
  * @param  string $javascript JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $default_embed, &$javascript, &$preview)
 {
     global $TEXTUAL_TAGS;
 
-    if (($tag == 'media') && (addon_installed('filedump'))) {
+    if ($tag == 'random') {
+        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
+    } elseif (($tag == 'media') && (addon_installed('filedump'))) {
         $set_name = 'file';
         $required = true;
         $set_title = do_lang_tempcode('FILE');
@@ -848,7 +904,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     } elseif ($tag == 'attachment') {
         if (get_option('eager_wysiwyg') == '0') {
             if ((!isset($_COOKIE['use_wysiwyg'])) || ($_COOKIE['use_wysiwyg'] != '0')) {
-                $javascript .= "document.getElementById('framed').onchange=function() { if (!this.checked && document.getElementById('_safe')) document.getElementById('_safe').checked=false; };";
+                $javascript .= "document.getElementById('framed').onchange=function() { if (this.checked && document.getElementById('_safe')) document.getElementById('_safe').checked=false; };";
             }
         }
 
@@ -861,7 +917,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         }
     } elseif (($tag == 'sections') || ($tag == 'big_tabs') || ($tag == 'tabs') || ($tag == 'list')) {
         $fields->attach(form_input_text_multi(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_EMBED')), 'tag_contents', explode(',', $default_embed), 2));
-    } elseif ((array_key_exists($tag, $TEXTUAL_TAGS)) || ($tag == 'menu')) {
+    } elseif ((array_key_exists($tag, $TEXTUAL_TAGS)) || ($tag == 'menu') || ($tag == 'code')) {
         if (($tag == 'menu') && ($default_embed == '')) {
             $default_embed = '-contracted section
 +expanded section
@@ -871,9 +927,12 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
 page=URL
 page=URL';
         }
-        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED');
+        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
+        if (is_null($descriptiont)) {
+            $descriptiont = '';
+        }
         $descriptiont = trim(str_replace(do_lang('BLOCK_IND_SUPPORTS_COMCODE'), '', $descriptiont));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_EMBED')), 'tag_contents', $default_embed, true, null, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, true, null, true));
     } else {
         return false;
     }
@@ -884,14 +943,14 @@ page=URL';
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step3()
 {
     require_javascript('posting');
     require_javascript('editing');
 
-    $field_name = get_param_string('field_name');
+    $field_name = filter_naughty_harsh(get_param_string('field_name'));
     $tag = post_param_string('tag');
     $title = get_screen_title('_COMCODE_HELPER', true, array(escape_html($tag)));
 
@@ -913,7 +972,7 @@ function comcode_helper_script_step3()
         'PREFIX' => ($prefix == '') ? null : $prefix,
         'TAG_CONTENTS' => post_param_string('tag_contents', ''),
         'SAVE_TO_ID' => get_param_string('save_to_id', ''),
-        'DELETE' => (post_param_integer('delete', 0) == 1),
+        'DELETE' => (post_param_integer('_delete', 0) == 1),
         'BLOCK' => $tag,
         'COMCODE' => $comcode,
         'COMCODE_SEMIHTML' => $comcode_semihtml,
@@ -925,6 +984,8 @@ function comcode_helper_script_step3()
  *
  * @param  ID_TEXT $tag Tag being read.
  * @return string The full Comcode for that tag.
+ *
+ * @ignore
  */
 function _get_preview_environment_comcode($tag)
 {
@@ -1103,6 +1164,10 @@ function get_defaults_multi($defaults, $param)
 {
     $values = array();
     foreach ($defaults as $key => $val) {
+        if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if (substr($param, 0, 2) == 'x_') {
             if (preg_match('#^' . str_replace('x', '\d', preg_quote($param, '#')) . '$#', $key) != 0) {
                 $values[] = $val;

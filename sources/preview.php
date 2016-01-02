@@ -22,7 +22,7 @@
  * Build up a preview based on what was submitted.
  *
  * @param  boolean $multi_return Whether to return additional data
- * @return mixed Either tempcode for the preview, or a tuple of details
+ * @return mixed Either Tempcode for the preview, or a tuple of details
  */
 function build_preview($multi_return = false)
 {
@@ -153,7 +153,7 @@ function build_preview($multi_return = false)
 
         if (substr($key, -4) == '_day') {
             $key = substr($key, 0, strlen($key) - 4);
-            $timestamp = get_input_date($key);
+            $timestamp = post_param_date($key);
             if (is_null($timestamp)) {
                 $is_hidden = true;
             } else {

@@ -113,8 +113,6 @@ class Hook_addon_registry_core_themeing
             'themes/default/images/icons/48x48/menu/adminzone/style/themes/theme_images.png',
             'themes/default/css/themes_editor.css',
             'sources/hooks/systems/snippets/exists_theme.php',
-            'sources/hooks/systems/config/templates_number_revisions_show.php',
-            'sources/hooks/systems/config/templates_store_revisions.php',
             'adminzone/load_template.php',
             'adminzone/tempcode_tester.php',
             'sources/hooks/systems/addon_registry/core_themeing.php',
@@ -195,7 +193,7 @@ class Hook_addon_registry_core_themeing
             $themes->attach(do_lorem_template('THEME_MANAGE', array(
                 'THEME_USAGE' => lorem_phrase(),
                 'SEED' => '123456',
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'RAW_DATE' => placeholder_date_raw(),
                 'NAME' => $value,
                 'DESCRIPTION' => lorem_paragraph_html(),
@@ -253,7 +251,7 @@ class Hook_addon_registry_core_themeing
             lorem_globalise(do_lorem_template('THEME_EDIT_CSS_SCREEN', array(
                 'PING_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',
-                'REVISION_HISTORY' => placeholder_table(),
+                'REVISIONS' => placeholder_table(),
                 'SWITCH_ICON' => 'buttons__proceed',
                 'SWITCH_STRING' => lorem_phrase(),
                 'SWITCH_URL' => placeholder_url(),
@@ -342,7 +340,7 @@ class Hook_addon_registry_core_themeing
             'FILE_SAVE_TARGET' => lorem_phrase(),
             'OLD_CONTENTS' => lorem_paragraph(),
             'CONTENTS' => lorem_paragraph(),
-            'REVISION_HISTORY' => lorem_phrase(),
+            'REVISIONS' => lorem_phrase(),
             'PREVIEW_URL' => placeholder_url(),
         )));
 

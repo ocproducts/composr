@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    db_schema
+ */
+
 /*
 Used to generate a database schema in the form of SQL code that can be imported into MySQL Workbench
 
@@ -24,8 +30,7 @@ if (!isset($_GET['testing'])) {
     header('Content-type: text/plain; charset=' . get_charset());
 }
 
-require_code('relations');
-$relation_map = get_relation_map();
+require_code('database_relations');
 
 $tables = get_all_tables();
 

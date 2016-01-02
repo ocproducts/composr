@@ -1,4 +1,4 @@
-[title="1"]Article (a template guide)[/title]
+[title]Article (a template guide)[/title]
 
 [i]This guide provides advice from journalism to sales letters. It's in a template rather than a tutorial so that you can chop the advice down (i.e. mark it off) while you write in your real text above it.[/i]
 
@@ -67,7 +67,7 @@ Long copy techniques may include:
 The call to action is ideal for split-testing (aka A/B testing), to identify what version of your copy works best.
 To gather data you could, for example:
  - give a different phone number extension for different randomised versions of the copy
- - pass through a different software [tt]keep_referrer[/tt] parameter to the join page, e.g. [page=":join:keep_referrer=2"]a[/page] or [page=":join:keep_referrer=3"]b[/page] (in this case make sure '2' and '3' are the IDs of admin accounts, so you can then use the non-bundled [tt]referrals[/tt] addon to track the referrals these accounts make)
+ - pass through a different software [tt]keep_referrer[/tt] parameter to the [tt]join[/tt] module, e.g. [page=":join:keep_referrer=2"]a[/page] or [page=":join:keep_referrer=3"]b[/page] (in this case make sure '2' and '3' are the IDs of admin accounts, so you can then use the non-bundled [tt]referrals[/tt] addon to track the referrals these accounts make)
  - inject different Google Analytics tracker codes
 
 {+START,CASES,{$SET_RAND,a,b}}

@@ -61,7 +61,7 @@ class Hook_addon_registry_cns_post_templates
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_forum_helpdesk',
+            'tut_support_desk',
         );
     }
 
@@ -140,7 +140,7 @@ class Hook_addon_registry_cns_post_templates
                 'SELECTED' => false,
                 'DISABLED' => false,
                 'CLASS' => '',
-                'NAME' => lorem_word() . strval($key),
+                'NAME' => placeholder_random_id(),
                 'TEXT' => lorem_phrase(),
             )));
         }

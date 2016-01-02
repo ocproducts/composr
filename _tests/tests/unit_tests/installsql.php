@@ -29,7 +29,6 @@ class installsql_test_set extends cms_test_case
         // Not with forced charsets or other contextual noise
         $this->assertTrue(strpos($contents, "\n" . 'SET') === false, 'Contains unwanted context');
         $this->assertTrue(preg_match('#\d+ SET #', $contents) == 0, 'Contains unwanted context');
-        $this->assertTrue(strpos($contents, ' DEFAULT CHARSET=utf8') === false, 'Contains unwanted charset stuff');
 
         // Old way of specifying table types
         $this->assertTrue(strpos($contents, ' TYPE=') === false, 'Change TYPE= to ENGINE=');

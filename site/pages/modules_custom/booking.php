@@ -62,7 +62,7 @@ class Module_booking
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('bookable', array(
                 'id' => '*AUTO',
-                //'num_available'=>'INTEGER',      Implied by number of bookable_codes attached to bookable_id
+                //'num_available' => 'INTEGER',      Implied by number of bookable_codes attached to bookable_id
                 'title' => 'SHORT_TRANS__COMCODE',
                 'description' => 'LONG_TRANS__COMCODE',
                 'price' => 'REAL',
@@ -133,7 +133,7 @@ class Module_booking
                 'b_day' => 'SHORT_INTEGER',
                 'b_month' => 'SHORT_INTEGER',
                 'b_year' => 'INTEGER',
-                'code_allocation' => 'ID_TEXT', // These code allocations will be given out arbitrarily, which means later on if things get busy, things could be suboptimal (e.g. people's 'stay' split across different codes on different dates, whilst reorganising could solve that). So a human would probably reorganise this manually in some cases, and it should not be considered a real-world guarantee, or a necessary thing to make sure people get a full run-length on a single code
+                'code_allocation' => 'ID_TEXT', // These code allocations will be given out arbitrarily, which means later on if things get busy, things could be suboptimal (e.g. people's 'stay' split across different codes on different dates, while reorganising could solve that). So a human would probably reorganise this manually in some cases, and it should not be considered a real-world guarantee, or a necessary thing to make sure people get a full run-length on a single code
                 'notes' => 'LONG_TEXT',
                 'booked_at' => 'TIME', // time booking was made
                 'paid_at' => '?TIME',
@@ -166,7 +166,7 @@ class Module_booking
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -181,7 +181,7 @@ class Module_booking
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -213,7 +213,7 @@ class Module_booking
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -249,7 +249,7 @@ class Module_booking
     /**
      * Allow the user to choose what to book, on a high level - what bookables, what dates.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function choose_bookables_and_dates()
     {
@@ -373,7 +373,7 @@ class Module_booking
                 'BOOKABLE_DATE_TO_MONTH' => date('m', $date_to),
                 'BOOKABLE_DATE_TO_YEAR' => date('Y', $date_to),
             );
-            //Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'],'BOOKABLE_TITLE');
+            //Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'], 'BOOKABLE_TITLE');
         }
 
         ksort($categories);
@@ -441,16 +441,16 @@ class Module_booking
     public function _read_chosen_bookable_settings($bookable)
     {
         $quantity = post_param_integer('bookable_' . strval($bookable['id']) . '_quantity', 0);
-        $date_from = get_input_date('bookable_' . strval($bookable['id']) . '_date_from');
+        $date_from = post_param_date('bookable_' . strval($bookable['id']) . '_date_from');
         if (is_null($date_from)) {
-            $date_from = get_input_date('bookable_date_from'); // allow to be specified for whole form (the norm actually)
+            $date_from = post_param_date('bookable_date_from'); // allow to be specified for whole form (the norm actually)
         }
         if (is_null($date_from)) {
             $date_from = time();
         }
-        $date_to = get_input_date('bookable_' . strval($bookable['id']) . '_date_to');
+        $date_to = post_param_date('bookable_' . strval($bookable['id']) . '_date_to');
         if (is_null($date_to)) {
-            $date_to = get_input_date('bookable_date_to'); // allow to be specified for whole form (the norm actually); may still be null, if ranges not being used
+            $date_to = post_param_date('bookable_date_to'); // allow to be specified for whole form (the norm actually); may still be null, if ranges not being used
         }
         if (is_null($date_to)) {
             $date_to = $date_from;
@@ -462,7 +462,7 @@ class Module_booking
     /**
      * Flesh out the details of a booking.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function flesh_out()
     {
@@ -529,7 +529,7 @@ class Module_booking
     /**
      * Let the user login / do an inline join.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function join_or_login()
     {
@@ -567,7 +567,7 @@ class Module_booking
     /**
      * E-mails staff and receipt notice to user, and saves everything.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function thanks()
     {

@@ -21,11 +21,11 @@
 /**
  * Render a member profile.
  *
- * @param  tempcode $title Screen title
+ * @param  Tempcode $title Screen title
  * @param  MEMBER $member_id_of The ID of the member who is being viewed
  * @param  ?MEMBER $member_id_viewing The ID of the member who is doing the viewing (null: current member)
  * @param  ?ID_TEXT $username The username of the member who is being viewed (null: work out from member_id_of)
- * @return tempcode The rendered profile
+ * @return Tempcode The rendered profile
  */
 function render_profile_tabset($title, $member_id_of, $member_id_viewing = null, $username = null)
 {
@@ -84,7 +84,7 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
             //$tab[1]->handle_symbol_preprocessing();
             $tab[1] = $tab[1]->evaluate(); // So that SETs run early, thus things can be moved outside tabs
         }
-        $_tabs[] = array('TAB_TITLE' => $tab[0], 'TAB_CODE' => $hook, 'TAB_ICON' => $tab[3], 'TAB_CONTENT' => $tab[1], 'TAB_FIRST' => $i == 0, 'TAB_LAST' => !array_key_exists($i + 1, $tabs));
+        $_tabs[] = array('TAB_TITLE' => $tab[0], 'TAB_CODE' => $hook, 'TAB_ICON' => $tab[3], 'TAB_CONTENT' => $tab[1], 'TAB_FIRST' => $i == 0, 'TAB_LAST' => $i + 1 == count($tabs));
         $i++;
     }
 

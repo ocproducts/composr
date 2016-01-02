@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    shoutr
+ */
+
+/**
+ * Block class.
  */
 class Block_side_shoutbox
 {
@@ -35,7 +40,7 @@ class Block_side_shoutbox
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -92,7 +97,7 @@ class Block_side_shoutbox
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red_alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '', 'red_alert');
         }
 
         // Did a message get sent last time?

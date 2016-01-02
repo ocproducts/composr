@@ -1,95 +1,139 @@
-[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Access control and privileges[/title]
+[title sub="Written by Philip Withnall (ocProducts)"]Composr Tutorial: Access control and privileges[/title]
 
 Any large site will have areas that it wants certain members to be able to access, but not others. For example:
  - Categories of information that are visible to the eyes of members from only one usergroup
  - Pages available only if you're new to the site
 Composr has a powerful access control and privilege system built into its core
-For an overview of the Composr permission system, see the 'Advanced configuration' tutorial. This tutorial goes into more detail.
+For an overview of the Composr permission system, see the [page="_SEARCH:tut_adv_configuration"]Advanced configuration tutorial[/page]. This tutorial goes into more detail.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Access control[/title]
+[title="2"]Brief overview of what can be set[/title]
 
-[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/permissions_tree_editor.png[/media]
+You can set:
+ - Access (view) permissions for zones, pages, and categories.
+ - Global privileges.
+ - Overridden privileges for particular content-types, by overriding them on the module (page) controlling that content-type.
+ - Overridden privileges for particular categories.
+ - Ad hoc access control on particular match-keys.
+
+You cannot set:
+ - Permissions on the entry-level (e.g. for a specific news article). You need to use categorisation to group entries that would have the same access level.
+ - Write privileges on individual Comcode Pages. It is possible to set them on a per-zone basis though. You can also allow one particular user to have control over a particular page if they are the owner of that page (i.e. the submitter), and they have been granted permission to edit their own content.
+ - Permissions on the member-level. You need to use usergroups to assign permissions. You can put members in multiple usergroups to achieve complex permission schemes. Technically Composr does support per-member permissions, but we don't have a user interface to set it because we wanted to keep the system concepts as streamlined and simple as possible: usergroups always provide a way to achieve what is needed.
+ - Inheritable permissions from parent to child categories. You can quickly copy permissions to subcategories in the Permissions Tree Editor instead, or assign them at the module level and leave the categories as non-overridden (so inheriting from module to all categories within that module). We made this decision for simplicity and performance reasons.
+ - Per-field (i.e. sub-entry) edit permissions.
+
+[title="2"]Access (view) control[/title]
+
+[surround]
+[media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change.gif[/media]
+[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
 To edit permissions in Composr you can either use:
- - The permissions tree editor
- - Manual configuration
+ - The Permissions Tree Editor
+ - Disparate configuration (described in sections below)
 
 {!permissions:DOC_PERMISSIONS_TREE}
 
-The remainder of this section is concerned with manual permission setting.
+Access the Permissions Tree Editor from:
+Admin Zone > Security > Permissions Tree Editor
+
+Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the ctrl/shift keys.
+
+The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
+[/surround]
 
 [title="3"]Editing zone permissions[/title]
 
-[i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
+[i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed.[/i]
 
-[media width="150" description="Setting zone permissions" float="left"]data_custom/images/docs/permissions_Edit-zone-permissions.png[/media]
+[surround]
+[media width="150" description="Setting zone permissions" float="left"]data_custom/images/docs/tut_permissions/permissions_edit_zone_permissions.png[/media]
+[media width="150" description="Choosing a zone to edit" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_zone_edit.png[/media]
 You can edit zone permissions by editing the zone for which you want to change the permissions.
 
-Go the Admin Zone, then the 'Structure' section, then the 'Zones' icon. Choose a zone to edit (bear in mind that you can't change permissions for the Welcome Zone, as everybody is allowed to access it), and continue.
-[surround]
-[media width="150" description="Choosing a zone to edit" float="right"]data_custom/images/docs/permissions_Choose-zone-edit.png[/media]
+For each zone you can set which usergroups can access (view) it.
+
+Go to Admin Zone > Structure > Zones. Choose a zone to edit (bear in mind that you can't change permissions for the Welcome Zone, as everybody is allowed to access it), and continue.
+
 You will be presented with the zone editing form. Near the bottom are the options for usergroup access permissions: one binary 'can/can't' access permission per usergroup. Toggle the checkboxes as you see fit (if a checkbox is unchecked, the corresponding usergroup can't enter the zone, but if it is checked, the usergroup can enter the zone without problem), and submit the form.
 [/surround]
+
 [title="3"]Editing page permissions[/title]
 
-[i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
+[i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed. In fact, we do not link the Page Permissions interface into the default admin menu structure unless JavaScript is not enabled. There is a similar interface when editing a Comcode Page, however.[/i]
+
 [surround]
-[media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/permissions_Page-permissions-grid.png[/media]
-Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/permissions_Mass-checkbox-change.gif[/url]).
+[media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/tut_permissions/permissions_page_permissions_grid.png[/media]
+For each page you can set which usergroups can access (view) it. For modules you can also often override certain privileges for the content handled within those modules.
+
+Go to Admin Zone > Structure > Permissions. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change1.gif[/url]).
 
 Once all the access permissions are set as appropriate, submit the form.
-[/surround]
+
 [title="4"]Page permissions as a routine process[/title]
 
 Composr routinely checks page permissions when choosing whether to include standardised links.
 
 The best example of this would be when viewing someone's member profile. The member profile includes links to all kinds of screens relating to the member being viewed. However, these links are only included if the viewing user (not the member being viewed) has access to the pages involved. For example, if there is no permission to the [tt]contact_member[/tt] page then no contact link will be given.
+[/surround]
 
 [title="3"]Editing category permissions[/title]
 
 [i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
 
-[media width="150" description="Editing category permissions" float="left"]data_custom/images/docs/permissions_Edit-category-permissions.png[/media]
+[surround]
+[media width="150" description="Editing category permissions" float="right"]data_custom/images/docs/tut_permissions/permissions_edit_category_permissions.png[/media]
+[media width="150" description="Choosing a category to edit" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_category_edit.png[/media]
+For each category you can set which usergroups can access (view) it, and often also override certain privileges for that category.
+
 Usergroup access permissions exist for just about any type of category Composr provides: from calendar entry types to news categories, you can easily set the usergroup access permissions through the category edit page. In this example, we'll change the usergroup access permissions for a news category.
 
 Go to the Content Management Zone. Choose the icon for the content type you want to edit. Click the 'Edit one category' icon. Select the category to edit, and submit the form.
 
 Then, set the permissions as necessary, and submit the form once more.
-[media width="150" description="Choosing a category to edit" float="right"]data_custom/images/docs/permissions_Choose-category-edit.png[/media]
 
 The process is the same for editing the permissions of any type of category.
+[/surround]
 
 [title="2"]Privileges[/title]
 
-[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/permissions_Choose-specific-access.png[/media]
+[surround]
+[media width="150" description="Setting privileges" float="right"]data_custom/images/docs/tut_permissions/permissions_edit_privileges.png[/media]
+[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_privileges.png[/media]
 {!permissions:DOC_PRIVILEGES}
 
-The privileges are accessed through the "privileges" page. On this page is a list of permission sections; all the privileges are grouped into related sections for ease-of-configuration. Choose a section, and submit the form to see and change the related privileges. The page shows a checkbox-grid of the usergroups and the privileges in your selected section. Set up the privileges as appropriate, and submit the form to change them.
+The privileges are managed from:
+Admin Zone > Security > Privileges
+You'll see a list of permission sections -- all the privileges are grouped into related sections for ease-of-configuration. Choose a section, and submit the form to see and change the related privileges. The page shows a checkbox-grid of the usergroups and the privileges in your selected section. Set up the privileges as appropriate, and submit the form to change them.
 
 For a good real-world example of how to set up privileges, see the 'Setting bypass-validation access' section of the [page="_SEARCH:tut_forums"]organising discussion forums[/page] tutorial.
+[/surround]
 
 [title="2"]Adding, Editing and Deleting content[/title]
 
+[surround]
+[media width="150" description="An example of overriding privileges. Changing bypass-validation permissions for galleries using the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/gallery_validation_permissions.png[/media]
 To submit/edit/delete you need the correct privileges. You also need view permission all the way to the page that does it, in the CMS zone.
 
 Here is a worked example of how to set view and privilege permissions to submit to a links catalogue category.
 
 As view permissions work on a basis of needing to get past successive barriers, you need to have view permissions assigned to all of the following barriers to submit:
  - CMS zone
- - cms_catalogues page (by default all pages have view access)
+ - [tt]cms_catalogues[/tt] module (by default all pages have view access)
 
 Of course, if you want people to be able to submit, you probably also want them to be able to view. You'd need view permissions assigned to all of the following barriers to view:
  - Site zone
- - catalogues page (by default all pages have view access)
+ - [tt]catalogues[/tt] module (by default all pages have view access)
  - Links catalogue
  - category
 
 Privileges on the other hand are inherited all the way from the global privileges. You don't need to set them at all if they are set in the global privileges and you haven't set up any overrides. However you would be able to set overrides on the Links catalogue itself, and the particular category you might want to allow/disallow links to be submitted to, should you wish to have more fine-grained control.
 
-Note that privileges are not inherited through category trees, so setting privileges on a parent category will not change privilege to the child categories. If you wanted whole subtrees of categories to have different privileges you'd need to use the batch selection feature in the Permission Tree Editor. It is rare to want to be able to do this though.
+Note that privileges are not inherited through category trees, so setting privileges on a parent category will not change privilege to the child categories. If you wanted whole subtrees of categories to have different privileges you'd need to use the batch selection feature in the Permissions tree editor. It is rare to want to be able to do this though.
 
-Similarly, you do not need view permissiosn on parent categories to view child categories, although it would be hard to find a category if you did not have access to view it's parents.
+Similarly, you do not need view permission on parent categories to view child categories, although it would be hard to find a category if you did not have access to view its parents.
+[/surround]
 
 [title="2"]Usergroup settings[/title]
 
@@ -97,41 +141,65 @@ Usergroups have a number of settings that are "privilege"-like. They're not actu
 
 [title="2"]Testing access and privileges[/title]
 
-[media width="150" description="The SU feature is incredibly quick and easy: just enter a name and click a button" float="left"]data_custom/images/docs/permissions_Su.png[/media]
-To test access permissions and privileges, it's best to create a test user, or to assume the identity of a lower-ranking (non-administrator) member. This section is concerned with the use of the 'su' function.
+[surround]
+[media width="150" description="The 'SU' feature is incredibly quick and easy: just enter a name and click a button" float="right"]data_custom/images/docs/tut_permissions/permissions_su.png[/media]
+To test access permissions and privileges, it's best to create a test member, or to assume the identity of an existing lower-ranking (non-administrator) member. In fact, if you are using [concept]Conversr[/concept] then there's a default member named 'test' for you.
 
-[media width="150" description="Setting privileges" float="right"]data_custom/images/docs/permissions_Edit-specific-access.png[/media]
-The 'su' function allows an administrator to quickly and easily assume the identity of somebody else, for whatever nefarious or benevolent purposes he sees fit. To use 'su', simply enter the name of the member whose identity you would like to assume into the 'su' box (in the footer), and press the enter/return key. A new window will open, presenting the same screen as seen by the specified user. You can navigate around as this user, experiencing the site through his/her eyes (so to speak), as all the permissions are as they are for this normal user. This can easily and effectively be used to test out permissions changes to make sure they are as required.
+The 'SU' feature allows an administrator to quickly and easily assume the identity of somebody else ("masquerade"), for whatever purposes he sees fit (and not needing to type in their password, or logout).
 
-Please note that when using 'su':
+To use 'SU', simply enter the username of the member whose identity you would like to assume into the 'SU' box (in the footer), and press the enter/return key. A new window will open, presenting the same screen as seen by the specified user.
+This works on the default theme. Custom themes may not have this in the theme footer. In that case you  can access it by putting [tt]&keep_su=<username>[/tt]/[tt]?keep_su=<username>[/tt] onto the end of the URL as appropriate (e.g. [tt]http://yourbaseurl/index.php?keep_su=test[/tt] to masquerade as the test user looking at your front page).
+
+You can navigate around as the user, experiencing the site through his/her eyes (so to speak), as all the permissions are as they are for this normal user. This can easily and effectively be used to test out permissions changes to make sure they are as required.
+
+You can use [tt]Guest[/tt] as a username to act as if you are not logged in.
+
+Please note that when using 'SU':
  - the member will not show as being 'online' in most contexts
- - (by design) you will still be able to access a closed site, and view permission diagnostics using FirePHP
+ - (by design) you will still be able to access a closed site, and view permission diagnostics using FirePHP (FirePHP is explained below)
+[/surround]
 
-[title="3"]Debugging permission problems[/title]
+[title="2"]Debugging permission problems[/title]
 
+[title="3"]FirePHP[/title]
+
+[media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
 1) To use this feature you need to be using [url="Firefox"]http://www.mozilla.com/en-US/[/url] and have the [url="Firebug"]https://addons.mozilla.org/en-US/firefox/addon/1843[/url] and [url="FirePHP"]https://addons.mozilla.org/en-US/firefox/addon/6149[/url] addons installed
-2) Once the addons are both installed, make sure that all the debugging panes (Console, HTML, CSS, Script, DOM, Net) for Firebug are enabled for your website (to bring up Firebug click the bug icon in the tray of icons in the bottom right of the browser)
-3) Bring up your website and add [tt]&keep_firephp=1[/tt] to the end of the URL
-You will then find that details of all the permission checks, templates, and queries, used to generate the Composr screen are logged to the Firebug/FirePHP Console. By looking to see what permission checks pass or fail you can work out what settings you might want to change.
+2) Once the addons are both installed, make sure that all the debugging panes (Console, HTML, CSS, Script, DOM, Net) for Firebug are enabled for your website (to bring up Firebug access: Tools > Web Developer > Firebug > Open Firebug, from the Firefox menus)
+3) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
 
-You can also create a writable [tt]data_custom/permissioncheckslog.php[/tt] file, and all failed permission checks will be logged to it. Just don't leave the file there or it'll get very big, very fast.
+You will then find that details of all the permission checks used to generate the Composr screen are logged to the Firebug/FirePHP Console. By looking to see what permission checks pass or fail you can work out what settings you might want to change.
 
-[title="4"]Refreshing forms[/title]
+There are FirePHP equivalents in other browsers, but for simplicity we have focused the above instructions on the official/original Firefox addon.
+
+[title="3"]Logging[/title]
+
+As an alternative to FirePHP, you can create an empty writable [tt]data_custom/permissioncheckslog.php[/tt] file. All failed permission checks will be logged to it.
+
+Just don't leave the file there or it'll get very big, very fast!
+
+[title="3"]Refreshing forms[/title]
 
 Be aware that privilege changes may require refreshing of any currently-open forms where the privilege may be used.
 For example, bypass-validation privileges add a checkbox to the form, and if the privilege is not enabled that checkbox will not be there. When the form is submitted Composr requires that checkbox to be checked, in addition to the secure re-testing of access that will happen automatically at this point.
 
-[title="2"]Adding a new usergroup for a non-Conversr site[/title]
+[title="2"]Adding a new usergroup to a third-party forum[/title]
+
+[surround]
+[media width="150" description="Absorbing permissions" float="right"]data_custom/images/docs/tut_permissions/absorb_permissions.png[/media]
+[i]If you are using Conversr (you almost certainly are), ignore this section[/i]
 
 If you are not using [concept]Conversr[/concept] and decide to add a new usergroup, then Composr will not have any permissions associated with it.
+
 Fortunately Composr has a special feature for this situation: go to Admin Zone > Security > Absorb usergroup-permissions. You may use this feature to take the permissions of an existing usergroup and copy them so that the new usergroup has those same permissions.
+[/surround]
 
 [concepts
- 1_key="access permission"     1_value="Whether members of a certain usergroup have permission to access somewhere (a zone, page, or category, for example); a member does not need all their usergroups to have access, only one"
- 2_key="privilege"   2_value="Whether a certain usergroup has permission to do specific things (such as using high-level Comcode, or bypass the word-filter)"
- 3_key="su"                    3_value="Named after the Unix command 'su' ('superuser'), which when used at the command line allows somebody to temporarily log in as a different user"
- 4_key="permissions tree editor"  4_value="This editor is a user friendly interface for editing all permissions (except privileges) on a Composr website"
+ 1_key="access permission"        1_value="Whether members of a certain usergroup have permission to access somewhere (a zone, page, or category, for example); a member does not need all their usergroups to have access, only one"
+ 2_key="privilege"                2_value="Whether a certain usergroup has permission to do specific things (such as using high-level Comcode, or bypass the word-filter)"
+ 3_key="SU"                       3_value="Named after the Unix command 'SU' (superuser / switch user), which when used at the command line allows somebody to temporarily log in as a different user"
+ 4_key="Permissions Tree Editor"  4_value="This editor is a user friendly interface for editing all permissions (except privileges) on a Composr website"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
@@ -141,6 +209,6 @@ Fortunately Composr has a special feature for this situation: go to Admin Zone >
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
 
 {$SET,tutorial_tags,Security,core_permission_management,Configuration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A detailed explanation of how you can configure permissions, how to test them, and how to manage them.}[block]main_tutorial_rating[/block]

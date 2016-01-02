@@ -149,9 +149,9 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 'type_code' => $sub['s_type_code'],
                 'item_name' => $item_name,
 
-                // These will be NULL for non-usergroup subscriptions
+                // These will be null for non-usergroup subscriptions
                 'usergroup_subscription_id' => $usergroup_subscription_id,
-                'usergroup_subscription_title' => $usergroup_subscription_title, // If not NULL, is same as $item_name -- but it's nice to be verbose/clear
+                'usergroup_subscription_title' => $usergroup_subscription_title, // If not null, is same as $item_name -- but it's nice to be verbose/clear
                 'usergroup_subscription_description' => $usergroup_subscription_description,
                 'usergroup_id' => $usergroup_id,
                 'usergroup_name' => $usergroup_name,
@@ -197,7 +197,7 @@ function prepare_templated_subscription($subscription)
         'SUBSCRIPTION_ID' => strval($subscription['subscription_id']),
         'TYPE_CODE' => $subscription['type_code'],
         'ITEM_NAME' => $subscription['item_name'],
-        'USERGROUP_SUBSCRIPTION_TITLE' => $subscription['usergroup_subscription_title'], // May be NULL, if not a usergroup subscription
+        'USERGROUP_SUBSCRIPTION_TITLE' => $subscription['usergroup_subscription_title'], // May be null, if not a usergroup subscription
         'USERGROUP_SUBSCRIPTION_DESCRIPTION' => is_null($subscription['usergroup_subscription_description']) ? new Tempcode() : $subscription['usergroup_subscription_description'],
         'USERGROUP_SUBSCRIPTION_ID' => is_null($subscription['usergroup_subscription_id']) ? '' : strval($subscription['usergroup_subscription_id']),
         'USERGROUP_ID' => is_null($subscription['usergroup_id']) ? '' : strval($subscription['usergroup_id']),

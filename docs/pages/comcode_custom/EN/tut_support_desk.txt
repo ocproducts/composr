@@ -1,16 +1,18 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a virtual support desk[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a virtual support desk[/title]
 
-[media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/support_forum_config.png[/media]
-Composr can be used as an effective support desk tool. For those unfamiliar with the concept of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
- - PLACEMENT: the ability for issues to be placed, both by staff, and by the audience being supported
- - NOTIFICATION: notifications, for staff to be made aware of issues
- - CATEGORISATION: categorisation of issues
- - PRIORITISATION: prioritisation of issues
- - ASSIGNING: the issue is assigned to a specific member of staff
- - TRACKING: tracking of issues
- - COORDINATION: coordination with the resolution of issues between relevant parties
- - RESOLUTION: the ability for issues to be marked as 'resolved'
- - ARCHIVING: past issues may be browsed
+[media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/tut_support_desk/support_forum_config.png[/media]
+Running an online support desk is something many companies will want to do. It allows customers to easily communicate via a website, suggesting new features, reporting bugs, or otherwise asking for support. Composr can be used as an effective support desk tool.
+
+For those unfamiliar with the features of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
+ - [b]Placement[/b]: the ability for issues to be placed, both by staff, and by the audience being supported
+ - [b]Notification[/b]: notifications, for staff to be made aware of issues
+ - [b]Categorisation[/b]: categorisation of issues
+ - [b]Prioritisation[/b]: prioritisation of issues
+ - [b]Assigning[/b]: the issue is assigned to a specific member of staff
+ - [b]Tracking[/b]: tracking of issues
+ - [b]Coordination[/b]: coordination with the resolution of issues between relevant parties
+ - [b]Resolution[/b]: the ability for issues to be marked as 'resolved'
+ - [b]Archiving[/b]: past issues may be browsed
 
 Four different Composr systems may be used to provide such a support desk:
  - The Support Ticket system
@@ -21,12 +23,15 @@ Four different Composr systems may be used to provide such a support desk:
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]The Support Ticket system[/title]
+
 [surround]
-[media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/support_ticket_types.png[/media]
+[media width="150" description="Viewing a support ticket" float="right"]data_custom/images/docs/tut_support_desk/support_show_ticket.png[/media]
+[media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/tut_support_desk/support_ticket_types.png[/media]
 {!tickets:DOC_TICKETS}
-[/surround]
-[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/support_list_tickets.png[/media]
-[media width="150" description="Viewing a support ticket" float="left"]data_custom/images/docs/support_show_ticket.png[/media]
+
+You can add/edit/delete support ticket types from:
+Admin Zone > Setup > Support tickets.
+You can delete a support ticket type from the bottom of its edit form.
 
 Support tickets are created simply by visiting the support ticket page, clicking to add a ticket, and filling in the appropriate details. Upon completion of this, an e-mail is sent to the staff, and the staff can then respond to the ticket as appropriate.
 
@@ -35,53 +40,60 @@ The support ticket system supports attachments, but only in [concept]Conversr[/c
 Guests may create support tickets, but they need to leave their e-mail address (there is a field for this) if they want a reply.
 
 Staff will see all open support tickets when they visit the support ticket page, but users may only seen their own. If the support ticket list is left open then it will automatically make your computer beep if a new ticket is made, and refresh to show that new ticket. Likewise, if a support ticket is left open, your computer will beep and the ticket will refresh, if a new post is made in the ticket.
+[/surround]
 
 [title="3"]Requirements[/title]
 
- - you must not be using the 'none' forum driver (don't worry, you probably aren't)
+[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/tut_support_desk/support_list_tickets.png[/media]
+ - you must not be using the [tt]none[/tt] forum driver (don't worry, you probably aren't)
  - you must have created the support forum that is referenced in the Composr configuration (don't worry, for regular [concept]Conversr[/concept] users it's auto-created)
  - users will need a way to get to the support system; a link is in the default menus, and may also be created using the menu editor
 
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>A special interface is provided for this</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>Support ticket types may be managed from the Admin Zone</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>You can make use of ticket types to set up a priority scale</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>If more than one member of staff are viewing the same support ticket then a notification will be shown; when you reply, you are automatically assigned to the ticket; multiple staff may be assigned, manually or automatically; you may unassign yourself or other staff</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>E-mail/etc notifications are sent</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A topic-like reply feature is provided. There's a staff-only reply feature to make hidden messages only the staff may see</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Ticket may be closed</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>Ticket list is made available, according to permissions</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>A special interface is provided for this</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>Support ticket types may be managed from the Admin Zone</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>You can make use of ticket types to set up a priority scale</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>If more than one member of staff are viewing the same support ticket then a notification will be shown; when you reply, you are automatically assigned to the ticket; multiple staff may be assigned, manually or automatically; you may unassign yourself or other staff</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>E-mail/etc notifications are sent</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A topic-like reply feature is provided. There's a staff-only reply feature to make hidden messages only the staff may see</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Ticket may be closed</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>Ticket list is made available, according to permissions</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -90,8 +102,10 @@ Staff will see all open support tickets when they visit the support ticket page,
 As described earlier, the forum is used to store the tickets.
 
 The ticket forum should not generally be used for making or managing support tickets. It is also generally configured as closed to regular users (i.e. staff-only).
-The tickets module is the primary interface for making or managing tickets.
-Advantages of using the tickets module include:
+
+The primary interface for making or managing tickets is the [tt]tickets[/tt] module ([tt]site:tickets[/tt] page-link, About > Support tickets on the default menus).
+
+Advantages of using the [tt]tickets[/tt] module include:
  - the ability to split replies into separate tickets
  - ticket assignment
  - ticket type filtering
@@ -128,48 +142,55 @@ You can also use square brackets to specify the ticket type to log as. Composr "
 
 The Messaging system is designed to allow staff to easily receive messages and organise themselves with respect to those messages. It is different from the Support Ticket system because the Messaging system is designed around staff planning, and unlike support tickets there is no inbuilt reply mechanism to reply to messages received (although people may leave their contact details). It is optimised for managing feedback instead of maintaining customer relationships.
 
-The Messaging system hooks up to the [tt]main_contact_us[/tt] block. This block gets placed on a Comcode page of your choice, and you use it to gather messages. Any messages gathered will be e-mailed out to any staff who have notifications enabled for the particular usage of the block. Staff can set up their notifications by visiting the Comcode page where the block is placed. When staff are e-mailed they get a link to view the message, and discuss it between themselves. One member of staff may opt to take ownership over the message, which gives them the responsibility of actioning/implementing whatever it implies is required (e.g. if it is a suggestion, implementing that suggestion).
- 
+The Messaging system hooks up to the [tt]main_contact_us[/tt] block.
+
+For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page].
+
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>A special interface is provided for this</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>You can place multiple contact-us blocks, each identified with different IDs. Staff members may set notifications for them individually.</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td><i>Not supported at the time of writing, although ticket types may be used in this way</i></td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>If more than one member of staff are viewing the same support ticket then a notification will be shown</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>E-mail/etc notifications are sent</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>Staff may privately discuss messages and take ownership</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Once a staff member has taken ownership over staff can essentially consider the matter resolved</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>It is possible to browse past messages</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>A special interface is provided for this</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>You can place multiple contact-us blocks, each identified with different IDs. Staff members may set notifications for them individually.</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td><em>Not supported at the time of writing, although ticket types may be used in this way</em></td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>If more than one member of staff are viewing the same support ticket then a notification will be shown</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>E-mail/etc notifications are sent</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>Staff may privately discuss messages and take ownership</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Once a staff member has taken ownership over staff can essentially consider the matter resolved</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>It is possible to browse past messages</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -177,100 +198,129 @@ The Messaging system hooks up to the [tt]main_contact_us[/tt] block. This block 
 
 The Discussion Forum (our own Conversr, at least) is designed to be an extremely efficient multi-purpose working environment: forums are at their heart an interactive communication medium. There are also a number of special features, such as post templates, and multi moderations, that make the forums particularly appropriate for use to provide support.
 
-For more information on this, see the 'Running a discussion forum based help desk' tutorial.
- 
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>Standard forum features may be used effectively</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>Staff may set up notifications against forums as appropriate</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>Sub-forums or topic titles may be used for this</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A reply feature is provided</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Topic may be closed</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>The forum-view allows browsing and searching</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>Standard forum features may be used effectively</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>Staff may set up notifications against forums as appropriate</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>Sub-forums or topic titles may be used for this</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A reply feature is provided</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Topic may be closed</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>The forum-view allows browsing and searching</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
+[title="3"]Post templates[/title]
+
+[surround]
+[media width="150" description="The screen to select post templates for use in a post" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_using_post_template.png[/media]
+[media width="150" description="Adding a post template" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_add_post_template.png[/media]
+{!cns_post_templates:DOC_POST_TEMPLATES}
+
+[title="4"]Adding a post template[/title]
+
+To add a post template, just open up the 'Add post template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms.
+You can delete a post template from the bottom of its edit form.
+
+Composr provides useful features such as limiting the use of a post template to certain forums, making the post template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
+
+[title="4"]Using a post template[/title]
+
+To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
+[/surround]
+
 [title="2"]The Feedback system[/title]
 
-[media width="150" description="The feedback commenting system in action" float="right"]data_custom/images/docs/support_feedback.png[/media]
+[media width="150" description="The feedback commenting system in action" float="right"]data_custom/images/docs/tut_support_desk/support_feedback.png[/media]
 Most forms of Composr content support commenting, via the feedback system. For example, if enabled for a download, and in Composr, the download may have an attached discussion. This discussion is actually stored on the forum in a comment topic.
 
-The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For most forms of content, these discussions are unlikely to be classifiable as 'support', but the download system in particular may contain questions and answers relating to the download itself.
+The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For example, comments posted on a download may contain questions and answers relating to the download itself -- very simple and convenient for users.
 
-To use the feedback commenting system, you must not be using the 'none' forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
- 
+To use the feedback commenting system, you must not be using the [tt]none[/tt] forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
+
+For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page].
+
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>There is an implicit attachment to a related piece of content (such as a download)</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>There is an implicit attachment to a related piece of content (such as a download)</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td><i>Not supported</i></td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>a notification can be enabled for when new feedback is posted</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A reply feature is provided</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td><i>Not supported</i></td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>Content may be searched and browsed</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>There is an implicit attachment to a related piece of content (such as a download)</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>There is an implicit attachment to a related piece of content (such as a download)</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td><em>Not supported</em></td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>a notification can be enabled for when new feedback is posted</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A reply feature is provided</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td><em>Not supported</em></td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>Content may be searched and browsed</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -279,16 +329,17 @@ To use the feedback commenting system, you must not be using the 'none' forum dr
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
 
 [concepts
- 1_key="support desk"   1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
- 2_key="support ticket" 2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
+ 1_key="support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
+ 2_key="support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
+ 3_key="Post template"    3_value="A pre-defined body of text that can be used as a template for new posts"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_mod"]Basic forum moderation[/page]
- - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
- - [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk[/page]
+ - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
+ - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
 
-{$SET,tutorial_tags,Support,tickets,staff_messaging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Support,tickets,cns_post_templates,staff_messaging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]

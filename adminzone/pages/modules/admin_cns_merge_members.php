@@ -46,7 +46,7 @@ class Module_admin_cns_merge_members
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -55,7 +55,7 @@ class Module_admin_cns_merge_members
             return null;
         }
 
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 
@@ -69,7 +69,7 @@ class Module_admin_cns_merge_members
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -100,7 +100,7 @@ class Module_admin_cns_merge_members
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -125,7 +125,7 @@ class Module_admin_cns_merge_members
     /**
      * The UI for choosing members to merge.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
@@ -139,7 +139,7 @@ class Module_admin_cns_merge_members
         $fields->attach(form_input_username(do_lang_tempcode('FROM'), do_lang_tempcode('DESCRIPTION_MEMBER_FROM'), 'from', $from, true));
         $fields->attach(form_input_username(do_lang_tempcode('TO'), do_lang_tempcode('DESCRIPTION_MEMBER_TO'), 'to', $to, true));
 
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             $fields->attach(form_input_tick(do_lang_tempcode('MERGING_ON_MSN'), do_lang_tempcode('DESCRIPTION_MERGING_ON_MSN'), 'keep', true));
         }
 
@@ -152,7 +152,7 @@ class Module_admin_cns_merge_members
     /**
      * The actualiser for merging members.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function actual()
     {
@@ -244,18 +244,18 @@ class Module_admin_cns_merge_members
         require_code('cns_topics_action');
         $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array('t_cache_first_member_id' => $from_id));
         foreach ($topics as $topic) {
-            cns_force_update_topic_cacheing($topic['id'], null, true, true);
+            cns_force_update_topic_caching($topic['id'], null, true, true);
         }
         $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array('t_cache_last_member_id' => $from_id));
         foreach ($topics as $topic) {
-            cns_force_update_topic_cacheing($topic['id'], null, true, true);
+            cns_force_update_topic_caching($topic['id'], null, true, true);
         }
 
         // Forums
         require_code('cns_posts_action2');
         $forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_cache_last_member_id' => $from_id));
         foreach ($forums as $forum) {
-            cns_force_update_forum_cacheing($forum['id']);
+            cns_force_update_forum_caching($forum['id']);
         }
 
         // ---

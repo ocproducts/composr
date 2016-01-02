@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: ftp_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -48,52 +50,49 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
             if ($array != '') {
                 $array .= ",\n";
             }
-            $array .= "    '" . $name . "'=>'" . $type . "'";
+            $array .= "    '" . $name . "' => '" . $type . "'";
         }
         fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->create_table('$table',array(\n$array),true,true);\n"));
 
-        if (($table == 'stats') || ($table == 'incoming_uploads') || ($table == 'cache') || ($table == 'url_title_cache') || ($table == 'ip_country')) { // These are not things we want to back up
-            $data = array();
-        } else {
-            if (($table != 'edit_pings') && ($table != 'cache')) {
-                $start = 0;
-                do {
-                    $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), null, '', 100, $start, false, array());
-                    foreach ($data as $d) {
-                        $list = '';
-                        $value = mixed();
-                        foreach ($d as $name => $value) {
-                            if (multi_lang_content()) {
-                                if (($table == 'translate') && ($name == 'text_parsed')) {
-                                    $value = '';
-                                }
-                            } else {
-                                if (strpos($name, '__text_parsed') !== false) {
-                                    $value = '';
-                                }
+        require_code('database_relations');
+        if (!table_has_purpose_flag($table, TABLE_PURPOSE__NO_BACKUPS)) {
+            $start = 0;
+            do {
+                $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), null, '', 100, $start, false, array());
+                foreach ($data as $d) {
+                    $list = '';
+                    $value = mixed();
+                    foreach ($d as $name => $value) {
+                        if (multi_lang_content()) {
+                            if (($table == 'translate') && ($name == 'text_parsed')) {
+                                $value = '';
                             }
-
-                            if (is_null($value)) {
-                                continue;
-                            }
-                            if ($list != '') {
-                                $list .= ',';
-                            }
-                            $list .= "'" . (is_string($name) ? $name : strval($name)) . "'=>";
-                            if (is_integer($value)) {
-                                $list .= strval($value);
-                            } elseif (is_float($value)) {
-                                $list .= float_to_raw_string($value);
-                            } else {
-                                $list .= '"' . php_addslashes($value) . '"';
+                        } else {
+                            if (strpos($name, '__text_parsed') !== false) {
+                                $value = '';
                             }
                         }
-                        fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->query_insert('$table',array($list));\n"));
-                    }
 
-                    $start += 100;
-                } while (count($data) != 0);
-            }
+                        if (is_null($value)) {
+                            continue;
+                        }
+                        if ($list != '') {
+                            $list .= ',';
+                        }
+                        $list .= "'" . (is_string($name) ? $name : strval($name)) . "'=>";
+                        if (is_integer($value)) {
+                            $list .= strval($value);
+                        } elseif (is_float($value)) {
+                            $list .= float_to_raw_string($value);
+                        } else {
+                            $list .= '"' . php_addslashes($value) . '"';
+                        }
+                    }
+                    fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->query_insert('$table',array($list));\n"));
+                }
+
+                $start += 100;
+            } while (count($data) != 0);
         }
 
         fwrite($logfile, 'Backed up table ' . $table . "\n");
@@ -117,7 +116,7 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
  * @param  string $b_type The type of backup to do
  * @set    full incremental
  * @param  integer $max_size The maximum size of a file to include in the backup
- * @return tempcode Success message
+ * @return Tempcode Success message
  */
 function make_backup_2($file, $b_type, $max_size) // This is called as a shutdown function and thus cannot script-timeout
 {
@@ -126,8 +125,8 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
         make_missing_directory(get_custom_file_base() . '/exports/backups');
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $logfile_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
     $logfile = @fopen($logfile_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($logfile_path); // .txt file because IIS doesn't allow .log download
@@ -157,17 +156,17 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
 
 //COMMANDS BEGIN
 //\$GLOBALS['SITE_DB']->drop_table_if_exists('db_meta');
-//\$GLOBALS['SITE_DB']->create_table('db_meta',array(
-// 'm_table'=>'*ID_TEXT',
-// 'm_name'=>'*ID_TEXT',
-// 'm_type'=>'ID_TEXT'
+//\$GLOBALS['SITE_DB']->create_table('db_meta', array(
+// 'm_table' => '*ID_TEXT',
+// 'm_name' => '*ID_TEXT',
+// 'm_type' => 'ID_TEXT'
 //));
 //
 //\$GLOBALS['SITE_DB']->drop_table_if_exists('db_meta_indices');
-//\$GLOBALS['SITE_DB']->create_table('db_meta_indices',array(
-// 'i_table'=>'*ID_TEXT',
-// 'i_name'=>'*ID_TEXT',
-// 'i_fields'=>'*ID_TEXT',
+//\$GLOBALS['SITE_DB']->create_table('db_meta_indices', array(
+// 'i_table' => '*ID_TEXT',
+// 'i_name' => '*ID_TEXT',
+// 'i_fields' => '*ID_TEXT',
 //));
 ");
     get_table_backup($logfile, 'db_meta', 'db_meta_indices', $install_data_php_file);
@@ -313,7 +312,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
                 require_lang('backups');
                 require_code('notifications');
                 $subject = do_lang('FAILED_TO_UPLOAD_BACKUP_SUBJECT', null, null, null, get_site_default_lang());
-                $message = do_lang('FAILED_TO_UPLOAD_BACKUP_BODY', $copy_server, null, null, get_site_default_lang());
+                $message = do_notification_lang('FAILED_TO_UPLOAD_BACKUP_BODY', $copy_server, null, null, get_site_default_lang());
                 dispatch_notification('error_occurred', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
             }
         }

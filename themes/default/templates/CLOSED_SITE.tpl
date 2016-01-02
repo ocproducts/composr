@@ -1,3 +1,5 @@
+{$SET,login_screen,1}
+
 {$REQUIRE_CSS,messages}
 
 <div class="closed_site_special_message">

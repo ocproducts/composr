@@ -51,6 +51,6 @@ class Hook_config_captcha_single_guess
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

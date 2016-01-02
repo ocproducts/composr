@@ -27,6 +27,8 @@
 <hr class="spaced_rule" />
 
 <form title="{!SAVE}" action="{URL*}" method="post" target="_self">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div id="edit_field_store" style="display: none">
 	</div>
 

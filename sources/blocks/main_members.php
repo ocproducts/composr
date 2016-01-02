@@ -59,11 +59,11 @@ class Block_main_members
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(strpos(serialize($_GET),\'filter_\')!==false)?null:array(
@@ -93,7 +93,7 @@ class Block_main_members
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -102,6 +102,7 @@ class Block_main_members
         }
 
         require_code('cns_members');
+        require_code('cns_groups');
         require_code('cns_members2');
         require_code('selectcode');
 
@@ -125,7 +126,7 @@ class Block_main_members
         } else {
             $filters_row_a = 'm_username=' . php_addslashes(do_lang('USERNAME'));
             if ($usergroup == '') {
-                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('GROUP'));
+                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('USERGROUP'));
             }
             $filters_row_b = '';
             $cpfs = cns_get_all_custom_fields_match(cns_get_all_default_groups(), 1, 1, null, null, 1, null);
@@ -189,7 +190,7 @@ class Block_main_members
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
                     if (is_null($group_id)) {
-                        return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'red_alert');
+                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
                     }
                 }
                 if ($has_exists) {

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: How the Internet actually works[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: How the Internet actually works[/title]
 
 In this tutorial I will explain how the Internet works, all the way from what goes through the wires and how the wires across the globe connect, to how meaningful activities are performed on your computer.
 
@@ -14,6 +14,7 @@ This is all it is really -- a very big computer network.  However, this tutorial
 
 [title="2"]Computer networks[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/tut_how_internet_works/wiring.jpg[/media]
 And, what's a computer network? A computer network is just two or more of computers connected together such that they may send messages between each other. On larger networks computers are connected together in complex arrangements, where some intermediary computers have more than one connection to other computers, such that every computer can reach any other computer in the network via paths through some of those intermediary computers.
 
 Computers aren't the only things that use networks -- the road and rail networks are very similar to computer networks, just those networks transport people instead of information.
@@ -32,16 +33,18 @@ Fast Internet connections that are done via '(A)DSL' and 'Cable' are no differen
 
 [title="2"]The Internet[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/tut_how_internet_works/globe.jpg[/media]
 The really amazing thing about the Internet isn't the technology. We've actually had big Internet-like computer networks before, and 'The Internet' existed long before normal people knew the term. The amazing thing is that such a massive computer network could exist without being built or governed in any kind of seriously organised way. The only organisation that really has a grip on the core computer network of the Internet is a US-government-backed non-profit company called 'ICANN', but nobody could claim they 'controlled' the Internet, as their mandate and activities are extremely limited.
 
 The Internet is a testament both simultaneously due to the way technologists cooperated and by the way entrepreneurs took up the task, unmanaged, to use the conventions of the technologists to hook up regular people and businesses. The Internet didn't develop on the Microsoft Windows 'operating system' -- Internet technology was built around much older technical operating systems; nevertheless, the technology could be applied to ordinary computers by simply building support for the necessary networking conventions on top of Windows. It was never planned, but good foundations and a lack of bottlenecks (such as controlling bodies) often lead to unforeseen great rises -- like the telephone network before, or even the world-wide spread of human population and society.
 
 What I have described so far is probably not the Internet as you or most would see it. It's unlikely you see the Internet as a democratic and uniform computer network, and to an extent, it isn't. The reason for this is that I have only explained the foundations of the system so far, and this foundation operates below the level you'd normally be aware of. On the lowest level you would be aware of, the Internet is actually more like a situation between a getter and a giver -- there's something you want from the Internet, so you connect up and get it. Even when you send an e-mail, you're getting the service of e-mail delivery.
 
-Being a computer network, the Internet consists of computers -- however, not all computers on the Internet are created equal. Some computers are there to provide services, and some are there to consume those services. We call the providing computers 'servers' and the consuming computers 'clients'. At the theoretical level, the computers have equal status on the network, but servers are much better connected than clients and are generally put in place by companies providing some kind of commercial service. You don't pay to view a web site, but somebody pays for the server the website is located on -- usually the owner of the web site pays a 'web host' (a commercial company who owns the server).
+Being a computer network, the Internet consists of computers -- however, not all computers on the Internet are created equal. Some computers are there to provide services, and some are there to consume those services. We call the providing computers 'servers' and the consuming computers 'clients'. At the theoretical level, the computers have equal status on the network, but servers are much better connected than clients and are generally put in place by companies providing some kind of commercial service. You don't pay to view a website, but somebody pays for the server the website is located on -- usually the owner of the website pays a 'web host' (a commercial company who owns the server).
 
 [title="2"]Making contact[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/tut_how_internet_works/handshake.jpg[/media]
 I've established how the Internet is a computer network: now I will explain how two computers that could be on other sides of the world can send messages to each other.
 
 Imagine you were writing a letter and needed to send it to someone. If you just wrote a name on the front, it would never arrive, unless perhaps you lived in a small village. A name is rarely specific enough. Therefore, as we all know, we use addresses to contact someone, often using: the name, the house number, the road name, the town name, the county name, and sometimes, the country name. This allows sending of messages on another kind of network -- the postal network. When you send a letter, typically it will be passed between postal sorting offices starting from the sorting office nearest to the origin, then up to increasingly large sorting offices until it's handled by a sorting office covering regions for both the origin and the destination, then down to increasingly small sorting offices until it's at the sorting office nearest the destination -- and then it's delivered.
@@ -52,7 +55,7 @@ Each computer on the Internet is given an address (a so-called 'IP address'), an
 
 Like the postal network with its sorting offices, computer networks usually have connections to a few other computer networks. A computer network will send the message to a larger network (a network that is more likely to recognise at least some part of the address). This process of 'broadening out' continues until the message is being handled by a network that is 'over' the destination, and then the 'narrowing in' process will occur.
 
-An example 'IP address' is '[tt]69.60.115.116[/tt]'. They are just series of digit groups where the digit groups towards the right are increasingly local. Each digit group is a number between [tt]0[/tt] and [tt]255[/tt]. This is just an approximation, but you could think of this address meaning:
+An example 'IP address' is [tt]69.60.115.116[/tt]. They are just series of digit groups where the digit groups towards the right are increasingly local. Each digit group is a number between [tt]0[/tt] and [tt]255[/tt]. This is just an approximation, but you could think of this address meaning:
  - A computer [tt]116[/tt]
  - in a small neighbourhood [tt]115[/tt]
  - in a larger neighbourhood [tt]60[/tt]
@@ -86,19 +89,19 @@ Reliable message transfer on the Internet is done via 'TCP'. You may have heard 
 
 [title="2"]Names, not numbers[/title]
 
-When most people think of an 'Internet Address' they think of something like '[tt]www.example.com[/tt]' rather than '[tt]12.34.156.78[/tt]'. People relate to names with greater ease than numbers, so special computers that humans need to access are typically assigned names ('domain names') using a system known as 'DNS' (the 'domain name system').
+[media width="150" description="" float="right"]data_custom/images/docs/tut_how_internet_works/image.png[/media]
+When most people think of an 'Internet Address' they think of something like [tt]www.example.com[/tt] rather than [tt]12.34.156.78[/tt]. People relate to names with greater ease than numbers, so special computers that humans need to access are typically assigned names ('domain names') using a system known as 'DNS' (the 'domain name system').
 
-All Internet communication is still done using IP addresses (recall '[tt]69.60.115.116[/tt]' is an IP address). The 'domain names' are therefore translated to IP addresses behind the scenes, before the main communication starts.
+All Internet communication is still done using IP addresses (recall [tt]69.60.115.116[/tt] is an IP address). The 'domain names' are therefore translated to IP addresses behind the scenes, before the main communication starts.
 
-At the core, the process of looking up a domain name is quite simple -- it's a process of 'homing in' by moving leftwards through the name, following an interrogation path. This is best shown by example -- '[tt]www.example.com[/tt]' would be looked up as follows:
+At the core, the process of looking up a domain name is quite simple -- it's a process of 'homing in' by moving leftwards through the name, following an interrogation path. This is best shown by example -- [tt]www.example.com[/tt] would be looked up as follows:
+ - Every computer on the Internet knows how to contact the computers (the 'root' 'DNS servers') responsible for things like [tt]com[/tt], [tt]org[/tt], [tt]net[/tt] and [tt]uk[/tt]. There are a few such computers and one is contacted at random. The DNS server computer is asked if they know [tt]www.example.com[/tt] and will respond saying they know which server computer is responsible for [tt]com[/tt].
+ - The [tt]com[/tt] server computer is asked it knows [tt]www.example.com[/tt] and will respond saying they know which server computer is responsible for [tt]example.com[/tt].
+ - 'The [tt]'example.com[/tt]' server computer is asked if it knows [tt]www.example.com[/tt] and will respond saying that it knows the corresponding server computer to be [tt]69.60.115.116[/tt].
 
- - Every computer on the Internet knows how to contact the computers (the 'root' 'DNS servers') responsible for things like '[tt]com[/tt]', '[tt]org[/tt]', '[tt]net[/tt]' and '[tt]uk[/tt]'. There are a few such computers and one is contacted at random. The DNS server computer is asked if they know '[tt]www.example.com[/tt]' and will respond saying they know which server computer is responsible for '[tt]com[/tt]'.
- - The '[tt]com[/tt]' server computer is asked it knows '[tt]www.example.com[/tt]' and will respond saying they know which server computer is responsible for '[tt]example.com[/tt]'.
- - 'The [tt]'example.com[/tt]' server computer is asked if it knows '[tt]www.example.com[/tt]' and will respond saying that it knows the corresponding server computer to be '[tt]69.60.115.116[/tt]'.
+Note that there is a difference between a server computer being 'responsible' for a domain name and the domain name actually corresponding to that computer. For example, the [tt]example.com[/tt] responsible DNS server might not necessarily be the same server as [tt]example.com[/tt] itself.
 
-Note that there is a difference between a server computer being 'responsible' for a domain name and the domain name actually corresponding to that computer. For example, the '[tt]example.com[/tt]' responsible DNS server might not necessarily be the same server as '[tt]example.com[/tt]' itself.
-
-As certain domain names, or parts of domain names, are very commonly used, computers will remember results to avoid doing a full interrogation for every name they need to lookup. In fact, I have simplified the process considerably in my example because the looking-up computer does not actually perform the full search itself. If all computers on the Internet did full searches it would overload the 'root DNS servers', as well as the DNS servers responsible for names like '[tt]com[/tt]'. Instead, the looking up computer would ask its own special 'local DNS server', which might remember a result of a partial result, or might solicit help (full, or partial) from its own 'local DNS server', and so on -- until, in a worst case scenario, the process has to be completed in full.
+As certain domain names, or parts of domain names, are very commonly used, computers will remember results to avoid doing a full interrogation for every name they need to lookup. In fact, I have simplified the process considerably in my example because the looking-up computer does not actually perform the full search itself. If all computers on the Internet did full searches it would overload the 'root DNS servers', as well as the DNS servers responsible for names like [tt]com[/tt]. Instead, the looking up computer would ask its own special 'local DNS server', which might remember a result of a partial result, or might solicit help (full, or partial) from its own 'local DNS server', and so on -- until, in a worst case scenario, the process has to be completed in full.
 
 Domain names are allocated by the person wanting them registering the domain name with an agent (a 'registrar') of the organisation responsible for the furthest right-hand part of the domain name. At the time of writing a company named 'VeriSign' (of which 'Network Solutions' is a subsidiary) is responsible for things like 'com' and 'net'. There are an uncountable number of registrars operating for VeriSign, and most domain purchasers are likely not aware of the chain of responsibility present -- instead, they just get the domains they want from the agent, and deal solely with that agent and their web host (who are often the same company). Domains are never purchased, but rather rented and exclusively renewable for a period a bit longer than the rental period.
 
@@ -107,26 +110,26 @@ Domain names are allocated by the person wanting them registering the domain nam
 I've fully covered the essence of how messages are delivered over the Internet, but so far these messages are completely raw and meaningless. Before meaningful communication can occur we need to layer on yet another protocol (recall IP and TCP protocols are already layered over our physical network).
 
 There are many protocols that work on the communications already established, including:
-
- - HTTP -- for web pages, typically read in web browser software
- - POP3 -- for reading e-mail in e-mail software, with it stored on a user's own computer
- - IMAP4 -- for reading e-mail in e-mail software, with it archived on the receiving server
- - SMTP -- for sending e-mail from e-mail software
- - FTP -- for uploading and downloading files (sometimes via a web browser, although using special FTP software is better)
- - ICMP -- for 'pinging', amongst other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
- - Telnet -- for logging into another computer across the Internet and typing in commands for it (the old operating systems that the Internet developed around are heavily based on the typing in of commands rather than just using a mouse -- don't expect to be able to telnet to a Windows computer)
- - MSN Messenger -- this is just one example of many protocols that aren't really standard and shared conventions, but rather ones designed by a single software manufacturer wholly for the purposes of their own software
+ - [b]HTTP[/b] -- for web pages, typically read in web browser software
+ - [b]POP3[/b] -- for reading e-mail in e-mail software, with it stored on a user's own computer
+ - [b]IMAP4[/b] -- for reading e-mail in e-mail software, with it archived on the receiving server
+ - [b]SMTP[/b] -- for sending e-mail from e-mail software
+ - [b]FTP[/b] -- for uploading and downloading files (sometimes via a web browser, although using special FTP software is better)
+ - [b]ICMP[/b] -- for 'pinging', among other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
+ - [b]Telnet[/b] -- for logging into another computer across the Internet and typing in commands for it (the old operating systems that the Internet developed around are heavily based on the typing in of commands rather than just using a mouse -- don't expect to be able to telnet to a Windows computer)
+ - [b]Skype[/b] -- this is just one example of many protocols that aren't really standard and shared conventions, but rather ones designed by a single software manufacturer wholly for the purposes of their own software
 
 I'm not going to go into the details of any of these protocols because it's not really relevant unless you actually need to know it.
 
 The information transferred via a protocol is usually a request for something, or a response for something requested. For example, with HTTP, a client computer requests a certain web page from a server via HTTP and then the web server, basically, responds with the file embedded within HTTP.
 
-Each of these protocols operates on more or more so-called 'ports', and it is these 'ports' that allow the computers to know which protocol to use. For example, a web server (special computer software running on a server computer that serves out web pages) uses a port of number '[tt]80[/tt]', and hence when the server receives messages on that port it passes them to the web server software which naturally knows that they'll be written in HTTP.
+Each of these protocols operates on more or more so-called 'ports', and it is these 'ports' that allow the computers to know which protocol to use. For example, a web server (special computer software running on a server computer that serves out web pages) uses a port of number [tt]80[/tt], and hence when the server receives messages on that port it passes them to the web server software which naturally knows that they'll be written in HTTP.
 
 For a client computer it's simpler -- it knows that a response to a message it sent will be in the same protocol it initially used. When the messages are sent back and forth the server computer and client computer typically set up a so-called 'stream' (a marked conversation) between them. They are then able to associate messages to the stream according to their origin address and port number.
 
 [title="2"]The World Wide Web[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/tut_how_internet_works/web.jpg[/media]
 I've explained how the Internet works, but not yet how the 'World Wide Web' (the 'web') works. The web is the publishing system that most people don't realise is distinguishable from the Internet itself.
 The Internet uses IP addresses (often found via domain names) to identify resources, but the web has to have something more sophisticated as it would be silly if every single page on the Internet had to have its own 'domain name'. The web uses 'URLs' (uniform resource locators), and I'm sure you know about these as nowadays they are printed all over the place in the real world (albeit, usually only in short-hand).
 
@@ -138,35 +141,36 @@ That said that's not really a full URL, because occasionally URLs can be much mo
 [indent][tt]<protocol>://<user>:<password>@<domain/ip>:<port>/<resource_identifier>[/tt][/indent]
 You can ignore the more complex example, because it's not really relevant for the purposes of this tutorial.
 
-HTTP is the core protocol for the web. This is why URLs usually start '[tt]http://[/tt]'. Web browsers almost always also support FTP, which is why some URLs may start '[tt]ftp://[/tt]'.
+HTTP is the core protocol for the web. This is why URLs usually start [tt]http://[/tt]. Web browsers almost always also support FTP, which is why some URLs may start [tt]ftp://[/tt].
 
-Typically the 'resource identifier' is simply a file on the server computer. For example, '[tt]mywebsite/index.html[/tt]' would be a file on the server computer of the same path, stored underneath a special directory. On Windows the "[tt]\[/tt]" symbol is used to write out directory names, but as the web wasn't invented for Windows, the convention of the older operating systems is used.
+Typically the 'resource identifier' is simply a file on the server computer. For example, [tt]mywebsite/index.html[/tt] would be a file on the server computer of the same path, stored underneath a special directory. On Windows the "[tt]\[/tt]" symbol is used to write out directory names, but as the web wasn't invented for Windows, the convention of the older operating systems is used.
 
 We now have three kinds of 'Internet Address', in order of increasing sophistication:
- - IP addresses
- - Domain names
- - URLs
+1) IP addresses
+2) Domain names
+3) URLs
 
 If a URL were put into web browser software by a prospective reader then the web browser would send out an appropriate request (usually, with the HTTP protocol being appropriate) to the server computer identified by the URL. The server computer would then respond and typically the web browser would end up with a file. The web browser would then interpret the file for display, much like any software running on a computer would interpret the files it understands. For the HTTP protocol, the web browser knows what to interpret the file as because the HTTP protocol uses something called a 'MIME type' to identify each kind of resource the server can send out. If the web server computer is just sending out an on-disk file then the web server computer works out the MIME type from the file extension (such as '.html') of the file.
 
-An 'HTML' file is the kind of file that defines a web page. It's written in plain text, and basically mixes information showing show to display a document along with the document itself. If you're curious, try using the "View page source" function of your web browser when viewing a web page, and you'll see a mix of portions of normal human text and short text between '[tt]<[/tt]' and '[tt]>[/tt]' symbols. The former is the document contents and the latter are the display instructions.
+An 'HTML' file is the kind of file that defines a web page. It's written in plain text, and basically mixes information showing show to display a document along with the document itself. If you're curious, try using the "View page source" function of your web browser when viewing a web page, and you'll see a mix of portions of normal human text and short text between [tt]<[/tt] and [tt]>[/tt] symbols. The former is the document contents and the latter are the display instructions.
 In newer versions of HTML there's a split between 'structuring' a document and 'displaying' a structure -- in this case, another special technology named 'CSS' is added to the mix.
 
 I've explained how typical web pages are just files on the disk of a server computer. Increasingly, things are slightly less direct. When you visit something like eBay, your web-mail, or a Composr-powered website, you aren't just reading files. You're actually interacting with computer software, and the web pages you receive are generated anew by that software every time a request is made. These kinds of systems are known as 'web applications' and are increasingly replacing the need to install software on your own computer (because it's so much easier just to use a web browser to access a web application on a server computer).
 
 [title="2"]Whispering across the globe[/title]
 
+[media description="" width="150" float="right" framed="0"]data_custom/images/docs/tut_how_internet_works/security.jpg[/media]
 The problem with sending messages around the world using protocols such as HTTP, built on well-understood standard protocols, potentially between 100s of computers, is that it's hardly safe when those messages contain passwords and credit card details.
 
 There are in fact three main security problems with just using common Internet technologies for sensitive communication. These problems are that any of the 'middleman' computers between source and destination could be:
- - listening in (for passwords, for example)
- - altering the conversation (inserting instructions into banking requests to take money out of bank accounts, for example)
- - hijacking requests (pretending to be the bank, for example)
+1) listening in (for passwords, for example)
+2) altering the conversation (inserting instructions into banking requests to take money out of bank accounts, for example)
+3) hijacking requests (pretending to be the bank, for example)
 
 To solve these three problems we need to encode data so that:
- - it's encrypted
- - it's only encryptable by the sender (i.e. Tampering becomes impossible, because they don't know how to encrypt new data to tack on)
- - it's provable that the engaging client computer really is the correct client computer and that the responding server computer really is the correct server computer
+1) it's encrypted
+2) it's only encryptable by the sender (i.e. Tampering becomes impossible, because they don't know how to encrypt new data to tack on)
+3) it's provable that the engaging client computer really is the correct client computer and that the responding server computer really is the correct server computer
 
 This is all done using something called 'TLS' (formerly named 'SSL'). I won't explain exactly how it's done, but the basis is that there's a way of encrypting, and the receiver can identify whether the sender did the encrypting itself without actually knowing how the sender did it. It's done using some mathematical trickery.
 
@@ -190,6 +194,6 @@ Thanks for reading!
  - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
- - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
 
 {$SET,tutorial_tags,Internet Technology,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of how the Internet works, all the way from what goes through the wires, to how meaningful activities happen.}[block]main_tutorial_rating[/block]

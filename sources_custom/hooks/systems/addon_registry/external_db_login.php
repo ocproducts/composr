@@ -113,6 +113,16 @@ class Hook_addon_registry_external_db_login
     }
 
     /**
+     * Explicitly say which icon should be used
+     *
+     * @return URLPATH Icon
+     */
+    public function get_default_icon()
+    {
+        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+    }
+
+    /**
      * Get a list of files that belong to this addon
      *
      * @return array List of files
@@ -123,11 +133,7 @@ class Hook_addon_registry_external_db_login
             'sources_custom/hooks/systems/addon_registry/external_db_login.php',
             'sources_custom/hooks/systems/login_providers/external_db.php',
             'sources_custom/hooks/systems/login_providers_direct_auth/external_db.php',
-            'sources_custom/hooks/systems/login_providers_direct_auth/index.html',
-            'sources_custom/hooks/systems/login_providers_direct_auth/.htaccess',
             'sources_custom/hooks/systems/upon_login/external_db.php',
-            'sources_custom/hooks/systems/upon_login/index.html',
-            'sources_custom/hooks/systems/upon_login/.htaccess',
             'sources_custom/external_db.php',
             'pages/modules_custom/join.php',
             'pages/modules_custom/lost_password.php',

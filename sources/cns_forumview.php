@@ -28,7 +28,7 @@
  * @param  integer $start Offset for result showing
  * @param  AUTO_LINK $root Virtual root
  * @param  ?MEMBER $of_member_id The member to show private topics of (null: not showing private topics)
- * @param  tempcode $breadcrumbs The breadcrumbs
+ * @param  Tempcode $breadcrumbs The breadcrumbs
  * @return mixed Either Tempcode (an interface that must be shown) or a pair: The main Tempcode, the forum name (string). For a PT view, it is always a tuple, never raw Tempcode (as it can go inside a tabset).
  */
 function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $root, $of_member_id, $breadcrumbs)
@@ -56,8 +56,8 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
         if ((array_key_exists('question', $details)) && (is_null(get_bot_type()))) {
             // Was there a question answering attempt?
-            $answer = post_param_string('answer', '-1#');
-            if ($answer != '-1#') {
+            $answer = post_param_string('answer', null);
+            if ($answer !== null) {
                 if (strtolower(trim($answer)) == strtolower(trim($details['answer']))) { // They got it right
                     if (!is_guest()) {
                         $GLOBALS['FORUM_DB']->query_insert('f_forum_intro_member', array('i_forum_id' => $id, 'i_member_id' => get_member()));
@@ -303,17 +303,17 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     }
     if ($type == 'pt') {
         //There has been debate in the past whether to have a link from PTs to the forum or not! Currently using the Social menu is considered canon - templating could add a button in though.
-        //$archive_url=$GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(),true);
-        //$button_array[]=array('immediate'=>false,'title'=>do_lang_tempcode('ROOT_FORUM'),'url'=>$archive_url,'img'=>'buttons__forum');
+        //$archive_url = $GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(), true);
+        //$button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons__forum');
     }
     if (array_key_exists('may_post_topic', $details)) {
         if ($type == 'pt') {
             //if ($of_member_id!==get_member())    Actually we'll leave the "send message" button in your inbox, as a way for being able to type in who to send it to
             {
-                $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__send');
+                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__send');
             }
         } else {
-            $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__new_topic');
+            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__new_topic');
         }
     }
     $buttons = cns_button_screen_wrap($button_array);
@@ -415,7 +415,8 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
 
     // Pre-load it, so meta-data isn't altered later
     $bak = $GLOBALS['META_DATA'];
-    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row, 't_cache_first_post', $GLOBALS['FORUM_DB']);
+    $topic_row_tedit = array('id' => $topic_row['id'], 't_cache_first_post' => $topic_row['t_cache_first_post'], 't_cache_first_post__text_parsed' => multi_lang_content() ? null : $topic_row['t_cache_first_post__text_parsed'], 't_cache_first_post__source_user' => multi_lang_content() ? null : $topic_row['t_cache_first_post__source_user']);
+    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row_tedit, 't_cache_first_post', $GLOBALS['FORUM_DB']);
     $topic['first_post']->evaluate();
     $GLOBALS['META_DATA'] = $bak;
 
@@ -457,7 +458,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     $topic['first_member_id'] = $topic_row['t_cache_first_member_id'];
     if (is_null($topic['first_member_id'])) {
         require_code('cns_posts_action2');
-        cns_force_update_topic_cacheing($topic_row['id'], null, true, true);
+        cns_force_update_topic_caching($topic_row['id'], null, true, true);
     }
     if (!is_null($topic_row['t_cache_last_post_id'])) {
         $topic['last_post_id'] = $topic_row['t_cache_last_post_id'];
@@ -516,7 +517,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
  * @param  boolean $pt Whether the topic is a Private Topic.
  * @param  ?string $show_forum The forum name (null: do not show the forum name).
- * @return tempcode The topic row.
+ * @return Tempcode The topic row.
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
@@ -567,7 +568,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     if ($topic['emoticon'] != '') {
         $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON', array('_GUID' => 'dfbe0e4a11b3caa4d2da298ff23ca221', 'EMOTICON' => $topic['emoticon']));
     } else {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON_NONE');
+        $emoticon = new Tempcode();
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {
@@ -642,6 +643,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         'DESCRIPTION' => $topic['description'],
         'URL' => $url,
         'TITLE' => $title,
+        '_POSTER' => is_null($topic['first_member_id']) ? '' : strval($topic['first_member_id']),
         'POSTER' => $poster,
         'NUM_POSTS' => integer_format($topic['num_posts']),
         'NUM_VIEWS' => integer_format($topic['num_views']),
@@ -702,7 +704,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         if ($child_or_list != '') {
             $child_or_list .= ' AND ';
         }
-        $query = 'SELECT DISTINCT t_forum_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval(get_member()) . ') WHERE t_forum_id IS NOT NULL AND ' . $child_or_list . 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' AND (l_time<t_cache_last_time OR l_time IS NULL)';
+        $query = 'SELECT DISTINCT t_forum_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval(get_member()) . ') WHERE t_forum_id IS NOT NULL AND ' . $child_or_list . 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' AND (l_time<t_cache_last_time OR l_time IS NULL)';
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $query .= ' AND t_validated=1';
         }
@@ -925,7 +927,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         $out['may_change_max'] = true;
         $out['may_move_topics'] = true;
         if (has_privilege(get_member(), 'multi_delete_topics')) {
-            $out['may_delete_topics'] = true; // Only super admins can casually delete topics - other staff are expected to trash them. At least deleted posts or trashed topics can be restored!
+            $out['may_delete_topics'] = true; // Only super admins can casually delete topics - other staff are expected to trash them. At least trashed topics can be restored!
         }
     }
     return $out;

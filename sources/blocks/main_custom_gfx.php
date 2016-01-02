@@ -45,7 +45,7 @@ class Block_main_custom_gfx
      * Execute the block.
      *
      * @param                           array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -70,7 +70,7 @@ class Block_main_custom_gfx
      * @param  ID_TEXT $cache_id ID.
      * @param  array $map A map of parameters.
      * @param  URLPATH $img_path The image path.
-     * @return mixed URL of completed image OR tempcode error.
+     * @return mixed URL of completed image OR Tempcode error.
      */
     public function _do_image($cache_id, &$map, $img_path)
     {
@@ -108,7 +108,7 @@ class Block_main_custom_gfx
 
             $colour = imagecolorallocate($img, hexdec(substr($_color, 0, 2)), hexdec(substr($_color, 2, 2)), hexdec(substr($_color, 4, 2)));
 
-            $pos_y = intval(array_key_exists('y', $map) ? $map['y'] : '12');
+            $pos_y = intval(array_key_exists('y', $map) ? $map['y'] : '16');
 
             require_code('character_sets');
             $text = foxy_utf8_to_nce($map['data']);

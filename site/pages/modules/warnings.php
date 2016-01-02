@@ -27,7 +27,7 @@ class Module_warnings extends Standard_crud_module
 {
     public $lang_type = 'WARNING';
     public $select_name = 'SUBMITTER';
-    public $select_name_description = 'DESCRIPTION_SUBMITTER';
+    public $select_name_description = '';
     public $redirect_type = '!';
     public $menu_label = 'MODULE_TRANS_NAME_warnings';
     public $table = 'f_warnings';
@@ -51,7 +51,7 @@ class Module_warnings extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -70,7 +70,7 @@ class Module_warnings extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -82,6 +82,7 @@ class Module_warnings extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
         require_lang('cns_warnings');
+        require_lang('submitban');
 
         if ($type == 'history') {
             $this->title = get_screen_title('PUNITIVE_HISTORY');
@@ -118,7 +119,7 @@ class Module_warnings extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -157,7 +158,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * View the warning/punishment history for a member.
      *
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function history()
     {
@@ -183,13 +184,13 @@ class Module_warnings extends Standard_crud_module
             $is_warning = escape_html($row['w_is_warning'] ? do_lang_tempcode('YES') : do_lang_tempcode('NO'));
 
             $changed_usergroup_from = escape_html((is_null($row['p_changed_usergroup_from']) ? do_lang_tempcode('NO') : do_lang_tempcode('YES')));
-            $charged_points = ($row['p_charged_points'] == 0) ? new Tempcode() : div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_charge'), '_SELF'), do_lang_tempcode('RESTORE_POINTS', integer_format($row['p_charged_points'])), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'dsgsgdfgddgdf');
+            $charged_points = ($row['p_charged_points'] == 0) ? new Tempcode() : div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_charge'), '_SELF'), do_lang_tempcode('RESTORE_POINTS', escape_html(integer_format($row['p_charged_points']))), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'dsgsgdfgddgdf');
             $undoing = new Tempcode();
             if ($row['p_probation'] == 0) {
                 $_undoing_link = new Tempcode();
             } else {
                 $_undoing_url = build_url(array('page' => '_SELF', 'type' => 'undo_probation'), '_SELF');
-                $_undoing_link = div(hyperlink($_undoing_url, do_lang_tempcode('REMOVE_PROBATION_DAYS', integer_format($row['p_probation'])), false, false, '', null, form_input_hidden('id', strval($row['id']))), '46t54yhrtghdfhdhdfg');
+                $_undoing_link = div(hyperlink($_undoing_url, do_lang_tempcode('REMOVE_PROBATION_DAYS', escape_html(integer_format($row['p_probation']))), false, false, '', null, form_input_hidden('id', strval($row['id']))), '46t54yhrtghdfhdhdfg');
             }
             $undoing->attach($_undoing_link);
             if (addon_installed('points')) {
@@ -237,7 +238,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_charge()
     {
@@ -258,7 +259,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_probation()
     {
@@ -281,7 +282,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_banned_ip()
     {
@@ -303,7 +304,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_banned_member()
     {
@@ -323,7 +324,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_silence_from_topic()
     {
@@ -349,7 +350,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Actualiser to undo a certain type of punitive action.
      *
-     * @return tempcode Result (redirect page)
+     * @return Tempcode Result (redirect page)
      */
     public function undo_silence_from_forum()
     {
@@ -373,13 +374,13 @@ class Module_warnings extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a warning adding/editing form.
+     * Get Tempcode for a warning adding/editing form.
      *
      * @param  boolean $new Whether it is a new warning/punishment record
      * @param  LONG_TEXT $explanation The explanation for the warning/punishment record
      * @param  BINARY $is_warning Whether to make this a formal warning
      * @param  ?MEMBER $member_id The member the warning is for (null: get from environment)
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($new = true, $explanation = '', $is_warning = 0, $member_id = null)
     {
@@ -408,7 +409,7 @@ class Module_warnings extends Standard_crud_module
             if (is_object($profile_url)) {
                 $profile_url = $profile_url->evaluate();
             }
-            $this->add_text = do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), integer_format($num_warnings), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
+            $this->add_text = do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'cb4511a58a4c78eb75346a468e6e6fdf', 'TITLE' => do_lang_tempcode('MODULE_TRANS_NAME_warnings'))));
@@ -480,7 +481,7 @@ class Module_warnings extends Standard_crud_module
                 }
             }
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BANNED_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
 
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
                 $groups = new Tempcode();
@@ -587,7 +588,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -604,7 +605,7 @@ class Module_warnings extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
@@ -659,7 +660,7 @@ class Module_warnings extends Standard_crud_module
         // Topic silencing
         $silence_from_topic = post_param_integer('topic_id', null);
         if (!is_null($silence_from_topic)) {
-            $_silence_from_topic = get_input_date('silence_from_topic');
+            $_silence_from_topic = post_param_date('silence_from_topic');
             $GLOBALS['SITE_DB']->query_delete('member_privileges', array(
                 'member_id' => $member_id,
                 'privilege' => 'submit_lowrange_content',
@@ -667,6 +668,9 @@ class Module_warnings extends Standard_crud_module
                 'module_the_name' => 'topics',
                 'category_name' => strval($silence_from_topic),
             ));
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('SILENCE_FROM_TOPIC', strval($member_id), strval($silence_from_topic));
         } else {
             $_silence_from_topic = null;
         }
@@ -701,7 +705,10 @@ class Module_warnings extends Standard_crud_module
                 'module_the_name' => 'forums',
                 'category_name' => strval($silence_from_forum),
             ));
-            $_silence_from_forum = get_input_date('silence_from_forum');
+            $_silence_from_forum = post_param_date('silence_from_forum');
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum));
         } else {
             $_silence_from_forum = null;
         }
@@ -738,6 +745,9 @@ class Module_warnings extends Standard_crud_module
                 }
                 $on_probation_until += $probation * 60 * 60 * 24;
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until), array('id' => $member_id), '', 1);
+
+                require_code('cns_general_action2');
+                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username);
             }
         }
 
@@ -746,6 +756,9 @@ class Module_warnings extends Standard_crud_module
             $banned_member = post_param_integer('banned_member', 0);
             if ($banned_member == 1) {
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $member_id), '', 1);
+
+                require_code('cns_general_action2');
+                cns_mod_log_it('BAN_MEMBER', strval($member_id), $username);
             }
         } else {
             $banned_member = 0;
@@ -769,7 +782,10 @@ class Module_warnings extends Standard_crud_module
         if ($stopforumspam == 1) {
             $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
             require_code('failure');
-            syndicate_spammer_report($banned_ip, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username);
         }
 
         // Change group

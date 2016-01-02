@@ -76,14 +76,19 @@ class Hook_whatsnew_galleries
         require_code('selectcode');
         $or_list = selectcode_to_sqlfragment($filter, 'cat', null, null, null, null, false);
 
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('video', 'r', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            list($extra_join, $extra_where) = get_privacy_where_clause('video', 'r', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'videos r' . $privacy_join . ' WHERE add_date>' . strval($cutoff_time) . ' AND validated=1 AND (' . $or_list . ')' . $privacy_where . ' ORDER BY add_date DESC', $max/*reasonable limit*/);
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('video', 'r.id');
+        }
+
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'videos r' . $extra_join . ' WHERE add_date>' . strval($cutoff_time) . ' AND validated=1 AND (' . $or_list . ')' . $extra_where . ' ORDER BY add_date DESC', $max/*reasonable limit*/);
 
         if (count($rows) == $max) {
             return array();
@@ -111,7 +116,7 @@ class Hook_whatsnew_galleries
             } else {
                 $thumbnail = mixed();
             }
-            $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => 'dfe5850aa67c0cd00ff7d465248b87a5', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'THUMBNAIL' => $thumbnail, 'CONTENT_TYPE' => 'video', 'CONTENT_ID' => strval($id))), null, false, null, '.txt', 'text');
+            $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => 'dfe5850aa67c0cd00ff7d465248b87a5', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'THUMBNAIL' => $thumbnail, 'CONTENT_TYPE' => 'video', 'CONTENT_ID' => strval($id)), null, false, null, '.txt', 'text'));
 
             handle_has_checked_recently($url); // We know it works, so mark it valid so as to not waste CPU checking within the generated Comcode
         }

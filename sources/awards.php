@@ -58,7 +58,7 @@ function give_award($award_id, $content_id, $time = null)
 
     $awards = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => $award_id), '', 1);
     if (!array_key_exists(0, $awards)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'award_type'));
     }
     $award_title = get_translated_text($awards[0]['a_title']);
     log_it('GIVE_AWARD', strval($award_id), $award_title);
@@ -74,7 +74,7 @@ function give_award($award_id, $content_id, $time = null)
         list($content_title, $member_id, , $content) = content_get_details($awards[0]['a_content_type'], $content_id);
 
         if (is_null($content)) {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($awards[0]['a_content_type'] . ':' . $content_id)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($awards[0]['a_content_type'] . ':' . $content_id), 'award_type'));
         }
 
         // Lots of fiddling around to work out how to check permissions for this
@@ -126,7 +126,7 @@ function give_award($award_id, $content_id, $time = null)
  *
  * @param  ID_TEXT $content_type The content type
  * @param  ?ID_TEXT $id The content ID (null: not added yet - therefore can't be holding the award yet)
- * @return tempcode The fields
+ * @return Tempcode The fields
  */
 function get_award_fields($content_type, $id = null)
 {
@@ -169,7 +169,8 @@ function get_award_fields($content_type, $id = null)
     if (!$fields->is_empty()) {
         $help = paragraph(do_lang_tempcode('AWARDS_AFTER_VALIDATION'));
         if (get_option('show_docs') == '1') {
-            $help->attach(paragraph(symbol_tempcode('URLISE_LANG', array(do_lang('TUTORIAL_ON_THIS'), get_tutorial_url('tut_featured'), 'tut_featured', '1'))));
+            $help_link = do_lang_tempcode('TUTORIAL_ON_THIS', get_tutorial_url('tut_featured'));
+            $help->attach(paragraph($help_link));
         }
         $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5b91c53ff3966c13407d33680354fd5d', 'SECTION_HIDDEN' => is_null(get_param_integer('award', null)), 'TITLE' => do_lang_tempcode('AWARDS'), 'HELP' => protect_from_escaping($help)));
         $_fields->attach($fields);

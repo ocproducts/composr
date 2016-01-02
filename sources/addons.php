@@ -197,16 +197,16 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         return $addon_info;
     }
 
-    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ADDON')));
 }
 
 /**
  * Find the icon for an addon.
  *
  * @param  ID_TEXT $addon_name Addon name
- * @param  boolean $pick_default Whether to use a default icon
+ * @param  boolean $pick_default Whether to use a default icon if not found
  * @param  ?PATH $tar_path Path to tar file (null: don't look inside a TAR / it's installed already)
- * @return string Theme image URL (may be a "data:" URL rather than a normal URLPATH)
+ * @return ?string Theme image URL (may be a "data:" URL rather than a normal URLPATH) (null: not found)
  */
 function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
 {
@@ -227,7 +227,18 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                 @eval($data);
                 $ob = object_factory('Hook_addon_registry_' . $addon_name, true);
                 if (($ob !== null) && (method_exists($ob, 'get_default_icon'))) {
-                    return get_base_url() . '/' . str_replace('%2F', '/', urlencode($ob->get_default_icon()));
+                    $file = $ob->get_default_icon();
+                    if (file_exists(get_file_base() . '/' . $file)) {
+                        return get_base_url() . '/' . str_replace('%2F', '/', urlencode($ob->get_default_icon()));
+                    } else {
+                        require_code('mime_types');
+                        $file = $ob->get_default_icon();
+                        $image_data = tar_get_file($tar_file, $file);
+                        if ($image_data === null) {
+                            return $pick_default ? find_theme_image('icons/48x48/menu/_generic_admin/component') : null;
+                        }
+                        return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($image_data['data']);
+                    }
                 }
             }
 

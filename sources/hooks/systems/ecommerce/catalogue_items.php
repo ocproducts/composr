@@ -55,8 +55,8 @@ class Hook_ecommerce_catalogue_items
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $start = 0;
@@ -208,7 +208,7 @@ class Hook_ecommerce_catalogue_items
      * Get the message for use in the purchase wizard
      *
      * @param  ID_TEXT $type_code The product in question.
-     * @return tempcode The message.
+     * @return Tempcode The message.
      */
     public function get_message($type_code)
     {
@@ -226,7 +226,7 @@ class Hook_ecommerce_catalogue_items
         $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
 
         if (!array_key_exists(0, $entries)) {
-            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $entry = $entries[0];
@@ -256,7 +256,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $pid));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $product_det = get_catalogue_entry_field_values($catalogue_name, $pid, null, null, true);
@@ -406,9 +406,9 @@ class Hook_ecommerce_catalogue_items
     /**
      * Show shopping cart entries.
      *
-     * @param  tempcode $shopping_cart Tempcode object of shopping cart result table.
+     * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
      * @param  array $entry Details of new entry to the shopping cart.
-     * @return tempcode Tempcode object of shopping cart result table.
+     * @return Tempcode Tempcode object of shopping cart result table.
      */
     public function show_cart_entry(&$shopping_cart, $entry)
     {
@@ -437,7 +437,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $image = $this->get_product_image($catalogue_name, $entry['product_id']);
@@ -465,12 +465,12 @@ class Hook_ecommerce_catalogue_items
                 array(
                     $product_image,
                     $product_link,
-                    $currency . escape_html(float_format(round($entry["price"], 2))),
+                    $currency . escape_html(float_format($entry['price'], 2)),
                     $edit_qnty,
                     $currency . escape_html(float_format($order_price)),
-                    $currency . escape_html(float_format(round($total_tax, 2))),
-                    $currency . escape_html(float_format(round($total_shipping, 2))),
-                    $currency . escape_html(float_format(round($price, 2))),
+                    $currency . escape_html(float_format($total_tax, 2)),
+                    $currency . escape_html(float_format($total_shipping, 2)),
+                    $currency . escape_html(float_format($price, 2)),
                     $del_item
                 ), false, $tpl_set
             )
@@ -648,7 +648,9 @@ class Hook_ecommerce_catalogue_items
             stock_maintain_warn_mail($product_name, $entry_id);
         }
 
-        $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        if (array_key_exists(3, $fields)) { // Stock level
+            $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        }
     }
 
     /**
@@ -665,7 +667,7 @@ class Hook_ecommerce_catalogue_items
      * Return product info details.
      *
      * @param  AUTO_LINK $id Product ID.
-     * @return tempcode Product information.
+     * @return Tempcode Product information.
      */
     public function product_info($id)
     {
@@ -693,11 +695,11 @@ class Hook_ecommerce_catalogue_items
         if (array_key_exists('FIELD_0', $map)) {
             $product_title = $map['FIELD_0_PLAIN'];
             if (is_object($product_title)) {
-                $product_title = @html_entity_decode(strip_tags($product_title->evaluate()), ENT_QUOTES);
+                $product_title = strip_html($product_title->evaluate());
             }
         }
 
-        $licence = method_exists($this, 'get_agreement') ? $this->get_agreement(strval($id)) : '';
+        $terms = method_exists($this, 'get_terms') ? $this->get_terms(strval($id)) : '';
 
         $fields = method_exists($this, 'get_needed_fields') ? $this->get_needed_fields(strval($id)) : null;
 
@@ -713,7 +715,7 @@ class Hook_ecommerce_catalogue_items
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($licence == '') ? (is_null($fields) ? 'pay' : 'details') : 'licence', 'type_code' => strval($id), 'id' => $id), '_SELF');
+        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
 
         $map['CART_BUTTONS'] = do_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',

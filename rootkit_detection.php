@@ -184,19 +184,14 @@ END;
     }
 
     // Check files
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $files = rd_do_dir('');
     foreach ($files as $file) {
         if (filesize($FILE_BASE . '/' . $file) != 0) {
             $results .= 'File: ' . $file . '=';
-            if (function_exists('md5_file')) {
-                $results .= md5_file($FILE_BASE . '/' . $file);
-            } else {
-                $data = file_get_contents($FILE_BASE . '/' . $file);
-                $results .= md5($data);
-            }
+            $results .= md5_file($FILE_BASE . '/' . $file);
             $results .= "\n";
         }
     }
@@ -308,6 +303,11 @@ function rk_check_master_password($password_given)
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
         $salt = 'cms';
+
+        // LEGACY
+        if ($actual_password_hashed != md5($password_given . $salt)) {
+            $salt = 'ocp';
+        }
     }
     return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
 }

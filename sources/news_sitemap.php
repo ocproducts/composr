@@ -25,16 +25,7 @@ function build_news_sitemap()
 {
     require_code('xml');
 
-    $path = get_file_base() . '/cms_news_sitemap.xml';
-    if (!file_exists($path)) {
-        if (!is_writable_wrap(dirname($path))) {
-            return;
-        }
-    } else {
-        if (!is_writable_wrap($path)) {
-            return;
-        }
-    }
+    $path = get_file_base() . '/data_custom/sitemaps/news_sitemap.xml';
 
     cms_profile_start_for('build_news_sitemap');
 
@@ -131,7 +122,7 @@ function build_news_sitemap()
         }
 
         $start += $max;
-    } while ((count($rows) != 0) && ($start < 500/*Let's not go nuts!*/));
+    } while ((count($rows) != 0) && ($start < 500/*Let's not go nuts - older news is still in the regular sitemap!*/));
 
     fwrite($sitemap_file, '
         </urlset>
@@ -140,11 +131,19 @@ function build_news_sitemap()
     @flock($sitemap_file, LOCK_UN);
     fclose($sitemap_file);
     require_code('files');
-    fix_permissions($path, 0666);
     sync_file($path);
+    fix_permissions($path);
+
+    $target_url = get_custom_base_url() . '/data_custom/sitemaps/news_sitemap.xml';
+
+    if (function_exists('gzencode')) {
+        file_put_contents($path . '.gz', gzencode(file_get_contents($path), -1));
+        $path .= '.gz';
+        $target_url .= '.gz';
+    }
 
     require_code('sitemap_xml');
-    ping_sitemap_xml(get_custom_base_url() . '/cms_news_sitemap.xml');
+    ping_sitemap_xml($target_url);
 
     cms_profile_end_for('build_news_sitemap');
 }

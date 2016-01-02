@@ -32,7 +32,7 @@ class Hook_content_meta_aware_wiki_post
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'wiki:WIKI_POST',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_wiki_post
             'title_field_dereference' => true,
             'description_field' => 'the_message',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:wiki:find_post:_WILD',
             'edit_page_link_pattern' => '_SEARCH:wiki:post:post_id=_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_wiki_post
             'support_url_monikers' => false,
 
             'views_field' => 'wiki_views',
+            'order_field' => null,
             'submitter_field' => 'member_id',
+            'author_field' => null,
             'add_time_field' => 'date_and_time',
             'edit_time_field' => 'edit_date',
             'date_field' => 'date_and_time',
@@ -75,9 +78,14 @@ class Hook_content_meta_aware_wiki_post
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'wiki_posts',
+            'rss_hook' => null,
+            'attachment_hook' => 'wiki_post',
+            'unvalidated_hook' => 'wiki',
+            'notification_hook' => 'wiki',
+            'sitemap_hook' => null,
 
             'addon_name' => 'wiki',
 
@@ -87,7 +95,11 @@ class Hook_content_meta_aware_wiki_post
             'commandr_filesystem_hook' => 'wiki',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => true,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_WIKI_POST',
         );
@@ -103,7 +115,7 @@ class Hook_content_meta_aware_wiki_post
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Translating Composr content[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Translating Composr content[/title]
 
 Composr can have its content translated and delivered for each language, without requiring any duplication.
 
@@ -31,13 +31,13 @@ In short: Use it if you need it, and prepare for the extra cost and complexity. 
 A special Commandr command is required to set up the database structure.
 The Commandr command may take some time to run. It is advised you therefore run the SSH version of Commandr, rather than the webapp (slow webapp requests may stall or be cancelled via various levels of timeout).
 Log into SSH on your server (or equivalent process to receive a command prompt) and type:
-[code]
+[code="Bash"]
 php data/commandr.php
 [/code]
-(this assumes you run it from the Composr base directory, and that the '[tt]php[/tt]' command is in your path)
+(this assumes you run it from the Composr base directory, and that the [tt]php[/tt] command is in your path)
 
 Then the Commandr command required is:
-[code]
+[code="Commandr"]
 :require_code('database_multi_lang_conv'); enable_content_translation();
 [/code]
 
@@ -52,7 +52,7 @@ To understand what the content translation can do, and how it works, we need to 
 4) Using the Zone Editor
 5) Content translation (described in the next section)
 
-For '1' (newsletters), you will get a choice what language to send it for when you go to the newsletter module. Subscribers choose their language when they sign up.
+For '1' (newsletters), you will get a choice what language to send it for when you go to the [tt]newsletter[/tt] module. Subscribers choose their language when they sign up.
 
 Similarly, for '2'-'4', you will get a choice of language which to edit under when you go to the respective section of Composr. What you save will be saved accordingly.
 
@@ -61,6 +61,7 @@ E.g. if you are viewing the website in English, and you go to edit a Comcode pag
 
 [title="2"]Content translation[/title]
 
+[media width="150" description="Content translation" float="right"]data_custom/images/docs/tut_intl_content/content.png[/media]
 Content added to Composr is initially saved against the language being used by the submitter. Therefore, when adding content you must ensure you have the correct language choice for what you want the default content language to be; a good rule of thumb to check this is by seeing if the language Composr is uses in its interface matches the language you expect to be submitting content in.
 
 For example, if you are adding an article in French, make sure you have your current language set to French by checking the Composr site is being shown in French while you are adding that article.
@@ -76,19 +77,24 @@ Content translation is primarily performed in a special 'Translate content' part
 
 You will see there is also an option in the footer for opening up a 'Translate content' screen just with language strings (the user content kind) that were included on the page you are viewing. This is a nice feature if the main translation queue is to full to realistically deal with and you just want new content to get translated.
 
-In Composr almost [i]everything[/i] (*) can be translated, but obviously you would not want to translate every forum post for a large community (for example). For this reason, Composr saves language with 'priorities', and that of the highest priority will be presented for translation first. For example, the names of zones would be the highest priority, whilst forum posts would be the lowest.
+In Composr almost [i]everything[/i] (*) can be translated, but obviously you would not want to translate every forum post for a large community (for example). For this reason, Composr saves language with 'priorities', and that of the highest priority will be presented for translation first. For example, the names of zones would be the highest priority, while forum posts would be the lowest.
 
 (*) A few things cannot be translated such as forum names. The reasoning is that you [i]do not want[/i] such things translated, but rather you should have a different copy of each forum for each language. This is an exceptional situation, and is only designed like this due to the way forums are used. Other kinds of category may be translated as described above.
 
 [title="2"]Allowing guests to choose language[/title]
 
-You will want a way to be able to give your site visitors the option to view your website in their choice of language. You can easily achieve this by adding a ready made block on one of the side panels ([i]assuming your web designer has not done this already -- if you are an ocProducts client and have discussed internationalisation, it almost certainly is already built into your web design[/i]). The code for this is:
-[code][block]side_language[/block][/code]
+[surround]
+[media width="150" description="The [tt]side_language[/tt] block" float="right"]data_custom/images/docs/tut_intl_content/side_language.png[/media]
+You will want a way to be able to give your site visitors the option to view your website in their choice of language. You can easily achieve this by adding a ready made block on one of the side panels ([i]assuming your web designer has not done this already[/i]). The code for this is:
+[code="Comcode"]
+[block]side_language[/block]
+[/code]
 Any content which has not been translated yet will display in the original language it was written in. For example, a news post will display in English if that's how it was originally written.
+[/surround]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
  - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
 
-{$SET,tutorial_tags,Internationalisation,expert}{$SET,tutorial_add_date,Aug 2014}{$SET,tutorial_summary,Multi-language content translations within Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,core_language_editing,Internationalisation,expert}{$SET,tutorial_add_date,Aug 2014}{$SET,tutorial_summary,Multi-language content translations within Composr.}[block]main_tutorial_rating[/block]

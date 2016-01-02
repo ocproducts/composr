@@ -40,19 +40,19 @@ class Module_admin_ecommerce extends Standard_crud_module
             var length_units=_length_units.options[_length_units.selectedIndex].value,length=_length.value;
             if (document.getElementById('auto_recur').checked)
             {
-                    // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
-                    if ((length_units=='d') && ((length<1) || (length>90)))
-                            _length.value=(length<1)?1:90;
-                    if ((length_units=='w') && ((length<1) || (length>52)))
-                            _length.value=(length<1)?1:52;
-                    if ((length_units=='m') && ((length<1) || (length>24)))
-                            _length.value=(length<1)?1:24;
-                    if ((length_units=='y') && ((length<1) || (length>5)))
-                            _length.value=(length<1)?1:5;
+                // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
+                if ((length_units=='d') && ((length<1) || (length>90)))
+                        _length.value=(length<1)?1:90;
+                if ((length_units=='w') && ((length<1) || (length>52)))
+                        _length.value=(length<1)?1:52;
+                if ((length_units=='m') && ((length<1) || (length>24)))
+                        _length.value=(length<1)?1:24;
+                if ((length_units=='y') && ((length<1) || (length>5)))
+                        _length.value=(length<1)?1:5;
             } else
             {
-                    if (length<1)
-                            _length.value=1;
+                if (length<1)
+                    _length.value=1;
             }
         }
         _length_units.onchange=adjust_lengths;
@@ -82,7 +82,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -101,7 +101,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -131,7 +131,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -160,7 +160,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     /**
      * The do-next manager for before setup management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -175,7 +175,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for adding/editing form.
+     * Get Tempcode for adding/editing form.
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
@@ -252,7 +252,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                 $list->attach(form_input_list_entry(strval($id), $id == $group_id, $group));
             }
         }
-        $fields->attach(form_input_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_GROUP'), 'group_id', $list));
+        $fields->attach(form_input_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_GROUP'), 'group_id', $list));
 
         $fields->attach(form_input_tick(do_lang_tempcode('USES_PRIMARY'), do_lang_tempcode('DESCRIPTION_USES_PRIMARY'), 'uses_primary', $uses_primary == 1));
 
@@ -274,7 +274,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                 $ref_point = isset($mails[$i]) ? $mails[$i]['ref_point'] : 'start';
                 $ref_point_offset = isset($mails[$i]) ? $mails[$i]['ref_point_offset'] : 0;
 
-                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('EXTRA_SUBSCRIPTION_MAIL', integer_format($i + 1)), 'SECTION_HIDDEN' => ($subject == ''))));
+                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('EXTRA_SUBSCRIPTION_MAIL', escape_html(integer_format($i + 1))), 'SECTION_HIDDEN' => ($subject == ''))));
                 $fields->attach(form_input_line_comcode(do_lang_tempcode('SUBJECT'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_SUBJECT'), 'subject_' . strval($i), $subject, false));
                 $fields->attach(form_input_text_comcode(do_lang_tempcode('BODY'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_BODY'), 'body_' . strval($i), $body, false, null, true));
                 $radios = new Tempcode();
@@ -314,7 +314,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             's_title' => do_lang_tempcode('TITLE'),
             's_cost' => do_lang_tempcode('COST'),
             's_length' => do_lang_tempcode('SUBSCRIPTION_LENGTH'),
-            's_group_id' => do_lang_tempcode('GROUP'),
+            's_group_id' => do_lang_tempcode('USERGROUP'),
             's_enabled' => do_lang('ENABLED'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
@@ -325,7 +325,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('COST'),
             do_lang_tempcode('SUBSCRIPTION_LENGTH'),
-            do_lang_tempcode('GROUP'),
+            do_lang_tempcode('USERGROUP'),
             do_lang('ENABLED'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
@@ -348,7 +348,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {

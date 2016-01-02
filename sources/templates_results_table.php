@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the tempcode for a results table.
+ * Get the Tempcode for a results table.
  *
  * @param  mixed $text_id Some text/word describing what is being browsed (Tempcode or string)
  * @param  integer $start The result number our table starts at (x of n)
@@ -27,21 +27,21 @@
  * @param  integer $max The total number of results to show per-page
  * @param  ID_TEXT $max_name The parameter name used to store the total number of results to show per-page (usually, 'max')
  * @param  integer $max_rows The maximum number of rows in the entire dataset
- * @param  tempcode $fields_title The titles of the fields we are showing in our table, presented in preprepared tempcode
- * @param  tempcode $fields The values of the fields we are showing in our table
+ * @param  Tempcode $fields_title The titles of the fields we are showing in our table, presented in preprepared Tempcode
+ * @param  Tempcode $fields The values of the fields we are showing in our table
  * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC
  * @param  ?ID_TEXT $sort_name The parameter name used to store our sortable (usually 'sort') (null: none)
- * @param  ?tempcode $message Message to show (null: auto)
+ * @param  ?Tempcode $message Message to show (null: auto)
  * @param  ?array $widths Widths to specify to the table (null: none sent)
  * @param  ?string $tplset The template set to use (null: default)
  * @param  integer $max_page_links The maximum number of quick-jump page-links to show
  * @param  string $guid GUID to pass to template
  * @param  boolean $skip_sortables_form Whether to skip showing a sort form (useful if there is another form wrapped around this)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
- * @return tempcode The results table
+ * @return Tempcode The results table
  */
 function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $fields_title, $fields, $sortables = null, $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = null, $tplset = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
 {
@@ -98,7 +98,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
 }
 
 /**
- * Get the tempcode for a results sorter.
+ * Get the Tempcode for a results sorter.
  *
  * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
@@ -106,7 +106,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
  * @set    ASC DESC
  * @param  ?ID_TEXT $sort_name The parameter name used to store our sortable (usually 'sort') (null: none)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
- * @return tempcode The results sorter
+ * @return Tempcode The results sorter
  */
 function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_name = 'sort', $hash = '')
 {
@@ -142,13 +142,13 @@ function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_
 }
 
 /**
- * Get the tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.
+ * Get the Tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.
  *
- * @param  array $values The array of values that make up this entry (of tempcode or string, or mixture)
+ * @param  array $values The array of values that make up this entry (of Tempcode or string, or mixture)
  * @param  boolean $auto_escape Whether to automatically escape each entry so that it cannot contain HTML
  * @param  ?string $tplset The template set to use (null: default)
  * @param  string $guid GUID to pass to template
- * @return tempcode The generated entry
+ * @return Tempcode The generated entry
  */
 function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14173c7320b57243d607718ab')
 {
@@ -164,14 +164,14 @@ function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14
 }
 
 /**
- * Get the tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call.
+ * Get the Tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call.
  *
  * @param  array $values The array of field titles that define the entries in the results table
  * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
  * @param  ID_TEXT $order_param The parameter name used to store our sortable
  * @param  ID_TEXT $current_ordering The current ordering ("$sortable $sort_order")
  * @param  string $guid GUID to pass to template
- * @return tempcode The generated title
+ * @return Tempcode The generated title
  */
 function results_field_title($values, $sortables = null, $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
 {

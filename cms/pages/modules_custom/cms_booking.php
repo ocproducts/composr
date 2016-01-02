@@ -40,7 +40,7 @@ class Module_cms_booking extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -76,7 +76,7 @@ class Module_cms_booking extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -117,7 +117,7 @@ class Module_cms_booking extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -150,7 +150,7 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -207,7 +207,7 @@ class Module_cms_booking extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, true, false, true);
             $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, true, false, true);
             $fr[] = ($row['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -285,9 +285,9 @@ class Module_cms_booking extends Standard_crud_module
             }
         }
         $fields->attach(form_input_line(do_lang_tempcode('BOOKABLE_CATEGORISATION'), do_lang_tempcode('DESCRIPTION_BOOKABLE_CATEGORISATION'), 'categorisation', $categorisation, true));
-        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'),do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'),'cycle_type',$details['cycle_type'],false));
-        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'),do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'),'cycle_pattern',$details['cycle_pattern'],false));
-        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'),do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'),'user_may_choose_code',$details['user_may_choose_code']==1));
+        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'), do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'), 'cycle_type', $details['cycle_type'], false));
+        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'), do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'), 'cycle_pattern', $details['cycle_pattern'], false));
+        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'), do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'), 'user_may_choose_code', $details['user_may_choose_code']==1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('BOOKABLE_DATES_ARE_RANGES'), do_lang_tempcode('DESCRIPTION_BOOKABLE_DATES_ARE_RANGES'), 'dates_are_ranges', $details['dates_are_ranges'] == 1));
 
@@ -387,10 +387,10 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -456,7 +456,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
             $fr = array();
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_supplement', $row, 'title'));
             $fr[] = float_format($row['price']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -505,7 +505,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_SUPPLEMENT_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $fields->attach(form_input_tick(do_lang_tempcode('PRICE_IS_PER_PERIOD'), do_lang_tempcode('DESCRIPTION_PRICE_IS_PER_PERIOD'), 'price_is_per_period', $details['price_is_per_period'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_QUANTITIES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_QUANTITIES'), 'supports_quantities', $details['supports_quantities'] == 1));
-        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'),do_lang_tempcode('DESCRIPTION_PROMO_CODE'),'promo_code',$details['promo_code'],true));
+        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'), do_lang_tempcode('DESCRIPTION_PROMO_CODE'), 'promo_code', $details['promo_code'], true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_integer(do_lang_tempcode('SORT_ORDER'), do_lang_tempcode('DESCRIPTION_SORT_ORDER'), 'sort_order', $details['sort_order'], true));
 
@@ -585,10 +585,10 @@ class Module_cms_booking_supplements extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -654,7 +654,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false);
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false);
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $row, 'blacked_explanation'));
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -771,10 +771,10 @@ class Module_cms_booking_blacks extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -934,7 +934,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             }
             $fr[] = number_format($row['quantity']);
             $fr[] = get_timezoned_date($row['_rows'][0]['booked_at']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -1167,10 +1167,10 @@ class Module_cms_booking_bookings extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {

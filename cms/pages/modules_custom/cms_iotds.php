@@ -38,7 +38,7 @@ class Module_cms_iotds extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -69,7 +69,7 @@ class Module_cms_iotds extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -101,7 +101,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -125,7 +125,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -140,7 +140,7 @@ class Module_cms_iotds extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for an IOTD adding/editing form.
+     * Get Tempcode for an IOTD adding/editing form.
      *
      * @param  ?AUTO_LINK $id The IOTD ID (null: new)
      * @param  URLPATH $url The URL to the image
@@ -152,9 +152,9 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes for the IOTD
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $url = '', $thumb_url = '', $title = '', $caption = '', $current = false, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
+    public function get_form_fields($id = null, $url = '', $thumb_url = '', $title = '', $caption = '', $current = true, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -181,12 +181,12 @@ class Module_cms_iotds extends Standard_crud_module
                     $current = true;
                 }
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
+            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($id === null) ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
         // Meta data
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         $fields->attach(meta_data_get_fields('iotd', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
@@ -200,7 +200,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The UI to manage the IOTD.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -234,7 +234,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  BINARY $used Whether to show used IOTDs
      * @param  BINARY $current Whether to show the current IOTD
      * @param  ?MEMBER $submitter The member to only show iotds submitted-by (null: do not filter)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _get_iotd_boxes($used = 0, $current = 0, $submitter = null)
     {
@@ -277,13 +277,13 @@ class Module_cms_iotds extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
         $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => intval($id)));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
         }
         $myrow = $rows[0];
 
@@ -319,6 +319,8 @@ class Module_cms_iotds extends Standard_crud_module
 
         $id = add_iotd($url, $title, $caption, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], 0, null, $meta_data['views']);
 
+        set_url_moniker('iotd', strval($id));
+
         if (($validated == 1) || (!addon_installed('unvalidated'))) {
             if (has_actual_page_access(get_modal_user(), 'iotds')) {
                 require_code('activities');
@@ -353,7 +355,7 @@ class Module_cms_iotds extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('is_current', 'submitter'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];
@@ -404,7 +406,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The actualiser to set the IOTD.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_iotd()
     {
@@ -428,7 +430,7 @@ class Module_cms_iotds extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('is_current', 'submitter'), array('id' => $id));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];

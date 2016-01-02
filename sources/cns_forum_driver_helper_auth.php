@@ -19,17 +19,19 @@
  */
 
 /**
- * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+ * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
  * All authorisation, cookies, and form-logins, are passed through this function.
  * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
  *
  * @param  object $this_ref Link to the real forum driver
  * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
  * @param  ?MEMBER $userid The member ID (null: use member name)
- * @param  MD5 $password_hashed The md5-hashed password
+ * @param  SHORT_TEXT $password_hashed The md5-hashed password
  * @param  string $password_raw The raw password
  * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
- * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+ * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
+ *
+ * @ignore
  */
 function _forum_authorise_login($this_ref, $username, $userid, $password_hashed, $password_raw, $cookie_login = false)
 {
@@ -88,6 +90,11 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             require_code('cns_members_action2');
             $completion_form_submitted = (trim(post_param_string('email_address', '')) != '');
             if ((!$completion_form_submitted) && (get_option('finish_profile') == '1')) { // UI
+                require_code('failure');
+                if (throwing_errors()) {
+                    throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
+                }
+
                 @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
                 $middle = cns_member_external_linker_ask($username, 'ldap', cns_ldap_guess_email($username));
                 $tpl = globalise($middle, null, '', true);
@@ -146,7 +153,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         return $out;
     }
     if ($this_ref->is_banned($row['id'])) { // All hands to the guns
-        $out['error'] = do_lang_tempcode('MEMBER_BANNED');
+        $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
         return $out;
     }
 
@@ -160,7 +167,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             case 'temporary': // as above, but forced temporary password
                 if ($cookie_login) {
                     if ($password_hashed !== $row['m_pass_hash_salted']) {
-                        require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need tempcode for do_lang_tempcode
+                        require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need Tempcode for do_lang_tempcode
                         $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                         return $out;
                     }
@@ -194,7 +201,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             */
 
             case 'ldap':
-                if ($password_hashed != $row['m_pass_hash_salted']) {
+                if ($password_hashed !== $row['m_pass_hash_salted']) {
                     $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                     return $out;
                 }

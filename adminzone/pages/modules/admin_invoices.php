@@ -46,12 +46,12 @@ class Module_admin_invoices
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 
@@ -68,7 +68,7 @@ class Module_admin_invoices
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -132,7 +132,7 @@ class Module_admin_invoices
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -167,7 +167,7 @@ class Module_admin_invoices
     /**
      * The do-next manager for before invoice management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -185,7 +185,7 @@ class Module_admin_invoices
     /**
      * UI to add an invoice.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function add()
     {
@@ -212,7 +212,7 @@ class Module_admin_invoices
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_INVOICE_FOR'), 'to', $to, true));
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('INVOICE_AMOUNT_TEXT', escape_html(get_option('currency'))), 'amount', null, false));
         $fields->attach(form_input_line(do_lang_tempcode('INVOICE_SPECIAL'), do_lang_tempcode('DESCRIPTION_INVOICE_SPECIAL'), 'special', '', false));
-        $fields->attach(form_input_text(do_lang_tempcode('INVOICE_NOTE'), do_lang_tempcode('DESCRIPTION_INVOICE_NOTE'), 'note', '', false));
+        $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('DESCRIPTION_INVOICE_NOTE'), 'note', '', false));
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');
         $submit_name = do_lang_tempcode('CREATE_INVOICE');
@@ -223,7 +223,7 @@ class Module_admin_invoices
     /**
      * Actualiser to add an invoice.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function _add()
     {
@@ -266,7 +266,7 @@ class Module_admin_invoices
     /**
      * Show outstanding invoices.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function outstanding()
     {
@@ -289,7 +289,7 @@ class Module_admin_invoices
     /**
      * Show undelivered invoices.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function undelivered()
     {
@@ -312,7 +312,7 @@ class Module_admin_invoices
     /**
      * Actualiser to delete an invoice.
      *
-     * @return tempcode The result.
+     * @return Tempcode The result.
      */
     public function delete()
     {
@@ -336,7 +336,7 @@ class Module_admin_invoices
     /**
      * Actualiser to deliver an invoice.
      *
-     * @return tempcode The result.
+     * @return Tempcode The result.
      */
     public function deliver()
     {

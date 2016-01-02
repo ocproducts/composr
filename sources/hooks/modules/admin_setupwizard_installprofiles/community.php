@@ -31,7 +31,7 @@ class Hook_admin_setupwizard_installprofiles_community
     public function info()
     {
         return array(
-            'title' => do_lang('FORUM_SLASH_COMMUNITY'),
+            'title' => do_lang('COMMUNITY'),
         );
     }
 

@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__files()
 {
@@ -29,20 +31,22 @@ function init__files()
 
         define('IGNORE_DEFAULTS', 0);
         // -
-        define('IGNORE_ACCESS_CONTROLLERS', 1);
-        define('IGNORE_CUSTOM_DIR_CONTENTS', 2);
+        define('IGNORE_NON_EN_SCATTERED_LANGS', 1);
+        define('IGNORE_ACCESS_CONTROLLERS', 2);
         define('IGNORE_HIDDEN_FILES', 4);
         define('IGNORE_EDITFROM_FILES', 8);
         define('IGNORE_REVISION_FILES', 16);
         define('IGNORE_CUSTOM_ZONES', 32);
         define('IGNORE_CUSTOM_THEMES', 64);
-        define('IGNORE_NON_REGISTERED', 128);
-        define('IGNORE_USER_CUSTOMISE', 256);
-        define('IGNORE_NONBUNDLED_SCATTERED', 512);
+        define('IGNORE_USER_CUSTOMISE', 256); // This is more specific than IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS
+        define('IGNORE_NONBUNDLED_SCATTERED', 512); // This is fairly specific stuff that we know we need to skip, not a broad skip pattern and not listing all non-bundled addon files
         define('IGNORE_BUNDLED_VOLATILE', 1024);
         define('IGNORE_BUNDLED_UNSHIPPED_VOLATILE', 2048);
-        define('IGNORE_NON_EN_SCATTERED_LANGS', 4096);
-        define('IGNORE_UPLOADS', 8192);
+        define('IGNORE_UPLOADS', 8192); // More specific than IGNORE_CUSTOM_DIR_GROWN_CONTENTS, except it does skip .htaccess/index.html under uploads too
+        define('IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS', 16384);
+        define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
+        define('IGNORE_NONBUNDLED_VERY_SCATTERED', 65536);
+        define('IGNORE_NONBUNDLED_EXTREMELY_SCATTERED', 131072);
     }
 }
 
@@ -115,19 +119,19 @@ function clean_file_size($bytes)
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0))) . ' GB';
     }
     if (floatval($bytes) > 1024.0 * 1024.0 * 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0, 2)) . ' GB';
+        return float_format(floatval($bytes) / 1024.0 / 1024.0 / 1024.0, 2) . ' GB';
     }
     if (floatval($bytes) > 2.0 * 1024.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0))) . ' MB';
     }
     if (floatval($bytes) > 1024.0 * 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0 / 1024.0, 2)) . ' MB';
+        return float_format(floatval($bytes) / 1024.0 / 1024.0, 2) . ' MB';
     }
     if (floatval($bytes) > 2.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0))) . ' KB';
     }
     if (floatval($bytes) > 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0, 2)) . ' KB';
+        return float_format(floatval($bytes) / 1024.0, 2) . ' KB';
     }
     return strval($bytes) . ' Bytes';
 }
@@ -223,6 +227,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // Web server extensions / leave-behinds
                                              'web-inf' => '.*',
                                              'www.pid' => '',
+                                             '.ftaccess' => '',
+                                             '.ftpquota' => '',
+                                             'cgi-bin' => '',
 
                                              // Specially-recognised naming conventions
                                              '_old' => '.*',
@@ -237,7 +244,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'php.ini' => '.*',
                                              '.htpasswd' => '.*',
                                              'iirf.ini' => '',
-                                             'text/robots.txt' => '',
+                                             'robots.txt' => 'text',
                                              'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
                                              '400.shtml' => '',
                                              '500.shtml' => '',
@@ -245,6 +252,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '403.shtml' => '',
                                              'cron.yaml' => '',
                                              'dos.yaml' => '',
+                                             'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
                                              'queue.yaml' => '',
                                              '.htaccess' => '',
 
@@ -252,6 +260,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'install.php' => '',
                                              '_config.php.template' => '',
                                              'data.cms' => '',
+                                             'cms.sql' => '', // Temporary backup
                                              'install.sql' => '',
                                              'install1.sql' => '',
                                              'install2.sql' => '',
@@ -294,7 +303,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
                                              'persistant_cache' => '', // Old misspelling
-                                             'docs4' => '',
                                              'mods' => 'imports|exports',
     );
 
@@ -309,7 +317,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // Cache files
                                 'lcd' => '(caches|lang_cached)/.*', // LEGACY
                                 'gcd' => '(caches|persistent_cache|persistant_cache)/.*', // LEGACY
-                                'htm' => 'caches/guest_pages/.*',
+                                'htm' => 'caches/guest_pages',
+                                'xml' => 'caches/guest_pages',
                                 'tcp' => 'themes/[^/]*/templates_cached/.*',
                                 'tcd' => 'themes/[^/]*/templates_cached/.*',
                                 'css' => 'themes/[^/]*/templates_cached/.*',
@@ -320,17 +329,16 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                 // Temporary files
                                 'tmp' => '.*',
+                                'inc' => 'safe_mode_temp',
+                                'dat' => 'safe_mode_temp',
                                 'bak' => '.*',
+                                'old' => '.*',
 
                                 // HHVM Hack converted files (built on-the-fly)
                                 'hh' => '.*',
 
                                 // IDE projects
                                 'clpprj' => '', // Code Lobster
-                                'tmproj' => '', // TextMate
-
-                                // CGI files
-                                'fcgi' => '',
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
@@ -344,21 +352,12 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     $ignore_filename_patterns = array( // Case insensitive; we'll use this only when we *need* directories that would match to be valid
     );
 
-    if (($bitmask & IGNORE_NON_REGISTERED) != 0) { // These aren't registered in any addon_registry hook, yet are bundled and in non-custom directories
-        $ignore_filenames_and_dir_names += array(
-            //'files.dat'=>'data', Actually is now (core.php)
-            //'files_previous.dat'=>'data', Actually is now (core.php)
-        );
-    }
-
     if (($bitmask & IGNORE_BUNDLED_VOLATILE) != 0) {
         $ignore_filenames_and_dir_names += array(
             // Bundled stuff that is not necessarily in a *_custom dir yet is volatile
             '_config.php' => '',
             'map.ini' => 'themes',
             'functions.dat' => 'data_custom',
-            'cms_sitemap.xml' => '',
-            'cms_news_sitemap.xml' => '',
             'errorlog.php' => 'data_custom',
             'execute_temp.php' => 'data_custom',
         );
@@ -371,6 +370,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'chat_last_msg.dat' => 'data_custom/modules/chat',
             'latest.dat' => 'data_custom/modules/web_notifications',
             'permissioncheckslog.php' => 'data_custom',
+            'failover_rewritemap.txt' => 'data_custom',
+            'failover_rewritemap__mobile.txt' => 'data_custom',
         );
     }
 
@@ -381,7 +382,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                           ) + $ignore_filenames_and_dir_names; // Done in this order as we are overriding .htaccess to block everywhere (by default blocks root only). PHP has weird array merge precedence rules.
     }
 
-    if (($bitmask & IGNORE_USER_CUSTOMISE) != 0) { // Ignores directories that user override files go in, not code or uploads (which IGNORE_CUSTOM_DIR_CONTENTS would cover): stuff edited through frontend to override bundled files
+    if (($bitmask & IGNORE_USER_CUSTOMISE) != 0) { // Ignores directories that user override files go in, not code or uploads (which IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS would cover): stuff edited through frontend to override bundled files
         $ignore_filenames_and_dir_names += array(
             'comcode_custom' => '.*',
             'html_custom' => '.*',
@@ -403,7 +404,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         );
     }
 
-    if (($bitmask & IGNORE_CUSTOM_DIR_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
+    if (($bitmask & IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
         if (($dir == 'data_custom') && (in_array($filename, array('errorlog.php', 'execute_temp.php', 'functions.dat')))) {
             // These are allowed, as they are volatile yet bundled. Use IGNORE_BUNDLED_VOLATILE if you don't want them.
         } else {
@@ -411,15 +412,22 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                 array('(?!index\.html$)(?!\.htaccess$).*', '.*_custom(/.*)?'), // Stuff under custom folders
             ));
             $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
-                //'.*\_custom'=>'.*', Let it find them, but work on the contents
+                //'.*\_custom' => '.*', Let it find them, but work on the contents
                 array('(?!index\.html$)(?!\.htaccess$).*', 'sources_custom/[^/]*'), // We don't want deep sources_custom directories either
-                array('(?!index\.html$)(?!\.htaccess$).*', 'themes/default/images_custom'), // We don't want deep images_custom directories either
-                array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
-                array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
-                array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
-                array('.*', 'exports/builds/.*'),
             ));
         }
+    }
+
+    if (($bitmask & IGNORE_CUSTOM_DIR_GROWN_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
+        $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
+            array('(?!index\.html$)(?!\.htaccess$).*', 'themes/default/images_custom'), // We don't want deep images_custom directories either
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/chat'), // Various chat data files
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
+            array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
+            array('(?!index\.html$)(?!\.htaccess$).*', '.*/(comcode|html)_custom/.*'), // Comcode pages
+            array('.*', 'exports/builds/.*'),
+        ));
     }
 
     if (($bitmask & IGNORE_UPLOADS) != 0) {
@@ -480,8 +488,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         }
     }
 
-    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0) {
-        if (preg_match('#^data_custom/addon_screenshots(/|$)#', strtolower($filepath)) != 0) {
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_EXTREMELY_SCATTERED) != 0) {
+        if (preg_match('#^data_custom/images/addon_screenshots(/|$)#', strtolower($filepath)) != 0) {
             return true; // Relating to addon build, but not defined in addons
         }
         if (preg_match('#^exports/static(/|$)#', strtolower($filepath)) != 0) {
@@ -493,10 +501,19 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if (preg_match('#^_tests(/|$)#', strtolower($filepath)) != 0) {
             return true; // Test set may have various temporary files buried within
         }
+        if (preg_match('#^data_custom/ckeditor(/|$)#', strtolower($filepath)) != 0) {
+            return true; // Don't want development version of CKEditor
+        }
 
+        if (preg_match('#^data_custom/sitemaps(/|$)#', strtolower($filepath)) != 0) {
+            return true; // Don't want sitemap files
+        }
+    }
+
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0) {
         static $addon_files = null;
         if ($addon_files === null) {
-            $addon_files = array();// Old style: function_exists('collapse_1d_complexity')?array_map('strtolower',collapse_1d_complexity('filename',$GLOBALS['SITE_DB']->query_select('addons_files',array('filename')))):array();
+            $addon_files = array();// Old style: function_exists('collapse_1d_complexity') ? array_map('strtolower', collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename')))) : array();
             $hooks = find_all_hooks('systems', 'addon_registry');
             foreach ($hooks as $hook => $place) {
                 if ($place == 'sources_custom') {
@@ -514,7 +531,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             $addon_files = array_flip($addon_files);
         }
         if (isset($addon_files[strtolower($filepath)])) {
-            return true;
+            if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 && strpos($filepath, '_custom') === false) {
+                return true;
+            }
         }
         // Note that we have no support for identifying directories related to addons, only files inside. Code using this function should detect directories with no usable files in as relating to addons.
     }

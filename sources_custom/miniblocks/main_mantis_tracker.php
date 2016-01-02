@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composr_homesite
+ * @package    composr_homesite_support_credits
  */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
@@ -51,7 +51,7 @@ require_code('xhtml');
 $max = get_param_integer('mantis_max', 10);
 $start = get_param_integer('mantis_start', 0);
 
-$db = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), '');
+$db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), '');
 
 $where = 'duplicate_id=0';
 $where .= ' AND view_state=10';
@@ -60,8 +60,7 @@ if (isset($map['completed'])) {
     $where .= ' AND ' . (($map['completed'] == '0') ? 'a.status<=50' : 'a.status=80');
 }
 if (isset($map['voted'])) {
-    $where .= ' AND (' . (($map['voted'] == '1') ?/*disabled as messy if someone's reported lots 'a.reporter_id='.strval(get_member()).' OR '.*/
-            'EXISTS' : 'NOT EXISTS') . ' (SELECT * FROM mantis_bug_monitor_table p WHERE user_id=' . strval(get_member()) . ' AND p.bug_id=a.id))';
+    $where .= ' AND (' . (($map['voted'] == '1') ? /*disabled as messy if someone's reported lots 'a.reporter_id='.strval(get_member()).' OR '.*/'EXISTS' : 'NOT EXISTS') . ' (SELECT * FROM mantis_bug_monitor_table p WHERE user_id=' . strval(get_member()) . ' AND p.bug_id=a.id))';
 }
 if (isset($map['project'])) {
     $where .= ' AND a.project_id=' . strval(intval($map['project']));
@@ -98,7 +97,7 @@ $select .= ',(SELECT COUNT(*) FROM mantis_bug_monitor_table y WHERE y.bug_id=a.i
 $select .= ',(SELECT SUM(amount) FROM mantis_sponsorship_table z WHERE z.bug_id=a.id) AS money_raised';
 $select .= ',CAST(c.value AS DECIMAL) as hours';
 $select .= ',CAST(c.value AS DECIMAL)*' . strval($multi_rate) . '*' . float_to_raw_string($s_credit_value) . ' AS currency_needed';
-$table = 'mantis_bug_table a JOIN mantis_bug_text_table b ON b.id=a.id JOIN mantis_custom_field_string_table c ON c.bug_id=a.id AND field_id=' . $cms_hours_field . ' JOIN mantis_category_table d ON d.id=a.category_id';
+$table = 'mantis_bug_table a JOIN mantis_bug_text_table b ON b.id=a.bug_text_id JOIN mantis_custom_field_string_table c ON c.bug_id=a.id AND field_id=' . $cms_hours_field . ' JOIN mantis_category_table d ON d.id=a.category_id';
 $query = 'SELECT ' . $select . ' FROM ' . $table . ' WHERE ' . $where . ' ORDER BY ' . $order;
 
 $issues = $db->query($query, $max, $start);

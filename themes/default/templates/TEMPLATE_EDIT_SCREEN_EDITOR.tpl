@@ -92,7 +92,7 @@
 				</div>
 			{+END}
 
-			{REVISION_HISTORY}
+			{REVISIONS}
 
 			{+START,SET,button}
 				{+START,IF_NON_EMPTY,{PREVIEW_URL}}

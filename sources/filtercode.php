@@ -41,7 +41,7 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
     }
 
     if (($field_type == 'date') || ($field_type == 'time')) {
-        $_default_value = get_input_date('filter_' . $field_name, true);
+        $_default_value = post_param_date('filter_' . $field_name, true);
         $default_value = ($_default_value === null) ? '' : strval($_default_value);
     } elseif ($field_type == 'list_multi') {
         $default_value = array_key_exists('filter_' . $field_name, $env) ? implode(',', $env['filter_' . $field_name]) : '';
@@ -117,7 +117,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         require_code('content');
         $ob2 = get_content_object($content_type);
         $info2 = $ob2->info();
-        if ((isset($info2['supports_custom_fields'])) && ($info2['supports_custom_fields'])) {
+        if ($info2['support_custom_fields']) {
             require_code('fields');
             $catalogue_fields = list_to_map('id', get_catalogue_fields(($content_type == 'catalogue_entry') ? $catalogue_name : '_' . $content_type));
             foreach ($catalogue_fields as $catalogue_field) {
@@ -261,7 +261,6 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                         case 'REAL':
                             $field_type = 'float';
                             break;
-                        case 'MD5':
                         case 'URLPATH':
                         case 'IP':
                         case 'LONG_TEXT':
@@ -465,6 +464,7 @@ function unparse_filtercode($parsed)
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -512,6 +512,7 @@ function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join,
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _fields_api_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -582,6 +583,7 @@ function generate_filtercode_join_key_from_string($str)
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -675,7 +677,6 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
                 $field_type = 'float';
                 $filter_key = $table_join_code_here . '.' . $inner_filter_key;
                 break;
-            case 'MD5':
             case 'URLPATH':
             case 'LANGUAGE_NAME':
             case 'IP':
@@ -739,7 +740,7 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
         $info = $ob->info();
         $info['content_type'] = $content_type; // We'll need this later, so add it in
 
-        if (isset($info['filtercode'])) {
+        if (array_key_exists('filtercode', $info)) {
             if (strpos($info['filtercode'], '::') !== false) {
                 list($code_file, $conv_func) = explode('::', $info['filtercode']);
                 require_code($code_file);
@@ -838,7 +839,7 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
                             $alt .= ' OR ';
                         }
                         $_filter_val = explode('-', $filter_val, 2);
-                        //$alt.=$filter_key.'>='.$_filter_val[0].' AND '.$filter_key.'<='.$_filter_val[1];     Less efficient than the below, due to possibility of $filter_key being a subselect
+                        //$alt .= $filter_key . '>=' . $_filter_val[0] . ' AND ' . $filter_key . '<=' . $_filter_val[1];     Less efficient than the below, due to possibility of $filter_key being a subselect
                         $alt .= $filter_key . ' BETWEEN ' . $_filter_val[0] . ' AND ' . $_filter_val[1];
                     }
                     break;

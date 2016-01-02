@@ -8,7 +8,15 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    custom_ratings
+ */
+
+/**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__feedback()
 {

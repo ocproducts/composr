@@ -33,18 +33,18 @@
 		<div class="float_surrounder">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
-					<a target="_self" href="#"><img class="top_vertical_alignment" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
+					<a rel="back_to_top" target="_self" href="#"><img class="top_vertical_alignment" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a>
 				</p>
 			{+END}
 
 			{+START,IF_NON_EMPTY,{VIEW_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
-					<a class="buttons__more button_screen_item" title="{!VIEW}: {$STRIP_TAGS*,{FIELD_0}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}" href="{VIEW_URL*}"><span>{!VIEW}</span></a>
+					<a class="buttons__more button_screen_item" title="{!VIEW}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}{+END}" href="{VIEW_URL*}"><span>{!VIEW}</span></a>
 				</p>
 			{+END}
 			{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
-					<a class="buttons__edit button_screen_item" href="{EDIT_URL*}" title="{!EDIT}: {$STRIP_TAGS*,{FIELD_0}}"><span>{!EDIT}</span></a>
+					<a class="buttons__edit button_screen_item" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
 				</p>
 			{+END}{+END}
 		</div>

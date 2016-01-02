@@ -42,13 +42,13 @@ class Block_menu
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
-        /* Ideally we would not cache as we would need to cache for all screens due to context sensitive link display (either you're here or match key filtering). However in most cases that only happens per page, so we will cache per page -- and people can turn off cacheing via the standard block parameter for that if needed.*/
+        /* Ideally we would not cache as we would need to cache for all screens due to context sensitive link display (either you're here or match key filtering). However in most cases that only happens per page, so we will cache per page -- and people can turn off caching via the standard block parameter for that if needed.*/
         $info = array();
         $info['cache_on'] = array('block_menu__cache_on');
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
@@ -60,7 +60,7 @@ class Block_menu
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -89,6 +89,10 @@ class Block_menu
             }
         }
 
+        if ($map['param'] == '') {
+            disable_php_memory_limit();
+        }
+
         require_code('menus');
         $menu = build_menu($type, $map['param'], $silent_failure == '1');
         $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
@@ -115,7 +119,7 @@ function block_menu__cache_on($map)
     We therefore assume that menu links are maximally distinguished by zone&page&type parameters.
      (special case -- catalogue index screens are also distinguished by ID, as catalogues vary a lot)
 
-    There is a simple workaround if our assumptions don't hold up. Just turn off cacheing for the
+    There is a simple workaround if our assumptions don't hold up. Just turn off caching for the
     particular menu block instance. cache="0". It won't hurt very much, menus are relatively fast.
     */
 

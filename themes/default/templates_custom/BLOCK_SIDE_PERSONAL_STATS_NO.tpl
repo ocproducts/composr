@@ -2,7 +2,7 @@
 	<section class="box box___block_side_personal_stats_no"><div class="box_inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
-		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="autocomplete">
+		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
@@ -17,7 +17,7 @@
 					<div class="login_block_cookies">
 						<div class="float_surrounder">
 							<label for="ps_remember">{!REMEMBER_ME}</label>
-							<input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}}checked="checked" {+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }" {+END}type="checkbox" value="1" id="ps_remember" name="remember" />
+							<input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />
 						</div>
 						{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
 							<div class="float_surrounder">
@@ -41,7 +41,7 @@
 
 		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 			{+START,IF_EMPTY,{$FB_CONNECT_UID}}
-				<div style="margin-top: 0.4em; text-align: center"><div class="fb-login-button" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_stream,offline_access{+END}"></div></div>
+				<div style="margin-top: 0.4em; text-align: center"><div class="fb-login-button" data-scope="email,user_birthday,user_about_me,user_hometown,user_location,user_website{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div></div>
 			{+END}
 		{+END}
 	</div></section>

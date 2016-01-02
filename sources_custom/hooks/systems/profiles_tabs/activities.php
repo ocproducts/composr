@@ -35,7 +35,7 @@ class Hook_profiles_tabs_activities
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return array A tuple: The tab title, the tab contents, the suggested tab order, the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -77,11 +77,12 @@ class Hook_profiles_tabs_activities
                         $ob->auth_set($member_id_of, $oauth_url);
                     } elseif ((running_script('index')) && (!$leave_to_ajax_if_possible) && ($ob->auth_is_set($member_id_of)) && (either_param_string('oauth_in_progress', null) === null) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
                         /* running_script('index') won't work currently due to execution contexts, and it is never non-AJAX, and it's probably not needed anyway
-                                        // Do a refresh to make sure the token is updated
-                                        $url_map=array('page'=>'_SELF','type'=>'view','id'=>$member_id_of,'oauth_in_progress'=>1);
-                                        $url_map['syndicate_start__'.$hook]=1;
-                                        $oauth_url=build_url($url_map,'_SELF',NULL,false,false,false,'tab__activities');
-                                        $ob->auth_set($member_id_of,$oauth_url);*/
+                        // Do a refresh to make sure the token is updated
+                        $url_map = array('page' => '_SELF', 'type' => 'view', 'id' => $member_id_of, 'oauth_in_progress' => 1);
+                        $url_map['syndicate_start__' . $hook] = 1;
+                        $oauth_url = build_url($url_map, '_SELF', null, false, false, false, 'tab__activities');
+                        $ob->auth_set($member_id_of, $oauth_url);
+                        */
                     }
 
                     $syndications[$hook] = array(

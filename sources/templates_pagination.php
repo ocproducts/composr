@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__templates_pagination()
 {
@@ -28,9 +30,9 @@ function init__templates_pagination()
 }
 
 /**
- * Get the tempcode for a results browser.
+ * Get the Tempcode for a results browser.
  *
- * @param  tempcode $title The title/name of the resource we are browsing through
+ * @param  Tempcode $title The title/name of the resource we are browsing through
  * @param  integer $start The current position in the browser
  * @param  ID_TEXT $start_name The parameter name used to store our position in the results (usually, 'start')
  * @param  integer $max The maximum number of rows to show per browser page
@@ -40,7 +42,7 @@ function init__templates_pagination()
  * @param  integer $max_page_links The maximum number of quick-jump page-links to show
  * @param  ?array $_selectors List of per-page selectors to show (null: show hard-coded ones)
  * @param  ID_TEXT $hash Hash component to URL
- * @return tempcode The results browser
+ * @return Tempcode The results browser
  */
 function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $keep_post = false, $max_page_links = 5, $_selectors = null, $hash = '')
 {
@@ -265,6 +267,8 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
  * @param  array $post_array Map of POST array segments (relayed as GET) to use
  * @param  ID_TEXT $hash Hash component to URL
  * @return mixed The URL
+ *
+ * @ignore
  */
 function _build_pagination_cat_url($url_array, $post_array, $hash)
 {

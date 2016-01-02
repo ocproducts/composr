@@ -42,14 +42,14 @@ class Block_main_cc_embed
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):NULL,((array_key_exists(\'sorting\',$map)?$map[\'sorting\']:\'0\')==\'1\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',get_param_string($block_id.\'_order\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'\'),array_key_exists(\'display_type\',$map)?$map[\'display_type\']:NULL,array_key_exists(\'template_set\',$map)?$map[\'template_set\']:\'\',array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id())';
+        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):null,((array_key_exists(\'sorting\',$map)?$map[\'sorting\']:\'0\')==\'1\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',get_param_string($block_id.\'_order\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'\'),array_key_exists(\'display_type\',$map)?$map[\'display_type\']:null,array_key_exists(\'template_set\',$map)?$map[\'template_set\']:\'\',array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id())';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -62,7 +62,7 @@ class Block_main_cc_embed
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -85,7 +85,7 @@ class Block_main_cc_embed
         // Pick up details about category
         $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $categories)) {
-            return do_lang_tempcode('MISSING_RESOURCE');
+            return do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category');
         }
         $category = $categories[0];
 

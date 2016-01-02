@@ -71,7 +71,7 @@ class Module_bookmarks
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -80,15 +80,8 @@ class Module_bookmarks
             return array();
         }
 
-        $cnt = $GLOBALS['SITE_DB']->query_select_value('bookmarks', 'COUNT(*)', array('b_owner' => is_null($member_id) ? get_member() : $member_id));
-
-        $ret = array();
-        if ($cnt != 0) {
-            $ret += array(
-                'browse' => array('MANAGE_BOOKMARKS', 'menu/site_meta/bookmarks'),
-            );
-        }
-        $ret += array(
+        $ret = array(
+            'browse' => array('MANAGE_BOOKMARKS', 'menu/site_meta/bookmarks'), // Even if we have none we need this link, as sitemap will put add link underneath it
             'add' => array('ADD_BOOKMARK', 'menu/_generic_admin/add_one'),
         );
         return $ret;
@@ -99,7 +92,7 @@ class Module_bookmarks
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -125,7 +118,7 @@ class Module_bookmarks
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -161,7 +154,7 @@ class Module_bookmarks
     /**
      * The UI to manage bookmarks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function manage_bookmarks()
     {
@@ -181,7 +174,7 @@ class Module_bookmarks
 
         $set_name = 'choose_folder';
         $required = true;
-        $set_title = do_lang_tempcode('BOOKMARK_FOLDER');
+        $set_title = do_lang_tempcode('FOLDER');
         $field_set = alternate_fields_set__start($set_name);
 
         $field_set->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('DESCRIPTION_OLD_BOOKMARK_FOLDER'), 'folder', $list, null, false, false));
@@ -207,7 +200,7 @@ class Module_bookmarks
     /**
      * The actualiser to manage bookmarks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _manage_bookmarks()
     {
@@ -241,7 +234,7 @@ class Module_bookmarks
     /**
      * The UI to add a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add()
     {
@@ -256,7 +249,7 @@ class Module_bookmarks
     /**
      * The actualiser to add a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -281,7 +274,7 @@ class Module_bookmarks
     /**
      * The actualiser to edit a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_bookmark()
     {

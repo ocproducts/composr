@@ -29,17 +29,6 @@ function close_down()
 	if (current) current.parentNode.removeChild(current);
 }
 
-window.setTimeout(function() {
-	add_event_listener_abstract(window,'load',function() {
-		var es=document.getElementsByTagName('input');
-		for (var i=0;i<es.length;i++)
-		{
-			if (es[i].getAttribute('autocomplete')=='off')
-				es[i].setAttribute('autocorrect','off');
-		}
-	});
-},0);
-
 function update_ajax_member_list(target,special,delayed,e)
 {
 	if (typeof e=='undefined') e=window.event;
@@ -50,8 +39,6 @@ function update_ajax_member_list(target,special,delayed,e)
 
 	if (e && enter_pressed(e)) return null;
 
-	target.setAttribute('autocomplete','off');
-	target.setAttribute('autocorrect','off');
 	if (target.disabled) return;
 
 	if (!browser_matches('ios'))

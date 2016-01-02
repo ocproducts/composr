@@ -8,7 +8,7 @@ The system uses a database (located on our systems) and works by tracking all of
 
 Display the banner on your site, without a banner of your own being in the system. This is the simplest way to do things, however the disadvantage is that you won't get any hits back from the network for it. To use this method, simply insert the following code into your site:
 
-[code]
+[code="HTML"]
 <iframe width="728" height="90" frameborder="0" scrolling="no" src="{$BASE_URL}/banner.php"></iframe>
 [/code]
 
@@ -20,7 +20,7 @@ We have the ability to change the regularity a banner is shown on the network. I
 
 &raquo; [page="_SEARCH:cms_banners:add"]Join our banner scheme[/page]
 
-{+START,IF,{$ADDON_INSTALLED,pointstore}}[title="2"]Point-store[/title]
+{+START,IF,{$ADDON_INSTALLED,pointstore}}[title="2"]Point Store[/title]
 
 If you have built up points on our site then you may use the Point Store to purchase a banner and hits for it.
 {+END}

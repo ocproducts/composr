@@ -50,6 +50,6 @@ class Hook_config_points_show_personal_stats_total_points
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

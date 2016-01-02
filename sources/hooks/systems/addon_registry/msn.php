@@ -106,7 +106,7 @@ class Hook_addon_registry_msn
             'themes/default/templates/NETLINK.tpl',
             'adminzone/pages/comcode/EN/netlink.txt',
             'text/netlink.txt',
-            'netlink.php',
+            'data/netlink.php',
             'sources/hooks/systems/page_groupings/msn.php',
             'sources/multi_site_networks.php',
             'sources/blocks/side_network.php',

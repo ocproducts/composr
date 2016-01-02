@@ -36,7 +36,7 @@ class Hook_content_meta_aware_post
         }
 
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_POST',
 
@@ -59,6 +59,7 @@ class Hook_content_meta_aware_post
             'title_field_dereference' => false,
             'description_field' => 'p_post',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:topicview:findpost:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_post:_WILD',
@@ -69,7 +70,9 @@ class Hook_content_meta_aware_post
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => 'p_poster',
+            'author_field' => null,
             'add_time_field' => 'p_time',
             'edit_time_field' => 'p_last_edit_time',
             'date_field' => 'p_time',
@@ -82,6 +85,11 @@ class Hook_content_meta_aware_post
             'permissions_type_code' => 'forums',
 
             'search_hook' => 'cns_posts',
+            'rss_hook' => null,
+            'attachment_hook' => 'cns_post',
+            'unvalidated_hook' => 'cns_posts',
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'cns_forum',
 
@@ -91,7 +99,11 @@ class Hook_content_meta_aware_post
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => true,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_POST',
         );
@@ -107,7 +119,7 @@ class Hook_content_meta_aware_post
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    classifieds
+ * @package    classified_ads
  */
 
 /**
@@ -56,7 +56,7 @@ class Module_classifieds
             $GLOBALS['SITE_DB']->create_table('classifieds_prices', array(
                 'id' => '*AUTO',
                 'c_catalogue_name' => 'ID_TEXT',
-                //'c_category_id'=>'?AUTO_LINK',
+                //'c_category_id' => '?AUTO_LINK',
                 'c_days' => 'INTEGER',
                 'c_label' => 'SHORT_TRANS',
                 'c_price' => 'REAL',
@@ -91,7 +91,7 @@ class Module_classifieds
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -108,7 +108,7 @@ class Module_classifieds
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -127,7 +127,7 @@ class Module_classifieds
     /**
      * Standard module run function.
      *
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run()
     {
@@ -143,7 +143,7 @@ class Module_classifieds
     /**
      * View an overview of the members adverts on the system.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function adverts()
     {

@@ -1,5 +1,6 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Nuances of forum integration[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Nuances of forum integration[/title]
 
+[media width="150" float="right" framed="0"]data_custom/images/docs/tut_nuances/intro_forums.png[/media]
 Composr supports integration with a wide variety of forum systems through our forum driver system. Integration is seamless for the most part, but there are a few issues as described in this tutorial.
 
 Composr draws upon the forum for features such as:
@@ -9,30 +10,51 @@ Composr draws upon the forum for features such as:
  - topic storage (aka thread [storage])
  - personal messaging (aka private messaging), or Private Topics
 
-Once you have installed Composr, you cannot easily switch forums, as the member and usergroup IDs referenced by Composr would lose their association. Please see the 'Importing from other software' tutorial for more information on this.
-
-Also if you upgrade your forum after installing be sure to check Composr supports the version you are upgrading to before doing it.
-
 [contents]decimal,lower-alpha[/contents]
+
+[title="2"]Our own forum (Conversr)[/title]
+
+We [b]strongly[/b] recommend the use of our own forum, Conversr, rather than a third-party one, if Composr is not being installed against a pre-established forum (although we strive to provide a number of tools to convert from your existing forum software).
+
+There are many advantages to use Conversr, such as:
+ - you'll be able to use Comcode for making forum posts and not see any difference in presentation between website and forum
+ - the forum users-online and sessions features will be the same as the sites
+ - you won't have to work between the Admin Zone and forum admincp -- there will instead be a single Admin Zone
+ - links will flow seamlessly from Composr to the forum
+ - the forum will use the same theme and basic templates as Composr
+ - there is no need to learn concepts from two pieces of software: Conversr has perfect integration on all levels
+ - Conversr is full of innovative features that other forum systems do not have (such as Private Topics and in-post whispers) -- it's actually a very powerful system in its own right
+
+Frankly speaking, using a third-party forum is far too clunky for the modern user to tolerate, costly to maintain, and may give you a headache. If we were recreating Composr today we wouldn't include support for third-party forums. We only continue to maintain the functionality because it is sometimes necessary to connect to pre-established membership systems.
+
+[title="2"]A further word of caution[/title]
+
+[surround]
+[media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
+Once you have installed Composr, you cannot easily switch forums, as the member and usergroup IDs referenced by Composr would lose their association. Please see the [page="_SEARCH:tut_importer"]Importing data into Composr tutorial[/page] for more information on this.
+
+Also: if you upgrade your forum after installing be sure to check Composr supports the version you are upgrading to before doing it.
+[/surround]
 
 [title="2"]A note about character sets[/title]
 
 If your forum and Composr are not using the same character set there may be problems.
-You can change Composr's character set if needed (see the internationalisation tutorial for needed).
+You can change Composr's character set if needed (see the [page="_SEARCH:tut_intl"]Localisation and internationalisation tutorial[/page] for needed).
 A good example -- if your login password has weird symbols (ones that don't appear on most keyboards), those symbols may not be the same in Composr's character set, and thus that log in would not work.
 
 [title="2"]Comment topics[/title]
 
-[media width="150" description="Configuration of special forums" float="right"]data_custom/images/docs/nuances_2.png[/media]
+[surround]
+[media width="150" description="The configured special forums do actually exist... see! (our own forum actually configures it all like this by default)" float="right"]data_custom/images/docs/tut_nuances/nuances_1.png[/media]
+[media width="150" description="Configuration of special forums" float="right"]data_custom/images/docs/tut_nuances/nuances_2.png[/media]
 Most resources in Composr that have commenting enabled create comment topics in the configured comment forum. If a forum stores posts in BBCode, then if Comcode features not supported in BBCode were used, they will be displayed unparsed when viewing from the forum.
 
 You should moderate comments from the forum as you would any other forum topic. On some forum drivers, however, the forum "latest post" area may not update properly to show new posts. It is best to have the comment topic forums ("Website comment topics" and "Website support tickets", by default) located on the root of the forum-view, as Composr will never update "last post" areas for parent-forum trees.
 
-The first post in comment topics is a special 'spacer post'. This is necessary for two reasons...
- - To indicate what content the topic is for
- - To allow the first true post in the topic to be deleted (with ordinary forum topics the first post can not usually be deleted because it is considered as setting the grounds for the topic)
-
-[media width="150" description="The configured special forums do actually exist... see! (our own forum actually configures it all like this by default)" float="right"]data_custom/images/docs/nuances_1.png[/media]
+The first post in comment topics is a special 'spacer post'. This is necessary because:
+1) To indicate what content the topic is for
+2) To allow the first true post in the topic to be deleted (with ordinary forum topics the first post can not usually be deleted because it is considered as setting the grounds for the topic)
+[/surround]
 
 [title="2"]Super-members[/title]
 
@@ -43,31 +65,31 @@ Super-members are a Composr concept for advanced members that have access to ext
 
 [title="2"]Forum base URL[/title]
 
-It is very common for Composr users to install the portal, but get the forum base URL wrong. This can be easily corrected after installation by using the separate [tt]config_editor.php[/tt] script (the one where you need to enter the admin password you chose upon install to change the installation environment). Once this is done, it is necessary to clean the Comcode page cache (go to: Admin Zone > Tools > Website cleanup tools).
+It is very common for Composr users to install Composr with the forum base URL wrong. This can be easily corrected after installation by using the separate [tt]http://yourbaseurl/config_editor.php[/tt] script (the one where you need to enter the master password you chose upon install to change the installation environment). Once this is done, it is necessary to clean the Comcode page cache (go to: Admin Zone > Tools > Website cleanup tools).
 
 The forum base URL should not include a script name -- it should be a URL-prefix to your forums. For example,
  - [tt]http://forums.example.com[/tt] would be okay
- - [tt]http://forums.example.com/index.php[/tt] would not have been correct, as the software won't be able to find emoticon image URLs by using this as a prefix
- - [tt]http://forums.example.com/[/tt] would have been over-specified -- the final slash is not required
+ - [tt]http://forums.example.com/index.php[/tt] would not have been correct, as Composr won't be able to find emoticon image URLs by using this as a prefix (imagine [tt]http://forums.example.com/index.php/styles/emoticons/smile.png[/tt] -- clearly that would be wrong)
+ - [tt]http://forums.example.com/[/tt] would work -- but the final slash is not required (we don't want to have double slashes in the generated URLs)
 
 [title="2"]Show forum within website[/title]
 
-[media width="150" description="Configuring Composr to generate in-line forum links" float="left"]data_custom/images/docs/nuances_3.png[/media]
-[media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/nuances_forum_menu_1.png[/media]
-Composr supports integration of your forum into the portal, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its XHTML code and CSS into the XHTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
+[media width="150" description="Configuring Composr to generate in-line forum links from:
+Admin Zone > Setup > Configuration > Site options > Advanced" float="left"]data_custom/images/docs/tut_nuances/nuances_3.png[/media]
+[media width="150" description="...and this is how you should make it be" float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_2.png[/media]
+[media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_1.png[/media]
+Composr supports integration of your forum into the website, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its HTML code and CSS into the HTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
 
 This feature can be turned on from the Admin Zone configuration module, and once on, any Composr generated forum link will be passed through the module (such as links to member profiles). You will also need to replace the forum link in the menu so as to pass through the 'forums' embedding module, as the menus are not managed by the configuration options. To do this, click the "edit menu" link underneath the menu, and make the change as identified in the screenshots.
 
-[media width="150" description="...and this is how you should make it be" float="right"]data_custom/images/docs/nuances_forum_menu_2.png[/media]
-
-Be aware that the forum and Composr both will look a bit weird because it will be running with two sets of CSS sheets that have not been designed to work together.
+Be aware that the forum and Composr both will look a bit weird because it will be running with two sets of CSS sheets that have not been designed to work together. It is up to you to make things look seamless.
 
 [title="3"]Example of making the CSS work together[/title]
 
 This example is for phpBB 3's default skin.
 
-If will help a lot if you add this to Composr's [tt]global.css[/tt]...
-[code]
+If will help a lot with the integration if you add this to Composr's [tt]global.css[/tt]...
+[code="CSS"]
 .global_middle #wrap {
 	float: left;
 	width: 100%;
@@ -75,10 +97,12 @@ If will help a lot if you add this to Composr's [tt]global.css[/tt]...
 	direction: ltr;
 }
 [/code]
-This will make them rest will together in terms of spacing, and set phpBB to have a good base font size.
+This will make them rest well together in terms of spacing, and set phpBB to have a good base font size.
+
+[tt]#wrap[/tt] is used internally to phpBB, and is not used in Composr. It is therefore a good way to target only the embedded phpBB layout with additional styling rules.
 
 And then you can make changes like this to the phpBB's CSS...
-[code]
+[code="CSS"]
 h4 {
 	/* Forum and topic list titles */
 	font-family: "Trebuchet MS", Verdana, Helvetica, Arial, Sans-serif;
@@ -86,49 +110,49 @@ h4 {
 }
 [/code]
 to
-[code]
+[code="CSS"]
 #wrap h4 {
 	/* Forum and topic list titles */
 	font-family: "Trebuchet MS", Verdana, Helvetica, Arial, Sans-serif;
 	font-size: 1.3em;
 }
 [/code]
-because putting "#wrap" before things will make it apply to stuff inside phpBB, not to Composr.
 
 "#wrap" is specific to phpBB but most forums will have something similar you can bind your CSS to, or otherwise you can add something via changing a forum template.
 
-[title="2"]Cookie integration[/title]
+[title="2"]Cookie integration (advanced, non-supported)[/title]
 
-Composr, where possible, will allow you to use the same cookies for logging into Composr as you do for your forum. However this is difficult to set-up as:
+Composr, where possible, will allow you to use the same cookies for logging into Composr as you do for your forum. However this is difficult to setup as:
  - it requires cookie domain and path consistency between Composr and the forum
  - if mistakes are made during configuration, they may block the success of reconfigurations, by the unsuccessful cookies being dominant over the correct ones
  - web browsers can behave differently with respect to cookies, especially when they are configured differently
  - cookie format may change between forum versions, and we might not always track such changes as it is not obvious (no error messages are provided)
-Due to all these problems, ocProducts does not support this functionality officially.
+Due to all these problems, we do not support this functionality officially.
 
+[media float="right" framed="0" thumb="0"]data_custom/images/docs/remember.png[/media]
 Make sure:
- - That the forum cookie path is set to '/', or at least a URL path that both the forum and the portal exist underneath. A blank path will not work
- - That the cookie domain is valid for both the forums and the portal. If your portal and forum are on different sub-domains, then blank will not work. For example '.forums.example.com' would not cover a portal on 'example.com'. '.example.com' would cover both -- and hence that should be used for the cookie domain. The proceeding 'dot' has a special meaning. Preferably, forum and portal will be on the same exact domain, so to avoid any confusion
- - That the cookies have the same names. For most forums this will be auto-detected. The names Composr use will be based on the real cookie names, whilst forums may ask you just to define a stub
+ - That the forum cookie path is set to '/', or at least a URL path that both the forum and the website exist underneath. A blank path will not work
+ - That the cookie domain is valid for both the forums and the website. If your website and forum are on different sub-domains, then blank will not work. For example '.forums.example.com' would not cover a website on 'example.com'. '.example.com' would cover both -- and hence that should be used for the cookie domain. The proceeding 'dot' has a special meaning. Preferably, forum and website will be on the same exact domain, so to avoid any confusion
+ - That the cookies have the same names. For most forums this will be auto-detected. The names Composr use will be based on the real cookie names, while forums may ask you just to define a stub
  - That you clear cookies from the Composr/forums sites and reload your web browser between configuration changes. Please note that clearing all cookies indiscriminatingly is likely to be annoying for you because you will have to re-enter many passwords on Internet sites, and you may not remember them all
 
-[title="2"]Forum specifics[/title]
+[title="2"]Forum specifics (advanced)[/title]
 
 [title="3"]SMF[/title]
 
 Super administrator membership is determined by membership of the 'Administrator' usergroup (#1).
 Super moderator membership is determined by membership of the 'Global Moderator' usergroup (#2).
 
-In order for frame-embed of SMF to work, you need to remove this line from SMF's [tt]index.php[/tt] file:
-[code]
+In order for frame-embed of SMF to work ("Show forum within website"), you need to remove this line from SMF's [tt]index.php[/tt] file:
+[code="PHP"]
 header('X-Frame-Options: SAMEORIGIN');
 [/code]
 
 [title="3"]vBulletin[/title]
 
 If you use vBulletin 3.5 or earlier put:
-[code]
-$SITE_INFO['vb_version']=3.5;
+[code="PHP"]
+$SITE_INFO['vb_version'] = 3.5;
 [/code]
 into [tt]_config.php[/tt].
 
@@ -136,17 +160,17 @@ into [tt]_config.php[/tt].
 
 phpBB2 is unlike the other supported forums when it comes to determining who is a member of staff or not. phpBB stores this as a user-level for each user, rather than encoding it in the properties of a usergroup.
 
-Composr uses the user level to define admin membership, but in order to make staff show up on the staff page, you will need to create a new usergroup named 'Administrators' and put all staff into it. The reason for this is that Composr uses usergroup membership to list all the staff.
+Composr uses the user level to define admin membership, but in order to make staff show up on the [tt]staff[/tt] module, you will need to create a new usergroup named 'Administrators' and put all staff into it. The reason for this is that Composr uses usergroup membership to list all the staff.
 
-Because of this no-group-issue, the staff filter is disabled for phpBB: it can't synchronise when it is turned on, and thus would lock existing staff out.
+Because of this no-group issue, the staff filter feature is disabled for phpBB: it can't synchronise when it is turned on, and thus would lock existing staff out.
 
 [title="3"]Invision Power Board[/title]
 
 OpenID, LDAP, and Facebook connect integration is not supported via the IPB forum driver.
 
 If you use IPB stronghold cookies (version 2.2 and later) put:
-[code]
-$SITE_INFO['stronghold_cookies']=1;
+[code="PHP"]
+$SITE_INFO['stronghold_cookies'] = 1;
 [/code]
 into [tt]_config.php[/tt].
 
@@ -188,20 +212,7 @@ Using the none-forum driver, many Composr features will either be disabled or ma
 
 If using this driver, you should remove links and blocks from the menus that involve users (such as the forum link, the points links, and the personal-stats-block).
 
-You are likely better off using Conversr rather than no forum and simply restricting access to the forum zone, join module, and personal zone.
-
-[title="2"]Our own forum (Conversr)[/title]
-
-We strongly recommend the use of our own forum, Conversr, rather than a third-party one, if Composr is not being installed against a pre-established forum (although ocProducts strives to provide a number of tools to convert from your existing forum software).
-
-There are many advantages to use Conversr, such as:
- - you'll be able to use Comcode for making forum posts and not see any difference in presentation between portal and forum
- - the forum users-online and sessions features will be the same as the sites
- - you won't have to work between the Admin Zone and forum admincp -- there will instead be a single Admin Zone
- - links will flow seamlessly from Composr to the forum
- - the forum will use the same theme and basic templates as Composr
- - there is no need to learn concepts from two pieces of software: Conversr has perfect integration on all levels
- - Conversr is full of innovative features that other forum systems do not have (such as Private Topics and in-post whispers), regardless of its association to Composr
+You are likely better off using Conversr rather than no forum and simply restricting access to the forum zone, [tt]join[/tt] module, and personal zone.
 
 [concepts
  1_key="Conversr"   1_value="The powerful forum and member system that comes with Composr. Conversr is only used if a third-party forum isn't."

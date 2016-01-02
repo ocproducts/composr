@@ -24,6 +24,8 @@
  *
  * @param  URLPATH $url The URL to enforce results in session persistence for the user
  * @return URLPATH The fixed URL
+ *
+ * @ignore
  */
 function _enforce_sessioned_url($url)
 {
@@ -168,7 +170,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         if (!is_null($test)) {
             require_code('temporal');
             require_code('tempcode');
-            if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/M/Y', tz_time(time(), get_site_timezone()))) {
+            if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/m/Y', tz_time(time(), get_site_timezone()))) {
                 require_code('points');
                 $_before = point_info($member);
                 if (array_key_exists('points_gained_visiting', $_before)) {
@@ -193,6 +195,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
  */
 function set_session_id($id, $guest_session = false)  // NB: Guests sessions can persist because they are more benign
 {
+    global $DID_CHANGE_SESSION_ID;
+    $DID_CHANGE_SESSION_ID = true;
+
     // If checking safe mode, can really get in a spin. Don't let it set a session cookie till we've completed startup properly.
     global $CHECKING_SAFEMODE;
     if (($CHECKING_SAFEMODE) && ($id == '')) {
@@ -201,11 +206,13 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
 
     // Save cookie
     $timeout = $guest_session ? (time() + intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time'))))) : null;
-    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies',0)==0))      Useful for testing non-cookie support, but annoying if left on
-    {
-        $test=false;
+    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {     Useful for testing non-cookie support, but annoying if left on
+        $test = false;
     } else {*/
     $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
+    if (is_null($test)) {
+        $test = false;
+    }
     //}
     $_COOKIE[get_session_cookie()] = $id; // So we remember for this page view
 
@@ -273,7 +280,7 @@ function try_su_login($member)
             if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member))) { // All hands to the guns
                 global $USER_THEME_CACHE;
                 $USER_THEME_CACHE = 'default';
-                critical_error('MEMBER_BANNED');
+                critical_error('YOU_ARE_BANNED');
             }
         }
         $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
@@ -324,13 +331,18 @@ function try_httpauth_login()
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
+            require_code('failure');
+            if (throwing_errors()) {
+                throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
+            }
+
             @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
         }
     }
 

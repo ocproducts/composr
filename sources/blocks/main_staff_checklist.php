@@ -44,11 +44,11 @@ class Block_main_staff_checklist
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)>0)?null:array()'; // No cache on POST as this is when we save text data
@@ -84,9 +84,9 @@ class Block_main_staff_checklist
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
                 '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_P3P') . '"]http://www.p3pwiz.com/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]http://www.google.com/addurl/[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/toolbox/submit-site-url[/url]',
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://www.compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'helping_out'), 'site') . '[/url]',
             );
@@ -114,11 +114,13 @@ class Block_main_staff_checklist
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
         require_javascript('ajax');
+
+        require_lang('dates');
 
         // Handle custom tasks
         $new_task = post_param_string('new_task', null);
@@ -134,16 +136,16 @@ class Block_main_staff_checklist
             $recurevery = '';
             switch ($r['recurevery']) {
                 case 'mins':
-                    $recurevery = do_lang('_MINUTES');
+                    $recurevery = do_lang('DPLU_MINUTES');
                     break;
                 case 'hours':
-                    $recurevery = do_lang('_HOURS');
+                    $recurevery = do_lang('DPLU_HOURS');
                     break;
                 case 'days':
-                    $recurevery = do_lang('_DAYS');
+                    $recurevery = do_lang('DPLU_DAYS');
                     break;
                 case 'months':
-                    $recurevery = do_lang('_MONTHS');
+                    $recurevery = do_lang('DPLU_MONTHS');
                     break;
             }
             $custasks->attach(do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
@@ -212,7 +214,7 @@ class Block_main_staff_checklist
 /**
  * Work out when an action should happen, and last happened.
  *
- * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is NULL then the number of seconds until it happens (null: won't happen)
+ * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is null then the number of seconds until it happens (null: won't happen)
  * @param  ?integer $recur_hours It should be done every this many hours (null: never happened)
  * @return array A pair: Tempcode to display, and the number of seconds to go until the action should happen
  */

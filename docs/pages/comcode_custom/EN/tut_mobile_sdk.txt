@@ -1,13 +1,244 @@
-[title sub="Written by Rajesh Kumar, ocProducts"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
+[title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps -- the Composr Mobile SDK[/title]
 
-TODO
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
+Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
 
 [contents]decimal,lower-alpha[/contents]
 
-TODO
+[title="2"]Getting Composr Mobile SDK[/title]
+
+[title="3"]SDK[/title]
+
+The main iOS/Android SDK can be [url="found on github"]https://github.com/ocproducts/[/url].
+
+[title="3"]Server-side functionality[/title]
+
+To connect to a Composr site you will need to install the non-bundled [tt]composr_mobile_sdk[/tt] addon.
+This addon also contains some scripting to help generate app assets from the Composr site.
+
+[title="2"]The SDK[/title]
+
+[title="3"]Setup[/title]
+
+[title="4"]iOS[/title]
+
+How to link the SDK into your project:
+[list="1"]
+[*] Create a new project to use with [tt]CMS_SDK[/tt] or open an existing project.
+[*] Add a Prefix Header file (.pch) to your project if you do not have one (the prefix headers are not added automatically in Xcode6 created projects). Steps to add a pch file:
+ - File --> New -->
+ - iOS --> Other --> PCH File --> [tt]ProjectName-Prefix.pch[/tt]
+ - Project > Build Settings > Search: "Prefix Header"
+ - Under "Apple LLVM 6.0" you will get the Prefix Header key
+ - Type in: [tt]ProjectName/ProjectName-Prefix.pch[/tt]
+ - Clean project
+[*] Frameworks you need to add in Build Phases:
+ - [tt]MobileCoreServices.framework[/tt]
+ - [tt]libz.dylib[/tt]
+ - [tt]CFNetwork.framework[/tt]
+ - [tt]libsqlite3.0.dylib[/tt]
+ - [tt]SystemConfiguration.framework[/tt]
+ - [tt]Foundation.framework[/tt]
+ - [tt]CoreGraphics.framework[/tt]
+ - [tt]UIKit.framework[/tt]
+[*] Now, add [tt]CMS_SDK[/tt] entirely to your project by File --> Add Files to [tt]<your_project_name>[/tt]. Then, you can delete off the files not required. Make sure you check the "Copy items if needed" option and add the required targets.
+[*] Once you have imported the entire SDK, you can move some unwanted files to trash. You can also import the SDK without these files, but this would be easier. Files to be removed:
+ - The xcode project file ([tt]Composr Mobile SDK.xcodeproj[/tt])
+ - [tt]AppDelegate.h[/tt] and [tt]AppDelegate.m[/tt]
+ - Entire [tt]Composr Mobile SDKTests[/tt] folder
+ - [tt]Supporting Files[/tt] folder
+[*] Now, you need to add a compiler option for the [tt]JsonKit[/tt] library. Open the "Compile Sources" in "Build Phases" of your project. Scroll down to [tt]JSONKit.m[/tt] and double click on it. In the popup that appears, give this text: [tt]-fno-objc-arc -Wno-conversion[/tt].
+[*] Now, open up your pch file and import [tt]CMS_SDK.h[/tt] so that the SDK is available in your entire project.
+[/list]
+That's it. You are now good to go work with the features of [tt]CMS_SDK[/tt].
+
+[title="2"]Notifications[/title]
+
+Composr can support sending native iOS/Android push notifications.
+
+There are many configuration options located in Admin Zone > Setup > Configuration > Composr APIs.
+
+For iOS notifications to work, put your Apple-provided server certificate over [tt]data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem[/tt] (follow the usual CSR signing process against your Apple developer account).
+
+[title="2"]Toolkit[/title]
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
+The toolkit will help you mirror some Composr website resources into a mobile app. It is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
+
+[title="3"]Language files[/title]
+
+This tool will generate iOS/Android string resources.
+
+It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]http://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
+
+[list="1"]
+[*] Open a command prompt to the Composr installation directory.
+[*] Type a command like:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php language <the .ini filenames which needs to be parsed separated by spaces> <language name>
+[/code]
+For example, to export the [tt]polls.ini[/tt] and [tt]galleries.ini[/tt] files from the [tt]EN[/tt] language pack:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php language polls galleries EN
+[/code]
+[*] Find the files have been generated under [tt]exports/composr_mobile_sdk[/tt]
+[*] Copy through to your app, hand-editing as required
+[/list]
+
+[title="3"]Image assets[/title]
+
+This tool will export theme images to a directory structure more appropriate for copying directly into an iOS/Android app as image assets.
+
+[list="1"]
+[*] Open a command prompt to the Composr installation directory.
+[*] Type a command like:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php images <theme>
+[/code]
+For example, to export the [tt]example[/tt] theme:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php images example
+[/code]
+[*] Find the files have been generated under [tt]exports/composr_mobile_sdk/image_assets[/tt]
+[*] Delete assets you don't want them copy through to your app
+[/list]
+
+[title="2"]Server-side API[/title]
+
+You may access the server-side API by making HTTP calls to [tt]http://yourbaseurl/data/endpoint.php[/tt]. Results are returned as JSON.
+
+The API is split into a number of endpoints, which are given a 'hook' name, and categorised by 'hook type'.
+
+Both REST-style and GET-parameter style requests can be made. At the time of writing, the API is still quite young and most calls are not really content-based, so REST isn't particularly relevant as a metaphor, so we recommend keeping it simple and just using the GET-parameter method.
+
+Here are 2 equivalent example API calls...
+ - [tt]PUT http://yourbaseurl/data/endpoint.php/somehooktype/somehook/someid[/tt] (REST style)
+ - [tt]POST http://yourbaseurl/data/endpoint.php?hook_type=somehooktype&hook=somehook&type=edit&id=someid[/tt] (GET-parameter style)
+Notice these differences:
+[list="1"]
+[*] Request method vs simple GET/POST with use of Composr-style [tt]type[/tt] parameter.
+They are mapped as follows: [tt]GET[/tt]=[tt]view[/tt], [tt]PUT[/tt]=[tt]edit[/tt], [tt]POST[/tt]=[tt]add[/tt], [tt]DELETE[/tt]=[tt]delete[/tt].
+[*] The path components after the PHP file, vs use of [tt]hook_type[/tt], [tt]hook[/tt], and [tt]id[/tt] GET parameters.
+[/list]
+
+Apart from the standardised [tt]type[/tt] and [tt]id[/tt] request parameters described above, input parameters are just put through as GET/POST parameters (i.e. not submitted via POSTed/PUT JSON data). Different endpoints may use different parameters. It is up to the endpoint how to use the parameters, even the meaning of [tt]type[/tt] and [tt]id[/tt] is not defined and those parameters are not required by all endpoints.
+
+JSON is returned in the response as a structure like:
+[code="JavaScript"]
+{
+	success: true|false,
+	error_details: string|null,
+	response_data: ...
+}
+[/code]
+
+Any endpoint may return an error as a false [tt]success[/tt], so the iOS/Android code must handle this. If there is an error, [tt]error_details[/tt] will always be set. Error messages are guaranteed to be human-readable and to be translatable, so you can show them directly to mobile users.
+
+The particular data returned within [tt]response_data[/tt] varies by endpoint.
+
+Authentication is done automatically using cookies, just like it would for normal website requests. If you can't use cookies, re-send the [tt]device_auth_member_id_cn[/tt]/[tt]device_auth_pass_hashed_cn[/tt]/[tt]device_auth_member_id_vl[/tt]/[tt]device_auth_pass_hashed_vl[/tt] response parameters from the [tt]login[/tt] endpoint as POST parameters to subsequent requests.
+
+[title="3"]Default available endpoints[/title]
+
+{|
+! Hook type
+! Hook
+! GET parameters
+! POST parameters
+! Dictionary entries within [tt]response_data[/tt]
+|-
+| [tt]account[/tt]
+| [tt]join[/tt]
+| [i]None[/i]
+| Whatever the normal Composr join form POSTS through. This is usually at least:
+[tt]username[/tt]
+
+[tt]password[/tt]
+
+[tt]password_confirm[/tt]
+
+[tt]email_address[/tt]
+
+[tt]email_address_confirm[/tt]
+
+[tt]dob_day[/tt]
+
+[tt]dob_month[/tt]
+
+[tt]dob_year[/tt]
+| [tt]message[/tt]
+|-
+| [tt]account[/tt]
+| [tt]login[/tt]
+| [i]None[/i]
+| [tt]username[/tt]
+
+[tt]password[/tt]
+| [tt]device_auth_member_id_cn[/tt] (name of cookie containing member ID)
+
+[tt]device_auth_pass_hashed_cn[/tt] (name of cookie containing hashed password)
+
+[tt]device_auth_member_id_vl[/tt] (member ID, if reading cookies is too difficult on your platform)
+
+[tt]device_auth_pass_hashed_vl[/tt] (hashed password, if reading cookies is too difficult on your platform)
+
+Lots of data from Composr's [tt]cns_read_in_member_profile[/tt] function
+|-
+| [tt]account[/tt]
+| [tt]lost_password[/tt]
+| [tt]username[/tt] (optional)
+
+[tt]email_address[/tt] (optional) -- one of these must be passed
+| [i]None[/i]
+| [tt]message[/tt]
+|-
+| [tt]account[/tt]
+| [tt]setup_push_notifications[/tt]
+| [tt]device[/tt] ("ios" or "android")
+
+[tt]member[/tt] (optional, the member ID being set up for -- defaults to current member)
+| [tt]token[/tt] (device notification token)
+| [tt]message[/tt]
+|-
+| [tt]misc[/tt]
+| [tt]contact_us[/tt]
+| [i]None[/i]
+| [tt]category[/tt] (optional, category for message)
+
+[tt]post[/tt] (the message)
+
+[tt]title[/tt] (optional, the subject line)
+
+[tt]email[/tt] (optional, the email to send from -- defaults to that of current member)
+| [tt]message[/tt]
+|-
+| [tt]content[/tt]
+| [tt]commandr_fs[/tt]
+| [i]None[/i]
+
+The standardised [tt]type[/tt] specifies the REST operation
+
+The standardised [tt]id[/tt] specifies the Commandr-fs path
+| [i]Raw data, not split into fields[/i]
+
+[b]or[/b]
+
+[i]A single parameter named [tt]data[/tt] containing said data[/i]
+| [i]Whatever the Commandr-fs hook has[/i]
+|}
+
+You may want to install a browser extension such as [url="JSONView"]https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en[/url] when developing with the API.
+
+[title="2"]Other approaches to mobile integration[/title]
+
+On the [url="tracker"]http://compo.sr/tracker/search.php?tag_string=Type%3A+Mobile[/url] you will find a number of plans and issues relating to further development of Composr Mobile SDK. This is an active process, as we move forward a number of complementary alternative approaches, suited for different mobile integration/extension scenarios. As with all Composr development, development is primary implemented as a byproduct of commercial projects or direct feature sponsorship, but guided by a shared plan that benefits all interested users.
+
+[title="3"]Tapatalk[/title]
+
+There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users. Tapatalk will essentially function as an "out of the box Composr app", as we continue to extend our implementation to include other kinds of content within virtual-forums/virtual-topics.
 
 [concepts
  1_key="TODO"   1_value="TODO"
 ]Concepts[/concepts]
 
-{$SET,tutorial_tags,Mobile,Development,expert,pinned}{$SET,tutorial_add_date,Jan 2014}{$SET,tutorial_summary,TODO}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Mobile,Development,composr_mobile_sdk,expert,pinned}{$SET,tutorial_add_date,Jan 2014}{$SET,tutorial_summary,TODO}[block]main_tutorial_rating[/block]

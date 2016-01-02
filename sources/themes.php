@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__themes()
 {
@@ -63,13 +65,6 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $db = $GLOBALS['SITE_DB'];
     }
 
-    if ($RECORD_THEME_IMAGES_CACHE) {
-        global $RECORDED_THEME_IMAGES;
-        if (is_on_multi_site_network()) {
-            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = 1;
-        }
-    }
-
     $true_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
     if ($theme === null) {
         $theme = $true_theme;
@@ -92,7 +87,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $path = $db->query_select_value_if_there('theme_images', 'path', array('theme' => $theme, 'lang' => $lang, 'id' => $id));
         if ($path !== null) {
             if ((url_is_local($path)) && (!$leave_local)) {
-                if ($db->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                if (is_forum_db($db)) {
                     $path = get_forum_base_url() . '/' . $path;
                 } else {
                     if ((substr($path, 0, 22) == 'themes/default/images/') || (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) {
@@ -189,7 +184,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             }
         }
 
-        if ($db->connection_write == $GLOBALS['SITE_DB']->connection_write) { // If guard is here because a MSN site can't make assumptions about the file system of the central site
+        if (!is_forum_db($db)) { // If guard is here because a MSN site can't make assumptions about the file system of the central site
             if ((($path !== null) && ($path != '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE']))) {
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
@@ -203,7 +198,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         if ($path === null) {
             if (!$silent_fail) {
                 require_code('site');
-                attach_message(do_lang_tempcode('NO_SUCH_IMAGE', escape_html($id)), 'warn');
+                attach_message(do_lang_tempcode('NO_SUCH_THEME_IMAGE', escape_html($id)), 'warn');
             }
             if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
                 $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, '');
@@ -229,7 +224,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     // Make absolute
     if ((url_is_local($path)) && (!$leave_local) && ($path != '')) {
-        if ($db->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_forum_db($db)) {
             $base_url = get_forum_base_url();
         } else {
             global $SITE_INFO;
@@ -256,6 +251,14 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
     if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
         $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
     }
+
+    if ($RECORD_THEME_IMAGES_CACHE) {
+        global $RECORDED_THEME_IMAGES;
+        if (!is_on_multi_site_network()) {
+            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = true;
+        }
+    }
+
     return $ret;
 }
 
@@ -352,6 +355,7 @@ function cdn_filter($path)
  * @param  ID_TEXT $id The theme image ID
  * @param  ID_TEXT $dir Directory to search
  * @return ?string The path to the image (null: was not found)
+ * @ignore
  */
 function _search_img_file($theme, $lang, $id, $dir = 'images')
 {

@@ -34,7 +34,7 @@ class Hook_cron_tasks
             $task_rows = $GLOBALS['SITE_DB']->query_select('task_queue', array('*'), array('t_locked' => 0));
             foreach ($task_rows as $task_row) {
                 require_code('files');
-                //$url=find_script('tasks').'?id='.strval($task_row['id']).'&secure_ref='.urlencode($task_row['t_secure_ref']);
+                //$url = find_script('tasks') . '?id=' . strval($task_row['id']) . '&secure_ref=' . urlencode($task_row['t_secure_ref']);
                 //http_download_file($url);
                 execute_task_background($task_row);
             }

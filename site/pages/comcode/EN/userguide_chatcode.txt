@@ -1,35 +1,35 @@
 [title]Chatcode help[/title]
 
-Chatcode allows you to do more advanced things with the chat system than would normally be possible.
-You may also use any inline [page="_SEARCH:userguide_comcode"]comcode tags[/page] you please in the chat system.
+Chatcode allows you to do some advanced things via coded embedded within your messages.
+You may also use any inline [page="_SEARCH:userguide_comcode"]Comcode[/page] you please in the chat system.
 
 [title="2"]Private Messages[/title]
 
-Private messages can be inline, and due to the way that they are handled, you may have as many different private messages -- each to different or identical users -- as you want in every chat message. You may also put non-private text in-between the private messages, which will get displayed to everyone.
+Private messages are inline, and due to the way that they are handled, you may have as many different private messages -- each to different or identical users -- as you want in every chat message. You may also put non-private text in-between the private messages, which will get displayed to everyone.
 
 Please note that staff may view private messages if they so choose to. For this reason, it is not advisable to put information of a sensitive nature, such as passwords, into a private message.
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code][private="Philip"]This message would not be displayed to anyone except Philip.[/private][/code]</td><td><div class="box"><div class="box_inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div></td></tr></table>[/semihtml]
+[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][private="Philip"]This message would not be displayed to anyone except Philip.[/private][/code]</td><td><div class="box"><div class="box_inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div></td></tr></table>[/semihtml]
 
 [title="2"]Bots[/title]
 
-You can send messages (commands) to the website itself, and any other bots we might have installed on our site. The bot will respond automatically to your commands, following it's programming.
+You can send messages (commands) to the website itself, and any other bots we might have installed on our site. The bot will respond automatically to your commands, following its programming.
 To do this, just send a private message to 'bot'. We suggest you start with a message of 'help' which is a command that will cause all bots to identify themselves and the commands that they support.
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code][private="bot"]help[/private][/code]</td></tr></table>[/semihtml]
+[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][private="bot"]help[/private][/code]</td></tr></table>[/semihtml]
 
 [title="2"]Invitations[/title]
 
 Invitations act in much the same way as private messages, apart from the fact that they can be sent to multiple people at once, and their display format is designed specifically for displaying a link to a chatroom -- it displays a fixed message, and a link.
-Invitations should not be used in conjunction with IM conversations -- they are intended only for inviting people active in chat rooms in to other chat rooms. You can invite people to an IM conversation from your the friend list in the chat lobby. You can manually invite people who are not already in a chatroom via first engaging them in an IM, or by sending them a PT (Private Topic).
+Invitations should not be used in conjunction with IM conversations -- they are intended only for inviting people active in chatrooms in to other chatrooms. You can invite people to an IM conversation from your the friend list in the chat lobby. You can manually invite people who are not already in a chatroom via first engaging them in an IM, or by sending them a PT (Private Topic).
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code][invite="Philip,Allen,Chris"]My Chatroom Name[/invite][/code]</td><td><div class="box"><div class="box_inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions_list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div></td></tr></table>[/semihtml]
+[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][invite="Philip,Allen,Chris"]My Chatroom Name[/invite][/code]</td><td><div class="box"><div class="box_inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions_list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div></td></tr></table>[/semihtml]
 
 [title="2"]New Rooms[/title]
 
 New rooms can easily be added using chatcode. The room that you create will belong to you, and only people on the allow list will be allowed into it (as well as you), unless, of course, you don't put anything on the allow list -- then the room will be public. All the people on the allow list will automatically have invitations to enter the new room sent to them. The [tt]newroom[/tt] tag doesn't output anything other than this.
 
-[semihtml][code][newroom="My Chatroom Name"]Philip,Chris[/newroom][/code][/semihtml]
+[semihtml][code="Comcode"][newroom="My Chatroom Name"]Philip,Chris[/newroom][/code][/semihtml]
 
 [title="2"]Emoticons[/title]
 

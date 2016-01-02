@@ -25,6 +25,8 @@
  * Roll on PHP6 that has a true internal UTF string model. For now, anyone who uses UTF will get some (albeit minor) imperfections from PHP's manipulations of the strings.
  *
  * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
+ *
+ * @ignore
  */
 function _convert_data_encodings($known_utf8 = false)
 {
@@ -156,7 +158,7 @@ function _convert_data_encodings($known_utf8 = false)
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichrm_hex($matches)
 {
@@ -167,7 +169,7 @@ function unichrm_hex($matches)
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichrm($matches)
 {
@@ -178,7 +180,7 @@ function unichrm($matches)
  * Convert a unicode character number to a HTML-entity enabled string, using lower ASCII characters where possible.
  *
  * @param  integer $c Character number.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichr($c)
 {
@@ -427,6 +429,7 @@ function do_environment_utf8_conversion($from_charset)
 
 /**
  * Guard for entity_utf8_decode. Checks that the data can be stripped so there is no unicode left. Either the htmlentities function must convert mechanically to entity-characters or all higher ascii character codes (which are actually unicode control codes in a unicode interpretation) that are used happen to be linked to named entities.
+ * PHP's utf-8 support may not be great. For example, we have seen emoji characters not converting.
  *
  * @param  string $data Data to check.
  * @return boolean Whether we are good to execute entity_utf8_decode.
@@ -455,6 +458,10 @@ function will_be_unicode_neutered($data)
  */
 function convert_to_internal_encoding($data, $input_charset = null, $internal_charset = null)
 {
+    if (preg_match('#^[\x00-\x7f]$#', $data) != 0) { // All ASCII
+        return $data;
+    }
+
     global $VALID_ENCODING;
 
     convert_data_encodings(); // In case it hasn't run yet. We need $VALID_ENCODING to be set.
@@ -535,7 +542,7 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
  *
  * @param  string $data Data to convert.
  * @param  string $internal_charset Charset to convert to.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function entity_utf8_decode($data, $internal_charset)
 {
