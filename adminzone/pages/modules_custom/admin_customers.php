@@ -93,13 +93,14 @@ class Module_admin_customers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        require_lang('customers');
-
         if (get_forum_type() != 'cns') {
             return; // Conversr only
         }
 
-        /* CPFs */
+        require_lang('customers');
+
+        // CPFs...
+
         require_code('cns_members_action');
         require_code('cns_members_action2');
         require_code('mantis');
@@ -114,6 +115,8 @@ class Module_admin_customers
         cns_make_custom_field('cms_ftp_username', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
         cns_make_custom_field('cms_ftp_password', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text');
         cns_make_custom_field('cms_profession', 0, '', do_lang('CUSTOMER_PROFESSION_CPF_LIST'), 0, 1, 1, 0, 'list');
+
+        // Credit logging...
 
         $GLOBALS['SITE_DB']->create_table('credit_purchases', array(
             'purchase_id' => '*AUTO',
@@ -132,6 +135,8 @@ class Module_admin_customers
             'date_and_time' => 'TIME',
             'reason' => 'SHORT_TEXT',
         ));
+
+        // Tracker...
 
         if (get_db_type() != 'xml') {
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
@@ -647,9 +652,9 @@ class Module_admin_customers
             );
         }
 
-        /* Multi-mods */
-        require_code('cns_moderation_action');
+        // Multi-moderations...
 
+        require_code('cns_moderation_action');
         cns_make_multi_moderation(do_lang('TICKET_MM_TAKE_OWNERSHIP'), do_lang('TICKET_MM_TAKE_OWNERSHIP_POST'), null, null, null, null, '*');
         cns_make_multi_moderation(do_lang('TICKET_MM_QUOTE'), do_lang('TICKET_MM_QUOTE_POST'), null, null, null, null, '*');
         cns_make_multi_moderation(do_lang('TICKET_MM_PRICE'), do_lang('TICKET_MM_PRICE_POST'), null, null, null, null, '*');
