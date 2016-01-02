@@ -67,6 +67,7 @@ if (!$is_bleeding_edge) {
 require_code('downloads2');
 $releases_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Releases'));
 if (is_null($releases_category_id)) {
+    // Should not be needed, composr_homesite_install.php does this
     $releases_category_id = add_download_category('Releases', db_get_first_id(), '', '');
     foreach (array_keys($groups) as $group_id) {
         $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($releases_category_id), 'group_id' => $group_id));

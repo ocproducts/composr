@@ -89,7 +89,7 @@
 			</div>
 		</header>
 
-		{$BLOCK,block=menu,type=dropdown_new,param=composr_website_header}
+		{$BLOCK,block=menu,type=dropdown_new,param=composr_homesite_header}
 	{+END}
 
 	{+START,IF,{$MATCH_KEY_MATCH,:start}}

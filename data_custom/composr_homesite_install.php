@@ -94,9 +94,16 @@ function go()
     require_code('downloads2');
     add_download_category('Releases', db_get_first_id(), "Releases of Composr.\n\nAvoid installing old releases, as they may contain bugs or security holes that we have since fixed.\n\nIf you are trying to upgrade, you\'re looking in the wrong place. Personalised upgrade packages may be generated from the new version announcements in the [page=\"site:news\"]news archive[/page].", '', 'uploads/repimages/installation.png');
     add_download_category('Addons', db_get_first_id(), "[title=\"2\"]What are addons?[/title]\n\nAddons are new/changed features for Composr. Addons are organised according to the version they are targeted for.\n\nCommunity members are encouraged to submit addons. The addons don\'t need validating, except if you\'re still in the lowest member rank (fan in training). Therefore you should also exercise some caution when installing these third-party addons.\n\n[title=\"2\"]Contributing addons[/title]\n\nBy submitting an addon, you are giving ocProducts permission to redistribute it, but also please consider specifying a licence in your download description.\n\nIf you would like to pass on copyright to ocProducts so that it can be considered for inclusion in a future Composr version, please include this in the \'Notes\' field of the download.\n\nIf you are not attaching a proper Composr addon (an exported TAR file), then please describe how the addon can be installed in the description.\n\n[title=\"2\"]Choose Composr version below[/title]\n", '', 'uploads/repimages/addon.png');
+    /* These are added automatically by publish_addons_as_downloads.php scripts, underneath particular Addon release categories
+    add_download_category('Themes', db_get_first_id(), "", '', 'uploads/repimages/xxx');
+    add_download_category('Translations', db_get_first_id(), "", '', 'uploads/repimages/xxx');
+    add_download_category('Addons', db_get_first_id(), "", '', 'uploads/repimages/xxx');
+    */
 
     // Catalogues structure
     // --------------------
+
+    // TODO
 
     // News structure
     // --------------
@@ -118,16 +125,27 @@ function go()
 
     // Groupings
     cns_edit_forum_grouping(1, 'Water Coolr'/*Was 'General'*/, "'Beyond today\'s Composr (discussion, planning, addons)'", 1);
-    cns_make_forum_grouping('Water Coolr', "Beyond today\'s Composr (discussion, planning, addons)");
+    // (2 = Staff, no change)
+    cns_make_forum_grouping('Composing', "Beyond today\'s Composr (discussion, planning, addons)"); // 3
 
     // Forums
-    cns_make_forum('Deploying', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Designing', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Developing', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Feature request and bug tracking', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Introduce yourself', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Addons', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Internationalisation', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('FAQ', '', 1/*forum grouping*/, null, 1/*parent forum*/);
-    cns_make_forum('Paid support', '', 1/*forum grouping*/, null, 1/*parent forum*/);
+    cns_make_forum('Introduce yourself', '', 1/*forum grouping*/, null, 1/*parent forum*/, 0/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    $deploying_forum_id = cns_make_forum('Deploying', '', 3/*forum grouping*/, null, 1/*parent forum*/, 1/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    cns_make_forum('Designing', '', 3/*forum grouping*/, null, 1/*parent forum*/, 2/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    cns_make_forum('Developing', '', 3/*forum grouping*/, null, 1/*parent forum*/, 3/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    cns_make_forum('Addons', '', 3/*forum grouping*/, null, 1/*parent forum*/, 4/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    cns_make_forum('Internationalisation', '', 3/*forum grouping*/, null, 1/*parent forum*/, 5/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    cns_make_forum('Feature requests and bug tracking', '', 3/*forum grouping*/, null, $deploying_forum_id/*parent forum*/, 1/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', 'tracker');
+    cns_make_forum('FAQ', '', 3/*forum grouping*/, null, $deploying_forum_id/*parent forum*/, 2/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', 'docs/faq.htm');
+    cns_make_forum('Paid support', '', 3/*forum grouping*/, null, $deploying_forum_id/*parent forum*/, 3/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', 'professional_support.htm');
+
+    // Theme
+    // -----
+
+    $GLOBALS['SITE_DB']->query("UPDATE " . get_table_prefix() . "zones SET zone_theme='composr_homesite' WHERE zone_name IN ('','site','forum','ocproducts','docs')");
+
+    // Menu
+    // ----
+
+    import_menu_csv(get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv');
 }
