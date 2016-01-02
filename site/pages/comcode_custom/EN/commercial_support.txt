@@ -193,7 +193,7 @@ Hourly cost (approx):
 						</ul>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Talk to us</a>
+							<a href="{$PAGE_LINK*,_SEARCH:contact:secondment}">Talk to us</a>
 						</div>
 					</li>
 
