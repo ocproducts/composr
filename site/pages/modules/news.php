@@ -134,12 +134,10 @@ class Module_news
             ));
             $GLOBALS['SITE_DB']->create_index('news_category_entries', 'news_entry_category', array('news_entry_category'));
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('id'));
             foreach ($categories as $_id) {
-                foreach (array_keys($groups) as $group_id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($_id['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('news', $_id['id']);
             }
 
             $GLOBALS['SITE_DB']->create_index('news', 'ftjoin_ititle', array('title'));

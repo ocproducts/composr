@@ -270,11 +270,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
             $main_news_category_id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
             $already_created_personal_category = true;
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($main_news_category_id), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('news', $main_news_category_id);
         }
     } else {
         $main_news_category_id = $main_news_category;
@@ -323,11 +320,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
                 $map += insert_lang('nc_title', do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($submitter, true)), 2);
                 $news_category_id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
 
-                $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-                foreach (array_keys($groups) as $group_id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($news_category_id), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('news', $news_category_id);
             } else {
                 $news_category_id = $value;
             }

@@ -263,23 +263,6 @@ class Module_admin_community_billboard extends Standard_crud_module
     }
 
     /**
-     * Get posted access map.
-     *
-     * @return array A map of access permissions
-     */
-    public function get_permissions()
-    {
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        $output = array();
-        foreach (array_keys($groups) as $group_id) {
-            $value = post_param_integer('access_' . $group_id, 0);
-            $output[$group_id] = $value;
-        }
-
-        return $output;
-    }
-
-    /**
      * Standard crud_module add actualiser.
      *
      * @return ID_TEXT The entry added

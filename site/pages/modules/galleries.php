@@ -173,10 +173,8 @@ class Module_galleries
 
             // Add root gallery
             add_gallery('root', do_lang('GALLERIES_HOME'), '', '', '', 1, 1, 0, 1);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'galleries', 'category_name' => 'root', 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('galleries', 'root');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {

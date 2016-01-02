@@ -628,15 +628,9 @@ class Module_cms_wiki
                 } else { // New
                     $title = $new_link;
                     $child_id = wiki_add_page($title, '', '', $hide_posts, null, null, 0, '', '', null, false);
-                    $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-                    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-                    foreach (array_keys($groups) as $group_id) {
-                        if (in_array($group_id, $admin_groups)) {
-                            continue;
-                        }
 
-                        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'wiki_page', 'category_name' => strval($child_id), 'group_id' => $group_id));
-                    }
+                    require_code('permissions2');
+                    set_global_category_access('wiki_page', $child_id);
 
                     require_code('notifications2');
                     copy_notifications_to_new_child('wiki', strval($id), strval($child_id));

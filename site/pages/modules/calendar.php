@@ -184,19 +184,11 @@ class Module_calendar
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
-            $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
             // Save in permissions for event type
             $types = $GLOBALS['SITE_DB']->query_select('calendar_types');
             foreach ($types as $type) {
-                foreach (array_keys($groups) as $group_id) {
-                    if (in_array($group_id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'calendar', 'category_name' => strval($type['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('calendar', $type['id']);
             }
         }
 

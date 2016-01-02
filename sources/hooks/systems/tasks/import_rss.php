@@ -53,8 +53,6 @@ class Hook_task_import_rss
         $imported_news = array();
         $imported_pages = array();
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
         // Preload news categories
         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
         $NEWS_CATS = list_to_map('id', $NEWS_CATS);
@@ -170,9 +168,8 @@ class Hook_task_import_rss
                     }
                     if (is_null($cat_id)) { // Could not find existing category, create new
                         $cat_id = add_news_category($cat, 'newscats/general', '', null);
-                        foreach (array_keys($groups) as $group_id) {
-                            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                        }
+                        require_code('permissions2');
+                        set_global_category_access('news', $cat_id);
                         // Need to reload now
                         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
                         $NEWS_CATS = list_to_map('id', $NEWS_CATS);

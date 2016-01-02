@@ -101,11 +101,8 @@ class Module_downloads
             $map += insert_lang_comcode('description', '', 3);
             $map += lang_code_to_default_content('category', 'DOWNLOADS_HOME');
             $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads'));
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($id), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('downloads', $id);
 
             $GLOBALS['SITE_DB']->create_index('download_categories', 'child_find', array('parent_id'));
 

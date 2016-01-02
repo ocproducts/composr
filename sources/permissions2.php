@@ -19,6 +19,32 @@
  */
 
 /**
+ * Allow all usergroups to access a category
+ *
+ * @param  string $module The module
+ * @param  mixed $category The category (integer or string)
+ */
+function set_global_category_access($module, $category)
+{
+    if (is_integer($category)) {
+        $category = strval($category);
+    }
+
+    $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true);
+
+    $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
+
+    foreach (array_keys($groups) as $group_id) {
+        if (in_array($group_id, $admin_groups)) {
+            continue;
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+    }
+}
+
+/**
  * Log permission checks to the permission_checks.log file
  *
  * @param  MEMBER $member The user checking against
