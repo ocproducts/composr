@@ -348,6 +348,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 /* Colours to mirror human understandings (i.e. non-thematic) */
 {$THEME_WIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
 {$THEME_WIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
+{$THEME_WIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
 {$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
 {$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
 {$THEME_WIZARD_COLOR,#fc210e,red_highlight_text,80% FF0000 + 20% seed}
@@ -452,6 +453,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 
 html, body {
 	border: 0;
+	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 }
 
 body, .email_body, textarea, input, td, th {
@@ -562,6 +564,9 @@ td, th.de_th {
 	text-align: {!en_left};
 	font-weight: normal;
 	border: 0;
+}
+table[border="1"] td, table[border="1"] th.de_th { /* To make WYSIWYG easier */
+	border: 1px solid;
 }
 th.de_th {
 	background-color: transparent;
@@ -782,15 +787,15 @@ body.popup_spacer h2 {
 =========================
 */
 
-.autocomplete { /* Membership of this class is used as a tag to allow form autocompletion */
-}
-
 .webstandards_checker_off { /* Membership of this class is used as a tag to turn off the webstandards checker */
 	display: inline-block; /* To stop it breaking text-align: center */
 	width: 100%;
 }
 
 .textarea_scroll { /* Turns off word-wrapping for a textarea: this has to be done using JavaScript so that the invalid 'wrap' property isn't written into the XHTML */
+}
+
+.leave_native_tooltip { /* No automatic tooltips on this element */
 }
 
 body .accessibility_hidden { /* Contents should be made visible (or interpreted) for accessibly representation but hidden for normal visual display */
@@ -829,7 +834,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	background-position: {!en_left} 5px;
 	background-repeat: no-repeat;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.nothing_here, .more_here {
 		background-image: url('{$IMG_INLINE;,2x/cannot_show}');
 		background-size: 9px 6px;
@@ -1030,7 +1035,7 @@ div.red_alert, p.red_alert {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	div.red_alert, p.red_alert {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
@@ -1112,7 +1117,7 @@ th.meta_data_title {
 }
 
 .being_dragged {
-	background: {$GET,native_ui_background};
+	font-style: italic;
 }
 
 .img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
@@ -1149,7 +1154,7 @@ th.meta_data_title {
 
 	overflow: hidden;
 }
-td>.box {
+td>.box, .right>.box, .left>.box {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1277,7 +1282,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.boxless_space .box>.box_inner>h1, .boxless_space .box>.box_inner>h2, .boxless_space .box>.box_inner>h3, .boxless_space .box>.box_inner>h4, .boxless_space .box>.box_inner>h5, .boxless_space .box>.box_inner>h6, .boxless_space .box>.toggleable_tray_title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
@@ -1311,13 +1316,20 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .global_side_panel .boxless_space .box .box + .box {
 	padding-top: 0;
 }
-.global_middle .boxless_space .box .box + .box:before, .comments_wrapper .boxless_space .box + .box:before {
+.global_middle .boxless_space .box .box + .box:before {
 	content: "";
 	width: 60%;
 	display: block;
 	margin: 0 auto;
 	border-top: 2px dotted {$GET,pale_border} !important;
 	padding-top: 0.4em;
+}
+.comments_wrapper .boxless_space .box + .box:before {
+	content: "";
+	width: 60%;
+	display: block;
+	margin: 0 auto 2em auto;
+	border-top: 2px dotted {$GET,pale_border} !important;
 }
 .boxless_space .box + .fp_col_blocks_wrap {
 	padding-top: 0;
@@ -1360,10 +1372,10 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	padding: 0 0.3em !important;
+	margin: 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
-	margin-top: -2px;
+	margin-top: -2px !important;
 }
 .toggleable_tray_button img {
 	width: 20px;
@@ -1501,7 +1513,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	margin-left: 20.2em;
 	position: absolute;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.box.box_arrow>span {
 		background-image: url('{$IMG;,2x/box_arrow}');
 		background-size: 13px 7px;
@@ -1533,7 +1545,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .whitespace_visible {
 	overflow: auto;
 	outline: 0;
-	white-space: pre;
+	white-space: pre-wrap;
 }
 .whitespace_visible.code {
 	font-family: 'Courier New', 'Courier', monospace;
@@ -1575,12 +1587,28 @@ hr.spaced_rule {
 .left.float_separation {
 	margin-{!en_right}: 1em;
 }
-
 .right {
 	float: {!en_right};
 }
 .right.float_separation, .inline.spaced {
 	margin-{!en_left}: 1em;
+}
+@media screen and (max-width:800px) {
+	.left.responsive {
+		float: none;
+	}
+	.left.responsive.float_separation {
+		margin-{!en_right}: 0;
+	}
+	.right.responsive {
+		float: none;
+	}
+	.right.responsive.float_separation {
+		margin-{!en_left}: 0;
+	}
+	.responsive>.box {
+		width: auto !important;
+	}
 }
 
 .inline_lined_up {
@@ -1634,11 +1662,6 @@ table.scrollable_inside {
 	table-layout: fixed; /* For permission setting stuff that can scroll off */
 }
 
-.centered_table_contents th, .centered_table_contents td {
-	vertical-align: middle;
-	text-align: center;
-}
-
 .wide_table_wrap {
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -1654,6 +1677,9 @@ table.scrollable_inside {
 
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
+	{+START,IF,{$MOBILE}}
+		overflow-x: scroll;
+	{+END}
 }
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
@@ -1674,6 +1700,9 @@ table.scrollable_inside {
 	border-spacing: 0;
 	margin: 1em 0;
 }
+.lined_up_boxes .results_table {
+	margin-top: 0;
+}
 .wide_table_wrap>.results_table {
 	margin: 0; /* As overflow would cause margin doubling */
 }
@@ -1681,10 +1710,10 @@ table.scrollable_inside {
 	margin-top: 1em;
 }
 
-.results_table>thead>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
+.results_table>thead:first-child>tr:first-child *:first-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
 	{$BETA_CSS_PROPERTY,border-top-left-radius: 5px;}
 }
-.results_table>thead>tr:first-child *:last-child, .results_table>tbody>tr:first-child>*:last-child {
+.results_table>thead:first-child>tr:first-child *:last-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:last-child, .results_table>tbody>tr:first-child>*:last-child {
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 5px;}
 }
 .results_table.columned_table>tbody>tr:first-child>*:first-child {
@@ -1693,10 +1722,10 @@ table.scrollable_inside {
 .results_table.columned_table>tbody>tr:first-child>*:last-child {
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 0px;}
 }
-.results_table>tbody>tr:last-child>*:first-child {
+.results_table>tbody:last-child>tr:last-child>*:first-child, .results_table>tbody>tr.last>*:first-child {
 	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
 }
-.results_table>tbody>tr:last-child>*:last-child {
+.results_table>tbody:last-child>tr:last-child>*:last-child, .results_table>tbody>tr.last>*:last-child {
 	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
 }
 
@@ -1716,18 +1745,18 @@ table.scrollable_inside {
 .results_table>*>tr>td:first-child, .results_table>*>tr>th:first-child {
 	border-left: 1px solid {$GET,standard_border};
 }
-.results_table>tbody>tr:last-child>td, .results_table>tbody>tr:last-child>th {
+.results_table>tbody>tr:last-child>td, .results_table>tbody>tr.last>td, .results_table>tbody>tr:last-child>th {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 .results_table>tfoot>tr>td, .results_table>tfoot>tr>th {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-.results_table>*>.zebra_0>th, .results_table>*>.zebra_0>td, div.zebra_0 {
+table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0 {
 	background-color: {$GET,area_zebra_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-.results_table>*>.zebra_1>th, .results_table>*>.zebra_1>td, div.zebra_1 {
+table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1 {
 	background-color: {$GET,area_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
@@ -1793,7 +1822,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 	border: 1px solid {$GET,point_of_interest_border};
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
-	z-index: 1000;
+	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
@@ -1801,9 +1830,6 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 .tooltip .box {
 	margin: 0;
-}
-.tooltip .box {
-	margin-top: 0;
 }
 .tooltip img {
 	max-width: 100%;
@@ -1831,23 +1857,25 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	text-decoration: none !important;
 	color: inherit !important;
 }
-.tooltip_fields {
+.tooltip.have_links a, .tooltip.have_links a:visited, .tooltip.have_links a:hover {
+	color: {$GET,a.link} !important;
+	text-decoration: underline !important;
+}
+.tooltip .tooltip_fields {
 	font-size: 0.85em;
 	display: inline-block;
 	border-spacing: 0;
 }
-.tooltip_fields table {
+.tooltip .tooltip_fields table {
 	border-collapse: collapse;
 }
-.tooltip_fields th {
+.tooltip .tooltip_fields th {
 	border-right: 1px solid {$GET,dark_border};
 	font-weight: bold !important;
 	padding-right: 1em;
-}
-.tooltip .tooltip_fields th {
 	white-space: nowrap;
 }
-.tooltip_fields td {
+.tooltip .tooltip_fields td {
 	padding-left: 1em;
 	min-width: 18em;
 }
@@ -1974,7 +2002,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher a:visited,
 .results_launcher a:hover,
 .results_launcher span {
-	padding: 2px {$?,{$MOBILE},10,4}px !important;
+	padding: 2px {$?,{$MOBILE},10,6}px !important;
 }
 
 .results_launcher {
@@ -2051,7 +2079,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') 0 3px no-repeat;
 	background-size: 14px 14px;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.index_screen_fancier_entry_link {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 	}
@@ -2142,7 +2170,7 @@ div.wysiwyg_toolbar_color_finder {
 }
 .software_chat_iframe {
 	overflow: hidden;
-	width: 450px;
+	width: 650px;
 	height: 90%;
 }
 
@@ -2252,7 +2280,7 @@ div.wysiwyg_toolbar_color_finder {
 }
 
 .post .post_subline {
-	margin: 1em 0;
+	margin: 0 0 1em 0;
 	font-size: 0.9em;
 }
 
@@ -2289,10 +2317,10 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	{$BETA_CSS_PROPERTY,opacity: 0.1;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition-property : opacity;}
 	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.post_buttons>*[rel="add reply"] {
+.post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
 }
 
@@ -2321,6 +2349,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comment_wrapper .highlighted_post {
 	background-color: {$GET,point_of_interest_background} !important;
 	padding: 1em !important;
+	margin-top: 1em;
 	border: 1px dotted {$GET,slightly_seeded_complement_text} !important;
 }
 .comments_wrapper .boxless_space .comment_wrapper .highlighted_post.box {
@@ -2409,18 +2438,22 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		text-align: center;
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 0 1em 0;
+		margin: 0 0 1em 13.5em;
 	/*{+END}*/
 }
 
-.comments_posting_form_end .proceed_button {
-	margin-top: 1em;
-	text-align: center !important;
+.comments_posting_form_end input {
+	float: left;
+	margin-right: 0.5em !important;
+}
+
+.comments_posting_form_end #submit_button {
+	float: right;
+	margin-right: 1em !important;
 }
 
 .comments_captcha {
-	width: 200px;
-	margin: 1em auto 0 auto;
+	width: 210px;
 	font-size: 0.85em;
 	text-align: center;
 }
@@ -2429,12 +2462,6 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	margin: 0 5px 2px 5px;
 	vertical-align: middle;
 }
-
-/*{+START,IF,{$MOBILE}}*/
-	.comments_posting_form_end .proceed_button button {
-		float: none;
-	}
-/*{+END}*/
 
 /*
 =========================
@@ -2476,12 +2503,14 @@ dl.compact_list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol {
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul, .zone_running_docs .comcode_page ol {
 	margin: 0;
 	padding: 0 !important;
+}
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul {
 	list-style-type: square;
 }
-.spaced_list li {
+.spaced_list li, .zone_running_docs .comcode_page li {
 	margin: 0.5em 0 0.5em 25px !important;
 	padding: 0;
 }
@@ -2496,8 +2525,9 @@ ul.actions_list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions_list>li {
-	padding: 2px 0 2px 18px;
+ul.actions_list>li, .attachment ul.actions_list>li /*for higher precedence for attachments within docs zone*/ {
+	padding: 2px 0 2px 18px !important;
+	margin: 0 !important;
 }
 ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	padding: 0 0 0 18px;
@@ -2505,7 +2535,7 @@ ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') left 4px no-repeat;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 		background-size: 14px 14px;
@@ -2584,7 +2614,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	{$BETA_CSS_PROPERTY,opacity: 0.4;}
 	{$BETA_CSS_PROPERTY,transition: opacity 0.6s linear;}
 	margin-top: 3em;
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 .quick_self_edit_link img, .quick_self_edit_link span {
 	vertical-align: middle;
@@ -2604,9 +2634,9 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	background: url('{$IMG_INLINE;,icons/24x24/tabs/settings}') right 4px no-repeat;
 	padding-right: 5px;
 	background-origin: content-box;
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
 		background-image: url('{$IMG_INLINE;,icons/48x48/tabs/settings}');
 		background-size: 24px 24px;
@@ -2625,7 +2655,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	width: auto;
 	font-size: 1em;
 }
-.staff_actions a {
+.global_middle .staff_actions li {
 	white-space: nowrap !important;
 }
 
@@ -2799,13 +2829,18 @@ ul.buttons_group, ul.associated_links_block_group {
 
 .alt_field:before {
 	content: "\00bb"; /* raquo */
+	padding-left: 1em;
+	padding-right: 0.2em;
+}
+.related_field {
+	font-style: italic;
+	font-weight: normal;
 }
 .related_field:before {
+	font-style: normal;
 	content: "\203a"; /* rsaquo */
-	font-size: 1.2em;
-}
-.alt_field:before, .related_field:before {
-	padding-left: 1em;
+	padding-bottom: 5px;
+	padding-left: 0.5em;
 	padding-right: 0.2em;
 }
 
@@ -2924,8 +2959,10 @@ input.magic_image_edit_link {
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
 	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
+	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
+	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -2949,10 +2986,11 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .buttons__previous.button_screen, .buttons__previous_none.button_screen {
 	padding: 6px 7px 7px 39px !important;
-	background-position: left 7px top 3px !important;
+	background-position: 7px 3px !important;
 }
 .button_screen_item {
 	padding: 3px 33px 4px 7px;
+	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;
@@ -2975,7 +3013,7 @@ div .button_micro {
 
 .button_screen, .button_screen_item, .button_micro, .toggleable_tray_button img {
 	{$BETA_CSS_PROPERTY,opacity: 0.85;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover {
@@ -3008,7 +3046,7 @@ div.proceed_button_left_2 {
 .innocuous_fieldset {
 	border: 0;
 	padding: 0;
-	margin: 0;
+	margin: 0 0 1em 0;
 	min-width: 0; /* Works around webkit bug, where it breaks max-width:100% inside because the size calculation has been inverted by the default "min-width: -webkit-min-content;" rule  */
 }
 
@@ -3090,8 +3128,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
 }
-.buttons__changes {
-	background-image: url('{$IMG,icons/24x24/buttons/changes}') !important;
+.buttons__revisions {
+	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 }
 .buttons__choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
@@ -3162,8 +3200,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-.buttons__restore {
-	background-image: url('{$IMG,icons/24x24/buttons/restore}') !important;
+.buttons__undo {
+	background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 }
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
@@ -3238,7 +3276,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	background-image: url('{$IMG,icons/24x24/tabs/preview}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__menu__pages__help {
 		background-image: url('{$IMG,icons/48x48/menu/pages/help}') !important;
 	}
@@ -3275,8 +3313,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__changes {
-		background-image: url('{$IMG,icons/48x48/buttons/changes}') !important;
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 	}
 	.buttons__choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
@@ -3344,8 +3382,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	.buttons__restore {
-		background-image: url('{$IMG,icons/48x48/buttons/restore}') !important;
+	.buttons__undo {
+		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 	}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
@@ -3471,7 +3509,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	overflow: hidden; /* To stop margin collapsing bleeding backgrounds */
 }
 
-div.tabs {
+.tabs {
 	border-left: 0;
 	border-right: 0;
 	border-top: 0;
@@ -3493,6 +3531,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
+	line-height: 1em;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
 	/*{+START,IF,{$MOBILE}}*/
 		min-width: 85px; /* Allows 3 per row, neat alignment */
@@ -3598,7 +3637,7 @@ ul.nl, .nl ul {
 .edit_menu_link_inline, .edit_page_link_inline {
 	{$BETA_CSS_PROPERTY,opacity: 0 !important;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition: opacity 0.5s linear;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
@@ -3712,7 +3751,7 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	background-image: url('{$IMG;,icons/14x14/wiki_link_hover}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.comcode_concept a {
 		background-image: url('{$IMG;,2x/arrow_box}') !important;
 		background-size: 12px 13px;
@@ -3776,12 +3815,12 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	display: none;
 }
 
-.comcode_table_of_contents ol {
-	list-style-position: inside;
-	padding-{!en_left}: 12px !important;
+body div.comcode_table_of_contents>div.box_inner>ol {
+	padding: 0 !important;
 	margin: 0 !important;
+	margin-{!en_left}: 20px !important;
 }
-.comcode_table_of_contents li {
+body div.comcode_table_of_contents>div.box_inner>ol>li {
 	margin: 0.2em 0 !important;
 	padding: 0 !important;
 }
@@ -3863,12 +3902,16 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 
 .attachment {
 	margin: 1em 0;
+	margin-bottom: 1px !important; /* Overrides 0 on .left>figure, .right>figure */
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		border: 1px solid {$GET,standard_border};
 		padding: 0.5em !important;
 	/*{+END}*/
 	font-size: 0.9em;
-	display: inline-block;
+	/*display: inline-block; Actually table works better, shows margins even when not floated*/
+	display: table;
+	max-width: 100%;
+	background: {$GET,WB};
 }
 figure {
 	margin: 1em 0;
@@ -3910,6 +3953,8 @@ a[rel="lightbox"] {
 
 .attachment img {
 	vertical-align: middle;
+	max-width: 100%;
+	/*height: auto; Would always override HTML height - so we need to make sure that any width+height given in the HTML isn't too big and then max-width won't kick in and cause an inconsistency -- or not give width+height at all, in which case height will indeed auto-scale without needing height:auto here (although be aware that the media renderers will always auto-detect widths+heights as either thumbnail size or from source media)*/
 }
 
 .attachment figcaption {
@@ -3990,6 +4035,16 @@ a[rel="lightbox"] {
 */
 
 /*{+START,IF,{$CONFIG_OPTION,filetype_icons}}*/
+	/* Higher than media links for lower CSS precedence */
+	a[target="_blank"].user_link { /* Detected external links have styling */
+		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
+		padding-right: 10px;
+	}
+	body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top !important;
+		padding-right: 10px !important;
+	}
+
 	a[href^="mailto:"] {
 		background: url('{$IMG;,icons/16x16/filetypes/email_link}') no-repeat right top !important; /* Important because the URL may contain arbitrary stuff, including ".php", due to embedded mail body */
 		padding: 0 22px 5px 0 !important;
@@ -4055,16 +4110,7 @@ a[rel="lightbox"] {
 		padding: 0 22px 5px 0;
 	}
 
-	a[target="_blank"].user_link { /* Detected external links have styling */
-		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
-		padding-right: 10px;
-	}
-	body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
-		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top !important;
-		padding-right: 10px !important;
-	}
-
-	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"].user_link { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
+	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"]:not(.force_filetype_icon).user_link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
 		background-image: none !important;
 		padding: 0px !important;
 	}
@@ -4073,7 +4119,16 @@ a[rel="lightbox"] {
 		background-image: none !important;
 	}
 
-	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+		a[target="_blank"].user_link { /* Detected external links have styling */
+			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
+			background-size: 7px 8px;
+		}
+		body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
+			background-size: 7px 8px;
+		}
+
 		a[href^="mailto:"] {
 			background-image: url('{$IMG;,icons/32x32/filetypes/email_link}');
 			background-size: 16px 16px;
@@ -4138,15 +4193,6 @@ a[rel="lightbox"] {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_media}');
 			background-size: 16px 16px;
 		}
-
-		a[target="_blank"].user_link { /* Detected external links have styling */
-			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
-			background-size: 7px 8px;
-		}
-		body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
-			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
-			background-size: 7px 8px;
-		}
 	}
 /*{+END}*/
 
@@ -4156,7 +4202,7 @@ a[rel="lightbox"] {
 		padding: 0 0 5px 22px !important;
 	}
 
-	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 		.print_icon {
 			background-image: url('{$IMG;,icons/48x48/links/print}');
 			background-size: 24px 24px;
@@ -4189,8 +4235,14 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay_close_button {
 	position: absolute;
-	top: -16px;
-	right: -16px;
+	/*{+START,IF,{$MOBILE}}*/
+		top: 0;
+		right: 0;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		top: -16px;
+		right: -16px;
+	/*{+END}*/
 	cursor: pointer;
 }
 
@@ -4259,6 +4311,8 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 		background: none !important;
 	}
 
+	.non_accessibility_redundancy,
+	.menu_type__top,
 	.buttons_group,
 	.associated_links_block_group,
 	.screen_actions_outer,
@@ -4272,7 +4326,7 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	.quick_self_edit_link, .staff_actions,
 	.comments_form,
 	.ratings, .trackbacks {
-		display: none;
+		display: none !important;
 	}
 
 	.global_navigation {

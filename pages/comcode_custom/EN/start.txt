@@ -20,16 +20,18 @@
 	<ul class="RoundButPart">
 		<li><a class="RoundBut" href="{$PAGE_LINK*,site:download}"><span class="TxtUpper">Download</span> Composr CMS</a></li>
 		<li><a class="RoundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="TxtUpper">Tutorial</span> Library</a></li>
-		<li><a class="RoundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>
+		<li><a class="RoundBut" href="{$PAGE_LINK*,site:demo}">View Personal <span class="TxtUpper">Demo</span></a></li>
+		<!--<li><a class="RoundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
 	</ul>
 
 	<ul class="MainMenu">
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:features}">about composr</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:compare}">why we're different</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:vision}">our vision</a></li>
 		<li><a class="MenuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
 		<li><a class="MenuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:contribute}">contribute</a></li>
+		<li><a class="MenuBut" href="{$PAGE_LINK*,site:contributions}">contribute</a></li>
 		<li><a class="MenuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
-		<li><a class="MenuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>
+		<!--<li><a class="MenuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>-->
 	</ul>
 {+END}
 
