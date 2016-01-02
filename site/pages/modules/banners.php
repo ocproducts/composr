@@ -153,13 +153,11 @@ class Module_banners
             );
             $map += lang_code_to_default_content('caption', 'DONATION', true, 1);
             $GLOBALS['SITE_DB']->query_insert('banners', $map);
-            $banner_c = 'donate';
+            $banner_b = 'donate';
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'banners', 'category_name' => $banner_a, 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'banners', 'category_name' => $banner_c, 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('banners', $banner_a);
+            set_global_category_access('banners', $banner_b);
 
             add_privilege('BANNERS', 'full_banner_setup', false);
             add_privilege('BANNERS', 'view_anyones_banner_stats', false);

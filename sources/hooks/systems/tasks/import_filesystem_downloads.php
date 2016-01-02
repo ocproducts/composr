@@ -78,8 +78,6 @@ class Hook_task_import_filesystem_downloads
     {
         $num_added = 0;
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
         require_code('files');
 
         $dh = @opendir($server_path);
@@ -97,9 +95,8 @@ class Hook_task_import_filesystem_downloads
                             if (is_null($category_id)) {
                                 // Add the directory
                                 $category_id = add_download_category(titleify($entry), $dest_cat, '', '', '');
-                                foreach (array_keys($groups) as $group_id) {
-                                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id), 'group_id' => $group_id));
-                                }
+                                require_code('permissions2');
+                                set_global_category_access('downloads', $category_id);
                             }
                             // Call this function again to recurse it
                             $num_added += $this->filesystem_recursive_downloads_scan($full_path, $full_url, $category_id, true);

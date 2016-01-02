@@ -184,14 +184,8 @@ class Module_chat
             $rooms = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id'));
             foreach ($rooms as $room) {
                 // Set access
-                $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-                $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-                foreach (array_keys($groups) as $group_id) {
-                    if (in_array($group_id, $admin_groups)) {
-                        continue;
-                    }
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'chat', 'category_name' => strval($room['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('chat', $room['id']);
             }
 
             add_privilege('SECTION_CHAT', 'moderate_my_private_rooms', true);
@@ -781,15 +775,8 @@ class Module_chat
         }
 
         // Set access
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'chat', 'category_name' => strval($new_room_id)));
-        foreach (array_keys($groups) as $group_id) {
-            if (in_array($group_id, $admin_groups)) {
-                continue;
-            }
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'chat', 'category_name' => strval($new_room_id), 'group_id' => $group_id));
-        }
+        require_code('permissions2');
+        set_global_category_access('chat', $new_room_id);
 
         $url = build_url(array('page' => '_SELF', 'type' => 'room', 'id' => $new_room_id), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

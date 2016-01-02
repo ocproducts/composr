@@ -80,19 +80,11 @@ class Module_quiz
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_answers', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_marked', 'BINARY', 1);
 
-            $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
             // Save in permissions for event type
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('id'));
             foreach ($quizzes as $quiz) {
-                foreach (array_keys($groups) as $group_id) {
-                    if (in_array($group_id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'quiz', 'category_name' => strval($quiz['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('quiz', $quiz['id']);
             }
 
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_type', 'ID_TEXT', 'MULTIPLECHOICE');

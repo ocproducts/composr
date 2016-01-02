@@ -7,6 +7,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: ftp_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -1710,7 +1712,9 @@ if (!function_exists(\'git_repos\')) {
     }
 
     // Derive a random session cookie name, to stop conflicts between sites
-    fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+    if (!isset($_POST['session_cookie'])) {
+        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+    }
 
     // On the live GAE, we need to switch in different settings to the local dev server
     if (GOOGLE_APPENGINE) {

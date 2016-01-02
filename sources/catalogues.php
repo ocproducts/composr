@@ -228,19 +228,6 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
 }
 
 /**
- * Grant all usergroups access to the specified catalogue category.
- *
- * @param  AUTO_LINK $category_id The ID of the category that access is being given to
- */
-function grant_catalogue_full_access($category_id)
-{
-    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($category_id), 'group_id' => $group_id));
-    }
-}
-
-/**
  * Count the entries and subcategories underneath the specified category, recursively.
  *
  * @param  AUTO_LINK $category_id The ID of the category for which count details are collected

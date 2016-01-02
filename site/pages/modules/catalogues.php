@@ -240,7 +240,7 @@ class Module_catalogues
             // Add the default catalogues
             // ==========================
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+            require_code('permissions2');
 
             // Projects
             actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
@@ -254,14 +254,11 @@ class Module_catalogues
                 actual_add_catalogue_field('projects', lang_code_to_default_content('cf_name', $field[0], false, 3), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, $field[5], $field[4]);
             }
             $cat_id = actual_add_catalogue_category('projects', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), '', null, '');
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'projects', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'projects');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // Links
             actual_add_catalogue('links', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_LINKS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_LINKS_DESCRIPTION', true, 3), C_DT_TABULAR, 1, '', 0);
-            $links_category = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'links'));
             $fields = array(
                 // Name, Description, Type, Defines order, Required, Put in category
                 array('TITLE', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1),
@@ -271,10 +268,9 @@ class Module_catalogues
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field('links', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, '', $field[4], $field[5]);
             }
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($links_category), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'links', 'group_id' => $group_id));
-            }
+            $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'links'));
+            set_global_category_access('catalogues_catalogue', 'links');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // FAQs
             actual_add_catalogue('faqs', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 0);
@@ -287,10 +283,8 @@ class Module_catalogues
                 actual_add_catalogue_field('faqs', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], $field[5], 1, '', $field[4], 1, $field[6]);
             }
             $cat_id = actual_add_catalogue_category('faqs', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_FAQS_DESCRIPTION', true, 3), '', null, '');
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'faqs', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'faqs');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // Contacts
             actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
@@ -344,10 +338,8 @@ class Module_catalogues
                     array_key_exists(5, $field) ? $field[5] : 0 // $put_in_search
                 );
             }
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'products', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'products');
+            set_global_category_access('catalogues_category', $cat_id);
 
             add_privilege('CATALOGUES', 'high_catalogue_entry_timeout', false);
 

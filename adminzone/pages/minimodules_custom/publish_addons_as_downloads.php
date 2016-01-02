@@ -34,10 +34,8 @@ function find_addon_category_download_category($category_name, $parent_id = null
         }
 
         $cat_id = add_download_category($category_name, $parent_id, $description, '', '');
-        $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true);
-        foreach (array_keys($all_groups) as $_group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($cat_id), 'group_id' => $_group_id));
-        }
+        require_code('permissions2');
+        set_global_category_access('downloads', $cat_id);
         return $cat_id;
     }
 

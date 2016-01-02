@@ -30,10 +30,8 @@ if (count($themes) == 1) {
 }
 foreach (array_keys($themes) as $theme) {
     if ($theme != 'default') {
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
-        foreach (array_keys($groups) as $gid) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('group_id' => $gid, 'module_the_name' => 'theme', 'category_name' => $theme), false, true);
-        }
+        require_code('permissions2');
+        set_global_category_access('theme', $theme);
 
         echo '<li>';
         echo '<a href="' . static_evaluate_tempcode(build_url(array('page' => 'start', 'keep_theme_test' => '1', 'keep_theme' => $theme), '')) . '">' . escape_html($theme) . '</a><br />
@@ -76,7 +74,7 @@ foreach (array_keys($themes) as $theme) {
                 if (
                     (substr($f, -4) == '.css') ||
                     (substr($f, -4) == '.tpl') ||
-                    ((substr($f, -4) == '.txt') && ((count($themes < 5)) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
+                    ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
                 ) {
                     $contents = file_get_contents($dir . '/' . $f);
 

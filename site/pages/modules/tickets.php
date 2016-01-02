@@ -106,8 +106,6 @@ class Module_tickets
                 'cache_lead_time' => '?TIME',
             ));
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
             $default_types = array(
                 /*'TT_FEATURE_REQUEST','TT_FEATURE_INQUIRY','TT_MODDING_HELP','TT_REPAIR_HELP',*/
                 'TT_OTHER',/*'TT_FINANCIAL_INQUIRY',*/
@@ -122,9 +120,8 @@ class Module_tickets
                 $map += insert_lang('ticket_type_name', do_lang($ticket_type_name), 1);
                 $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
 
-                foreach (array_keys($groups) as $id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'tickets', 'category_name' => strval($ticket_type_id), 'group_id' => $id));
-                }
+                require_code('permissions2');
+                set_global_category_access('tickets', $ticket_type_id);
             }
 
             add_privilege('SUPPORT_TICKETS', 'view_others_tickets', false);

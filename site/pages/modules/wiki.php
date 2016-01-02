@@ -111,10 +111,8 @@ class Module_wiki
             $map += insert_lang_comcode('description', '', 2);
             $map += lang_code_to_default_content('title', 'WIKI_HOME', false, 1);
             $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'wiki_page', 'category_name' => strval(db_get_first_id()), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('wiki_page', db_get_first_id());
 
             add_privilege('WIKI', 'wiki_manage_tree', false);
 
