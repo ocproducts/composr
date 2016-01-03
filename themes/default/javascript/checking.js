@@ -1250,12 +1250,12 @@ function geolocate_address_fields()
 		{
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var fields=[
-					'{!cns:SPECIAL_CPF__cms_street_address;}',
-					'{!cns:SPECIAL_CPF__cms_city;}',
-					'{!cns:SPECIAL_CPF__cms_county;}',
-					'{!cns:SPECIAL_CPF__cms_state;}',
-					'{!cns:SPECIAL_CPF__cms_post_code;}',
-					'{!cns:SPECIAL_CPF__cms_country;}'
+					'{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
 				];
 
 				var geocode_url='{$FIND_SCRIPT;,geocode}';
