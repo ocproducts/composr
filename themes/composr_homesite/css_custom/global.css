@@ -78,7 +78,7 @@ header { margin:0px auto; width:100%; padding:30px 0px 10px 0px; height:auto; ov
 .HeadRCol>ul>li>a:hover { color:#E5922C; }
 .HeadRCol>ul>li:last-child>a { background-image:none; }
 
-.HeadEmail { float:right; width:150px; margin-left:140px; padding-left:40px; padding-bottom:16px; height:24px; background-image:url('{$IMG;,composr_homesite/email_icon}'); background-repeat:no-repeat; background-position:0px 0px; font-size:14px; color:#525E66; }
+.HeadEmail { float:right; width:180px; margin-left:140px; padding-left:40px; padding-top:3px; padding-bottom:13px; height:24px; background-image:url('{$IMG;,composr_homesite/email_icon}'); background-repeat:no-repeat; background-position:0px 0px; font-size:14px; color:#525E66; }
 .HeadEmail a { color:#525E66; }
 .HeadEmail a:hover { text-decoration:none; color:#E5922C; }
 
@@ -339,7 +339,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
 {$THEME_WIZARD_COLOR,#a9a9a9,unfilled_input_text,100% A9A9A9}
 {$THEME_WIZARD_COLOR,#888888,locked_input_field,100% 888888}
-{$THEME_WIZARD_COLOR,#fdf6ed,comfortable_input_field_text,65% area_2_background + 35% WB}
+{$THEME_WIZARD_COLOR,#000000,comfortable_input_field_text,65% area_2_background + 35% WB}
 {$THEME_WIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
 {$THEME_WIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
 {$THEME_WIZARD_COLOR,#ffffff,floating_section_background,100% WB}
