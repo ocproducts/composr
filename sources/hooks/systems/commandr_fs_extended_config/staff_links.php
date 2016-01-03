@@ -45,7 +45,7 @@ class Hook_commandr_fs_extended_config__staff_links
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('stafflinks', array('id'));
+        return table_to_json('staff_links', array('id'));
     }
 
     /**
@@ -60,6 +60,6 @@ class Hook_commandr_fs_extended_config__staff_links
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('stafflinks', $contents, array('id'), TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('staff_links', $contents, array('id'), TABLE_REPLACE_MODE_SEVERE);
     }
 }

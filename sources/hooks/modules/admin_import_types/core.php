@@ -49,9 +49,9 @@ class Hook_admin_import_types_core
             'rss' => 'RSS',
             'blocks' => '_BLOCKS',
             'menu_items' => 'MENU_ITEMS',
-            'stafflinks' => 'STAFF_LINKS',
-            'customtasks' => 'CHECK_LIST',
-            'sitewatchlist' => 'SITE_WATCHLIST',
+            'staff_links' => 'STAFF_LINKS',
+            'staff_checklist_custom_tasks' => 'CHECK_LIST',
+            'staff_website_monitoring' => 'SITE_WATCHLIST',
             'searches_saved' => 'SAVED_SEARCHES',
             'notifications' => 'NOTIFICATIONS',
         );

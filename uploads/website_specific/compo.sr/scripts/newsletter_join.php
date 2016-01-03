@@ -44,7 +44,7 @@ $interest_level = get_param_integer('interest_level');
 $lang = get_param_string('lang');
 
 if ($advertise_on == 1) {
-    $GLOBALS['SITE_DB']->query_insert('mayfeature', array('url' => $url));
+    $GLOBALS['SITE_DB']->query_insert('may_feature', array('url' => $url));
 }
 
 if (($email != 'dont_sign_me_up@compo.sr') && ($email != '')) {

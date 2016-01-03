@@ -799,9 +799,6 @@ hr.cns_sig_barrier {
 .buttons__forum {
 	background-image: url('{$IMG,icons/24x24/buttons/forum}') !important;
 }
-.buttons__revisions {
-	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
-}
 .buttons__mark_read_forum {
 	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;
 }

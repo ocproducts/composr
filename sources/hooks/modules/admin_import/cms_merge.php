@@ -42,7 +42,7 @@ class Hook_cms_merge
         $info = array();
         $info['supports_advanced_import'] = true;
         $info['product'] = do_lang('COMPOSR_SITE_MERGER');
-        $info['prefix'] = 'cms4_';
+        $info['prefix'] = 'cms_';
         $info['import'] = array(
             'attachments',
             'cns_groups',
@@ -57,7 +57,7 @@ class Hook_cms_merge
             'config',
             'custom_comcode',
             'comcode_pages',
-            'customtasks',
+            'staff_checklist_custom_tasks',
             'notifications',
             'awards',
             'downloads_and_categories', // including rating, trackbacks, seo
@@ -81,8 +81,8 @@ class Hook_cms_merge
             'pointstore',
             'redirects',
             'searches_saved',
-            'stafflinks',
-            'sitewatchlist',
+            'staff_links',
+            'staff_website_monitoring',
             'searches_saved',
             'wiki', // including rating, trackbacks, seo
             'stats',
@@ -1722,22 +1722,22 @@ class Hook_cms_merge
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
-    public function import_customtasks($db, $table_prefix, $file_base)
+    public function import_staff_checklist_custom_tasks($db, $table_prefix, $file_base)
     {
-        if (!$db->table_exists($table_prefix . 'customtasks')) {
+        if (!$db->table_exists($table_prefix . 'staff_checklist_custom_tasks')) {
             return;
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'customtasks', null, null, true);
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'staff_checklist_custom_tasks', null, null, true);
         if (is_null($rows)) {
             return;
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            if (is_null($row['taskisdone'])) {
-                $GLOBALS['SITE_DB']->query_insert('customtasks', array('tasktitle' => $row['tasktitle'], 'datetimeadded' => $row['datetimeadded'], 'recurinterval' => $row['recurinterval'], 'recurevery' => $row['recurevery']));
+            if (is_null($row['task_is_done'])) {
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every']));
             } else {
-                $GLOBALS['SITE_DB']->query_insert('customtasks', array('tasktitle' => $row['tasktitle'], 'datetimeadded' => $row['datetimeadded'], 'recurinterval' => $row['recurinterval'], 'recurevery' => $row['recurevery'], 'taskisdone' => $row['taskisdone']));
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every'], 'task_is_done' => $row['task_is_done']));
             }
         }
     }
@@ -3827,20 +3827,20 @@ class Hook_cms_merge
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
-    public function import_sitewatchlist($db, $table_prefix, $file_base)
+    public function import_staff_website_monitoring($db, $table_prefix, $file_base)
     {
-        if (!$db->table_exists($table_prefix . 'sitewatchlist')) {
+        if (!$db->table_exists($table_prefix . 'staff_website_monitoring')) {
             return;
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'sitewatchlist', null, null, true);
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'staff_website_monitoring', null, null, true);
         if (is_null($rows)) {
             return;
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             unset($row['id']);
-            $GLOBALS['SITE_DB']->query_insert('sitewatchlist', $row);
+            $GLOBALS['SITE_DB']->query_insert('staff_website_monitoring', $row);
         }
     }
 
@@ -3851,16 +3851,16 @@ class Hook_cms_merge
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
-    public function import_stafflinks($db, $table_prefix, $file_base)
+    public function import_staff_links($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'stafflinks', null, null, true);
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'staff_links', null, null, true);
         if (is_null($rows)) {
             return;
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             unset($row['id']);
-            $GLOBALS['SITE_DB']->query_insert('stafflinks', $row);
+            $GLOBALS['SITE_DB']->query_insert('staff_links', $row);
         }
     }
 
