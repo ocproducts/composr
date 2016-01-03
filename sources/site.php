@@ -867,7 +867,7 @@ function do_site()
     }
 
     // Caching for spiders
-    if (running_script('index')) {
+    if ($GLOBALS['STATIC_CACHE_ENABLED']) {
         save_static_caching($out);
     }
 

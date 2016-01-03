@@ -51,20 +51,7 @@ function init__global2()
     }
     safe_ini_set('error_log', get_custom_file_base() . '/data_custom/errorlog.php');
 
-    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (get_param_integer('routine_refresh', 0) == 0)) { // Architecturally hackerish chat message precheck (for extra efficiency)
-        require_code('chat_poller');
-        chat_poller();
-    }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') >= get_param_integer('time_barrier'))) {
-        prepare_for_known_ajax_response();
-
-        header('Content-Type: application/xml');
-
-        //  encoding="' . get_charset() . '" not needed due to no data in it
-        $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
-    }
-
-    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8;
+    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED;
 
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
@@ -121,6 +108,20 @@ function init__global2()
     if (!isset($KNOWN_UTF8)) {
         $KNOWN_UTF8 = false;
     }
+    /** Whether we know we need to do CSRF token checks.
+     *
+     * @global boolean $CSRF_TOKENS
+     */
+    if (!isset($CSRF_TOKENS)) {
+        $CSRF_TOKENS = false;
+    }
+    /** Whether we enable the static cache for this request.
+     *
+     * @global boolean $STATIC_CACHE_ENABLED
+     */
+    if (!isset($STATIC_CACHE_ENABLED)) {
+        $STATIC_CACHE_ENABLED = false;
+    }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;
     /** On the quick installer, this presents manifest information about files that exist in the virtual filesystem.
@@ -137,6 +138,19 @@ function init__global2()
     // Keep check of our bootstrapping
     $BOOTSTRAPPING = true;
     $CHECKING_SAFEMODE = false;
+
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (get_param_integer('routine_refresh', 0) == 0)) { // Architecturally hackerish chat message precheck (for extra efficiency)
+        require_code('chat_poller');
+        chat_poller();
+    }
+    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') >= get_param_integer('time_barrier'))) {
+        prepare_for_known_ajax_response();
+
+        header('Content-Type: application/xml');
+
+        //  encoding="' . get_charset() . '" not needed due to no data in it
+        $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+    }
 
     // Initialise timezones
     $SERVER_TIMEZONE_CACHE = @date_default_timezone_get();
@@ -229,7 +243,7 @@ function init__global2()
         static_cache((($bot_type !== null) ? STATIC_CACHE__FAST_SPIDER : 0) | STATIC_CACHE__FAILOVER_MODE);
     }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for bots and possibly guests
-        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
                 require_code('static_cache');
@@ -272,7 +286,7 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
@@ -452,7 +466,7 @@ function init__global2()
         }
 
         // Check security token, if necessary
-        if (running_script('index') || running_script('iframe')) {
+        if ($CSRF_TOKENS) {
             $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin\njoin";
             $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
             if (!in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name() . ':', $_security_token_exceptions)) {
@@ -1293,6 +1307,7 @@ function get_complex_base_url($at)
 /**
  * Get a parameter value (either POST *or* GET, i.e. like $_REQUEST[$name]), or the default if neither can be found.
  * Implements additional security over the direct PHP access mechanism which should not be used.
+ * Use with caution, as this has very limited CSRF protection compared to post_param_string.
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)

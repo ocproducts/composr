@@ -1098,13 +1098,13 @@ function actualise_post_trackback($allow_trackbacks, $content_type, $content_id)
     require_code('antispam');
     inject_action_spamcheck();
 
-    $url = either_param_string('url', null);
+    $url = post_param_string('url', null);
     if (is_null($url)) {
         return false;
     }
-    $title = either_param_string('title', $url);
-    $excerpt = either_param_string('excerpt', '');
-    $name = either_param_string('blog_name', $url);
+    $title = post_param_string('title', $url);
+    $excerpt = post_param_string('excerpt', '');
+    $name = post_param_string('blog_name', $url);
 
     $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id, 'trackback_ip' => get_ip_address(), 'trackback_time' => time(), 'trackback_url' => $url, 'trackback_title' => $title, 'trackback_excerpt' => $excerpt, 'trackback_name' => $name));
 

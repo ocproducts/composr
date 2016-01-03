@@ -12,18 +12,18 @@ function password_strength(ob)
 	var _ind=document.getElementById('password_strength_'+ob.id);
 	if (!_ind) return;
 	var ind=_ind.getElementsByTagName('div')[0];
-	var url='password='+window.encodeURIComponent(ob.value);
+	var post='password='+window.encodeURIComponent(ob.value);
 	if (ob.form && typeof ob.form.elements['username']!='undefined')
 	{
-		url+='&username='+ob.form.elements['username'].value;
+		post+='&username='+ob.form.elements['username'].value;
 	} else
 	{
 		if (ob.form && typeof ob.form.elements['edit_username']!='undefined')
 		{
-			url+='&username='+ob.form.elements['edit_username'].value;
+			post+='&username='+ob.form.elements['edit_username'].value;
 		}
 	}
-	var strength=load_snippet('password_strength',url);
+	var strength=load_snippet('password_strength',post);
 	strength*=2; if (strength>10) strength=10; // Normally too harsh!
 	ind.style.width=(strength*10)+'px';
 	if (strength>=6)

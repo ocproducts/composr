@@ -30,7 +30,7 @@ class Hook_snippet_count
      */
     public function run()
     {
-        $name = get_param_string('name');
+        $name = post_param_string('name');
         update_stat($name, 1);
 
         return new Tempcode();

@@ -157,7 +157,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     if ($one_per_email_address_if_enabled) {
         if (get_option('one_per_email_address') == '1') {
             $javascript .= "
-            url='" . addslashes($script) . "?snippet=email_exists&name='+window.encodeURIComponent(form.elements['email_address'].value);
+            url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
             if (!do_ajax_field_test(url))
             {
                 document.getElementById('submit_button').disabled=false;

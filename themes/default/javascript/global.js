@@ -2542,7 +2542,7 @@ function keep_stub(starting_query_string,skip_session,context) // starting_query
 	}
 	if (!done_session)
 	{
-		var session=read_cookie('{$SESSION_COOKIE_NAME;}');
+		var session=get_session_id();
 		gap_symbol=(((to_add=='') && (starting_query_string))?'?':'&');
 		if (session) to_add=to_add+gap_symbol+'keep_session='+window.encodeURIComponent(session);
 	}
@@ -2559,6 +2559,11 @@ function keep_stub(starting_query_string,skip_session,context) // starting_query
 	}
 
 	return to_add;
+}
+
+function get_session_id()
+{
+	return read_cookie('{$SESSION_COOKIE_NAME;}');
 }
 
 /* Get an element's HTML, including the element itself */

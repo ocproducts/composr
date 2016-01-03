@@ -152,7 +152,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/notifications/cns_password_changed.php',
             'sources/hooks/systems/snippets/member_tooltip.php',
             'sources/hooks/systems/notifications/cns_rank_promoted.php',
-            'sources/hooks/systems/snippets/email_exists.php',
+            'sources/hooks/systems/snippets/exists_email.php',
             'sources/hooks/systems/snippets/profile_tab.php',
             'sources/hooks/systems/snippets/invite_missing.php',
             'sources/hooks/systems/snippets/exists_usergroup.php',
