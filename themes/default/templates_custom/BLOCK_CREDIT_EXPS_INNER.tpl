@@ -35,37 +35,10 @@
 
 				<tr>
 					<td>
-						{L_N}
+						{L_R}
 					</td>
 					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{N_MINUTES}}}</strong> {MINUTES}
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						{L_D}
-					</td>
-					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{D_MINUTES}}}</strong> {MINUTES}
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						{L_H}
-					</td>
-					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{H_MINUTES}}}</strong> {MINUTES}
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						{L_E}
-					</td>
-					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{E_MINUTES}}}</strong> {MINUTES}
+						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{R_MINUTES}}}</strong> {MINUTES}
 					</td>
 				</tr>
 			</tbody>

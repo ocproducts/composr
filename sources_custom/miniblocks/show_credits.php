@@ -27,7 +27,7 @@ $credits_message = new Tempcode();
 if (get_page_name() != 'professional_support') {
     $_professional_support_url = build_url(array('page' => 'professional_support'), 'site');
     $professional_support_url = $_professional_support_url->evaluate();
-    $whats_this = do_lang_tempcode('SHOW_CREDITS_Whats_this', $professional_support_url);
+    $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', $professional_support_url);
 }
 
 if (is_guest()) {
@@ -66,13 +66,13 @@ $_logout_url = build_url(array('page' => 'login', 'type' => 'logout', 'redirect'
 $logout_url = $_logout_url->evaluate();
 $welcome_msg = do_lang_tempcode('SHOW_CREDITS_WELCOME_MESSAGE', $username_link, $logout_url);
 if ($credits_available == 0) {
-    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_No_credits_link');
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_No_credits');
+    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK');
+    $credits_message = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
 } else {
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_Some_credits', $credits_available);
+    $credits_message = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', $credits_available);
 }
 $_tickets_url = build_url(array('page' => 'tickets', 'type' => 'browse'), get_module_zone('tickets'));
 $tickets_url = $_tickets_url->evaluate();
-$tickets_open_msg = do_lang_tempcode('SHOW_CREDITS_Tickets_open', number_format($tickets_open), $tickets_url);
+$tickets_open_msg = do_lang_tempcode('SHOW_CREDITS_TICKETS_OPEN', number_format($tickets_open), $tickets_url);
 $tpl = do_template('SHOW_CREDITS_BAR', array('_GUID' => '43e6e18c180cda2e6f4627d2a2bb8677', 'GUEST_MSG' => $guest_msg, 'WHATS_THIS' => $whats_this, 'WHATS_THIS_LINK' => $no_credits_link, 'WELCOME_MSG' => $welcome_msg, 'CREDITS_AVAILABLE' => $credits_message));
 $tpl->evaluate_echo();

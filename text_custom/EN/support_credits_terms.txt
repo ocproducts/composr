@@ -28,11 +28,11 @@ A stated minimum credit cost may apply to work done. This cost is per action, no
 
 ocProducts may provide a number of different service levels, with different hourly unit costs depending on the service level. Service level response times are set based on when work begins, not when it concludes. If ocProducts are not able to start providing a requested service level then ocProducts will discount the credit cost to the closest matching lower service level. 
 
-ocProducts provides no guarantees that service levels, operating procedures, staffing, or credit costs, will not change, other than that the budget-level time-value of each credit will not decrease for credits already purchased.
+ocProducts provides no guarantees that service levels, operating procedures, staffing, or credit costs, will not change, other than that the back-burner-level time-value of each credit will not decrease for credits already purchased.
 
 ocProducts reserves the right to expire (without refund) purchased credits that are not used within two years of their purchase date, at their discretion.
 
-ocProducts reserves the right to limit the proportion of budget priority tasks per customer to 50% of requested work.
+ocProducts reserves the right to limit the proportion of back-burner priority tasks per customer to 50% of requested work.
 
 Service level response times are based on working hours, unless otherwise stated. ocProducts reserves the right to change working hours, or to operate different working hours for different services, service levels, or regions. Working hours at the time of writing these conditions are Mon-Fri 9:30am-5:30pm UK time (GMT/BST), but may be different at the time of reading.
 

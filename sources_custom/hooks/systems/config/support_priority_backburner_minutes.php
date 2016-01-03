@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_support_normal_priority
+class Hook_config_support_priority_backburner_minutes
 {
     /**
      * Gets the details relating to the config option.
@@ -26,14 +26,14 @@ class Hook_config_support_normal_priority
     public function get_details()
     {
         return array(
-            'human_name' => 'SUPPORT_PRIORITY_NORMAL_MINUTES',
+            'human_name' => 'SUPPORT_PRIORITY_BACKBURNER_MINUTES',
             'type' => 'float',
             'category' => 'FEATURE',
             'group' => 'CUSTOMERS',
-            'explanation' => 'CONFIG_OPTION_support_normal_priority',
+            'explanation' => 'CONFIG_OPTION_support_priority_backburner_minutes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 9,
 
             'addon' => 'composr_homesite_support_credits',
         );
@@ -46,6 +46,6 @@ class Hook_config_support_normal_priority
      */
     public function get_default()
     {
-        return '8';
+        return '10';
     }
 }
