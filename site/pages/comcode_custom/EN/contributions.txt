@@ -9,7 +9,7 @@
 		<div class="cntL_Row">
 			[title]Considering helping out?[/title]
 
-			<p>Do you want to help our mission: bringing a way that empowers the masses to create better websites on saner budgets?</p>
+			<p>Do you want to help our mission: bringing a way that empowers the masses to create feature-rich websites on saner budgets?</p>
 
 			<p>It's a lofty goal, and we'd love your help!</p>
 

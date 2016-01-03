@@ -25,7 +25,7 @@
 
 				<tr>
 					<th class="tdBody">Budget priority</th>
-					<td class="tdBody">7 working days</td>
+					<td class="tdBody">2 business weeks</td>
 					<td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 3 credits &#8801; [currency]16.50[/currency]
 
@@ -35,46 +35,13 @@
 
 				<tr>
 					<th class="tdBody">Normal priority</th>
-					<td class="tdBody">3 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
-32 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
-
-Hourly cost (approx):
-64 minutes &#8801; 8 credits &#8801; [currency]44.00[/currency]"]8 minutes[/tooltip]</td>
-					<td class="tdBody">4 credits (32 minutes)</td>
-				</tr>
-
-				<tr>
-					<th class="tdBody">Day priority</th>
-					<td class="tdBody">8 working days</td>
+					<td class="tdBody">2 business days</td>
 					<td class="tdBody">[tooltip="Minimum ticket price:
 28 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
 
 Hourly cost (approx):
-63 minutes &#8801; 9 credits &#8801; [currency]49.50[/currency]"]7 minutes[/tooltip]</td>
+56 minutes &#8801; 8 credits &#8801; [currency]44.00[/currency]"]7 minutes[/tooltip]</td>
 					<td class="tdBody">4 credits (28 minutes)</td>
-				</tr>
-
-				<tr>
-					<th class="tdBody">High priority</th>
-					<td class="tdBody">3 working days</td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
-30 minutes &#8801; 6 credits &#8801; [currency]33.00[/currency]
-
-Hourly cost (approx):
-60 minutes &#8801; 12 credits &#8801; [currency]66.00[/currency]"]5 minutes[/tooltip]</td>
-					<td class="tdBody">6 credits (30 minutes)</td>
-				</tr>
-
-				<tr>
-					<th class="tdBody">Emergencies</th>
-					<td class="tdBody">1 working hour<br /><span>(24×7 if staff near a computer)</span></td>
-					<td class="tdBody">[tooltip="Minimum ticket price:
-30 minutes &#8801; 10 credits &#8801; [currency]55.00[/currency]
-
-Hourly cost (approx):
-60 minutes &#8801; 20 credits &#8801; [currency]110.00[/currency]"]3 minutes[/tooltip]</td>
-					<td class="tdBody">10 credits (30 minutes)<br /><span>(even if cost not agreed)</span></td>
 				</tr>
 			</table>
 		</div>
@@ -104,7 +71,7 @@ Hourly cost (approx):
 	<div class="cntRow">
 		<p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
 
-		<p>&dagger; Response times aren't guaranteed, but you won't be charged in full if we can't meet them. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to discuss this in advance to ensure we schedule for your needs.</p>
+		<p>&dagger; Response times aren't guaranteed, but if we miss a regular response time we will charge it at the back-burner rate. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to arrange a staff secondment with us.</p>
 
 		<!--<p>&dagger;&dagger; VAT applies for EU customers. VAT not included in figures quoted here.</p>-->
 	</div>
