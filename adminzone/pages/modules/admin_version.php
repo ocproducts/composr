@@ -762,6 +762,17 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
+
+            $GLOBALS['SITE_DB']->rename_table('sitewatchlist', 'staff_website_monitoring');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_website_monitoring', 'siteurl', 'URLPATH', 'site_url');
+            $GLOBALS['SITE_DB']->rename_table('stafflinks', 'staff_links');
+            $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
+            $GLOBALS['SITE_DB']->rename_table('customtasks', 'staff_checklist_custom_tasks');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_custom_tasks', 'tasktitle', 'SHORT_TEXT', 'task_title');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_custom_tasks', 'datetimeadded', 'TIME', 'add_date');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_custom_tasks', 'recurinterval', 'INTEGER', 'recur_interval');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_custom_tasks', 'recurevery', 'ID_TEXT', 'recur_every');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_custom_tasks', 'taskisdone', '?TIME', 'task_is_done');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {

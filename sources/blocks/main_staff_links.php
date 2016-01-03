@@ -47,7 +47,7 @@ class Block_main_staff_links
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('stafflinks');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_links');
     }
 
     /**
@@ -72,7 +72,7 @@ class Block_main_staff_links
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
-            $GLOBALS['SITE_DB']->create_table('stafflinks', array(
+            $GLOBALS['SITE_DB']->create_table('staff_links', array(
                 'id' => '*AUTO',
                 'link' => 'URLPATH',
                 'link_title' => 'SHORT_TEXT',
@@ -107,7 +107,7 @@ class Block_main_staff_links
                 //'GoDaddy (Domains and SSL certificates)' => 'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
             );
             foreach ($default_links as $link_title => $url) {
-                $GLOBALS['SITE_DB']->query_insert('stafflinks', array(
+                $GLOBALS['SITE_DB']->query_insert('staff_links', array(
                     'link' => $url,
                     'link_title' => $link_title,
                     'link_desc' => $link_title,
@@ -129,7 +129,7 @@ class Block_main_staff_links
         $newdata = post_param_string('staff_links_edit', null);
         if (!is_null($newdata)) {
             $items = explode("\n", $newdata);
-            $GLOBALS['SITE_DB']->query_delete('stafflinks');
+            $GLOBALS['SITE_DB']->query_delete('staff_links');
 
             foreach ($items as $i) {
                 $q = trim($i);
@@ -152,7 +152,7 @@ class Block_main_staff_links
                     } else {
                         $link_desc = $link_title;
                     }
-                    $GLOBALS['SITE_DB']->query_insert('stafflinks', array(
+                    $GLOBALS['SITE_DB']->query_insert('staff_links', array(
                         'link' => $link,
                         'link_title' => $link_title,
                         'link_desc' => $link_desc,
@@ -165,7 +165,7 @@ class Block_main_staff_links
             log_it('STAFF_LINKS');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('stafflinks', array('*'));
+        $rows = $GLOBALS['SITE_DB']->query_select('staff_links', array('*'));
         $formatted_staff_links = array();
         $unformatted_staff_links = array();
         foreach ($rows as $r) {

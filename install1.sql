@@ -1755,11 +1755,11 @@ CREATE TABLE IF NOT EXISTS `cms_cron_caching_requests` (
 DROP TABLE IF EXISTS `cms_customtasks`;
 CREATE TABLE IF NOT EXISTS `cms_customtasks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tasktitle` varchar(255) NOT NULL,
-  `datetimeadded` int(10) unsigned NOT NULL,
-  `recurinterval` int(11) NOT NULL,
-  `recurevery` varchar(80) NOT NULL,
-  `taskisdone` int(10) unsigned DEFAULT NULL,
+  `task_title` varchar(255) NOT NULL,
+  `add_date` int(10) unsigned NOT NULL,
+  `recur_interval` int(11) NOT NULL,
+  `recur_every` varchar(80) NOT NULL,
+  `task_is_done` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  AUTO_INCREMENT=14 ;
 
@@ -1767,19 +1767,19 @@ CREATE TABLE IF NOT EXISTS `cms_customtasks` (
 -- Dumping data for table `cms_customtasks`
 --
 
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(1, 'Set up website configuration and structure', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(2, 'Make ''favicon'' theme image', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(3, 'Make ''appleicon'' (webclip) theme image', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(4, 'Make/install custom theme', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(5, 'Add your content', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(6, '[page="adminzone:admin_themes:edit_image:logo/trimmed_logo:theme=default"]Customise your mail/RSS logo[/page]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(7, '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]Customise your ''MAIL'' template[/page]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(8, '[url="P3P Wizard (set up privacy policy)"]http://www.p3pwiz.com/[/url]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(9, '[url="Submit to Google"]http://www.google.com/addurl/[/url]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(10, '[url="Submit to OpenDMOZ"]http://www.dmoz.org/add.html[/url]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(11, '[url="Submit to Bing"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(12, 'Facebook user? Like Composr on Facebook:[html]<iframe src="http://www.cmsortal.com/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:30px;" allowTransparency="true"></iframe>[/html]', 1344775608, 0, '', NULL);
-INSERT INTO `cms_customtasks` (`id`, `tasktitle`, `datetimeadded`, `recurinterval`, `recurevery`, `taskisdone`) VALUES(13, '[url="Consider helping out with the Composr project"]http://cmsortal.com/site/helping_out.htm[/url]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(1, 'Set up website configuration and structure', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(2, 'Make ''favicon'' theme image', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(3, 'Make ''appleicon'' (webclip) theme image', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(4, 'Make/install custom theme', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(5, 'Add your content', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(6, '[page="adminzone:admin_themes:edit_image:logo/trimmed_logo:theme=default"]Customise your mail/RSS logo[/page]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(7, '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]Customise your ''MAIL'' template[/page]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(8, '[url="P3P Wizard (set up privacy policy)"]http://www.p3pwiz.com/[/url]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(9, '[url="Submit to Google"]http://www.google.com/addurl/[/url]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(10, '[url="Submit to OpenDMOZ"]http://www.dmoz.org/add.html[/url]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(11, '[url="Submit to Bing"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(12, 'Facebook user? Like Composr on Facebook:[html]<iframe src="http://www.cmsortal.com/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:30px;" allowTransparency="true"></iframe>[/html]', 1344775608, 0, '', NULL);
+INSERT INTO `cms_customtasks` (`id`, `task_title`, `add_date`, `recur_interval`, `recur_every`, `task_is_done`) VALUES(13, '[url="Consider helping out with the Composr project"]http://cmsortal.com/site/helping_out.htm[/url]', 1344775608, 0, '', NULL);
 
 -- --------------------------------------------------------
 

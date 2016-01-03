@@ -13,11 +13,11 @@
 		CREATE TABLE cms10_customtasks
 		(
 			id integer auto_increment NULL,
-			tasktitle varchar(255) NOT NULL,
-			datetimeadded integer unsigned NOT NULL,
-			recurinterval integer NOT NULL,
-			recurevery varchar(80) NOT NULL,
-			taskisdone integer unsigned NOT NULL,
+			task_title varchar(255) NOT NULL,
+			add_date integer unsigned NOT NULL,
+			recur_interval integer NOT NULL,
+			recur_every varchar(80) NOT NULL,
+			task_is_done integer unsigned NOT NULL,
 			PRIMARY KEY (id)
 		) TYPE=InnoDB;
 

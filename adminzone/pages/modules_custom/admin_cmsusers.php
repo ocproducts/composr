@@ -40,7 +40,7 @@ class Module_admin_cmsusers
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('mayfeature');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('may_feature');
         $GLOBALS['SITE_DB']->drop_table_if_exists('logged');
     }
 
@@ -52,7 +52,7 @@ class Module_admin_cmsusers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('mayfeature', array(
+        $GLOBALS['SITE_DB']->create_table('may_feature', array(
             'id' => '*AUTO',
             'url' => 'URLPATH'
         ));
@@ -185,7 +185,7 @@ class Module_admin_cmsusers
             if (!array_key_exists('host', $url_parts)) {
                 continue;
             }
-            $perm = $GLOBALS['SITE_DB']->query_select_value_if_there('mayfeature', 'id', array('url' => $url_parts['scheme'] . '://' . $url_parts['host']));
+            $perm = $GLOBALS['SITE_DB']->query_select_value_if_there('may_feature', 'id', array('url' => $url_parts['scheme'] . '://' . $url_parts['host']));
             if ((is_null($perm)) && (get_param_integer('no_feature', 0) == 1)) {
                 continue;
             }

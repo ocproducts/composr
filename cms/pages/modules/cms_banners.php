@@ -418,7 +418,7 @@ class Module_cms_banners extends Standard_crud_module
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $campaignremaining = post_param_integer('campaignremaining', 0);
-        $siteurl = fixup_protocolless_urls(post_param_string('site_url', ''));
+        $site_url = fixup_protocolless_urls(post_param_string('site_url', ''));
         $importancemodulus = post_param_integer('importancemodulus', 3);
         $notes = post_param_string('notes', '');
         $the_type = post_param_integer('the_type', 1);
@@ -435,7 +435,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('banner', null);
 
-        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $siteurl, $importancemodulus, $notes, $the_type, $expiry_date, $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['add_time'], 0, 0, 0, 0, $meta_data['edit_time']);
+        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['add_time'], 0, 0, 0, 0, $meta_data['edit_time']);
 
         $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
         if (array_key_exists(0, $_banner_type_row)) {

@@ -49,7 +49,7 @@ class Hook_commandr_fs_extended_config__checklist_tasks
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('customtasks', array('id'));
+        return table_to_json('staff_checklist_custom_tasks', array('id'));
     }
 
     /**
@@ -64,6 +64,6 @@ class Hook_commandr_fs_extended_config__checklist_tasks
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('customtasks', $contents, array('id'), TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('staff_checklist_custom_tasks', $contents, array('id'), TABLE_REPLACE_MODE_SEVERE);
     }
 }
