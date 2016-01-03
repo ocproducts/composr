@@ -71,6 +71,27 @@ function composr_homesite_install()
     //  - adminzone:admin_cmsusers
     //  - (installing of docs zone)
 
+    // Support ticket types
+    // --------------------
+
+    require_code('tickets2');
+    $ticket_types = array(
+        'Feedback',
+        'Partnership',
+        'Job',
+        'Project',
+        'Secondment',
+        'Professional support',
+        'Installation',
+        'Upgrade',
+    );
+    delete_ticket_type(1); // Other
+    delete_ticket_type(2); // Complaint
+    foreach ($ticket_types as $ticket_type) {
+        $cat_id = add_ticket_type($ticket_type);
+        set_global_category_access('tickets', $cat_id);
+    }
+
     // Config
     // ------
 
