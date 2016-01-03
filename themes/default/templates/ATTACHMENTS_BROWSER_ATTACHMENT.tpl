@@ -5,6 +5,8 @@
 
 	{+START,IF,{MAY_DELETE}}
 		<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<input type="hidden" name="delete_{ID*}" value="1" />
 			<input onclick="var form=this.form; fauxmodal_confirm('{!ARE_YOU_SURE_DELETE;*}',function(v) { if (v) form.submit(); }); return false;" type="submit" class="menu___generic_admin__delete button_screen_item" value="{!DELETE}" />
 		</form>

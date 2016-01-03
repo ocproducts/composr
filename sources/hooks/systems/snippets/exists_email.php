@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_snippet_email_exists
+class Hook_snippet_exists_email
 {
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.

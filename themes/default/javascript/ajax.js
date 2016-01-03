@@ -515,8 +515,11 @@ function do_ajax_request(url,callback__method,post) // Note: 'post' is not an ar
 		window.AJAX_REQUESTS[index]=new XMLHttpRequest();
 	}
 	if (!synchronous) window.AJAX_REQUESTS[index].onreadystatechange=process_request_changes;
-	if (post)
+	if (typeof post!='undefined' && post!==null)
 	{
+		if (post.indexOf('&session_id')==-1)
+			post+='&session_id='+window.encodeURIComponent(get_session_id()); // For CSRF prevention
+
 		window.AJAX_REQUESTS[index].open('POST',url,!synchronous);
 		window.AJAX_REQUESTS[index].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 		window.AJAX_REQUESTS[index].send(post);

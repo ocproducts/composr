@@ -30,7 +30,7 @@ class Hook_snippet_checklist_task_manage
      */
     public function run()
     {
-        $type = get_param_string('type');
+        $type = post_param_string('type');
 
         if (!has_zone_access(get_member(), 'adminzone')) {
             return new Tempcode();
@@ -42,15 +42,15 @@ class Hook_snippet_checklist_task_manage
 
         switch ($type) {
             case 'add':
-                $recur_interval = get_param_integer('recur_interval', 0);
+                $recur_interval = post_param_integer('recur_interval', 0);
 
-                $task_title = get_param_string('task_title', false, true);
+                $task_title = post_param_string('task_title', false, true);
 
                 $id = $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array(
                     'task_title' => $task_title,
                     'add_date' => time(),
                     'recur_interval' => $recur_interval,
-                    'recur_every' => get_param_string('recur_every'),
+                    'recur_every' => post_param_string('recur_every'),
                     'task_is_done' => null,
                 ), true);
 
@@ -65,16 +65,16 @@ class Hook_snippet_checklist_task_manage
 
                 return do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                     '_GUID' => 'e95228a3740dc7eda2d1b0ccc7d3d9d3',
-                    'TASK_TITLE' => comcode_to_tempcode(get_param_string('task_title', false, true)),
+                    'TASK_TITLE' => comcode_to_tempcode(post_param_string('task_title', false, true)),
                     'ADD_DATE' => display_time_period(time()),
                     'RECUR_INTERVAL' => ($recur_interval == 0) ? '' : integer_format($recur_interval),
-                    'RECUR_EVERY' => get_param_string('recur_every'),
+                    'RECUR_EVERY' => post_param_string('recur_every'),
                     'TASK_DONE' => 'not_completed',
                     'ID' => strval($id),
                 ));
 
             case 'delete':
-                $id = get_param_integer('id');
+                $id = post_param_integer('id');
                 $task_title = $GLOBALS['SITE_DB']->query_select_value('staff_checklist_custom_tasks', 'task_title', array('id' => $id));
 
                 $GLOBALS['SITE_DB']->query_delete('staff_checklist_custom_tasks', array(
@@ -86,7 +86,7 @@ class Hook_snippet_checklist_task_manage
                 break;
 
             case 'mark_done':
-                $id = get_param_integer('id');
+                $id = post_param_integer('id');
                 $task_title = $GLOBALS['SITE_DB']->query_select_value('staff_checklist_custom_tasks', 'task_title', array('id' => $id));
 
                 $GLOBALS['SITE_DB']->query_update('staff_checklist_custom_tasks', array('task_is_done' => time()), array('id' => $id), '', 1);
@@ -96,7 +96,7 @@ class Hook_snippet_checklist_task_manage
                 break;
 
             case 'mark_undone':
-                $id = get_param_integer('id');
+                $id = post_param_integer('id');
                 $task_title = $GLOBALS['SITE_DB']->query_select_value('staff_checklist_custom_tasks', 'task_title', array('id' => $id));
 
                 $GLOBALS['SITE_DB']->query_update('staff_checklist_custom_tasks', array('task_is_done' => null), array('id' => $id), '', 1);

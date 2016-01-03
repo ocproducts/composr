@@ -143,7 +143,7 @@ function check_posted_field($name, $val)
                     }
                 }
             }
-        } elseif (cms_admirecookie('has_referers') === '1') {
+        } elseif (cms_admirecookie('has_referers') === '1' && !addon_installed('ssl')/*https->http removes referer*/) {
             $evil = true;
         }
     }

@@ -96,18 +96,18 @@ function messages_script()
         _chat_messages_script_ajax(either_param_integer('room_id'), true);
     } elseif ($action == 'post') {
         // Posting a message
-        $message = either_param_string('message');
+        $message = post_param_string('message');
         _chat_post_message_ajax(either_param_integer('room_id'), $message, post_param_string('font', ''), preg_replace('#^\##', '', post_param_string('colour', '')), post_param_integer('first_message', 0));
     } elseif ($action == 'start_im') {
         require_lang('chat');
 
-        $people = get_param_string('people');
+        $people = post_param_string('people');
         if ($people == '') {
             exit();
         }
 
         $room = array();
-        $may_recycle = (get_param_integer('may_recycle', 0) == 1);
+        $may_recycle = (either_param_integer('may_recycle', 0) == 1);
         if ($may_recycle) {
             if (strpos($people, ',') === false) {
                 // See if we can find a room to recycle
@@ -135,7 +135,7 @@ function messages_script()
         // Send response of new messages, so we get instant result
         _chat_messages_script_ajax(-2, false, either_param_integer('message_id'), either_param_integer('event_id'), $extra_xml);
     } elseif ($action == 'join_im') {
-        $room_id = get_param_integer('room_id');
+        $room_id = post_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
@@ -176,7 +176,7 @@ function messages_script()
 
         _chat_messages_script_ajax(-1, false, -1, either_param_integer('event_id'), $events_output);
     } elseif ($action == 'deinvolve_im') {
-        $room_id = get_param_integer('room_id');
+        $room_id = post_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (array_key_exists(0, $room_check)) {
             $room_row = $room_check[0];
@@ -207,8 +207,8 @@ function messages_script()
             }
         }
     } elseif ($action == 'invite_im') {
-        $room_id = get_param_integer('room_id');
-        $people = get_param_string('people');
+        $room_id = post_param_integer('room_id');
+        $people = post_param_string('people');
         if ($people == '') {
             exit();
         }
