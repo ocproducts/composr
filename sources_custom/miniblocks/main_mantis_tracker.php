@@ -22,8 +22,8 @@ $title_tracker = do_lang('TRACKER');
 $result = get_option('currency', true);
 $s_currency = is_null($result) ? 'USD' : strval($result);
 $s_credit_value = floatval(get_option('support_credit_value'));
-$budget_minutes = intval(get_option('support_budget_priority'));
-$multi_rate = (intval(60 / $budget_minutes) < 1) ? 1 : intval(60 / $budget_minutes);
+$backburner_minutes = intval(get_option('support_priority_backburner_minutes'));
+$multi_rate = (intval(60 / $backburner_minutes) < 1) ? 1 : intval(60 / $backburner_minutes);
 if (!running_script('tracker')) {
     $params = '';
     foreach ($map as $key => $val) {
@@ -129,29 +129,29 @@ if (count($issues) == 0) {
         $_percentage = is_null($cost) ? do_lang('FEATURES_UNKNOWN_lc') : (escape_html(float_format(100.0 * $money_raised / $cost, 0)) . '%');
         $member_linked = static_evaluate_tempcode($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($suggested_by));
         $date_prepped = escape_html(get_timezoned_date($add_date, false));
-        $comments_label = $num_comments != 1 ? do_lang('FEATURES_comment') : do_lang('FEATURES_comments');
+        $comments_label = $num_comments != 1 ? do_lang('FEATURES_COMMENT_lc') : do_lang('FEATURES_COMMENTS_lc');
 
         $out = '';
         $out .= '
             <div style="float: left; width: 140px; text-align: center; border: 1px solid #AAA" class="medborder">
-                    <p style="font-size: 1.5em"><strong>' . escape_html(number_format($votes)) . '</strong> ' . (($votes == 1) ? do_lang('FEATURES_vote') : do_lang('FEATURES_votes')) . '</p>
+                    <p style="font-size: 1.5em"><strong>' . escape_html(number_format($votes)) . '</strong> ' . (($votes == 1) ? do_lang('FEATURES_VOTE_lc') : do_lang('FEATURES_VOTES_lc')) . '</p>
         ';
 
         if (!$voted) {
             $out .= '
-                            <p onclick="this.style.border=\'1px dotted blue\';"><a style="text-decoration: none" target="_blank" href="' . escape_html($vote_url) . '"><img style="vertical-align: middle" src="' . find_theme_image('tracker/plus') . '" /> <span style="vertical-align: middle">' . do_lang('FEATURES_Vote') . '</span></a></p>
+                            <p onclick="this.style.border=\'1px dotted blue\';"><a style="text-decoration: none" target="_blank" href="' . escape_html($vote_url) . '"><img style="vertical-align: middle" src="' . find_theme_image('tracker/plus') . '" /> <span style="vertical-align: middle">' . do_lang('FEATURES_VOTE') . '</span></a></p>
             ';
         } else {
             $out .= '
-                            <p onclick="this.style.border=\'1px dotted blue\';"><a style="text-decoration: none" target="_blank" href="' . escape_html($unvote_url) . '"><img style="vertical-align: middle" src="' . find_theme_image('tracker/minus') . '" /> <span style="vertical-align: middle">' . do_lang('FEATURES_Unvote') . '</span></a></p>';
+                            <p onclick="this.style.border=\'1px dotted blue\';"><a style="text-decoration: none" target="_blank" href="' . escape_html($unvote_url) . '"><img style="vertical-align: middle" src="' . find_theme_image('tracker/minus') . '" /> <span style="vertical-align: middle">' . do_lang('FEATURES_UNVOTE') . '</span></a></p>';
         }
 
-        $out .= '<p style="font-size: 0.8em">' . do_lang('FEATURES_Raised_percent_of', $_percentage, $_credits);
+        $out .= '<p style="font-size: 0.8em">' . do_lang('FEATURES_RAISED_PERCENT_OF', $_percentage, $_credits);
 
         if (!is_null($cost)) {
             $out .= '
                             <br />
-                            <span class="associated_details">(' . do_lang('FEATURES_credits_hours_cost', $_credits, $_hours, $_cost) . ')</span>';
+                            <span class="associated_details">(' . do_lang('FEATURES_CREDITS_HOURS_COST', $_credits, $_hours, $_cost) . ')</span>';
         }
         $out .= '
                     </p>
@@ -160,9 +160,9 @@ if (count($issues) == 0) {
             <div style="margin-left: 150px">
                     <p style="min-height: 7.5em">' . xhtml_substr(nl2br(escape_html($description)), 0, 310, false, true) . '</p>
 
-                    <p style="float: right; margin-bottom: 0" class="associated_details" style="color: #777">' . do_lang('FEATURES_Suggested_by', $member_linked, $date_prepped) . '</p>
+                    <p style="float: right; margin-bottom: 0" class="associated_details" style="color: #777">' . do_lang('FEATURES_SUGGESTED_BY', $member_linked, $date_prepped) . '</p>
 
-                    <p class="associated_link_to_small" style="float: left; margin-bottom: 0">&raquo; <a href="' . escape_html($full_url) . '">' . do_lang('FEATURES_Full_details') . '</a> (' . escape_html(number_format($num_comments)) . ' ' . ($comments_label) . ')</p>
+                    <p class="associated_link_to_small" style="float: left; margin-bottom: 0">&raquo; <a href="' . escape_html($full_url) . '">' . do_lang('FEATURES_FULL_DETAILS') . '</a> (' . escape_html(number_format($num_comments)) . ' ' . ($comments_label) . ')</p>
             </div>
         ';
 
