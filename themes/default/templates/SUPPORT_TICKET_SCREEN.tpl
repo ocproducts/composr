@@ -12,6 +12,13 @@
 		{TICKET_PAGE_TEXT}
 	</div>
 {+END}
+{+START,IF,{$NOT,{NEW}}}
+	{+START,IF_NON_EMPTY,{$GET,ticket_page_existing_text}}
+		<div class="ticket_page_text">
+			{$GET,ticket_page_existing_text}
+		</div>
+	{+END}
+{+END}
 
 <div>
 	{+START,SET,EXTRA_COMMENTS_FIELDS_1}
