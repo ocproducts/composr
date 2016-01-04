@@ -129,6 +129,8 @@ Instead of drag and drop we have an 'Add block' button, which adds the code for 
 					<p>Some CMS have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMS's can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through webapps.</p>
 
 					<p>It's actually intentional that we have avoided writing certain common features that we consider out of step with where the web and business world is heading. For example, archiving, scheduled content release, and advanced workflow, are all about restricting content &ndash; but search engines thrive on pages with lots of content and the public now expect to be able to interact with companies on a personal/honest/immediate basis, and content/openness/truth embargoes grate against this level of agility. Of course, many enterprises have very good reasons for this, but the majority in our view do not &ndash; and therefore we consider these kinds of features as specific requirements to consider on a case-by-case basis.</p>
+
+					<p>The above all said, Composr does infact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
 				</div>
 
 				<h3><a href="#">A glorified blog, basic CMS, or &ldquo;site builder&rdquo;</a></h3>
@@ -214,7 +216,7 @@ Instead of drag and drop we have an 'Add block' button, which adds the code for 
 				<h3><a href="#">A way to get &ldquo;a world-class website on the cheap&rdquo;</a></h3>
 
 				<div>
-					<p>There is no way to get a complex fully customised, [b]world-class[/b] site cheaply. Most world-class sites have a full-time team of programmers and designers behind them. Composr represents [i]significant cost-savings[/i], because you can build on the existing foundations, is future proof for easy growth, and helps you tap into talent. But these are savings, and not eliminations.</p>
+					<p>There is no way to get a complex fully customised, [b]world-class[/b] site cheaply. Most world-class sites have a full-time team of programmers and designers behind them. Composr represents [i]significant cost-savings[/i] and [i]accelerated time-to-market[/i], because you can build on the existing foundations, is future proof for easy growth, and helps you tap into talent. But these are savings, and not eliminations.</p>
 
 					<p>If you're trying to run a world-class website you probably at the very least need a part-time web designer, a few days of [acronym="Search Engine Optimisation"]SEO[/acronym] per-month, a day of content writing per month, and an ongoing relationship with a programmer who can solve technical issues and make small changes competently and swiftly. That's before considering the time needing to manage daily operation, do marketing, and the time taken to develop the website in the first place.</p>
 

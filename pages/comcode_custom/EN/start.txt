@@ -39,12 +39,12 @@
 	<div class="cntRow">
 		<div class="cntCol1">
 			<div class="head">
-				Here's the story of Composr!
+				What is Composr CMS?
 			</div>
 
-			<p>Originally launched as Composr in 2004, Composr enables designers to realise their visions without a team of programmers.<br />Never before could you achieve so much · so quickly · to such high standard</p>
-
-			<p>Similarly, we've enabled programmers to achieve more faster, and we've helped businesses and government to do more for less investment.</p>
+			<p>Composr is a very flexible CMS with advanced social, interactive and dynamic functionality.</p>
+			<p>Hundreds of features are available out of the box, as well as building blocks, and further addons (think multi-channel content delivery).</p>
+			<p>Composr is embraced by Fortune-100 companies, government agencies, and small startups. We make all the best ideas available to everyone.</p>
 		</div>
 
 		<div class="cntCol2">

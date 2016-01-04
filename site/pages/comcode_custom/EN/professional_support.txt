@@ -37,10 +37,10 @@
 					<th class="tdBody">Normal priority</th>
 					<td class="tdBody">2 business days</td>
 					<td class="tdBody">[tooltip="Minimum ticket price:
-28 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
+32 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
 
 Hourly cost (approx):
-56 minutes &#8801; 8 credits &#8801; [currency]44.00[/currency]"]7 minutes[/tooltip]</td>
+64 minutes &#8801; 8 credits &#8801; [currency]44.00[/currency]"]8 minutes[/tooltip]</td>
 					<td class="tdBody">4 credits (28 minutes)</td>
 				</tr>
 			</table>

@@ -22,7 +22,7 @@
 	</div>
 
 	<div class="cntRow">
-		<p class="text-center">"With Composr, we are committed to using our experience and talents to keep the web open, ensuring people don't need legions of programmers to build websites with the features they truly need. Through our Open Source Content Management System, Composr, we are carrying the web forward by empowering people to build sophisticated sites with elegance and efficiency."</p>
+		<p class="text-center">"With Composr, we are committed to using our experience and talents to keep the web open, to empower teams to build sophisticated sites with elegance and efficiency, and to carry the web forward with the highest of standards."</p>
 	</div>
 
 	<div class="cntRow"><img alt="" height="11" src="{$IMG*,composr_homesite/sep_comp}" width="962" /></div>
@@ -63,7 +63,7 @@
 				<li>
 					<span>5</span>
 
-					<p>Composr should remain Open Source software, free to use and modify.</p>
+					<p>Composr should remain Open Source software, free to download, install, and modify.</p>
 				</li>
 
 				<li>
@@ -253,11 +253,11 @@
 			<div class="vhis-box-row">
 				<div class="vhis-box-date">
 					v10<br />
-					<span>February 2015</span>
+					<span>January 2016</span>
 				</div>
 
 				<div class="vhis-box-txt">
-					Platform overhaul, Composr now Composr
+					Platform overhaul, ocPortal now Composr
 				</div>
 			</div>
 		</div>

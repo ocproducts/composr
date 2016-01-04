@@ -189,7 +189,7 @@ function composr_homesite_install()
     // Theme
     // -----
 
-    $GLOBALS['SITE_DB']->query("UPDATE " . get_table_prefix() . "zones SET zone_theme='composr_homesite' WHERE zone_name IN ('','site','forum','ocproducts','docs')");
+    $GLOBALS['SITE_DB']->query("UPDATE " . get_table_prefix() . "zones SET zone_theme='composr_homesite' WHERE zone_name IN ('','site','forum','ocproducts','docs','collaboration')");
 
     // Menu
     // ----

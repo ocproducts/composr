@@ -352,6 +352,7 @@
 			<div class="sept"></div>
 
 			<p>A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining what to look out for and another on pricing. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.</p>
+TODO: Link agency-vs-support-ticket.pdf
 		</div>
 	</div>
 

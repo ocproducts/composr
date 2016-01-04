@@ -43,7 +43,7 @@
 			<h2><span class="colrBl">Calling all</span> Webmasters&hellip;</h2>
 
 			<ul class="difText">
-				<li>Composr has no licensing costs &ndash; it is completely free, even for commercial use &ndash; save a lot of time and money</li>
+				<li>Composr has no licensing costs &ndash; it is free to download, even for commercial use &ndash; re-focus investment where it's needed</li>
 				<li>So many website features are available out of the box: start with just what you need and turn things on as you need them</li>
 				<li>Composr can be thoroughly customised &ndash; you can do a surprising amount without a programmer</li>
 				<li>Use the integrated administration system: everything is neatly organised in harmony. Because Composr is developed by a dedicated team, everything is designed for simplicity and coherence</li>
