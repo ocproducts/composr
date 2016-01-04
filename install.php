@@ -1974,7 +1974,7 @@ function step_5_core_2()
 
     // Create default zones
     require_lang('zones');
-    $trans1 = insert_lang('zone_header_text', do_lang('A_SITE_ABOUT', '???'), 1, null, false, null, $INSTALL_LANG);
+    $trans1 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
     $h1 = insert_lang('zone_title', do_lang('_WELCOME'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => '', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans1 + $h1);
     $trans2 = insert_lang('zone_header_text', do_lang('HEADER_TEXT_ADMINZONE'), 1, null, false, null, $INSTALL_LANG);
@@ -1985,12 +1985,17 @@ function step_5_core_2()
         $h3 = insert_lang('zone_title', do_lang('COLLABORATION'), 1, null, false, null, $INSTALL_LANG);
         $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'collaboration', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans3 + $h3);
     }
-    $trans4 = insert_lang('zone_header_text', do_lang('A_SITE_ABOUT', '???'), 1, null, false, null, $INSTALL_LANG);
+    $trans4 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
     $h4 = insert_lang('zone_title', do_lang('SITE'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'site', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans4 + $h4);
     $trans5 = insert_lang('zone_header_text', do_lang('CMS'), 1, null, false, null, $INSTALL_LANG);
     $h5 = insert_lang('zone_title', do_lang('CMS'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'cms', 'zone_default_page' => 'cms', 'zone_theme' => 'admin', 'zone_require_session' => 1) + $trans5 + $h5);
+    if (file_exists(get_file_base() . '/docs')) { // installing from git
+        $trans6 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
+        $h6 = insert_lang('zone_title', do_lang('TUTORIALS'), 1, null, false, null, $INSTALL_LANG);
+        $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'docs', 'zone_default_page' => 'tutorials', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans6 + $h6);
+    }
 
     // Forums
     $forum_type = post_param_string('forum_type');

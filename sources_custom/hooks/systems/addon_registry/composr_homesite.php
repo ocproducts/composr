@@ -85,7 +85,7 @@ class Hook_addon_registry_composr_homesite
      */
     public function get_description()
     {
-        return 'The Composr deployment/hosting platform. The hosting side of the build addon (composr_release_build).';
+        return 'The Composr deployment/hosting platform (Demonstratr). The hosting companion to the composr_release_build addon.';
     }
 
     /**
@@ -109,7 +109,11 @@ class Hook_addon_registry_composr_homesite
             'requires' => array(
                 'downloads',
             ),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite_support_credits',
+                'composr_release_build',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }

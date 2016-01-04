@@ -115,7 +115,11 @@ The documentation is primarily maintained on our website, and this archive is on
     {
         return array(
             'requires' => array(),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_homesite_support_credits',
+                'composr_release_build',
+            ),
             'conflicts_with' => array()
         );
     }

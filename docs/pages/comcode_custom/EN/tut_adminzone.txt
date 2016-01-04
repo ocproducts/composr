@@ -95,7 +95,7 @@ The content review settings are shown on content add/edit forms.
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
- - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
 
 [concepts
  1_key="Admin Zone"   1_value="The zone used to perform most site maintenance, accessible only by staff"

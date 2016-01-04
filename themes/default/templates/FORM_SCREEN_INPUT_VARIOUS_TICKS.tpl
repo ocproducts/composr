@@ -1,3 +1,5 @@
+{$SET,early_description,1}
+
 <div>
 	{+START,IF_PASSED,EXPANDED}
 		<h3 class="toggleable_tray_title">

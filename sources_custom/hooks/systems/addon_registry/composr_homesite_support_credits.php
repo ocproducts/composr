@@ -111,7 +111,11 @@ class Hook_addon_registry_composr_homesite_support_credits
             'requires' => array(
                 'tickets',
             ),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_release_build',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }

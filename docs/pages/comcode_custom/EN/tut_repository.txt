@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr repository[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr Enterprise Repository[/title]
 
 The Composr repository is a shadow representation of Composr's data.
 
@@ -187,4 +187,4 @@ Generally Resource-fs is not designed for merging separate websites into one. Th
  - [page="_SEARCH:tut_aggregate_types"]Aggregate Content Types[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 
-{$SET,tutorial_tags,Power tools,Collaboration,Administration,commandr,expert}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,How the Composr content repository works and may be accessed and used.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Power tools,Collaboration,Administration,commandr,expert,pinned}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,How the Composr content repository works and may be accessed and used.}[block]main_tutorial_rating[/block]

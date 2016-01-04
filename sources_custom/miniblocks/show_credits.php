@@ -31,7 +31,7 @@ if (get_page_name() != 'professional_support') {
 }
 
 if (is_guest()) {
-    $_login_url = build_url(array('page' => 'login', 'redirect' => get_self_url(true, true)), '');
+    $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), '');
     $login_url = $_login_url->evaluate();
     $_join_url = build_url(array('page' => 'join', 'redirect' => get_self_url(true, true)), '');
     $join_url = $_join_url->evaluate();
