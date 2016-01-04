@@ -266,7 +266,7 @@ class Module_admin
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
             array('description', 'caption', 'summary'),
             array('choose', 'set', 'specify', 'pick'),
-            array('add', 'submit', 'create', 'make', 'publish', 'upload'),
+            array('add', 'submit', 'create', 'make', 'publish', 'upload', 'build'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
             array('changes', 'revisions', 'diff', 'history', 'undelete', 'version'),
             array('delete', 'erase', 'remove', 'discard', 'prune', 'trash'),

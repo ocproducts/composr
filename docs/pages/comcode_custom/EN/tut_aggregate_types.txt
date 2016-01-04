@@ -133,7 +133,7 @@ You can re-sync all instances of all aggregate content types, or for just a sele
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
  - [page="_SEARCH:tut_commandr"]Commandr[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 

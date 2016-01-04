@@ -1,12 +1,14 @@
-[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites you'll likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
-[media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
+[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites you'll likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
+[media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
 Composr has great support for mobile. You can design for mobile in two ways:
 1) Mobile mode
 2) Responsive Design
 
 This tutorial explains which you might choose, and provides some guidance.
+
+There is also an API for making native mobile apps for Composr called [page="_SEARCH:tut_mobile_sdk"]Composr Mobile SDK[/page].
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -241,18 +243,19 @@ Here are some things to bear in mind:
 
 There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users.
 
-[concepts
- 1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
-]Concepts[/concepts]
-
 [title="2"]Smart app banners[/title]
 
 If you have an iPhone app too, you can promote that up using [url="smart app banners"]https://developer.apple.com/library/prerelease/ios/documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html[/url].
 It's not specifically a Composr feature, but can be enabled via putting the appropriate tag into your [tt]HTML_HEAD.tpl[/tt] template.
 
+[concepts
+ 1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
+]Concepts[/concepts]
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_mobile_sdk"]Writing mobile apps -- the Composr Mobile SDK[/page]
 
 {$SET,tutorial_tags,Mobile,Design & Themeing,CSS,cns_tapatalk,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]

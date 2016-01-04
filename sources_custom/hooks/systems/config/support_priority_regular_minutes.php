@@ -46,6 +46,6 @@ class Hook_config_support_priority_regular_minutes
      */
     public function get_default()
     {
-        return '7';
+        return '8';
     }
 }

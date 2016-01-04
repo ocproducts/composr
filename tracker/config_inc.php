@@ -98,7 +98,7 @@ $cms_sc_community_doc_url = $cms_sc_site_url.'/docs/tut_software_feedback.htm';
 $cms_sc_commercial_support_url = $cms_sc_site_url.'/commercial_support.htm';
 $cms_sc_join_url = $cms_sc_site_url.'/join.htm';
 $cms_sc_member_view_url = $cms_sc_site_url.'/members/view/%1$d.htm';  # Set the user id as variable in the url ie %1$d
-$cms_sc_sourcecode_link = '<a href="https://github.com/ocproducts/Composr">Github</a>';
+$cms_sc_sourcecode_link = '<a href="https://github.com/ocproducts/composr">Github</a>';
 $cms_sc_product_name = 'Composr';
 $cms_sc_business_name = 'ocProducts';
 $cms_sc_business_name_possesive = 'ocProduct\'s';

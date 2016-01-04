@@ -370,7 +370,7 @@ Information about redirects and virtual roots is covered in the [page="_SEARCH:t
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
- - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_adv_structure"]Advanced site structure and flow[/page]
 

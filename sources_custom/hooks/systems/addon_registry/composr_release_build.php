@@ -85,7 +85,7 @@ class Hook_addon_registry_composr_release_build
      */
     public function get_description()
     {
-        return 'The Composr release build platform.';
+        return 'The Composr release build platform. Should be run from a developers machine, not the server.';
     }
 
     /**
@@ -107,7 +107,11 @@ class Hook_addon_registry_composr_release_build
     {
         return array(
             'requires' => array(),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_homesite_support_credits',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }

@@ -553,4 +553,4 @@ As stated, we will not always disclose the existence of low-risk vulnerabilities
  - and most importantly, to avoid alerting hackers
 We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
 
-{$SET,tutorial_tags,Contributing,Advice & Guidance,novice,pinned}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Contributing,Advice & Guidance,novice}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]

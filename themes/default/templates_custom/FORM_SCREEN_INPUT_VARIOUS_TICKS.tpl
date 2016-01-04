@@ -1,3 +1,5 @@
+{$SET,early_description,1}
+
 <div>
 	{+START,IF_PASSED,EXPANDED}
 		<h4 class="comcode_quote_h4">

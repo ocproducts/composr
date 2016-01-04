@@ -77,6 +77,8 @@ class DecisionTree
      */
     public function __construct($decision_tree, $default_screen = 'start')
     {
+        require_lang('decision_tree');
+
         $this->decision_tree = $decision_tree;
 
         $this->default_screen = $default_screen;
@@ -239,7 +241,7 @@ class DecisionTree
                                 e=[e];
                             }
                             for (var i=0;i<e.length;i++) {
-                                e[i].onclick=function(_e) { return function() {
+                                add_event_listener_abstract(e[i],\'click\',function(_e) { return function() {
                                     var selected=false;
                                     if (_e.type!=\'undefined\' && _e.type==\'checkbox\')
                                     {
@@ -251,7 +253,7 @@ class DecisionTree
                                     if (selected) {
                                         fauxmodal_alert(\'' . addslashes($_notice->evaluate()) . '\',null,\'' . addslashes($notice_title) . '\',true);
                                     }
-                                }}(e[i]);
+                                }}(e[i]));
                             }
                         ';
                     } else { // Flat

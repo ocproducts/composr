@@ -26,7 +26,7 @@ Notes:
 
 require_code('locations');
 
-$disclaimer = 'Be aware that once the work is referred, it is your responsibility to ensure confidence in the chosen provider. ocProducts do the matching service as a part of the Composr CMS stewardship role and don\'t charge a commission for the service &ndash; so are not in any way commercially responsible for the implementation, or for developer training. We do encourage third-party companies to give back to the Composr CMS project by contributing code improvements made for projects though, and we do often make ourselves available to the developer for implementation of certain parts of a referred project.';
+$disclaimer = 'Be aware that once the work is referred, it is your responsibility to ensure confidence in the chosen provider. ocProducts do the matching service as a part of the Composr CMS stewardship role and don\'t charge a commission for the service &ndash; so are not in any way commercially responsible for the implementation, or for developer training. We do encourage third-party companies to give back to the Composr CMS project by contributing code improvements made for projects though, and we do often make ourselves available to the developer for implementation of certain parts of a referred project.' . "\n\n" . 'Be aware that third-party developers have no special control over the ocProducts development and maintenance priorities.';
 
 $extra_support_inform = array();
 $extra_support_notice = array();
@@ -49,8 +49,17 @@ if (is_guest()) {
 }
 
 if (is_guest()) {
-    if (get_param_string('type') == 'support' || get_param_string('type') == 'upgrade' || get_param_string('type') == 'installation') {
+    $type = get_param_string('type', 'start');
+    if ($type == 'support' || $type == 'upgrade' || $type == 'installation' || $type == 'sponsor') {
         access_denied('NOT_AS_GUEST');
+    } else {
+        $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
+        if (!is_object($join_url)) {
+            $join_url = make_string_tempcode($join_url);
+        }
+        $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true)), get_module_zone('login'));
+        $please_log_in = 'You are not logged in. We advise <a href="' . escape_html($join_url->evaluate()) . '">joining</a> then <a href="' . escape_html($login_url->evaluate()) . '">logging in</a> to make best use of the ticket system.';
+        attach_message(protect_from_escaping($please_log_in), 'notice');
     }
 }
 
@@ -209,11 +218,11 @@ $decision_tree = array(
         'title' => 'Hire for a project - step 1 of 6',
         'text' => 'Exciting! We will now be asking a lot of questions to try and get a clear picture for what you\'re looking for.' . "\n\n" . 'Apologies if the questions don\'t quite apply (e.g. if the project is not a full website implementation). Rest assured that a real human with common sense will read over whatever you fill in.',
         'notice' => array(
-            //    Parameter             Value                                                                                       Warning
-            array('ideal_developer',    'ocProducts (the Composr CMS sponsoring company)',                                          'That\'s cool. ocProducts is run by founding developer(s) of Composr CMS, with work done to a very high standard by foremost Composr experts. Communication is generally done via e-mail due to the balancing we need to do between Composr CMS stewardship, and commercial work. You should expect we will charge around the same as a high-quality established UK/US agency. If you need lower costs, or physical meetings, it may be best to choose a local agency or freelancer, especially if you are not based in a &ldquo;Western&rdquo; country.'),
-            array('ideal_developer',    'A local agency ocProducts will help you pick',                                             'That\'s cool. We will try and find an appropriate company in your country. ' . $disclaimer),
-            array('ideal_developer',    'A local freelancer ocProducts will help you pick (lower cost, more basic, less formal)',   'That\'s cool. We will try and find someone appropriate in your country. Just be aware that a freelancer usually won\'t be able to offer the full reliability than an established agency can. It\'s a trade-off of service breadth/reliability vs. cost. ' . $disclaimer),
-            array('ideal_developer',    'Specifically Chris Graham, Composr lead developer',                                        'Chris is the ocProducts CEO, so has limited availability and a higher cost. Work is charged on a strict hourly basis (without advance quotes), for the work done in the hours he is available. If you\'re happy to pay top dollar for the world\'s foremost expert in Composr CMS then this is the option for you.'),
+            //    Parameter             Value                                                                                           Warning
+            array('ideal_developer',    'ocProducts (the Composr CMS sponsoring company)',                                              'That\'s cool. ocProducts is run by founding developers of Composr CMS, with work done to a very high standard by foremost Composr experts. Communication is generally done via e-mail due to the balancing we need to do between Composr CMS stewardship, and commercial work.' . "\n\n". 'You should expect we will charge around the same as a high-quality established UK/US agency. If you need lower costs, or physical meetings, it may be best to choose a local agency or freelancer, especially if you are not based in a &ldquo;Western&rdquo; country.' . "\n\n". 'We cannot guarantee availability of ocProducts staff for any particular project because we may sometimes be very busy or not be a good match. Sometimes we may have a waiting period as we have to clear back-logs or hire additional staff (top developers are hard to find). In such a case we\'ll try and match you with a local developer.'),
+            array('ideal_developer',    'A local agency that ocProducts will help you pick',                                            'That\'s cool. We will try and find an appropriate company in your country.' . "\n\n" . $disclaimer),
+            array('ideal_developer',    'A local freelancer that ocProducts will help you pick (lower cost, more basic, less formal)',  'That\'s cool. We will try and find someone appropriate in your country. Just be aware that a freelancer usually won\'t be able to offer the full reliability than an established agency can. It\'s a trade-off of service breadth/reliability vs. cost.' . "\n\n" . $disclaimer),
+            array('ideal_developer',    'Specifically Chris Graham, Composr lead developer',                                            'Chris is the ocProducts CEO, so has limited availability and a higher cost. Work is charged on a strict hourly basis (without advance quotes), for the work done in the hours he is available. If you\'re happy to pay top dollar for the world\'s foremost expert in Composr CMS then this is the option for you.'),
         ),
         'previous' => 'paid',
         'form_method' => 'POST',
@@ -264,7 +273,7 @@ $decision_tree = array(
             ),
             'country' => array(
                 'label' => 'Your country & nearest&nbsp;city',
-                'description' => 'What country do you work in? Knowing the nearest city will help also',
+                'description' => 'What country do you work in? Knowing the nearest city will help also.',
                 'type' => 'short_text',
                 'default' => find_country_name_from_iso(get_country()),
                 'options' => '',
@@ -295,11 +304,11 @@ $decision_tree = array(
                 'label' => 'Desired developer',
                 'description' => 'Who do you want to develop the work?',
                 'type' => 'list',
-                'default' => 'A local agency ocProducts will help you pick',
+                'default' => '',
                 'default_list' => array(
                     'Unsure',
-                    'A local freelancer ocProducts will help you pick (lower cost, more basic, less formal)',
-                    'A local agency ocProducts will help you pick',
+                    'A local freelancer that ocProducts will help you pick (lower cost, more basic, less formal)',
+                    'A local agency that ocProducts will help you pick',
                     'ocProducts (the Composr CMS sponsoring company)',
                     'Specifically Chris Graham, Composr lead developer',
                 ),
@@ -960,8 +969,9 @@ $decision_tree = array(
                 'default_list' => array(
                     'Permanent',
                     'Unknown',
-                    '1 month (approx)',
+                    '4 months (approx)',
                     '6 months (approx)',
+                    '9 months (approx)',
                     '1 year (approx)',
                 ),
                 'options' => 'widget=radio',
@@ -1053,7 +1063,25 @@ $decision_tree = array(
 
     'sponsor' => array(
         'title' => 'Sponsor Composr enhancements',
-        'text' => 'Wow, thanks! Composr moves forward when people sponsor new functionality, or when new functionality is developed as part of a wider commercial project. If you want to see something integrated cleanly into Composr\'s roadmap, and don\'t need a custom deployment, feature sponsorship is a great way to do it. Sponsored features are developed at ocProduct\'s back-burner hourly rate.' . "\n\n" . 'To sponsor something you should go to the [url="tracker"]' . get_base_url() . '/tracker[/url], find the feature you want to sponsor, fill in the sponsor form on that issue, and [page="_SEARCH:professional_support" external="1"]purchase some support credits[/page] to back up the amount. If the issue is not yet on the tracker, you\'ll need to add it, mention that you\'ll sponsor it, and wait for the hours field to be updated. If it is on the tracker already but has no hours set yet, similarly reply to say that you\'d like to sponsor it and wait.' . "\n\n" . 'Please be aware that not all sponsorships can be accepted. The developers/community needs to feel a feature is right for Composr before we can add it, regardless of sponsorship.' . "\n\n" . 'Sponsorships aren\'t usually acted on immediately, as a developer has to be free. If time is critical, please discuss it on the tracker issue. Sponsorships can be removed if you want to (assuming work has not already started).' . "\n\n" . 'Sponsored code goes into the next version of Composr, and may not be compatible with your existing site without it being upgraded (which can\'t happen until the next version is out). If this is a concern then discuss it in the tracker issue; sometimes it can be arranged to provide a patch for a particular existing version also &ndash; or, the work can be done as a project instead, and merged into Composr later. Note also though that patches can be incompatible with each other, or with subsequent Composr patch upgrades or hot-fixes.' . "\n\n" . 'If you don\'t know what you want to sponsor but just want to support Composr, we can help you pick something to sponsor, so just [page="site:tickets:ticket:ticket_type=Feedback"]open up a ticket[/page] with us and let us know.' . "\n\n" . ' Once you have sponsored something you will be given the ability to buy support credits in precise quantities (we only offer this to feature sponsorers, as buying individual credits isn\'t an appropriate model for normal technical support).',
+        'text' => 
+            'Wow, thanks! Composr moves forward when people sponsor new functionality, or when new functionality is developed as part of a wider commercial project. If you want to see something integrated cleanly into Composr\'s open roadmap, and don\'t need a custom deployment, feature sponsorship is a great way to do it. Sponsored features are developed at ocProduct\'s back-burner hourly rate.' . "\n\n" .
+            'To sponsor something you should go to the [url="tracker"]' . get_base_url() . '/tracker[/url], find the feature you want to sponsor, fill in the sponsor form on that issue, and [page="_SEARCH:professional_support" external="1"]purchase some support credits[/page] to back up the amount (&dagger;). If the issue is not yet on the tracker, you\'ll need to add it, mention that you\'ll sponsor it, and wait for the hours field to be updated. If it is on the tracker already but has no hours set yet, similarly reply to say that you\'d like to sponsor it and wait.' . "\n\n" .
+            '&dagger; Once you have sponsored something you will be given the ability to buy support credits in precise quantities (we only offer this to feature sponsorers, as buying individual credits isn\'t an appropriate model for normal technical support).' . "\n\n" .
+            'If you don\'t know what you want to sponsor but just want to support Composr, we can help you pick something to sponsor, so just [page="site:tickets:ticket:ticket_type=Feedback"]open up a ticket[/page] with us and let us know.' . "\n\n" .
+            'We do need to explain some possible caveats...' . "\n\n" .
+            'Please be aware that not all sponsorships can be accepted. The developers/community needs to feel a feature is right for Composr before we can add it, regardless of sponsorship. Features could potentially be changed or even removed from Composr at a later date, if the developers decide it is the best action for the product at that particular point in time.' . "\n\n" .
+            'Sponsorships aren\'t usually acted on immediately, as a developer has to be free. If time is critical, please discuss this on the tracker issue. Sponsorships can be cancelled if you change your mind (assuming work has not already started).' . "\n\n" .
+            'Sponsored code goes into the next version of Composr. Here are some things to consider regarding the development methodology:[list]
+                [*] The developers won\'t usually do direct business analysis or maintain awareness of your operation -- development is purely focused around the features being created.
+                [*] All features will be made as generic, not focused specifically to your own needs. They may therefore not be optimal to you.
+                [*] Development is done in the open, nothing is private or proprietary. Other users could get the new code quicker than you if they jump on it, especially if they are programmers.
+                [*] As work goes into the next version of Composr, it may not be compatible with your current site until your site is upgraded (which can\'t happen until the next version is out). If this is a concern then discuss it in the tracker issue [i]in advance of any work starting[/i]; sometimes it can be arranged to provide a patch for a particular existing version also &ndash; or, the work can be done as a project instead at a higher cost, and merged into Composr later by the developers separately.
+                [*] Patches can be incompatible with each other. For example, if you applied 2 patches for sponsored functionality, it is possible that they could conflict.
+                [*] ... or, get overwritten when you apply patch upgrades.
+                [*] ... or, hot fixes.
+                [*] ... So if you patch immediately then you\'ll end up with a temporary "fork" of Composr and will have to skip subsequent patch releases, until the next major release comes that incorporates your sponsored features.
+            [/list]' . "\n\n" .
+            'Often none of the above matters much. Sponsorship works particularly well for medium-term improvements that are nice and generic. A big advantage to sponsorship is that the code will usually be maintained for free indefinitely -- which definitely wouldn\'t be the case for a project.',
         'previous' => 'paid',
     ),
 
