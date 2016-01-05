@@ -27,7 +27,7 @@ function init__banners()
 {
     define('BANNER_PERMANENT', 0);
     define('BANNER_CAMPAIGN', 1);
-    define('BANNER_DEFAULT', 2);
+    define('BANNER_FALLBACK', 2);
 }
 
 /**
@@ -120,7 +120,7 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
 
     $_title = $row['id'];
     if ($_title == '') {
-        $_title = do_lang('GENERAL');
+        $_title = do_lang('_DEFAULT');
     }
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER_TYPE'), $_title) : $_title;
 
@@ -295,11 +295,11 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             }
         }
 
-        // Are we allowed to show default banners?
-        $show_defaults = true;
+        // Are we allowed to show fallback banners?
+        $show_fallbacks = true;
         foreach ($rows as $counter => $myrow) {
             if ($myrow['the_type'] == BANNER_CAMPAIGN) {
-                $show_defaults = false;
+                $show_fallbacks = false;
             }
         }
 
@@ -325,7 +325,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         while (array_key_exists($counter, $rows)) {
             $myrow = $rows[$counter];
 
-            if (($myrow['the_type'] == 2) && (!$show_defaults)) {
+            if (($myrow['the_type'] == 2) && (!$show_fallbacks)) {
                 $myrow['importance_modulus'] = 0;
             }
             $tally += $myrow['importance_modulus'];
@@ -402,7 +402,7 @@ function create_selection_list_banner_types($it = null)
     $list = new Tempcode();
     $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), null, 'ORDER BY id');
     foreach ($rows as $row) {
-        $caption = ($row['id'] == '') ? do_lang('GENERAL') : $row['id'];
+        $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
 
         if ($row['t_is_textual'] == 1) {
             $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', $caption);

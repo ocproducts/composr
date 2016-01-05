@@ -32,7 +32,7 @@
  * @range  1 max
  * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=fallback)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -115,7 +115,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         $radios = new Tempcode();
         $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
         $radios->attach(form_input_radio_entry('the_type', strval(BANNER_CAMPAIGN), ($the_type == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
-        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_DEFAULT), ($the_type == BANNER_DEFAULT), do_lang_tempcode('BANNER_DEFAULT')));
+        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_FALLBACK), ($the_type == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
         $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'the_type', $radios));
         $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaignremaining', $campaignremaining, false));
         $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
@@ -281,7 +281,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  integer $importancemodulus The banners "importance modulus"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -393,7 +393,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  integer $importancemodulus The banners "importance modulus"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)

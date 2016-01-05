@@ -275,20 +275,20 @@ class Module_cms_banners extends Standard_crud_module
 
             $deployment_agreement = new Tempcode();
             switch ($row['the_type']) {
-                case 0:
+                case BANNER_PERMANENT:
                     $deployment_agreement = do_lang_tempcode('BANNER_PERMANENT');
                     break;
-                case 1:
+                case BANNER_CAMPAIGN:
                     $deployment_agreement = do_lang_tempcode('BANNER_CAMPAIGN');
                     break;
-                case 2:
-                    $deployment_agreement = do_lang_tempcode('BANNER_DEFAULT');
+                case BANNER_FALLBACK:
+                    $deployment_agreement = do_lang_tempcode('BANNER_FALLBACK');
                     break;
             }
 
             $fr = array(
                 hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))), false, false),
-                ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'],
+                ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 $deployment_agreement,
                 //integer_format($row['campaign_remaining']),
                 strval($row['importance_modulus']),
@@ -332,7 +332,7 @@ class Module_cms_banners extends Standard_crud_module
      * @range  1 max
      * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
      * @range  0 max
-     * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+     * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
      * @set    0 1 2
      * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -560,7 +560,7 @@ class Module_cms_banners extends Standard_crud_module
 
             $csv_row[do_lang('CODENAME')] = $row['name'];
 
-            $csv_row[do_lang('BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'];
+            $csv_row[do_lang('BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'];
 
             $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))));
             $csv_row[do_lang('SECONDARY_CATEGORIES')] = $banner_types;
@@ -606,8 +606,8 @@ class Module_cms_banners extends Standard_crud_module
                     case BANNER_CAMPAIGN:
                         $deployment_agreement = do_lang('BANNER_CAMPAIGN');
                         break;
-                    case BANNER_DEFAULT:
-                        $deployment_agreement = do_lang('BANNER_DEFAULT');
+                    case BANNER_FALLBACK:
+                        $deployment_agreement = do_lang('BANNER_FALLBACK');
                         break;
                 }
                 $csv_row[do_lang('DEPLOYMENT_AGREEMENT')] = $deployment_agreement;
@@ -712,7 +712,7 @@ class Module_cms_banners_cat extends Standard_crud_module
 
             $total = integer_format($GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('b_type' => $row['id'])));
 
-            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('GENERAL') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
+            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
