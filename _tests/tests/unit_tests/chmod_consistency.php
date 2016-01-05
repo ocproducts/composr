@@ -158,7 +158,7 @@ class chmod_consistency_test_set extends cms_test_case
                     }
 
                     if ($place == 'fixperms.sh' && preg_match('#^uploads/\w+/\*$#', $item) != 0) {
-                        // Special case, handled with a "find" command due to wildcard extension limit
+                        // Special case, handled with a "find" command due to wildcard expansion limit
                         continue;
                     }
 
@@ -186,7 +186,7 @@ class chmod_consistency_test_set extends cms_test_case
 
                         $there = strpos($c, $search) !== false;
                         if ($there) {
-                            $c_stripped = str_replace(trim($search), '', $c_stripped); // So we can check for no unexpected stuff; trim is because pre and post may overlap (fixperms.sh)
+                            $c_stripped = str_replace(trim($search), '', $c_stripped); // So we can check for no alien stuff; trim is because pre and post may overlap with shared spaces (fixperms.sh)
                         } else {
                             if ($wildcard_support) {
                                 $search_regexp = preg_quote($pre, '#');
@@ -206,7 +206,7 @@ class chmod_consistency_test_set extends cms_test_case
                                 $search_regexp .= preg_quote($post, '#');
                                 $there = (preg_match('#' . $search_regexp . '#', $c) != 0);
                                 if ($there) {
-                                    $c_stripped = preg_replace('#' . trim($search_regexp) . '#', '', $c_stripped); // So we can check for no unexpected stuff
+                                    $c_stripped = preg_replace('#' . trim($search_regexp) . '#', '', $c_stripped); // So we can check for no alien stuff; trim is because pre and post may overlap with shared spaces (fixperms.sh)
                                 }
                             }
                         }
@@ -216,7 +216,7 @@ class chmod_consistency_test_set extends cms_test_case
             }
         }
 
-        // Make sure no alien
+        // Make sure no alien (old chmod entries that no longer should be there - or ones missing from inst_special.php, potentially)
         foreach ($places as $place_parts) {
             if (count($place_parts) == 6) {
                 list($place, $windows_slashes, $wildcard_support, $runtime_too, $pre, $post) = $place_parts;
