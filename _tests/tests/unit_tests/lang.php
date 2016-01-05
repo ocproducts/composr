@@ -47,19 +47,28 @@ class lang_test_set extends cms_test_case
         }
         closedir($dh);
 
-        $path = get_file_base() . '/docs/pages/comcode_custom/EN/';
-        $dh = opendir($path);
-        while (($file = readdir($dh)) !== false) {
-            if (substr($file, -4) != '.txt') {
-                continue;
-            }
-            if ($file[0] == '.') {
-                continue;
-            }
+        $dirs = array(
+            'text',
+            'text/EN',
+            'pages/comcode/EN',
+            'site/pages/comcode/EN',
+            'docs/pages/comcode_custom/EN',
+        );
+        foreach ($dirs as $dir) {
+            $path = get_file_base() . '/' . $dir;
+            $dh = opendir($path);
+            while (($file = readdir($dh)) !== false) {
+                if (substr($file, -4) != '.txt') {
+                    continue;
+                }
+                if ($file[0] == '.') {
+                    continue;
+                }
 
-            $this->check($file, null, file_get_contents($path . $file), $verbose);
+                $this->check($file, null, file_get_contents($path . '/' . $file), $verbose);
+            }
+            closedir($dh);
         }
-        closedir($dh);
     }
 
     private function check($file, $key, $string, $verbose)
@@ -84,8 +93,9 @@ class lang_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((stripos($string, 'email') !== false) && (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) {
-            $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. This should be changed to \'e-mail\'.');
+        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false))) {
+            $prefix = $matches[1];
+            $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }
         if (stripos($string, 'comma separated') !== false) {
             $this->assertTrue(false, 'The phrase \'comma separated\' was used in ' . $file . '. This should be changed to \'comma-separated\'.');
@@ -204,7 +214,10 @@ class lang_test_set extends cms_test_case
             $this->assertTrue(false, 'The acronym \'id\' was used in ' . $file . '. This should be changed to \'ID\'.');
         }
         if (preg_match('#([^\$:\_A-Za-z\[\]></\']+)url([^\}A-Za-z=\']+)#', $string, $matches) != 0) {
-            $this->assertTrue(false, 'The acronym \'url\' was used in ' . $file . '. (prefix is ' . $matches[1] . ') This should be changed to \'URL\'.');
+            $prefix = $matches[1];
+            if ($prefix != '="') {
+                $this->assertTrue(false, 'The acronym \'url\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'URL\'.');
+            }
         }
         if (stripos($string, 'thankyou') !== false) {
             $this->assertTrue(false, 'The word \'thankyou\' was used in ' . $file . '. This should be changed to \'thank you\'.');

@@ -268,7 +268,7 @@ Composr has been tested up to a million of the following:
  - Comment topic posts for a single resource
  - Ratings for a single resource
  - Trackbacks for a single resource
- - Forum/topic trackers (if you do this though things will get horribly slow -- imagine the number of emails sent out)
+ - Forum/topic trackers (if you do this though things will get horribly slow -- imagine the number of e-mails sent out)
  - Authors
  - Members
  - Newsletter subscribers

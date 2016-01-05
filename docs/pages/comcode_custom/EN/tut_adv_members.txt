@@ -224,7 +224,7 @@ For welcome e-mails to work the CRON bridge scheduler must be configured as disc
 
 [title="3"]Referencing member-specific data[/title]
 
-As long as you have the newsletters addon installed, welcome emails will piggy-back off the newsletters templating code (regardless of whether the welcome email is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
+As long as you have the newsletters addon installed, welcome e-mails will piggy-back off the newsletters templating code (regardless of whether the welcome e-mail is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
 
 [title="2"]Importing/exporting members[/title]
 
@@ -341,4 +341,4 @@ UPDATE cms_f_members SET m_password_compat_scheme='temporary' WHERE m_password_c
  - [page="_SEARCH:tut_subcom"]Creating sub-communities[/page]
  - [page="_SEARCH:tut_web_hosting"]Web Hosting for Composr[/page]
 
-{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome emails for new members.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome e-mails for new members.}[block]main_tutorial_rating[/block]

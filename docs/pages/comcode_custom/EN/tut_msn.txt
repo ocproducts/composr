@@ -117,7 +117,7 @@ Please note it is essential to configure your cookie domain to be encompassing o
 
 Composr has some residual support for running many websites of a single install, although [i]not officially supported[/i]. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
 
-If run like this, certain functions of Composr, such as email settings, or addon management, are disabled.
+If run like this, certain functions of Composr, such as e-mail settings, or addon management, are disabled.
 
 The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible. Be prepared to invest serious money or effort to sponsor the upkeep of this Composr functionality, as it has no regular testing or maintenance by core developers.
 

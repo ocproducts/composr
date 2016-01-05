@@ -260,7 +260,7 @@ Let's imagine we have made ourselves a catalogue called [tt]classifieds[/tt], an
 	This advert was posted by
 	<a href="{$PAGE_LINK*,_SEARCH:members:view:{SUBMITTER}}">{$USERNAME*,{SUBMITTER}}</a>.<br />
 	You might want to
-	<a href="{$PAGE_LINK*,_SEARCH:contact_member:browse:{SUBMITTER}}">email {$USERNAME*,{SUBMITTER}}</a>
+	<a href="{$PAGE_LINK*,_SEARCH:contact_member:browse:{SUBMITTER}}">e-mail {$USERNAME*,{SUBMITTER}}</a>
 	to query more about {FIELD_0*}.
 </p>
 {+END}

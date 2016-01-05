@@ -486,7 +486,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
   - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about its memory limit
   - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
-  - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
+  - [tt]base64_emails[/tt] -- set this to '1' if you want base64 e-mails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 e-mails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
   - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
   - [tt]disable_ssl_for__<domain>[/tt] -- set this to '1' to disable SSL certificate checking for the given domain name. This is not a great idea, but may be necessary if a required service has a broken certificate yet it only supports HTTPS.
@@ -498,7 +498,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)
  - Developer testing
-  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get misdirected/over-sent
+  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome e-mails don't get misdirected/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to enable the Composr profiler, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to '1' to log any requests taking at least 5 seconds to [tt]data_custom/time_log.txt[/tt]
@@ -668,7 +668,7 @@ Setting,
 [code="PHP"]
 $SITE_INFO['no_email_output'] = '1';
 [/code]
-in [tt]_config.php[/tt] will disable emails. This is useful on a development server running with live user accounts.
+in [tt]_config.php[/tt] will disable e-mails. This is useful on a development server running with live user accounts.
 
 If you use the [tt]config_editor.php[/tt] script to edit the base configuration then you'll find lots of other settings to play with.
 
@@ -797,7 +797,7 @@ Take particular care with Comcode pages:
 
 It's overkill to apply the full range of Composr coding standards if you're writing PHP code for use on just one website. You shouldn't get into bad habits by skipping any of the conventions but some of our standards are particularly time consuming to meet, and in particular the following time savers can be applied:
  - It is better to have "hackerish" overrides (using the code rewrite facility) than to override whole files. This is because it makes upgrades easy, which is far more important than code maintenance for a one-off Composr project.
- - You can almost always assume the site runs one theme and thus save your new templates into the new theme. One caveat is the 'CMS' zone will need to run your theme, and also bear in mind that any files used in outgoing emails must be available from the default theme.
+ - You can almost always assume the site runs one theme and thus save your new templates into the new theme. One caveat is the 'CMS' zone will need to run your theme, and also bear in mind that any files used in outgoing e-mails must be available from the default theme.
  - You don't need to write everything using language strings.
  - You don't need full MVC. For example, you could code in add/edit functionality straight into modules rather than via a sources file (model).
  - You can make more assumptions than you ordinarily would be able to. For example, you might be able to assume cURL is installed. It is sensible to document your assumptions though, to make sure they continue to be met, or so someone breaking them has an idea that they need to act to change your code.

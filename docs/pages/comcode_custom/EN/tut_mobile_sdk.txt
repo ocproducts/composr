@@ -209,7 +209,7 @@ Lots of data from Composr's [tt]cns_read_in_member_profile[/tt] function
 
 [tt]title[/tt] (optional, the subject line)
 
-[tt]email[/tt] (optional, the email to send from -- defaults to that of current member)
+[tt]email[/tt] (optional, the e-mail to send from -- defaults to that of current member)
 | [tt]message[/tt]
 |-
 | [tt]content[/tt]

@@ -180,7 +180,7 @@ I am not exposing any security holes in LAMP software here, but what I am exposi
 
 Advice for website maintenance:
  - Never connect using FTP (passwords are sent in plain text, so anyone with administrative infrastructure access between you and the server can read them)
- - Never use IMAP or POP3 email unless you have SSL turned on for it (again, passwords are sent in plain text)
+ - Never use IMAP or POP3 e-mail unless you have SSL turned on for it (again, passwords are sent in plain text)
  - Use secure passwords, according to best practices
  - Don't re-use passwords across different services (if one is found you don't want everything to tumble like a house of cards)
  - Keep your own computers secure and patched (if your own machine becomes infected and you are being targeted actively by a hacker then anything you do becomes exploitable)

@@ -357,8 +357,8 @@ If someone has mucked up the translation on Transifex you'll need to correct it 
 
 [title="3"]Why are e-mails sent by users shown as 'from' the website?[/title]
 
-When you click reply it should show the email address of the sender, assuming they gave/have one.
-The [tt]from[/tt] address (different to the 'reply address' you see when you click reply) is the site's address, which is necessary to stop some email services blocking the email as spam. Basically it's because if your server sends mail [tt]from[/tt] someone whose email account is not on your server, it looks suspicious.
+When you click reply it should show the e-mail address of the sender, assuming they gave/have one.
+The [tt]from[/tt] address (different to the 'reply address' you see when you click reply) is the site's address, which is necessary to stop some e-mail services blocking the e-mail as spam. Basically it's because if your server sends mail [tt]from[/tt] someone whose e-mail account is not on your server, it looks suspicious.
 
 [title="2"]Common usage queries[/title]
 
@@ -400,7 +400,7 @@ You may have renamed the default Conversr comment forum, or you may have changed
 
 [title="3"]Why is mail not getting sent from the server?[/title]
 
-This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing email server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website email address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the web host) is not working.
+This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the web host) is not working.
 
 [title="3"]How can I show different content to different usergroups?[/title]
 

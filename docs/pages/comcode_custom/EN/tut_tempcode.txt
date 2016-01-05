@@ -467,7 +467,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MEMBER_EMAIL,2}</td>
-			<td>The member's email address (optionally takes a member ID, else assumes current user)</td>
+			<td>The member's e-mail address (optionally takes a member ID, else assumes current user)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$PHOTO,2}</td>

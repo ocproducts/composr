@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a newsletter[/title]
 
-Composr has an inbuilt email newsletter system which will allow you to send out newsletters to subscribers and your members.
+Composr has an inbuilt e-mail newsletter system which will allow you to send out newsletters to subscribers and your members.
 
 {!newsletter:DOC_NEWSLETTER}
 
@@ -63,7 +63,7 @@ The easiest way is to go to where members signup, and act on their behalf.
 To unsubscribe a member from a newsletter:
 1) Log in with your administrative account, if you haven't already got an admin login open
 2) Go to the [tt]newsletter[/tt] module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
-3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
+3) Enter the e-mail address you wish to unsubscribe. Leave all other fields blank.
 4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
 5) Click "Join newsletter/Change settings"
 This works, even though the maintenance password was left blank, because Composr acknowledges your overriding administrative access.
@@ -86,7 +86,7 @@ Admin Zone > Tools > Newsletter > Send fresh newsletter issue
 
 In the form you will need to primarily fill the subject line and body for the newsletter. Newsletters are written in [page="_SEARCH:tut_comcode"]Comcode[/page] and can be edited using the [page="_SEARCH:tut_wysiwyg"]WYSIWYG editor[/page].
 
-You need to choose where to send it to. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
+You need to choose where to send it to. Usergroups/newsletters with no members (to be precise, no members that can receive e-mails) will not be shown as options.
 
 Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
 
@@ -193,17 +193,17 @@ Creating templated newsletters is best shown by example (this is the newsletter 
 Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL.tpl[/tt] template.
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
- - [b]title[/b], The subject line of the email (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
+ - [b]title[/b], The subject line of the e-mail (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
  - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
  - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
  - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)
  - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
- - [b]email_address[/b], The email address of the subscriber
+ - [b]email_address[/b], The e-mail address of the subscriber
  - [b]sendid[/b], A special code identifying the subscriber (starts with [tt]m[/tt] if it is a member, or [tt]n[/tt] if it is a newsletter subscriber)
  - [b]unsub_url[/b], A URL to unsubscribe from (one-click unsubscribe for newsletter recipients, a link to account settings for other recipients). If you are using [tt]unsub_url[/tt] in a Comcode newsletter it is very important not to insert it plainly, as Composr will look at the link for a link caption and incidentally click that link for every user. Instead use a Comcode [tt]url[/tt] tag and hence tell Composr what caption to give the link.
 
 If you are going to go down this path it is strongly recommended to tick (check) the 'HTML only' box when you go to send your newsletters, as the auto-generated text equivalents will not be easily readable.
-The vast majority of email applications have HTML capabilities nowadays, so you are not really sacrificing anything if you do this.
+The vast majority of e-mail applications have HTML capabilities nowadays, so you are not really sacrificing anything if you do this.
 
 This bit may confuse you: [tt]{+START,IF_NON_EMPTY,{forename}}{forename}{+END}{+START,IF_EMPTY,{forename}}{name}{+END}[/tt]
 It is saying "if the forename is available, use the forename, if the forename is not available, use the username".

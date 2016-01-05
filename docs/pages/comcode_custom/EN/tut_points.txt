@@ -96,12 +96,12 @@ Members can gamble points. On average, members lose out on points when they try 
 By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
 
 What may be purchased:
- - POP3 email accounts, and upgrades
-  - staff define which email domains members may purchase addresses on
-  - staff must set up the email accounts manually after they are purchased/upgrades
- - email Forwarding accounts, and updates
-  - staff define which email domains members may purchase addresses on
-  - staff must set up the email accounts manually after they are purchased/upgrades
+ - POP3 e-mail accounts, and upgrades
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+ - e-mail Forwarding accounts, and updates
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
 
 These may be configured via the inventory management screen at:
 Admin Zone > Setup > Point Store inventory management
