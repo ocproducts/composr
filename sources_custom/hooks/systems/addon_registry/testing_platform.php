@@ -21,9 +21,10 @@ class Hook_addon_registry_testing_platform
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -430,8 +431,10 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/image_compression.php',
             '_tests/tests/unit_tests/xss.php',
             '_tests/tests/unit_tests/core_fields.php',
-            '_tests/tests/regression_tests/input_filter_post_block.php',
+            '_tests/tests/unit_tests/chmod_consistency.php',
+            '_tests/tests/unit_tests/external_code_considerations.php',
             '_tests/tests/unit_tests/tutorials_codebox.php',
+            '_tests/tests/regression_tests/input_filter_post_block.php',
         );
     }
 }

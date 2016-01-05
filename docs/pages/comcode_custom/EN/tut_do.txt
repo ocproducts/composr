@@ -1,17 +1,19 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Dos and Do-nots of an (Composr) website[/title]
 
-This tutorial will detail a few of the do and do-nots of running a website powered by Composr.
+This tutorial will detail a few of the miscellaneous do and do-nots of running a website powered by Composr.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Do[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
  - Use a clear colour scheme that is easy on the eyes
  - Make it easy to navigate your site: people should not need to think to find where to go, it should be obvious
  - Provide good, fresh, and new content on your site; or if you are making an aggregation site, content that is organised in a unique way
 
 [title="2"]Do not[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/disadvantage.png[/media]
  - Make a website that is too busy, as it will be slow and will distract from your site message
  - Use every Composr feature on your site just because they exist
  - Plagiarise content: if you use other peoples content, credit them

@@ -214,13 +214,9 @@ sites/www/caches/lang/EN/.htaccess
 sites/www/caches/lang/index.html
 sites/www/caches/guest_pages
 sites/www/caches/guest_pages/.htaccess
-sites/www/caches/guest_pages/EN
-sites/www/caches/guest_pages/EN/.htaccess
 sites/www/caches/guest_pages/index.html
 sites/www/caches/self_learning
 sites/www/caches/self_learning/.htaccess
-sites/www/caches/self_learning/EN
-sites/www/caches/self_learning/EN/.htaccess
 sites/www/caches/self_learning/index.html
 sites/www/lang_custom
 sites/www/lang_custom/.htaccess

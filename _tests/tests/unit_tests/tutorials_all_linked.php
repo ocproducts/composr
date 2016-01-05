@@ -137,6 +137,29 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
+    public function testHasImage()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                if ($f == 'panel_top.txt') {
+                    continue;
+                }
+
+                if (in_array(basename($f, '.txt'), array('sup_glossary', 'tut_addon_index'))) {
+                    continue;
+                }
+
+                $c = file_get_contents($path . '/' . $f);
+
+                $has_image = (strpos($c, '[media') !== false) || (strpos($c, '[media') !== false) || (strpos($c, '[img') !== false) || (strpos($c, '[code') !== false);
+
+                $this->assertTrue($has_image, $f . ' has no images or code samples');
+            }
+        }
+    }
+
     public function testHasStandardParts()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
@@ -168,7 +191,7 @@ class tutorials_all_linked_test_set extends cms_test_case
             }
         }
 
-        $desired = 8;
+        $desired = 6;
         $this->assertTrue($count == $desired, 'You should pin exactly ' . integer_format($desired) . ' tutorials, you have pinned ' . integer_format($count));
     }
 

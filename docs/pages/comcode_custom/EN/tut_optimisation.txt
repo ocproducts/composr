@@ -344,7 +344,6 @@ Composr has special support for running on server farms (or custom cloud platfor
  - the Composr database system supports replication
 
 In order to implement file change synchronisation, you need to create a simple PHP file in [tt]data_custom/sync_script.php[/tt] that defines these functions:
-
 [code="PHP"]
 /**
  * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.

@@ -13,7 +13,6 @@ We'll also keep tally of whether they visited the [tt]purchase[/tt] module and w
 As with the previous tutorial, we'll avoid making things difficult for ourselves, and just write our code in English, without using templates. As we're making a module this time, we'll be implementing using a 'mini-module'.
 
 Here is our [tt]adminzone/pages/mini-modules_custom/admin_tracking.php[/tt] file:
-
 [code="PHP"]
 <?php
 

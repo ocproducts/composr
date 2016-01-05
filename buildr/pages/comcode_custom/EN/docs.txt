@@ -210,7 +210,6 @@ You can also make point-form lists by putting " - " at the start of each list it
 [title="4"]Making Links[/title]
 
 Follow the following example to create links:
-
 [code="Comcode"]
 [url="link text"]http://www.something.com/something[/url]
 [/code]

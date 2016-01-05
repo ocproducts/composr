@@ -85,6 +85,7 @@ Composr recommends:
   - OpenSSL (raises security, strongly recommended)
   - ZIP
   - XML
+  - cURL
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server
 
 If you do not have the PHP FTP extension, then you will need either:

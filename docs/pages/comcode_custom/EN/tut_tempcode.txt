@@ -1985,7 +1985,6 @@ If you are not comfortable with creating new code files you may want to glance o
 Lets start by adding a new sample block to our front page so that we can test different examples of Tempcode. Go to the [tt]sources_custom/blocks[/tt] folder and create and add a new empty file named [tt]main_first_block.php[/tt].
 
 Now lets add something to our block file. Edit [tt]main_first_block.php[/tt] using your favorite text editor and add the following:
-
 [code="PHP"]
 <?php
 

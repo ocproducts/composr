@@ -73,7 +73,6 @@ Some  text   with lots of   spaces.
 [/box]
 
 The HTML generated would be roughly like:
-
 [code="HTML"]
 This is a simple document.<br />
 <br />

@@ -1337,14 +1337,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $STRUCTURE_LIST[] = array($level, $embed, $uniq_id);
             if ($level == 1) {
                 $template = 'SCREEN_TITLE';
-            } elseif ($level == 2) {
-                $template = 'COMCODE_SECTION_TITLE';
-            } elseif ($level == 3) {
-                $template = 'COMCODE_MINOR_TITLE';
-            } elseif ($level == 4) {
-                $template = 'COMCODE_VERY_MINOR_TITLE';
             } else {
-                $template = 'COMCODE_VERY_MINOR_TITLE';
+                $template = 'COMCODE_SUBTITLE';
             }
             if ($level == 1) {
                 if (is_null($COMCODE_PARSE_TITLE)) {
@@ -1391,7 +1385,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $temp_tpl = make_string_tempcode('<h' . strval($level) . (($level == 1) ? ' class="screen_title"' : '') . '>' . $embed->evaluate() . '</h' . strval($level) . '>');
                 break;
             }
-            $tpl_map = array('ID' => (substr($pass_id, 0, 5) == 'panel') ? null : $uniq_id, 'TITLE' => $embed, 'HELP_URL' => '', 'HELP_TERM' => '');
+            $tpl_map = array(
+                'ID' => (substr($pass_id, 0, 5) == 'panel') ? null : $uniq_id,
+                'TITLE' => $embed,
+                'HELP_URL' => '',
+                'HELP_TERM' => '',
+                'LEVEL' => strval($level),
+            );
             if (array_key_exists('sub', $attributes)) {
                 $tpl_map['SUB'] = protect_from_escaping(comcode_to_tempcode($attributes['sub'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member));
             }

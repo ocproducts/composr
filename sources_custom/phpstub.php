@@ -246,7 +246,7 @@ function array_slice($array, $offset, $length = null)
  * @param  ?array $replacement The replacement (null: nothing put in, just bit taken out).
  * @return array The spliced result.
  */
-function array_splice($input, $offset, $length = null, $replacement = null)
+function array_splice(&$input, $offset, $length = null, $replacement = null)
 {
     return array();
 }

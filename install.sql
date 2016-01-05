@@ -8489,7 +8489,7 @@ insert into `cms10_addons_files` values('3636','core_form_interfaces','data/cked
  ('4153','core_rich_media','themes/default/templates/COMCODE_JUMPING.tpl'),
  ('4154','core_rich_media','themes/default/templates/COMCODE_JUMPING_PART.tpl'),
  ('4155','core_rich_media','themes/default/templates/COMCODE_MESSAGE.tpl'),
- ('4156','core_rich_media','themes/default/templates/COMCODE_MINOR_TITLE.tpl'),
+ ('4156','core_rich_media','themes/default/templates/COMCODE_SUBTITLE.tpl'),
  ('4157','core_rich_media','themes/default/templates/COMCODE_MISTAKE_ERROR.tpl'),
  ('4158','core_rich_media','themes/default/templates/COMCODE_MISTAKE_LINE.tpl'),
  ('4159','core_rich_media','themes/default/templates/COMCODE_MISTAKE_SCREEN.tpl'),

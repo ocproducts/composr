@@ -1054,7 +1054,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
+        (strpos($text, 'The SELECT would examine more than MAX_JOIN_SIZE rows') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
+        (strpos($text, 'MySQL client ran out of memory') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL

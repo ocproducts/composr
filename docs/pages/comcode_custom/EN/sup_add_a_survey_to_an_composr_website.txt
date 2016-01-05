@@ -24,7 +24,6 @@ The next section is where you will choose the questions you want to include. The
 To create each type it's very simple.
 
 To create a multiple choice questions simply write the question title with each answer on a separate line below it like this:
-
 [code="Text"]
 Composr is?
 Great
@@ -34,13 +33,11 @@ Even better than sliced bread
 [/code]
 
 There shouldn't be any line spaces between the answers and the question. To add another question simply leave a line space. To add a question with a large space for answers write the question and leave a space on the same line and add the code [LONG] which will look like:
-
 [code="Text"]
 Arvixe Web hosting is awesome because? [LONG]
 [/code]
 
 The final type is a standard question which will have a single line text box for an answer which will just be the question written on a line on its own, i.e.:
-
 [code="Text"]
 What is the registry code of the Enterprise in Star Trek the Next Generation?
 [/code]

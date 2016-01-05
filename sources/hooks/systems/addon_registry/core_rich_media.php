@@ -26,9 +26,10 @@ class Hook_addon_registry_core_rich_media
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -155,7 +156,7 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_JUMPING.tpl',
             'themes/default/templates/COMCODE_JUMPING_PART.tpl',
             'themes/default/templates/COMCODE_MESSAGE.tpl',
-            'themes/default/templates/COMCODE_MINOR_TITLE.tpl',
+            'themes/default/templates/COMCODE_SUBTITLE.tpl',
             'themes/default/templates/COMCODE_MISTAKE_ERROR.tpl',
             'themes/default/templates/COMCODE_MISTAKE_LINE.tpl',
             'themes/default/templates/COMCODE_MISTAKE_SCREEN.tpl',
@@ -164,7 +165,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_RANDOM.tpl',
             'themes/default/templates/COMCODE_RANDOM_PART.tpl',
             'themes/default/templates/COMCODE_REFERENCE.tpl',
-            'themes/default/templates/COMCODE_SECTION_TITLE.tpl',
             'themes/default/templates/COMCODE_STRIKE.tpl',
             'themes/default/templates/COMCODE_SUB.tpl',
             'themes/default/templates/COMCODE_SUP.tpl',
@@ -173,7 +173,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_UNDERLINE.tpl',
             'themes/default/templates/COMCODE_URL.tpl',
             'themes/default/templates/COMCODE_SURROUND.tpl',
-            'themes/default/templates/COMCODE_VERY_MINOR_TITLE.tpl',
             'themes/default/templates/COMCODE_TEXTCODE_LINE.tpl',
             'themes/default/templates/COMCODE_TEXTCODE_TAB.tpl',
             'themes/default/templates/COMCODE_WIKI_LINK.tpl',
@@ -410,14 +409,12 @@ class Hook_addon_registry_core_rich_media
             'templates/COMCODE_REAL_TABLE_CELL.tpl' => 'comcode_table_real_screen',
             'templates/COMCODE_REAL_TABLE_ROW_END.tpl' => 'comcode_table_real_screen',
             'templates/COMCODE_REAL_TABLE_END.tpl' => 'comcode_table_real_screen',
-            'templates/COMCODE_MINOR_TITLE.tpl' => 'comcode_minor_title',
+            'templates/COMCODE_SUBTITLE.tpl' => 'comcode_subtitle',
             'templates/COMCODE_TAB_BODY.tpl' => 'comcode_tab_body',
             'templates/COMCODE_SAMP.tpl' => 'comcode_samp',
             'templates/COMCODE_VAR.tpl' => 'comcode_var',
             'templates/COMCODE_TELETYPE.tpl' => 'comcode_teletype',
             'templates/COMCODE_TAB_CONTROLLER.tpl' => 'comcode_tab_body',
-            'templates/COMCODE_SECTION_TITLE.tpl' => 'comcode_section_title',
-            'templates/COMCODE_VERY_MINOR_TITLE.tpl' => 'comcode_very_minor_title',
             'templates/COMCODE_TAB_HEAD.tpl' => 'comcode_tab_body',
             'templates/COMCODE_CODE.tpl' => 'comcode_code',
             'templates/COMCODE_CODE_SCROLL.tpl' => 'comcode_code_scroll',
@@ -1700,13 +1697,14 @@ class Hook_addon_registry_core_rich_media
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__comcode_minor_title()
+    public function tpl_preview__comcode_subtitle()
     {
         return array(
-            lorem_globalise(do_lorem_template('COMCODE_MINOR_TITLE', array(
+            lorem_globalise(do_lorem_template('COMCODE_SUBTITLE', array(
                 'ID' => placeholder_id(),
                 'TITLE' => lorem_phrase(),
                 'SUB' => lorem_sentence(),
+                'LEVEL' => '2',
             )), null, '', true)
         );
     }
@@ -1834,47 +1832,11 @@ class Hook_addon_registry_core_rich_media
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__comcode_section_title()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COMCODE_SECTION_TITLE', array(
-                'ID' => placeholder_id(),
-                'TITLE' => lorem_phrase(),
-                'SUB' => lorem_sentence(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
     public function tpl_preview__comcode_var()
     {
         return array(
             lorem_globalise(do_lorem_template('COMCODE_VAR', array(
                 'CONTENT' => lorem_sentence(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__comcode_very_minor_title()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COMCODE_VERY_MINOR_TITLE', array(
-                'ID' => placeholder_id(),
-                'TITLE' => lorem_phrase(),
-                'SUB' => lorem_sentence(),
             )), null, '', true)
         );
     }
