@@ -2511,7 +2511,7 @@ ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_
 	list-style-type: square;
 }
 .spaced_list li, .zone_running_docs .comcode_page li {
-	margin: 0.5em 0 0.5em 25px !important;
+	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
 
