@@ -360,7 +360,11 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
     }
 
-    $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($name);
+    $member_id = mixed();
+    if (substr($sendid, 0, 1) == 'm') {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($name);
+        $name = $GLOBALS['FORUM_DRIVER']->get_displayname($name);
+    }
 
     $vars = array(
         'title' => $subject,

@@ -411,7 +411,6 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/primary_members_per_page.php',
             'sources/hooks/systems/config/secondary_members_per_page.php',
             'sources/hooks/systems/config/show_empty_cpfs.php',
-            'sources/hooks/systems/config/signup_fullname.php',
             'sources/hooks/systems/config/use_joindate.php',
             'sources/hooks/systems/config/use_lastondate.php',
             'sources/hooks/systems/config/username_profile_links.php',

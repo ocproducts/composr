@@ -931,7 +931,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  ID_TEXT $username The username
      * @return SHORT_TEXT The display name
      */
-    public function get_displayname($username)
+    protected function _get_displayname($username)
     {
         $generator = get_option('display_name_generator');
         if ($generator != '') {

@@ -1263,7 +1263,7 @@ On a similar note, when using user-input with the PHP [tt]preg_replace[/tt] func
 
 [title="4"]Kid-gloves modes[/title]
 
-It's a fact of life that newbie coders don't know how to write secure code, and it's also a fact of life newbie developers will be expected to write real-world production code. Composr contains many security features and abstractions to protect common types of vulnerability, however there are also additional protections included for newbie developers.
+It's a fact of life that novice coders don't know how to write secure code, and it's also a fact of life novice developers will be expected to write real-world production code. Composr contains many security features and abstractions to protect common types of vulnerability, however there are also additional protections included for novice developers.
 The additional protections may slow performance slightly, or cause some slight weird processing issues in rare events, but generally won't cause any problems. The protections automatically enable for any block or module in a [tt]*_custom[/tt] directory.
 The protections may be turned off by a code call like:
 [code="PHP"]

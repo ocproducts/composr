@@ -1637,7 +1637,7 @@ abstract class Standard_crud_module
             }
 
             if ($this->user_facing) {
-                if (($this->check_validation) && (post_param_integer('validated', 0) == 0)) {
+                if (($this->check_validation) && (post_param_integer('validated', 0) == 0) && (post_param_integer('tick_on_form__validated', null) === null)) {
                     require_code('submit');
                     if (($this->send_validation_request) && (addon_installed('unvalidated'))) {
                         $edit_url = build_url(array('page' => '_SELF', 'type' => $this->get_screen_type_for('_edit', $this->type_code), 'id' => $id, 'validated' => 1), '_SELF', null, false, false, true);

@@ -234,6 +234,21 @@ class Forum_driver_base
     }
 
     /**
+     * Get the display name of a username.
+     * If no display name generator is configured, this will be the same as the username.
+     *
+     * @param  ID_TEXT $username The username
+     * @return SHORT_TEXT The display name
+     */
+    public function get_displayname($username)
+    {
+        if (!method_exists($this, '_get_displayname')) {
+            return $username;
+        }
+        return $this->_get_displayname($username);
+    }
+
+    /**
      * Get a member's e-mail address.
      *
      * @param  MEMBER $id The member

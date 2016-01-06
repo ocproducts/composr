@@ -54,10 +54,10 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
     $ob = get_content_object($entry_type);
     $info = $ob->info();
 
-    $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
+    $db_order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
 
     if (is_null($max)) {
-        $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')', null, 'WHERE ' . $order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
+        $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $db_order_field . ')', null, 'WHERE ' . $db_order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
         if (is_null($max)) {
             $max = 0;
         }
@@ -73,7 +73,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
     }
 
     if ($new) {
-        $test = $info['connection']->query_select_value($info['table'], 'COUNT(' . $order_field . ')', null, 'WHERE ' . $order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
+        $test = $info['connection']->query_select_value($info['table'], 'COUNT(' . $db_order_field . ')', null, 'WHERE ' . $db_order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
 
         if ($test > 0) {
             $current_order = ORDER_AUTOMATED_CRITERIA; // Ah, we are already in the habit of automated ordering here
