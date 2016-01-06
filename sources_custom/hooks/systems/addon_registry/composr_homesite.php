@@ -153,6 +153,7 @@ class Hook_addon_registry_composr_homesite
             'data_custom/demonstratr_upgrade.php',
             'sources_custom/cns_forumview.php',
             'sources_custom/errorservice.php',
+            'uploads/website_specific/compo.sr/errorservice.csv',
             'sources_custom/miniblocks/composr_homesite_featuretray.php',
             'sources_custom/miniblocks/composr_homesite_download.php',
             'themes/default/images_custom/help_small.gif',

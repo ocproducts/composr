@@ -1,6 +1,9 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr/ocProducts FAQ[/title]
 
-This page will answer frequently asked questions (FAQs) about Composr and ocProducts.
+This page will answer frequently asked questions (FAQs) about Composr and ocProducts, including:
+ - Basic background information
+ - Solutions to common problems
+ - Succinct answers to common reuqests
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -51,21 +54,6 @@ We have gone to great lengths to make our code compliant with all major standard
 Supported standards include true XHTML5 support, valid hack-free CSS and the highest WAI accessibility standard (level 3) -- very few, if any, competing systems can claim this.
 
 As web standards are evolving and we often need to make use of ones that are not yet finalised, sometimes checker tools may produce some warnings. This is normal for any modern website, as things are moving ahead so fast.
-
-[title="3"]Will you implement (some feature)?[/title]
-
-The developers are very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_software_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
- - we need to integrate any changes into our long-term development roadmap, but this is always changing as the Internet (and economy) evolves very rapidly and priorities shift, and new ideas often make old ideas irrelevant
- - we need for us to design a clean product suitable for our wider user-base, which makes decisions on features almost impossible to do in advance because it requires multiple levels of design before we can be completely clear on how things might work, and how well they would in relation to other plans and wider goals
-Users who need a new feature should bear in mind that Composr is Open Source and thus third-parties may advance development, or we support feature sponsorship on our tracker. We therefore try to explain that Composr as it stands today is a solid reliable product, but if you require enhancements then you should take responsibility to budget or plan for this in terms of sponsoring or contributing (this is part of the spirit of Open Source -- it is free, but it requires community investment to move forward).
-
-[title="3"]Will you implement per-user permissions?[/title]
-
-For reasons of simplicity we have opted to only provide per-usergroup permissions. Composr does have internal functionality for per-user permissions (used by the Point Store), but we feel that this would add unneeded complexity if it were placed in the administrative interface.
-
-[title="3"]Will you implement a point-bank/games-arcade/auctions?[/title]
-
-These significant new feature categories are often requested, but are unlikely to be produced as official Composr features. This is because these features are very specific, and particularly contrary to the needs of most websites. We are not against these feature categories in any way, but these are best developed and released as third party addons.
 
 [title="3"]Is Composr available in (some language)?[/title]
 
@@ -189,40 +177,6 @@ If your software is not supported and you want to send us a database dump it mig
 Alternatively it may be possible to import by first converting to some other software that we do have an importer from. You'd need to identify a software product we can import and which also can itself import what you currently have.
 Finally, we could give you a quote to have an importer developed.
 
-[title="2"]Forum integration (third-party forums)[/title]
-
-[title="3"]Can I embed my third-party forum between the CMS menus?[/title]
-
-Yes. You need to enable the 'Show forum within website' option from the Admin Zone (Admin Zone > Setup > Configuration > Site options, Advanced options group), and change the forum link on your menus to point to [tt]index.php?page=forums[/tt].
-
-[title="3"]Can I share login between the CMS and my forum if I am using a forum driver?[/title]
-
-Composr uses the forum for authentication, but users may have difficulty sharing cookies between the forum and the CMS.
-
-It is recommended that you set the cookie names to be different between the CMS and forum, making them run on separate cookies. The disadvantage to this is only minor, while you are a lot less likely to suffer from cookie conflict issues.
-
-[title="3"]Why does my cookie integration not work?[/title]
-
-There are many factors to cookie integration, and it is renowned to be problematic. These problems include: strange and inconsistent browser/privacy behaviour, the trickiness of getting exactly matching and correct paths and domains, the change of format between forum versions, secondary usage to forum session cookies, and old cookies masking new cookies. Due to all these problems, we cannot provide personal support for cookie integration except on a commercial basis.
-
-[title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
-
-You must correct it using the config editor script, available under Admin Zone > Setup > Configuration > Installation Options. The installer asked for this value, but many users (wrongly) do not change it from the default auto-detected value.
-Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. To do this, hold down Ctrl+Alt+Shift and reload a page from your Composr site in a browser, when logged into Composr as an administrator. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
-
-[title="3"]Why do I not have commenting boxes on my CMS?[/title]
-
-You must create a comment forum with the name specified in your configuration settings. Also, commenting must be enabled for the content involved, and must be enabled globally (-- although both these elements allow commenting by default).
-
-[title="3"]How do I use my forum skin for a Composr theme?[/title]
-
-There is no way to do this. Skins/themes define the visual appearance of applications by specifying visual properties for specific aspects of the specific application, they are not like all-purpose coats of paint.
-
-[title="3"]Can I switch to Conversr from my existing forum?[/title]
-
-This is only supported if there is an available importer to perform this. Currently this is only the case for IPB and vBulletin.
-It may seem possible to perform this action by editing the _config.php file, but this is highly ill-advised because it will result in misassociated members and usergroups.
-
 [title="2"]Common problems[/title]
 
 [title="3"]My new install seems slow?[/title]
@@ -251,7 +205,11 @@ Composr provides ways to reference files uploaded via other means (e.g. [abbr="F
 
 [title="3"]Why do I get blank pages? OR, Why do I get errors saying the script has run out of memory?[/title]
 
-Composr is designed to run on a PHP memory limit of 16MB or higher; very old PHP configurations come with an 8MB limit, but the majority of web-hosts have it raised to a more reasonable level: take into account that every Composr interface, even the installer which unpacks a large archive, is being asked to run within a tiny 8MB, which includes the space taken up by the PHP source code being run. If you encounter these problems, please submit a bug report, and we will optimise the area where they are occurring for you.
+There are a number of likely possible causes.
+
+[title="4"]Memory[/title]
+
+Composr is designed to run on a PHP memory limit of 32MB or higher; very old PHP configurations come with an 16MB limit, but the majority of web-hosts have it raised to a more reasonable level: take into account that every Composr interface, even the installer which unpacks a large archive, is being asked to run within a tiny 16MB, which includes the space taken up by the PHP source code being run. If you encounter these problems, please submit a bug report, and we will optimise the area where they are occurring for you.
 
 Note that the 'blank page' problem is likely to be due to memory running out, as some PHP installations do not give errors in this event, even if the PHP [tt]display_errors[/tt] option is enabled.
 
@@ -265,13 +223,40 @@ It may be possible to get Composr to raise the memory limit for you. Our default
 If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore" answer below.
 If you are not successful in raising the memory limit you will need to contact the web host to ask them to do it, as on some hosts the limit is locked down at a server level.
 
-[title="3"]Why do I get an Internal Server Error or '500' error when saving the site configuration, using the WYSIWYG editor, or editing templates?[/title]
+[title="4"]Corrupt PHP files[/title]
 
-Your server has an extension called 'ModSecurity' enabled. We have an article about this in the community documentation.
+It could be a problem with a corrupt PHP file. You can use the 'Integrity checker' option within the upgrader to find a list of all corrupt files. You can access the upgrader by calling up the [tt]http://yourwebsite/upgrader.php[/tt] URL on your site.
+Alternatively append [tt]&keep_show_parse_errors=1[/tt] to the URL (or [tt]?keep_show_parse_errors=1[/tt] if the URL you are adding to it doesn't have any parameters on yet). This will allow you to identify the offending PHP file.
 
-[title="3"]Why do I get an Internal Server Error or '500' error (often when adding a new zone or going to the Installation Options)?[/title]
+Once you have identified which files are corrupt you need to re-upload them. Download the manual installer from the [page="site:downloads"]Composr website[/page] that corresponds to your version, and then upload the files using an [abbr="File Transfer Protocol"]FTP[/abbr] client (or by some other means if you prefer).
+
+[title="4"]Other causes[/title]
+
+Check your web server's raw logs, or contact your web host.
+
+[title="3"]Why do I get an Internal Server Error or '500' error?[/title]
+
+[title="4"]ModSecurity[/title]
+
+If you specifically get it when saving the site configuration, using the WYSIWYG editor, or editing templates then your server has an extension called [page="_SEARCH:sup_modsecurity"]ModSecurity[/page] enabled.
+
+[title="4"]File permissions[/title]
 
 Check that the PHP file you are loaded up by URL (e.g. [tt]config_editor.php[/tt] or [tt]mynewzone/index.php[/tt]) does [b]not[/b] have write access (use your FTP tool to 'chmod' the file). Often Apache servers will not allow script files to load if they have write access.
+You may also need to remove 'execute' access, or in some rare cases add it.
+If in doubt, look at the permissions of a working PHP script, and copy them.
+
+If you have being using root access to add files on the server, you may need to change the file ownership and file group to that of the account user.
+
+Also see the answer to "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?" if this has just start after editing the [tt].htaccess[/tt] file or switching web hosts.
+
+[title="4"].htaccess problems[/title]
+
+Please keep reading on for this specific case.
+
+[title="4"]Other causes[/title]
+
+Otherwise, you may need to look at your raw web server logs, or contact your web host. Often the true cause of internal errors are written into the web server error log.
 
 [title="3"]I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?[/title]
 
@@ -355,10 +340,16 @@ Often people will accidentally translate these language strings:
 These are there to control [acronym="Cascading Style Sheets"]CSS[/acronym] settings, for the potential of supporting right-to-left languages. Valid values for each are [tt]left[/tt] or [tt]right[/tt] (you flip them for a right-to-left language pack). They should never be literally translated.
 If someone has mucked up the translation on Transifex you'll need to correct it yourself.
 
+[title="2"]E-mail problems[/title]
+
 [title="3"]Why are e-mails sent by users shown as 'from' the website?[/title]
 
 When you click reply it should show the e-mail address of the sender, assuming they gave/have one.
 The [tt]from[/tt] address (different to the 'reply address' you see when you click reply) is the site's address, which is necessary to stop some e-mail services blocking the e-mail as spam. Basically it's because if your server sends mail [tt]from[/tt] someone whose e-mail account is not on your server, it looks suspicious.
+
+[title="3"]Why is e-mail not getting sent from the server?[/title]
+
+This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the web host) is not working.
 
 [title="2"]Common usage queries[/title]
 
@@ -374,10 +365,6 @@ Often webmasters are surprised that by default users allowed into the CMS zone. 
 
 Panels are just Comcode pages. Whenever you save a change, a revision is saved. However, the Zone editor doesn't have any user interface for restoring past revisions, so you'll need to do this via editing the individual Comcode page. From the admin menus find Content > Pages (Comcode pages), then select the panel page to edit. You will see revision restore functionality at the bottom.
 
-[title="3"]Why are Comcode pages stored as files?[/title]
-
-This is because a number of them need to be provided by default, so that they may easily be created and edited in a text editor, and so that they may easily be transferred between CMSs.
-
 [title="3"]How do I open my site?[/title]
 
 This is available in the configuration. Please read our [page="_SEARCH:tut_configuration"]'Basic Configuration' tutorial[/page].
@@ -392,15 +379,11 @@ Please check the documentation -- we have a [page="_SEARCH:tut_moving"]tutorial 
 
 [title="3"]Why don't non-validated posts show up in the staff checklist?[/title]
 
-This is an intentional design decision, to make sure the tally only took into account website resources, and wasn't always 'spammed to the point of meaninglessness' by an ongoing stream of forum posts. However, we have since learnt that some users prefer the tally to be more transparent, and thus we have made an unofficial method to set this. Please see the 'hidden functionality' section of our Code Book (available from our Documentation section).
+This is an intentional design decision, to make sure the tally only took into account website resources, and wasn't always 'spammed to the point of meaninglessness' by an ongoing stream of forum posts. However, we have since learnt that some users prefer the tally to be more transparent, and thus we have made an unofficial method to set this. Please see the 'hidden functionality' section of our [page="_SEARCH:codebook_3"]Code Book[/page].
 
 [title="3"]Why do I get an error about a missing comment topic forum when I try to use comment topics?[/title]
 
 You may have renamed the default Conversr comment forum, or you may have changed the name used for it in the configuration. These need to match up.
-
-[title="3"]Why is mail not getting sent from the server?[/title]
-
-This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the web host) is not working.
 
 [title="3"]How can I show different content to different usergroups?[/title]
 
@@ -415,14 +398,6 @@ Simply remove [tt]{$,page hint: no_wysiwyg}[/tt] from the bottom of the page's C
 
 Look at the URL you see in the web browser address bar when you have clicked through to edit that piece of content. It'll include the ID (usually a number) near the end. If the ID is not a number, it will have been manually chosen by you (e.g. gallery names are manually chosen).
 
-[title="3"]PHP files need to end with "?>" but none of Composr's do[/title]
-
-This is a common misunderstanding. It is actually the documented PHP best practice (as described in the PHP manual) to leave off "?>" from the end of PHP files. Some text editors (especially online ones) insert white-space at the end of files, and if that happens after "?>" then it can cause operational problems relating to HTTP headers and cookies.
-
-[title="3"]Why isn't all the code Object Orientated?[/title]
-
-We do use a lot of OOP in Composr, but a lot of the general library code is not in classes. Some programmers will strongly disagree with this way of coding, but it is done for performance reasons and productivity reasons. For a number of reasons, heavy use of OOP adds performance costs to a dynamic language like PHP (code parse time, memory usage, and execution time). Software like the Linux kernel or Wordpress don't use much OOP at all, and are wildly successful. We go into more detail about the reasonings behind these conscious engineering decisions in the Code Book.
-
 [title="3"]How can I automatically install hotfixes?[/title]
 
 Hotfixes are not supposed to be installed unless you really need them.
@@ -433,6 +408,35 @@ We perhaps change 200 things with each patch release, and perhaps make 30 hotfix
 On the tracker issues it says "These hotfixes are not necessarily reliable or well supported", which is the truth. We don't necessarily spend more than 2 minutes testing out a hotfix. We don't go testing out how different combinations of them might interact. We don't know how they might interact with different combinations of addons people may have installed. We don't run through our test suite. And, we don't particularly want to be trying to debug issues for non-versioned versions of Composr. They are just there as a band-aid for people with immediate issues.
 
 So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
+
+[title="2"]Programming philosophy and goals[/title]
+
+[title="3"]Will you implement (some feature)?[/title]
+
+The developers are very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_software_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
+ - we need to integrate any changes into our long-term development roadmap, but this is always changing as the Internet (and economy) evolves very rapidly and priorities shift, and new ideas often make old ideas irrelevant
+ - we need for us to design a clean product suitable for our wider user-base, which makes decisions on features almost impossible to do in advance because it requires multiple levels of design before we can be completely clear on how things might work, and how well they would in relation to other plans and wider goals
+Users who need a new feature should bear in mind that Composr is Open Source and thus third-parties may advance development, or we support feature sponsorship on our tracker. We therefore try to explain that Composr as it stands today is a solid reliable product, but if you require enhancements then you should take responsibility to budget or plan for this in terms of sponsoring or contributing (this is part of the spirit of Open Source -- it is free, but it requires community investment to move forward).
+
+[title="3"]Will you implement per-user permissions?[/title]
+
+For reasons of simplicity we have opted to only provide per-usergroup permissions. Composr does have internal functionality for per-user permissions (used by the Point Store), but we feel that this would add unneeded complexity if it were placed in the administrative interface.
+
+[title="3"]Will you implement a point-bank/games-arcade/auctions?[/title]
+
+These significant new feature categories are often requested, but are unlikely to be produced as official Composr features. This is because these features are very specific, and particularly contrary to the needs of most websites. We are not against these feature categories in any way, but these are best developed and released as third party addons.
+
+[title="3"]Why are Comcode pages stored as files?[/title]
+
+This is because a number of them need to be provided by default, so that they may easily be created and edited in a text editor, and so that they may easily be transferred between CMSs.
+
+[title="3"]PHP files need to end with "?>" but none of Composr's do[/title]
+
+This is a common misunderstanding. It is actually the documented PHP best practice (as described in the PHP manual) to leave off "?>" from the end of PHP files. Some text editors (especially online ones) insert white-space at the end of files, and if that happens after "?>" then it can cause operational problems relating to HTTP headers and cookies.
+
+[title="3"]Why isn't all the code Object Orientated?[/title]
+
+We do use a lot of OOP in Composr, but a lot of the general library code is not in classes. Some programmers will strongly disagree with this way of coding, but it is done for performance reasons and productivity reasons. For a number of reasons, heavy use of OOP adds performance costs to a dynamic language like PHP (code parse time, memory usage, and execution time). Software like the Linux kernel or Wordpress don't use much OOP at all, and are wildly successful. We go into more detail about the reasonings behind these conscious engineering decisions in the [page="_SEARCH:codebook_3"]Code Book[/page].
 
 [title="2"]Themes/Appearance[/title]
 
@@ -497,11 +501,45 @@ The box type a block uses is changeable by editing the template of that block; t
 If you want to make your own box in Comcode, just use the [tt]box[/tt] Comcode tag around some existing Comcode.
 If you want to place a block, use the 'Add block' button you see while editing Comcode pages.
 
+[title="2"]Forum integration (third-party forums)[/title]
+
+[title="3"]Can I embed my third-party forum between the CMS menus?[/title]
+
+Yes. You need to enable the 'Show forum within website' option from the Admin Zone (Admin Zone > Setup > Configuration > Site options, Advanced options group), and change the forum link on your menus to point to [tt]index.php?page=forums[/tt].
+
+[title="3"]Can I share login between the CMS and my forum if I am using a forum driver?[/title]
+
+Composr uses the forum for authentication, but users may have difficulty sharing cookies between the forum and the CMS.
+
+It is recommended that you set the cookie names to be different between the CMS and forum, making them run on separate cookies. The disadvantage to this is only minor, while you are a lot less likely to suffer from cookie conflict issues.
+
+[title="3"]Why does my cookie integration not work?[/title]
+
+There are many factors to cookie integration, and it is renowned to be problematic. These problems include: strange and inconsistent browser/privacy behaviour, the trickiness of getting exactly matching and correct paths and domains, the change of format between forum versions, secondary usage to forum session cookies, and old cookies masking new cookies. Due to all these problems, we cannot provide personal support for cookie integration except on a commercial basis.
+
+[title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
+
+You must correct it using the config editor script, available under Admin Zone > Setup > Configuration > Installation Options. The installer asked for this value, but many users (wrongly) do not change it from the default auto-detected value.
+Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. To do this, hold down Ctrl+Alt+Shift and reload a page from your Composr site in a browser, when logged into Composr as an administrator. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
+
+[title="3"]Why do I not have commenting boxes on my CMS?[/title]
+
+You must create a comment forum with the name specified in your configuration settings. Also, commenting must be enabled for the content involved, and must be enabled globally (-- although both these elements allow commenting by default).
+
+[title="3"]How do I use my forum skin for a Composr theme?[/title]
+
+There is no way to do this. Skins/themes define the visual appearance of applications by specifying visual properties for specific aspects of the specific application, they are not like all-purpose coats of paint.
+
+[title="3"]Can I switch to Conversr from my existing forum?[/title]
+
+This is only supported if there is an available importer to perform this. Currently this is only the case for IPB and vBulletin.
+It may seem possible to perform this action by editing the _config.php file, but this is highly ill-advised because it will result in misassociated members and usergroups.
+
 ---
 
 [title="3"]Do you have another question?[/title]
 
 Please first check the documentation, and if there is no obvious answer, post your question on our public forums so anyone can answer.
-If you need an answer from an ocProducts employee, we have a professional support scheme.
+If you need an answer from an ocProducts employee, we have a professional support service.
 
 {$SET,tutorial_tags,Introduction,novice,pinned}{$SET,tutorial_add_date,Dec 2004}{$SET,tutorial_summary,Frequently Asked Questions about Composr.}[block]main_tutorial_rating[/block]

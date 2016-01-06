@@ -20,8 +20,6 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 restrictify();
 safe_ini_set('ocproducts.xss_detect', '0');
 
-define('SOLUTION_FORUM', 283); // The forum ID on compo.sr for problem solution posts
-
 $_title = get_screen_title('Composr bugfix tool', false);
 $_title->evaluate_echo();
 
@@ -146,15 +144,6 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
         $done['Posted reply'] = $reply_url;
     }
 
-    // Problem solution system
-    $recog_error_substring = post_param_string('recog_error_substring', '');
-    if ($recog_error_substring != '') {
-        $recog_post = 'Your error seems to match a known and fixed bug in Composr (' . $title . ').' . "\n\n" . '[title="2"]How did this happen?[/title]' . "\n\n" . 'The bug description is as follows...' . "\n\n" . $notes . "\n\n" . '[title="2"]How do I fix it?[/title]' . "\n\n" . 'A hotfix is available under issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url].';
-        $recog_topic_id = create_forum_topic(SOLUTION_FORUM, $recog_error_substring, $recog_post);
-        $recog_topic_url = $REMOTE_BASE_URL . '/forum/topicview/browse/' . strval($recog_topic_id) . '.htm';
-        $done['Posted recognition signature'] = $recog_topic_url;
-    }
-
     // Show progress
     echo '<ol>';
     foreach ($done as $done_title => $done_url) {
@@ -253,15 +242,6 @@ echo <<<END
         <div>
             <label for="affects">Affects</label>
             <input size="40" name="affects" id="affects" type="text" value="" placeholder="optional" />
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Recognition signature <em>(optional)</em></legend>
-
-        <div>
-            <label for="recog_error_substring">Error message substring <span style="font-size: 0.8em">(use <kbd>xxx</kbd> to make a wild-card)</span></label>
-            <input size="40" name="recog_error_substring" id="recog_error_substring" type="text" value="" placeholder="optional" />
         </div>
     </fieldset>
 

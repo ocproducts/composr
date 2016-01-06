@@ -441,7 +441,7 @@ class Forum_driver_ipb1 extends forum_driver_ipb_shared
             }
             $this->EMOTICON_CACHE[$this->ipb_unescape($myrow['typed'])] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['typed']);
         }
-        uksort($this->EMOTICON_CACHE, 'strlen_sort');
+        uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
         return $this->EMOTICON_CACHE;
     }

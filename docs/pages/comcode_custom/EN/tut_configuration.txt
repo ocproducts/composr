@@ -147,7 +147,7 @@ You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at le
 
 [title="4"]Sandboxes CRON[/title]
 
-Some webhosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
+Some web hosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
 A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:
 [code="Bash"]
 #!/bin/sh
@@ -194,7 +194,7 @@ Simply sign up and  add the URL i.e. [tt]http://yourbaseurl/data/cron_bridge.php
 [staff_note]We have since optimised things so this is commented out
 [title="3"]Caveats[/title]
 
-If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the webhost deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the webhost, then perhaps deciding to ease CRON back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
+If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the web host deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the web host, then perhaps deciding to ease CRON back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
 [/staff_note]
 [title="2"]Closed site, and opening[/title]
 

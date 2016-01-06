@@ -129,6 +129,11 @@ class lang_test_set extends cms_test_case
             $this->assertTrue(false, 'The phrase \'web site\' was used in ' . $file . '. This should be changed to \'website\'.');
         }
 
+        // Space wanted
+        if (stripos($string, 'webhost') !== false) {
+            $this->assertTrue(false, 'The phrase \'webhost\' was used in ' . $file . '. This should be changed to \'web host\'.');
+        }
+
         // Wrong way of writing proper noun (we want our canonical way)
         if ((stripos($string, 'unvalidated') !== false) && ($file !== 'tut_addon_index.txt') && ($file !== 'sup_set_up_a_workflow_in_composr.txt')) {
             $this->assertTrue(false, 'The word \'unvalidated\' was used in ' . $file . '. This should be changed to \'non-validated\'.');
