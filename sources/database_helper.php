@@ -136,8 +136,11 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
         if (in_array(strtoupper($name), $keywords)) {
             fatal_exit($name . ' is a keyword');
         }
-        if ((preg_match('#^[\w]+$#', $name) == 0) || (strlen($name) > DB_MAX_FIELD_IDENTIFIER_SIZE)) {
+        if (preg_match('#^[\w]+$#', $name) == 0) {
             fatal_exit('Inappropriate identifier: ' . $name);
+        }
+        if (strlen($name) > DB_MAX_FIELD_IDENTIFIER_SIZE) {
+            fatal_exit('Inappropriate identifier, too long: ' . $name);
         }
     }
     if ((!$skip_size_check) && (substr($id_name, 0, 1) != '#')) {
@@ -173,8 +176,11 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
 {
     require_code('database_action');
 
-    if ((preg_match('#^[\w]+$#', $table_name) == 0) || (strlen($table_name) + 7 > DB_MAX_IDENTIFIER_SIZE)) {
+    if (preg_match('#^[\w]+$#', $table_name) == 0) {
         fatal_exit('Inappropriate identifier: ' . $table_name); // (the +7 is for prefix: max length of 7 chars allocated for prefix)
+    }
+    if (strlen($table_name) + 7 > DB_MAX_IDENTIFIER_SIZE) {
+        fatal_exit('Inappropriate identifier, too long: ' . $table_name); // (the +7 is for prefix: max length of 7 chars allocated for prefix)
     }
 
     if (!$skip_size_check) {

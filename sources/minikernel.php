@@ -257,6 +257,18 @@ function fatal_exit($text)
 }
 
 /**
+ * Lookup error on compo.sr, to see if there is more information.
+ * (null implementation for minikernel)
+ *
+ * @param  mixed $error_message The error message (string or Tempcode)
+ * @return ?string The result from the web service (null: no result)
+ */
+function get_webservice_result($error_message)
+{
+    return null;
+}
+
+/**
  * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
  */
 function catch_fatal_errors()

@@ -57,7 +57,7 @@ class Hook_cms_merge
             'config',
             'custom_comcode',
             'comcode_pages',
-            'staff_checklist_custom_tasks',
+            'staff_checklist_cus_tasks',
             'notifications',
             'awards',
             'downloads_and_categories', // including rating, trackbacks, seo
@@ -1722,22 +1722,22 @@ class Hook_cms_merge
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
-    public function import_staff_checklist_custom_tasks($db, $table_prefix, $file_base)
+    public function import_staff_checklist_cus_tasks($db, $table_prefix, $file_base)
     {
-        if (!$db->table_exists($table_prefix . 'staff_checklist_custom_tasks')) {
+        if (!$db->table_exists($table_prefix . 'staff_checklist_cus_tasks')) {
             return;
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'staff_checklist_custom_tasks', null, null, true);
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'staff_checklist_cus_tasks', null, null, true);
         if (is_null($rows)) {
             return;
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             if (is_null($row['task_is_done'])) {
-                $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every']));
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every']));
             } else {
-                $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every'], 'task_is_done' => $row['task_is_done']));
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $row['task_title'], 'add_date' => $row['add_date'], 'recur_interval' => $row['recur_interval'], 'recur_every' => $row['recur_every'], 'task_is_done' => $row['task_is_done']));
             }
         }
     }
