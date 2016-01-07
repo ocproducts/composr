@@ -85,7 +85,6 @@ An iframe is an HTML construct that allows you to place one site inside a region
  - the title-bar titles would not be reflected in the browser title-bar
 
 To place an iframed system into Composr, the easiest way is to make a new Comcode page which will contain the frame, link that onto your menu, and place the following Comcode into the page:
-
 [code="Comcode"]
 [html]
 <iframe frameBorder="0" scrolling="no" title="whatever the embedded system is" src="whatever the system URL is" style="width: 100%; height: whatever height you want px;">whatever the embedded system is</iframe>

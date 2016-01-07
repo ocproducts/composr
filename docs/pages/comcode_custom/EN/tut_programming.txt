@@ -340,7 +340,6 @@ PHP contains a huge number of functions that are built-in, although some need PH
 [title="2"]Reference parameters[/title]
 
 When a function is given parameters that come from variables, these variables are essentially copied: if you write to the variable available inside the function, it will not change the source variable. This behaviour can be changed, however, by using reference parameters. To use reference parameters you must place '&' before the '$' or a parameter in the function definition, as follows:
-
 [code="PHP"]
 /**
  * Output a string.

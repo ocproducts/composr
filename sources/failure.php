@@ -870,7 +870,7 @@ function get_webservice_result($error_message)
         $brand = 'Composr';
     }
 
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . float_to_raw_string(cms_version_number()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
+    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(cms_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
     if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
         return null;
     }
@@ -1054,7 +1054,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
+        (strpos($text, 'The SELECT would examine more than MAX_JOIN_SIZE rows') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
+        (strpos($text, 'MySQL client ran out of memory') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL

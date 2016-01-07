@@ -108,7 +108,7 @@ The option requirements for PayPal are as follows:
 			Email address
 		</th>
 		<td>
-			For PayPal it is your PayPal email address, but for other gateways it probably is just be any you receive email on
+			For PayPal it is your PayPal e-mail address, but for other gateways it probably is just be any you receive e-mail on
 		</td>
 	</tr>
 	<tr>
@@ -124,7 +124,7 @@ The option requirements for PayPal are as follows:
 			[Testing mode] Gateway username
 		</th>
 		<td>
-			Your PayPal email address (for the testing mode one, it's your sandbox PayPal email address).
+			Your PayPal e-mail address (for the testing mode one, it's your sandbox PayPal e-mail address).
 		</td>
 	</tr>
 </tbody></table>

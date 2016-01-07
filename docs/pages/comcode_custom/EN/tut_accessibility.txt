@@ -1098,7 +1098,6 @@ If visually scanned, it is obvious how this table is laid out. However, non-visu
 If properly marked-up, the user would get an understand with greater ease. While this might seem a minor issue, it is in fact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
 
 A properly marked-up version, using Composr conventions, would look as follows:
-
 [code="HTML"]
 <table class="map_table results_table">
     <tr>

@@ -146,7 +146,6 @@ You can either set a viewport width in pixels, or set it to 'device-width' if yo
 [title="3"]What Composr does[/title]
 
 This is the code Composr now uses in [tt]HTML_HEAD.tpl[/tt]:
-
 [code="Tempcode"]
 {$,iPhone/Android/etc should know they have an optimised design heading to them}
 {+START,IF,{$MOBILE}}

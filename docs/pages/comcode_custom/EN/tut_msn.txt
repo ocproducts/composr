@@ -87,7 +87,7 @@ The staff filter works by storing 'staff on' lists under all member profiles tha
 
 You can make it so you have a single Composr site that runs across different subdomains. You can also make it so that zones appear to be structured hierarchically.
 
-[i]This is an advanced feature that is not fully supported by the developers. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared webhosts).[/i]
+[i]This is an advanced feature that is not fully supported by the developers. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared web hosts).[/i]
 
 The procedure is as follows:
 [list="a"]
@@ -117,7 +117,7 @@ Please note it is essential to configure your cookie domain to be encompassing o
 
 Composr has some residual support for running many websites of a single install, although [i]not officially supported[/i]. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
 
-If run like this, certain functions of Composr, such as email settings, or addon management, are disabled.
+If run like this, certain functions of Composr, such as e-mail settings, or addon management, are disabled.
 
 The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible. Be prepared to invest serious money or effort to sponsor the upkeep of this Composr functionality, as it has no regular testing or maintenance by core developers.
 
@@ -214,13 +214,9 @@ sites/www/caches/lang/EN/.htaccess
 sites/www/caches/lang/index.html
 sites/www/caches/guest_pages
 sites/www/caches/guest_pages/.htaccess
-sites/www/caches/guest_pages/EN
-sites/www/caches/guest_pages/EN/.htaccess
 sites/www/caches/guest_pages/index.html
 sites/www/caches/self_learning
 sites/www/caches/self_learning/.htaccess
-sites/www/caches/self_learning/EN
-sites/www/caches/self_learning/EN/.htaccess
 sites/www/caches/self_learning/index.html
 sites/www/lang_custom
 sites/www/lang_custom/.htaccess

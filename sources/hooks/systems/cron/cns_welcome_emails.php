@@ -121,7 +121,7 @@ class Hook_cron_cns_welcome_emails
                     } else {
                         $forename = '';
                         $surname = '';
-                        $name = $member['m_username'];
+                        $name = $GLOBALS['FORUM_DRIVER']->get_displayname($member['m_username']);
                     }
 
                     if (addon_installed('newsletter')) {

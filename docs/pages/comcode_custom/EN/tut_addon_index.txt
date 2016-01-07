@@ -1032,7 +1032,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png" />Staff Messaging<br />(<kbd>staff_messaging</kbd>)</td>
-            <td>Blocks to allow visitors to contact the staff, either via email, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
+            <td>Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
             <td><a href="http://compo.sr/docs10/index.php?page=tut_feedback">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_support_desk">Running a virtual support desk</a></td>

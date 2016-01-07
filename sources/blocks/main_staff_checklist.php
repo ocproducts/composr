@@ -65,7 +65,7 @@ class Block_main_staff_checklist
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
-            $GLOBALS['SITE_DB']->create_table('staff_checklist_custom_tasks', array(
+            $GLOBALS['SITE_DB']->create_table('staff_checklist_cus_tasks', array(
                 'id' => '*AUTO',
                 'task_title' => 'SHORT_TEXT',
                 'add_date' => 'TIME',
@@ -91,7 +91,7 @@ class Block_main_staff_checklist
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'helping_out'), 'site') . '[/url]',
             );
             foreach ($tasks as $task) {
-                $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array(
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(
                     'task_title' => $task,
                     'add_date' => time(),
                     'recur_interval' => 0,
@@ -107,7 +107,7 @@ class Block_main_staff_checklist
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_custom_tasks');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
     }
 
     /**
@@ -127,11 +127,11 @@ class Block_main_staff_checklist
         $recur_interval = post_param_integer('recur_interval', 0);
         $recur_every = post_param_string('recur_every', null);
         if ((!is_null($new_task)) && (!is_null($recur_interval)) && (!is_null($recur_every))) {
-            $GLOBALS['SITE_DB']->query_insert('staff_checklist_custom_tasks', array('task_title' => $new_task, 'add_date' => time(), 'recur_interval' => $recur_interval, 'recur_every' => $recur_every, 'task_is_done' => null));
+            $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $new_task, 'add_date' => time(), 'recur_interval' => $recur_interval, 'recur_every' => $recur_every, 'task_is_done' => null));
             decache('main_staff_checklist');
         }
         $custom_tasks = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_custom_tasks', array('*'));
+        $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
         foreach ($rows as $r) {
             $recur_every = '';
             switch ($r['recur_every']) {

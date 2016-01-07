@@ -943,7 +943,7 @@ class Forum_driver_mybb extends Forum_driver_base
             $src = $this->get_emo_dir() . $myrow['image'];
             $this->EMOTICON_CACHE[$myrow['find']] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['find']);
         }
-        uksort($this->EMOTICON_CACHE, 'strlen_sort');
+        uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
         return $this->EMOTICON_CACHE;
     }

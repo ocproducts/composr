@@ -2374,7 +2374,7 @@ function step_10_forum_stuff()
  */
 function require_code($codename)
 {
-    if ($codename == 'mail') {
+    if ($codename == 'mail' || $codename == 'failure') {
         return;
     }
 

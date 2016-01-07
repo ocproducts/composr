@@ -59,7 +59,7 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
         $EMOTICON_LEVELS[$myrow['e_code']] = $myrow['e_relevance_level'];
     }
     if (strpos(get_db_type(), 'mysql') === false) {
-        uksort($this_ref->EMOTICON_CACHE, 'strlen_sort');
+        uksort($this_ref->EMOTICON_CACHE, '_strlen_sort');
         $this_ref->EMOTICON_CACHE = array_reverse($this_ref->EMOTICON_CACHE);
     }
     return $this_ref->EMOTICON_CACHE;

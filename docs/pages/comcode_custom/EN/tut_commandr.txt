@@ -256,7 +256,6 @@ Commands can be put together in scripts and saved for later use in the [tt]bin[/
 [title="2"]Bulk actions using Composr[/title]
 
 Commandr is a very effective way to automate tedious maintenance tasks. For example, if you want to delete a set of images and you have their IDs, you could execute this Commandr code:
-
 [code="Commandr"]
 :require_code('galleries2');
 $ids=array(1,2,3,4,5);

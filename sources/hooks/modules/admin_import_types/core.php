@@ -50,7 +50,7 @@ class Hook_admin_import_types_core
             'blocks' => '_BLOCKS',
             'menu_items' => 'MENU_ITEMS',
             'staff_links' => 'STAFF_LINKS',
-            'staff_checklist_custom_tasks' => 'CHECK_LIST',
+            'staff_checklist_cus_tasks' => 'CHECK_LIST',
             'staff_website_monitoring' => 'SITE_WATCHLIST',
             'searches_saved' => 'SAVED_SEARCHES',
             'notifications' => 'NOTIFICATIONS',

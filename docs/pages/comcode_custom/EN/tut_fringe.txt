@@ -57,7 +57,7 @@ The WYSIWYG editor will not select a font by default.
 
 Unlike a word processor, whatever is being edited is going to end up inserted into a wider existing document context (i.e. into your overall web design). This means that whatever font was used within that wider context would be the default font. This is best for most cases. For example:
  - If the theme font default is changed, it will sweep across all content automatically
- - You can have different fonts in different contexts. For example, perhaps emails should have a different font to the main website.
+ - You can have different fonts in different contexts. For example, perhaps e-mails should have a different font to the main website.
 
 The default Composr theme defines a font in the [tt]global.css[/tt] as follows:
 [code="CSS"]

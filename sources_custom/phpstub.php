@@ -246,7 +246,7 @@ function array_slice($array, $offset, $length = null)
  * @param  ?array $replacement The replacement (null: nothing put in, just bit taken out).
  * @return array The spliced result.
  */
-function array_splice($input, $offset, $length = null, $replacement = null)
+function array_splice(&$input, $offset, $length = null, $replacement = null)
 {
     return array();
 }
@@ -3891,18 +3891,6 @@ function md5_file($filename)
 }
 
 /**
- * Formats a number as a currency string.
- *
- * @param  string $format The formatting string.
- * @param  float $number The number to format as currency.
- * @return string The final currency string.
- */
-function money_format($format, $number)
-{
-    return '';
-}
-
-/**
  * Advance the internal array pointer of an array.
  *
  * @param  array $array The array.
@@ -5710,6 +5698,7 @@ getmyinode
 getmygid
 get_current_user
 fnmatch
+money_format
 
 Disabled various legacy synonyms (aliases), such as...
 

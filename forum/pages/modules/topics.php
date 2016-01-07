@@ -4047,7 +4047,7 @@ END;
      */
     public function topic_history() // Type
     {
-        $title = get_screen_title('POST_HISTORY');
+        $title = get_screen_title('REVISIONS');
 
         // We should be somewhere else entirely - it's just our moderator action list took us here
         $url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'topic,post', 'category_id' => get_param_integer('id')), get_module_zone('admin_revisions'));

@@ -146,14 +146,14 @@ class Module_admin_banners
                 case BANNER_CAMPAIGN:
                     $type = do_lang_tempcode('BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
                     break;
-                case BANNER_DEFAULT:
-                    $type = do_lang_tempcode('BANNER_DEFAULT');
+                case BANNER_FALLBACK:
+                    $type = do_lang_tempcode('BANNER_FALLBACK');
                     break;
             }
 
             $banner_type = $myrow['b_type'];
             if ($banner_type == '') {
-                $banner_type = do_lang('GENERAL');
+                $banner_type = do_lang('_DEFAULT');
             }
 
             $date_and_time = get_timezoned_date($myrow['add_date'], false);

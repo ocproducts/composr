@@ -249,14 +249,18 @@ class Module_cms_wiki
         $radios->attach(form_input_radio_entry('send_notification', '1', $notify, do_lang_tempcode('YES')));
         $fields2->attach(form_input_radio(do_lang_tempcode('SEND_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SEND_NOTIFICATION'), 'send_notification', $radios));
 
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5ae885a9f92415498340c41edfb47501', 'SECTION_HIDDEN' => $notes == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
-        if (get_option('enable_staff_notes') == '1') {
-            $fields2->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
-        }
-
         require_code('fields');
-        if (has_tied_catalogue('wiki_page')) {
-            append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+
+        if ((get_option('enable_staff_notes') == '1') || (has_tied_catalogue('wiki_page'))) {
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5ae885a9f92415498340c41edfb47501', 'SECTION_HIDDEN' => $notes == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
+            if (get_option('enable_staff_notes') == '1') {
+                $fields2->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
+            }
+
+            if (has_tied_catalogue('wiki_page')) {
+                append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+            }
         }
 
         require_code('content2');

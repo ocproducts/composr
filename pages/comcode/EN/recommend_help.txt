@@ -16,7 +16,7 @@ Our recommend tool should work with all major software and web applications that
 
 1) Start Windows Live Mail.
 2) Click on the &quot;Contacts&quot; icon at the bottom of the left column.
-3) On the Windows Live Contacts toolbar, click File | Export &#9658;, and then choose Comma Separated Values (.CSV)
+3) On the Windows Live Contacts toolbar, click File | Export &#9658;, and then choose Comma-Separated-Values (.CSV)
 4) Browse to a folder where you want to store your contacts and give it a name; click Next.
 5) Select the fields you want to save; click Finish.
 6) You will see a progress window that tells you the export is being actioned; the window closes.
@@ -65,7 +65,7 @@ Our recommend tool should work with all major software and web applications that
 
 [title="3"]Gmail[/title]
 
-1) Log into your Gmail email account;
+1) Log into your Gmail e-mail account;
 2) Click on Contact from the left menu;
 3) Click on "Export" in the top right title bar;
 4) Select the contacts group that you want to export (i.e. "Everyone (All Contacts)" to export all contacts);
@@ -75,7 +75,7 @@ Our recommend tool should work with all major software and web applications that
 
 [title="3"]Yahoo[/title]
 
-1) Log into your Yahoo email account;
+1) Log into your Yahoo e-mail account;
 2) Click on Contact from the top menu;
 3) Click on the 'Import/Export' link on top right;
 4) From the "Export" page section, click on the "Yahoo! CSV:" "Export Now" button;
@@ -83,7 +83,7 @@ Our recommend tool should work with all major software and web applications that
 
 [title="3"]Hotmail[/title]
 
-1) Log into your Live.com email account;
+1) Log into your Live.com e-mail account;
 2) Click on "Contact list" from the left menu;
 3) From the middle-top menu select "Manage" and then "Export";
 4) Enter the security image characters into the text box and click "Export";

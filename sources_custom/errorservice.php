@@ -13,34 +13,18 @@
  * @package    composr_homesite
  */
 
-function init__errorservice()
-{
-    define('CMS_SOLUTION_FORUM', 283);
-}
-
 /**
  * Handler for compo.sr error message web service.
  */
 function get_problem_match()
 {
+    header('Content-type: text/plain; charset=' . get_charset());
+
     $version = get_param_string('version');
     $error_message = get_param_string('error_message', false, true);
 
-    $ret = get_problem_match_worker($error_message);
-    header('Content-type: text/plain; charset=' . get_charset());
-    if (!is_null($ret)) {
-        $output = $ret[2]->evaluate();
-
-        // Possible rebranding
-        $brand = get_param_string('product');
-        if (($brand != 'Composr') && ($brand != '')) {
-            $brand_base_url = get_param_string('product_site', '');
-            if ($brand_base_url != '') {
-                $output = str_replace('Composr', $brand, $output);
-                $output = str_replace('ocProducts', 'The Developers', $output);
-                $output = str_replace(get_brand_base_url(), $brand_base_url, $output);
-            }
-        }
+    $output = get_problem_match_nearest($error_message);
+    if (!is_null($output)) {
         echo $output;
     }
 }
@@ -49,27 +33,47 @@ function get_problem_match()
  * Find a match for a problem in the database.
  *
  * @param  string $error_message The error that occurred
- * @return ?array A tuple: the post ID, the full Comcode, the Tempcode, the language string ID  (probably caller will only use post ID and Tempcode - but all available)
+ * @return ?string The full Comcode (null: not found)
  */
-function get_problem_match_worker($error_message)
+function get_problem_match_nearest($error_message)
 {
-    // Find matches. Stored in forum topics.
-    $_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_cache_forum_id' => CMS_SOLUTION_FORUM));
+    // Find matches. Stored in a CSV file.
     $matches = array();
-    foreach ($_data as $d) {
-        $regexp = str_replace('\.\.\.', '.*', str_replace('xxx', '.*', preg_quote($d['p_title'], '#')));
-        if (preg_match('#' . $regexp . '#', $error_message) != 0) {
-            $matches[$d['p_title']] = array(
-                $d['id'],
-                get_translated_text($d['p_post'], $GLOBALS['FORUM_DB']),
-                get_translated_tempcode('f_posts', $d, 'p_post', $GLOBALS['FORUM_DB'])
-            );
+    $myfile = fopen(get_custom_file_base() . '/uploads/website_specific/compo.sr/errorservice.csv', 'rb');
+    fgetcsv($myfile); // Skip header row
+    while (($row = fgetcsv($myfile)) !== false) {
+        list($message, $summary, $how, $solution) = $row;
+
+        $assembled = $summary . "\n\n[title=\"2\"]How did this happen?[/title]\n\n" . $how . "\n\n[title=\"2\"]How do I fix it?[/title]\n\n" . $solution;
+
+        // Possible rebranding
+        $brand = get_param_string('product');
+        if (($brand != 'Composr') && ($brand != '')) {
+            $brand_base_url = get_param_string('product_site', '');
+            if ($brand_base_url != '') {
+                $assembled = str_replace('Composr', $brand, $assembled);
+                $assembled = str_replace('ocProducts', 'The developers', $assembled);
+                $assembled = str_replace(get_brand_base_url(), $brand_base_url, $assembled);
+            }
         }
+
+        $regexp = str_replace('xxx', '.*', preg_quote($message, '#'));
+        if (preg_match('#' . $regexp . '#', $error_message) != 0) {
+            $matches[$message] = $assembled;
+        }
+    }
+    fclose($myfile);
+
+    // No matches
+    if (count($matches) == 0) {
+        return null;
     }
 
     // Sort by how good the match is (string length)
-    uksort($matches, 'strlen_sort');
+    uksort($matches, '_strlen_sort');
 
-    // Return best-match result, after a cleanup
-    return array_pop($matches);
+    // Return best-match result
+    $_output = array_pop($matches);
+    $output = comcode_to_tempcode($_output, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+    return $output->evaluate();
 }

@@ -71,7 +71,7 @@ Composr requires:
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
  - That the web server is not overloaded with too many users, or has very poor performance
  - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback')
- - Connectivity to a mail server (SMTP) so that outgoing email can be sent out to the staff email address or the addresses of individual members
+ - Connectivity to a mail server (SMTP) so that outgoing e-mail can be sent out to the staff e-mail address or the addresses of individual members
  - The install directory does not contain the text "_custom" in it
 (*) Other database software may work, but is not supported
 
@@ -85,6 +85,7 @@ Composr recommends:
   - OpenSSL (raises security, strongly recommended)
   - ZIP
   - XML
+  - cURL
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server
 
 If you do not have the PHP FTP extension, then you will need either:
@@ -102,7 +103,7 @@ Do not try and install Composr on an ad-sponsored free web host. The banners and
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
 
-If you need to be able to easily remove 'bounce' emails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
+If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 
 If encrypted CPFs (custom profile fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), the PHP OpenSSL extension is required.
 

@@ -86,7 +86,7 @@ class Hook_profiles_tabs_about
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'member_id' => $member_id_of), get_module_zone('warnings')), 'tabs/member_account/warnings');
         }
         if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {
-            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('POST_HISTORY'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
+            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('REVISIONS'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
         }
         if ((addon_installed('securitylogging')) && (has_actual_page_access($member_id_viewing, 'admin_lookup'))) {
             require_lang('lookup');

@@ -21,9 +21,10 @@ class Hook_addon_registry_composr_tutorials
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -186,8 +187,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/advantage.png',
             'data_custom/images/docs/codebook/mvc_admin.png',
             'data_custom/images/docs/codebook/mvc_site.png',
-            'data_custom/images/docs/codebook_1b/tempcode_object.png',
             'data_custom/images/docs/codebook/1.jpg',
+            'data_custom/images/docs/codebook/octocat.jpg',
             'data_custom/images/docs/codebook_1/1.jpg',
             'data_custom/images/docs/codebook_1/2.jpg',
             'data_custom/images/docs/codebook_1/3.jpg',
@@ -196,11 +197,13 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/codebook_1/6.jpg',
             'data_custom/images/docs/codebook_1/7.jpg',
             'data_custom/images/docs/codebook_1/8.jpg',
-            'data_custom/images/docs/codebook_1/9.jpg',
+            'data_custom/images/docs/codebook_1/flow.png',
+            'data_custom/images/docs/codebook_1b/tempcode_object.png',
             'data_custom/images/docs/codebook_1b/1.jpg',
             'data_custom/images/docs/codebook_1b/2.jpg',
             'data_custom/images/docs/codebook_1b/3.jpg',
             'data_custom/images/docs/codebook_1b/4.jpg',
+            'data_custom/images/docs/codebook_1b/winmerge.png',
             'data_custom/images/docs/codebook_2/1.jpg',
             'data_custom/images/docs/codebook_2/png.png',
             'data_custom/images/docs/codebook_3/1.jpg',
@@ -210,6 +213,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/disadvantage.png',
             'data_custom/images/docs/dont.png',
             'data_custom/images/docs/remember.png',
+            'data_custom/images/docs/sup_forum_separation/1.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image2.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image3.jpg',

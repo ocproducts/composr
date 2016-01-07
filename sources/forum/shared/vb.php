@@ -719,7 +719,7 @@ class Forum_driver_vb_shared extends Forum_driver_base
             }
             $this->EMOTICON_CACHE[$myrow['smilietext']] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['smilietext']);
         }
-        uksort($this->EMOTICON_CACHE, 'strlen_sort');
+        uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
         return $this->EMOTICON_CACHE;
     }

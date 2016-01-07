@@ -466,15 +466,11 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // Human name / Username
     if (cns_field_editable('username', $special_type)) {
         if ((is_null($member_id)) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self'))) {
-            if (get_option('signup_fullname') == '1') {
-                $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('_DESCRIPTION_NAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
+            $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
+            if ($prohibit_username_whitespace == '1') {
+                $fields->attach(form_input_codename(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
             } else {
-                $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-                if ($prohibit_username_whitespace == '1') {
-                    $fields->attach(form_input_codename(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
-                } else {
-                    $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
-                }
+                $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
             }
         }
     }
@@ -1573,14 +1569,10 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username));
         }
         if ((!is_null($test)) && ($test !== $member_id)) {
-            if (get_option('signup_fullname') == '0') {
-                if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
-                }
-                warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
-            } else { // Adjust username as required
-                $username = get_username_from_human_name($username);
+            if ($return_errors) {
+                return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
             }
+            warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
         }
         $username_changed = is_null($test);
     } else {
@@ -1637,14 +1629,12 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
 
     // Check for whitespace
     if (!is_null($username)) {
-        if (get_option('signup_fullname') == '0') {
-            $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-            if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
-                if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
-                }
-                warn_exit(do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE'));
+        $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
+        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
+            if ($return_errors) {
+                return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
+            warn_exit(do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE'));
         }
     }
     if (!is_null($password)) {
