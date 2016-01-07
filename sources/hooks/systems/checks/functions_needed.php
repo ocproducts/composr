@@ -54,56 +54,51 @@ class Hook_check_functions_needed
             imagesetstyle imagesetthickness imagesettile imagetruecolortopalette
             imagecharup imagecolorclosest imagecolorclosestalpha imagecolorclosesthwb
             imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolorresolve
-            imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge
-            implode in_array include include_once ini_get ini_set intval is_a is_array is_bool is_dir is_file is_float
-            is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file is_writable
-            isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min
+            imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge is_float
+            implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
+            is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file
+            isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min is_writable
             mkdir mktime move_uploaded_file mt_getrandmax mt_rand mt_srand number_format ob_end_clean
             ob_end_flush ob_get_contents ob_start octdec opendir ord pack parse_url pathinfo
-            preg_match preg_grep preg_match_all
-            preg_replace preg_replace_callback preg_split print_r putenv rawurldecode
-            rawurlencode readdir realpath register_shutdown_function rename require require_once reset rmdir
-            round rsort rtrim serialize set_error_handler
+            preg_replace preg_replace_callback preg_split print_r putenv rawurldecode rmdir
+            rawurlencode readdir realpath register_shutdown_function rename require require_once reset
+            round rsort rtrim serialize set_error_handler preg_match preg_grep preg_match_all
             setcookie setlocale sha1 sin sort fprintf sprintf srand str_pad str_repeat str_replace
             strcmp strftime strip_tags stripslashes strlen strpos strrpos strstr strtok strtolower
             strtotime strtoupper strtr strval substr substr_count time trim trigger_error
             uasort ucfirst ucwords uksort uniqid unlink unserialize unset urldecode urlencode usort
-            utf8_decode utf8_encode wordwrap
-            acos array_rand array_unshift asin assert
+            utf8_decode utf8_encode wordwrap cos array_rand array_unshift asin assert
             assert_options atan base_convert basename bin2hex bindec call_user_func_array
             connection_aborted connection_status crc32 decbin each empty fflush fileatime flock flush
-            gethostbyaddr getrandmax gmmktime gmstrftime ip2long
-            levenshtein log log10 long2ip md5_file money_format pow preg_quote prev rad2deg
+            gethostbyaddr getrandmax gmmktime gmstrftime ip2long is_dir is_file
+            levenshtein log log10 long2ip md5_file pow preg_quote prev rad2deg
             range readfile shuffle similar_text sqrt strcasecmp strcoll strcspn stristr strnatcasecmp
             strnatcmp strncasecmp strncmp strrchr strrev strspn substr_replace tan unpack version_compare
-            gettype
-            var_dump vprintf vsprintf touch tanh sinh sleep soundex stripcslashes
+            gettype var_dump vprintf vsprintf touch tanh sinh sleep soundex stripcslashes
             readgzfile restore_error_handler rewind rewinddir quoted_printable_decode
             quotemeta exp ezmlm_hash lcg_value localtime addcslashes
             array_filter array_map array_merge_recursive array_multisort array_pad array_reduce array_walk
-            atan2 fgetc fgetcsv fgetss filetype fscanf fstat
-            ftruncate func_get_arg func_get_args func_num_args
+            atan2 fgetc fgetcsv fgetss filetype fscanf fstat array_change_key_case
+            date_default_timezone_get ftruncate func_get_arg func_get_args func_num_args
             parse_ini_file parse_str is_executable memory_get_usage
             is_scalar is_subclass_of metaphone natcasesort natsort nl2br ob_get_length ob_gzhandler
-            ob_implicit_flush ob_clean
-            printf convert_cyr_string cosh count_chars
-            gethostbynamel getimagesize getlastmod fpassthru
+            ob_implicit_flush ob_clean printf convert_cyr_string cosh count_chars
+            gethostbynamel getimagesize getlastmod fpassthru create_function
             gettimeofday get_cfg_var get_magic_quotes_runtime get_meta_tags get_parent_class
             get_included_files get_resource_type gzcompress gzdeflate gzencode gzfile gzinflate
             gzuncompress hypot ignore_user_abort hebrev hebrevc array_intersect_assoc
-            is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum create_function
-            gzclose gzopen gzwrite
-            file_get_contents str_word_count html_entity_decode array_combine array_diff_uassoc array_udiff
-            array_udiff_assoc array_udiff_uassoc array_walk_recursive array_uintersect_assoc array_uintersect_uassoc
+            is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
+            gzclose gzopen gzwrite file_get_contents str_word_count html_entity_decode
+            array_combine array_diff_uassoc array_udiff array_uintersect_uassoc
+            array_udiff_assoc array_udiff_uassoc array_walk_recursive array_uintersect_assoc
             array_uintersect str_split strpbrk substr_compare file_put_contents get_headers headers_list
-            http_build_query image_type_to_extension imagefilter scandir str_shuffle image_type_to_mime_type sha1
-            ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set
-            date_default_timezone_get array_diff_key inet_pton array_product array_diff_ukey array_intersect_ukey
-            inet_ntop fputcsv
-            is_nan is_finite is_infinite ob_flush array_chunk array_fill array_change_key_case
-            var_export array_intersect_key ini_restore
-            end fileinode get_class_methods get_class_vars get_object_vars gethostbyname htmlspecialchars
-            imagecolorallocatealpha imageistruecolor key pi print set_exception_handler stat str_ireplace stripos
+            http_build_query image_type_to_extension imagefilter scandir str_shuffle image_type_to_mime_type
+            ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1
+            array_diff_key inet_pton array_product array_diff_ukey array_intersect_ukey
+            inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
+            var_export array_intersect_key ini_restore end fileinode get_class_methods get_class_vars
+            get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
+            imagecolorallocatealpha imageistruecolor key pi print set_exception_handler
 END;
         foreach (preg_split('#\s+#', $needed_functions) as $function) {
             if (trim($function) == '') {
