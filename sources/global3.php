@@ -2697,7 +2697,7 @@ function get_zone_default_page($zone_name)
                 }
             }
             if ($_zone_default_page === null) {
-                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name'=>$zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
+                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
             $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = 'start';
             $ZONE_DEFAULT_PAGES_CACHE['collaboration'] = 'start'; // Set this in case collaboration zone removed but still referenced. Performance tweak!

@@ -541,7 +541,7 @@ class Module_chat
         ));
 
         if (!is_guest()) {
-            $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
+            $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
         } else {
             $seteffects_link = new Tempcode();
         }
@@ -668,7 +668,7 @@ class Module_chat
         $download_url = build_url(array('page' => '_SELF', 'type' => 'download_logs', 'id' => $room_id), '_SELF');
         $download_link = hyperlink($download_url, do_lang_tempcode('CHAT_DOWNLOAD_LOGS'), true, false);
 
-        $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
+        $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
 
         $links = array('edit2' => $admin_link, 'tools' => $mod_link, 'export' => $download_link, 'sound_effects' => $seteffects_link);
 

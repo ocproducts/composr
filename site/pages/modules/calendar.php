@@ -341,7 +341,7 @@ class Module_calendar
                 'identifier' => '_SEARCH:calendar:view:' . strval($id),
                 'description' => get_translated_text($event['e_content']),
                 'image' => find_theme_image('icons/48x48/menu/rich_content/calendar'),
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             set_feed_url(find_script('backend') . '?mode=calendar&select=' . urlencode(implode(',', $this->get_and_filter())));

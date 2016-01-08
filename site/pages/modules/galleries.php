@@ -356,7 +356,7 @@ class Module_galleries
                 'title' => comcode_escape($fullname),
                 'identifier' => '_SEARCH:galleries:browse:' . $cat,
                 'description' => get_translated_text($myrow['description']),
-                //'category'=>???,
+                //'category' => ???,
             ));
             if ($rep_image != '') {
                 set_extra_request_metadata(array(
@@ -459,7 +459,7 @@ class Module_galleries
                     'video:height' => strval($myrow['video_height']),
                     'video:width' => strval($myrow['video_width']),
                     'video:type' => $mime_type,
-                    //'category'=>???,
+                    //'category' => ???,
                 ));
             } else {
                 set_extra_request_metadata(array(
@@ -472,7 +472,7 @@ class Module_galleries
                     'identifier' => '_SEARCH:galleries:' . $type . ':' . strval($id),
                     'description' => get_translated_text($myrow['description']),
                     'image' => $url,
-                    //'category'=>???,
+                    //'category' => ???,
                 ));
             }
 

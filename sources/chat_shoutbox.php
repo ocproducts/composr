@@ -41,7 +41,7 @@ function shoutbox_script($ret = false, $room_id = null, $num_messages = null)
     require_css('chat');
 
     if (is_null($room_id)) {
-        $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*,'room_language'=>user_lang()*/));
+        $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
         if (is_null($room_id)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }

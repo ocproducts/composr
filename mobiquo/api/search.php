@@ -44,7 +44,7 @@ function search_topic_func($raw_params)
 
     $response = mobiquo_val(array(
         'total_topic_num' => mobiquo_val($total_topic_num, 'int'),
-        //'search_id'=>mobiquo_val($search_id,'string'), We don't save search result sets
+        //'search_id' => mobiquo_val($search_id, 'string'), We don't save search result sets
         'topics' => mobiquo_val($topics, 'array'),
     ), 'struct');
     return mobiquo_response($response);
@@ -79,7 +79,7 @@ function search_post_func($raw_params)
 
     $response = mobiquo_val(array(
         'total_post_num' => mobiquo_val($total_post_num, 'int'),
-        //'search_id'=>mobiquo_val($search_id,'string'), We don't save search result sets
+        //'search_id' => mobiquo_val($search_id, 'string'), We don't save search result sets
         'posts' => mobiquo_val($posts, 'array'),
     ), 'struct');
     return mobiquo_response($response);
@@ -129,7 +129,7 @@ function search_func($raw_params)
 
         $response = mobiquo_val(array(
             'total_topic_num' => mobiquo_val($total_topic_num, 'int'),
-            //'search_id'=>mobiquo_val($search_id,'string'), We don't save search result sets
+            //'search_id' => mobiquo_val($search_id, 'string'), We don't save search result sets
             'topics' => mobiquo_val($topics, 'array'),
         ), 'struct');
     } else {
@@ -142,7 +142,7 @@ function search_func($raw_params)
 
         $response = mobiquo_val(array(
             'total_post_num' => mobiquo_val($total_post_num, 'int'),
-            //'search_id'=>mobiquo_val($search_id,'string'), We don't save search result sets
+            //'search_id' => mobiquo_val($search_id, 'string'), We don't save search result sets
             'posts' => mobiquo_val($posts, 'array'),
         ), 'struct');
     }

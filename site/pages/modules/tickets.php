@@ -586,7 +586,7 @@ class Module_tickets
                     'identifier' => '_SEARCH:tickets:ticket:' . $id,
                     'description' => '',
                     'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
-                    //'category'=>???,
+                    //'category' => ???,
                 ));
 
                 // "Staff only reply" tickbox

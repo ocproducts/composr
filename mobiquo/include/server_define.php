@@ -250,9 +250,9 @@ $SERVER_DEFINE = array(
                              array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcArray, $xmlrpcString, $xmlrpcBoolean)),
     ),
 
-    /*'reply_topic'=>array(	NO LONGER EXISTS
+    /*'reply_topic' => array(	NO LONGER EXISTS
         'function' => 'reply_topic_func',
-            'signature'=>array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcString),
+            'signature' => array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcString),
                                array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBase64),
                                array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64),
                                array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64),
@@ -407,7 +407,7 @@ $SERVER_DEFINE = array(
         'signature' => array(array($xmlrpcStruct)),
     ),
 
-    /*'set_avatar'=>array(	NO LONGER EXISTS
+    /*'set_avatar' => array(	NO LONGER EXISTS
         'function' => 'upload_avatar_func',
         'signature' => array(array($xmlrpcStruct)),
     ),*/
@@ -422,9 +422,9 @@ $SERVER_DEFINE = array(
         'signature' => array(array($xmlrpcStruct, $xmlrpcString)),
     ),
 
-    /*'authorize_user'=>array(	NO LONGER EXISTS
+    /*'authorize_user' => array(	NO LONGER EXISTS
         'function' =>'authorize_user_func',
-        'signature'=>array(array($xmlrpcStruct,$xmlrpcBase64,$xmlrpcString),
+        'signature' => array(array($xmlrpcStruct,$xmlrpcBase64,$xmlrpcString),
                                  array($xmlrpcStruct,$xmlrpcBase64,$xmlrpcBase64),
         ),
     ),*/
@@ -470,7 +470,7 @@ $SERVER_DEFINE = array(
         ),
     ),
 
-    /*'m_delete_post_by_user'=>array(	NO LONGER EXISTS
+    /*'m_delete_post_by_user' => array(	NO LONGER EXISTS
         'function' => 'm_delete_post_by_user_func',
         'signature' => array(array($xmlrpcStruct,$xmlrpcString,$xmlrpcBase64)),
     ),*/
@@ -583,7 +583,7 @@ $SERVER_DEFINE = array(
         'signature' => array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcInt)),
     ),
 
-    /*'activate_account'=>array(	NO LONGER EXISTS
+    /*'activate_account' => array(	NO LONGER EXISTS
           'function' => 'activate_account_func',
           'signature' => array(array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcString, $xmlrpcString)),
      ),*/

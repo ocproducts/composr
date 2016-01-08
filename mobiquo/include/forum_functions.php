@@ -310,9 +310,9 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'reply_number' => mobiquo_val($details['t_cache_num_posts'] - 1, 'int'),
         'new_post' => mobiquo_val(is_topic_unread($topic_id, $member_id, $details), 'boolean'),
         'short_content' => mobiquo_val(generate_shortened_post($details, true), 'base64'),
-        /*'is_moved'=>, We don't have these topic shells in Composr
-        'is_merged'=>,
-        'real_topic_id'=>,*/
+        /*'is_moved' =>, We don't have these topic shells in Composr
+        'is_merged' =>,
+        'real_topic_id' => ,*/
         'can_upload' => mobiquo_val(true, 'boolean'),
     );
 

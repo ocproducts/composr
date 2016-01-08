@@ -358,7 +358,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
                 'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category'=>???,
+                //'category' => ???,
             ),
             'row' => $topic_info,
         );

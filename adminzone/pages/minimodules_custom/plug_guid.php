@@ -49,10 +49,10 @@ foreach ($files as $i => $file) {
 
     echo 'Doing ' . escape_html($file) . '<br />';
 
-    $IN = file_get_contents($file);
+    $IN = file_get_contents(get_custom_file_base() . '/' . $file);
 
-    $out = preg_replace_callback("#do_template\('([^']*)',array\(\s*'([^']+)'=>('[^\']+')#", 'callback', $IN);
-    $out = preg_replace_callback("#do_template\('([^']*)',array\(\s*'([^']+)'=>#", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => ('[^\']+')#", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => #", 'callback', $IN);
 
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';

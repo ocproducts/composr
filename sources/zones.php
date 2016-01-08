@@ -381,7 +381,7 @@ function load_redirect_cache()
     if (addon_installed('redirects_editor')) {
         $redirect = persistent_cache_get(array('REDIRECT', $_zone));
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them ,array('r_from_zone'=>$_zone)*/);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
             persistent_cache_set(array('REDIRECT', $_zone), $redirect);
         }
         foreach ($redirect as $r) {

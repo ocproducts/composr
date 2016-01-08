@@ -293,7 +293,7 @@ class Module_wiki
                 'description' => (strlen($description_comcode) < 200) ? $description_comcode : '',
                 'numposts' => strval($num_posts),
                 'image' => find_theme_image('icons/48x48/menu/rich_content/wiki'),
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             breadcrumb_set_parents($breadcrumbs);

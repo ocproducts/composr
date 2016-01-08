@@ -670,13 +670,13 @@ function init__webstandards2()
     global $TAG_ATTRIBUTES_REQUIRED;
     $TAG_ATTRIBUTES_REQUIRED = array(
         'base' => array('href'), // XHTML-strict
-        //'html'=>array('xmlns'/*, 'xml:lang' Not in XHTML5*/),
+        //'html' => array('xmlns'/*, 'xml:lang' Not in XHTML5*/),
         'meta' => array('content'),
         'style' => array(/*'type'*/),
         'script' => array(/*'type'*/),
         'bdo' => array('dir'),
         'basefont' => array('size'),
-        //  'param'=>array('name'), Not needed in XHTML strict
+        //'param' => array('name'), Not needed in XHTML strict
         'iframe' => array('src', 'title'),
         'img' => array('src', 'alt'),
         'label' => array('for'),
@@ -684,7 +684,7 @@ function init__webstandards2()
         'area' => array('alt'),
         'form' => array('action', 'title'),
         'textarea' => array('cols', 'rows'),
-        //'input'=>array('value'), // accessibility, checked somewhere else
+        //'input' => array('value'), // accessibility, checked somewhere else
         'table' => array(/*'summary' not in html5*/),
         'optgroup' => array('label')
     );
