@@ -21,6 +21,9 @@ This is a general Composr tool for testing out the default theme manually but wi
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$title = get_screen_title('CSS analyser', false);
+$title->evaluate_echo();
+
 $used = find_used();
 $existing = find_existing();
 sort($used);

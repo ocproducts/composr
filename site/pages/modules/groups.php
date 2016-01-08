@@ -327,7 +327,7 @@ class Module_groups
 
             $rank_image = $row['g_rank_image'];
             if ($rank_image != '') {
-                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('_GUID' => '3753739ac2bebcfb9fff8b80e4bd71d0', 'GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
             } else {
                 $rank_image_tpl = new Tempcode();
             }
@@ -377,7 +377,7 @@ class Module_groups
 
                 $rank_image = $row['g_rank_image'];
                 if ($rank_image != '') {
-                    $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+                    $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('_GUID' => '598558286a1f701fe5f4a59ed94bff3a', 'GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
                 } else {
                     $rank_image_tpl = new Tempcode();
                 }
@@ -439,7 +439,7 @@ class Module_groups
 
             $rank_image = $row['g_rank_image'];
             if ($rank_image != '') {
-                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('_GUID' => 'e43b9775c7ab9a524f0073f749c75cd1', 'GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
             } else {
                 $rank_image_tpl = new Tempcode();
             }

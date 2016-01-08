@@ -287,7 +287,7 @@ class Module_banners
                 'identifier' => '_SEARCH:banners:view:' . $source,
                 'description' => '',
                 'image' => $myrow['img_url'],
-                //'category'=>$type,
+                //'category' => $type,
             ));
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('BANNERS'))));
@@ -348,7 +348,7 @@ class Module_banners
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
-            //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
+            //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
@@ -405,7 +405,7 @@ class Module_banners
             }
 
             $fr = array(
-                do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))),
+                do_template('COMCODE_TELETYPE', array('_GUID' => '4ac291a8c2eabc304cd26f7d6b4bf8a2', 'CONTENT' => escape_html($row['name']))),
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail

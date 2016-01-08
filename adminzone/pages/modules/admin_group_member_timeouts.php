@@ -157,8 +157,7 @@ class Module_admin_group_member_timeouts
         require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        $ret = do_template('GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN', array(
-            'TITLE' => $this->title,
+        $ret = do_template('GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN', array('_GUID' => '83753cb500b04f741c0875f64dc6ad2f', 'TITLE' => $this->title,
             'TIMEOUTS' => $timeouts,
             'GROUPS' => $usergroups,
             'DATE_INPUT' => form_input_date(do_lang_tempcode('DATE'), new Tempcode(), 'gmt_time_new', true, false, true, null, 10, null, null),

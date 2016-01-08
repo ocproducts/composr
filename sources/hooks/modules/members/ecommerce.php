@@ -93,6 +93,6 @@ class Hook_members_ecommerce
 
         require_lang('ecommerce');
 
-        return array(do_template('MEMBER_SUBSCRIPTION_STATUS', array('SUBSCRIPTIONS' => $subscriptions, 'MEMBER_ID' => strval($member_id))));
+        return array(do_template('MEMBER_SUBSCRIPTION_STATUS', array('_GUID' => '74e2193b1f31ca5c962a525d887e9ca1', 'SUBSCRIPTIONS' => $subscriptions, 'MEMBER_ID' => strval($member_id))));
     }
 }

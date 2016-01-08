@@ -531,7 +531,7 @@ class Module_catalogues
                 'title' => comcode_escape(get_translated_text($catalogue['c_title'])),
                 'identifier' => '_SEARCH:catalogues:index:' . $catalogue_name,
                 'description' => $description_2,
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             $this->catalogue_name = $catalogue_name;
@@ -629,7 +629,7 @@ class Module_catalogues
                 'title' => comcode_escape($_title),
                 'identifier' => '_SEARCH:catalogues:category:' . strval($id),
                 'description' => get_translated_text($category['cc_description']),
-                //'category'=>???,
+                //'category' => ???,
             ));
             $rep_image_str = $category['rep_image'];
             if ($rep_image_str != '') {

@@ -313,12 +313,25 @@ function phase_2()
                 <li>Update the <kbd>community</kbd> page to point to the new addon locations</li>
                 <li>Update the secondary level navigation to link to the new addon locations</li>
             </ul></li>
-            <li><strong>Documentation</strong>: Upload the latest new documentation&hellip;<ul>
+            <li><strong>Documentation</strong>: Upload the latest new documentation [if we are currently updating the site via git then do the appropriate equivalent to the below, culminating in a pull &ndash; you\'ll need to think carefully about what exact commands you are going to do]&hellip;<ul>
                 <li>Build new addon tutorial index (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=doc_index_build&amp;keep_devtest=1">doc_index_build minimodule</a>)</li>
                 <li>Create <a target="_blank" href="http://compo.sr/adminzone/index.php?page=admin_zones&amp;type=add">docs' . strval(intval(cms_version_number())) . ' zone</a> (Codename "docs' . strval(intval(cms_version_number())) . '", Title "Documentation (version ' . strval(intval(cms_version_number())) . ')", Theme "ocProducts", Default page "tutorials")</li>
                 <li>Do this in a Linux shell on the compo.sr server: <kbd>rm docs' . strval(intval(cms_version_number()) - 1) . ' ; mv docs docs' . strval(intval(cms_version_number()) - 1) . ' ; rm -f docs' . strval(intval(cms_version_number())) . '/pages/comcode_custom/EN/*.txt; ln -s docs' . strval(intval(cms_version_number())) . ' docs; cd docs' . strval(intval(cms_version_number() - 1)) . '; mv api *.doc *.pdf *.zip *.xls ../docs/ ; cd ..</kbd></li>
                 <li>Upload the latest <kbd>.txt</kbd> files from git for <kbd>docs/pages/comcode_custom/EN/</kbd> to the compo.sr server</li>
                 <li>Upload <kbd>data_custom/images/docs</kbd> files from git to the compo.sr server</li>
+            </ul></li>
+            <li>ERD (<em>Optional</em>): Compile new ERD diagrams&hellip;<ul>
+                <li>Install <a target="_blank" href="https://www.mysql.com/products/workbench/">MySQL Workbench</a></li>
+                <li>Get <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql_schema_generate_by_addon&amp;keep_devtest=1">exported SQL</a></li>
+                <li>Extract to a directory</li>
+                <li>Import into separate databases; to convert a directory listing into commands use something like <kbd>/s/(.*).sql/mysql -e "CREATE DATABASE $1" ; mysql $1 < $1.sql</kbd></li>
+                <li>For each:<ul>
+                    <li>"Database &rarr; Reverse Engineer" from inside MySQL Workbench</li>
+                    <li>Tweak the spatial arrangement</li>
+                    <li>Save as a graphic file, "File &rarr; Export &rarr; Export as PNG"</li>
+                </ul></li>
+                <li>Zip the graphics into <kbd>erd_rendered__by_addon.zip</kbd></li>
+                <li>Put <kbd>erd_rendered__by_addon.zip</kbd> and <kbd>erd_sql__by_addon.zip</kbd> into <kbd>docs</kbd>)</li>
             </ul></li>
             <li>API docs (<em>Optional</em>): Recompile the API docs&hellip;<ul>
                 <li><a href="http://graphviz.org/Download..php">Install Graphviz</a></li>
@@ -329,7 +342,6 @@ function phase_2()
                 <li>Build documentation with <kbd><!--rm -rf docs/api 2&lt; /dev/null ; -->phpdoc --sourcecode --force --template composr-api-template</kbd></li>
                 <li>Upload <kbd>docs/api</kbd></li>
             </ul></li>
-            <li>ERD (<em>Optional</em>): Compile new ERD diagrams using <a target="_blank" href="http://www.malcolmhardie.com/sqleditor/">SQLEditor</a> (mac) (you need to create a new MySQL database by importing the output of <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql_schema_generate&amp;keep_devtest=1">the exported SQL</a>)</li>
             <li><strong>History</strong>: Update release history details on the compo.sr <kbd>vision</kbd> page</li>
             <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="http://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><input class="hyperlink_button" type="submit" value="Get someone to update our release history on Wikipedia" /></form></li>
             <li><strong>Syndication</strong>: Syndicate news to these sites (<a href="http://ocportal.com/tracker/view.php?id=2085" target="_blank">Passwords</a>):<ul>

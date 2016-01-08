@@ -15,6 +15,9 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$title = get_screen_title('Publish addons', false);
+$title->evaluate_echo();
+
 // Find existing category ID for a named category. Insert into the database if the category does not exist
 function find_addon_category_download_category($category_name, $parent_id = null)
 {

@@ -287,7 +287,7 @@ class Module_downloads
                 'title' => comcode_escape($title_to_use),
                 'identifier' => '_SEARCH:downloads:browse:' . strval($category_id),
                 'description' => get_translated_text($category['description']),
-                //'category'=>???,
+                //'category' => ???,
             ));
             $main_rep_image = $category['rep_image'];
             if ($main_rep_image != '') {
@@ -408,7 +408,7 @@ class Module_downloads
                 'identifier' => '_SEARCH:downloads:view:' . strval($id),
                 'description' => get_translated_text($myrow['description']),
                 'image' => $image_url,
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             $this->id = $id;

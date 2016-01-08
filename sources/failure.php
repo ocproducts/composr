@@ -870,7 +870,7 @@ function get_webservice_result($error_message)
         $brand = 'Composr';
     }
 
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(cms_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
+    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
     if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
         return null;
     }

@@ -789,7 +789,7 @@ class Module_admin_customers
                 do_lang_tempcode('REASON'),
             );
             $header_row = columned_table_header_row($_header_row);
-            $text->attach(do_template('COLUMNED_TABLE', array('HEADER_ROW' => $header_row, 'ROWS' => $rows)));
+            $text->attach(do_template('COLUMNED_TABLE', array('_GUID' => '032e4dcb1d4224ed6633679154b6d827', 'HEADER_ROW' => $header_row, 'ROWS' => $rows)));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => 'f91185ee725f47ffa652d5fef8d85c0b', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));

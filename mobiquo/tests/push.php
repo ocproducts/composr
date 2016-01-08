@@ -66,7 +66,7 @@ function push_content_check_test()
                 'authorid' => '2',
 
                 // For PMs
-                //'mid'=>123,
+                //'mid' => 123,
             )),
         )
     );

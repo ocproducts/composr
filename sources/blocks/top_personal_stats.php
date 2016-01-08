@@ -68,6 +68,6 @@ class Block_top_personal_stats
         require_code('global4');
         list($links, $links_ecommerce, $details, $num_unread_pps) = member_personal_links_and_details($member_id);
 
-        return do_template('BLOCK_TOP_PERSONAL_STATS', array('NUM_UNREAD_PTS' => strval($num_unread_pps), 'AVATAR_URL' => $avatar_url, 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'LINKS' => $links, 'LINKS_ECOMMERCE' => $links_ecommerce, 'DETAILS' => $details));
+        return do_template('BLOCK_TOP_PERSONAL_STATS', array('_GUID' => '6460943f1f0944fb6e8fe252dfa1b853', 'NUM_UNREAD_PTS' => strval($num_unread_pps), 'AVATAR_URL' => $avatar_url, 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'LINKS' => $links, 'LINKS_ECOMMERCE' => $links_ecommerce, 'DETAILS' => $details));
     }
 }

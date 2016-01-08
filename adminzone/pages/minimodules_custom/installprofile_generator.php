@@ -148,7 +148,7 @@ $profile .= <<<END
     function default_blocks()
     {
         return array(
-            'YES'=>array(
+            'YES' => array(
 
 END;
 $blocks = find_blocks_in_page('start');
@@ -157,9 +157,9 @@ foreach (array_keys($blocks) as $block) {
 }
 $profile .= <<<END
             ),
-            'YES_CELL'=>array(
+            'YES_CELL' => array(
             ),
-            'PANEL_LEFT'=>array(
+            'PANEL_LEFT' => array(
 
 END;
 $blocks = find_blocks_in_page('panel_left');
@@ -168,7 +168,7 @@ foreach (array_keys($blocks) as $block) {
 }
 $profile .= <<<END
             ),
-            'PANEL_RIGHT'=>array(
+            'PANEL_RIGHT' => array(
 
 END;
 $blocks = find_blocks_in_page('panel_right');

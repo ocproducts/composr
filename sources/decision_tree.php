@@ -180,9 +180,9 @@ class DecisionTree
 
             if (count($_POST) > 0) {
                 $post = build_keep_post_fields(null, true);
-                $refresh = do_template('JS_REFRESH', array('FORM_NAME' => 'redir_form'));
+                $refresh = do_template('JS_REFRESH', array('_GUID' => '63cb29a82471b7ba7fd594eb92cc02c1', 'FORM_NAME' => 'redir_form'));
 
-                return do_template('REDIRECT_POST_METHOD_SCREEN', array('REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
+                return do_template('REDIRECT_POST_METHOD_SCREEN', array('_GUID' => 'f9f374626d7acdb0699399f970b2196a', 'REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
             }
 
             return redirect_screen($title, $url);
@@ -299,7 +299,7 @@ class DecisionTree
                 }
 
                 if (!is_null($section) && $current_section !== $section) {
-                    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => $section)));
+                    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '103da055fbd879f2bfc023d83d64091d', 'TITLE' => $section)));
                 }
                 $current_section = $section;
 
@@ -338,8 +338,7 @@ class DecisionTree
         $next_tree_position = '_' . $tree_position; // Needs complex processing
         $next_url = $this->build_url($next_tree_position);
 
-        return do_template('FORM_SCREEN', array(
-            'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array('_GUID' => '3164d2c849259902d0e3dc8dce1ad110', 'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $title,
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,

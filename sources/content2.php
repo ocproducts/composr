@@ -340,7 +340,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
         'submitter' => $submitter,
         'add_time' => $add_time,
         'edit_time' => $edit_time,
-        /*'url_moniker'=>$url_moniker, was handled internally*/
+        /*'url_moniker' => $url_moniker, was handled internally*/
     );
 }
 

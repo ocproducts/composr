@@ -63,7 +63,7 @@ class Block_side_shoutbox
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
         if (is_null($room_id)) {
-            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*,'room_language'=>user_lang()*/));
+            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
             if (is_null($room_id)) {
                 return new Tempcode();
             }

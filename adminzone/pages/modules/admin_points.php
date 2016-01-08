@@ -225,8 +225,7 @@ class Module_admin_points
             }
 
             $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => get_self_url(true)), '_SELF');
-            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
-                'NAME' => do_lang_tempcode('REVERSE'),
+            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '3585ec7f35a1027e8584d62ffeb41e56', 'NAME' => do_lang_tempcode('REVERSE'),
                 'URL' => $delete_url,
                 'HIDDEN' => form_input_hidden('id', strval($myrow['id'])),
             ));

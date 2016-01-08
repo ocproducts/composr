@@ -149,8 +149,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         require_lang('workflows');
 
-        // TODO: Add tutorial
-        //set_helper_panel_tutorial('tut_workflow');
+        set_helper_panel_tutorial('sup_set_up_a_workflow_in_composr');
 
         if ($type == '_add') {
             $doing = 'ADD_' . $this->lang_type;
@@ -320,7 +319,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // Actions
         $fields2 = new Tempcode();
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ACTIONS'))));
+        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e578cf36d2552947dfe406f38a2e2877', 'TITLE' => do_lang_tempcode('ACTIONS'))));
 
         // Add an option to redefine the approval permissions
         $fields2->attach(form_input_tick(do_lang('REDEFINE_WORKFLOW_POINTS'), do_lang('REDEFINE_WORKFLOW_POINTS_DESC'), 'redefine_points', false));
@@ -418,8 +417,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // Add the form elements for each section
         if (count($clarify_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
-                'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '956a8b51ebbbd5e581092520534bd332', 'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS_HELP', escape_html(implode(', ', $clarify_points))),
             )));
             foreach ($clarify_points as $seq_id => $p) {
@@ -439,8 +437,7 @@ class Module_admin_workflow extends Standard_crud_module
         }
 
         if (count($redefine_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
-                'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1670e74ade97bd18b8dc798033a14f36', 'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS_HELP'),
             )));
 
@@ -470,8 +467,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         $title = get_screen_title('DEFINE_WORKFLOW_POINTS');
 
-        return do_template('FORM_SCREEN', array(
-            'TITLE' => $title,
+        return do_template('FORM_SCREEN', array('_GUID' => '31a56dccccdf5d7691439f79d120ffcb', 'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
             'HIDDEN' => $hidden,

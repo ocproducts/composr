@@ -424,7 +424,7 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
             'edit_own_cat_lowrange_content' => 0,
             'delete_cat_lowrange_content' => 0,
             'delete_own_cat_lowrange_content' => 0,
-            'submit_lowrange_content'=>1,
+            'submit_lowrange_content' => 1,
             'bypass_validation_lowrange_content' => 1,
             'edit_own_lowrange_content' => 1,
             'edit_lowrange_content' => 1,

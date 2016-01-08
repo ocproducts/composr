@@ -117,7 +117,7 @@ class Module_forumview
                 'identifier' => '_SEARCH:forumview:browse:' . strval($id),
                 'description' => $description_text,
                 'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {

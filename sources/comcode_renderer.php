@@ -1840,8 +1840,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $width = array_key_exists('width', $attributes) ? $attributes['width'] : '';
             $height = array_key_exists('height', $attributes) ? $attributes['height'] : '';
 
-            $temp_tpl = do_template('COMCODE_MEDIA_SET', array(
-                'WIDTH' => $width,
+            $temp_tpl = do_template('COMCODE_MEDIA_SET', array('_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa', 'WIDTH' => $width,
                 'HEIGHT' => $height,
                 'MEDIA' => $embed,
             ));
@@ -2269,33 +2268,31 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
     } else {
         switch (strtolower($type)) {
             case 'php':
-                if (!php_function_allowed('highlight_string')) {
-                    break;
-                }
+                if (php_function_allowed('highlight_string')) {
+                    $evaluated = $embed->evaluate();
 
-                $evaluated = $embed->evaluate();
+                    if (($in_semihtml) || ($is_all_semihtml)) {
+                        require_code('comcode_from_html');
+                        $evaluated = semihtml_to_comcode($evaluated);
+                    }
 
-                if (($in_semihtml) || ($is_all_semihtml)) {
-                    require_code('comcode_from_html');
-                    $evaluated = semihtml_to_comcode($evaluated);
+                    if (strpos($evaluated, '<' . '?php') === false) {
+                        $strip = true;
+                        $evaluated = "<" . "?php\n" . $evaluated . "\n?" . ">";
+                    } else {
+                        $strip = false;
+                    }
+                    require_code('xhtml');
+                    ob_start();
+                    highlight_string($evaluated);
+                    $h_result = ob_get_clean();
+                    $_embed = xhtmlise_html($h_result);
+                    if ($strip) {
+                        $_embed = str_replace('&lt;?php<br />', '', $_embed);
+                        $_embed = str_replace('?&gt;', '', $_embed);
+                    }
+                    $title = do_lang_tempcode('comcode:PHP_CODE');
                 }
-
-                if (strpos($evaluated, '<' . '?php') === false) {
-                    $strip = true;
-                    $evaluated = "<" . "?php\n" . $evaluated . "\n?" . ">";
-                } else {
-                    $strip = false;
-                }
-                require_code('xhtml');
-                ob_start();
-                highlight_string($evaluated);
-                $h_result = ob_get_clean();
-                $_embed = xhtmlise_html($h_result);
-                if ($strip) {
-                    $_embed = str_replace('&lt;?php<br />', '', $_embed);
-                    $_embed = str_replace('?&gt;', '', $_embed);
-                }
-                $title = do_lang_tempcode('comcode:PHP_CODE');
                 break;
         }
     }

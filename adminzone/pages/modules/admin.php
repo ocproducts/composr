@@ -526,7 +526,7 @@ class Module_admin
             );
             foreach ($tips as $n => $tip_string) {
                 if ($this->_keyword_match($n)) {
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => do_lang_tempcode($tip_string, escape_html(get_brand_base_url()), escape_html(brand_name())), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'de0b2510ac9640ec36805fe39025afdf', 'NAME' => do_lang_tempcode($tip_string, escape_html(get_brand_base_url()), escape_html(brand_name())), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                 }
             }
         }
@@ -660,7 +660,7 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitetree', 'type' => 'site_tree', 'id' => $zone . ':' . $page), 'adminzone');
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }
@@ -918,7 +918,7 @@ class Module_admin
                                 $description = isset($info['description']) ? $info['description'] : '';
                                 $_url = build_url(array('page' => 'admin_addons'), 'adminzone');
                                 $url = $_url->evaluate();
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
+                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e9cd6b45e33abf4a2136dc6b1ff5b8ee', 'NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
                             }
                         }
                     }

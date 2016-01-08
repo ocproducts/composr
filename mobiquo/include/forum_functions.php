@@ -310,9 +310,9 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'reply_number' => mobiquo_val($details['t_cache_num_posts'] - 1, 'int'),
         'new_post' => mobiquo_val(is_topic_unread($topic_id, $member_id, $details), 'boolean'),
         'short_content' => mobiquo_val(generate_shortened_post($details, true), 'base64'),
-        /*'is_moved'=>, We don't have these topic shells in Composr
-        'is_merged'=>,
-        'real_topic_id'=>,*/
+        /*'is_moved' =>, We don't have these topic shells in Composr
+        'is_merged' =>,
+        'real_topic_id' => ,*/
         'can_upload' => mobiquo_val(true, 'boolean'),
     );
 
@@ -676,8 +676,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         }
     }
 
-    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array(
-        'CONTENT' => $content,
+    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array('_GUID' => 'ef6a156778d1bcaf9228c8bddef938fc', 'CONTENT' => $content,
         'WHISPER_USERNAME' => $whisper_username,
         'HAS_POLL' => $has_poll,
         'POST_ID' => strval($post['id']),
@@ -976,7 +975,7 @@ function report_post($post_id, $reason = '')
     }
 
     $__post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']));
-    $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_title, 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
+    $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '6e9a43a3503c357b52b724e11d3d4eef', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_title, 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
     if ($reason != '') {
         $post->attach($reason);
     }

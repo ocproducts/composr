@@ -30,7 +30,7 @@ foreach ($_addons as $addon => $place) {
 
         $pretty = titleify($addon);
 
-        $stemmed_addon = $stemmer->stem($pretty);
+        $stemmed_addon = strtolower($stemmer->stem($pretty));
         $_synonyms = array();
         foreach ($synonyms as $ss) {
             if (in_array($ss[0], array('export', 'permission'))) {
@@ -38,7 +38,6 @@ foreach ($_addons as $addon => $place) {
             }
 
             $_ss = array_map(array($stemmer, 'stem'), $ss);
-
             if (in_array($stemmed_addon, $_ss)) {
                 $_synonyms = array_merge($_synonyms, $ss);
                 $test = array_search($stemmed_addon, $_synonyms);

@@ -127,7 +127,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6df9d181757c40237d9459b06075de97', 'TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
 
     $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
 

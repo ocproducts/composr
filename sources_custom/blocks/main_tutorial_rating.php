@@ -69,6 +69,6 @@ class Block_main_tutorial_rating
 
         $rating = display_rating($self_url, $self_title, 'block_main_rating', $id, 'RATING_INLINE_DYNAMIC');
 
-        return do_template('BLOCK_MAIN_TUTORIAL_RATING', array('RATING' => $rating));
+        return do_template('BLOCK_MAIN_TUTORIAL_RATING', array('_GUID' => 'f68915b7d913e4736b558d0ccd59634a', 'RATING' => $rating));
     }
 }

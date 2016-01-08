@@ -228,7 +228,7 @@ class Module_cms_banners extends Standard_crud_module
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
-            //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
+            //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
@@ -287,7 +287,7 @@ class Module_cms_banners extends Standard_crud_module
             }
 
             $fr = array(
-                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))), false, false),
+                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('_GUID' => '25c57dd13c0801ad64f5bb8e6c9860f3', 'CONTENT' => escape_html($row['name']))), false, false),
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 $deployment_agreement,
                 //integer_format($row['campaign_remaining']),

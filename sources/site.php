@@ -495,7 +495,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
                     $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
                 }
 
-                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '769236ef4f20a0a05cee6d7a335eaf9f', 'LABEL' => $label)));
             }
         }
     }
@@ -526,14 +526,14 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
         }
 
         if ($entry_point == '') {
-            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => 'fcf371ee4a071ebdd170dc16a55f36dd', 'LABEL' => $label)));
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
             list($zone, $attributes, $hash) = page_link_decode($entry_point);
             $url = build_url($attributes, $zone, null, false, false, $hash);
 
-            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
+            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
     }
 
@@ -1765,7 +1765,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $add_child_url = new Tempcode();
     if (has_add_comcode_page_permission($zone)) {
         if (strpos($raw_comcode, 'main_comcode_page_children') !== false) {
-            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow ,'lang'=>user_lang()*//*,'redirect'=>$redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
+            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => $redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
         }
     }
 
@@ -1791,7 +1791,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
             'identifier' => $zone . ':' . $codename,
             'description' => '',
-            //'category'=>???,
+            //'category' => ???,
         ));
     }
 

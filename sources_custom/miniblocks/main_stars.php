@@ -52,4 +52,4 @@ foreach ($gifts as $gift) {
     }
 }
 
-return do_template('BLOCK_MAIN_STARS', array('STARS' => $stars));
+return do_template('BLOCK_MAIN_STARS', array('_GUID' => '298e81f1062087de02e30d77ff61305d', 'STARS' => $stars));

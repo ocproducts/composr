@@ -2,6 +2,9 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$title = get_screen_title('Categorise language strings', false);
+$title->evaluate_echo();
+
 require_code('lorem');
 require_code('lang_compile');
 

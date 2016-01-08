@@ -69,6 +69,7 @@ class Hook_addon_registry_core_themeing
             'tut_fixed_width',
             'tut_design',
             'tut_designer_themes',
+            'tut_mobile',
         );
     }
 
