@@ -20,6 +20,9 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$title = get_screen_title('Plug in missing GUIDs', false);
+$title->evaluate_echo();
+
 global $FOUND_GUID;
 $FOUND_GUID = array();
 global $GUID_LANDSCAPE;

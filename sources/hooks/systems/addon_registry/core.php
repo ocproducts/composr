@@ -62,10 +62,18 @@ class Hook_addon_registry_core
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_webapp',
             'tut_do',
             'tut_drinking',
             'tut_metadata',
+            'tut_sql',
+            'tut_short_urls',
+            'tut_seo',
+            'tut_selectcode',
+            'tut_filtercode',
+            'tut_keymap',
+            'tut_email',
+            'tut_disaster',
+            'tut_antispam',
         );
     }
 

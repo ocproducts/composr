@@ -149,8 +149,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         require_lang('workflows');
 
-        // TODO: Add tutorial
-        //set_helper_panel_tutorial('tut_workflow');
+        set_helper_panel_tutorial('sup_set_up_a_workflow_in_composr');
 
         if ($type == '_add') {
             $doing = 'ADD_' . $this->lang_type;

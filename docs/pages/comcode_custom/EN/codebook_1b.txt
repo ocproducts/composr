@@ -480,7 +480,7 @@ header('Location:' . $url);
 
 [title="3"]Database structure[/title]
 
-We describe Composr's database structure in a [url="separate document"]{$BRAND_BASE_URL}/docs/codebook_data_dictionary.doc[/url].
+We describe Composr's database structure in a [url="separate document"]{$BRAND_BASE_URL}/docs/codebook_data_dictionary.docx[/url].
 This document includes a data-dictionary, and links to ERD diagrams for different parts of Composr.
 
 [title="3"]Diff tools[/title]

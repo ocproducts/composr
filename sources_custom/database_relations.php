@@ -108,7 +108,14 @@ function get_relation_map()
     return $ret + $more;
 }
 
-function get_all_tables()
+/*
+The following code is strictly intended for building up a *FAKE* InnoDB schema for the
+database.
+
+It is not intended for real-world backups. For that see database_toolkit.php.
+*/
+
+function get_all_innodb_tables()
 {
     $_tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
     $all_tables = array();
@@ -120,19 +127,26 @@ function get_all_tables()
         $all_tables[$t['m_table']][$t['m_name']] = $t['m_type'];
     }
     unset($_tables);
+
+    ksort($all_tables);
+
     $all_tables['anything'] = array('id' => '*ID_TEXT');
 
     return $all_tables;
 }
 
-function get_tables_by_addon()
+function get_innodb_tables_by_addon()
 {
     $tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table')));
     $tables = array_combine($tables, array_fill(0, count($tables), '1'));
 
     $hooks = find_all_hooks('systems', 'addon_registry');
     $tables_by = array();
-    foreach (array_keys($hooks) as $hook) {
+    foreach ($hooks as $hook => $hook_type) {
+        if (strpos($hook_type, '_custom') !== false && get_param_integer('include_custom', 0) == 0) {
+            continue;
+        }
+
         require_code('hooks/systems/addon_registry/' . filter_naughty($hook));
         $object = object_factory('Hook_addon_registry_' . $hook);
         $files = $object->get_file_list();
@@ -186,7 +200,7 @@ function get_innodb_table_sql($tables, $all_tables)
 
     $i = 0;
     $table_prefix = get_table_prefix();
-    for ($loop_it = 0; $loop_it < count($tables); $loop_it++) {
+    for ($loop_it = 0; $loop_it < count($tables); $loop_it++) { // Loops over $tables, which is growing as we pull in tables needed due to foreign key references
         $tables_keys = array_keys($tables);
         $tables_values = array_values($tables);
 
@@ -195,18 +209,25 @@ function get_innodb_table_sql($tables, $all_tables)
         if ($table == 'translate') {
             continue; // Only used in multi-lang mode, which is the exception
         }
+        if (table_has_purpose_flag($table, TABLE_PURPOSE__NON_BUNDLED) && get_param_integer('include_custom', 0) == 0) {
+            continue;
+        }
 
         $fields = $tables_values[$loop_it];
 
         $_i = strval($i);
-        $out .= "    CREATE TABLE {$table_prefix}{$table}
-        (\n";
+        $out .= "CREATE TABLE {$table_prefix}{$table}\n(\n";
         $keys = array();
         $type_remap = get_innodb_data_types();
+        if (!is_array($fields)) { // Error
+            @print($out);
+            @var_dump($fields);
+            exit();
+        }
         foreach ($fields as $field => $type) {
             $_type = $type_remap[str_replace(array('*', '?'), array('', ''), $type)];
             $nullness = (strpos($type, '*') !== false) ? 'NULL' : 'NOT NULL';
-            $out .= "         {$field} {$_type} {$nullness},\n";
+            $out .= "     {$field} {$_type} {$nullness},\n";
             if (strpos($type, '*') !== false) {
                 $keys[] = $field;
             }
@@ -233,15 +254,14 @@ function get_innodb_table_sql($tables, $all_tables)
                 }
             }
         }
-        $out .= "       PRIMARY KEY (";
+        $out .= "\n     PRIMARY KEY (";
         foreach ($keys as $it => $key) {
             if ($it != 0) {
                 $out .= ',';
             }
             $out .= $key;
         }
-        $out .= ")
-        ) TYPE=InnoDB;\n\n";
+        $out .= ")\n) engine=InnoDB;\n\n";
 
         $i++;
     }
@@ -253,9 +273,7 @@ function get_innodb_table_sql($tables, $all_tables)
         $to_field = preg_replace('#^.*\.#', '', $to);
         $source_id = strval(array_search($from_table, array_keys($tables)));
         $target_id = strval(array_search($to_table, array_keys($tables)));
-        $out .= "
-        CREATE INDEX `{$from}` ON {$table_prefix}{$from_table}({$from_field});
-        ALTER TABLE {$table_prefix}{$from_table} ADD FOREIGN KEY `{$from}` ({$from_field}) REFERENCES {$table_prefix}{$to_table} ({$to_field});\n";
+        $out .= "\nCREATE INDEX `{$from}` ON {$table_prefix}{$from_table}({$from_field});\nALTER TABLE {$table_prefix}{$from_table} ADD FOREIGN KEY `{$from}` ({$from_field}) REFERENCES {$table_prefix}{$to_table} ({$to_field});\n";
     }
 
     return $out;

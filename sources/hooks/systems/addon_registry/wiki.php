@@ -51,7 +51,7 @@ class Hook_addon_registry_wiki
      */
     public function get_description()
     {
-        return 'Collaborative/encyclopaedic database interface. A WIKI-like community database with rich media capabilities.';
+        return 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.';
     }
 
     /**

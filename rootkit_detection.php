@@ -62,7 +62,7 @@ if ($type == '') {
 			<p>Database name: <input type="text" name="db_name" value="cns" /></p>
 			<p>Database table prefix: <input type="text" name="db_prefix" value="cms_" /></p>
 			<p>Database username: <input type="text" name="db_user" value="root" /></p>
-			<p>Database password: <input type="password" name="db_pass" /></p>
+			<p>Database password: <input type="password" name="db_password" /></p>
 END;
 
     if (isset($_SERVER['APPLICATION_ID'])) {// Google App Engine
@@ -76,6 +76,7 @@ END;
 		</div>
 END;
 } else {
+    // Load POSTed settings
     $settings = array();
     foreach ($_POST as $key => $val) {
         if (get_magic_quotes_gpc()) {
@@ -84,32 +85,8 @@ END;
         $settings[$key] = $val;
     }
 
-    $info_file = file_get_contents($FILE_BASE . '/_config.php');
-    $matches = array();
-    if (preg_match('#\$SITE_INFO\[\'master_password\'\]=\'([^\']*)\';#', $info_file, $matches) == 0) {
-        exit(':(');
-    }
-    global $SITE_INFO;
-    $SITE_INFO = array('master_password' => $matches[1]);
-    if (!rk_check_master_password($settings['password'])) {
-        echo '<p>Incorrect master password</p>';
-        rd_do_footer();
-        exit();
-    }
-
-    $db = mysql_connect($settings['db_host'], $settings['db_user'], $settings['db_pass']);
-    if ($db === false) {
-        echo '<p>Could not connect (1)</p>';
-        rd_do_footer();
-        exit();
-    }
-    if (!mysql_select_db($settings['db_name'], $db)) {
-        echo '<p>Could not connect (2)</p>';
-        rd_do_footer();
-        exit();
-    }
-
-    if (isset($_SERVER['APPLICATION_ID'])) { // Google App Engine
+    // Google App Engine
+    if (isset($_SERVER['APPLICATION_ID'])) {
         if (isset($_GET['settings'])) { // Running out of the task queue
             $settings = unserialize(get_magic_quotes_gpc() ? stripslashes($_GET['settings']) : $_GET['settings']);
         } else { // Put into the task queue
@@ -123,6 +100,35 @@ END;
             rd_do_footer();
             exit();
         }
+    }
+
+    // Find and check password
+    if (!defined('EXTERNAL_ROOTKIT_DETECTION_CALL')) {
+        $config_file = file_get_contents($FILE_BASE . '/_config.php');
+        $matches = array();
+        if (preg_match('#\$SITE_INFO\[\'master_password\'\] = \'([^\']*)\';#', $config_file, $matches) == 0) {
+            exit(':(');
+        }
+        global $SITE_INFO;
+        $SITE_INFO = array('master_password' => $matches[1]);
+        if (!rk_check_master_password($settings['password'])) {
+            echo '<p>Incorrect master password</p>';
+            rd_do_footer();
+            exit();
+        }
+    }
+
+    // Connect to DB
+    $db = mysql_connect($settings['db_host'], $settings['db_user'], $settings['db_password']);
+    if ($db === false) {
+        echo '<p>Could not connect (1)</p>';
+        rd_do_footer();
+        exit();
+    }
+    if (!mysql_select_db($settings['db_name'], $db)) {
+        echo '<p>Could not connect (2)</p>';
+        rd_do_footer();
+        exit();
     }
 
     $results = '';
@@ -172,6 +178,9 @@ END;
     }
     $r = mysql_query('SELECT * FROM ' . $prefix . 'group_privileges WHERE the_value=1 ORDER BY privilege,the_page,module_the_name,category_name,group_id', $db);
     while (($row = mysql_fetch_assoc($r)) !== false) {
+        if ($row['module_the_name'] == 'galleries') {
+            continue;
+        }
         $results .= "Privileges: {$row['privilege']}/{$row['the_page']}/{$row['module_the_name']}/{$row['category_name']}/{$row['group_id']}={$row['the_value']}\n";
     }
     $r = mysql_query('SELECT * FROM ' . $prefix . 'member_zone_access WHERE zone_name=\'cms\' OR zone_name=\'adminzone\' OR zone_name=\'collaboration\' ORDER BY zone_name,member_id', $db);
@@ -180,6 +189,9 @@ END;
     }
     $r = mysql_query('SELECT * FROM ' . $prefix . 'member_privileges WHERE the_value=1 ORDER BY privilege,the_page,module_the_name,category_name,member_id', $db);
     while (($row = mysql_fetch_assoc($r)) !== false) {
+        if ($row['module_the_name'] == 'galleries') {
+            continue;
+        }
         $results .= "Member-Privileges: {$row['privilege']}/{$row['the_page']}/{$row['module_the_name']}/{$row['category_name']}/{$row['member_id']}={$row['the_value']}\n";
     }
 
@@ -189,6 +201,13 @@ END;
     }
     $files = rd_do_dir('');
     foreach ($files as $file) {
+        if (preg_match('#^data_custom/errorlog\.php$#', $file)!=0) {
+            continue;
+        }
+        if (preg_match('#^servers/composr.info/_config\.php$#', $file)!=0) {
+            continue;
+        }
+
         if (filesize($FILE_BASE . '/' . $file) != 0) {
             $results .= 'File: ' . $file . '=';
             $results .= md5_file($FILE_BASE . '/' . $file);
