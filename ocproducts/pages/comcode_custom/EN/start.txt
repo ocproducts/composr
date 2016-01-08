@@ -1,4 +1,216 @@
 [semihtml]
+<!--[title]Sheffield web design/development agency[/title]-->
+<div class="company_rhs_box_links">
+	<div class="company_rhs_box_link">
+		<h3>Stats and facts:&nbsp;&nbsp;</h3>
+
+		<p>Blinded by tech? See our <a href="{$PAGE_LINK*,ocproducts:glossary}"><strong>glossary</strong></a>.</p>
+		[staff_note]<p>Our number: <a style="text-decoration: none; font-weight: bold" href="tel: +44 114 360 0209">+44 114 360 0209</a></p>[/staff_note]
+		<!--<p>Our office: <a target="_blank" title="{!LINK_NEW_WINDOW}" href="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=ocproducts+sheffield&amp;sll=34.597042,-95.449219&amp;sspn=107.785629,150.117187&amp;ie=UTF8&amp;hq=ocproducts&amp;hnear=Sheffield,+United+Kingdom&amp;ll=53.372064,-1.488132&amp;spn=0.041581,0.073299&amp;z=14&amp;iwloc=A">Sheffield</a>, <a target="_blank" title="{!LINK_NEW_WINDOW}" href="http://www.british-expats.com/showthread.php?tid=15606">Yorkshire</a>, UK</p>
+		<p>Full-time staff: 6 (<em>5</em> in Sheffield)</p>
+		<p>Part-time staff: 2 (<em>1</em> in Sheffield)</p>-->
+	</div>
+
+	<div class="company_rhs_box_link">
+		<a href="{$PAGE_LINK*,ocproducts:portfolio}"><img alt="Website design projects" src="{$IMG*,company_rhs_box_link/portfolio}" /></a>
+
+		<p>Testimony: [page="ocproducts:portfolio"]View [b]portfolio[/b] &amp; case studies &raquo;[/page]</p>
+	</div>
+
+	<div class="company_rhs_box_link">
+		<a href="{$PAGE_LINK*,ocproducts:social-revolution}" title="Beyond websites: we can develop any kind of digital social tool">[block]fp_animation[/block]</a>
+
+		<p>The social revolution: [page="ocproducts:social-revolution"]Beyond websites &raquo;[/page]</p>
+	</div>
+
+	<div class="company_rhs_box_link">
+		<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=agency:cost=free}"><img alt="Contact our website development team" src="{$IMG*,company_rhs_box_link/ticket}" /></a>
+
+		<p style="font-weight: bold; font-size: 1.05em">Ready to contact us? [page="site:tickets:ticket:ticket_template=agency:cost=free"]Open a ticket &raquo;[/page]</p>
+	</div>
+	
+	<!--<div class="company_rhs_box_link">
+		<a href="{$PAGE_LINK*,ocproducts:team}"><img alt="Website design team" src="{$IMG*,company_rhs_box_link/team}" /></a>
+
+		<p>Meet the team behind the magic. <br />[page="ocproducts:team"]About ocProducts / our Sheffield office &raquo;[/page]</p>
+	</div>-->
+
+	<div class="pull_quote">
+		<img alt="The client benefits from the combination of our expertise and the powerful features of our software" title="" src="{$IMG*,company_pull_quote}" />
+	</div>
+</div>
+[/semihtml]
+[title="2"]Our premise[/title]
+
+Rather than building several 'pages' and calling it a website, we specialising in providing real tools you need to succeed in today's competitive online world of highly [b]sophisticated beautiful social websites[/b].
+
+In addition, our first-class websites include practical tools (like [abbr="Search Engine Optimisation"]SEO[/abbr]) that actually make a website effective.
+
+[title="2"]Why not a regular web design company?[/title]
+
+Through our unique relationship with Composr [sup]*1[/sup], you'll receive:[semihtml]<ul style="list-style: none; padding: 0; margin: 1em 0 0 0">
+<li style="padding-left:21px; background: url('{$IMG;,bullets/love}') no-repeat 0 3px;">Service from a [b]world-class web development company[/b] with an [b]active web presence[/b] and [b]public fan base[/b]</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/money}') no-repeat 0 3px;">[b]Cost-effectiveness[/b], by leveraging Composr's features and avoid reinventing the wheel</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/growth}') no-repeat 0 3px;">A [b]low-maintenance[/b] web solution with capacity for [b]low-cost growth[/b]</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/tools}') no-repeat 0 3px;">An [b]integrated web solution[/b] with advanced functionality and features</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/good}') no-repeat 0 0;">Software that has [b]passed the tests of time[/b]</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/people}') no-repeat 0 3px;">Reduced reliance on third-party software/technology: [b]avoid buck-passing[/b]</li>
+</ul>
+
+<p>Read more about <a href="{$BASE_URL}/uploads/website_specific/ocportal.com/ocproducts-and-ocportal.pdf">our company's approach</a>.</p>
+
+<span class="associated_details">(we can do non-Composr solutions too, if appropriate)</span>[/semihtml]
+
+[title="2"]We're not all about technology[/title]
+
+It's vital that you get a beautiful web design that carries your brand and gives your users confidence:[semihtml]<ul style="list-style: none; padding: 0; margin: 1em 0">
+<li style="padding-left:21px; background: url('{$IMG;,bullets/template}') no-repeat 0 3px;">We won't just use template, you'll have a [b]real designer[/b] working for you, someone with [b]experience[/b]</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/logo}') no-repeat 0 3px;">We include [b]logo design[/b], if you want it</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/stock}') no-repeat 0 3px;">[i]Free[/i] use of professional stock photography</li>
+</ul><span class="associated_details">(if you're a design agency, we'll build your design)</span>[/semihtml]
+
+We want your users to keep coming back to you, not a competitor. A great and charming user experience helps.
+[title="2"]We make our projects partnerships[/title]
+
+As our business partner you will get [sup]*2[/sup]:[semihtml]<ul style="list-style: none; padding: 0; margin: 1em 0">
+<li style="padding-left:21px; background: url('{$IMG;,bullets/pm}') no-repeat 0 3px;">To [b]liaise directly with a project manager[/b] in charge of your web design project</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/email}') no-repeat 0 3px;">A free [b]email account[/b] and [b]domain name[/b] (if you take out our low-cost hosting option)</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/seo}') no-repeat 0 3px;">Inbuilt [b]search engine optimisation[/b] and automatic search engine submission</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/stats}') no-repeat 0 3px;">Inbuilt [b]web analytics[/b]</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/browsers}') no-repeat 0 3px;">A website that is compatible with all the major web browsers (Internet Explorer, Firefox, Google Chrome, Safari, and Opera)</li>
+<li style="padding-left:21px; background: url('{$IMG;,bullets/support}') no-repeat 0 3px;">[b]Comprehensive support[/b] to make your site as successful as it can be (under our support account service)</li>
+</ul>[/semihtml]
+We also have the skills and resources to provide all kinds of other design/development services as-required, such as user-testing sessions and mobile-app development.
+
+[title="2"]The world-class web development team is waiting to hear from you[staff_note]just a phone call away[/staff_note][/title]
+
+[box][indent="20"]&raquo; To get started, [page="site:tickets:ticket:ticket_template=agency:cost=free"]open a ticket[/page] with your requirements. We'll respond promptly with a free quote [sup]*1, *5[/sup].
+
+&raquo; Or, fill in our [page="site:quiz:do:project_briefing"]project briefing survey[/page] to tell us your website development needs directly.
+[staff_note]
+&raquo; Or (British customers), give us a ring on [font color="green" size="1.2"][b]0114 360 0209[/b][/font] (our Sheffield office number).
+
+&raquo; Or (International customers). give us a ring on +44 114 360 0209 [size="0.8"](Monday-Friday, 9am-5pm UK hours)[/size].[/staff_note]
+[/indent][/box]
+
+[title="2"]The website design process[/title]
+[html]
+<div class="float_surrounder company_columns">
+	<div class="company_column company_column_first">[/html][title="3"]How do we do it?[/title]
+
+Take a look inside our usual full-agency website design process [sup]*3[/sup]:
+[semihtml]{$CSS_INCLUDE,lightbox}{$JAVASCRIPT_INCLUDE,javascript_prototype}{$JAVASCRIPT_INCLUDE,javascript_scriptaculous}{$JAVASCRIPT_INCLUDE,javascript_scriptaculous_builder}{$JAVASCRIPT_INCLUDE,javascript_scriptaculous_effects}{$JAVASCRIPT_INCLUDE,javascript_lightbox}<a rel="lightbox" href="{$BASE_URL*}/uploads/website_specific/ocportal.com/process.png"><img alt="Website design process" src="{$BASE_URL*}/uploads/website_specific/ocportal.com/process_thumb.png" /></a>[/semihtml][surround="associated_details"](click the diagram for a larger version)[/surround]
+
+The process begins with you submitting your requirements. There is no &ldquo;one size fits all&rdquo;: every web solution we do is written to the needs of that customer. We work to agree on a website development plan with a fixed-price quote, then submit diagrams and screen designs for approval.
+
+After you sign-off, our website development begins. This phase includes regular progress updates plus thorough testing where we critically review our work against [tooltip="This includes aesthetics, interaction design, information architecture / 
+layout, compatibility, usability, SEO, web standards, and accessibility"]a wide range of quality and standards compliance criteria[/tooltip]. Then we prepare a live demo for you to evaluate.
+[html]	</div>
+
+	<div class="company_column company_column_mid">[/html]
+When everyone is happy, we deploy the new website, and remain on-call for further support needs with our [i]Experts by the Hour[/i] service.
+	
+[title="3"]What do we charge?[/title]
+
+For all full-agency developments, we charge our standard hourly rates which incorporate all our development costs. Currently:[semihtml]
+<ul>
+<li>[b]Web designer[/b]<br />
+[currency="GBP" bracket="1"]40[/currency] per hour.</li>
+<li>[b]Web developer[/b]<br />
+[currency="GBP" bracket="1"]60[/currency] per hour.</li>
+<li>[b]Project manager[/b]<br />
+[currency="GBP" bracket="1"]40[/currency] per hour.</li>
+</ul>[/semihtml]
+Prices typically start from about [currency="GBP" bracket="1"]2500[/currency] for a professionally designed website, with [currency="GBP" bracket="1"]10000[/currency] being a typical amount for a website with a lot of awesome-new functionality.
+
+You will receive your initial quote once we have identified your particular needs.
+
+[html]	</div>
+
+	<div class="company_column company_column_last">[/html][title="3"]What to provide us[/title]
+
+It is best if you can provide detailed specifications to design for, because it reduces the risk of misunderstanding and things go much more quickly. Examples:
+ - Website objectives
+ - Feature lists for development
+ - Sketches of how screens should look (if you have strong ideas in this area)
+ - Descriptions of behaviour
+If you are too busy for this, or are not sure how to write a good web brief/specification then our [page="site:quiz:do:project_briefing"]project briefing survey[/page] provides a strong start.
+
+If new requirements come up after the initial sign-off, they may have to be incorporated into your web development at a later stage. Such revisions usually involve a change to the quote, as well. This is why we try and work things out ahead of time and carefully match your requirements and budget.
+[html]	</div>
+</div>
+[/html]
+
+[title="2"]Comparison to other web designers - don't get ripped off![/title]
+
+[img="Be wary of web design companies" float="right"]{$IMG,bullets/warn}[/img]A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining [url="what to look out for"]{$BASE_URL}/uploads/website_specific/ocportal.com/web-client-guide.pdf[/url] and another on [url="pricing"]{$BASE_URL}/uploads/website_specific/ocportal.com/pricing.pdf[/url]. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.
+
+[title="3"]Don't be fooled by a slick pitch[/title]
+
+[img="Plan your web development funding" float="right"]{$IMG,bullets/plan}[/img]There isn't much meaning to 'accreditation' logos, and some companies are known to get good testimonials by giving out freebies. Here are some demonstrable facts about ocProducts:
+ - [url="http://www.facebook.com/notes/facebook-engineering/hiphop-for-php-six-months-later/416880943919"]Thanked publicly by Facebook[/url] for helping them improve their technology
+ - One of just a few Content Management Systems [url="distributed by Microsoft"]http://www.microsoft.com/web/gallery/ocportal.aspx[/url]
+ - [page="site:members"]Thousands of registered users[/page] of our technology
+ - [url="Regular third-party coverage"]http://www.google.co.uk/search?q=site:cmsreport.com+ocportal[/url] of our innovations
+ - [url="http://bitnami.org/stack/ocportal"]Third parties package our technology[/url] for use on cutting-edge Amazon Cloud services
+ - We are rated highest by users for &lsquo;Built-in Applications&rsquo; on the [url="biggest CMS comparison website"]http://www.cmsmatrix.org/[/url]
+ - A high percentage of web hosts supply our technology as a service to their users
+Local web designers may make a lot of bold fancy claims about expertise and technology, and have a few nice sites in their portfolio, but can they say anything like this? ocProducts is an International technology leader, but with all the business and creative excellence you'd want from a good web design company burning at our core.
+
+[size="0.9"](if another company says they have a CMS, can you actually demo it? Usually it is either something they've knocked together, or they simply claim something like Joomla or Wordpress as their own)[/size]
+
+[title="2"]Agency or support ticket?[/title]
+
+[img="Full service agency, with direct project managers contacts, or online support tickets?" float="right"]{$IMG,bullets/support2}[/img]This page of our website relates to our agency service. We also have a support tickets system called &ldquo;Experts By The Hour&rdquo; that is available to you. This is our innovative service for providing great web support at whatever service level you require for an individual query -- saving you money for small queries, and meeting urgency when needed (and no long-term service contract!). We have a [url="document that helps you decide"]{$BASE_URL}/uploads/website_specific/ocportal.com/agency-vs-support-ticket.pdf[/url] whether to choose our agency service or support tickets.
+
+We usually recommend that large developments be done via our agency service (for example, a complete website design), then supported using a topped-up &ldquo;Experts By The Hour&rdquo; account. The agency service has many advantages: for example we can meet in person [sup]*4[/sup].
+
+[semihtml]<div style="width: 231px; margin-left: 10px" class="right">[block="10" blogs="1" title="Our CEO's blog" filter="17"]side_news[/block]</div>[/semihtml][title="2"]Project funding[/title]
+
+There are roughly three kinds of web design project funding scenarios:
+1) New businesses, designed to make money with the website being the/a key foundation
+2) A necessary investment for a new/existing business (a capital cost to &ldquo;keep with the times&rdquo;)
+3) A non-profit project, such as for a charity or government organisation who need a strong web presence
+Sometimes we see web design project ideas that we don't immediately see as viable as the foundation for a business. We try and do some level of market review when we write a project proposal, to identify competition, learn a little about the markets involved, and see what has sometimes not worked for other businesses in the past. We may make some suggestions on how to add additional differentiation to your original idea, or what marketing strategies you could use to reach your market.
+
+Ultimately though it is important that you yourself consider your business plan carefully as there is quite a lot of expense and uncertainty starting a web design project on the modern web. If you'd like us to conduct a more thorough and formal review on your behalf please ask us to do so and we'll include that as an initial phase of the project.
+
+Generally a business should see a website development investment like any other: write a proper business plan, then arrange an appropriate source of funding (for example it might be a personal investment, a company expenditure, or from an external business investor).
+
+----
+
+[html]
+                <noscript>
+                    <div style="font-size:.85em; text-align:left; overflow:scroll; height: 150px"><strong>You have Javascript disabled</strong>, so the text to our video is as follows:<br /><br />
+At ocProducts, we offer cost-effective, dynamic web solutions with our state of the art, Open Source Content Management System: Composr.<br /><br />
+
+Composr gives you a future-proof website, with many or all of the features you'd expect from a CMS. These include forums, galleries, news, wiki, social media integration and syndication, and RSS delivery and aggregation, and many more&mdash;all designed together and to the highest standards available, ensuring your website remains accessible to all.<br /><br />
+
+Couple these with essential components like automatic Search Engine Optimization, and our aggressive security standards which pro-actively prevent hack attacks, to give you the tools you need to survive in the 21st century.<br /><br />
+
+The flexibility of Composr means you can add any standard Composr features, even if they were not initially required, without the need to employ programmers or incur further development costs, making Composr an excellent long-term investment.<br /><br />
+
+We pride ourselves in intuitive interfaces anyone in your company can use. Combined with our free library of clear video and written tutorials, you can continue updating your website long after we hand it over to you<br /><br />
+
+However, our dedicated team remains on-call, through our "experts by the hour" professional support system. Lean on us at any point for assistance, training, or new feature development. This way, you're never left behind.<br /><br />
+
+Because we believe in the Open Source model, we believe in no hidden costs. All of our costing is up-front, and available on our website.<br /><br />
+
+If you want to combine cutting edge technology with high-value service, then ocProducts can provide the solution for you.
+
+                    </div>
+                </noscript>
+[/html]
+
+
+ocproducts_rate_card.pdf
+
+[title="3"]ocProducts (the Composr company)[/title]
+
+Looking for a professionally developed website? [page="ocproducts:start"]Hire ocProducts[/page] to develop your Composr based site&mdash;we are experts in crafting our software to perfectly suit your needs. Let us make you a &ldquo;sticky site&rdquo; that isn't &ldquo;glued together&rdquo;.
+
+
+[semihtml]
 {$REQUIRE_CSS,composr_homesite__ocproducts}
 
 {$REQUIRE_CSS,jquery.megahomepage-slidedeck}

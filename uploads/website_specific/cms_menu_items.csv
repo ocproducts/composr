@@ -1,5 +1,5 @@
 id,i_menu,i_order,i_parent,i_url,i_check_permissions,i_expanded,i_new_window,i_page_only,i_theme_img_code,i_caption,i_caption_long,i_include_sitemap
-513,composr_homesite_header,25,,site:helping_out,0,0,0,,,Contribute,Support our mission,
+513,composr_homesite_header,25,,site:contributions,0,0,0,,,Contribute,Support our mission,
 512,composr_homesite_header,17,,site:community,0,0,0,,,Community,,
 511,composr_homesite_header,8,,site:support,0,0,0,,,Support,,
 510,composr_homesite_header,26,,ocproducts:,0,0,0,,,Pro web design,Full website development service from ocProducts,
@@ -17,10 +17,10 @@ id,i_menu,i_order,i_parent,i_url,i_check_permissions,i_expanded,i_new_window,i_p
 532,composr_homesite_header,11,511,docs:faq,0,0,0,,,FAQ,,
 533,composr_homesite_header,12,511,docs:codebook,0,0,0,,,Developer docs,,
 534,composr_homesite_header,13,511,site:professional_support,0,0,0,,,Professional,,
+545,composr_homesite_header,15,511,site:tickets,0,0,0,,,Existing tickets,,
 535,composr_homesite_header,17,512,site:community,0,0,0,,,Index,,
 536,composr_homesite_header,18,512,forum:forumview,0,0,0,,,Forums,Participate in the online Composr community,
 537,composr_homesite_header,19,512,site:chat,0,0,0,,,Chat,,
 538,composr_homesite_header,20,512,site:tracker,0,0,0,,,Issue Tracker,,
 539,composr_homesite_header,21,512,site:downloads:misc:TODO,0,0,0,,,Translations,,
 540,composr_homesite_header,22,512,site:downloads:misc:TODO,0,0,0,,,Addons,,
-545,composr_homesite_header,15,511,site:tickets,0,0,0,,,Existing tickets,,

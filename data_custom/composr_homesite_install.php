@@ -111,7 +111,7 @@ function composr_homesite_install()
     set_option('encryption_key', '{file_base}/uploads/website_specific/ocportal.com/public.pem');
     set_option('decryption_key', '{file_base}/uploads/website_specific/ocportal.com/private.pem');
     set_option('site_scope', 'Composr CMS');
-    set_option('primary_paypal_email', 'payment@ocportal.com'); // TODO: Change this when we change the account itself
+    set_option('primary_paypal_email', 'payment@compo.sr');
     set_option('newsletter_title', 'Composr CMS newsletter');
     set_option('network_links', 'http://compo.sr/data/netlink.php');
     set_option('mail_server', 'localhost');

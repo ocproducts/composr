@@ -168,9 +168,9 @@ To thank a member for something, visit their points profile (linked from their m
 							</tr>
 						</table>
 
-						<p>Want points? Earn 350 when a member joins using a recommeded address.<br />
-						Also check out our community stars.<br />
-						Points to spend? Buy a banner at the point store.</p>
+						<p>Want points? Earn 350 when a member joins using a <a href="{$PAGE_LINK*,:recommend}">recommended address</a>.<br />
+						Also check out our <a href="{$PAGE_LINK*,site:stars}">community stars</a>.<br />
+						Points to spend? Buy a banner at the <a href="{$PAGE_LINK*,site:pointstore}">point store</a>.</p>
 
 						<div class="forum-row-box-button">
 							<a href="#">Read more</a>

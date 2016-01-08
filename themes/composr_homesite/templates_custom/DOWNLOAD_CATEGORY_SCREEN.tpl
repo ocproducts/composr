@@ -542,7 +542,7 @@
 
 						<div class="bannerr"><img alt="Community Advertising" height="319" src="{$IMG*,composr_homesite/community_advertising}" width="960" /></div>
 
-						<p>These banners are from the members of the Composr community, bought with <span>points</span></p>
+						<p>These banners are from the members of the Composr community, bought with <a href="{$PAGE_LINK*,site:pointstore}">points</a></p>
 					</div>
 				</div>
 			</div>
