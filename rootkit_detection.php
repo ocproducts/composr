@@ -201,10 +201,10 @@ END;
     }
     $files = rd_do_dir('');
     foreach ($files as $file) {
-        if (preg_match('#^data_custom/errorlog\.php$#', $file)!=0) {
+        if (preg_match('#^data_custom/errorlog\.php$#', $file) != 0) {
             continue;
         }
-        if (preg_match('#^servers/composr.info/_config\.php$#', $file)!=0) {
+        if (preg_match('#^servers/composr.info/_config\.php$#', $file) != 0) {
             continue;
         }
 

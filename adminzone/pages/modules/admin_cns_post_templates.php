@@ -175,7 +175,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
 
         $text = paragraph(do_lang_tempcode('DESCRIPTION_IMPORT_STOCK_RESPONSES_PT'));
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
+        return do_template('FORM_SCREEN', array('_GUID' => '7089deefe20d3917020610768e0f7f24', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
     }
 
     /**

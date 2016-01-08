@@ -572,8 +572,7 @@ class Module_admin_quiz
             $passed,
             ) = score_quiz($id, null, null, null, true);
 
-        return do_template('QUIZ_RESULT_SCREEN', array(
-            'TITLE' => $this->title,
+        return do_template('QUIZ_RESULT_SCREEN', array('_GUID' => 'f59cbda2bb6b6f0ad6fa149591d94c90', 'TITLE' => $this->title,
             'USERNAME' => $username,
             'MEMBER_URL' => $member_url,
             'DATE' => $date,

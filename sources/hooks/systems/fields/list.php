@@ -214,8 +214,7 @@ class Hook_fields_list
                 }
 
                 if ($custom_values == 'on') {
-                    $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array(
-                        'TABINDEX' => strval(get_form_field_tabindex()),
+                    $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array('_GUID' => '4eb01c365b63d4ef09fd99b5c05ca3d5', 'TABINDEX' => strval(get_form_field_tabindex()),
                         'NAME' => $input_name,
                         'VALUE' => $custom_value ? $actual_value : '',
                     )));

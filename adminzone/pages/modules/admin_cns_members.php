@@ -606,7 +606,7 @@ class Module_admin_cns_members
 
         // Contents (preset / detailed specification)...
 
-        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('CONTENTS'))));
+        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '64766722d13457f593b60d0c9ca9aab5', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('CONTENTS'))));
 
         $presets = method_exists($this, '_get_export_presets') ? $this->_get_export_presets() : array();
         if ($presets != array()) {
@@ -668,7 +668,7 @@ class Module_admin_cns_members
 
         // Filename...
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('FILENAME'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '16d396d2357684d2dbfebefbd20776a3', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('FILENAME'))));
 
         // File name
         $filename = strtolower(do_lang('MEMBERS')) . '-' . date('Y-m-d');
@@ -697,7 +697,7 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
+        return do_template('FORM_SCREEN', array('_GUID' => '24cae29bc329a307a94c8b3f1e087708', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
     }
 
     /**

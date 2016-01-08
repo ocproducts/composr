@@ -495,7 +495,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
                     $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
                 }
 
-                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '769236ef4f20a0a05cee6d7a335eaf9f', 'LABEL' => $label)));
             }
         }
     }
@@ -526,14 +526,14 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
         }
 
         if ($entry_point == '') {
-            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => 'fcf371ee4a071ebdd170dc16a55f36dd', 'LABEL' => $label)));
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
             list($zone, $attributes, $hash) = page_link_decode($entry_point);
             $url = build_url($attributes, $zone, null, false, false, $hash);
 
-            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
+            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
     }
 

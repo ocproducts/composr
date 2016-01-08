@@ -156,7 +156,7 @@ class Hook_fields_posting_field
 
         $ret = new Tempcode();
 
-        $ret->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => $_cf_name)));
+        $ret->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2201f130af229cbadd92bb1b377739f5', 'TITLE' => $_cf_name)));
 
         $ret->attach(do_template('POSTING_FIELD', array(
             '_GUID' => 'b6c65227a28e0650154393033e005f67',

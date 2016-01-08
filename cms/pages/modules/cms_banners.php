@@ -287,7 +287,7 @@ class Module_cms_banners extends Standard_crud_module
             }
 
             $fr = array(
-                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))), false, false),
+                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('_GUID' => '25c57dd13c0801ad64f5bb8e6c9860f3', 'CONTENT' => escape_html($row['name']))), false, false),
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 $deployment_agreement,
                 //integer_format($row['campaign_remaining']),

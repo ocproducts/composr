@@ -78,10 +78,10 @@ class Hook_members_quiz
         $selectors = new Tempcode();
         foreach ($_selectors as $selector_value => $selector_name) {
             $selected = ($order == $selector_value);
-            $selectors->attach(do_template('PAGINATION_SORTER', array('SELECTED' => $selected, 'NAME' => do_lang_tempcode($selector_name), 'VALUE' => $selector_value)));
+            $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '87b66fd533e5b2b185b00ed97c1d4c6b', 'SELECTED' => $selected, 'NAME' => do_lang_tempcode($selector_name), 'VALUE' => $selector_value)));
         }
         $sort_url = get_self_url(false, false, array('sort_quiz_results' => null));
-        $sorting = do_template('PAGINATION_SORT', array('SORT' => 'sort_quiz_results', 'URL' => $sort_url, 'SELECTORS' => $selectors));
+        $sorting = do_template('PAGINATION_SORT', array('_GUID' => '80b6bfaaf33fe0f455d57e9d940abf96', 'SORT' => 'sort_quiz_results', 'URL' => $sort_url, 'SELECTORS' => $selectors));
 
         if ($order == 'q_name ASC' || $order == 'q_name DESC') {
             $order = str_replace('q_name', $GLOBALS['SITE_DB']->translate_field_ref('q_name'), $order);
@@ -191,8 +191,7 @@ class Hook_members_quiz
             $delete_url = build_url(array('page' => 'admin_quiz', 'type' => 'delete_quiz_results'), get_module_zone('admin_quiz'));
         }
 
-        return array(do_template('MEMBER_QUIZ_ENTRIES', array(
-            'CATEGORIES' => $categories,
+        return array(do_template('MEMBER_QUIZ_ENTRIES', array('_GUID' => '3143daff524b1e8e8de090d445e20b28', 'CATEGORIES' => $categories,
             'MEMBER_ID' => strval($member_id),
             'SORTING' => $sorting,
             'DELETE_URL' => $delete_url,

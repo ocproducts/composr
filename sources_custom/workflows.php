@@ -426,7 +426,7 @@ function get_workflow_form($workflow_content_id)
     }
 
     // Attach the title to the form first, along with usage info
-    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
+    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f0a8a4aabdd2f42bf7612f88b52b32b6', 'TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
 
     // Show the current status next
     $workflow_fields->attach(form_input_various_ticks($existing_status, '', null, do_lang_tempcode('CURRENT_APPROVAL_STATUS'), false));

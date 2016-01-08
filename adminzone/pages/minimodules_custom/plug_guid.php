@@ -93,7 +93,7 @@ function callback($match)
             $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
             return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "'";
         }
-        $FOUND_GUID[$guid_value] = 1;
+        $FOUND_GUID[$guid_value] = true;
         $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $guid_value);
     }
     return $match[0];

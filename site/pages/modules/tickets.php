@@ -718,7 +718,7 @@ class Module_tickets
                     $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
                     $post_templates2->attach($_post_templates);
 
-                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('LIST' => $post_templates2, 'RESETS' => true));
+                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'LIST' => $post_templates2, 'RESETS' => true));
                 }
             }
 
@@ -998,7 +998,7 @@ class Module_tickets
         }
         $fields->attach(form_input_username_multi(do_lang_tempcode('USERNAME'), '', 'access', $access, 0, true));
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu__adminzone__security__permissions__privileges', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array('_GUID' => 'a94d516fc14662908628ff19eb7305b9', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu__adminzone__security__permissions__privileges', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
     }
 
     /**
@@ -1082,7 +1082,7 @@ class Module_tickets
         }
         $fields->attach(form_input_list(do_lang_tempcode('TICKET_TYPE'), '', 'ticket_type', $_ticket_types));
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array('_GUID' => '1fd8f7eaf5346776ae2362450d81f4c2', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
     }
 
     /**

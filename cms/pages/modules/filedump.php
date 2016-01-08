@@ -445,8 +445,7 @@ class Module_filedump
 
                 $choose_action = new Tempcode();
                 if ($file['choosable']) {
-                    $choose_action->attach(do_template('COLUMNED_TABLE_ROW_CELL_TICK', array(
-                        'LABEL' => do_lang_tempcode('CHOOSE'),
+                    $choose_action->attach(do_template('COLUMNED_TABLE_ROW_CELL_TICK', array('_GUID' => 'd5085d4d602d24f7df25bcaf24db0d79', 'LABEL' => do_lang_tempcode('CHOOSE'),
                         'NAME' => 'select_' . strval($i),
                         'VALUE' => rtrim($filename, '/'),
                         'HIDDEN' => form_input_hidden('place_file_' . strval($i), $_place),
@@ -475,8 +474,7 @@ class Module_filedump
                 );
 
                 // Editable filename
-                $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    'LABEL' => do_lang_tempcode('FILENAME'),
+                $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array('_GUID' => 'bce082b134f751615785189bf1cedbe2', 'LABEL' => do_lang_tempcode('FILENAME'),
                     'NAME' => 'filename_value_' . strval($i),
                     'VALUE' => rtrim($filename, '/'),
                     'HIDDEN_NAME' => 'filename_file_' . strval($i),
@@ -484,8 +482,7 @@ class Module_filedump
                 ));
 
                 // Editable description
-                $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    'LABEL' => do_lang_tempcode('DESCRIPTION'),
+                $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array('_GUID' => '22ef464010277ceedb72f8f38f897af6', 'LABEL' => do_lang_tempcode('DESCRIPTION'),
                     'NAME' => 'description_value_' . strval($i),
                     'VALUE' => $file['description'],
                     'HIDDEN_NAME' => 'description_file_' . strval($i),
@@ -578,8 +575,7 @@ class Module_filedump
             $hidden = new Tempcode();
             handle_max_file_size($hidden);
 
-            $upload_form = do_template('FORM', array(
-                'TABINDEX' => strval(get_form_field_tabindex()),
+            $upload_form = do_template('FORM', array('_GUID' => '70279f3714ec90a5b3defec04a357b11', 'TABINDEX' => strval(get_form_field_tabindex()),
                 'SKIP_REQUIRED' => true,
                 'HIDDEN' => $hidden,
                 'TEXT' => $text,
@@ -900,8 +896,7 @@ class Module_filedump
         }
         $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
 
-        $form = do_template('FORM', array(
-            'FIELDS' => $fields,
+        $form = do_template('FORM', array('_GUID' => 'b1502bd870aded49d27d7478806d53ed', 'FIELDS' => $fields,
             'HIDDEN' => '',
             'TEXT' => '',
             'URL' => get_self_url(),
@@ -950,8 +945,7 @@ class Module_filedump
             $existing_count = 0;
         }
 
-        return do_template('FILEDUMP_EMBED_SCREEN', array(
-            'TITLE' => $this->title,
+        return do_template('FILEDUMP_EMBED_SCREEN', array('_GUID' => 'f82e0225f9b94fd96c5f61eac9c56e3d', 'TITLE' => $this->title,
             'FORM' => $form,
             'GENERATED' => $generated,
             'RENDERED' => $rendered,
@@ -1377,8 +1371,7 @@ class Module_filedump
 
         $url = build_url(array('page' => '_SELF', 'type' => '_broken'), '_SELF');
 
-        return do_template('FORM_SCREEN', array(
-            'TITLE' => $this->title,
+        return do_template('FORM_SCREEN', array('_GUID' => '1b13a7aaf187f10a077df5b2b79098c7', 'TITLE' => $this->title,
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
             'URL' => $url,

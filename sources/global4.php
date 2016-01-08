@@ -239,8 +239,7 @@ function member_personal_links_and_details($member_id)
                 if ((!is_null($expiry_time)) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
                     require_lang('ecommerce');
                     $expiry_date = is_null($expiry_time) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false, false, false, true);
-                    $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
-                        'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),
+                    $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '2675d56aa278616aa9f00b051ca084fc', 'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),
                         'VALUE' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_DATE', escape_html($expiry_date)),
                     )));
                 }
@@ -278,7 +277,7 @@ function member_personal_links_and_details($member_id)
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
         } else {
             $url = build_url(array('page' => ''), 'cms');
-            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
+            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '3f63dad2645b6c39f68dcfebe7d7a0ab', 'ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
         }
     }
 

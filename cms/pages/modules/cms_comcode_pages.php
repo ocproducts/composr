@@ -512,7 +512,7 @@ class Module_cms_comcode_pages
         if ($fields->is_empty()) {
             $extra = new Tempcode();
         } else {
-            $extra = do_template('FORM', array('FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_NAME' => $submit_name, 'SUBMIT_ICON' => 'menu___generic_admin__add_one'));
+            $extra = do_template('FORM', array('_GUID' => '52f88211619a877e5c6f85fd4d46a90e', 'FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_NAME' => $submit_name, 'SUBMIT_ICON' => 'menu___generic_admin__add_one'));
         }
 
         // Custom fields
@@ -527,8 +527,7 @@ class Module_cms_comcode_pages
             );
         }
 
-        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array(
-            'TITLE' => $this->title,
+        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array('_GUID' => 'eba3e03c65d96530e3a42d600f90ccd8', 'TITLE' => $this->title,
             'TEXT' => $text,
             'TABLE' => $table,
             'FIELDS' => $fields,
@@ -1006,7 +1005,7 @@ class Module_cms_comcode_pages
 
         $page_structure = $this->organise_page_tree($pages, '', $menu_branches);
 
-        return do_template('GENERATE_PAGE_SITEMAP_SCREEN', array('TITLE' => $title, 'ZONES' => $zones, 'PAGE_STRUCTURE' => $page_structure));
+        return do_template('GENERATE_PAGE_SITEMAP_SCREEN', array('_GUID' => 'b07b07bfca5d4191e99671040b70ed51', 'TITLE' => $title, 'ZONES' => $zones, 'PAGE_STRUCTURE' => $page_structure));
     }
 
     /**
@@ -1082,6 +1081,6 @@ class Module_cms_comcode_pages
             }
         }
 
-        return do_template('GENERATE_PAGE_SITEMAP', array('PAGE_STRUCTURE' => $page_structure));
+        return do_template('GENERATE_PAGE_SITEMAP', array('_GUID' => 'f92876ca45010873c71a9fea574d17c1', 'PAGE_STRUCTURE' => $page_structure));
     }
 }

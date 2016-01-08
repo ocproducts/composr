@@ -56,8 +56,7 @@ class Hook_symbol_SHOW_RATINGS
                 $cnt = $GLOBALS['SITE_DB']->query_select_value('rating', 'COUNT(*)', array('rating_for_type' => $rating_type, 'rating_for_id' => $rating_id));
             }
 
-            $_value = do_template('RATINGS_SHOW', array(
-                'RATINGS' => $ratings,
+            $_value = do_template('RATINGS_SHOW', array('_GUID' => 'fda94aa20508a071853e56e14c13fe3c', 'RATINGS' => $ratings,
                 'HAS_MORE' => $cnt > count($_ratings),
                 'MAX' => strval($max),
                 'CNT' => strval($cnt),

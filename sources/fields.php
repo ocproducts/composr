@@ -467,7 +467,7 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
     }
 
     if ($add_separate_header) {
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('MORE'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '9ebf9c2c66923907b561364c37224728', 'TITLE' => do_lang_tempcode('MORE'))));
     }
     foreach ($field_groups as $field_group_title => $extra_fields) {
         if (is_integer($field_group_title)) {

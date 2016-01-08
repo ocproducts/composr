@@ -174,8 +174,7 @@ class xhtml_substr_test_set extends cms_test_case
         require_code('lorem');
         require_code('files');
 
-        $tpl = do_template('MEDIA_IMAGE_WEBSAFE', array(
-            'URL' => placeholder_url(),
+        $tpl = do_template('MEDIA_IMAGE_WEBSAFE', array('_GUID' => '54bb099d48cbae06decc3b479d9e1eaa', 'URL' => placeholder_url(),
             'REMOTE_ID' => placeholder_id(),
             'THUMB_URL' => placeholder_image_url(),
             'FILENAME' => lorem_word(),

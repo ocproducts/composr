@@ -405,7 +405,7 @@ class Module_banners
             }
 
             $fr = array(
-                do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))),
+                do_template('COMCODE_TELETYPE', array('_GUID' => '4ac291a8c2eabc304cd26f7d6b4bf8a2', 'CONTENT' => escape_html($row['name']))),
                 ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail

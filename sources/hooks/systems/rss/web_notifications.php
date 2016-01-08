@@ -109,7 +109,7 @@ class Hook_rss_web_notifications
             $view_url = build_url(array('page' => 'notifications', 'type' => 'view', 'id' => $row['id']), get_module_zone('notifications'));
 
             if ($prefix == 'RSS_') {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');
+                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '6437a55941d309e16c8030c47f82d02e', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');
             } else {
                 $if_comments = new Tempcode();
             }

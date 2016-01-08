@@ -67,7 +67,7 @@ function download_gateway_script()
     if ($url != '') {
         require_lang('downloads');
         $title = get_screen_title('DOWNLOAD_GATEWAY', true, array(escape_html($name)));
-        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
+        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('_GUID' => 'ed996e64c34d2c26e43712ffd62c5236', 'TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {

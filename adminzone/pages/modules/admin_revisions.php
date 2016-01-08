@@ -249,13 +249,13 @@ class Module_admin_revisions
 
         if (has_privilege(get_member(), 'delete_revisions')) {
             $delete_url = get_self_url(false, false, array('type' => 'delete', 'id' => $revision['id']));
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'delete', 'IMMEDIATE' => true, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'menu___generic_admin__delete'));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fff6126f163c05a6966208a6f1244e08', 'REL' => 'delete', 'IMMEDIATE' => true, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'menu___generic_admin__delete'));
             $_revision[] = $delete;
         }
 
         /*if (has_privilege(get_member(), 'undo_revisions')) {
             $undo_url = build_url(array('page' => '_SELF', 'type' => 'undo', 'id' => $revision['id']), '_SELF');
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'undo', 'IMMEDIATE' => true, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '8b3b9bc19246045bf1537ee0f6b67fe1', 'REL' => 'undo', 'IMMEDIATE' => true, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
             $_revision[] = $delete;
         }*/
 

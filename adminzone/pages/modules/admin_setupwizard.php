@@ -179,7 +179,7 @@ class Module_admin_setupwizard
         $fields = new Tempcode();
 
         $inner = do_template('FORM', array('_GUID' => '71316d91703e3549301f57182405c997', 'SKIP_WEBSTANDARDS' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '1', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '38a02343903542f8bbe1fb49a7b21eb7', 'TITLE' => $this->title, 'STEP' => '1', 'INNER' => $inner));
     }
 
     /**
@@ -195,7 +195,7 @@ class Module_admin_setupwizard
         $submit_name = do_lang_tempcode('PROCEED');
 
         $inner = do_template('SETUPWIZARD_2', array('_GUID' => '2042f3786d10c7c5be5d38ea28942b47', 'SKIP_WEBSTANDARDS' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '2', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e04bc40dfc4047b62b586711d15ad875', 'TITLE' => $this->title, 'STEP' => '2', 'INNER' => $inner));
     }
 
     /**
@@ -274,7 +274,7 @@ class Module_admin_setupwizard
         $fields->attach(form_input_tick(do_lang_tempcode('INCLUDE_CMS_ADVERT'), do_lang_tempcode('DESCRIPTION_INCLUDE_CMS_ADVERT'), 'include_cms_advert', $include_cms_advert));
 
         $inner = do_template('FORM', array('_GUID' => '3126441524b51cba6a1e0de336c8a9d5', 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_3', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '3', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => '3', 'INNER' => $inner));
     }
 
     /**
@@ -495,7 +495,7 @@ class Module_admin_setupwizard
         $fields .= $fields_advanced;
 
         $inner = do_template('FORM', array('_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4', 'NO_SIZING' => true, 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_4', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '4', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'ca91a76aa418d5c9ae956247ebc70652', 'TITLE' => $this->title, 'STEP' => '4', 'INNER' => $inner));
     }
 
     /**
@@ -569,7 +569,7 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '5', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '8dfd885199d3d1416c044fad7a97d953', 'TITLE' => $this->title, 'STEP' => '5', 'INNER' => $inner));
     }
 
     /**
@@ -693,7 +693,7 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '6', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '7c2cbc9577974b210e196b92158b4bb8', 'TITLE' => $this->title, 'STEP' => '6', 'INNER' => $inner));
     }
 
     /**
@@ -742,7 +742,7 @@ class Module_admin_setupwizard
         $corporate = comcode_to_tempcode($this->get_rules_file('corporate'), null, true);
 
         $inner = do_template('SETUPWIZARD_7', array('_GUID' => '5e46c3a989e42fa6eec5a017e8c644c2', 'FORM' => $form, 'BALANCED' => $balanced, 'LIBERAL' => $liberal, 'CORPORATE' => $corporate));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '7', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '04f24f8c44267d2ad315aa34243e9712', 'TITLE' => $this->title, 'STEP' => '7', 'INNER' => $inner));
     }
 
     /**
@@ -776,7 +776,7 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '8', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e67abf478cea7aed5cda64189549677a', 'TITLE' => $this->title, 'STEP' => '8', 'INNER' => $inner));
     }
 
     /**
@@ -809,7 +809,7 @@ class Module_admin_setupwizard
             'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
             'JAVASCRIPT' => $javascript,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('TITLE' => $this->title, 'STEP' => '9', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42', 'TITLE' => $this->title, 'STEP' => '9', 'INNER' => $inner));
     }
 
     /**
