@@ -3,7 +3,7 @@
 
 <div class="cntRow">
 	<div class="cntLeft">
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			[title]Download Composr[/title]
 
 			<!--
@@ -20,11 +20,12 @@
 
 			<h1>Cloud &amp; <acronym title="Software as a Service">SaaS</acronym> hosting</h1>
 
-			<h3 class="colrBl">Scaleability</h3>
+			<h3 class="colrBl">Scalability</h3>
 
 			<div class="sept"></div>
 
-			<p>Composr will work on most kinds of PHP cloud hosting such as [url="PHP Fog"]https://www.phpfog.com/[/url], [url="Rackspace Cloud Sites"]http://www.rackspace.com/cloud/cloud_hosting_products/sites/[/url] and [url="Amazon EC2"]http://aws.amazon.com/ec2/[/url]. [url="Bitnami"]http://bitnami.org/cloud/[/url] provide quality cloud hosting, and Composr EC2 images.</p>
+			<p>Composr will work on most kinds of PHP cloud hosting such as [url="AppFog"]https://www.ctl.io/appfog/[/url], [url="Rackspace Cloud Sites"]http://www.rackspace.com/cloud/cloud_hosting_products/sites/[/url] and [url="Amazon EC2"]http://aws.amazon.com/ec2/[/url]. [url="Bitnami"]http://bitnami.org/cloud/[/url] provide quality cloud hosting, and Composr EC2 images.</p>
+			<!-- Others: Heroku, Azure, Engine Yard, Jelastic, Google Cloud, Google AppEngine (if it's stable now), OpenShift (PaaS, Redhat)/OpenStack (IaaS, Rackspace)/Cloud Foundry (to roll your own?) -->
 
 			<p>We have inbuilt support for the kind of advanced features needed for scaling Composr installations.</p>
 
@@ -34,7 +35,7 @@
 
 			<p>Composr is also available on:</p>
 
-			<div class="cntL_Row">
+			<div class="cntLRow">
 				<div id="div_dlLogo">
 					<ul>
 						<li><a href="http://www.microsoft.com/web/gallery/composr.aspx" target="_blank"><img alt="Microsoft Web Platform" src="{$IMG*,composr_homesite/download/logo-microsoft}" /></a></li>
@@ -53,8 +54,10 @@
 					<ul>
 						<li><a href="https://netenberg.com/fantastico.php" target="_blank"><img alt="Fantastico" src="{$IMG*,composr_homesite/download/logo-fantastico}" /></a></li>
 						<li><a href="http://cpanel.net/" target="_blank" title="cpanel"><img alt="Cpanel" src="{$IMG*,composr_homesite/download/logo-cpanel}" /></a></li>
+						<!--
 						<li><a href="http://www.parallels.com/products/plesk/" target="_blank" title="Plesk"><img alt="plesk" src="{$IMG*,composr_homesite/download/logo-plesk}" /></a></li>
 						<li><a href="http://www.ensim.com/" target="_blank" title="ensim"><img alt="Ensim" src="{$IMG*,composr_homesite/download/logo-ensim}" /></a></li>
+						-->
 					</ul>
 
 					<p>But we need our users to petition them for this, as they are not currently wanting to add new scripts.</p>
@@ -83,16 +86,18 @@
 
 			<div class="sept"></div>
 
-			<p>Composr development is sponsored and led by ocProducts, who is the primary developer. However we do accept and encourage external contributions. Composr is a community project after all, even if we do centrally ensure its quality. We will hand out write-access to Git as appropriate (essentially when someone shows a serious commitment to the project in the form of high-quality code). Until you get Git access you'll need to make patches and put them on the tracker.</p>
+			<p>Composr development is sponsored and led by ocProducts, who is the primary developer. However we do accept and encourage external contributions. Composr is a community project after all, even if we do centrally ensure its quality.</p>
+			<p>We will provide write-access to Git as appropriate (essentially when someone shows a serious commitment to the project in the form of high-quality code).</p>
+			<p>Until you get Git access you'll need to make Github pull requests, or put patches on the tracker.</p>
 		</div>
 	</div>
 
 	<div class="cntRight">
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlock">
-				<div class="tesHead">
+				<h3 class="tesHead">
 					Are you upgrading?
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<p>Instead of using this page, you should login to your Admin Zone. You'll see a link to upgrade there.</p>
@@ -100,23 +105,25 @@
 			</div>
 		</div>
 
-		<div class="cntR_Row">
+		<!--
+		<div class="cntRRow">
 			<div class="tesBlockWt">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Looking for addons and themes?
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<p>Go to our <a href="{$PAGE_LINK*,site:community}">community section</a>.</p>
 				</div>
 			</div>
 		</div>
+		-->
 
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlockWt">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Hosting requirements
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<ul class="liRcol">
@@ -135,16 +142,16 @@
 					<p>We recommended [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url]. It's great quality hosting and they'll even install Composr for you.</p>
 					-->
 
-					<p>For more information and recommendations, see our [page="docs:tut_web_hosting"]web hosting[/page].</p>
+					<p>For more information and recommendations, see our [page="docs:tut_web_hosting"]web hosting tutorial[/page].</p>
 				</div>
 			</div>
 		</div>
 
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlockWt">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Forum integration
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<p>Composr has it's own forum and member system (Conversr), but can also integrate with some third party ones out-of-the-box:</p>
@@ -161,11 +168,11 @@
 			</div>
 		</div>
 
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlockWt">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Other integration
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<p>Conversr can integrate with an [abbr="Lightweight Directory Access Protocol"]LDAP[/abbr] server, facilitating tie in with [tooltip="i.e. tie in with Windows networks"]Active Directory[/tooltip] and [tooltip="i.e. tie in with Linux networks"]OpenLDAP[/tooltip] logins.</p>
@@ -188,5 +195,4 @@
 		}
 	}
 //]]></script>
-
 [/semihtml]

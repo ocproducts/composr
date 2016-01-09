@@ -6,13 +6,13 @@
 
 <div class="cntRow">
 	<div class="cntLeft">
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			[title]Community[/title]
 
 			<p>Ask as many questions as you want, and answer all you can in return. Share your tips, your successes, and benefit from the experience of others. Or converse in real-time in [page=site:chat]our chatroom[/page].</p>
 		</div>
 
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			<ul class="cmnty">
 				<li class="head">Downloads</li>
 
@@ -96,7 +96,7 @@
 	</div>
 
 	<div class="cntRight">
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlock">
 				<h3 class="tesHead">
 					Testimonials
@@ -107,16 +107,16 @@
 				</div>
 
 				<div class="quoteCst">
-					<div class="demo-wrapper">
+					<div class="communityWrapper">
 						<div class="swipe" id="slider">
 							<div class="swipe-wrap">
-								<div class="testimonial">&ldquo;I am a forty-eight year old blind male. I have tried literally every CMS out there. Thank you for the most accessible CMS I've ever had the pleasure of working with&rdquo; <span class="ta highlight_span">Chipster</span></div>
+								<div class="testimonial">&ldquo;I am a forty-eight year old blind male. I have tried literally every CMS out there. Thank you for the most accessible CMS I've ever had the pleasure of working with&rdquo; <span class="ta highlightSpan">Chipster</span></div>
 
-								<div class="testimonial">&ldquo;One of their greatest features is that it's all tied together seamlessly. Everything is always compatible and updated at the same time.&rdquo; <span class="ta highlight_span">Rishi Saravan</span></div>
+								<div class="testimonial">&ldquo;One of their greatest features is that it's all tied together seamlessly. Everything is always compatible and updated at the same time.&rdquo; <span class="ta highlightSpan">Rishi Saravan</span></div>
 
-								<div class="testimonial">&ldquo;Combined with the superb forum software integration, Composr transformed a site that once took hours a day to run into something that could be completely updated in a matter of minutes!&rdquo; <span class="ta highlight_span">Pete</span></div>
+								<div class="testimonial">&ldquo;Combined with the superb forum software integration, Composr transformed a site that once took hours a day to run into something that could be completely updated in a matter of minutes!&rdquo; <span class="ta highlightSpan">Pete</span></div>
 
-								<div class="testimonial">&ldquo;I have been searching for a portal for my website for over a year now, I have reviewed close to 50 portals, installed, and tried over a dozen. In my humble opinion Composr is the perfect portal system, it doesn't get any better then this.&rdquo; <span class="ta highlight_span">Andrew Randt</span></div>
+								<div class="testimonial">&ldquo;I have been searching for a portal for my website for over a year now, I have reviewed close to 50 portals, installed, and tried over a dozen. In my humble opinion Composr is the perfect portal system, it doesn't get any better then this.&rdquo; <span class="ta highlightSpan">Andrew Randt</span></div>
 							</div>
 						</div>
 					</div>
@@ -163,18 +163,6 @@
 <!-- Script for Tab menu -->
 <script>//<![CDATA[
 	$(document).ready(function() {
-		$("#tabsholder").tytabs({
-			tabinit:"1",
-			fadespeed:"fast"
-		});
-		$("#tabsholder2").tytabs({
-			prefixtabs:"tabz",
-			prefixcontent:"contentz",
-			classcontent:"tabscontent",
-			tabinit:"3",
-			catchget:"tab2",
-			fadespeed:"normal"
-		});
 		$('[placeholder]').focus(function() {
 		  var input = $(this);
 		  if (input.val() == input.attr('placeholder')) {

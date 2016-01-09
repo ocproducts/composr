@@ -1,9 +1,9 @@
 <div class="navHolder">
-	<div class="NavLeft"></div>
+	<div class="navLeft"></div>
 
-	<ul class="drop_menu">
+	<ul class="dropMenu">
 		{CONTENT}
 	</ul>
 
-	<div class="NavRight"></div>
+	<div class="navRight"></div>
 </div>

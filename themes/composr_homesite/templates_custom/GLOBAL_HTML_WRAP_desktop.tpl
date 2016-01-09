@@ -9,7 +9,7 @@
 					<a href="{$PAGE_LINK*,:}" title="Composr"><img alt="composr logo" src="{$IMG*,composr_homesite/composr_full_logo}" /></a>
 				</figure>
 
-				<div class="HeadRCol">
+				<div class="headRCol">
 					<ul>
 						<li class="textLabel"><a href="https://github.com/ocproducts/composr">Github</a></li>
 
@@ -31,8 +31,8 @@
 						{+END}
 					</ul>
 
-					<div class="HeadEmail">
-						Briefr: <a class="link_exempt" href="{$PAGE_LINK*,_SEARCH:contact}" title="Bring questions or projects">Contact ocProducts</a>
+					<div class="headEmail">
+						Briefr: <a class="link_exempt" href="{$PAGE_LINK*,_SEARCH:contact}" title="Bring questions or projects">Contact ocProducts</a>{+START,IF,{$EQ,{$PAGE},support,tickets,professional_support,contact}}. {$BLOCK,block=show_credits}{+END}
 					</div>
 
 					{+START,IF,{$EQ,{$ZONE},docs}}
@@ -96,7 +96,7 @@
 		<section class="bnrHolder">
 			<div class="headBnr">
 				<div class="banner">
-					<div class="bnrtext">
+					<div class="bnrText">
 						The versatile <span class="orange">Content Management System</span> for next<br>
 						generation websites
 					</div>
@@ -119,7 +119,7 @@
 		</section>
 	{+END}
 
-	<div class="cntMainWrapper PdLess">
+	<div class="cntMainWrapper pdLess">
 		<div class="cntMain" role="main">
 			{$,Composr may show little messages for you as it runs relating to what you are doing or the state the site is in}
 			<div class="global_messages" id="global_messages"><div class="cntMain">
@@ -135,7 +135,11 @@
 			{$,Associated with the SKIP_NAVIGATION link defined further up}
 			<a id="maincontent"></a>
 
+			{$LOAD_PANEL,top}
+
 			{MIDDLE}
+
+			{$LOAD_PANEL,bottom}
 
 			<a class="back-to-top" href="#">Back to Top</a>
 		</div>
@@ -195,7 +199,7 @@
 				<div class="ftrRight">
 					<div class="ftrImg">
 						<div class="one">
-							<a class="tt_geek_cred" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geek_cred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Open Source" src="{$IMG*,composr_homesite/img-open-source}" title="" /></a>
+							<a class="ttGeekCred" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geekCred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Open Source" src="{$IMG*,composr_homesite/img-open-source}" title="" /></a>
 						</div>
 
 						<div class="two">

@@ -117,6 +117,7 @@ function composr_homesite_install()
     set_option('mail_server', 'localhost');
     set_option('likes', '1');
     set_option('cookie_notice', '1');
+    set_option('breadcrumb_crop_length', '60');
 
     // Downloads structure
     // -------------------
@@ -186,6 +187,34 @@ function composr_homesite_install()
     $cat_id = cns_make_forum('Paid support', '', 3/*forum grouping*/, null, $deploying_forum_id/*parent forum*/, 3/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', 'professional_support.htm');
     set_global_category_access('forums', $cat_id);
 
+    // Topics...
+
+    $admin_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username('admin');
+    require_code('cns_topics_action');
+    require_code('cns_posts_action');
+
+    $forum_id = db_get_first_id();
+    $title = 'Forum advice and rules';
+    $description = 'How to get support, make suggestions, etc';
+    $post = "When joining compo.sr you agree to our rules, and when you first visit the forums you click through advice. This topic just repeats this for reference.\n\n[include]_forum_advice[/include]";
+    $topic_id = cns_make_topic($forum_id, $description, '', 1, 1, 1/*pinned*/, 0, 1/*cascading*/);
+    cns_make_post($topic_id, $title, $post, 0, true, 1, 1, null, null, null, $admin_member_id);
+    $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_intro_question' => '[include]_forum_advice[/include]', 'f_intro_question__text_parsed' => '', 'f_intro_question__source_user' => $admin_member_id), array('id' => $forum_id), '', 1);
+
+    $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'id', array('f_name' => 'Introduce yourself'));
+    $title = 'Post your location';
+    $description = 'Where are you in the world? See where others are.';
+    $post = "Show where you are on our map :)! Find other Composr users who might be near you.\n\n[block]main_google_map_users[/block]";
+    $topic_id = cns_make_topic($forum_id, $description, '', 1, 1, 1/*pinned*/);
+    cns_make_post($topic_id, $title, $post, 0, true, 1, 1, null, null, null, $admin_member_id);
+
+    $forum_id = db_get_first_id();
+    $title = 'Composr evangelism';
+    $description = 'Did someone miss Composr?';
+    $post = "[include]_evangelism[/include]";
+    $topic_id = cns_make_topic($forum_id, $description, '', 1, 1, 1/*pinned*/, 0, 1/*cascading*/);
+    cns_make_post($topic_id, $title, $post, 0, true, 1, 1, null, null, null, $admin_member_id);
+
     // Theme
     // -----
 
@@ -195,6 +224,43 @@ function composr_homesite_install()
     // ----
 
     import_menu_csv(get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv');
+
+    // SSL
+    // ---
+
+    $https_pages = array(
+        ':contact',
+        ':join',
+        ':login',
+        ':members',
+        ':purchase',
+        ':shopping',
+    );
+    $GLOBALS['SITE_DB']->query_delete('https_pages');
+    foreach ($https_pages as $https_page) {
+        $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => $https_page));
+    }
+
+    // Usergroups
+    // ----------
+
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Community saint'), array('id' => 5), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Honoured member', 'g_promotion_threshold' => 3000), array('id' => 6), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Well-settled', 'g_promotion_threshold' => 1200), array('id' => 7), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in action', 'g_promotion_threshold' => 400), array('id' => 8), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in training', 'g_promotion_threshold' => 100), array('id' => 9), '', 1);
+
+    require_code('cns_groups_action');
+    cns_make_group('Composr supporters', 0, 0, 0, 'I supposr Composr', '', null, null, null, null, null, null, null, null, null, null, null, null, 3/*gift points per day*/, 0, 0, 0, null, 1, 1/*open membership*/);
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Composr supporters'), array('id' => 5), '', 1);
+
+    // Remove unneeded CPFs
+    // --------------------
+
+    require_code('cns_members_action2');
+    cns_delete_boiler_custom_field('interests');
+    cns_delete_boiler_custom_field('location');
+    cns_delete_boiler_custom_field('occupation');
 
     // Permissions
     // -----------

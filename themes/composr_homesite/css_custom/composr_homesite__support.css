@@ -1,6 +1,4 @@
-.page_running_support .colrBl {
-	margin:0;
-}
+.page_running_support .colrBl { margin:0; }
 
 ul.srBoxes { list-style:none; margin:0; padding:0; float:left; width:960px; height:auto; }
 ul.srBoxes li { float:left; width:310px; height:140px; margin:0px 15px 15px 0px; background-color:#F2F4F7; display:block; {$BETA_CSS_PROPERTY,border-radius:3px;} }

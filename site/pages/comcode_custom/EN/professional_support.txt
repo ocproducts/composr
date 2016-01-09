@@ -6,7 +6,7 @@
 
 <div class="cntRow">
 	<div class="cntLeft">
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			[title]Professional Support[/title]
 
 			<p>Need help with your Composr website? Head straight to the source with our professional support service.</p>
@@ -17,10 +17,10 @@
 
 			<table class="comSr">
 				<tr>
-					<th class="Hdr">Priority level</th>
-					<th class="Hdr">Response times (&dagger;)</th>
-					<th class="Hdr">Time per credit</th>
-					<th class="Hdr">Minimum per ticket (*)</th>
+					<th class="hdr">Priority level</th>
+					<th class="hdr">Response times (&dagger;)</th>
+					<th class="hdr">Time per credit</th>
+					<th class="hdr">Minimum per ticket (*)</th>
 				</tr>
 
 				<tr>
@@ -48,11 +48,11 @@ Hourly cost (approx):
 	</div>
 
 	<div class="cntRight">
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlock">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Top up
-				</div>
+				</h3>
 
 				{$SET,purchase_url,{$PAGE_LINK,_SEARCH:purchase:licence:member_id={$MEMBER}}}
 				<form class="quoteCst" action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get">

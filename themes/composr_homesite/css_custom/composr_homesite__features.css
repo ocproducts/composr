@@ -13,18 +13,13 @@
 .ft-rw .column { width:220px; float:left; padding:7px; font-size:14px; color:#666; margin-bottom:20px; }
 .ft-rw .column p { text-align:center; margin:0 }
 .ft-rw .column .image { width:220px; float:left; text-align:center; margin-bottom:5px; min-height:90px; padding-top:30px; }
-.ft-rw .column .icon_and_title { width:220px; float:left; text-align:center; }
-.ft-rw .column .icon_and_title h3 { display:block; margin:0 auto 40px auto; font-size:18px; color:#e49432; text-align:center; padding:0; width:95%; font-weight:normal; }
-.ft-rw .column .icon_and_title h3 .arrow-link { display:block; margin:0 auto; color:#e49432; padding-right:0%; text-decoration:none; }
-.ft-rw .column .subsection_caption {
-	margin:-38px 0 17px 0;
-	padding:0;
-	float:left;
-	width:100%;
-}
+.ft-rw .column .iconAndTitle { width:220px; float:left; text-align:center; }
+.ft-rw .column .iconAndTitle h3 { display:block; margin:0 auto 40px auto; font-size:18px; color:#e49432; text-align:center; padding:0; width:95%; font-weight:normal; }
+.ft-rw .column .iconAndTitle h3 .arrow-link { display:block; margin:0 auto; color:#e49432; padding-right:0%; text-decoration:none; }
+.ft-rw .column .subsectionCaption { margin:-38px 0 17px 0; padding:0; float:left; width:100%; }
 .ft-rw .column .subsection ul { list-style:none; padding:10px; margin:0 auto; padding-left:15px; }
 .ft-rw .column .subsection ul li { background:url('{$IMG;,composr_homesite/features/bult-3}') no-repeat left 5px; padding:0px 12px; line-height:20px; margin:20px 0; float:left; }
-.ft-rw .column .subsection ul li span.itemtitle { display:block; color:#667ea4 }
+.ft-rw .column .subsection ul li span.itemTitle { display:block; color:#667ea4 }
 .ft-rw .column .button a { width:110px; margin:0 auto; border:#d6d6d6 solid 1px; border-radius:3px; display:block; text-align:center; padding:7px 0 7px 10px; overflow:hidden; }
 .ft-rw .column .button a.seefewer { background:#f3f3f4 url('{$IMG;,composr_homesite/features/arrow_fewer}') no-repeat 13px 12px; }
 .ft-rw .column .button a.seemore { background:#f3f3f4 url('{$IMG;,composr_homesite/features/arrow_more}') no-repeat 13px 12px; }
@@ -32,13 +27,9 @@
 
 .ui-accordion .ui-accordion-header a { font-size:20px; font-weight:normal; color:#666; padding:5px 10px; padding-bottom:0; }
 
-.subsection + .subsection {
-	margin-top:4em;
-}
+.subsection + .subsection { margin-top:4em; }
 
-.moree {
-	display:none;
-}
+.moreE { display:none; }
 
 /* Recommend to a friend */
 

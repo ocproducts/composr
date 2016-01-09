@@ -221,7 +221,7 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 
 <div class="cntRow">
 	[title]ocProducts: The Composr Pros[/title]
-	<span class="ComTopTxt">The client benefits from the combination of our expertise<br />and the powerful features of our software.</span>
+	<span class="comTopTxt">The client benefits from the combination of our expertise<br />and the powerful features of our software.</span>
 </div>
 
 <div class="cntRow">
@@ -238,13 +238,13 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 								<div class="index"></div>
 
 								<ul class="verticalSlideNav slide-Nav">
-									<li class="nav_1 active"><a class="nav_1" href="#1">Nav 1</a></li>
+									<li class="nav-1 active"><a class="nav-1" href="#1">Nav 1</a></li>
 
-									<li class="nav_2"><a class="nav_2" href="#2">Nav 2</a></li>
+									<li class="nav-2"><a class="nav-2" href="#2">Nav 2</a></li>
 
-									<li class="nav_3"><a class="nav_3" href="#3">Nav 3</a></li>
+									<li class="nav-3"><a class="nav-3" href="#3">Nav 3</a></li>
 
-									<li class="nav_4"><a class="nav_4" href="#4">Nav 4</a></li>
+									<li class="nav-4"><a class="nav-4" href="#4">Nav 4</a></li>
 								</ul>
 								<!--<div style="position: absolute; top: 25px; left: 823px; overflow: hidden; z-index: 20000; display: none;" class="activeCorner spine_2"></div>-->
 							</dt>
@@ -298,28 +298,28 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 </div>
 
 <div class="cntRow">
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img1}" /></div><span>Service from a world-class web development company with an active web presence and public fan base.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img1}" /></div><span>Service from a world-class web development company with an active web presence and public fan base.</span>
 	</div>
 
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img2}" /></div><span>Cost-effectiveness, by leveraging Composr's features and avoid reinventing the wheel. We know the software best because we made it.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img2}" /></div><span>Cost-effectiveness, by leveraging Composr's features and avoid reinventing the wheel. We know the software best because we made it.</span>
 	</div>
 
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img3}" /></div><span>A low-maintenance web solution with capacity for low-cost growth.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img3}" /></div><span>A low-maintenance web solution with capacity for low-cost growth.</span>
 	</div>
 
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img4}" /></div><span>An integrated web solution with advanced functionality and features. When people compare what Composr does to what other Open Source CMS's can do, they are amazed &ndash; commercial CMS's that do what Composr can do can easily cost $10,000.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img4}" /></div><span>An integrated web solution with advanced functionality and features. When people compare what Composr does to what other Open Source CMS's can do, they are amazed &ndash; commercial CMS's that do what Composr can do can easily cost $10,000.</span>
 	</div>
 
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img5}" /></div><span>Software that has passed the tests of time. Composr's technology has been developed over more than a decade.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img5}" /></div><span>Software that has passed the tests of time. Composr's technology has been developed over more than a decade.</span>
 	</div>
 
-	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img6}" /></div><span>Reduced reliance on third-party software/technology: avoid buck-passing. We're not just a practitioner of other people's technology.</span>
+	<div class="compBoxHold">
+		<div class="compPic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img6}" /></div><span>Reduced reliance on third-party software/technology: avoid buck-passing. We're not just a practitioner of other people's technology.</span>
 	</div>
 </div>
 
@@ -334,13 +334,13 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 
 <div class="cntRow">
 	<div class="cntLeft">
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			<div class="thumbHead">
 				Stats and facts:
 			</div>
 		</div>
 
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			<div class="thumbComp">
 				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img7}" /></div>
 
@@ -363,33 +363,33 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 			</div>
 		</div>
 
-		<div class="cntL_Row">
+		<div class="cntLRow">
 			<h3 class="colrBl text-center">The world-class web development team is waiting to hear from you</h3><br />
 
-			<div class="compCol_lft marRht">
+			<div class="compColLft marRht">
 				<p>To get started, <a href="{$PAGE_LINK*,_SEARCH:contact}">contact us</a> with your requirements. We'll respond promptly with a free quote *1, *5.</p>
 			</div>
 		</div>
 	</div>
 
 	<div class="cntRight">
-		<div class="cntR_Row"></div>
+		<div class="cntRRow"></div>
 
-		<div class="cntR_Row">
+		<div class="cntRRow">
 			<div class="tesBlockWt">
-				<div class="tesHead2">
+				<h3 class="tesHead2">
 					Our CEO's blog
-				</div>
+				</h3>
 
 				<div class="quoteCst">
 					<p class="ceo"><img alt="Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />As well as a programmer, I'm managing director of my company, ocProducts. I basically do everything that no one else&hellip;</p>
 
 					<ul class="liRcol">
-						<li><a href="#">Development update</a> <span class=" highlight_span">18 November 2013</span></li>
+						<li><a href="#">Development update</a> <span class=" highlightSpan">18 November 2013</span></li>
 
-						<li><a href="#">New emoticons</a> <span class=" highlight_span">15 October 2013</span></li>
+						<li><a href="#">New emoticons</a> <span class=" highlightSpan">15 October 2013</span></li>
 
-						<li><a href="#">Understanding viewports on mobile devices</a><span class=" highlight_span">25 August 2013</span></li>
+						<li><a href="#">Understanding viewports on mobile devices</a><span class=" highlightSpan">25 August 2013</span></li>
 					</ul>
 
 					<div class="rdMore">
@@ -403,9 +403,9 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 
 <div class="compSepr"></div>
 
-<div class="cntRow comp_cnt1">
-	<div class="comp_col">
-		<div class="comp_col_head">
+<div class="cntRow compCnt1">
+	<div class="compCol">
+		<div class="compColHead">
 			We're not only about technology
 		</div>
 
@@ -423,8 +423,8 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 		<p>We want your users to keep coming back to you, not a competitor. A great and charming user experience helps.</p>
 	</div>
 
-	<div class="comp_col">
-		<div class="comp_col_head">
+	<div class="compCol">
+		<div class="compColHead">
 			We make our projects partnerships
 		</div>
 
@@ -448,8 +448,8 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 	</div>
 </div>
 
-<div class="cntRow comp_cnt2">
-	<div id="tabsholder2">
+<div class="cntRow compCnt2">
+	<div id="tabsHolder2">
 		<br />
 
 		<h1 class="text-center">The website design process</h1>
@@ -462,16 +462,16 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 			<li class="compli" id="tabz3">What to provide us</li>
 		</ul>
 
-		<div class="contents marginbot">
+		<div class="contents marginBot">
 			<div class="tabscontent" id="contentz1">
-				<div class="LcolTab">
+				<div class="lColTab">
 					<div class="picDia">
 						<a href="{$BASE_URL*}/uploads/website_specific/compo.sr/process.png" rel="lightbox"><img alt="ocProducts process diagram" src="{$IMG*,composr_homesite/ocproducts/img-diagram}" /></a>
 					</div>
 					<span>(click the diagram for a larger version)</span>
 				</div>
 
-				<div class="RcolTab">
+				<div class="rColTab">
 					<h3>How do we do it?</h3>
 
 					<p>Take a look inside our usual full-agency website design process *3:</p>
@@ -519,10 +519,10 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 </div>
 
 <div class="cntRow">
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Comparison to other web designers - don't get ripped off!</h3>
 
 			<div class="sept"></div>
@@ -531,10 +531,10 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img11}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img11}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Insist your web designer provides a mature approach</h3>
 
 			<div class="sept"></div>
@@ -543,10 +543,10 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img12}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img12}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Don't be fooled by a slick pitch</h3>
 
 			<div class="sept"></div>
@@ -555,10 +555,10 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img13}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img13}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Agency or support ticket?</h3>
 
 			<div class="sept"></div>
@@ -568,10 +568,10 @@ TODO: Link agency-vs-support-ticket.pdf
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img14}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img14}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Project funding</h3>
 
 			<div class="sept"></div>
@@ -580,10 +580,10 @@ TODO: Link agency-vs-support-ticket.pdf
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img15}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img15}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">Working in partnership</h3>
 
 			<div class="sept"></div>
@@ -592,10 +592,10 @@ TODO: Link agency-vs-support-ticket.pdf
 		</div>
 	</div>
 
-	<div class="comp_btm_list">
-		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img16}" /></div>
+	<div class="compBtmList">
+		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img16}" /></div>
 
-		<div class="btmli_rht">
+		<div class="btmliRht">
 			<h3 class="colrBl">The few web development things we cannot do</h3>
 
 			<div class="sept"></div>
@@ -682,7 +682,7 @@ TODO: Link agency-vs-support-ticket.pdf
 
 <script>//<![CDATA[
 	$(document).ready(function() {
-		$("#tabsholder2").tytabs({
+		$("#tabsHolder2").tytabs({
 			prefixtabs:"tabz",
 			prefixcontent:"contentz",
 			classcontent:"tabscontent",

@@ -1,14 +1,7 @@
-.page_running_antifeatures .cntRow h3 {
-	padding-bottom:0;
-}
+.page_running_antifeatures .cntRow h3 { padding-bottom:0; }
 
-.page_running_antifeatures .cntRow p:first-child {
-	margin-top:0;
-}
-
-.page_running_antifeatures .cntRow p {
-	margin:1em;
-}
+.page_running_antifeatures .cntRow p:first-child { margin-top:0; }
+.page_running_antifeatures .cntRow p { margin:1em; }
 
 .antf-row { width:100%; float:left; margin-bottom:10px; }
 .antf-row .img { width:174px; float:left; margin-right:20px; }

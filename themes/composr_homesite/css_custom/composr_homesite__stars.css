@@ -5,17 +5,13 @@
 .cmn-strs .list2 ul { list-style:none; margin:0; width:100%; float:left; padding:0; padding-left:20px; }
 .cmn-strs .list2 ul li { list-style-image:url('{$IMG;,composr_homesite/stars/bult-2}'); list-style-position:inside; line-height:25px; }
 
-.main_star {
-	margin-bottom: 3em;
-}
+.mainStar { margin-bottom:3em; }
 
-.main_star.cntRow .row-top {
-	margin-top: 5px;
-}
+.mainStar.cntRow .row-top { margin-top:5px; }
 
 .cmn-str-row { width:100%; float:left; border-bottom:#c7c7c7 solid 1px; font-size:14px; color:#666; line-height:22px; }
 .cmn-str-row .blk1 { width:136px; float:left; text-align:center; color:#e5922c; font-weight:bold; padding:7px 0; }
-/* Not practical with real avatars .cmn-str-row .blk1 img { border:3px solid #7E8EA8; {$BETA_CSS_PROPERTY,border-radius: 50px;} }*/
+/* Not practical with real avatars .cmn-str-row .blk1 img { border:3px solid #7E8EA8; {$BETA_CSS_PROPERTY,border-radius:50px;} }*/
 .cmn-str-row .blk2 { width:172px; float:left; padding:10px; }
 .cmn-str-row .adj { text-align:center; color:#e5922c; font-weight:bold; }
 .cmn-str-row .adj2 { text-align:left; color:#e5922c; font-weight:bold; }

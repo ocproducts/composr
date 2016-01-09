@@ -2,15 +2,15 @@
 
 .blockHead { float:left; width:250px; height:56px; }
 
-.demo-wrapper { float:left; width:240px; height:auto; }
+.communityWrapper { float:left; width:240px; height:auto; }
 .slider { float:left; width:240px; }
 .swipe { overflow:hidden; position:relative; max-width:240px; width:100%; margin:0px auto; float:left; }
 .swipe-wrap { overflow:hidden; position:relative; float:left; }
 .swipe-wrap > div { float:left; width:100%;	position:relative; }
 .swipe .nav { position:absolute; width:80px; height:25px; z-index:10; text-align:center; line-height:40px; display:inline-block; color:#fff;	top:45%; cursor:pointer; background-color:transparent; }
 
-.tesNav span.nav.prev { {$BETA_CSS_PROPERTY,user-select: none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-left}'); background-repeat:no-repeat; background-position:left top; }
-.tesNav span.nav.next { {$BETA_CSS_PROPERTY,user-select: none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-right}'); background-repeat:no-repeat; background-position:left top; }
+.tesNav span.nav.prev { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-left}'); background-repeat:no-repeat; background-position:left top; }
+.tesNav span.nav.next { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-right}'); background-repeat:no-repeat; background-position:left top; }
 .tesNav span.nav.prev:hover { cursor:pointer; }
 .tesNav span.nav.next:hover { cursor:pointer; }
 

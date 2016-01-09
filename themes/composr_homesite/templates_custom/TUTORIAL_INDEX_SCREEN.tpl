@@ -5,7 +5,7 @@
 	{$META_DATA,breadcrumb_self,Tutorials}
 
 	<div class="tut-row">
-		<div class="leftmenu">
+		<div class="leftMenu">
 			<ul>
 				{+START,LOOP,TAGS}
 					<li>
@@ -46,7 +46,7 @@
 											</div>
 										{+END}
 
-										<div class="blk2 blk2_long">
+										<div class="blk2 blk2Long">
 											<span>Tags:</span> 
 											{+START,LOOP,TAGS}
 												<a href="{$PAGE_LINK*,_SEARCH:tutorials:{_loop_var}}">{_loop_var*}</a>{+START,IF,{$NEQ,{_loop_key},{$SUBTRACT,{TAGS},1}}},{+END}

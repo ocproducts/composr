@@ -132,11 +132,11 @@
 			</div>
 
 			<div class="cntRow">
-				<div class="FTholder headFT">
+				<div class="ftHolder headFT">
 					Popular Addons:
 				</div>
 
-				<div class="FTholder">
+				<div class="ftHolder">
 					<div class="carosol">
 						<div class="stepcarousel galleryFT" id="mygallery">
 							<div class="belt">
@@ -184,7 +184,7 @@
 					</div>
 				</div>
 
-				<div class="FTholder">
+				<div class="ftHolder">
 					<div class="row-block">
 						<h2>Community Advertising</h2>
 
@@ -484,11 +484,11 @@
 			</div>
 
 			<div class="cntRow">
-				<div class="FTholder headFT">
+				<div class="ftHolder headFT">
 					Popular Addons:
 				</div>
 
-				<div class="FTholder">
+				<div class="ftHolder">
 					<div class="carosol">
 						<div class="stepcarousel galleryFT" id="mygallery">
 							<div class="belt">
@@ -536,7 +536,7 @@
 					</div>
 				</div>
 
-				<div class="FTholder">
+				<div class="ftHolder">
 					<div class="row-block">
 						<h2>Community Advertising</h2>
 

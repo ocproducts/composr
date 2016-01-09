@@ -18,5 +18,4 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {+START,IF,{$NOT,{$MOBILE}}}
 	{+START,INCLUDE,GLOBAL_HTML_WRAP_desktop}{+END}
 {+END}
-
 </html>

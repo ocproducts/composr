@@ -45,34 +45,31 @@
 		<link label="{!HOME}">:</link>
 	</substitution>
 
-	<substitution match_key=":contact">
+	<substitution match_key=":_WILD_NOT_START">
 		<link label="{!HOME}">:</link>
+	</substitution>
+
+	<substitution match_key=":contact">
 		<link label="Support">:support</link>
 	</substitution>
 	<substitution match_key=":professional_support">
-		<link label="{!HOME}">:</link>
 		<link label="Support">:support</link>
 	</substitution>
 	<substitution match_key=":tickets">
-		<link label="{!HOME}">:</link>
 		<link label="Support">:support</link>
 	</substitution>
 
 	<substitution match_key=":stars">
-		<link label="{!HOME}">:</link>
 		<link label="Community">:community</link>
 	</substitution>
 	<substitution match_key="forum:">
-		<link label="{!HOME}">:</link>
 		<link label="Community">:community</link>
 	</substitution>
 	<substitution match_key=":chat">
-		<link label="{!HOME}">:</link>
 		<link label="Community">:community</link>
 	</substitution>
 
 	<substitution match_key=":antifeatures">
-		<link label="{!HOME}">:</link>
 		<link label="Features">:features</link>
 	</substitution>
 

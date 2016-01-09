@@ -1,4 +1,4 @@
-<div class="cntRow main_star">
+<div class="cntRow mainStar">
 	{+START,IF_NON_EMPTY,{STARS}}
 		<div class="cmn-str-row row-top">
 			<div class="blk1">

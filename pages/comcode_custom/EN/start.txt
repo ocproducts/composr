@@ -4,46 +4,45 @@
 {$REQUIRE_JAVASCRIPT,jquery.tytabs}
 {$REQUIRE_CSS,jquery.elastislide}
 {$REQUIRE_JAVASCRIPT,jquery.elastislide}
-{$REQUIRE_JAVASCRIPT,modernizr.custom.17475}
 {$REQUIRE_JAVASCRIPT,jquerypp.custom}
 
 {+START,IF,{$MOBILE}}
-	<div class="BannerPart">
-		<div class="BannerIn">
-			<span class="MainTxt"> <span class="TxtBlack">The versatile</span> 
-			<span class="TxtOrange">Content Management System</span>
-			<span class="TxtWhite">for next generation website</span>
-			<a class="Button" href="{$PAGE_LINK*,site:features}">see our features</a>
+	<div class="bannerPart">
+		<div class="bannerIn">
+			<span class="mainTxt"> <span class="txtBlack">The versatile</span> 
+			<span class="txtOrange">Content Management System</span>
+			<span class="txtWhite">for next generation website</span>
+			<a class="button" href="{$PAGE_LINK*,site:features}">see our features</a>
 		</div>
 		</div>
 
-	<ul class="RoundButPart">
-		<li><a class="RoundBut" href="{$PAGE_LINK*,site:download}"><span class="TxtUpper">Download</span> Composr CMS</a></li>
-		<li><a class="RoundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="TxtUpper">Tutorial</span> Library</a></li>
-		<li><a class="RoundBut" href="{$PAGE_LINK*,site:demo}">View Personal <span class="TxtUpper">Demo</span></a></li>
-		<!--<li><a class="RoundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
+	<ul class="roundButPart">
+		<li><a class="roundBut" href="{$PAGE_LINK*,site:download}"><span class="txtUpper">Download</span> Composr CMS</a></li>
+		<li><a class="roundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="txtUpper">Tutorial</span> Library</a></li>
+		<li><a class="roundBut" href="{$PAGE_LINK*,site:demo}">View Personal <span class="txtUpper">Demo</span></a></li>
+		<!--<li><a class="roundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
 	</ul>
 
-	<ul class="MainMenu">
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:compare}">why we're different</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:vision}">our vision</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:contributions}">contribute</a></li>
-		<li><a class="MenuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
-		<!--<li><a class="MenuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>-->
+	<ul class="mainMenu">
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:compare}">why we're different</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:vision}">our vision</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:contributions}">contribute</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
+		<!--<li><a class="menuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>-->
 	</ul>
 {+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}
 	<div class="cntRow">
 		<div class="cntCol1">
-			<div class="head">
+			<h2 class="head">
 				What is Composr CMS?
-			</div>
+			</h2>
 
 			<p>Composr is a very flexible CMS with advanced social, interactive and dynamic functionality.</p>
-			<p>Hundreds of features are available out of the box, as well as building blocks, and further addons (think multi-channel content delivery).</p>
+			<p>[page="site:features"]Hundreds of features[/page] are available out of the box, as well as building blocks, and further addons (think multi-channel content delivery).</p>
 			<p>Composr is embraced by Fortune-100 companies, government agencies, and small startups. We make all the best ideas available to everyone.</p>
 		</div>
 
@@ -72,7 +71,7 @@
 				Tutorial Library
 			</div>
 
-			<div id="tabsholder">
+			<div id="tabsHolder">
 				<ul class="tabs">
 					<li id="tab1">Curated Order</li>
 					<li id="tab2">Newest First</li>
@@ -80,10 +79,10 @@
 					<li id="tab4">Recently up-voted</li>
 				</ul>
 
-				<div class="contents marginbot">
+				<div class="contents marginBot">
 					<div class="tabscontent" id="content1">
 						<!--Curated Order Content-->
-						<div class="container demo-1">
+						<div class="container">
 							<div class="main">
 								{$BLOCK,block=main_tutorials_carousel,param=pinned}
 							</div>
@@ -92,7 +91,7 @@
 
 					<div class="tabscontent" id="content2">
 						<!--Newest First Content-->
-						<div class="container demo-1">
+						<div class="container">
 							<div class="main">
 								{$BLOCK,block=main_tutorials_carousel,param=recent}
 							</div>
@@ -101,7 +100,7 @@
 
 					<div class="tabscontent" id="content3">
 						<!--Most up-voted Content-->
-						<div class="container demo-1">
+						<div class="container">
 							<div class="main">
 								{$BLOCK,block=main_tutorials_carousel,param=likes}
 							</div>
@@ -110,7 +109,7 @@
 
 					<div class="tabscontent" id="content4">
 						<!--Recently up-voted Content-->
-						<div class="container demo-1">
+						<div class="container">
 							<div class="main">
 								{$BLOCK,block=main_tutorials_carousel,param=likes_recent}
 							</div>
@@ -165,7 +164,7 @@
 			$('.elastislide-list').elastislide();
 
 			window.setTimeout(function() {
-				$("#tabsholder").tytabs({
+				$("#tabsHolder").tytabs({
 					tabinit:"1",
 					fadespeed:"fast"
 				});

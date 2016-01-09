@@ -2,7 +2,7 @@
 	<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
        <div class="row">
           <figure class="logo"><a href="{$PAGE_LINK*,:}" title="Composr"><img src="{$IMG*,composr_homesite/mobile/logo-composr}" alt="Composr logo"></a></figure>
-          <div class="HeadRCol">
+          <div class="headRCol">
               <ul>
                   <li>
 							{$,Login form for guests}

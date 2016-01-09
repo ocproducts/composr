@@ -1,0 +1,27 @@
+[title="1"]Advice[/title]
+
+[surround="spaced_list"]
+[list=1]
+[*][b]The Composr CMS forum is [i]not[/i] an [i]official[/i] support channel[/b] ([page="site:professional_support"]click here for paid professional support[/page]).
+The forum is area where community members can support each other, and it is best to help others as much as you yourself are helped -- this community works best when users work together for mutual benefit.
+
+For members who we see strongly helping the community, for instance a creating an excellent tutorial, contributing a formal user-testing report, running a successful advocacy drive, or releasing a high-quality theme/addon, there is a far higher chance the paid staff will consider investing back with some free support.
+
+[b]What if you see developers replying to other topics?[/b] It is true that Composr developers frequently visit these forums and reply to a few topics. But please don't assume they will read your post or necessarily respond, or necessarily keep responding if posted once in a topic. There are many official ways to [page=":contact"]get in touch[/page], such as to give feedback. Just please don't ask for free 1-on-1 developer support.
+
+[*][b]The moderators reserve the right to moderate the forum in accordance with the rules:[/b]
+Generally the forum has a very light touch for moderation, as we want to foster open discussion.
+However abusive and spammy behaviour in particular are not tolerated.
+
+[*][b]Feedback and suggestions:[/b]
+It is the official developer policy to [i]not comment[/i] on whether certain feedback will be incorporated into future versions, unless they have already been implemented, or have been sponsored. We have found any other policy just results in frustration and disappointment, so we hope you'll understand that.
+
+A good rule of thumb is to assume the developers won't necessarily implement your suggestion -- so if you need a feature/modification you should either sponsor it directly with the developers, pay your own developer, or nurture some development skills of your own (which the developers encourage, we are an inclusive community after all).
+
+We have prepared an extensive tutorial covering all aspects of giving feedback: [page="docs:tut_software_feedback"]Problem and feedback reports, and development policies[/page].
+[/list]
+[/surround]
+
+[title="1"]Rules[/title]
+
+[include]_rules[/include]

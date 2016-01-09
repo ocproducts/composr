@@ -21,13 +21,4 @@
 .vhis-box-date span { font-size:12px; color:#BDC7D8; }
 .vhis-box-txt { width:349px; float:left; height:18px; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }
 
-.tooltip {
-	display:none;
-	position:absolute;
-	border:1px solid #333;
-	background-color:#161616;
-	border-radius:5px;
-	padding:10px;
-	color:#fff;
-	font-size:12px Arial;
-}
+.tooltip { display:none; position:absolute; border:1px solid #333; background-color:#161616; border-radius:5px; padding:10px; color:#fff; font-size:12px Arial; }
