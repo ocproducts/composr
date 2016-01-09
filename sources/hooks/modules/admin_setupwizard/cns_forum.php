@@ -130,12 +130,8 @@ class Hook_sw_cns_forum
             if (post_param_integer('have_default_cpf_set', 0) == 0) {
                 $fields = array('im_skype', 'interests', 'location', 'occupation');
                 foreach ($fields as $field) {
-                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
-                    if (!is_null($test)) {
-                        require_code('cns_members_action');
-                        require_code('cns_members_action2');
-                        cns_delete_custom_field($test);
-                    }
+                    require_code('cns_members_action2');
+                    cns_delete_boiler_custom_field($field);
                 }
             }
         }

@@ -252,11 +252,14 @@ Note that some of these may be out-dated by now.
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project[/page]
  - [page="_SEARCH:sup_project_management"]Project Management[/page]
  - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
  - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
  - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
  - [page="_SEARCH:sup_running_agency"]Guide to running a web agency[/page]
+ - [page="_SEARCH:sup_pricing"]Project pricing[/page]
+ - [page="_SEARCH:faq"]Composr/ocProducts FAQ[/page]
 
 {$SET,tutorial_tags,Business Development,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,An honest and detailed look at how much professional websites typically cost.}[block]main_tutorial_rating[/block]

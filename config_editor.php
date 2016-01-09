@@ -209,6 +209,7 @@ function do_access($given_password)
         'safe_mode' => '<em>Development:</em> Whether Composr is to be forced into Safe Mode, meaning no custom files will load and most caching will be disabled.',
         'no_email_output' => '<em>Development:</em> Whether emails should never be sent.',
         'email_to' => '<em>Development:</em> If you have set up a customised critical error screen, and a background e-mailing process, this defines where error e-mails will be sent.',
+        'no_ssl' => '<em>Development:</em> Disable SSL (useful for conditionally disabling on development sites without SSL, when running a database with SSL configured)',
 
         'failover_mode' => '<em>Failover:</em> The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
         'failover_apache_rewritemap_file' => '<em>Failover:</em> Set to \'1\' to maintain an Apache RewriteMap file that maps disk cache files to URLs directly. This is a very advanced option and needs server-level Apache configuration by a programmer. You can also set to \'-\' which is like \'1\' except mobile hits are not differentiated from desktop hits.',

@@ -264,6 +264,7 @@ class Module_admin
             array('name', 'title', 'label', ''/*May be a stop word*/),
             array('analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
+            array('announcement', 'cascading'),
             array('description', 'caption', 'summary'),
             array('choose', 'set', 'specify', 'pick'),
             array('add', 'submit', 'create', 'make', 'publish', 'upload', 'build'),

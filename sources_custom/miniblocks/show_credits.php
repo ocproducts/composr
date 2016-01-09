@@ -18,33 +18,27 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 $existing_customer = !is_guest() && !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('credit_purchases', 'num_credits', array('member_id' => get_member())));
 
 require_lang('customers');
-$whats_this = new Tempcode();
-$guest_msg = new Tempcode();
-$welcome_msg = new Tempcode();
-$tickets_open_msg = new Tempcode();
-$no_credits_link = new Tempcode();
-$credits_message = new Tempcode();
-if (get_page_name() != 'professional_support') {
-    $_professional_support_url = build_url(array('page' => 'professional_support'), 'site');
-    $professional_support_url = $_professional_support_url->evaluate();
-    $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', $professional_support_url);
-}
-
-if (is_guest()) {
-    $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), '');
-    $login_url = $_login_url->evaluate();
-    $_join_url = build_url(array('page' => 'join', 'redirect' => get_self_url(true, true)), '');
-    $join_url = $_join_url->evaluate();
-    $guest_msg = do_lang_tempcode('SHOW_CREDITS_NOT_LOGGED_IN_MESSAGE', $login_url, $join_url);
-}
-
-$username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
-
-$credits_available = intval(get_cms_cpf('support_credits'));
-
 require_lang('tickets');
 require_code('tickets');
 require_code('tickets2');
+
+$credits_available = intval(get_cms_cpf('support_credits'));
+
+if (get_page_name() != 'professional_support' && $credits_available == 0) {
+    $professional_support_url = build_url(array('page' => 'professional_support'), '_SEARCH');
+    $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', escape_html($professional_support_url->evaluate()));
+} else {
+    $whats_this = new Tempcode();
+}
+
+if ($credits_available == 0) {
+    $credits_message = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
+    $help_link = build_url(array('page' => 'tut_software_feedback'), '_SEARCH');
+    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK', escape_html($help_link->evaluate()));
+} else {
+    $credits_message = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', escape_html(integer_format($credits_available)));
+    $no_credits_link = new Tempcode();
+}
 
 $query = '';
 $topic_filters = array();
@@ -58,21 +52,15 @@ foreach ($topic_filters as $topic_filter) {
     }
     $query .= '(SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id=' . strval(get_ticket_forum_id(null, null, false)) . ' AND ' . $topic_filter . ' AND t_is_open=1)';
 }
+$tickets_url = build_url(array('page' => 'tickets', 'type' => 'browse'), get_module_zone('tickets'));
 $tickets_open = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT ' . $query, false, true);
+$tickets_open_msg = do_lang_tempcode('SHOW_CREDITS_TICKETS_OPEN', escape_html(integer_format($tickets_open)), escape_html($tickets_url->evaluate()));
 
-$_username_link = hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url(get_member()), $username, false, true);
-$username_link = $_username_link->evaluate();
-$_logout_url = build_url(array('page' => 'login', 'type' => 'logout', 'redirect' => get_self_url(true, true)), '');
-$logout_url = $_logout_url->evaluate();
-$welcome_msg = do_lang_tempcode('SHOW_CREDITS_WELCOME_MESSAGE', $username_link, $logout_url);
-if ($credits_available == 0) {
-    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK');
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
-} else {
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', $credits_available);
-}
-$_tickets_url = build_url(array('page' => 'tickets', 'type' => 'browse'), get_module_zone('tickets'));
-$tickets_url = $_tickets_url->evaluate();
-$tickets_open_msg = do_lang_tempcode('SHOW_CREDITS_TICKETS_OPEN', number_format($tickets_open), $tickets_url);
-$tpl = do_template('SHOW_CREDITS_BAR', array('_GUID' => '43e6e18c180cda2e6f4627d2a2bb8677', 'GUEST_MSG' => $guest_msg, 'WHATS_THIS' => $whats_this, 'WHATS_THIS_LINK' => $no_credits_link, 'WELCOME_MSG' => $welcome_msg, 'CREDITS_AVAILABLE' => $credits_message));
+$tpl = do_template('SHOW_CREDITS_BAR', array(
+    '_GUID' => '43e6e18c180cda2e6f4627d2a2bb8677',
+    'WHATS_THIS' => $whats_this,
+    'CREDITS_AVAILABLE' => $credits_message,
+    'NO_CREDITS_LINK' => $no_credits_link,
+    'TICKETS_OPEN_MSG' => $tickets_open_msg,
+));
 $tpl->evaluate_echo();

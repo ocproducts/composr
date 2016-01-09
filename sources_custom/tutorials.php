@@ -54,6 +54,7 @@ function list_tutorials_by($criteria, $tag = null)
     switch ($criteria) {
         case 'pinned':
             $_tutorials = list_tutorials();
+            shuffle($_tutorials);
 
             $tutorials = array();
             foreach ($_tutorials as $tutorial) {
@@ -62,43 +63,48 @@ function list_tutorials_by($criteria, $tag = null)
                 }
             }
 
-            sort_maps_by($tutorials, 'title');
-
             break;
 
         case 'recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!add_date');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!add_date');
             break;
 
         case 'likes':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!likes');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!likes');
             break;
 
         case 'likes_recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!likes_recent');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!likes_recent');
             break;
 
         case 'rating':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!rating');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!rating');
             break;
 
         case 'rating_recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!rating_recent');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!rating_recent');
             break;
 
         case 'views':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!views');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!views');
             break;
 
         case 'title':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, 'title');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, 'title');
             break;
     }
 

@@ -1,5 +1,3 @@
-[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
-
 [title="2"]Liability[/title]
 
 We will not guarantee the accuracy, validity, integrity or security status of any content on this website, and will accept no liability from any issues that may result from it. We do not scan all hosted files for viruses.

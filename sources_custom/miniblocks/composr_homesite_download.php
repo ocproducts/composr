@@ -20,57 +20,76 @@ require_code('composr_homesite');
 require_lang('downloads');
 
 // Put together details about releases
-$t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
-if (is_null($t)) {
-    $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array('author' => 'ocProducts', 'validated' => 1));
-    if ($t !== null) {
-        $t = preg_replace('# \(.*#', '', $t);
-    }
+$t = mixed();
+if ($GLOBALS['DEV_MODE']) {
+    $t = 'Composr version 1337';
 }
-$_releases = array();
+if ($t === null) {
+    $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+}
+if ($t === null) {
+    $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array('author' => 'ocProducts', 'validated' => 1));
+}
+if ($t !== null) {
+    $t = preg_replace('# \(.*#', '', $t);
+}
+$releases_tpl_map = array();
 if ($t !== null) {
     $latest = get_translated_text($t);
     $release_quick = do_release($latest, 'QUICK_');
     if (!is_null($release_quick)) {
-        $_releases += $release_quick;
+        $releases_tpl_map += $release_quick;
     }
     $release_manual = do_release($latest . ' (manual)', 'MANUAL_');
     if (!is_null($release_manual)) {
-        $_releases += $release_manual;
+        $releases_tpl_map += $release_manual;
     }
     $release_bleedingquick = do_release('(bleeding-edge)', 'BLEEDINGQUICK_', is_null($release_quick) ? null : $release_quick['QUICK_VERSION']);
     if (!is_null($release_bleedingquick)) {
-        $_releases += $release_bleedingquick;
+        $releases_tpl_map += $release_bleedingquick;
     }
     $release_bleedingmanual = do_release('(bleeding-edge, manual)', 'BLEEDINGMANUAL_', is_null($release_manual) ? null : $release_manual['MANUAL_VERSION']);
     if (!is_null($release_bleedingmanual)) {
-        $_releases += $release_bleedingmanual;
+        $releases_tpl_map += $release_bleedingmanual;
     }
 }
 
-if ($_releases === array()) {
+if ($releases_tpl_map === array()) {
     $latest = do_lang('NA');
-    $releases = paragraph(do_lang_tempcode('CMS_BETWEEN_VERSIONS'));
+    $releases_tpl = paragraph(do_lang_tempcode('CMS_BETWEEN_VERSIONS'));
 } else {
-    $releases = do_template('CMS_DOWNLOAD_RELEASES', $_releases);
+    $releases_tpl = do_template('CMS_DOWNLOAD_RELEASES', $releases_tpl_map);
 }
 
-return do_template('CMS_DOWNLOAD_BLOCK', array('_GUID' => '4c4952e40ed96ab52461adce9989832d', 'RELEASES' => $releases, 'VERSION' => $latest));
+return do_template('CMS_DOWNLOAD_BLOCK', array('_GUID' => '4c4952e40ed96ab52461adce9989832d', 'RELEASES' => $releases_tpl, 'VERSION' => $latest));
 
 /**
  * Get template variables for a release.
  *
- * @param  SHORT_TEXT $name A substring of the title of the download.
+ * @param  SHORT_TEXT $name_suffix A substring of the title of the download.
  * @param  string $prefix Prefix to put on the template params.
  * @param  ?string $version_must_be_newer_than The version this must be newer than (null: no check).
  * @return ?array Map of template variables (null: could not find).
  */
-function do_release($name, $prefix, $version_must_be_newer_than = null)
+function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
 {
-    $sql = 'SELECT d.*,d.id AS d_id FROM ' . get_table_prefix() . 'download_downloads d USE INDEX(downloadauthor) WHERE ' . db_string_equal_to('author', 'ocProducts') . ' AND validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('%' . $name) . '\' ORDER BY add_date DESC';
-    $rows = $GLOBALS['SITE_DB']->query($sql, 1, null, false, false, array('name' => 'SHORT_TRANS'));
-    if (!array_key_exists(0, $rows)) {
-        return null; // Shouldn't happen, but let's avoid transitional errors
+    if ($GLOBALS['DEV_MODE']) {
+        $t = 'Composr version 1337';
+
+        $myrow = array(
+            'd_id' => 123,
+            'num_downloads' => 321,
+            'name' => $name_suffix,
+            'file_size' => 12345,
+        );
+    } else {
+        $sql = 'SELECT d.num_downloads,d.name,d.file_size,d.id AS d_id FROM ' . get_table_prefix() . 'download_downloads d USE INDEX(downloadauthor) WHERE ' . db_string_equal_to('author', 'ocProducts') . ' AND validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('%' . $name_suffix) . '\' ORDER BY add_date DESC';
+        $rows = $GLOBALS['SITE_DB']->query($sql, 1, null, false, false, array('name' => 'SHORT_TRANS'));
+        if (!array_key_exists(0, $rows)) {
+            return null; // Shouldn't happen, but let's avoid transitional errors
+        }
+
+        $myrow = $rows[0];
     }
 
     if (!is_null($version_must_be_newer_than)) {
@@ -78,8 +97,6 @@ function do_release($name, $prefix, $version_must_be_newer_than = null)
             $version_must_be_newer_than .= '.0.0'; // Weird, but PHP won't do version_compare right without it
         }
     }
-
-    $myrow = $rows[0];
 
     $id = $myrow['d_id'];
 
@@ -104,9 +121,9 @@ function do_release($name, $prefix, $version_must_be_newer_than = null)
 
     $ret = array();
     $ret[$prefix . 'VERSION'] = $version;
-    $ret[$prefix . 'NAME'] = $name;
+    $ret[$prefix . 'NAME'] = $name_suffix;
     $ret[$prefix . 'FILESIZE'] = $filesize;
-    $ret[$prefix . 'NUM_DOWNLOADS'] = number_format($num_downloads);
+    $ret[$prefix . 'NUM_DOWNLOADS'] = integer_format($num_downloads);
     $ret[$prefix . 'URL'] = $url;
     return $ret;
 }

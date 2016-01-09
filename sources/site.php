@@ -215,6 +215,9 @@ function load_zone_data()
                     if ($real_zone == 'forum') { // A bit of an architectural fudge, but people get confused why it doesn't come back the same
                         $zone_default_page = 'forumview';
                     }
+                    if ($real_zone == 'docs') {
+                        $zone_default_page = 'tutorials';
+                    }
                     $map = array(
                         'zone_name' => $real_zone,
                         'zone_default_page' => $zone_default_page,

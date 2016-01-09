@@ -52,6 +52,8 @@ function init__themewizard()
         $THEME_WIZARD_IMAGES = array_merge($THEME_WIZARD_IMAGES, $a);
         $THEME_WIZARD_IMAGES_NO_WILD = array_merge($THEME_WIZARD_IMAGES_NO_WILD, $b);
     }
+
+    require_code('images');
 }
 
 /**
@@ -1371,6 +1373,23 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $_image = @imagecreatefromjpeg($path);
         } else {
             $_image = @imagecreatefrompng($path);
+
+            // GD may have a bug with not loading up non-alpha transparency properly
+            if (function_exists('imageistruecolor')) {
+                if (function_exists('imagecreatetruecolor')) {
+                    if (!imageistruecolor($_image)) {
+                        $imagemagick = find_imagemagick();
+                        if (!is_null($imagemagick)) {
+                            $tempnam = cms_tempnam('png32bit');
+                            shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
+                            if (is_file($tempnam)) {
+                                $_image = @imagecreatefrompng($tempnam);
+                                @unlink($tempnam);
+                            }
+                        }
+                    }
+                }
+            }
         }
         if ($_image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)));
@@ -1378,17 +1397,18 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     } else {
         $_image = $path;
     }
+
     $width = imagesx($_image);
     $height = imagesy($_image);
     if (function_exists('imageistruecolor')) {
         if (function_exists('imagecreatetruecolor')) {
+            $trans_colour = imagecolortransparent($_image); // Even a truecolor one can have a transparency currency, if 24 bit
+
             if (!imageistruecolor($_image)) {
-                $trans_colour = imagecolortransparent($_image);
                 $image = imagecreatetruecolor($width, $height);
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;
-                $trans_colour = null;
             }
         } else {
             $image = $_image;
@@ -1397,6 +1417,9 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     } else {
         $image = $_image;
         $trans_colour = imagecolortransparent($_image);
+    }
+    if ($trans_colour === -1 || $trans_colour === false) {
+        $trans_colour = null;
     }
     imagealphablending($image, false);
     imagesavealpha($image, true);

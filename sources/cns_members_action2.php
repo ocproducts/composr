@@ -1984,3 +1984,19 @@ function update_member_username_caching($member_id, $username)
         $con->query_update($table, array($field => $username), array($updating_field => $member_id));
     }
 }
+
+/**
+ * Delete a custom profile field from one of the predefined templates (this is often used by importers).
+ *
+ * @param  ID_TEXT $type The identifier of the boiler custom profile field.
+ */
+function cns_delete_boiler_custom_field($field)
+{
+	require_lang('cns_special_cpf');
+
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+    if (!is_null($test)) {
+        require_code('cns_members_action');
+        cns_delete_custom_field($test);
+    }
+}

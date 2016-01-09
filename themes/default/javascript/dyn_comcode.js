@@ -288,7 +288,7 @@ function flip_page(to,pass_id,sections)
 		x=document.getElementById(pass_id+'_section_'+sections[i]);
 		var current_place=document.getElementById(pass_id+'_section_'+sections[current_pos]);
 		//var width=current_place?'100%':null;
-		var width=current_place?find_width(current_place,true,true,true):null;
+		var width=current_place?find_width(current_place,true):null;
 		if (x)
 		{
 			if (x.className=='comcode_big_tab')

@@ -693,7 +693,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
         }
 
         // Icon and title
-        echo '<div class="icon_and_title">' . "\n\n";
+        echo '<div class="iconAndTitle">' . "\n\n";
         $subsection_title = $subsection[0];
         require_code('tempcode_compiler');
         $subsection_title = comcode_to_tempcode('[semihtml]' . $subsection_title . '[/semihtml]', null, true);
@@ -715,7 +715,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
             $subsection_caption = '';
         }
         if ((!is_null($subsection_caption)) && ($subsection_caption != '')) {
-            echo '<p class="subsection_caption">' . $subsection_caption . '.</p>';
+            echo '<p class="subsectionCaption">' . $subsection_caption . '.</p>';
         }
 
         // List
@@ -727,7 +727,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                     if (has_js()) {
                         echo '</ul></div>' . "\n\n";
                         $see_more = true;
-                        echo '<div class="moree"><ul class="more">';
+                        echo '<div class="moreE"><ul class="more">';
                     }
                 } else {
                     $item[0] = comcode_to_tempcode('[semihtml]' . $item[0] . '[/semihtml]', null, true);
@@ -738,12 +738,12 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                     }
 
                     echo '<li>';
-                    echo '<span class="itemtitle">' . $item[0] . '</span>';
+                    echo '<span class="itemTitle">' . $item[0] . '</span>';
                     if (array_key_exists(1, $item)) {
                         if ((substr($item[1], -1) != '!') && (substr($item[1], -1) != '?') && (substr($item[1], -1) != '.')) {
                             $item[1] .= '.';
                         }
-                        echo '<span class="itemdescription">' . $item[1] . '</span>';
+                        echo '<span class="itemDescription">' . $item[1] . '</span>';
                     }
                     echo '</li>';
                 }

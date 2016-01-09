@@ -185,7 +185,9 @@ function display_alert(notification)
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request()
 {
+	/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 	window.notify.requestPermission();
+	/*{+END}*/
 }
 
 function toggle_top_personal_stats(event)
