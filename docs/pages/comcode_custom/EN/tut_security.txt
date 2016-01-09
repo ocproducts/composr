@@ -366,7 +366,7 @@ SSL certificates vary in price immensely, but the price generally depends on the
 You may decide to do this if the pages transmit confidential information; obvious targets are the login and join pages.
 
 Assuming you have already installed the SSL certificate on the server, you can set up SSL in Composr as follows:
-Go to the Admin Zone > Security > SSL/TLS (HTTPS) configuration, and tick (check) the boxes for the following pages... [tt]:join[/tt], [tt]:login[/tt], [tt]:purchase[/tt], [tt]:shopping[/tt], [tt]site:members[/tt]. (These are the pages that purchases or passwords happen on -- but you can enable for other pages too if you like)
+Go to the Admin Zone > Security > SSL/TLS (HTTPS) configuration, and tick (check) the boxes for the following pages... [tt]:join[/tt], [tt]:login[/tt], [tt]site:purchase[/tt], [tt]site:shopping[/tt], [tt]site:members[/tt]. (These are the pages that purchases or passwords happen on -- but you can enable for other pages too if you like)
 (this assumes that you have the [tt]ssl[/tt] addon installed)
 
 If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week while fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an e-commerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated. There may also be concerns with government surveillance.
@@ -508,6 +508,7 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
+ - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
 
 {$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

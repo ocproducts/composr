@@ -1,4 +1,4 @@
-<div class="SelCdt">
+<div class="selCdt">
 	<label for="product">{LABEL_BUY}</label>
 	<select name="product" id="product" onchange="update_product_info_display();">
 		{+START,LOOP,CREDIT_KINDS}

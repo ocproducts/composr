@@ -256,7 +256,8 @@ function is_page_https($zone, $page)
 {
     static $off = null;
     if ($off === null) {
-        $off = (!addon_installed('ssl')) || (in_safe_mode()) || (!function_exists('persistent_cache_get'));
+        global $SITE_INFO;
+        $off = (!addon_installed('ssl')) || (in_safe_mode()) || (!function_exists('persistent_cache_get') || (!empty($SITE_INFO['no_ssl'])));
     }
     if ($off) {
         return false;

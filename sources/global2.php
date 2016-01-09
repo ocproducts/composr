@@ -1769,7 +1769,11 @@ function javascript_tempcode($position = null)
         $JAVASCRIPTS = array();
         $JAVASCRIPTS[($grouping_codename == '') ? 'global' : $grouping_codename] = ($grouping_codename == '');
         if ($grouping_codename == '') {
-            $JAVASCRIPTS['jquery'] = true;
+            foreach (array('jquery', 'modernizr') as $important_script) {
+                if (isset($arr_backup[$important_script])) {
+                    $JAVASCRIPTS[$important_script] = true;
+                }
+            }
         }
         $JAVASCRIPTS += $arr_backup;
     }
@@ -2163,7 +2167,14 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 
     if ($type == '.js') {
         // Fix order, so our main JavaScript, and jQuery, goes first in the merge order
-        $arr = (isset($arr['jquery']) ? array('global' => true, 'jquery' => true) : array('global' => true)) + $arr;
+        $_arr = $arr;
+        $arr = array('global' => true);
+        foreach (array('jquery', 'modernizr') as $important_script) {
+            if (isset($arr[$important_script])) {
+                $arr[$important_script] = true;
+            }
+        }
+        $arr += $_arr;
     }
 
     $is_admin = $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member());

@@ -174,10 +174,11 @@ If you are using too many resources for shared hosting, you'll need something be
 
 [title="2"]Requesting support[/title]
 
-If you require a professional or official response, you'll need to use the Composr paid support service (or an equivalent third-party service -- we do not hold or seek to hold any support/development monopoly).
+If you require a professional or official response, you'll need to use the Composr [page="site:professional_support"]paid support service[/page] (or an equivalent third-party service -- we do not hold or seek to hold any support/development monopoly).
+
 Generally, users can help each other out on the community forum.
 
-Please don't ask for free professional/official support (except when reporting bugs in Composr), as we have to pay our dedicated staff and thus have to have funding for their work hours.
+Please don't ask for free professional/official support (except when reporting bugs in Composr, or under our referral scheme ["Referral scheme for free support"]), as we have to pay our dedicated staff and thus have to have funding for their work hours.
 
 [title="3"]Reporting and avoiding emergency problems[/title]
 
@@ -228,6 +229,35 @@ To report such issues it is best to take a screenshot of your JavaScript console
 Issues with AJAX and frames specifically can be caused by JavaScript security relating to access across domains. If JavaScript is asked to call one domain, from a different one, it won't allow it, to preserve the general security of the web.
 
 In Composr it can happen if the base URL has changed. One possibility is if it is blank in the [tt]_config.php[/tt] file. If it was never set, and sometimes Composr is getting called by different variants of the base URL (typically with and without 'www.') then the cache can get a mixture, and it triggers such cross-domain errors.
+
+[title="3"]Referral scheme for free support[/title]
+
+We know a lot of users would benefit from some advanced professional support on occasion, but that it's hard to find/justify the money if your website is not part of a successful business. The community helps, but sometimes only a programmer has the answer.
+
+Of course after making a great product for free the last thing ocProducts can afford is free individual tuition too.
+
+However, if you do help us bring in direct revenue, we can reward you for that. If you refer agency-service projects to us, you'll be given 5% of the value back in support credits to spend with us as you wish.
+
+This is a great way for us to be able to help you out further, and to help you help us.
+
+We're always in need of projects to pay the bills and to continue innovating. Sometimes it seems like we're "programming Gods", and sometimes businesses can seem inhuman or money-grabbing, but actually we're people who work very hard and make big long-term personal commitments, with big bills to pay. And unlike other non-contributing web design companies we have to compete with on a daily basis, we're always aiming for the stars and taking the Composr community with us.
+
+You can find all about our business offerings from the [url="ocProducts"]http://ocproducts.com/[/url] part of this site. If you know an established or funded business who needs a site doing -- see if you can sell them on our services, and [page=":contact:project"]send us the details of the referral[/page].
+
+So, time to get started :)? If you strike it big and are able to refer a development project at say £5,328, you'll earn one full days free support. That could be a [i]lot[/i] of questions answered, or a simple new addon developed.
+
+The smallprint:
+ - It must be a true referral. The entity being referred must not have been considering Composr previously. The entity could be your employer, but it can't be your own business.
+ - The order must be over [currency="GBP"]1000[/currency].
+ - The exact earning calculation is: 1 support credit for each £111 GBP spent with us, rounded down to the nearest support credit.
+ - Only work in the initial order will be considered.
+ - The project must actually start (i.e. deposit paid or support credits purchased). We reserve the right to reduce awarded credits if the project is cancelled for some reason, as we won't have made the money to pass on.
+ - We reserve the right to change these rules at any time, it's not a binding agreement.
+ - This applies for projects done at our agency rate, or long-term secondments of staff -- it doesn't apply to professional support or feature sponsorship which is done at a lower hourly rate.
+
+We suggest that you are open with whoever you are referring: if they realise you'll get a referral but think you are hiding this, it is likely to reflect poorly on you. Also, of course don't refer work you don't think we could realistically do -- e.g. print design work, PR strategy, IT network support.
+
+I neglected to mention that there's something inherently good about referring work – for most projects we do, at least one new feature makes it back into Composr. A lot of what Composr now is came from commercial projects originally.
 
 [title="2"]Providing feedback, or making feature requests[/title]
 
@@ -473,8 +503,8 @@ The developers are generally polite (if sometimes a bit curt due to time pressur
 
 So, please aim to:
 1) properly plan out your project (written business plan, discussions and arrangements with investors if appropriate, SWOT analysis, written and costed specification);
-2) think of Composr saving you a certain percent (say, 30%, compared to the effective budget of other successful live websites), not eliminating the need for a budget;
-3) start reasonably simple (perhaps a "minimum viable product", and agile development plan to iterate to/from that);
+2) think of Composr saving you a certain percent (say, 30%, compared to the effective budget of other successful live websites), [page="_SEARCH:sup_pricing"]not eliminating the need for a budget[/page];
+3) start reasonably simple (perhaps a [page="_SEARCH:sup_minimum_viable_products"]minimum viable product[/page], and agile development plan to iterate to/from that);
 4) follow the [page="_SEARCH:tut_antifeatures"]advice given[/page].
 
 If you do then find it a big challenge to achieve your desired goals, don't approach the developers asking for free support or for new features to be implemented for free. Please do fully interact with other users in the community though, of course.
@@ -507,7 +537,9 @@ Bugs and security issues are both classified as 'flaws'. There are two classific
  - [b]Major[/b]. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
  - [b]Minor[/b]. Any flaw that is not major.
 
-ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal). Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
+ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal).
+Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
+
 A [b]supported[/b] version is a previous major version where the initial release of a subsequent new major version was made only in the past 8 months. A [b]defunct[/b] version is older than that. Flaws are handled for the different support statuses as follows:
  - [b]Beta[/b] version. ocProducts will typically release the next new beta version with all bugs up to the major flaw fixed, but there are no guarantees.
  - [b]Stable[/b] version. ocProducts will release a new version with all bugs fixed.
@@ -552,5 +584,12 @@ As stated, we will not always disclose the existence of low-risk vulnerabilities
  - to avoid alarming users
  - and most importantly, to avoid alerting hackers
 We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project[/page]
+ - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
+ - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
+ - [page="_SEARCH:faq"]Composr/ocProducts FAQ[/page]
 
 {$SET,tutorial_tags,Contributing,Advice & Guidance,novice}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]

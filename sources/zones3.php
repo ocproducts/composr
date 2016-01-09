@@ -685,7 +685,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
         }
     }
 
-    $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => $page), '', 1);
+    $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => $zone . ':' . $page), '', 1);
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('comcode_page', $page, '');

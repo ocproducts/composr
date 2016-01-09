@@ -548,8 +548,8 @@ class Module_tutorials
                 't_author' => $external_tutorial['author'],
                 't_submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                 't_views' => 0,
-                't_add_date' => time(),
-                't_edit_date' => time(),
+                't_add_date' => time() - 60 * 60 * 24 * 365,
+                't_edit_date' => time() - 60 * 60 * 24 * 365,
             ), true);
 
             foreach ($external_tutorial['tags'] as $tag) {

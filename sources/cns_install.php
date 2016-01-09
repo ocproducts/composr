@@ -328,15 +328,17 @@ function install_cns($upgrade_from = null)
         ));
 
         cns_make_boiler_custom_field('about');
+        cns_make_boiler_custom_field('interests');
+        cns_make_boiler_custom_field('occupation');
+        cns_make_boiler_custom_field('staff_notes');
+        if (!addon_installed('user_mappr')) {
+            cns_make_boiler_custom_field('location');
+        }
         //cns_make_boiler_custom_field('im_jabber'); Old-school, although XMPP is still popular for some, so we won't remove entirely
         cns_make_boiler_custom_field('im_skype');
         cns_make_boiler_custom_field('sn_facebook');
         cns_make_boiler_custom_field('sn_google');
         cns_make_boiler_custom_field('sn_twitter');
-        cns_make_boiler_custom_field('interests');
-        cns_make_boiler_custom_field('location');
-        cns_make_boiler_custom_field('occupation');
-        cns_make_boiler_custom_field('staff_notes');
 
         $GLOBALS['FORUM_DB']->create_table('f_invites', array(
             'id' => '*AUTO',

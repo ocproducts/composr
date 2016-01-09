@@ -119,7 +119,7 @@ function script_load_stuff()
 			for (var i=0;i<stuck_navs.length;i++)
 			{
 				var stuck_nav=stuck_navs[i];
-				var stuck_nav_height=(typeof stuck_nav.real_height=='undefined')?find_height(stuck_nav,true,true):stuck_nav.real_height;
+				var stuck_nav_height=(typeof stuck_nav.real_height=='undefined')?find_height(stuck_nav,true):stuck_nav.real_height;
 				stuck_nav.real_height=stuck_nav_height;
 				var pos_y=find_pos_y(stuck_nav.parentNode,true);
 				var footer_height=find_height(document.getElementsByTagName('footer')[0]);
@@ -132,9 +132,9 @@ function script_load_stuff()
 					var extra_height=(get_window_scroll_y()-pos_y);
 					if (extra_height>0)
 					{
-						var width=find_width(stuck_nav);
-						var height=find_height(stuck_nav);
-						var stuck_nav_width=find_width(stuck_nav,true,true);
+						var width=find_width(stuck_nav,true);
+						var height=find_height(stuck_nav,true);
+						var stuck_nav_width=find_width(stuck_nav,true);
 						if (!abstract_get_computed_style(stuck_nav,'width')) // May be centered or something, we should be careful
 						{
 							stuck_nav.parentNode.style.width=width+'px';
@@ -1824,53 +1824,33 @@ function find_pos_y(obj,not_relative) /* if not_relative is true it gets the pos
 	}
 	return ret;
 }
-function find_width(obj,take_padding,take_margin,take_border)
+function find_width(obj,take_padding_and_border) // if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
 {
-	if (typeof take_padding=='undefined') take_padding=false;
-	if (typeof take_margin=='undefined') take_margin=false;
-	if (typeof take_border=='undefined') take_border=false;
+	if (typeof take_padding_and_border=='undefined') take_padding_and_border=false;
 
 	if (!obj) return 0;
 
 	var ret=obj.offsetWidth;
-	if (take_padding)
+	if (take_padding_and_border)
 	{
 		ret-=sts(abstract_get_computed_style(obj,'padding-left'));
 		ret-=sts(abstract_get_computed_style(obj,'padding-right'));
-	}
-	if (take_margin)
-	{
-		ret-=sts(abstract_get_computed_style(obj,'margin-left'));
-		ret-=sts(abstract_get_computed_style(obj,'margin-right'));
-	}
-	if (take_border)
-	{
 		ret-=sts(abstract_get_computed_style(obj,'border-left-width'));
 		ret-=sts(abstract_get_computed_style(obj,'border-right-width'));
 	}
 	return ret;
 }
-function find_height(obj,take_padding,take_margin,take_border)
+function find_height(obj,take_padding_and_border)
 {
-	if (typeof take_padding=='undefined') take_padding=false;
-	if (typeof take_margin=='undefined') take_margin=false;
-	if (typeof take_border=='undefined') take_border=false;
+	if (typeof take_padding_and_border=='undefined') take_padding_and_border=false;
 
 	if (!obj) return 0;
 
 	var ret=obj.offsetHeight;
-	if (take_padding)
+	if (take_padding_and_border)
 	{
 		ret-=sts(abstract_get_computed_style(obj,'padding-top'));
 		ret-=sts(abstract_get_computed_style(obj,'padding-bottom'));
-	}
-	if (take_margin)
-	{
-		ret-=sts(abstract_get_computed_style(obj,'margin-top'));
-		ret-=sts(abstract_get_computed_style(obj,'margin-bottom'));
-	}
-	if (take_border)
-	{
 		ret-=sts(abstract_get_computed_style(obj,'border-top-width'));
 		ret-=sts(abstract_get_computed_style(obj,'border-bottom-width'));
 	}
@@ -2105,13 +2085,13 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		{
 			tooltip_element.className+=' '+ac.className;
 		}
-		if (!force_width)
+		if (force_width)
+		{
+			tooltip_element.style.width=width;
+		} else
 		{
 			tooltip_element.style.maxWidth=width;
 			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
-		} else
-		{
-			tooltip_element.style.width=width;
 		}
 		if ((height) && (height!='auto'))
 		{
@@ -2173,7 +2153,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
 		if (tooltip_element.style.width=='auto')
-			tooltip_element.style.width=find_width(tooltip_element,true,true,true)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
 		{
@@ -2235,7 +2215,7 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 		catch(ignore) {}
 
 		// Work out which direction to render in
-		var width=find_width(tooltip_element);
+		var width=find_width(tooltip_element,true);
 		if (tooltip_element.style.width=='auto')
 		{
 			if (width<200) width=200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space

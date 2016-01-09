@@ -464,6 +464,29 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
 }
 
 /**
+ * Find the path to imagemagick.
+ *
+ * @return ?PATH Path to imagemagick (null: not found)
+ */
+function find_imagemagick()
+{
+    $imagemagick = '/usr/bin/convert';
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/usr/local/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/opt/local/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/opt/cloudlinux/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        return null;
+    }
+    return $imagemagick;
+}
+
+/**
  * Check we can load the given file, given our memory limit.
  *
  * @param  PATH $file_path The file path we are trying to load
@@ -496,17 +519,8 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
                 $max_dim = intval(sqrt(floatval($what_we_will_allow) / 4.0 / $magic_factor/*4 1 byte channels*/));
 
                 // Can command line imagemagick save the day?
-                $imagemagick = '/usr/bin/convert';
-                if (!@file_exists($imagemagick)) {
-                    $imagemagick = '/usr/local/bin/convert';
-                }
-                if (!@file_exists($imagemagick)) {
-                    $imagemagick = '/opt/local/bin/convert';
-                }
-                if (!@file_exists($imagemagick)) {
-                    $imagemagick = '/opt/cloudlinux/bin/convert';
-                }
-                if (@file_exists($imagemagick)) {
+                $imagemagick = find_imagemagick();
+                if ($imagemagick !== null) {
                     $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
                     $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
                     $shrink_command .= ' ' . escapeshellarg_wrap($file_path);

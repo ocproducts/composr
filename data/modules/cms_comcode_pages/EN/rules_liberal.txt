@@ -1,5 +1,3 @@
-[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
-
 Do not:
  - spam this website, or members that use it
  - hack this website
