@@ -139,7 +139,17 @@ $decision_tree = array(
 
     'contribute_code' => array(
         'title' => 'Contribute code',
-        'text' => 'Thanks, that\'s fantastic!' . "\n\n" . 'The way to contribute code is via a [url="pull request" target="_blank"]https://help.github.com/articles/using-pull-requests/[/url] on [url="github" target="_blank"]https://github.com/ocproducts/composr[/url].' . "\n\n" . 'It is also a good idea to [url="create an issue on the tracker" target="_blank"]' . get_base_url() . '/tracker/bug_report_page.php?severity=10[/url] to reference your changes and pull request.',
+        'text' => "Thanks, that's fantastic!
+
+There are 3 ways to contribute code to Composr:
+[list=\"1\"]
+[*] Make a [url=\"pull request\" target=\"_blank\"]https://help.github.com/articles/using-pull-requests/[/url] on [url=\"github\" target=\"_blank\"]https://github.com/ocproducts/composr[/url]. It is also a good idea to [url=\"create an issue on the tracker\" target=\"_blank\"]" . get_base_url() . "/tracker/bug_report_page.php[/url] to reference your changes and pull request.
+[*] Post a patch [url=\"in an issue on the tracker\" target=\"_blank\"]" . get_base_url() . "/tracker/bug_report_page.php[/url].
+[*] [page=\"site:tickets:ticket:ticket_type=Partnership\"]Request direct git write-access[/page].\nWe can only provide write-access to Git when someone shows a serious commitment to the project in the form of high-quality code, because we need to be careful with security and quality.
+[/list]
+For contributions to any of the bundled addons we may need a standard dual-copyright agreement signing. We'll get in touch regarding that if necessary.
+
+Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr developers[/page].",
         'previous' => 'free',
     ),
 
@@ -194,7 +204,7 @@ $decision_tree = array(
                 'default_list' => array(
                     'Request an installation',
                     'Hire for a project',
-                    'Hire a developer for ongoing work (secondment)',
+                    'Hire someone for ongoing work (secondment)',
                     'Technical support (single question support / very quick jobs)',
                     'Sponsor Composr enhancements',
                     'Request a website upgrade',
@@ -207,7 +217,7 @@ $decision_tree = array(
             //    Parameter                     Value                                                                   Target
             array('commercial_service_type',    'Request an installation',                                              'installation'),
             array('commercial_service_type',    'Hire for a project',                                                   'project'),
-            array('commercial_service_type',    'Hire a developer for ongoing work (secondment)',                       'secondment'),
+            array('commercial_service_type',    'Hire someone for ongoing work (secondment)',                           'secondment'),
             array('commercial_service_type',    'Technical support (single question support / very quick jobs)',        'support'),
             array('commercial_service_type',    'Sponsor Composr enhancements',                                         'sponsor'),
             array('commercial_service_type',    'Request a website upgrade',                                            'upgrade'),
@@ -945,7 +955,7 @@ $decision_tree = array(
     ),
 
     'secondment' => array(
-        'title' => 'Hire a developer for ongoing work (secondment)',
+        'title' => 'Hire someone for ongoing work (secondment)',
         'text' => 'We will try and match one of an employee with your needs. Secondment is a great option for ongoing work, or if you want the confidence and convenience of having a named person on hand to tackle random or urgent things.',
         'previous' => 'paid',
         'form_method' => 'POST',

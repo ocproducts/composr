@@ -7,7 +7,7 @@
 
 	<p class="lonely_label">{!AGREEMENT}:</p>
 
-	<div class="purchase_licence">{LICENCE*}</div>
+	<div class="purchase_terms">{TERMS*}</div>
 
 	<p>
 		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>

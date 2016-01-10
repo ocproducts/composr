@@ -1,61 +1,70 @@
-<div class="selCdt">
-	<label for="product">{LABEL_BUY}</label>
-	<select name="product" id="product" onchange="update_product_info_display();">
-		{+START,LOOP,CREDIT_KINDS}
-			<option{+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
-		{+END}
-	</select>
-</div>
+{$SET,purchase_url,{$PAGE_LINK,_SEARCH:purchase:terms:member_id={$MEMBER}}}
+<form class="quoteCst" action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get" style="margin-bottom: 0">
+	{$HIDDENS_FOR_GET_FORM,{$GET,purchase_url}}
 
-{+START,LOOP,CREDIT_KINDS}
-	<div class="creditsinfo" id="info_{NUM_CREDITS*}_CREDITS">
-		<p>{!BLOCK_CREDITS_EXP_INNER_MSG,{$NUMBER_FORMAT*,{NUM_CREDITS}},{$COMCODE,[currency="{S_CURRENCY}" bracket="1"]{PRICE}[/currency]}}</p>
-
-		<table class="columned_table topTble">
-			<thead>
-				<tr>
-					<th>
-						{TH_PRIORITY}
-					</th>
-					<th>
-						{TH_MINUTES}
-					</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr>
-					<td>
-						{L_B}
-					</td>
-					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{B_MINUTES}}}</strong> {MINUTES}
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						{L_R}
-					</td>
-					<td>
-						<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{R_MINUTES}}}</strong> {MINUTES}
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="selCdt">
+		<label for="type_code">{LABEL_BUY}</label>
+		<select name="type_code" id="type_code" onchange="update_product_info_display();">
+			{+START,LOOP,CREDIT_KINDS}
+				<option{+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
+			{+END}
+		</select>
 	</div>
-{+END}
 
-<script>// <![CDATA[
-	function update_product_info_display()
-	{
-		var product=document.getElementById('product');
-		var value=product.options[product.selectedIndex].value;
-		var creditsinfo=get_elements_by_class_name(document.body,'creditsinfo');
-		for (var i=0;i<creditsinfo.length;i++)
+	{+START,LOOP,CREDIT_KINDS}
+		<div class="creditsInfo" id="info_{NUM_CREDITS*}_CREDITS">
+			<p>{!BLOCK_CREDITS_EXP_INNER_MSG,{$NUMBER_FORMAT*,{NUM_CREDITS}},{$COMCODE,[currency="{S_CURRENCY}" bracket="1"]{PRICE}[/currency]}}</p>
+
+			<table class="columned_table topTble">
+				<thead>
+					<tr>
+						<th>
+							{!PRIORITY_LEVEL}
+						</th>
+						<th>
+							{!NUMBER_OF_MINUTES}
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>
+							{!SUPPORT_PRIORITY_backburner}
+						</td>
+						<td>
+							<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{BACKBURNER_MINUTES}}}</strong> {!SUPPORT_minutes}
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							{!SUPPORT_PRIORITY_regular}
+						</td>
+						<td>
+							<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{REGULAR_MINUTES}}}</strong> {!SUPPORT_minutes}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	{+END}
+
+	<script>// <![CDATA[
+		function update_product_info_display()
 		{
-			creditsinfo[i].style.display=(creditsinfo[i].id=='info_'+value)?'block':'none';
+			var type_code=document.getElementById('type_code');
+			var value=type_code.options[type_code.selectedIndex].value;
+			var creditsInfo=get_elements_by_class_name(document.body,'creditsInfo');
+			for (var i=0;i<creditsInfo.length;i++)
+			{
+				creditsInfo[i].style.display=(creditsInfo[i].id=='info_'+value)?'block':'none';
+			}
 		}
-	}
-	update_product_info_display();
-//]]></script>
+		update_product_info_display();
+	//]]></script>
+
+	<div class="purchaseBtn">
+		<input type="submit" value="Purchase" />
+	</div>
+</form>

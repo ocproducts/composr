@@ -29,7 +29,7 @@ If you are using [concept]Conversr[/concept] on a M.S.N. and upgrading to a new 
 
 [title="3"]Special note: upgrading third-party forums[/title]
 
-If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, commercial developers are available for such work.
+If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, professional developers are available for such work.
 
 [title="3"]Things to check in feature/major releases[/title]
 
@@ -83,7 +83,7 @@ Often browsers will cache CSS and JavaScript files, even when changed on the ser
 
 Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]http://yourbaseurl/upgrader.php[/tt]) already does.
 
-If you require assistance for an upgrade, commercial developers may be able to help.
+If you require assistance for an upgrade, professional developers may be able to help.
 
 [title="2"]The integrity checker[/title]
 

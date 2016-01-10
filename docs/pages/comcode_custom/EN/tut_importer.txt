@@ -187,7 +187,7 @@ However, it is advisable to keep the directory, database, and import session, ar
 
 [title="2"]Additional help[/title]
 
-As importing may not always go smoothly, you may want to arrange to have a commercial developer help with the process. If you run a website that you are able to justify temporarily hiring us, you may wish to contact a developer before import, so that someone can be prepared to assist, or perform the whole process themselves.
+As importing may not always go smoothly, you may want to arrange to have a professional developer help with the process. If you run a website that you are able to justify temporarily hiring us, you may wish to contact a developer before import, so that someone can be prepared to assist, or perform the whole process themselves.
 
 [title="2"]See also[/title]
 

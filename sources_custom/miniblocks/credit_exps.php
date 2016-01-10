@@ -24,14 +24,6 @@ if (is_null($s_currency)) {
 
 require_lang('customers');
 
-$priority_level = do_lang_tempcode('PRIORITY_LEVEL');
-$num_minutes = do_lang_tempcode('NUMBER_OF_MINUTES');
-$minutes = do_lang_tempcode('SUPPORT_minutes');
-$label_buy = do_lang_tempcode('SUPPORT_CREDITS_BUY');
-
-$label_b = do_lang_tempcode('SUPPORT_PRIORITY_backburner');
-$label_r = do_lang_tempcode('SUPPORT_PRIORITY_regular');
-
 require_code('ecommerce');
 require_code('hooks/systems/ecommerce/support_credits');
 
@@ -48,18 +40,12 @@ foreach ($products as $p => $v) {
     $msg = do_lang('BLOCK_CREDITS_EXP_INNER_MSG', strval($num_credits), strval($s_currency), float_format($v[1]));
 
     $credit_kinds[] = array(
+        'S_CURRENCY' => $s_currency,
         'NUM_CREDITS' => $num_credits,
         'PRICE' => float_format($v[1]),
-        'S_CURRENCY' => $s_currency,
-        'TH_PRIORITY' => $priority_level,
-        'TH_MINUTES' => $num_minutes,
-        'MINUTES' => $minutes,
 
-        'L_B' => $label_b,
-        'B_MINUTES' => $backburner_minutes,
-
-        'L_R' => $label_r,
-        'R_MINUTES' => $regular_minutes,
+        'BACKBURNER_MINUTES' => $backburner_minutes,
+        'REGULAR_MINUTES' => $regular_minutes,
     );
 }
 

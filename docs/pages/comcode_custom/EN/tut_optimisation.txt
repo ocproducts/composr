@@ -2,7 +2,7 @@
 
 Composr is very heavily optimised so that pages load as quickly as possible. This tutorial will provide information on techniques and issues for increasing throughput, so that your site may support more visitors. Some of these techniques are programmer-level in complexity.
 
-If you have need to be able to take particularly high load, commercial developers are available for custom tuning.
+If you have need to be able to take particularly high load, professional developers are available for custom tuning.
 
 [contents]decimal,lower-alpha[/contents]
 

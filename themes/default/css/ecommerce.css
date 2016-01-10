@@ -7,10 +7,11 @@
 	text-align: center;
 }
 
-.purchase_licence {
+.purchase_terms {
 	width: 100%;
 	font-family: Courier, monospace;
 	white-space: pre-wrap;
+	margin: 1em 0;
 }
 
 .purchase_screen_contents {

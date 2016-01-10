@@ -1,6 +1,6 @@
 <?php /*
 
- ocPortal
+ Composr
  Copyright (c) ocProducts, 2004-2015
 
  See text/EN/licence.txt for full licencing information.
@@ -36,7 +36,7 @@ class Hook_addon_registry_failover
     }
 
     /**
-     * Get the version of ocPortal this addon is for
+     * Get the version of Composr this addon is for
      *
      * @return float Version number
      */

@@ -60,7 +60,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'post':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_title' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_title' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -68,7 +68,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 return $ret;
 
             case 'topic':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id'), array('t_cache_first_title' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id'), array('t_cache_first_title' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -76,7 +76,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 return $ret;
 
             case 'forum':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_name' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_name' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);

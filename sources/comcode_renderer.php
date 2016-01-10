@@ -501,7 +501,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
             $temp_tpl = do_template('WARNING_BOX', array(
                 '_GUID' => '7bcea67226f89840394614d88020e3ac',
                 'FOR_GUESTS' => false,
-                'INLINE' => true,
+                //'INLINE' => true, Looks awful
                 'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
             ));
             if (array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) {

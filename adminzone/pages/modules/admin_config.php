@@ -237,7 +237,7 @@ class Module_admin_config
             $message_a = $GLOBALS['HTTP_MESSAGE'];
             if ($message_a == '200')
             {
-                $test_b = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
+                $test_b = http_download_file($_proper_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
                 if ($message_b != '200')
                 {

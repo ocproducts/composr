@@ -8,13 +8,13 @@
 */
 
 /**
- * @license        http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright    ocProducts Ltd
- * @package        unit_testing
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    testing_platform
  */
 
 /**
- * ocPortal test case class (unit testing).
+ * Composr test case class (unit testing).
  */
 class xss_test_set extends cms_test_case
 {

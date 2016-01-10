@@ -413,7 +413,7 @@ This would create: [tt]Module index > Root > Foo > Bar[/tt]
 
 [code="PHP"]
 breadcrumb_set_parents(array(
-    array('_SELF:_SELF:misc', 'Module index'), // type=misc
+    array('_SELF:_SELF:browse', 'Module index'), // type=misc
     array('_SELF:_SELF:category:1', 'Root'), // type=category&id=1
     array('_SELF:_SELF:category:3', 'Foo'), // type=category&id=3
     array('_SELF:_SELF:category:6', 'Bar'), // type=category&id=6
@@ -437,7 +437,7 @@ do // Recursively find parents and put each as a breadcrumb
     }
 }
 while ($_category_id !== null);
-$breadcrumbs[] = array('_SELF:_SELF:misc', 'Module index');
+$breadcrumbs[] = array('_SELF:_SELF:browse', 'Module index');
 breadcrumb_set_parents(array_reverse($breadcrumbs));
 [/code]
 
@@ -486,13 +486,13 @@ This document includes a data-dictionary, and links to ERD diagrams for differen
 [title="3"]Diff tools[/title]
 
 [media width="150" description="WinMerge" float="right"]data_custom/images/docs/codebook_1b/winmerge.png[/media]
-This is not specific to Composr, but you will find a good 'diff' tool is essential when programming. It should be a key part of any programmers toolkit, and can be used for:
+This is not specific to Composr, but you will find a good 'diff' tool is essential when programming. It should be a key part of any programmers toolkit, and could be used for:
  - Seeing what code you might have changed (e.g. if you made a quick bug fix and need to send through a bug report saying what to change).
  - Seeing what code someone else might have changed (e.g. between Composr versions, if you've found there's a new bug and want to see what caused it).
  - If multiple developers conflict, you can sync changes.
  - Updating overridden lang files with typo-fixes from the main Composr.
  - A whole lot more!
-On Windows 'WinMerge' is a good tool, on Mac 'DiffMerge', and on Linux, 'Kompare'.
+On Windows [url="WinMerge"]http://winmerge.org/?lang=en[/url] is a good tool, on Mac [url="DiffMerge"]https://sourcegear.com/diffmerge/[/url], and on Linux, Kompare. [url="Beyond Compare"]http://www.scootersoftware.com/[/url] is a better tool, and is cross platform -- but that requires a paid licence.
 
 [title="3"]Member profile customisation[/title]
 

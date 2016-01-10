@@ -2014,7 +2014,7 @@ function activate_rich_semantic_tooltip(ob,event,have_links)
 //  ac is the object to have the tooltip
 //  event is the event handler
 //  tooltip is the text for the tooltip
-//  width is in pixels (but you need 'px' on the end), can be null or auto but both of these will actually instead result in the default max-width of 360px
+//  width is in pixels (but you need 'px' on the end), can be null or auto
 //  pic is the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
 //  height is the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
 //  bottom is set to true if the tooltip should definitely appear upwards; rarely use this parameter

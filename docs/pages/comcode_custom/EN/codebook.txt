@@ -124,7 +124,7 @@ The following Composr concepts are used to describe content:
  - [b]Entry[/b]. An entry is a piece of content.
  - [b]Resource[/b]. A resource is a very general term that may mean anything from entries to categories to files.
 
-At the time of writing, 'resource' is often used loosely, and 'category' and 'entry' are used differently depending on the context. This is not a design flaw, but merely indicative of the diversity of context in Composr and the difficulty of being consistent across different contexts (e.g. a topic is a category for posts, but really we would usually consider the categories of the forum system to be the actual forums).
+'resource' is often used loosely, and 'category' and 'entry' are used differently depending on the context. This is not a design flaw, but merely indicative of the diversity of context in Composr and the difficulty of being consistent across different contexts (e.g. a topic is a category for posts, but really we would usually consider the categories of the forum system to be the actual forums).
 
 We use the formal term [b]content type[/b] to refer to a type of content (obviously). Examples: [tt]download[/tt], [tt]image[/tt], [tt]video[/tt]. We also use the term [b]resource type[/b] when being more broad. Typically particular addons will provide different content/resource types -- but there's no formal link. An addon could provide no new content/resource types, or more than one.
 

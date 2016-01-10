@@ -33,7 +33,7 @@ Programmers will often prefer IaaS and PaaS hosting in order to get scalability.
 Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
 We have various different installation tutorials that go into details on how to install on the different hosting options.
 
-[title="2"]Recommended web host[/title]
+[staff_note][title="2"]Recommended web host[/title]
 
 We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
 
@@ -43,7 +43,7 @@ A bit of advice if you choose to not use our recommended host and go purely on a
 Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap web hosts are only suitable for those with very basic needs.
 
 [semihtml]<a class="link_exempt" href="http://www.arvixe.com/5256-223-3-122.html" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
-
+[/staff_note]
 [title="2"]Requirements and recommendations[/title]
 
 When choosing a web-host, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
@@ -152,7 +152,7 @@ If you wish to integrate an existing forum into Composr, rather than use our own
  - Burning Board 2.0/2.2/Lite
  - Simple Machine Forum 1.0/1.1
  - WowBB 1.7
-If your forum is not on the list, commercial developers are available to add support.
+If your forum is not on the list, professional developers are available to add support.
 
 Please note that many 'forum systems' are referred to as 'bulletin boards', and that a 'forum' within 'forums' is often referred to as a 'board'. We consistently use the terms 'discussion forums', 'forums' and 'forum' to describe these.
 

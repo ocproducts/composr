@@ -47,7 +47,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id'), array('np_subject' => $label));
+        $_ret = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id'), array('np_subject' => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);

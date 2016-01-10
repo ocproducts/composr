@@ -60,7 +60,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'catalogue_entry':
-                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('MIN(cf_order)', 'id', 'cf_type'), null, 'GROUP BY c_name');
+                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('MIN(cf_order)', 'id', 'cf_type'), null, 'GROUP BY c_name ORDER BY id');
                 $ret = array();
                 require_code('fields');
                 foreach ($fields as $field_bits) {
@@ -80,7 +80,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 return $ret;
 
             case 'catalogue_category':
-                $_ret = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);

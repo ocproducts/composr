@@ -47,7 +47,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('id'), array($GLOBALS['FORUM_DB']->translate_field_ref('mm_name') => $label));
+        $_ret = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('id'), array($GLOBALS['FORUM_DB']->translate_field_ref('mm_name') => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);

@@ -2,7 +2,7 @@
 
 This tutorial will provide details on how to integrate Composr with another web system (known henceforth as the 'other system') installed for your website.
 
-Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire a company for commercial assistance. Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
+Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire a company for professional assistance. Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
 
 [contents]decimal,lower-alpha[/contents]
 

@@ -168,7 +168,7 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 		</tr>
 		<tr>
 			<th>Prioritisation</th>
-			<td><em>Not supported at the time of writing, although ticket types may be used in this way</em></td>
+			<td><em>Not supported, although ticket types may be used in this way</em></td>
 		</tr>
 		<tr>
 			<th>Assigning</th>

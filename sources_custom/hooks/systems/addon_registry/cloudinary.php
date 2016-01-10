@@ -1,6 +1,6 @@
 <?php /*
 
- ocPortal
+ Composr
  Copyright (c) ocProducts, 2004-2015
 
  See text/EN/licence.txt for full licencing information.
