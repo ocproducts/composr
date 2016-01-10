@@ -4,12 +4,10 @@
 {$REQUIRE_JAVASCRIPT,jquery-ui}
 {$REQUIRE_CSS,jquery.ui.all}
 
-<div class="cntRow">
-	[title]Features[/title]
-</div>
+[title]Features[/title]
 
 <div class="cntRow">
-	<p>Here we have a summary of ocP's major features: as you'll see, you have many to pick from! You don't need to be a [url="Rocket Surgeon"]https://www.google.co.uk/search?q=rocket+surgeon+t-shirts&tbm=isch[/url] to see why you should use Composr.</p>
+	<p>Here we have a summary of Composr's major features: as you'll see, you have many to pick from! You don't need to be a [url="Rocket Surgeon"]https://www.google.co.uk/search?q=rocket+surgeon+t-shirts&tbm=isch[/url] to see why you should use Composr.</p>
 	<p>Remember that almost every feature in Composr is optional. We hate web software that forces too much on us (and the visitors), so we ensure Composr scales back and customises very well.</p>
 
 	<div class="ft-blk1">
@@ -77,7 +75,7 @@
 	</div>
 
 	<div class="ft-rw2 no_print">
-		<h2>Recommend Composr to a friend</h2>
+		<h2><img class="vertical_alignment" src="{$IMG*,composr_homesite/features/recommend_header}" alt="" /> <span class="vertical_alignment">Recommend Composr to a friend</span></h2>
 
 		<div class="content extended_screen_actions">
 			<p>Does your friend use another CMS? Maybe you think they should give Composr a try?</p>

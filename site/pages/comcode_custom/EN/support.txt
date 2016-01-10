@@ -1,14 +1,12 @@
 [semihtml]
 {$REQUIRE_CSS,composr_homesite__support}
 
-<div class="cntRow">
-	[title]Support[/title]
-</div>
+[title]Support[/title]
 
 <div class="cntRow">
 	<h3 class="colrBl">Free resources:</h3>
 
-	<p>Use these if you're on a budget or just like to customise things on your own.</p>
+	<p>Use these free resources if you're on a budget or just like to customise things on your own.</p>
 </div>
 
 <div class="cntRow">
@@ -43,11 +41,11 @@
 
 		<li class="noMar">
 			<div class="srPic">
-				<a href="TODO"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic3}" /></a>
+				<a href="{$BASE_URL*}/tracker/search.php?project_id=1&status_id=80&sortby=last_updated&dir=DESC&hide_status_id=90"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic3}" /></a>
 			</div>
 
 			<div class="srTitle">
-				<a href="TODO">Known Bugs</a>
+				<a href="{$BASE_URL*}/tracker/search.php?project_id=1&status_id=80&sortby=last_updated&dir=DESC&hide_status_id=90">Known Bugs</a>
 			</div>
 
 			<div class="srPara">
@@ -101,14 +99,6 @@
 
 <div class="cntRow">
 	<h3 class="colrBl">Get in touch:</h3>
-
-	<p>Sometimes it's best to go straight to the source, which is why we provide several ways to contact us.</p>
-
-	<p>If you have general feedback, a bug report, or a business enquiry, please take advantage of our free ticket type: contact us.</p>
-
-	<p>For all other support questions, you can choose between either our pre-paid professional support system, or our Full agency service for complete site development.</p>
-
-	<p>We recommend any commercial users maintain a balance of support credits so we can help immediately.</p>
 </div>
 
 <div class="cntRow">
@@ -116,11 +106,11 @@
 		<div class="srBtmImg"><img alt="Contact" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
 
 		<div class="srBtmTitle">
-			CONTACT US
+			Contact Us
 		</div>
 
 		<div class="srBtmBlockInner">
-			<p>If you need to [b]report a bug[/b] or have a [b]business enquiry[/b], please let us know.</p>
+			<p>If you need to [b]report a bug[/b] or have a [b]business enquiry[/b], please reach out.</p>
 
 			<p>We also value your feedback about our [b]documentation[/b] or [b]in general[/b], though sadly [page="docs:tut_software_feedback"]we cannot respond directly[/page].</p>
 
@@ -133,23 +123,23 @@
 	</div>
 
 	<div class="srBtmBlock">
-		<div class="srBtmImg"><img alt="Hour" src="{$IMG*,composr_homesite/support/sr_by_hour}" /></div>
+		<div class="srBtmImg"><img alt="Hour" src="{$IMG*,composr_homesite/support/sr_support}" /></div>
 
 		<div class="srBtmTitle">
-			PROFESSIONAL SUPPORT
+			Professional Support
 		</div>
 
 		<div class="srBtmBlockInner">
 			<p>Receive support via pre-paid support credits:</p>
 
 			<ul class="srBtmLi">
-				<li>Installation</li>
+				<li>Professional installation</li>
 				<li>Get questions answered</li>
-				<li>Site upgrades</li>
+				<li>Expert site upgrading</li>
 				<li>Feature sponsorship</li>
 			</ul>
 
-			<p>To learn more, click the link below.</p>
+			<p>To learn more, click the link below&hellip;</p>
 		</div>
 
 		<div class="commonBtn cntr">
@@ -158,14 +148,14 @@
 	</div>
 
 	<div class="srBtmBlock srBtmLast">
-		<div class="srBtmImg"><img alt="Agency" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
+		<div class="srBtmImg"><img alt="Agency" src="{$IMG*,composr_homesite/support/sr_agency}" /></div>
 
 		<div class="srBtmTitle">
-			WEB PROJECTS
+			Web/Mobile Projects
 		</div>
 
 		<div class="srBtmBlockInner">
-			<p>We'll help you find a developer and brief them:</p>
+			<p>We'll help you find a developer and fill out a good introductory briefing:</p>
 
 			<ul class="srBtmLi">
 				<li>Complete design and development</li>
@@ -174,7 +164,7 @@
 				<li>By [page="ocproducts:start"]ocProducts[/page] or a company near you</li>
 			</ul>
 
-			<p>To learn more, click below&hellip;</p>
+			<p>To learn more, click the link below&hellip;</p>
 		</div>
 
 		<div class="commonBtn cntrLast">

@@ -3,9 +3,6 @@
 ul.cntLiFull { list-style:none; float:left; width:960px; height:auto; overflow:hidden; padding:10px 0px; margin:0 0 20px 0; }
 ul.cntLiFull li { float:left; width:920px; padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
 
-ol.cntHf { list-style:none; float:left; width:630px; height:auto; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
-ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }
-
 
 /*vTabs*/
 
@@ -20,13 +17,13 @@ ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px
 
 #tabs { float:left; width:960px; padding-bottom:20px; }
 
-#ui-id-1 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-2 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-3 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-1 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-2 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-3 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
 
-.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-1 { background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-1a}'); background-repeat:no-repeat; background-position:left top; }
-.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-2 { background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-2a}'); background-repeat:no-repeat; background-position:left top; }
-.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-3 { background-image:url('{$IMG;,composr_homesite/our_difference/tab_m-3a}'); background-repeat:no-repeat; background-position:left top; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-1 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-1a}'); background-repeat:no-repeat; background-position:left top; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-2 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-2a}'); background-repeat:no-repeat; background-position:left top; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-3 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-3a}'); background-repeat:no-repeat; background-position:left top; }
 
 .ui-tabs-vertical .ui-tabs-nav li:last-child { border-bottom:none; }
 
@@ -57,5 +54,3 @@ ul.difText li { padding-left:20px; background-image:url('{$IMG;,composr_homesite
 .tbGrCol { background-color:#D3F1E0 !important; color:#666666; }
 .tbYwCol { background-color:#FFEEA8 !important; color:#666666; }
 .tbWtCol { background-color:#F8F8F8 !important; color:#666666; }
-
-.diffFtrImg { float:left; width:320px; height:280px; margin-right:10px; padding-bottom:20px; }

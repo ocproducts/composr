@@ -71,6 +71,20 @@ function composr_homesite_install()
     //  - adminzone:admin_cmsusers
     //  - (installing of docs zone)
 
+    // Banners
+    // -------
+
+    $GLOBALS['SITE_DB']->query_update('banner_types', array('t_image_width' => 960, 't_image_height' => 319), array('id' => ''), '', 1);
+    require_code('banners');
+    require_code('banners2');
+    $banners = collapse_1d_complexity('name', $GLOBALS['SITE_DB']->query_select('banners', array('name')));
+    foreach ($banners as $banner) {
+        delete_banner($banner);
+    }
+    $url = 'pointstore.htm';//static_evaluate_tempcode(build_url(array('page' => 'pointstore'), get_module_zone('pointstore'), null, false, false, true))
+    $img = 'themes/composr_homesite/images_custom/composr_homesite/community_advertising.png'; //find_theme_image('composr_homesite/community_advertising')
+    add_banner('fallback', $img, '', 'Community advertising', '', null, $url->evaluate(), 1, '', BANNER_FALLBACK, null, 2, 1);
+
     // Support ticket types
     // --------------------
 
@@ -118,6 +132,12 @@ function composr_homesite_install()
     set_option('likes', '1');
     set_option('cookie_notice', '1');
     set_option('breadcrumb_crop_length', '60');
+    set_option('facebook_appid', '303252706408200');
+    set_option('facebook_uid', '80430912569');
+    set_option('is_on_highlight_name_buy', '0');
+    set_option('is_on_gambling_buy', '0');
+    set_option('is_on_topic_pin_buy', '0');
+    set_option('email_confirm_join', '0');
 
     // Downloads structure
     // -------------------
@@ -240,6 +260,11 @@ function composr_homesite_install()
     foreach ($https_pages as $https_page) {
         $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => $https_page));
     }
+
+    // Members
+    // -------
+
+    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_1' => 'Very humble anonymous admin.'), array('mf_member_id' => 2), '', 1);
 
     // Usergroups
     // ----------

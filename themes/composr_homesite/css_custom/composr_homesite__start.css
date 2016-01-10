@@ -54,34 +54,6 @@ ul.tabs li.current { background-color:#666666; color:#FFF; {$BETA_CSS_PROPERTY,b
 .tabscontent { padding:8px 0 0 0; width:100%; text-align:justify; font-size:13px; color:#666666; line-height:22px; }
 
 
-/*News/newsletter sections*/
-
-.ltNews { float:left; width:460px; height:auto; background-image:url('{$IMG;,composr_homesite/btm-box-bg}'); background-repeat:no-repeat; background-position:bottom center; margin-top:20px; padding-bottom:25px; }
-.ltNewsHead { margin:0; float:left; width:420px; padding:0px 20px !important; height:47px; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} font-size:24px; line-height:47px; font-weight:normal; color:#FFF !important; text-shadow:1px 1px #45526D; }
-.ltCnt { float:left; width:458px; padding:15px 0px 0px 0px; border-bottom:1px solid #ECEDF0; border-left:1px solid #ECEDF0; border-right:1px solid #ECEDF0; {$BETA_CSS_PROPERTY,border-radius:0px 0px 13px 13px;} font-size:13px; color:#666; line-height:22px; }
-.ltmore { float:left; width:418px; height:36px; background-image:url('{$IMG;,composr_homesite/btm-box-bg-2}'); background-repeat:repeat-x; background-position:bottom left; {$BETA_CSS_PROPERTY,border-radius:0px 0px 13px 13px;} text-align:right; padding:0px 20px; line-height:36px; font-weight:bold; font-size:14px; color:#666; }
-.ltmore a { color:#666; }
-.ltmore a:hover { color:#E5922C; text-decoration:none; }
-.ltmoreBtn { margin:0px auto; width:36px; height:13px; overflow:hidden; text-indent:-9999px; background-image:url('{$IMG;,composr_homesite/lt-more-btn}'); background-repeat:no-repeat; background-position:left top; margin-top:12px; }
-.ltmoreBtn:hover { background-position:left bottom; }
-.ltmoreBtn a { display:block; height:13px; }
-
-.ltNewsHold { float:left; width:438px; padding:0px 10px 10px 10px; }
-.ltCnt h3 { margin:0; font-size:14px; font-weight:bold; color:#E5922D; padding-bottom:5px; text-align:left; line-height:16px; }
-.ltCnt h3 a { color:#E5922D; }
-.ltCnt span { color:#999999; font-size:12px; display:block; padding-bottom:5px; line-height:14px; }
-.ltCnt p { font-size:13px; line-height:18px; color:#666666; padding-bottom:5px; }
-
-.ltNewsRht { float:right; width:460px; height:auto; background-image:url('{$IMG;,composr_homesite/btm-box-bg}'); background-repeat:no-repeat; background-position:bottom center; margin-top:20px; padding-bottom:25px; }
-
-.inpEmail { float:left; width:360px; margin:10px 39px 41px 39px; }
-input.user { float:left; width:350px; padding:0px 4px; height:40px; border:1px solid #DFE4EA; {$BETA_CSS_PROPERTY,border-radius:6px;} outline:none; line-height:40px; font-size:14px; color:#999; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; margin-bottom:10px; background-color:#FAFBFC !important; }
-input.email { float:left; width:270px; padding:0px 4px; height:40px; border:1px solid #DFE4EA; {$BETA_CSS_PROPERTY,border-top-left-radius:6px;} {$BETA_CSS_PROPERTY,border-bottom-left-radius:6px;} outline:none; line-height:40px; font-size:14px; color:#999; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; background-color:#FAFBFC !important; }
-
-.emailBtn { float:left; width:78px; height:42px;border:1px solid #DFE4EA; {$BETA_CSS_PROPERTY,border-top-right-radius:6px;} {$BETA_CSS_PROPERTY,border-bottom-right-radius:6px;} background:#FFF; outline:none; border-left:0px; color:#666; font-weight:bold; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
-.emailBtn:hover { background-color:#666666; color:#FFF; cursor:pointer; }
-
-
 /*Palette section*/
 
 .paletteHold { float:left; width:960px; }

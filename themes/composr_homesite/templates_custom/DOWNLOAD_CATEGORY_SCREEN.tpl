@@ -184,15 +184,7 @@
 					</div>
 				</div>
 
-				<div class="ftHolder">
-					<div class="row-block">
-						<h2>Community Advertising</h2>
-
-						<div class="bannerr"><img alt="Community Advertising" height="319" src="{$IMG*,composr_homesite/community_advertising}" width="960" /></div>
-
-						<p>These banners are from the members of the Composr community, bought with <span>points</span>.</p>
-					</div>
-				</div>
+				{+START,INCLUDE,_COMMUNITY_BANNERS}{+END}
 			</div>
 
 

@@ -24,9 +24,9 @@
 	</div>
 
 	<div class="company_rhs_box_link">
-		<a href="{$PAGE_LINK*,site:tickets:ticket:ticket_template=agency:cost=free}"><img alt="Contact our website development team" src="{$IMG*,company_rhs_box_link/ticket}" /></a>
+		<a href="{$PAGE_LINK*,:contact:paid}"><img alt="Contact our website development team" src="{$IMG*,company_rhs_box_link/ticket}" /></a>
 
-		<p style="font-weight: bold; font-size: 1.05em">Ready to contact us? [page="site:tickets:ticket:ticket_template=agency:cost=free"]Open a ticket &raquo;[/page]</p>
+		<p style="font-weight: bold; font-size: 1.05em">Ready to contact us? [page=":contact:paid"]Open a ticket &raquo;[/page]</p>
 	</div>
 	
 	<!--<div class="company_rhs_box_link">
@@ -84,7 +84,7 @@ We also have the skills and resources to provide all kinds of other design/devel
 
 [title="2"]The world-class web development team is waiting to hear from you[staff_note]just a phone call away[/staff_note][/title]
 
-[box][indent="20"]&raquo; To get started, [page="site:tickets:ticket:ticket_template=agency:cost=free"]open a ticket[/page] with your requirements. We'll respond promptly with a free quote [sup]*1, *5[/sup].
+[box][indent="20"]&raquo; To get started, [page=":contact:paid"]open a ticket[/page] with your requirements. We'll respond promptly with a free quote [sup]*1, *5[/sup].
 
 &raquo; Or, fill in our [page="site:quiz:do:project_briefing"]project briefing survey[/page] to tell us your website development needs directly.
 [staff_note]
@@ -181,7 +181,7 @@ Generally a business should see a website development investment like any other:
 
 [html]
                 <noscript>
-                    <div style="font-size:.85em; text-align:left; overflow:scroll; height: 150px"><strong>You have Javascript disabled</strong>, so the text to our video is as follows:<br /><br />
+                    <div style="font-size:.85em; text-align:left; overflow:scroll; height: 150px"><strong>You have JavaScript disabled</strong>, so the text to our video is as follows:<br /><br />
 At ocProducts, we offer cost-effective, dynamic web solutions with our state of the art, Open Source Content Management System: Composr.<br /><br />
 
 Composr gives you a future-proof website, with many or all of the features you'd expect from a CMS. These include forums, galleries, news, wiki, social media integration and syndication, and RSS delivery and aggregation, and many more&mdash;all designed together and to the highest standards available, ensuring your website remains accessible to all.<br /><br />
@@ -219,8 +219,9 @@ Looking for a professionally developed website? [page="ocproducts:start"]Hire oc
 {$REQUIRE_JAVASCRIPT,jquery.slidedeck}
 {$REQUIRE_JAVASCRIPT,jquery.tytabs}
 
+[title]ocProducts: The Composr Pros[/title]
+
 <div class="cntRow">
-	[title]ocProducts: The Composr Pros[/title]
 	<span class="comTopTxt">The client benefits from the combination of our expertise<br />and the powerful features of our software.</span>
 </div>
 
@@ -588,7 +589,7 @@ TODO: Link agency-vs-support-ticket.pdf
 
 			<div class="sept"></div>
 
-			<p>As well as being able to provide a high quality full agency service, we enjoy working on web design projects with other professionals in partnership. For example, we can work with designers as a development provider &ndash; making the design and vision real, and implementing extreme technology as required. If you would like to work with us then [page="_SEARCH:tickets:ticket:ticket_type=Partnership"]we would love to hear from you[/page].</p>
+			<p>As well as being able to provide a high quality agency service, we enjoy working on web design projects with other professionals in partnership. For example, we can work with designers as a development provider &ndash; making the design and vision real, and implementing extreme technology as required. If you would like to work with us then [page="_SEARCH:tickets:ticket:ticket_type=Partnership"]we would love to hear from you[/page].</p>
 		</div>
 	</div>
 

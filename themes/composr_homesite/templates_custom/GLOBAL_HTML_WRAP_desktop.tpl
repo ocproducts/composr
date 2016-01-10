@@ -122,9 +122,9 @@
 	<div class="cntMainWrapper pdLess">
 		<div class="cntMain" role="main">
 			{$,Composr may show little messages for you as it runs relating to what you are doing or the state the site is in}
-			<div class="global_messages" id="global_messages"><div class="cntMain">
+			<div class="global_messages" id="global_messages">
 				{$MESSAGES_TOP}
-			</div></div>
+			</div>
 
 			{+START,IF,{$SHOW_HEADER}}{+START,IF_NON_EMPTY,{$BREADCRUMBS}}
 				<div class="brCrumb breadcrumbs" itemprop="breadcrumb" role="navigation">
@@ -147,9 +147,9 @@
 
 	{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 	{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
-		<div class="global_messages"><div class="cntMain">
+		<div class="global_messages">
 			{$MESSAGES_BOTTOM}
-		</div></div>
+		</div>
 	{+END}
 	{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
 		<div class="global_messages" id="global_messages_2">

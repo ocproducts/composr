@@ -6,7 +6,7 @@
 {+START,INCLUDE,screen_actions,.css,css,default}{+END}
 
 .screen_actions_outer {
-	float: left;
+	clear: both;
 	width: 99%;
 }
 

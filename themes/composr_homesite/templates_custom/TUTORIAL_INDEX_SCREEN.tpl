@@ -42,7 +42,7 @@
 									<div class="float_surrounder">
 										{+START,IF_NON_EMPTY,{AUTHOR}}
 											<div class="blk1">
-												by <abbr title="{AUTHOR*}">{$PREG_REPLACE*, .*$,,{AUTHOR}}</abbr>
+												by <abbr title="{AUTHOR*}">{$PREG_REPLACE, .*$,,{$PREG_REPLACE,^(Dr) ,$1&nbsp;,{AUTHOR*}}}</abbr>
 											</div>
 										{+END}
 

@@ -1,9 +1,9 @@
-.comSr { width:660px; padding:30px 0px; }
+.comSr { width:660px; padding:10px 0 5px 0; }
 .comSr tr { width:660px; border-bottom:1px solid #FFF; padding:0px; }
 .comSr tr>* { font-weight:normal; padding:10px 5px; text-align:left; line-height:22px; }
-.comSr tr>*.hdr { width:154px; background-color:#677EA4; border-right:1px solid #8D9EBB; color:#FFF; font-size:14px; }
+.comSr tr>*.hdr { background-color:#677EA4; border-right:1px solid #8D9EBB; color:#FFF; font-size:14px; }
 .comSr tr>*.hdr:last-child { border-right:0px; }
-.comSr tr>*.tdBody { width:154px; background-color:#F0F2F6; border-right:1px solid #FFF; color:#666; font-size:13px; }
+.comSr tr>*.tdBody { background-color:#F0F2F6; border-right:1px solid #FFF; color:#666; font-size:13px; }
 .comSr tr>*.tdBody:last-child { border-right:0px; }
 
 .comSr ul li.tdBody span { font-size:12px; }
@@ -25,5 +25,5 @@
 .topTble tbody tr>*:last-child { border-right:0px; }
 
 .purchaseBtn { float:left; width:160px; height:42px; line-height:42px; font-size:15px; text-align:center; color:#FFF; margin:20px 0px 0px 36px; background-color:#E5922C; border-bottom:2px solid #7B4A0F; border-right:2px solid #7B4A0F; {$BETA_CSS_PROPERTY,border-radius:4px;} }
-.purchaseBtn a { color:#FFF; width:160px; height:42px; display:block; }
+.purchaseBtn input { color:#FFF; width:160px; height:42px; display:block; border:none; background:transparent; }
 .purchaseBtn:hover { background-color:#EBAB5C; }

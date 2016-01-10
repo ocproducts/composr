@@ -4,9 +4,7 @@
 {$REQUIRE_JAVASCRIPT,jquery-ui}
 {$REQUIRE_CSS,jquery.ui.all}
 
-<div class="cntRow">
-	[title]Community Stars[/title]
-</div>
+[title]Community stars[/title]
 
 <div class="cntRow">
 	<p>Each time you are give points in our community, you are asigned a role in relation to the points you recieve:</p>
@@ -137,7 +135,7 @@
 
 	<div class="blk3">
 		<ul>
-			<li>Developer of ocPortal &ndash; coded the chat room, blogging support, the analytics system, and OcCLE (now Commandr)</li>
+			<li>Coded the chat room, blogging support, the analytics system, and OcCLE (now Commandr)</li>
 			<li>Masters Degree in Computer Science degree from The University Of Cambridge</li>
 			<li>Other work has included helping out with Firefox, and ongoing work on GNOME</li>
 		</ul>
@@ -149,13 +147,13 @@
 </div>
 
 <div class="cntRow">
-	<p>We'd also like to thank:</p>
+	<p class="lonely_label">We'd also like to thank:</p>
 	<ul>
 		<li>Steve Jarvis (former project manager for ocProducts, written many tutorials via Arvixe)</li>
 		<li>Haydn Maidment (former project manager for ocProducts)</li>
 		<li>Chris Warburton (former developer for ocProducts, made some key contributions to ocPortal)</li>
 		<li>Jim Davidson (written many tutorials via Arvixe)</li>
-		<li>Arvixe (ongoing sponsorship of Composr CMS tutorials)</li>
+		<li>[url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url] (sponsorship of Composr CMS tutorials)</li>
 		<li>All 20 or so former and current developers and managers for ocProducts</li>
 	</ul>
 </div>
@@ -167,5 +165,4 @@
 		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 	});
 //]]></script>
-
 [/semihtml]

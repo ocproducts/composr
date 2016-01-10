@@ -6,10 +6,6 @@
 .addon-box-title a:hover { color:#E5922C; }
 .addon-box-title span { font-size:13px; color:#333; font-weight:normal; }
 .carosol { width:930px; float:left; background:#f2f4f7; border-radius:7px; height:150px; padding:15px; }
-.row-block { width:100%; float:left; background:url('{$IMG;,composr_homesite/sep_comp}') no-repeat top center; padding:10px 0; }
-.row-block .bannerr { width:100%; float:left; margin:5px 0; }
-.row-block h2 { font-size:21px; color:#667ea4; font-weight:bold; padding:15px 0; }
-.row-block p span { color:#e5922c; }
 
 .addon-block { width:99%; float:left; margin-bottom:20px; border:#667ea4 solid 1px; border-radius:7px; }
 .addon-block h2 { font-size:15px; color:#fff; font-weight:normal; padding:7px; background:#667ea4;border-radius:5px 5px 0 0; }

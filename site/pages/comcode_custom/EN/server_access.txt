@@ -1,6 +1,11 @@
 [title]Server access policy[/title]
 
-If we need to fix a bug that we can't reproduce, provide our installation service, or if we are asked to provide commercial services that involves code modification, we may ask permission to access your server. We cannot do this without the relevant passwords, as we don't place any 'back-doors' in the software itself. If you don't want us to go near your server, that's fine and we quite understand -- but sometimes if something is wanted from us, such access is required. We only offer in situations where for us to provide a service, or fix a problem, we need direct access in order to 'get the job done' in a reasonable time.
+[surround="spaced_list"]
+If we need to fix a bug that we can't reproduce, provide our installation service, or if we are asked to provide professional services that involves code modification, we may ask permission to access your server. We cannot do this without the relevant passwords, as we don't place any 'back-doors' in the software itself.
+
+If you don't want us to go near your server, that's fine and we quite understand -- but sometimes if something is wanted from us, such access is required. We only offer in situations where for us to provide a service, or fix a problem, we need direct access in order to 'get the job done' in a reasonable time.
+
+[title="2"]Requirements[/title]
 
 If you do decide to give us access to your server we require certain provisions:
 1) that you have a full backup of your site, including both files and database, and that you know how to restore it
@@ -9,7 +14,13 @@ If you do decide to give us access to your server we require certain provisions:
 4) that you do not post login details on a public forum (supply details by privately contacting us)
 5) that you accept that when we are done, it is your responsibility to secure your site and that you cannot claim we are continuing to log-in without permission, or causing damage, or have placed any kind of permanent back-door (it is your responsibility to make sure we haven't -- although of course, we wouldn't ever intentionally do so, we have to protect ourselves against being made a false suspect)
 
-When we are granted access, the typical process involves us adding a temporary backdoor to the info.php/_config.php file, to an office IP address. This is a clean way for us to be automatically logged in as an Composr administrator without having to know any temporary passwords, have a separate account, or reset any password.
+[title="2"]Temporary restricted back-door[/title]
+
+When we are granted access, the typical process involves us adding a temporary back-door to the [tt]_config.php[/tt] file, to an office IP address. This is a clean way for us to be automatically logged in as an Composr administrator without having to know any temporary passwords, have a separate account, or reset any password.
+
 It is possible we could forget to remove this, so if you see we have accidentally left an IP address in here, please remove it.
 
+[title="2"]Instant messaging[/title]
+
 On very rare occasions we may also give out an instant messenger contact address. We try to avoid this, as it tends to interrupt our work-flow. It is likely that if we do give out an IM address, that after work is completed that it be blocked, and that normal contact through the website be used for communication with us. This isn't an intended act of rudeness, just a reflection on the number of clients we need to serve and our other commitments.
+[/surround]

@@ -1,5 +1,6 @@
 .page_running_contributions .cntRow h3 { margin:0; }
 
+.lonely_label + ul.cntLi { padding-top: 0; }
 ul.cntLi { list-style:none; margin:0; float:left; width:660px; height:auto; overflow:hidden; padding:10px 0px; }
 ul.cntLi li { float:left; width:620px; padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
 

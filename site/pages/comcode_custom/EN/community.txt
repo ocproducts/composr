@@ -10,88 +10,90 @@
 			[title]Community[/title]
 
 			<p>Ask as many questions as you want, and answer all you can in return. Share your tips, your successes, and benefit from the experience of others. Or converse in real-time in [page=site:chat]our chatroom[/page].</p>
+
+			<p>The top contributing users are shown on our <a href="{$PAGE_LINK*,site:stars}">community stars</a> page.</p>
 		</div>
 
 		<div class="cntLRow">
-			<ul class="cmnty">
-				<li class="head">Downloads</li>
+			<div class="cmnty">
+				<h2 class="head">Downloads</h2>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-themes}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Theme</a>
-					</div>
+					<h3 class="head">
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Themes</a>
+					</h3>
 
 					<div class="cmntyCnt">
 						The Theme Wizard can repaint your site in seconds, but themes take you further.
 					</div>
-				</li>
+				</div>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-translations}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Translations</a>
-					</div>
+					<h3 class="head">
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Translations</a>
+					</h3>
 
 					<div class="cmntyCnt">
 						Sprechen sie Deutsch? Make your website speak your language.
 					</div>
-				</li>
+				</div>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-addons}" /></div>
 
-					<div class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:misc:TODO}">Addons</a>
-					</div>
+					<h3 class="head">
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Addons</a>
+					</h3>
 
 					<div class="cmntyCnt">
 						Add new features, or modify existing ones. Composr is extendible and modular.
 					</div>
-				</li>
-			</ul>
+				</div>
+			</div>
 
-			<ul class="cmnty cmtyRht">
-				<li class="head">Discussion</li>
+			<div class="cmnty cmtyRht">
+				<h2 class="head">Discussion</h2>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-chat}" /></div>
 
-					<div class="head">
+					<h3 class="head">
 						<a href="{$PAGE_LINK*,site:chat}">Chat</a>
-					</div>
+					</h3>
 
 					<div class="cmntyCnt">
 						Get quick answers and socialise with other users, in real-time.
 					</div>
-				</li>
+				</div>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-tracker}" /></div>
 
-					<div class="head">
+					<h3 class="head">
 						<a href="{$PAGE_LINK*,site:tracker}">Tracker</a>
-					</div>
+					</h3>
 
 					<div class="cmntyCnt">
 						Post and discuss feature requests and bug reports.
 					</div>
-				</li>
+				</div>
 
-				<li>
+				<div>
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/disc-forums}" /></div>
 
-					<div class="head">
+					<h3 class="head">
 						<a href="{$PAGE_LINK*,forum:}">Forums</a>
-					</div>
+					</h3>
 
 					<div class="cmntyCnt">
 						Talk with other Composr users &ndash; share ideas, ask questions, and answer them.
 					</div>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -102,7 +104,7 @@
 					Testimonials
 				</h3>
 
-				<div class="tesNav">
+				<div class="testimonialsNav">
 					<span class="nav prev">Prev</span> <span class="nav next">Next</span>
 				</div>
 
@@ -126,18 +128,18 @@
 			</div>
 		</div>
 
-		[block limit="10"]main_forum_topics[/block]
+		[block="*" limit="4" title="Active topics"]main_forum_topics[/block]
 	</div>
 </div>
 
 <div class="cntRow">
 	<div class="ltNews">
 		<h3 class="ltNewsHead">
-			Facebook Friends
+			Facebook Page
 		</h3>
 
-		<div class="ltCnt"><div style="padding:0 1em">
-			[block fans="16" param="80430912569" fanpage_name="Composr friends"]main_facebook_friends[/block]
+		<div class="ltCnt"><div style="padding:0 1em 1em 1em; min-height: 400px">
+			[block width="430" height="400" show_posts="1" show_fans="1" param="80430912569" page_name="Composr friends"]main_facebook_page[/block]
 		</div></div>
 	</div>
 
@@ -146,19 +148,14 @@
 			Tweets
 		</h3>
 
-		<div class="ltCnt"><div style="padding:0 1em">
+		<div class="ltCnt"><div style="padding:0 1em 1em 1em; min-height: 400px">
 			<a class="twitter-timeline" href="https://twitter.com/hashtag/composr" data-widget-id="558676915687804929">#composr Tweets</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		</div></div>
 	</div>
 </div>
 
-[box="Community Banners"]
-	[center]
-		{$BANNER}
-		[surround="associated_details"]These banners are from members of the Composr community, bought with [page="site:pointstore"]points[/page].[/surround]
-	[/center]
-[/box]
+{+START,INCLUDE,_COMMUNITY_BANNERS}{+END}
 
 <!-- Script for Tab menu -->
 <script>//<![CDATA[
@@ -190,5 +187,4 @@
 		$('.next').on('click', slider.next);
 	});
 //]]></script>
-
 [/semihtml]

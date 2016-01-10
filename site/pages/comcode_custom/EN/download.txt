@@ -86,9 +86,8 @@
 
 			<div class="sept"></div>
 
-			<p>Composr development is sponsored and led by ocProducts, who is the primary developer. However we do accept and encourage external contributions. Composr is a community project after all, even if we do centrally ensure its quality.</p>
+			<p>Composr development is sponsored and led by ocProducts, who is the primary developer. However we do [page=":contact:contribute_code"]accept and encourage external contributions[/page]. Composr is a community project after all, even if we do centrally ensure its quality.</p>
 			<p>We will provide write-access to Git as appropriate (essentially when someone shows a serious commitment to the project in the form of high-quality code).</p>
-			<p>Until you get Git access you'll need to make Github pull requests, or put patches on the tracker.</p>
 		</div>
 	</div>
 

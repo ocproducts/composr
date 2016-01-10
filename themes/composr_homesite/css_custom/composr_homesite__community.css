@@ -1,26 +1,24 @@
-.tesNav { float:left; width:60px; height:25px; position:absolute; margin-left:198px; margin-top:16px; z-index:199; }
-
-.blockHead { float:left; width:250px; height:56px; }
-
 .communityWrapper { float:left; width:240px; height:auto; }
+
+.cmnty { margin:0; list-style:none; padding:0; float:left; width:320px; display:block; }
+.cmtyRht { float:right !important; }
+.cmnty>div { display:block; margin-bottom:10px; {$BETA_CSS_PROPERTY,border-radius:0px 34px 0px 34px;} }
+.cmnty h2.head { float:left; width:320px; height:68px; background-image:url('{$IMG;,composr_homesite/community/community-head-bg}'); background-repeat:repeat; background-position:left top; margin-bottom:15px; {$BETA_CSS_PROPERTY,border-radius:34px 0px 34px 0px;} line-height:68px; font-size:32px; font-weight:bold; text-align:center; color:#FFF; text-shadow:1px 1px #8B4B30; padding-bottom:0; }
+.cmnty>div { float:left; width:320px; height:160px; background-image:url('{$IMG;,composr_homesite/community/community-body-bg}'); background-repeat:repeat-x; background-position:left top; background-color:#FFF; }
+.cmnty>div .pic { float:left; width:120px; height:121px; margin:0px 10px 0px 10px; } 
+.cmnty>div .head { float:left; width:180px; height:50px; font-size:24px; font-weight:bold; color:#FFF; line-height:50px; margin:31px 0px 5px 0px; padding:0; }
+.cmnty>div .head a { width:180px; height:50px; color:#FFF; display:block; }
+.cmnty>div .head a:hover { color:#E5922C; text-shadow:1px 1px #000; background-image:url('{$IMG;,composr_homesite/community/community-head-hover-bg}'); background-repeat:no-repeat; background-position:top right; text-decoration:none; }
+.cmnty>div .cmntyCnt { float:left; width:170px; padding-right:10px; color:#666; font-size:14px; line-height:20px; }
+
+.testimonialsNav { float:left; width:60px; height:25px; position:absolute; margin-left:198px; margin-top:16px; z-index:199; }
+.testimonialsNav span.nav.prev { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-left}'); background-repeat:no-repeat; background-position:left top; }
+.testimonialsNav span.nav.next { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-right}'); background-repeat:no-repeat; background-position:left top; }
+.testimonialsNav span.nav.prev:hover { cursor:pointer; }
+.testimonialsNav span.nav.next:hover { cursor:pointer; }
+
 .slider { float:left; width:240px; }
 .swipe { overflow:hidden; position:relative; max-width:240px; width:100%; margin:0px auto; float:left; }
 .swipe-wrap { overflow:hidden; position:relative; float:left; }
 .swipe-wrap > div { float:left; width:100%;	position:relative; }
 .swipe .nav { position:absolute; width:80px; height:25px; z-index:10; text-align:center; line-height:40px; display:inline-block; color:#fff;	top:45%; cursor:pointer; background-color:transparent; }
-
-.tesNav span.nav.prev { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-left}'); background-repeat:no-repeat; background-position:left top; }
-.tesNav span.nav.next { {$BETA_CSS_PROPERTY,user-select:none;} float:left; width:25px; height:25px; text-indent:-9999px; overflow:hidden; display:block; padding:0px; margin:0px; background-image:url('{$IMG;,composr_homesite/community/nav-right}'); background-repeat:no-repeat; background-position:left top; }
-.tesNav span.nav.prev:hover { cursor:pointer; }
-.tesNav span.nav.next:hover { cursor:pointer; }
-
-ul.cmnty { margin:0; list-style:none; padding:0; float:left; width:320px; display:block; }
-.cmtyRht { float:right !important; }
-ul.cmnty li { display:block; margin-bottom:10px; {$BETA_CSS_PROPERTY,border-radius:0px 34px 0px 34px;} }
-ul.cmnty li.head { float:left; width:320px; height:68px; background-image:url('{$IMG;,composr_homesite/community/community-head-bg}'); background-repeat:repeat; background-position:left top; margin-bottom:15px; {$BETA_CSS_PROPERTY,border-radius:34px 0px 34px 0px;} line-height:68px; font-size:32px; font-weight:bold; text-align:center; color:#FFF; text-shadow:1px 1px #8B4B30; }
-ul.cmnty li { float:left; width:320px; height:160px; background-image:url('{$IMG;,composr_homesite/community/community-body-bg}'); background-repeat:repeat-x; background-position:left top; background-color:#FFF; }
-ul.cmnty li .pic { float:left; width:120px; height:121px; margin:0px 10px 0px 10px; } 
-ul.cmnty li .head { float:left; width:180px; height:50px; font-size:24px; font-weight:bold; color:#FFF; line-height:50px; margin:31px 0px 5px 0px; }
-ul.cmnty li .head a { width:180px; height:50px; color:#FFF; display:block; }
-ul.cmnty li .head a:hover { color:#E5922C; text-shadow:1px 1px #000; background-image:url('{$IMG;,composr_homesite/community/community-head-hover-bg}'); background-repeat:no-repeat; background-position:top right; text-decoration:none; }
-ul.cmnty li .cmntyCnt { float:left; width:170px; padding-right:10px; color:#666; font-size:14px; line-height:20px; }

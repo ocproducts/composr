@@ -22,3 +22,8 @@
 .vhis-box-txt { width:349px; float:left; height:18px; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }
 
 .tooltip { display:none; position:absolute; border:1px solid #333; background-color:#161616; border-radius:5px; padding:10px; color:#fff; font-size:12px Arial; }
+
+.partnersFtrImg { margin-top: 40px; float:left; width:320px; height:280px; margin-right:10px; padding-bottom:20px; }
+
+ol.cntHf { list-style:none; float:left; width:630px; height:auto; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
+ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }

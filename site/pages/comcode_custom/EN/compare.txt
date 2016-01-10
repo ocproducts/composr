@@ -4,9 +4,9 @@
 {$REQUIRE_JAVASCRIPT,jquery-ui}
 {$REQUIRE_CSS,jquery.ui.all}
 
-<div class="cntRow">
-	[title]Why we're different[/title]
+[title]Composr compared to other CMSs[/title]
 
+<div class="cntRow">
 	<div class="hSliderHold">
 		<div class="hSliderInner">
 			<!--custom div scroll bar -->
@@ -119,509 +119,583 @@
 	<h2>Direct comparison</h2>
 
 	<table class="tbHold">
-		<tr class="tbRow tbHead">
-			<th class="col1">
-				Feature
-			</th>
-
-			<th class="col2">
-				Drupal
-			</th>
-
-			<th class="col3">
-				Joomla
-			</th>
-
-			<th class="col4">
-				Composr
-			</th>
-
-			<th class="col5">
-				Wordpress
-			</th>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				<acronym title="What You See Is What You Get">WYSIWYG</acronym> editor (*1)
-			</th>
-
-			<td class="col2 tbRdCol">
-				No
-			</td>
-
-			<td class="col3 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbGrCol">
-				Yes
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				Discussion forum (*1)
-			</th>
-
-			<td class="col2 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				Events Calendar (*1)
-			</th>
-
-			<td class="col2 tbRdCol">
-				No
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				Newsletter (*1)
-			</th>
-
-			<td class="col2 tbRdCol">
-				No
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				Photo Gallery (*1)
-			</th>
-
-			<td class="col2 tbRdCol">
-				No
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				Style Wizard
-			</th>
-
-			<td class="col2 tbGrCol">
-				No, but lots of user themes
-			</td>
-
-			<td class="col3 tbGrCol">
-				No, but lots of user themes
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbGrCol">
-				No, but lots of user themes
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="This basically means the system is free to use and modify. All the most common systems are Open Source as price is such a big thing for the majority of hobby sites, and the philosophy and prominence of this has now spread across the web industry as with time the free systems have been able to rival the commercial ones.
-
-We don't show any commercial vendors on this comparison, but there still are lots, and their usage is prominent in companies still. With a fully commercial product you may often find:[list]
-[*]a quick dispatch to your suggestions: 'we don't support this'. The developers are personally unreachable
-[*]the community suffers from the fact that only a minority of people are willing to pay &ndash; there is no community
-[*]the developers have little passion for the work, they just want to get paid"]Open Source[/tooltip][/list]
-			</th>
-
-			<td class="col2 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col3 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbGrCol">
-				Yes
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="Community-driven development is usually more programmer-focused, with features developed to help programmers with what they need. The best Open Source software tends to be Commercially-driven by companies or foundations that depend on user satisfaction for their survival.
-
-There are many reasons to avoid (most) Open Source software that is not commercially backed, especially:[list]
-[*]the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
-[*]the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
-[*]whilst the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces[/list]
-We have to be clear that these don't always hold true, every project is different, but you should check before relying on something!"]Commercially-driven[/tooltip]
-			</th>
-
-			<td class="col2 tbYwCol">
-				Somewhat
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbYwCol">
-				Somewhat
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="A lot of software has back logs of unfixed bugs, where bug fixes are only implemented if the bug is particularly nasty, if someone is motivated to fix it, or if someone has gotten around to it."]Bug back log[/tooltip]
-			</th>
-
-			<td class="col2 tbRdCol">
-				4594
-			</td>
-
-			<td class="col3 tbGrCol">
-				49
-			</td>
-
-			<td class="col4 tbGrCol">
-				2
-			</td>
-
-			<td class="col5 tbRdCol">
-				1429
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="Most CMSs rely on third party plugins for what most people consider standard functionality, and therefore there is no consistent design or control of how things should work. For example, input forms may be laid out in different ways, accessed from different areas, use different sets of terminology, and have inconsistent systems for defining who can access them."]Uniform design[/tooltip]
-			</th>
-
-			<td class="col2 tbYwCol">
-				Core only
-			</td>
-
-			<td class="col3 tbYwCol">
-				Core only
-			</td>
-
-			<td class="col4 tbGrCol">
-				Extensive
-			</td>
-
-			<td class="col5 tbYwCol">
-				Core only
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="When plugin development is distributed it usually means the different plugins don't integrate with each other and the overall framework is very limited in what kind of integrations are provided (e.g. unified search system, or easy picking of content items from different plugins for linking into menus, or a unified sitemap)."]Strong plugin integration[/tooltip]
-			</th>
-
-			<td class="col2 tbRdCol">
-				No
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="Most third party plugins do not have consistent standard support. For example, they may be hardcoded in English, may require Javascript enabled, or may not run on the same set of web browsers."]Uniform standards[/tooltip]
-			</th>
-
-			<td class="col2 tbYwCol">
-				Core only
-			</td>
-
-			<td class="col3 tbYwCol">
-				Core only
-			</td>
-
-			<td class="col4 tbGrCol">
-				Extensive
-			</td>
-
-			<td class="col5 tbYwCol">
-				Core only
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="It is very important with a lot of potential features that you are not forced into using those features, or having to work out how to turn them all off."]Modular[/tooltip]
-			</th>
-
-			<td class="col2 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col3 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbGrCol">
-				Yes
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="It is very useful for programmers to have all functions in the system to have full API documentation of behaviour and parameters."]Full API documentation[/tooltip]
-			</th>
-
-			<td class="col2 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col3 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbGrCol">
-				Yes
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="To be fair, there are fewer Composr users than the other software, so it hasn't been hacked so hard. But still, Composr contains many layers of security to prevent vulnerabilities, including proactive hack attack detection. Also don't forget that if you rely on third party plugins, you also need to separately monitor these for security issues."]Reported security holes[/tooltip]
-			</th>
-
-			<td class="col2 tbWtCol">
-				[color="orange"][url="92"]http://www.cvedetails.com/product/2387/Drupal-Drupal.html?vendor_id=1367[/url][/color]
-			</td>
-
-			<td class="col3 tbWtCol">
-				[color="orange"][url="97"]http://www.cvedetails.com/product/6129/Joomla-Joomla.html?vendor_id=3496[/url][/color]
-			</td>
-
-			<td class="col4 tbWtCol">
-				[color="green"][url="1"]http://www.cvedetails.com/product/4114/Ocportal-Ocportal.html?vendor_id=2351[/url][/color]
-			</td>
-
-			<td class="col5 tbWtCol">
-				[color="orange"][url="113"]http://www.cvedetails.com/product/4096/Wordpress-Wordpress.html?vendor_id=2337[/url][/color]
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="This is a rough way to check how much the project cares about standards compliance. Everything tested had a compliant product home page, but that's easy, how easy it is for a live site to be compliant is what matters."]W3C compliance of project home page[/tooltip]
-			</th>
-
-			<td class="col2 tbYwCol">
-				3 Errors, 1 warning(s)
-			</td>
-
-			<td class="col3 tbRdCol">
-				24 Errors, 18 warning(s)
-			</td>
-
-			<td class="col4 tbGrCol">
-				Pass
-			</td>
-
-			<td class="col5 tbGrCol">
-				Pass
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="This is the official standard for accessiblity. Composr has been praised for it's high accessibility for blind users."]WAI Compliant[/tooltip]
-			</th>
-
-			<td class="col2 tbYwCol">
-				Limited
-			</td>
-
-			<td class="col3 tbRdCol">
-				No
-			</td>
-
-			<td class="col4 tbGrCol">
-				Yes
-			</td>
-
-			<td class="col5 tbRdCol">
-				No
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="When code is written usually there are only a few records of test data around. In order to ensure code works with high volumes of data special testing is needed. For the 'Untested' entries here it may well be individual developers have actually performed tests, but we could not find any claims of it when we looked."]Scalability testing[/tooltip]
-			</th>
-
-			<td class="col2 tbGrCol">
-				Some people have millions
-			</td>
-
-			<td class="col3 tbWtCol">
-				[url="Untested"]http://forum.joomla.org/viewtopic.php?f=428&t=538609[/url]
-			</td>
-
-			<td class="col4 tbGrCol">
-				Tested to 1 million
-			</td>
-
-			<td class="col5 tbWtCol">
-				[url="Untested"]http://en.forums.wordpress.com/topic/number-of-permissable-pages[/url]
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="CMSs can often use huge numbers of queries. In our tests all the CMSs performed well, but often when people install large numbers of third party plugins the numbers can get into the hundreds."]Queries on default front page[/tooltip]
-			</th>
-
-			<td class="col2 tbRdCol">
-				50
-			</td>
-
-			<td class="col3 tbGrCol">
-				26
-			</td>
-
-			<td class="col4 tbGrCol">
-				6
-			</td>
-
-			<td class="col5 tbGrCol">
-				20
-			</td>
-		</tr>
-
-		<tr class="tbRow tbList">
-			<th class="col1 tbSlCol">
-				[tooltip="The number of front page loads that can happen per second, when the server is put under pressure. The tests performed on a 2.4 Ghz Core 2 Duo iMac with APC installed, running Snow Leopard with the bundled PHP version. All the systems here do very well with just these figures but a high-end server could multiply these figures by 20."]Page throughput[/tooltip]
-			</th>
-
-			<td class="col2 tbGrCol">
-				26.22 trans/sec
-			</td>
-
-			<td class="col3 tbGrCol">
-				8.57 trans/sec
-			</td>
-
-			<td class="col4 tbGrCol">
-				10.13 trans/sec (*2)
-			</td>
-
-			<td class="col5 tbGrCol">
-				19.12 trans/sec
-			</td>
-		</tr>
+		<thead>
+			<tr class="tbRow tbHead">
+				<th class="col1">
+					Feature
+				</th>
+
+				<th class="col2">
+					Drupal
+				</th>
+
+				<th class="col3">
+					Joomla
+				</th>
+
+				<th class="col4">
+					Composr
+				</th>
+
+				<th class="col5">
+					Wordpress
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Easy to install and setup
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbGrCol">
+					Yes
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					<acronym title="What You See Is What You Get">WYSIWYG</acronym> editor (*1)
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbGrCol">
+					Yes
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Discussion Forum (*1)
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Events Calendar (*1)
+				</th>
+
+				<td class="col2 tbRdCol">
+					No
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Newsletter (*1)
+				</th>
+
+				<td class="col2 tbRdCol">
+					No
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Photo Gallery (*1)
+				</th>
+
+				<td class="col2 tbRdCol">
+					No
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Style Wizard
+				</th>
+
+				<td class="col2 tbGrCol">
+					No, but lots of user themes
+				</td>
+
+				<td class="col3 tbGrCol">
+					No, but lots of user themes
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbGrCol">
+					No, but lots of user themes
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[acronym="Enterprise Content Management System"]eCMS[/acronym]
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes, Drupal is a sophisticated framework
+				</td>
+
+				<td class="col3 tbRdCol">
+					No (but the framework Joomla uses is very strong)
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Social networking
+				</th>
+
+				<td class="col2 tbYwCol">
+					Limited
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbYwCol">
+					Limited
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="This basically means the system is free to use and modify. All the most common systems are Open Source as price is such a big thing for the majority of hobby sites, and the philosophy and prominence of this has now spread across the web industry as with time the free systems have been able to rival the commercial ones.
+
+	We don't show any commercial vendors on this comparison, but there still are lots, and their usage is prominent in companies still. With a fully commercial product you may often find:[list]
+	[*]a quick dispatch to your suggestions: 'we don't support this'. The developers are personally unreachable
+	[*]the community suffers from the fact that only a minority of people are willing to pay &ndash; there is no community
+	[*]the developers have little passion for the work, they just want to get paid"]Open Source[/tooltip][/list]
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbGrCol">
+					Yes
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="Community-driven development is usually more programmer-focused, with features developed to help programmers with what they need. The best Open Source software tends to be commercially-backed by companies or foundations that depend on user satisfaction for their survival.
+
+	There are many reasons to avoid (most) Open Source software that is not commercially-backed, especially:[list]
+	[*]the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
+	[*]the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
+	[*]whilst the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces[/list]
+	We have to be clear that these don't always hold true, every project is different, but you should check before relying on something!"]Commercially-backed[/tooltip]
+				</th>
+
+				<td class="col2 tbYwCol">
+					Somewhat
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbYwCol">
+					Somewhat
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="A lot of software has back logs of unfixed bugs, where bug fixes are only implemented if the bug is particularly nasty, if someone is motivated to fix it, or if someone has gotten around to it."]Bug back log[/tooltip]
+				</th>
+
+				<td class="col2 tbRdCol">
+					4594
+				</td>
+
+				<td class="col3 tbGrCol">
+					49
+				</td>
+
+				<td class="col4 tbGrCol">
+					2
+				</td>
+
+				<td class="col5 tbRdCol">
+					1429
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="Most CMSs rely on third party plugins for what most people consider standard functionality, and therefore there is no consistent design or control of how things should work. For example, input forms may be laid out in different ways, accessed from different areas, use different sets of terminology, and have inconsistent systems for defining who can access them."]Uniform design[/tooltip]
+				</th>
+
+				<td class="col2 tbYwCol">
+					Core only
+				</td>
+
+				<td class="col3 tbYwCol">
+					Core only
+				</td>
+
+				<td class="col4 tbGrCol">
+					Extensive
+				</td>
+
+				<td class="col5 tbYwCol">
+					Core only
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="When plugin development is distributed it usually means the different plugins don't integrate with each other and the overall framework is very limited in what kind of integrations are provided (e.g. unified search system, or easy picking of content items from different plugins for linking into menus, or a unified sitemap)."]Strong plugin integration[/tooltip]
+				</th>
+
+				<td class="col2 tbRdCol">
+					No
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="Most third party plugins do not have consistent standard support. For example, they may be hardcoded in English, may require JavaScript enabled, or may not run on the same set of web browsers."]Uniform standards[/tooltip]
+				</th>
+
+				<td class="col2 tbYwCol">
+					Core only
+				</td>
+
+				<td class="col3 tbYwCol">
+					Core only
+				</td>
+
+				<td class="col4 tbGrCol">
+					Extensive
+				</td>
+
+				<td class="col5 tbYwCol">
+					Core only
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="It is very important with a lot of potential features that you are not forced into using those features, or having to work out how to turn them all off."]Modular[/tooltip], flexible, and maintainable
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbYwCol">
+					Limited (framework is, but product has some big assumptions)
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbYwCol">
+					Limited
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="It is very useful for programmers to have all functions in the system to have full API documentation of behaviour and parameters."]Full API documentation[/tooltip]
+				</th>
+
+				<td class="col2 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col3 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbGrCol">
+					Yes
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="To be fair, there are fewer Composr users than the other software, so it hasn't been hacked so hard. But still, Composr contains many layers of security to prevent vulnerabilities, including proactive hack attack detection. Also don't forget that if you rely on third party plugins, you also need to separately monitor these for security issues."]Reported security holes[/tooltip] (historic)
+				</th>
+
+				<td class="col2 tbWtCol">
+					[color="orange"][url="143"]http://www.cvedetails.com/product/2387/Drupal-Drupal.html?vendor_id=1367[/url][/color]
+				</td>
+
+				<td class="col3 tbWtCol">
+					[color="orange"][url="94"]http://www.cvedetails.com/product/6129/Joomla-Joomla.html?vendor_id=3496[/url][/color]
+				</td>
+
+				<td class="col4 tbWtCol">
+					[color="green"][url="5"]http://www.cvedetails.com/product/4114/Ocportal-Ocportal.html?vendor_id=2351[/url][/color]
+				</td>
+
+				<td class="col5 tbWtCol">
+					[color="orange"][url="205"]http://www.cvedetails.com/product/4096/Wordpress-Wordpress.html?vendor_id=2337[/url][/color]
+				</td>
+			</tr>
+
+			<!-- People don't care much since HTML5, move on
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="This is a rough way to check how much the project cares about standards compliance. Everything tested had a compliant product home page, but that's easy, how easy it is for a live site to be compliant is what matters."]W3C compliance of project home page[/tooltip]
+				</th>
+
+				<td class="col2 tbYwCol">
+					3 Errors, 1 warning(s)
+				</td>
+
+				<td class="col3 tbRdCol">
+					24 Errors, 18 warning(s)
+				</td>
+
+				<td class="col4 tbGrCol">
+					Pass
+				</td>
+
+				<td class="col5 tbGrCol">
+					Pass
+				</td>
+			</tr>
+			-->
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="This is the official standard for accessiblity. Composr has been praised for it's high accessibility for blind users."]WAI Compliant[/tooltip]
+				</th>
+
+				<td class="col2 tbYwCol">
+					Limited
+				</td>
+
+				<td class="col3 tbRdCol">
+					No
+				</td>
+
+				<td class="col4 tbGrCol">
+					Yes
+				</td>
+
+				<td class="col5 tbRdCol">
+					No
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="When code is written usually there are only a few records of test data around. In order to ensure code works with high volumes of data special testing is needed. For the 'Untested' entries here it may well be individual developers have actually performed tests, but we could not find any claims of it when we looked."]Scalability testing[/tooltip]
+				</th>
+
+				<td class="col2 tbGrCol">
+					Some people have millions
+				</td>
+
+				<td class="col3 tbWtCol">
+					[url="Untested"]http://forum.joomla.org/viewtopic.php?f=428&t=538609[/url]
+				</td>
+
+				<td class="col4 tbGrCol">
+					Tested to 1 million
+				</td>
+
+				<td class="col5 tbWtCol">
+					[url="Untested"]http://en.forums.wordpress.com/topic/number-of-permissable-pages[/url]
+				</td>
+			</tr>
+
+			<!-- This has likely changed a lot, but query counts don't matter much, so let's not focus on this even though we may still be winning
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="CMSs can often use huge numbers of queries. In our tests all the CMSs performed well, but often when people install large numbers of third party plugins the numbers can get into the hundreds."]Queries on default front page[/tooltip]
+				</th>
+
+				<td class="col2 tbRdCol">
+					50
+				</td>
+
+				<td class="col3 tbGrCol">
+					26
+				</td>
+
+				<td class="col4 tbGrCol">
+					6
+				</td>
+
+				<td class="col5 tbGrCol">
+					20
+				</td>
+			</tr>
+			-->
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					[tooltip="The number of front page loads that can happen per second, when the server is put under pressure. The tests performed on a 2.4 Ghz Core 2 Duo iMac with APC installed, running Snow Leopard with the bundled PHP version. All the systems here do very well with just these figures but a high-end server could multiply these figures by 20."]Page throughput[/tooltip]
+				</th>
+
+				<td class="col2 tbGrCol">
+					26.22 trans/sec
+				</td>
+
+				<td class="col3 tbGrCol">
+					8.57 trans/sec
+				</td>
+
+				<td class="col4 tbGrCol">
+					10.13 trans/sec (*2)
+				</td>
+
+				<td class="col5 tbGrCol">
+					19.12 trans/sec
+				</td>
+			</tr>
+
+			<tr class="tbRow tbList">
+				<th class="col1 tbSlCol">
+					Primary practioners
+				</th>
+
+				<td class="col2 tbYwCol">
+					Programmers
+				</td>
+
+				<td class="col3 tbGrCol">
+					Anybody<br />(lots of agencies)
+				</td>
+
+				<td class="col4 tbGrCol">
+					Varies by goals
+				</td>
+
+				<td class="col5 tbGrCol">
+					Anybody
+				</td>
+			</tr>
+		</tbody>
 	</table>
 </div>
 
 <div class="cntRow">
 	<ul class="cntLiFull">
-		<li>This data was taken from <a href="http://www.cmsmatrix.org/" target="_blank">CMS Matrix</a> on 9th September 2010 and tests run on 5th January 2011 using default installs. Please notify us if the status of anything has changed.</li>
-		<li>*1: Most of this functionality can be added to other systems using third-party plugins (we explain why we think this is bad above).</li>
-		<li>*2: We could have improved our speed by removing bundled addons (this gets Composr 17.77 trans/sec), but we wanted to be consistent in comparing default installations. Drupal 7's default site did not come with any content or blocks placed, so was naturally very fast. Wordpress is simple without much overhead. We need to update the benchmarks as we have managed to do some quite sophisticated optimisations in Composr v10.</li>
+		<li>This data was taken from <a href="http://www.cmsmatrix.org/" target="_blank">CMS Matrix</a>, tests run default installs, and our understanding of the systems.<br />Please [page=":contact:free"]notify us[/page] if the status of anything is incorrect and we'll update the table.</li>
+		<li>*1: Most of this functionality can be added to other systems using third-party plugins (we explain why we think this is bad above).<br />The features we picked for the table are just some examples: we didn't want to make the table hundreds of rows long.</li>
+		<li>*2: We could have improved our speed by removing bundled addons (this gets Composr 17.77 trans/sec), but we wanted to be consistent in comparing default installations. Drupal 7's default site did not come with any content or blocks placed, so was naturally very fast. Wordpress is simple without much overhead.<br />These figures are outdated and need updating. We have managed to do some quite sophisticated optimisations in Composr v10.</li>
 	</ul>
-</div>
-
-<div class="cntRow">
-	<figure class="diffFtrImg">
-		<img alt="" src="{$IMG*,composr_homesite/compare/diff_feature_img}" />
-	</figure>
-
-	<ol class="cntHf">
-		<li>
-			<h3><span class="colrBl">We're reaching out for</span> Community Partnerships</h3>
-		</li>
-
-		<li>1. <span class="colrRd">Designers/developers:</span> create and sell niche addons and themes for Composr, or partner with ocProducts for backend work.</li>
-		<li>2. <span class="colrRd">Publishers:</span> work with us to get the first Composr book onto book-store shelves.</li>
-		<li>3. <span class="colrRd">Consultants:</span> recommend our software and services and earn referral rewards for it. Established consultants can apply to be a regional representative.</li>
-		<li>4. <span class="colrRd">Trainers:</span> train teams and run seminars on Composr, and receive advertising on our site.</li>
-		<li>5. <span class="colrRd">Individuals:</span> join our active community and get involved.</li>
-	</ol>
-
-	<div class="commonBtn">
-		[page="site:tickets:ticket:ticket_type=Partnership"]Contact[/page]
-	</div>
 </div>
 
 <!-- Script for Vertical Tab menu -->
@@ -631,5 +705,4 @@ We have to be clear that these don't always hold true, every project is differen
 		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 	});
 //]]></script>
-
 [/semihtml]
