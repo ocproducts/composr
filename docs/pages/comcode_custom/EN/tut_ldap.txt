@@ -35,7 +35,7 @@ The usergroup, 'Users' is mapped to the lowest ranking Composr member usergroup.
 
 [title="3"]OpenLDAP[/title]
 
-Composr supports the [concept]NIS[/concept] (aka [concept]POSIX[/concept]) schema. This is the schema that is installed on the server in order for Linux clients to be able to login using the LDAP database for full credentials. It is possible that there are variations of the schema installed on different networks, therefore it may be necessary to ask a commercial developer to make sure Composr can handle your specific configuration.
+Composr supports the [concept]NIS[/concept] (aka [concept]POSIX[/concept]) schema. This is the schema that is installed on the server in order for Linux clients to be able to login using the LDAP database for full credentials. It is possible that there are variations of the schema installed on different networks, therefore it may be necessary to ask a professional developer to make sure Composr can handle your specific configuration.
 
 The usergroups, 'root' and 'admin', are mapped to the Composr Administrators usergroup. The usergroup, 'users' is mapped to the lowest ranking Composr member usergroup.
 

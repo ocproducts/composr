@@ -11,7 +11,7 @@ It is well worth pointing out that there are a number of 'all in one' packages t
 
 [title="3"]Bitnami[/title]
 
-There is a [url="Composr software stack for Bitnami"]https://bitnami.com/stack/composr[/url] that allows easy installation on Windows. (Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+There is a [url="Composr software stack for Bitnami"]https://bitnami.com/stack/composr[/url] that allows easy installation on Windows. [staff_note]LEGACY[/staff_note](Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
 
 Bitnami is professionally-maintained and a good choice. They also provide all kinds of hosting and virtual machine services.
 
@@ -36,7 +36,7 @@ Installing Composr on WampServer:
 
 [title="3"]Microsoft Web Platform[/title]
 
-This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform installer for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there. (Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform installer for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there. [staff_note]LEGACY[/staff_note](Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
 
 This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Microsoft test the integration each time we publish an update.
 

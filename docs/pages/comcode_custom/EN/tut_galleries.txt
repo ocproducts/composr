@@ -67,7 +67,7 @@ Composr supports most video formats, but video on the web is fraught with comple
 
 The following formats are best to use:
  - [tt].mp4[/tt] (with h.264 aac encoding)
- - [tt].webm[/tt] (the new [at time of writing] Google-sponsored format, supported natively in all web browsers except Internet Explorer/Microsoft Edge and Safari, but available in those via normal system codec plugins)
+ - [tt].webm[/tt] (the Google-sponsored format, supported natively in all web browsers except Internet Explorer/Microsoft Edge and Safari, but available in those via normal system codec plugins)
 
 The following are almost as good:
  - [tt].mov[/tt] (with h.264 aac encoding -- this modern QuickTime format is identical to mp4)

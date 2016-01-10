@@ -1289,9 +1289,9 @@ div.red_alert, p.red_alert {
 
 /* Used when a label is the only thing in front of a textarea/list */
 .lonely_label  {
-	margin-bottom: 0.2em;
-	display: block;
-	font-size: 1.1em;
+	margin-bottom: 0.2em !important;
+	display: block !important;
+	font-size: 1.1em !important;
 }
 .lonely_label+ul, .lonely_label+ol, .lonely_label+p {
 	margin-top: 0.2em;
@@ -2747,7 +2747,7 @@ ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul {
+ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul {
 	list-style-type: square;
 }
 .spaced_list li, .zone_running_docs .comcode_page li {

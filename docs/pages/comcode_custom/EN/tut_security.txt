@@ -218,7 +218,7 @@ Most security logs are accidental (caused by mistyped URLs, or buggy software) o
 
 [title="2"]Alert types[/title]
 
-At the time of writing, the following types of alert are defined:
+The following types of alert are defined:
  - [tt]DODGY_GET_HACK[/tt], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
  - [s][tt]REFERRER_IFRAME_HACK[/tt], It looks like someone tried to abuse an iframe in Composr, where the iframe URL was given by the main page URL. By doing this, social engineering, or referrer faking, might be achievable[/s] -- [i]not currently in use, we now use alternative and more reliable CSRF-prevention methods[/i]
  - [tt]EVIL_POSTED_FORM_HACK[/tt], This may be due to a social engineering attack, where a logged in administrator has been tricked into filling in a form targeted to delete something from the website (CSRF)

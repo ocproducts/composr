@@ -62,7 +62,7 @@ In general:
 
 If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Error log). The error log shows all non-user-errors that have occurred on your site.
 
-If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
+If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a paid ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
 [title="3"]Automatic reporting[/title]
 
@@ -192,7 +192,7 @@ It is not about:
  - general bugs in functionality
  - problems with your hosting, e.g. databases suddenly corrupting
 
-If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page="_SEARCH:tickets:ticket:ticket_template=bug:cost=free"]free bug report support ticket[/page]. The developers will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
+If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page=":contact:free"]free bug report support ticket[/page]. The developers will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
 
 It is important that you help the developers help you. Remember that the developers are not employed 24x7 to manage your bug reports, they have to fit it in within their working hours, and it is a secondary job to what pays the bills. You need to make it really easy for them to jump in to fix the problem, the first time they open the ticket. The developers will not want to:
  - negotiate for the access needed to fix the problem
@@ -254,6 +254,7 @@ The smallprint:
  - The project must actually start (i.e. deposit paid or support credits purchased). We reserve the right to reduce awarded credits if the project is cancelled for some reason, as we won't have made the money to pass on.
  - We reserve the right to change these rules at any time, it's not a binding agreement.
  - This applies for projects done at our agency rate, or long-term secondments of staff -- it doesn't apply to professional support or feature sponsorship which is done at a lower hourly rate.
+ - If referred out to a third-party company (which we often do), ocProducts will ask that company to pass back a referral to you, but we cannot guarantee they'll do it.
 
 We suggest that you are open with whoever you are referring: if they realise you'll get a referral but think you are hiding this, it is likely to reflect poorly on you. Also, of course don't refer work you don't think we could realistically do -- e.g. print design work, PR strategy, IT network support.
 
@@ -487,7 +488,7 @@ A consequence for this is that when we are providing services to people we are a
 One tricky thing about our business is we walk the line between enthusiast and enterprise services, trying to serve everybody's needs well, and aiming to be fair and open to everybody, be socially responsible, and to maintain a healthy community atmosphere. We make advanced stuff really affordable, but when that stuff is heavily customised with a lot of extra design work, and given heavy customisation to tune it to particular needs, it still can cost a lot of money. Often people who are in communities aren't accustomed to the kind of figures that companies have to pay for things, and expect services to be cheaper, more like the price you see for things in shops, or pay for a software license. There's a big gap between 'free'/$100 and 'tens of thousands of dollars'. The reality though is most websites for businesses cost this much, or often a lot more because they are developed by a permanent staff.
 Prices seem relatively high, because wages are always a lot higher than disposable income -- think how many $100 there are in the yearly salary of someone who has been through years of university training and with an in-demand skill-set, and then add to that things like the cost of dead time (periods where incoming work is slow), administration costs, write-downs (e.g. non-paying-clients), training, marketing and PR, management, sickness leave, vacation periods, tax, expansion funds, contingency, office and bills, return on investment, and many other costs. For people outside business costing, the actual cost things come to is a bit of a shock, but the figures that go around are fair reflections on the costs of it all.
 
-Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our commercial services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
+Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our professional services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
 
 Please be aware also that ocProducts doesn't take payment-in-kind, such as payment in stock, payment via advertising, mentions on mailing lists, commissions, or long-deferred payments. Our operating margins are already quite slim, so in these situations we'd expect a business client to use something like a bank loan to fund their enterprise. We're not professional valuators or risk assessors.
 

@@ -25,15 +25,15 @@ $featuretree = array(
     // Ways to help (using same code, bit of a hack)
     'help' => array(
         'evangelism' => array(
-            'Evangelism',
+            'Evangelism (outreach)',
             array(
-                array('Twitter', 'Follow [url="https://twitter.com/composr_cms"]Composr[/url] on Twitter, and tweet about #composr.'),
-                array('Become a fan of Composr [url="http://www.facebook.com/pages/Composr/80430912569"]on Facebook[/url].'),
-                array('Support us on YouTube', 'Rate and comment on [url="http://www.youtube.com/results?search_query=composr"]our video tutorials[/url] on YouTube.'),
-                array('Vote for Composr', 'Vote/rate and review Composr wherever you see it. [url=http://www.hotscripts.com/listing/composr/]HotScripts[/url] and [url=http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr]OpenSourceCMS[/url] are two places to start.'),
-                array('Post about Composr', 'If you see CMSs compared on other websites and Composr isn\'t mentioned, [page="forum:topicview:browse:10312"]let us know about it[/page]!'),
-                array('Tell a friend', 'Recommend Composr if a friend or your company is looking to make a website.'),
-                array('Mention ocProducts', 'Mention the staff as web developers to help them bring in an income.'),
+                array('Twitter', 'Follow [url="https://twitter.com/composr_cms"]Composr[/url] on Twitter, and tweet about [url="#composr"]https://twitter.com/hashtag/composr[/url]. Answer [url="CMS questions"]twitter.com/search?q=CMS[/url].'),
+                array('Facebook', 'Become a fan of Composr [url="http://www.facebook.com/pages/Composr/80430912569"]on Facebook[/url].'),
+                array('Stack Overflow', 'Answer CMS questions on [url="Stack Overflow"]http://stackoverflow.com/search?q=cms[/url].'),
+                array('YouTube', 'Rate and comment on [url="https://www.youtube.com/channel/UCBRm-sxk8sEk0wf4D0JJczw"]our video tutorials[/url] on YouTube.'),
+                array('Post about Composr', 'If you see other CMSs compared on other websites, {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Composr evangelism}"]let us know about it[/page]}!'),
+                array('Tell a friend about Composr', '[page=":recommend"]Recommend Composr[/page] if a friend or your company is looking to make a website.'),
+                array('Recommend ocProducts', 'Mention the ocProducts developers to help them bring in an income.'),
                 array('Show our ad', 'You can advertise Composr via the [url="banner ad"]{$BRAND_BASE_URL}/uploads/website_specific/compo.sr/ad-banner.swf.zip[/url] we have created.'),
                 array('Self-initiatives', 'Find any opportunity to share Composr with someone. Write your own article and publish it. Talk about Composr at a conference. Be creative!'),
             ),
@@ -42,35 +42,37 @@ $featuretree = array(
         'skill_based' => array(
             'Skill-based',
             array(
-                array('Make addons', 'If you know PHP, or are learning, [page="forum:topicview:browse:11688"]make and release some addons[/page] for the community. It takes a lot of knowledge, but anybody can learn and it\'s fun, fulfilling and makes you employable.'),
-                array('Theme', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are learning, [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
-                array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to make a new language pack.'),
+                array('Make addons', 'If you know PHP, or are learning, [page="docs:sup_hardcore_1"]make and release some addons[/page] for the community. It takes a lot of knowledge, but anybody can learn and it\'s fun, fulfilling and makes you employable.'),
+                array('Make themes', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are learning, [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
+                array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to [page="docs:tut_intl"]make a new language pack[/page].'),
                 //array('Use Composr for your own clients', 'Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
-                array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_template=general_feedback:cost=free"]contact us[/page] and we will work to try and make it happen.'),
+                array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_type=Partnership"]contact us[/page] and we will work to try and make it happen.'),
+                array('Developing unit tests', 'If you know some PHP you can help us test Composr en-masse. Write unit tests (the latest version of the testing framework is in our public [url="git"]https://github.com/ocproducts/composr[/url] repository).'),
+                array('Contribute code', 'Help improve Composr directly by [page=":contact:contribute_code"]contributing code[/page].'),
             ),
         ),
 
         'our_site' => array(
             'On compo.sr',
             array(
-                array('Reach out to other users', 'Particularly new members, try [page="forum:forumview:browse:198"]to welcome them[/page] and help make sure they don\'t get lost. Also [page="forum:topicview:browse:11683"][/page] so people near you can get in contact.'),
+                array('Reach out to other users', '{$COMCODE,[page="forum:forumview:browse:{$FIND_ID_VIA_LABEL,forum,Introduce yourself}"]Welcome new users[/page]} and help make sure people don\'t get lost.[html]<br />[/html]Also {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Post your location}"]put yourself on the map[/page]} so people near you can get in contact.'),
                 array('Help others on the forum', 'Where you can, answer other user\'s questions.'),
+                array('Hang out in the chat', 'If we have users in the [page="site:chat"]chat room[/page] 24&times;7 then users (including yourself) are less likely to feel stuck or isolated.'),
                 array('Give gift points', 'If you see other members doing good things, give them some gift points.'),
             ),
         ),
 
         'usability' => array(
-            'Usability and stability',
+            'User experience',
             array(
                 array('Reporting bugs', 'Big or tiny &ndash; we will be happy if you even report typos we make as bugs.'),
                 array('Reporting usability issues', 'We will be happy if you have any concrete suggestions for making reasonably common tasks even a little bit easier.'),
-                array('Write community tutorials', 'Post them on [page="site:wiki"]Wiki+[/page] and the staff may highlight them.'),
-                array('Developing unit tests', 'If you know some PHP you can help us test Composr en-masse. Write unit tests (the latest version of this framework is in our public git repository).'),
+                array('Write community tutorials', 'Post them on [url="the tracker"]http://compo.sr/tracker/set_project.php?project_id=7[/url] and the staff may add them to the site.'),
             ),
         ),
 
         'money' => array(
-            'Money',
+            'Financial',
             array(
                 array('Sponsor a feature', 'Do you want something new implemented in Composr? Sponsor little projects listed on the [page="site:tracker"]tracker[/page] (payment is made via buying support credits).'),
             ),
@@ -80,8 +82,7 @@ $featuretree = array(
             'Other',
             array(
                 array('Supply test data for importers', 'Send an SQL-dump to help us create a Composr importer. There\'s no promise of anything, but it helps us a lot to have test data on hand should we decide to make an importer.'),
-                array('Core developers wanted', 'If you ask and demonstrate your skillz and commitment then you can get commit privileges and be fully credited as one of the Composr developers. We just need a standard dual-copyright agreement signing.'),
-                array('Other', 'Do you have some other expertise? Do you have the ability to help the staff make business connections? There are many other ways to support our mission &ndash; be imaginative!'),
+                array('Other', 'Do you have some other expertise? Do you have the ability to help the staff make business connections? There are many other ways to support [page="site:vision"]our mission[/page] &ndash; be imaginative!'),
             ),
         ),
     ),

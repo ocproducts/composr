@@ -92,7 +92,7 @@ The advice for illegal content generally applies to the discussion of libel (def
 
 It is likely that you will experience attempts to hack into your website by malicious users and 'bots' which automatically probe websites for vulnerabilities. Fortunately Composr is extremely sophisticated when it comes to 'hack attack' detection, and will block, and log, these attempts. Composr provides a two-layer security approach: it is engineered to use secure practices, and proactively detects when its interfaces are being abused.
 
-However, even with all this, there are two-hundred and sixty-thousand (at the time of writing) lines of code that could potentially contain vulnerabilities. You therefore should keep backups, and if you run a high profile website, know how to attempt to track down miscreants and subject them to legal action.
+However, even with all this, there are 3/4 million (at the time of writing) lines of code that could potentially contain vulnerabilities. You therefore should keep backups, and if you run a high profile website, know how to attempt to track down miscreants and subject them to legal action.
 
 If a vulnerability is found, the developers [page="_SEARCH:tut_software_feedback"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
 

@@ -56,7 +56,7 @@ It is often better to go through the process by hand, or to go over by hand to p
 
 This is where the auto-created [tt].editfrom[/tt] files are useful...
 
-First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url]. DiffMerge on Mac, and Kompare on Linux are similar.
+First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url]. [url="Beyond Compare"]http://www.scootersoftware.com/[/url] (cross platform, commercial), [url="DiffMerge"]https://sourcegear.com/diffmerge/[/url] on Mac, and Kompare on Linux are similar.
 
 Then download the themes directory from your server, to your own desktop machine.
 

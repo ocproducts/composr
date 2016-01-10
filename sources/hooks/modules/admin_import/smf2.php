@@ -390,7 +390,7 @@ class Hook_smf2
                 }
 
                 $custom_fields = array(
-                    cns_make_boiler_custom_field('cms_fullname') => $row['real_name'],
+                    cns_make_boiler_custom_field('cms_firstname') => $row['real_name'],
                 );
                 if ($row['website_url'] != '') {
                     $custom_fields[cns_make_boiler_custom_field('website')] = $row['website_url'];

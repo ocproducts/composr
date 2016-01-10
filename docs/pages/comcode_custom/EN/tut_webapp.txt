@@ -518,14 +518,14 @@ The Composr philosophy is that almost all cutting-edge websites, from hobbyist c
 
 At the time of writing, we do not know any other products that have such a large built-in feature set as Composr. However, Composr also excels in customisability: the features in Composr can be fully customised on a number of levels, so that even though different websites share the same engine, they can have their own individuality.
 
-In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available). Commercial developers are available for such work.
+In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available). Professional developers are available for such work.
 
 There are some situations where Composr is not the most appropriate product. You'll find these are documented on the main Composr website ("What Composr is not"). You should always choose the most appropriate product for any particular situation.
 [/surround]
 
 [title="2"]Why not product-X?[/title]
 
-Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially backed. There are many reasons to avoid (most) Open Source software that is not commercially backed, especially:
+Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially-backed. There are many reasons to avoid (most) Open Source software that is not commercially-backed, especially:
  - the developers expect you to "fix it yourself", or quite possibly, the developers have disappeared leaving the project stagnant
  - the developers think that "you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings"
  - the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users

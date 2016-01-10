@@ -21,7 +21,7 @@
  */
 
 /*
-Some basic developer tools for ocPortal PHP development.
+Some basic developer tools for Composr PHP development.
 
 Also see:
  firephp
@@ -322,7 +322,7 @@ function show_memory_points()
 /**
  * Verify the parameters passed into the *calling* function match the phpdoc specification for that function.
  * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
- * For example, when web APIs are plumbed into ocPortal APIs and you need to ensure the types are coming in correctly.
+ * For example, when web APIs are plumbed into Composr APIs and you need to ensure the types are coming in correctly.
  *
  * @param  boolean $dev_only Whether to only run the checks in dev-mode
  */

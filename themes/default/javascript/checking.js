@@ -379,6 +379,8 @@ function clever_find_value(form,element)
 				case 'time':
 				case 'url':
 				case 'week':
+				case 'password':
+				default:
 					value=element.value;
 					break;
 			}

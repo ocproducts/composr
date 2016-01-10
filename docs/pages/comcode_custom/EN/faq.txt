@@ -68,7 +68,7 @@ The team has always been very fanatical about Open Source. There are 2 big reaso
 1) Given that software can be easily copied and therefore the value of Composr can be distributed across the world effortlessly, we think we have a social responsibility to take advantage of this and therefore structure our business in a way that can work with it. Software has such great potential to empower individuals from all walks of life, so we believe wherever possible companies shouldn't put the brakes on it by restricting the way things can be used via economic levies.
 2) We feel it is important that customers have full access to the code of what they pay for, so they aren't locked into a single company whose circumstances, availability, offerings, and pricings, could change drastically over time.
 
-We have structured our business so that ocProducts makes money from commercial projects, support, and implementing new functionality. We also encourage people outside our company to contribute to Composr, as a community project. Code is hosted on [url="GitHub"]/github[/url], commit access is available by request (after showing some skill and sincerity, e.g. by releasing a public addon). Coding standards are [url="defined in a spreadsheet"]/docs/standards-checklist.xls[/url]. The founders of ocProducts Ltd originally created Composr -- we do our best to make our company a commercial backer to the community project.
+We have structured our business so that ocProducts makes money from commercial projects, support, and implementing new functionality. We also encourage people outside our company to contribute to Composr, as a community project. Code is hosted on [url="GitHub"]/github[/url], commit access is available by request (after showing some skill and sincerity, e.g. by releasing a public addon). Coding standards are [url="defined in a spreadsheet"]/docs/standards-checklist.xls[/url]. The founders of ocProducts Ltd originally created Composr -- we do our best to make our company a great sponsor to the community project.
 
 Note that "reducing cost" should not be considered a primary benefit of Open Source. Cost often will be lower with Open Source, but people [i]do[/i] expect to be paid competitively for their work.
 
@@ -124,7 +124,7 @@ ocProducts has a tendency towards innovative, open, and collaborative practices,
 
 [title="3"]Can you write us a system that supports <insert-blank> specifications?[/title]
 
-We almost always can (commercially). Please contact us with details.
+We almost always can (via paid services). Please [page=":contact:paid"]contact us[/page] with details.
 
 [title="3"]Is ocProducts available to perform some custom work for me?[/title]
 
@@ -515,7 +515,7 @@ It is recommended that you set the cookie names to be different between the CMS 
 
 [title="3"]Why does my cookie integration not work?[/title]
 
-There are many factors to cookie integration, and it is renowned to be problematic. These problems include: strange and inconsistent browser/privacy behaviour, the trickiness of getting exactly matching and correct paths and domains, the change of format between forum versions, secondary usage to forum session cookies, and old cookies masking new cookies. Due to all these problems, we cannot provide personal support for cookie integration except on a commercial basis.
+There are many factors to cookie integration, and it is renowned to be problematic. These problems include: strange and inconsistent browser/privacy behaviour, the trickiness of getting exactly matching and correct paths and domains, the change of format between forum versions, secondary usage to forum session cookies, and old cookies masking new cookies. Due to all these problems, we cannot provide personal support for cookie integration except under our paid professional support.
 
 [title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
 

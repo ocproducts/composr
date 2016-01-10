@@ -1,6 +1,6 @@
 <?php /*
 
- ocPortal
+ Composr
  Copyright (c) ocProducts/Tapatalk, 2004-2015
 
  See text/EN/licence.txt for full licencing information.
@@ -78,7 +78,7 @@ class Hook_addon_registry_cns_tapatalk
      */
     public function get_licence()
     {
-        return 'Licensed on the same terms as ocPortal';
+        return 'Licensed on the same terms as Composr';
     }
 
     /**
@@ -88,11 +88,11 @@ class Hook_addon_registry_cns_tapatalk
      */
     public function get_description()
     {
-        return '[url="Tapatalk"]http://tapatalk.com[/url] is a popular third-party forum app for smartphones (available on all major mobile platforms). The ocPortal Tapatalk addon allows the Tapatalk app to connect seamlessly to ocPortal forums. The addon does this by providing an implementation of the Tapatalk API.
+        return '[url="Tapatalk"]http://tapatalk.com[/url] is a popular third-party forum app for smartphones (available on all major mobile platforms). The Composr Tapatalk addon allows the Tapatalk app to connect seamlessly to Composr forums. The addon does this by providing an implementation of the Tapatalk API.
 
 Tapatalk is free. It has optional advertisements and they will share advertising revenue with you. Tapatalk provide commercial customisation options also, for customisation of high-end forums ("BYO").
 
-Some configuration options can be found within the normal ocPortal configuration module.
+Some configuration options can be found within the normal Composr configuration module.
 
 [title="2"]Is Tapatalk right for me?[/title]
 
@@ -106,25 +106,25 @@ If you use the BYO service you can avoid this issue.
 
 ocProducts can provide custom mobile app development for organisations with sufficient budgets. Mobile development is costly, which is why Tapatalk is a great thing for many site owners.
 
-ocPortal provides a mobile mode out-of-the-box, which smartphones will use. However, mobile websites are significantly inferior to native mobile apps for a number of reasons, but particularly: responsiveness of user interface, bandwidth requirements, better access to phone capabilities. Mobile website capabilities are improving, but the gap will never close substantially.
+Composr provides a mobile mode out-of-the-box, which smartphones will use. However, mobile websites are significantly inferior to native mobile apps for a number of reasons, but particularly: responsiveness of user interface, bandwidth requirements, better access to phone capabilities. Mobile website capabilities are improving, but the gap will never close substantially.
 
 [title="2"]Setup[/title]
 
 First install the addon.
 
-A Tapatalk site also needs setting up on Tapatalk\'s website, so that you have an API key. You also need to fill that API key in the ocPortal configuration.
+A Tapatalk site also needs setting up on Tapatalk\'s website, so that you have an API key. You also need to fill that API key in the Composr configuration.
 
 When testing functionality you may wish to leave your site in Incognito mode so that it doesn\'t come up in searches.
 
 [title="2"]Limitations[/title]
 
-As Tapatalk is a third-party product, there are a number of limitations we need to work within. This section is thorough, but don\'t think that Tapatalk is really limited. The functionality made available via Tapatalk is very well tuned for mobile usage, and only on relatively rare occasions (or when wanting a decent screen and keyboard!) will users have to go to the normal ocPortal forum implementation.
+As Tapatalk is a third-party product, there are a number of limitations we need to work within. This section is thorough, but don\'t think that Tapatalk is really limited. The functionality made available via Tapatalk is very well tuned for mobile usage, and only on relatively rare occasions (or when wanting a decent screen and keyboard!) will users have to go to the normal Composr forum implementation.
 
 The limitations...
 
-The addon only works for users of OCF. If you use a third-party forum with ocPortal then Tapatalk needs to connect to that forum independently of ocPortal. This will work for many popular forums which Tapatalk also supports.
+The addon only works for users of OCF. If you use a third-party forum with Composr then Tapatalk needs to connect to that forum independently of Composr. This will work for many popular forums which Tapatalk also supports.
 
-The addon has not been tested with multi-site-network installs of ocPortal. It assumes your ocPortal website is standalone.
+The addon has not been tested with multi-site-network installs of Composr. It assumes your Composr website is standalone.
 
 This addon assumes you are using MySQL, version 5 or newer. MariaDB would also work. It may potentially work on other database systems, but we have no plans to test it on them currently.
 
@@ -132,10 +132,10 @@ Your website is assumed to only be running a single language. We may have bugs i
 
 You should keep your forum quantity to a reasonable number because Tapatalk\'s APIs may not work efficiently if you have 100s of forums.
 
-Tapatalk does not support the following ocPortal forum features:
+Tapatalk does not support the following Composr forum features:
  - Multi-moderations
  - Having both photos or avatars (precedence is on avatars)
- - Normal signatures (there is Tapatalk signature support, but it works via cut-down signatures saved into posts via the Tapatalk app – normal ocPortal signatures won\'t display [except in cut-down form when viewing users directly], and shouldn\'t due to space considerations)
+ - Normal signatures (there is Tapatalk signature support, but it works via cut-down signatures saved into posts via the Tapatalk app -- normal Composr signatures won\'t display [except in cut-down form when viewing users directly], and shouldn\'t due to space considerations)
  - Forced rule acceptance when creating private topics with another member (the recipients rules)
  - Complex HTML posts (posts are simplified down); for example, image-links are specifically prohibited, and no HTML requiring CSS or JavaScript will function
  - Post templates
@@ -158,22 +158,22 @@ Tapatalk does not support the following ocPortal forum features:
  - Special rendering for comment topics or support tickets
 
 We support almost everything in Tapatalk, but there are just a few exceptions:
- - Per-forum icons (we don\'t have this in ocPortal)
- - Topic prefixes (we achieve these via multi-moderations in ocPortal, but those are not supported)
- - Naming emoticons (we don\'t have this in ocPortal and feel this is bloat)
- - Stubs for deleted and moved topics (we don\'t have this in ocPortal and feel these are messy -- we send out notifications to users instead)
- - Soft deletion of posts and topics (we achieve these via multi-moderations/post-history in ocPortal, but those are not supported) -- manually move to Trash instead
+ - Per-forum icons (we don\'t have this in Composr)
+ - Topic prefixes (we achieve these via multi-moderations in Composr, but those are not supported)
+ - Naming emoticons (we don\'t have this in Composr and feel this is bloat)
+ - Stubs for deleted and moved topics (we don\'t have this in Composr and feel these are messy -- we send out notifications to users instead)
+ - Soft deletion of posts and topics (we achieve these via multi-moderations/post-history in Composr, but those are not supported) -- manually move to Trash instead
  - Ignoring users within topics (it\'s probably a bad idea because topics would get very confusing)
  - "Active members" (we felt it would end up a bit arbitrary and unnecessary -- there\'s no clear understood definition of what an active member is)
- - Password protected forums (we have an acceptance message with a corresponding question in ocPortal – but there\'s no way to display the message, so we cannot map it directly as a password feature – and pure password protection is better replaced with proper use of forum permissions anyway)
+ - Password protected forums (we have an acceptance message with a corresponding question in Composr – but there\'s no way to display the message, so we cannot map it directly as a password feature – and pure password protection is better replaced with proper use of forum permissions anyway)
  - You cannot view a private topic that you\'ve already left
  - You cannot leave a private topic that you are an original participant in
 
 [title="2"]Special notes[/title]
 
-A Tapatalk "thank" (thanking a post) works by giving a configured number of points to a member. Tapatalk itself doesn\'t have support for ocPortal points, but this is a nice simple way of giving them that works well for a streamlined smartphone interface.
+A Tapatalk "thank" (thanking a post) works by giving a configured number of points to a member. Tapatalk itself doesn\'t have support for Composr points, but this is a nice simple way of giving them that works well for a streamlined smartphone interface.
 
-Tapatalk may use different terminology to ocPortal:
+Tapatalk may use different terminology to Composr:
  - "Notifications" are "Subscriptions" in Tapatalk
  - "Validation" is "Approving" in Tapatalk
  - "Joining" is "Signing up" in Tapatalk
@@ -182,9 +182,9 @@ Tapatalk may use different terminology to ocPortal:
 
 Attachments in Tapatalk are restricted to images, and shown separately to the post bodies.
 
-You cannot do post rating in Tapatalk, but you can like a post. This is the same as rating a post maximally. Actually in ocPortal by default we implement the same, but ocPortal provides both mechanisms as options.
+You cannot do post rating in Tapatalk, but you can like a post. This is the same as rating a post maximally. Actually in Composr by default we implement the same, but Composr provides both mechanisms as options.
 
-Non-validated content is not shown inline like it is in ocPortal (to posters or those with permission to view it). It is shown from special moderation areas.
+Non-validated content is not shown inline like it is in Composr (to posters or those with permission to view it). It is shown from special moderation areas.
 
 Redirect forums are supported, if they point to an external URL. Jumps between forums are not supported (such redirect forums will be skipped).
 
@@ -198,11 +198,11 @@ Tapatalk\'s API is documented on Tapatalk\'s website. At the time of writing it 
 
 The Tapatalk implementation is organised by API category. The API functions (aka methods, aka endpoints) call read/write classes. The classes generally are Tapatalk-independent, while the direct API functions convert XML-RPC inputs and formulate things into the XML-RPC and precise structure that Tapatalk requires.
 
-To help with security we are using ocPortal\'s [tt]cms_verify_parameters_phpdoc[/tt] function to check API calls. We also check input method signatures if in development mode (i.e. running from git); see [tt]server_define.php for this[/tt].
+To help with security we are using Composr\'s [tt]cms_verify_parameters_phpdoc[/tt] function to check API calls. We also check input method signatures if in development mode (i.e. running from git); see [tt]server_define.php for this[/tt].
 
 Tapatalk uses XML-RPC for communication. A simple test harness and testing framework is included for programmers. [tt]call_mobiquo_test[/tt] is used to call a test in the framework.
 
-ocPortal has been configured to generate any errors in Tapatalk\'s XML-RPC format, via the enabling and catching/handling of Exceptions.
+Composr has been configured to generate any errors in Tapatalk\'s XML-RPC format, via the enabling and catching/handling of Exceptions.
 
 If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging will be written to it.
 Never use this on a live site as it is not secure, unless you limit access via an [tt]data_custom/.htaccess[/tt] file:

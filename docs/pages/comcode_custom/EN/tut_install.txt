@@ -13,7 +13,7 @@ Your options are:
   - [b]Use a supported integration[/b]. You can install with just a few clicks if your web host has a supported integration such as Softaculous or Installatron installed. If this is the case then you don't need to read this tutorial.
   - [b]Use the quick installer[/b]. This tutorial covers this case.
   - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
-  - [b]Get a commercial developer to install for you[/b].
+  - [b]Get a professional developer to install for you[/b].
  - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] and [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorials.
  - [b]Install on a PaaS service[/b]. PaaS services are typically managed directly by programmers and specific instructions would vary greatly between service.
  - Install on a Windows machine

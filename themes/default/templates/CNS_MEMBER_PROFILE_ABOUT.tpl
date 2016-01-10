@@ -126,7 +126,7 @@
 									</th>
 
 									<td>
-										<span{+START,IF,{$EQ,{NAME},{!SPECIAL_CPF__cms_fullname}}} class="fn given-name"{+END}>
+										<span>
 											{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 												{+START,IF_PASSED,EDITABILITY}
 													{$SET,edit_type,{EDIT_TYPE}}
@@ -220,7 +220,7 @@
 		{+START,IF,{VIEW_PROFILES}}
 			<h2>{!DETAILS}</h2>
 
-			<meta itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
+			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_details cns_profile_about_section">

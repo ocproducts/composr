@@ -47,7 +47,7 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_name'), array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $label));
+        $_ret = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_name'), array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);

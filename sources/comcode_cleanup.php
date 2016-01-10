@@ -60,7 +60,7 @@ function _download_associated_media(&$text, $old_url)
         $temp_path = get_custom_file_base() . '/uploads/external_media/' . $temp_filename;
 
         $write_to_file = fopen($temp_path, 'wb');
-        $test = http_download_file($old_url, null, false, false, 'ocPortal', null, null, null, null, null, $write_to_file);
+        $test = http_download_file($old_url, null, false, false, 'Composr', null, null, null, null, null, $write_to_file);
         if ($test === null) {
             @unlink($temp_path);
             return;

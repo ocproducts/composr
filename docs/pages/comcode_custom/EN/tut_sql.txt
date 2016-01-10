@@ -69,7 +69,7 @@ SQL is beyond the scope of this tutorial, but basic queries fit one of the follo
 
 [i]This is an advanced section designed for programmers, and you may wish to skip it.[/i]
 
-At the time of writing, Composr uses 176 tables when all addons are installed.
+At the time of writing, Composr uses 204 tables when all bundled addons are installed.
 
 For the technically inclined, the database table structure is mostly in 4NF form, with the main exception being fields that are for caching purposes (such as post count) and other fields that remove the need for complex and slow 'JOIN's or 'EXIST's clauses.
 
