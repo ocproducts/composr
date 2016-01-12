@@ -71,6 +71,8 @@ function composr_homesite_install()
     //  - adminzone:admin_cmsusers
     //  - (installing of docs zone)
 
+    // NB: You may want to run the 'lang' unit test, which does some relevant testing on the pages etc
+
     // Banners
     // -------
 
@@ -138,23 +140,22 @@ function composr_homesite_install()
     set_option('is_on_gambling_buy', '0');
     set_option('is_on_topic_pin_buy', '0');
     set_option('email_confirm_join', '0');
+    set_option('remember_me_by_default','1');
+    set_option('leader_board_size', '8');
 
     // Downloads structure
     // -------------------
 
     require_code('downloads2');
-    $cat_id = add_download_category('Releases', db_get_first_id(), "Releases of Composr.\n\nAvoid installing old releases, as they may contain bugs or security holes that we have since fixed.\n\nIf you are trying to upgrade, you\'re looking in the wrong place. Personalised upgrade packages may be generated from the new version announcements in the [page=\"site:news\"]news archive[/page].", '', 'uploads/repimages/installation.png');
+    $cat_id = add_download_category('Composr Releases', db_get_first_id(), "Avoid installing old releases, as they may contain bugs or security holes that we have since fixed.\n\nIf you are trying to upgrade, you're looking in the wrong place. Personalised upgrade packages may be generated from the new version announcements in the [page=\"site:news\"]news archive[/page].", '', find_theme_image('tutorial_icons/installation', false, true));
     set_global_category_access('downloads', $cat_id);
-    $cat_id = add_download_category('Addons', db_get_first_id(), "[title=\"2\"]What are addons?[/title]\n\nAddons are new/changed features for Composr. Addons are organised according to the version they are targeted for.\n\nCommunity members are encouraged to submit addons. The addons don\'t need validating, except if you\'re still in the lowest member rank (fan in training). Therefore you should also exercise some caution when installing these third-party addons.\n\n[title=\"2\"]Contributing addons[/title]\n\nBy submitting an addon, you are giving ocProducts permission to redistribute it, but also please consider specifying a licence in your download description.\n\nIf you would like to pass on copyright to ocProducts so that it can be considered for inclusion in a future Composr version, please include this in the \'Notes\' field of the download.\n\nIf you are not attaching a proper Composr addon (an exported TAR file), then please describe how the addon can be installed in the description.\n\n[title=\"2\"]Choose Composr version below[/title]\n", '', 'uploads/repimages/addon.png');
+    $cat_id = add_download_category('Addons', db_get_first_id(), "[title=\"2\"]What are addons?[/title]\n\nAddons are new/changed features for Composr. Addons are organised by the version they are targeted for.\n\nApply some caution:\nCommunity members are encouraged to submit addons. The addons don't need validating, except if for submitters in the lowest member rank (fan&nbsp;in&nbsp;training). Therefore you should also exercise some caution when installing these third-party addons.\n\n[title=\"2\"]Contributing addons[/title]\n\nBy submitting an addon, you are giving ocProducts permission to redistribute it -- but also please consider specifying a licence in your download description.\n\nIf you think the addon will be broadly useful and would like to have it added to the auto-maintained non-bundled addons in git (or even the bundled code), go through the [page=\":contact:contribute_code\"]contribution[/page] process.\n\nIf you are not attaching a proper Composr addon (an exported TAR file), then please describe how the addon can be installed in the description.\n\n[title=\"2\"]Choose Composr version below[/title]\n", '', find_theme_image('tutorial_icons/addon', false, true));
     set_global_category_access('downloads', $cat_id);
 
-    /* These are added automatically by publish_addons_as_downloads.php scripts, underneath particular Addon release categories
-    $cat_id = add_download_category('Themes', db_get_first_id(), "", '', 'uploads/repimages/xxx');
-    set_global_category_access('downloads', $cat_id);
-    $cat_id = add_download_category('Translations', db_get_first_id(), "", '', 'uploads/repimages/xxx');
-    set_global_category_access('downloads', $cat_id);
-    $cat_id = add_download_category('Addons', db_get_first_id(), "", '', 'uploads/repimages/xxx');
-    set_global_category_access('downloads', $cat_id);
+    /*
+    Addons category for a release are added automatically by the publish_addons_as_downloads.php script
+    Addons categories underneath are added automatically by the publish_addons_as_downloads.php script also
+    Releases category for a release is made by the _make_release.php script
     */
 
     // Catalogues structure
@@ -184,9 +185,9 @@ function composr_homesite_install()
     require_code('cns_forums_action2');
 
     // Groupings
-    cns_edit_forum_grouping(1, 'Water Coolr'/*Was 'General'*/, "'Beyond today\'s Composr (discussion, planning, addons)'", 1);
+    cns_edit_forum_grouping(1, 'Water Coolr'/*Was 'General'*/, "Beyond today's Composr (conversing, planning)", 1);
     // (2 = Staff, no change)
-    cns_make_forum_grouping('Composing', "Beyond today\'s Composr (discussion, planning, addons)"); // 3
+    cns_make_forum_grouping('Composing', 'Composing with Composr'); // 3
 
     // Forums
     $cat_id = cns_make_forum('Introduce yourself', '', 1/*forum grouping*/, null, 1/*parent forum*/, 0/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
@@ -206,6 +207,9 @@ function composr_homesite_install()
     set_global_category_access('forums', $cat_id);
     $cat_id = cns_make_forum('Paid support', '', 3/*forum grouping*/, null, $deploying_forum_id/*parent forum*/, 3/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', 'professional_support.htm');
     set_global_category_access('forums', $cat_id);
+    $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_position' => -3), array('id' => 10));
+    $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_position' => -2), array('id' => 11));
+    $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_position' => -1), array('id' => 12));
 
     // Topics...
 
@@ -274,6 +278,11 @@ function composr_homesite_install()
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Well-settled', 'g_promotion_threshold' => 1200), array('id' => 7), '', 1);
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in action', 'g_promotion_threshold' => 400), array('id' => 8), '', 1);
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in training', 'g_promotion_threshold' => 100), array('id' => 9), '', 1);
+
+    // Permissions for all except "Fan in training"
+    foreach (array(5,6,7,8) as $group_id) {
+    	$GLOBALS['SITE_DB']->query_insert('group_privileges', array('group_id' => $group_id, 'privilege' => 'bypass_validation_midrange_content', 'the_page' => 'downloads', 'module_the_name' => '', 'category_name' => '', 'the_value' => 1));
+    }
 
     require_code('cns_groups_action');
     cns_make_group('Composr supporters', 0, 0, 0, 'I supposr Composr', '', null, null, null, null, null, null, null, null, null, null, null, null, 3/*gift points per day*/, 0, 0, 0, null, 1, 1/*open membership*/);
