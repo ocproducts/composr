@@ -352,15 +352,13 @@ class Module_sites
             }
         }
 
-        // Find latest version
-        $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        // Check there's a latest version
+        $t = get_latest_version_pretty();
         if (is_null($t)) {
             warn_exit(do_lang_tempcode('ARCHIVE_NOT_AVAILABLE'));
         }
-        if (url_is_local($t)) {
-            $t = get_custom_file_base() . '/' . rawurldecode($t);
-        }
 
+        // Do upload to hosting
         $array = array('install.php' => get_file_base() . '/uploads/downloads/install.php', 'data.cms' => get_file_base() . '/uploads/downloads/data.cms');
         foreach ($array as $filename => $tmp_file) {
             if (!@ftp_put($conn_id, $filename, $tmp_file, FTP_BINARY)) {
@@ -374,11 +372,11 @@ class Module_sites
         }
         ftp_close($conn_id);
 
+        // Generate URL to installer on hosting
         $base_url = post_param_string('base_url');
         if (substr($base_url, -1) != '/') {
             $base_url .= '/';
         }
-
         $install_url = $base_url . 'install.php';
 
         return do_template('CMS_HOSTING_COPY_SUCCESS_SCREEN', array(

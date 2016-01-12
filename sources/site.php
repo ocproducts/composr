@@ -1773,7 +1773,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     }
 
     $warning_details = new Tempcode();
-    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0)) {
+    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0) && (!$being_included)) {
         require_code('site2');
         $warning_details = get_page_warning_details($zone, $codename, $edit_url);
     }

@@ -466,8 +466,8 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
                 $subject = do_lang(
                     'TICKET_REPLY',
                     $ticket_type_name,
-                    $ticket_type_name,
                     $title,
+                    null,
                     $uid_lang
                 );
 

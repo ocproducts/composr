@@ -54,6 +54,14 @@ class lang_test_set extends cms_test_case
             'site/pages/comcode/EN',
             'docs/pages/comcode_custom/EN',
         );
+        if (git_repos() == 'composr_homesite') {
+            $dirs = array_merge($dirs, array(
+                'text_custom',
+                'text_custom/EN',
+                'pages/comcode_custom/EN',
+                'site/pages/comcode_custom/EN',
+            ));
+        }
         foreach ($dirs as $dir) {
             $path = get_file_base() . '/' . $dir;
             $dh = opendir($path);
@@ -68,6 +76,14 @@ class lang_test_set extends cms_test_case
                 $this->check($file, null, file_get_contents($path . '/' . $file), $verbose);
             }
             closedir($dh);
+        }
+
+        $files = array(
+            'uploads/website_specific/compo.sr/errorservice.csv',
+        );
+        foreach ($files as $file) {
+            $path = get_file_base() . '/';
+            $this->check($file, null, file_get_contents($path . '/' . $file), $verbose);
         }
     }
 
@@ -93,7 +109,7 @@ class lang_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false))) {
+        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false)) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }
@@ -218,7 +234,7 @@ class lang_test_set extends cms_test_case
         if (preg_match('#([^A-Za-z]>+)id([^A-Za-z=<]+)#', $string) != 0) {
             $this->assertTrue(false, 'The acronym \'id\' was used in ' . $file . '. This should be changed to \'ID\'.');
         }
-        if (preg_match('#([^\$:\_A-Za-z\[\]></\']+)url([^\}A-Za-z=\']+)#', $string, $matches) != 0) {
+        if (preg_match('#([^\$:\_A-Za-z\[\]></\']+)url([^\}\(A-Za-z=\']+)#', $string, $matches) != 0) {
             $prefix = $matches[1];
             if ($prefix != '="') {
                 $this->assertTrue(false, 'The acronym \'url\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'URL\'.');

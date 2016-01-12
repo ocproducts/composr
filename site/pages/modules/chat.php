@@ -104,7 +104,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'first_public', array('is_im', 'id'));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'allow_list', array('allow_list(30)'));
 
-            // Create our default chat room. By default, this will be as the shoutbox
+            // Create our default chatroom. By default, this will be as the shoutbox
             $map = array(
                 'is_im' => 0,
                 'allow_list_groups' => '',
@@ -137,7 +137,7 @@ class Module_chat
 
             $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             foreach (array_keys($usergroups) as $id) {
-                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'cms_chat', 'zone_name' => 'cms', 'group_id' => $id)); // Don't want to let anyone do chat room moderation just because we let them manage content
+                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'cms_chat', 'zone_name' => 'cms', 'group_id' => $id)); // Don't want to let anyone do chatroom moderation just because we let them manage content
             }
 
             add_privilege('SECTION_CHAT', 'create_private_room', true);
@@ -428,7 +428,7 @@ class Module_chat
     }
 
     /**
-     * The UI to choose a chat room.
+     * The UI to choose a chatroom.
      *
      * @return Tempcode The UI
      */
@@ -478,7 +478,7 @@ class Module_chat
         if (count($rows) == 200) { // Ah, limit to not show private ones then
             $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('is_im' => 0, 'allow_list' => ''), 'ORDER BY room_name DESC', 200);
         }
-        $fields = new Tempcode();
+        $chatrooms = array();
         foreach ($rows as $myrow) {
             // Check to see if we are on the room's allow list, if we aren't, don't display the room :D
             $showroom = check_chatroom_access($myrow, true, $member_id);
@@ -487,8 +487,7 @@ class Module_chat
                 $users = get_chatters_in_room($myrow['id']);
                 $usernames = get_chatters_in_room_tpl($users);
                 $url = build_url(array('page' => '_SELF', 'type' => 'room', 'id' => $myrow['id']), '_SELF');
-                $room_link = do_template('CHAT_ROOM_LINK', array('_GUID' => '7a7c65df7fbb6b27c1ef8ce30eb55654', 'PRIVATE' => $myrow['allow_list'] != '' || $myrow['allow_list_groups'] != '', 'ID' => strval($myrow['id']), 'NAME' => $myrow['room_name'], 'USERNAMES' => $usernames, 'URL' => $url));
-                $fields->attach($room_link);
+                $chatrooms[] = array('PRIVATE' => $myrow['allow_list'] != '' || $myrow['allow_list_groups'] != '', 'ID' => strval($myrow['id']), 'NAME' => $myrow['room_name'], 'USERNAMES' => $usernames, 'URL' => $url);
             }
         }
 
@@ -567,7 +566,7 @@ class Module_chat
             'CAN_IM' => $can_im,
             'URL_ADD_FRIEND' => $post_url_add_friend,
             'URL_REMOVE_FRIENDS' => $post_url_remove_friends,
-            'CHATROOMS' => $fields,
+            'CHATROOMS' => $chatrooms,
             'PRIVATE_CHATROOM' => $private_room,
             'MOD_LINK' => $mod_link,
             'BLOCKING_LINK' => $blocking_link,
@@ -577,7 +576,7 @@ class Module_chat
     }
 
     /**
-     * The UI for a chat room.
+     * The UI for a chatroom.
      *
      * @return Tempcode The UI
      */
@@ -698,7 +697,7 @@ class Module_chat
     }
 
     /**
-     * The UI to create a private chat room.
+     * The UI to create a private chatroom.
      *
      * @return Tempcode The UI
      */
@@ -729,9 +728,9 @@ class Module_chat
     }
 
     /**
-     * The actualiser to add a chat room.
+     * The actualiser to add a chatroom.
      *
-     * @return Tempcode The UI to choose a chat room (probably what was just added, but...)
+     * @return Tempcode The UI to choose a chatroom (probably what was just added, but...)
      */
     public function _chat_private()
     {

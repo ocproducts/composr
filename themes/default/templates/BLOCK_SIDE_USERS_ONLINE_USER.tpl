@@ -1,1 +1,0 @@
-<a{+START,IF_PASSED,COLOUR} class="{COLOUR*}"{+END} href="{URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>, 

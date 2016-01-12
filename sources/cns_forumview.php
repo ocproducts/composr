@@ -550,25 +550,18 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     $url = build_url($map, get_module_zone('topicview'));
 
     // Modifiers
-    $topic_row_links = new Tempcode();
+    $topic_row_links = array();
     $modifiers = $topic['modifiers'];
     if (in_array('unread', $modifiers)) {
         $first_unread_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'first_unread'), get_module_zone('topicview'));
         $first_unread_url->attach('#first_unread');
-        $topic_row_links->attach(do_template('CNS_FORUM_TOPIC_ROW_LINK', array('_GUID' => '6f52881ed999f4c543c9d8573b37fa48', 'URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'))));
+        $topic_row_links[] = array('URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'));
     }
-    $topic_row_modifiers = new Tempcode();
+    $topic_row_modifiers = array();
     foreach ($modifiers as $modifier) {
         if ($modifier != 'unread') {
-            $topic_row_modifiers->attach(do_template('CNS_FORUM_TOPIC_ROW_MODIFIER', array('_GUID' => 'fbcb8791b571187fd699aa6796c3f401', 'IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier))));
+            $topic_row_modifiers[] = array('IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier));
         }
-    }
-
-    // Emoticon
-    if ($topic['emoticon'] != '') {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON', array('_GUID' => 'dfbe0e4a11b3caa4d2da298ff23ca221', 'EMOTICON' => $topic['emoticon']));
-    } else {
-        $emoticon = new Tempcode();
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {
@@ -639,7 +632,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         'TOPIC_ROW_MODIFIERS' => $topic_row_modifiers,
         '_TOPIC_ROW_MODIFIERS' => $modifiers,
         'POST' => $post,
-        'EMOTICON' => $emoticon,
+        'EMOTICON' => $topic['emoticon'],
         'DESCRIPTION' => $topic['description'],
         'URL' => $url,
         'TITLE' => $title,

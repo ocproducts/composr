@@ -271,7 +271,7 @@ class Module_admin_chat extends Standard_crud_module
     }
 
     /**
-     * The UI to delete all chat rooms.
+     * The UI to delete all chatrooms.
      *
      * @return Tempcode The UI
      */
@@ -287,7 +287,7 @@ class Module_admin_chat extends Standard_crud_module
     }
 
     /**
-     * The actualiser to delete all chat rooms.
+     * The actualiser to delete all chatrooms.
      *
      * @return Tempcode The UI
      */

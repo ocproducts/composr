@@ -83,7 +83,7 @@ class Module_purchase
             ));
 
             require_code('currency');
-            $cpf = array('currency' => array(3, 'list', implode('|', array_keys(get_currency_map()))));
+            $cpf = array('currency' => array(3, 'list', '|' . implode('|', array_keys(get_currency_map()))));
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
             }

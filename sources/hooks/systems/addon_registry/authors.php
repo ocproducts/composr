@@ -109,8 +109,6 @@ class Hook_addon_registry_authors
             'sources/hooks/systems/addon_registry/authors.php',
             'themes/default/templates/AUTHOR_MANAGE_SCREEN.tpl',
             'themes/default/templates/AUTHOR_SCREEN.tpl',
-            'themes/default/templates/AUTHOR_POPUP_WINDOW_DEFINED.tpl',
-            'themes/default/templates/AUTHOR_POPUP_WINDOW_UNDEFINED.tpl',
             'themes/default/templates/AUTHOR_POPUP.tpl',
             'themes/default/templates/AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY.tpl',
             'data/authors.php',
@@ -137,8 +135,6 @@ class Hook_addon_registry_authors
             'templates/AUTHOR_MANAGE_SCREEN.tpl' => 'administrative__author_manage_screen',
             'templates/AUTHOR_SCREEN.tpl' => 'author_screen',
             'templates/AUTHOR_POPUP.tpl' => 'author_popup_window',
-            'templates/AUTHOR_POPUP_WINDOW_DEFINED.tpl' => 'author_popup_window',
-            'templates/AUTHOR_POPUP_WINDOW_UNDEFINED.tpl' => 'author_popup_window',
             'templates/AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY.tpl' => 'author_screen'
         );
     }
@@ -243,17 +239,19 @@ class Hook_addon_registry_authors
     {
         require_lang('authors');
 
-        $out = new Tempcode();
-        $out->attach(do_lorem_template('AUTHOR_POPUP_WINDOW_DEFINED', array(
+        $authors = array();
+        $authors[] = array(
             'AUTHOR' => lorem_phrase(),
             'FIELD_NAME' => lorem_word(),
-        )));
-        $out->attach(do_lorem_template('AUTHOR_POPUP_WINDOW_UNDEFINED', array(
+            'DEFINED' => true,
+        );
+        $authors[] = array(
             'AUTHOR' => lorem_phrase(),
             'FIELD_NAME' => lorem_word(),
-        )));
+            'DEFINED' => false,
+        );
 
-        $out = do_lorem_template('AUTHOR_POPUP', array('CONTENT' => $out, 'NEXT_URL' => placeholder_url()));
+        $out = do_lorem_template('AUTHOR_POPUP', array('AUTHORS' => $authors, 'NEXT_URL' => placeholder_url()));
 
         return array(
             lorem_globalise($out, null, '', true)

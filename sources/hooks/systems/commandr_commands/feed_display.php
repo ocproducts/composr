@@ -78,7 +78,7 @@ class Hook_commandr_command_feed_display
 
             // Now for the actual stream contents
             $max = (array_key_exists('max', $options)) ? intval($options['max']) : 5;
-            $content = new Tempcode();
+            $content = array();
             require_code('xhtml');
             foreach ($rss->gleamed_items as $i => $item) {
                 if ($i >= $max) {
@@ -98,7 +98,7 @@ class Hook_commandr_command_feed_display
                 $_title = $item['title'];
                 $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date($item['clean_add_date']) : array_key_exists('add_date', $item) ? $item['add_date'] : '';
 
-                $content->attach(do_template('COMMANDR_RSS_ITEM', array('_GUID' => 'd6b811d17956ebd82c9911fbda19eeec', 'FULL_URL' => $full_url, 'NEWS_TITLE' => $_title, 'DATE' => $date, 'SUMMARY' => xhtmlise_html($item['news']))));
+                $content[] = array('FULL_URL' => $full_url, 'NEWS_TITLE' => $_title, 'DATE' => $date, 'SUMMARY' => xhtmlise_html($item['news']));
             }
 
             return array('', do_template('COMMANDR_RSS', array('_GUID' => 'c01334f868079f9e0c2dba751550aa40', 'TITLE' => $rss->gleamed_feed['title'], 'CONTENT' => $content)), '', '');

@@ -3,7 +3,9 @@
 <div id="comcoderandom{$GET,RAND_ID_RANDOM}"></div>
 <script>// <![CDATA[
 	var parts={};
-	{PARTS`}
+	{+START,LOOP,PARTS}
+		parts[{NUM%}]='{VAL;~/}';
+	{+END}
 
 	var use='',rand=window.parseInt(Math.random()*{MAX%});
 	for (var i in parts)

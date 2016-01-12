@@ -106,7 +106,7 @@ class Module_users_online
             warn_exit(do_lang_tempcode('TOO_MANY_USERS_ONLINE'));
         }
 
-        $rows = new Tempcode();
+        $rows = array();
         $members = array_reverse($members);
         sort_maps_by($members, 'last_activity');
         $members = array_reverse($members);
@@ -155,11 +155,11 @@ class Module_users_online
             $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member);
 
             if ($ip != '') {// CRON?
-                $rows->attach(do_template('CNS_USERS_ONLINE_ROW', array('_GUID' => '2573786f3bccf9e613b125befb3730e8', 'IP' => $ip, 'AT_URL' => $at_url, 'LOCATION' => $location, 'MEMBER' => $link, 'TIME' => integer_format(intval((time() - $last_activity) / 60)))));
+                $rows[] = array('IP' => $ip, 'AT_URL' => $at_url, 'LOCATION' => $location, 'MEMBER' => $link, 'TIME' => integer_format(intval((time() - $last_activity) / 60)));
             }
         }
 
-        if ($rows->is_empty()) {
+        if ($rows === array()) {
             warn_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 

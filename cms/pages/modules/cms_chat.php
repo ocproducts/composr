@@ -222,7 +222,7 @@ class Module_cms_chat
     }
 
     /**
-     * The main user interface for choosing a chat room to moderate.
+     * The main user interface for choosing a chatroom to moderate.
      *
      * @return Tempcode The UI.
      */
@@ -304,7 +304,7 @@ class Module_cms_chat
     }
 
     /**
-     * The main user interface for moderating a chat room.
+     * The main user interface for moderating a chatroom.
      *
      * @return Tempcode The UI.
      */

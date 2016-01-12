@@ -51,5 +51,8 @@ function map_table_screen($title, $fields)
  */
 function map_table_field($name, $value, $raw = false, $abbr = '') // Not for use with the above, which takes the fields as a raw map
 {
-    return do_template('MAP_TABLE_FIELD' . ($raw ? '_RAW' : '') . (($abbr != '') ? '_ABBR' : ''), array('ABBR' => $abbr, 'NAME' => $name, 'VALUE' => $value));
+    if ($raw) {
+        $value = protect_from_escaping($value);
+    }
+    return do_template('MAP_TABLE_FIELD', array('ABBR' => $abbr, 'NAME' => $name, 'VALUE' => $value));
 }

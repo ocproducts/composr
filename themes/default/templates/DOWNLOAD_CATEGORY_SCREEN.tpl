@@ -21,23 +21,23 @@
 
 {+START,IF_NON_EMPTY,{DOWNLOADS}}
 	{DOWNLOADS}
-
-	<div class="box category_sorter inline_block"><div class="box_inner">
-		{$SET,show_sort_button,1}
-		{SORTING}
-	</div></div>
 {+END}
+
+<div class="right">
+	{+START,INCLUDE,NOTIFICATION_BUTTONS}
+		NOTIFICATIONS_TYPE=download
+		NOTIFICATIONS_ID={ID}
+	{+END}
+</div>
+
+<div class="box category_sorter inline_block"><div class="box_inner">
+	{$SET,show_sort_button,1}
+	{SORTING}
+</div></div>
 
 {+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
 
 {$REVIEW_STATUS,download_category,{ID}}
-
-{+START,INCLUDE,NOTIFICATION_BUTTONS}
-	NOTIFICATIONS_TYPE=download
-	NOTIFICATIONS_ID={ID}
-	BREAK=1
-	RIGHT=1
-{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 {+START,INCLUDE,STAFF_ACTIONS}

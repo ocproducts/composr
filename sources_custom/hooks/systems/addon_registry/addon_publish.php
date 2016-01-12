@@ -138,6 +138,7 @@ class Hook_addon_registry_addon_publish
             'adminzone/pages/minimodules_custom/tar_dump.php',
             'sources_custom/hooks/systems/page_groupings/addon_publish.php',
             'sources_custom/transifex.php',
+            'sources_custom/addon_publish.php',
             'data_custom/transifex_pull.php',
             'data_custom/transifex_push.php',
             'data_custom/change_addon_bundling.php',

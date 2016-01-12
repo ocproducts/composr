@@ -162,6 +162,7 @@ class Hook_search_filedump
                         'ID' => $_path,
                         'TITLE' => basename($_path),
                         'SUMMARY' => $tpl,
+                        'RESOURCE_TYPE' => '_filedump_file',
                     ));
                 } else {
                     if (php_function_allowed('set_time_limit')) {
@@ -176,6 +177,7 @@ class Hook_search_filedump
                         'SUMMARY' => $tpl,
                         'BREADCRUMBS' => $file_breadcrumbs,
                         'URL' => $url,
+                        'RESOURCE_TYPE' => '_filedump_file_image',
                     ));
                 }
 

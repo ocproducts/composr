@@ -34,10 +34,10 @@ function total_points($member, $timestamp = null)
     $points = non_overridden__total_points($member, $timestamp);
 
     if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
-        $credits = $GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member, 'purchase_validated' => 1));
+        $credits = intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member, 'purchase_validated' => 1)));
 
         if (!is_null($timestamp)) {
-            $credits -= $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(num_credits) FROM ' . get_table_prefix() . 'credit_purchases WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member));
+            $credits -= intval($GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(num_credits) FROM ' . get_table_prefix() . 'credit_purchases WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member)));
         }
 
         $points += $credits * 50;

@@ -8,6 +8,12 @@
 	</thead>
 
 	<tbody>
-		{TAGS}
+		{+START,LOOP,TAGS}
+			<tr>
+				<td>{TITLE*}</td>
+				<td>{DESCRIPTION*}</td>
+				<td><kbd>{EXAMPLE*}</kbd></td>
+			</tr>
+		{+END}
 	</tbody>
 </table></div>

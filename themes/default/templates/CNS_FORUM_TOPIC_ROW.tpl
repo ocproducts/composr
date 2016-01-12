@@ -2,7 +2,9 @@
 	{+START,IF,{$NOT,{$MOBILE}}}
 		{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 			<td class="cns_forum_topic_row_emoticon cns_column1">
-				{EMOTICON}
+				{+START,IF_NON_EMPTY,{EMOTICON}}
+					<img class="vertical_alignment" alt="{EMOTICON*}" src="{$IMG*,{EMOTICON},1}" />
+				{+END}
 			</td>
 		{+END}
 	{+END}
@@ -13,9 +15,13 @@
 
 			<div class="cns_forum_topic_title_bits">
 				<span class="cns_forum_topic_title_bits_left">
-					{TOPIC_ROW_LINKS}
+					{+START,LOOP,TOPIC_ROW_LINKS}
+						<a rel="nofollow" href="{URL*}"><img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+					{+END}
 
-					{TOPIC_ROW_MODIFIERS}
+					{+START,LOOP,TOPIC_ROW_MODIFIERS}
+						<img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" /> 
+					{+END}
 				</span>
 
 				<a class="vertical_alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns_forum_topic_indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;~*}},,1}">{+START,FRACTIONAL_EDITABLE,{TITLE},title,_SEARCH:topics:_edit_topic:{ID}}{+START,IF,{UNREAD}}<span class="cns_unread_topic_title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}{+END}</a>

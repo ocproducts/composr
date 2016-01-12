@@ -174,6 +174,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
             'TITLE' => $title,
             'SUMMARY' => $summary,
             'URL' => $url,
+            'RESOURCE_TYPE' => 'group',
         ));
     }
 }

@@ -74,16 +74,16 @@ class Block_main_custom_comcode_tags
             return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing_here');
         }
 
-        $content = new Tempcode();
+        $tags = array();
         foreach ($tags as $tag) {
-            $content->attach(do_template('CUSTOM_COMCODE_TAG_ROW', array(
+            $tags[] = array(
                 '_GUID' => '28c257f5d0c596aa828fd9556b0df4a9',
                 'TITLE' => is_string($tag['tag_title']) ? $tag['tag_title'] : get_translated_text($tag['tag_title']),
                 'DESCRIPTION' => is_string($tag['tag_description']) ? $tag['tag_description'] : get_translated_text($tag['tag_description']),
                 'EXAMPLE' => $tag['tag_example'],
-            )));
+            );
         }
 
-        return do_template('BLOCK_MAIN_CUSTOM_COMCODE_TAGS', array('_GUID' => 'b8d3436e6e5fe679ae9b0a368e607610', 'TAGS' => $content));
+        return do_template('BLOCK_MAIN_CUSTOM_COMCODE_TAGS', array('_GUID' => 'b8d3436e6e5fe679ae9b0a368e607610', 'TAGS' => $tags));
     }
 }

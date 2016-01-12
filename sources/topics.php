@@ -30,7 +30,7 @@ API interfaces with...
 This API does not handle posting, although it can render a posting form. The feedback system and the cns_forum addon handle posting separately.
 
 
-The chat rooms and activity feeds are NOT topics, and not handled through this system.
+The chatrooms and activity feeds are NOT topics, and not handled through this system.
 The non-threaded cns_forum view has its own rendering.
 
 */

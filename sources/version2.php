@@ -92,28 +92,28 @@ function get_version_dotted($main = null, $minor = null)
  * Note that the dotted format is compatible with PHP's version_compare function.
  *
  * @param  string $any_format Any reasonable input
- * @return string Pretty version number
+ * @return string Dotted version number
  */
 function get_version_dotted__from_anything($any_format)
 {
-    $pretty = $any_format;
+    $dotted = $any_format;
 
     // Strip useless bits
-    $pretty = preg_replace('#[-\s]*(final|gold)#i', '', $pretty);
-    $pretty = preg_replace('#(Composr |version )*#i', '', $pretty);
-    $pretty = trim($pretty);
+    $dotted = preg_replace('#[-\s]*(final|gold)#i', '', $dotted);
+    $dotted = preg_replace('#(Composr |version )*#i', '', $dotted);
+    $dotted = trim($dotted);
 
     // Change dashes and spaces to dots
-    $pretty = str_replace(array('-', ' '), array('.', '.'), $pretty);
+    $dotted = str_replace(array('-', ' '), array('.', '.'), $dotted);
 
     foreach (array('alpha', 'beta', 'RC') as $qualifier) {
-        $pretty = preg_replace('#\.?' . preg_quote($qualifier, '#') . '\.?#i', '.' . $qualifier, $pretty);
+        $dotted = preg_replace('#\.?' . preg_quote($qualifier, '#') . '\.?#i', '.' . $qualifier, $dotted);
     }
 
     // Canonical to not have extra .0's on end. Don't really care about what Composr stores as we clean this up in our server's version.php - it is crucial that news post and download names are canonical though so version.php works. NB: Latest recommended versions are done via download name and description labelling.
-    $pretty = preg_replace('#(\.0)+($|\.alpha|\.beta|\.RC)#', '', $pretty);
+    $dotted = preg_replace('#(\.0)+($|\.alpha|\.beta|\.RC)#', '', $dotted);
 
-    return $pretty;
+    return $dotted;
 }
 
 /**

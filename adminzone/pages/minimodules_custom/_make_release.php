@@ -68,17 +68,15 @@ if (!$is_bleeding_edge) {
 // Add downloads (assume uploaded already)
 
 require_code('downloads2');
-$releases_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Releases'));
-if (is_null($releases_category_id)) {
-    $releases_category_id = add_download_category('Releases', db_get_first_id(), '', '');
-    set_global_category_access('downloads', $releases_category_id);
-}
+$releases_category_id = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Composr Releases'));
+// ^ Result must return, composr_homesite_install.php added the category
 
 $release_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Version ' . strval(intval($version_dotted))));
 if (is_null($release_category_id)) {
     $release_category_id = add_download_category('Version ' . strval(intval($version_dotted)), $releases_category_id, '', '');
     set_global_category_access('downloads', $release_category_id);
 }
+// NB: We don't add addon categories. This is done in publish_addons_as_downloads.php
 
 $installatron_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Installatron integration'));
 if (is_null($installatron_category_id)) {

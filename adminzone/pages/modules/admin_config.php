@@ -405,7 +405,7 @@ class Module_admin_config
         }
 
         // Render option groups
-        $groups_tempcode = new Tempcode();
+        $groups_arr = array();
         require_code('form_templates');
         $_groups = array();
         foreach ($groups as $group_codename => $rows) {
@@ -593,8 +593,7 @@ class Module_admin_config
             } else {
                 $group_description = do_lang_tempcode('CONFIG_GROUP_DESCRIP_' . $group_codename, escape_html($post_max_size), escape_html($upload_max_filesize));
             }
-            $group = do_template('CONFIG_GROUP', array('_GUID' => '84c0db86002a33a383a7c2e195dd3913', 'GROUP_DESCRIPTION' => $group_description, 'GROUP_NAME' => $group_codename, 'GROUP' => $out, 'GROUP_TITLE' => $group_title));
-            $groups_tempcode->attach($group->evaluate());
+            $groups_arr[] = array('GROUP_DESCRIPTION' => $group_description, 'GROUP_NAME' => $group_codename, 'GROUP' => $out, 'GROUP_TITLE' => $group_title);
             $_groups[$group_codename] = $group_title;
         }
 
@@ -609,7 +608,7 @@ class Module_admin_config
             'WARNING_DETAILS' => $warning_details,
             'TITLE' => $this->title,
             'URL' => $post_url,
-            'GROUPS' => $groups_tempcode,
+            'GROUPS' => $groups_arr,
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
         ));

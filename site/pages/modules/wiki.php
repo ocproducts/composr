@@ -475,7 +475,7 @@ class Module_wiki
 
         // Child Links
         $num_children = 0;
-        $children = new Tempcode();
+        $children = array();
         if (get_option('wiki_enable_children') == '1') {
             $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
@@ -493,19 +493,16 @@ class Module_wiki
                 $my_child_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $child_id));
                 $my_child_children = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'COUNT(*)', array('parent_id' => $child_id));
 
-                if (($my_child_posts > 0) || ($my_child_children > 0) || (trim($child_description) != '')) {
-                    $sup = do_template('WIKI_SUBCATEGORY_CHILDREN', array(
-                        '_GUID' => '90e9f1647fdad0cacccecca3cbf12888',
-                        'MY_CHILD_POSTS' => integer_format($my_child_posts),
-                        'MY_CHILD_CHILDREN' => integer_format($my_child_children),
-                        'BODY_CONTENT' => (trim($child_description) != '') ? strval(strlen($child_description)) : null,
-                    ));
-                } else {
-                    $sup = ($myrow['hide_posts'] == 1) ? new Tempcode() : do_lang_tempcode('EMPTY');
-                }
-
                 $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => wiki_derive_chain($child_id)), '_SELF');
-                $children->attach(do_template('WIKI_SUBCATEGORY_LINK', array('_GUID' => 'e9f9b504093220dc23a1ab59b3e8e5df', 'URL' => $url, 'CHILD' => $child_title, 'SUP' => $sup)));
+                $children[] = array(
+                    'URL' => $url,
+                    'CHILD' => $child_title,
+
+                    'MY_CHILD_POSTS' => integer_format($my_child_posts),
+                    'MY_CHILD_CHILDREN' => integer_format($my_child_children),
+                    'BODY_CONTENT' => (trim($child_description) != '') ? strval(strlen($child_description)) : '0',
+                    'HIDE_POSTS' => $myrow['hide_posts'] == 1,
+                );
 
                 $num_children++;
             }

@@ -55,7 +55,7 @@ foreach ($addons as $name => $place) {
     $addon_info = read_addon_info($name);
 
     // Archive it off to exports/addons
-    $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . $addon_info['version'] . '.tar';
+    $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
 
     $new_addon_files = array();
     foreach ($addon_info['files'] as $_file) {

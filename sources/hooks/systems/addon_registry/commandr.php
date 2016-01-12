@@ -137,7 +137,6 @@ class Hook_addon_registry_commandr
             'themes/default/templates/COMMANDR_MAIN.tpl',
             'themes/default/javascript/commandr.js',
             'themes/default/templates/COMMANDR_ARRAY.tpl',
-            'themes/default/templates/COMMANDR_ARRAY_ELEMENT.tpl',
             'themes/default/templates/COMMANDR_BOX.tpl',
             'themes/default/templates/COMMANDR_CHAT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_COMMAND.tpl',
@@ -151,7 +150,6 @@ class Hook_addon_registry_commandr
             'themes/default/templates/COMMANDR_CNS_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_PT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_RSS.tpl',
-            'themes/default/templates/COMMANDR_RSS_ITEM.tpl',
             'themes/default/templates/COMMANDR_USERS_ONLINE.tpl',
             'themes/default/templates/COMMANDR_WHOIS.tpl',
             'themes/default/javascript/button_commandr.js',
@@ -246,13 +244,11 @@ class Hook_addon_registry_commandr
             'templates/COMMANDR_MAIN.tpl' => 'administrative__commandr_main',
             'templates/COMMANDR_MAIN_SCREEN.tpl' => 'administrative__commandr_main_screen',
             'templates/COMMANDR_COMMAND.tpl' => 'administrative__commandr_command',
-            'templates/COMMANDR_ARRAY_ELEMENT.tpl' => 'administrative__commandr_array',
             'templates/COMMANDR_ARRAY.tpl' => 'administrative__commandr_array',
             'templates/COMMANDR_NOTIFICATION.tpl' => 'administrative__commandr_command',
             'templates/COMMANDR_HELP.tpl' => 'administrative__commandr_help',
             'templates/COMMANDR_BOX.tpl' => 'administrative__commandr_box',
             'templates/COMMANDR_COMMANDS.tpl' => 'administrative__commandr_commands',
-            'templates/COMMANDR_RSS_ITEM.tpl' => 'administrative__commandr_rss',
             'templates/COMMANDR_RSS.tpl' => 'administrative__commandr_rss',
             'templates/COMMANDR_EDIT.tpl' => 'administrative__commandr_edit',
             'templates/COMMANDR_USERS_ONLINE.tpl' => 'administrative__commandr_users_online',
@@ -345,10 +341,11 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_array()
     {
-        $elements = do_lorem_template('COMMANDR_ARRAY_ELEMENT', array(
+        $elements = array();
+        $elements[] = array(
             'KEY' => lorem_phrase(),
             'VALUE' => lorem_phrase(),
-        ));
+        );
 
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_ARRAY', array(
@@ -416,12 +413,13 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_rss()
     {
-        $content = do_lorem_template('COMMANDR_RSS_ITEM', array(
+        $content = array();
+        $content[] = array(
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE' => lorem_phrase(),
             'DATE' => placeholder_date(),
             'SUMMARY' => lorem_paragraph(),
-        ));
+        );
 
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_RSS', array(

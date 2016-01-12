@@ -463,7 +463,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
     $fields = new Tempcode();
 
-    // Human name / Username
+    // Username
     if (cns_field_editable('username', $special_type)) {
         if ((is_null($member_id)) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self'))) {
             $prohibit_username_whitespace = get_option('prohibit_username_whitespace');

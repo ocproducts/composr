@@ -143,9 +143,9 @@ function get_html_trace()
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
-    $trace = new Tempcode();
+    $trace = array();
     foreach ($_trace as $i => $stage) {
-        $traces = new Tempcode();
+        $traces = array();
         //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;
         $file = '';
         $line = '';
@@ -193,13 +193,13 @@ function get_html_trace()
                     ob_end_clean();
                 }
             }
-            $traces->attach(do_template('STACK_TRACE_LINE', array('_GUID' => 'a3bdbe9f0980b425f6aeac5d00fe4f96', 'LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value)));
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
-        $trace->attach(do_template('STACK_TRACE_WRAP', array('_GUID' => '748860b0c83ea19d56de594fdc04fe12', 'TRACES' => $traces)));
+        $trace[] = array('TRACES' => $traces);
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    return do_template('STACK_TRACE_HYPER_WRAP', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'CONTENT' => $trace, 'POST' => ''));
+    return do_template('STACK_TRACE', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'TRACE' => $trace, 'POST' => ''));
 }
 
 /**

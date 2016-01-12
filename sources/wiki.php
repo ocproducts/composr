@@ -63,6 +63,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
         'BREADCRUMBS' => $breadcrumbs,
         'SUMMARY' => get_translated_tempcode('wiki_posts', $just_wiki_post_row, 'the_message'),
         'URL' => $url,
+        'RESOURCE_TYPE' => 'wiki_post',
     ));
 }
 
@@ -110,6 +111,7 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
         'BREADCRUMBS' => $breadcrumbs,
         'SUMMARY' => $content,
         'URL' => $url,
+        'RESOURCE_TYPE' => 'wiki_page',
     ));
 }
 
