@@ -94,6 +94,7 @@ function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'calendar_type',
     ));
 }
 

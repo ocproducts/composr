@@ -1767,7 +1767,6 @@ function javascript_tempcode($position = null)
     if (isset($JAVASCRIPTS['global'])) {
         $arr_backup = $JAVASCRIPTS;
         $JAVASCRIPTS = array();
-        $JAVASCRIPTS[($grouping_codename == '') ? 'global' : $grouping_codename] = ($grouping_codename == '');
         if ($grouping_codename == '') {
             foreach (array('jquery', 'modernizr') as $important_script) {
                 if (isset($arr_backup[$important_script])) {
@@ -1775,6 +1774,7 @@ function javascript_tempcode($position = null)
                 }
             }
         }
+        $JAVASCRIPTS[($grouping_codename == '') ? 'global' : $grouping_codename] = ($grouping_codename == '');
         $JAVASCRIPTS += $arr_backup;
     }
 

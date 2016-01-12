@@ -6,7 +6,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{TEXT}}
-	{$PARAGRAPH,{TEXT}}
+	<div class="form_text">{$PARAGRAPH,{TEXT}}</div>
 {+END}
 
 {+START,IF,{$IN_STR,{FIELDS},required_star}}

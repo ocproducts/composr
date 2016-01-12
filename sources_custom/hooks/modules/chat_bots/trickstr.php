@@ -53,7 +53,7 @@ class Hook_chat_bot_trickstr
     /**
      * Give ability to reply to any communication.
      *
-     * @param  AUTO_LINK $room_id The ID of the chat room
+     * @param  AUTO_LINK $room_id The ID of the chatroom
      * @param  string $string The message used.
      * @return ?string Bot reply (null: bot does not handle the command)
      */
@@ -84,7 +84,7 @@ class Hook_chat_bot_trickstr
     /**
      * Handle hooks supported bot commands. Note multiple bots may support the same commands, and all respond. It is recommended all bots support the command 'help'.
      *
-     * @param  AUTO_LINK $room_id The ID of the chat room
+     * @param  AUTO_LINK $room_id The ID of the chatroom
      * @param  string $string The command used. This is just the chat message, so you can encode and recognise your own parameter scheme if you like.
      * @return ?string Bot reply (null: bot does not handle the command)
      */

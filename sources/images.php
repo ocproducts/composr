@@ -448,15 +448,13 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
     if (url_is_local($from)) {
         $from = get_custom_base_url() . '/' . $from;
     }
-    if (!file_exists($thumb_path)) {
-        if (is_video($from, true)) {
-            require_code('galleries2');
-            create_video_thumb($full_url, $thumb_path);
-        } else {
-            convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
-            if (!file_exists($thumb_path)) {
-                $thumb_url .= '.png';
-            }
+    if (is_video($from, true)) {
+        require_code('galleries2');
+        create_video_thumb($full_url, $thumb_path);
+    } else {
+        convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
+        if (!file_exists($thumb_path)) {
+            $thumb_url .= '.png';
         }
     }
 

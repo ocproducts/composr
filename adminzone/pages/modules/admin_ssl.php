@@ -106,7 +106,7 @@ class Module_admin_ssl
      */
     public function ssl_interface()
     {
-        $content = new Tempcode();
+        $entries = array();
         $zones = find_all_zones();
         foreach ($zones as $zone) {
             $pages = find_all_pages_wrap($zone);
@@ -117,12 +117,12 @@ class Module_admin_ssl
                     $page = strval($page); // strval($page) as $page could have become numeric due to array imprecision
                 }
                 $ticked = is_page_https($zone, $page);
-                $content->attach(do_template('SSL_CONFIGURATION_ENTRY', array('_GUID' => 'a08c339d93834f968c8936b099c677a3', 'TICKED' => $ticked, 'PAGE' => $page, 'ZONE' => $zone)));
+                $entries[] = array('TICKED' => $ticked, 'PAGE' => $page, 'ZONE' => $zone);
             }
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => 'set'), '_SELF');
-        return do_template('SSL_CONFIGURATION_SCREEN', array('_GUID' => '823f395205f0c018861847e80c622710', 'URL' => $url, 'TITLE' => $this->title, 'CONTENT' => $content));
+        return do_template('SSL_CONFIGURATION_SCREEN', array('_GUID' => '823f395205f0c018861847e80c622710', 'TITLE' => $this->title, 'URL' => $url, 'ENTRIES' => $entries));
     }
 
     /**

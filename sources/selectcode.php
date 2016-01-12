@@ -26,13 +26,14 @@ A match specifier may be:
  - an avoiding-literal (e.g. '!1')
  - a bounded acceptable-range (e.g. '1-3')
  - a non-bounded acceptable-range (e.g. '3+')
+ - an acceptable category (e.g. '3#')
  - an acceptable subtree (e.g. '3*')
  - an acceptable set of direct descendents (e.g. '3>')
  - an avoiding subtree (e.g. '3~')
  - all-acceptable '*'
 Note that:
  - this will work on string IDs as well as numeric IDs (except of course for the range specifiers) -- as the string IDs do not contain any special symbols (!-+*~,>).
- - subtree specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
+ - subtree/category specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
  - nothing is accepted by default. If you want this, add '*' into your Selectcode.
  - avoidance overrides acceptance, and there is no ordering. For example, "!3,3*" would get everything under category 3 except ID#3 (if our record-set equals our category-set, this example makes more sense as something useful)
  - while Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
@@ -175,28 +176,32 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                 $out_or .= ' OR ';
             }
             $out_or .= $field_name . '>=' . strval(intval($matches[1]));
-        } elseif ((preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3*' or '3>'
-            if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($category_field_name == 'cc_id') && ($matches[2] != '>') && (db_has_subqueries($db->connection_read))) { // Special case (optimisation) for catalogues
-                // MySQL should be smart enough to not enumerate the 'IN' clause here, which would be bad - instead it can jump into the embedded WHERE clause on each test iteration
-                $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
-                if ($this_details[0]['c_is_tree'] == 0) {
-                    $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
-                } elseif ($this_details[0]['cc_parent_id'] === null) {
-                    if ($this_details[0]['cc_parent_id'] === null) {
-                        $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
+        } elseif ((preg_match('#^(.+)(\#|\*|>)$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3#' or '3*' or '3>'
+            if ($matches[2] == '#') {
+                $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
+            } else {
+                if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($category_field_name == 'cc_id') && ($matches[2] != '>') && (db_has_subqueries($db->connection_read))) { // Special case (optimisation) for catalogues
+                    // MySQL should be smart enough to not enumerate the 'IN' clause here, which would be bad - instead it can jump into the embedded WHERE clause on each test iteration
+                    $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
+                    if ($this_details[0]['c_is_tree'] == 0) {
+                        $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
+                    } elseif ($this_details[0]['cc_parent_id'] === null) {
+                        if ($this_details[0]['cc_parent_id'] === null) {
+                            $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
+                        } else {
+                            $out_or .= $category_field_name . ' IN (SELECT cc_id FROM ' . $db->get_table_prefix() . 'catalogue_cat_treecache WHERE cc_ancestor_id=' . strval(intval($matches[1])) . ')';
+                        }
                     } else {
-                        $out_or .= $category_field_name . ' IN (SELECT cc_id FROM ' . $db->get_table_prefix() . 'catalogue_cat_treecache WHERE cc_ancestor_id=' . strval(intval($matches[1])) . ')';
+                        $out_or = '1=0';
                     }
                 } else {
-                    $out_or = '1=0';
-                }
-            } else {
-                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
-                foreach ($subtree as $ii) {
-                    if ($out_or != '') {
-                        $out_or .= ' OR ';
+                    $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+                    foreach ($subtree as $ii) {
+                        if ($out_or != '') {
+                            $out_or .= ' OR ';
+                        }
+                        $out_or .= _selectcode_eq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
                     }
-                    $out_or .= _selectcode_eq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
                 }
             }
         } elseif ((preg_match('#^(.+)\~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
@@ -342,7 +347,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                     }
                 }
             }
-        } elseif (preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) { // e.g. '3*' or '3>'
+        } elseif (preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) { // e.g. '3#' or '3*' or '3>'
             if ($ids_and_parents === null) {
                 if ($field_name !== null) {
                     $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
@@ -350,7 +355,12 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                     $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
                 }
             }
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+
+            if ($matches[2] == '#') {
+                $subtree = array($matches[1]);
+            } else {
+                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+            }
 
             foreach ($subtree as $subtree_i) {
                 foreach ($ids_and_parents as $id => $parent_id) {

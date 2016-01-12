@@ -3532,7 +3532,7 @@
 	 * Access level required to create new tags
 	 * @global int $g_tag_create_threshold
 	 */
-	$g_tag_create_threshold = REPORTER;
+	$g_tag_create_threshold = DEVELOPER;
 
 	/**
 	 * Access level required to edit tag names and descriptions

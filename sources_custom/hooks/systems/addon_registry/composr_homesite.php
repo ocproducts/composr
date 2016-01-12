@@ -86,7 +86,16 @@ class Hook_addon_registry_composr_homesite
      */
     public function get_description()
     {
-        return 'The Composr deployment/hosting platform (Demonstratr). The hosting companion to the composr_release_build addon.';
+        return 'This addon contains various aspects of compo.sr:
+ - Composr CMS release management and upgrading
+ - compo.sr addon management scripts
+ - Composr CMS download scripts
+ - The Composr deployment/hosting platform (Demonstratr)
+ - Error message explainer system for Composr
+ - Various other scripts for running compo.sr
+
+This addon does not contain the compo.sr install code and the overall site and theme. That is not categorised into an addon, but is in the composr_homesite git branch.
+';
     }
 
     /**
@@ -183,6 +192,10 @@ class Hook_addon_registry_composr_homesite
             'uploads/website_specific/compo.sr/index.html',
             'cmscore.rdf',
             'pages/minimodules_custom/contact.php',
+            'sources_custom/hooks/systems/symbols/COMPOSR_HOMESITE_ID_LATEST_ADDONS.php',
+            'sources_custom/hooks/systems/symbols/COMPOSR_HOMESITE_ID_LATEST_THEMES.php',
+            'sources_custom/hooks/systems/symbols/COMPOSR_HOMESITE_ID_LATEST_TRANSLATIONS.php',
+            'sources_custom/hooks/systems/startup/composr_homesite__for_outdated_version.php',
         );
     }
 }

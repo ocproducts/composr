@@ -708,6 +708,9 @@ hr.cns_sig_barrier {
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	/*{+END}*/
 }
+.cns_whisper_choose_box .box {
+	margin-top: 0;
+}
 .cns_whisper_choose_box.right {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		padding: 4em 4em 4em 2em;

@@ -70,7 +70,7 @@ class Block_main_emoticon_codes
 
         $num_columns = array_key_exists('num_columns', $map) ? intval($map['num_columns']) : 4;
 
-        $rows = new Tempcode();
+        $rows = array();
 
         global $EMOTICON_LEVELS;
 
@@ -103,10 +103,9 @@ class Block_main_emoticon_codes
                 $i++;
             }
 
-            $rows->attach(do_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
-                '_GUID' => '9d723c17133313b327a9485aeb23aa8c',
+            $rows[] = array(
                 'COLUMNS' => $columns,
-            )));
+            );
         }
 
         return do_template('BLOCK_MAIN_EMOTICON_CODES', array(

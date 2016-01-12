@@ -244,6 +244,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             'ID' => strval($row['id']),
             'TITLE' => $title,
             'SUMMARY' => $tpl,
+            'RESOURCE_TYPE' => 'post',
         ));
     }
 

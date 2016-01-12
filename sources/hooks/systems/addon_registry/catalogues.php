@@ -256,6 +256,7 @@ class Hook_addon_registry_catalogues
             'TITLE' => lorem_phrase(),
             'SUMMARY' => lorem_paragraph_html(),
             'URL' => placeholder_url(),
+            'RESOURCE_TYPE' => 'catalogue_category',
         )));
         $tags = do_lorem_template('TAGS', array(
             'TAGS' => placeholder_array(),

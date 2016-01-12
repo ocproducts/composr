@@ -57,7 +57,7 @@ $featuretree = array(
             array(
                 array('Reach out to other users', '{$COMCODE,[page="forum:forumview:browse:{$FIND_ID_VIA_LABEL,forum,Introduce yourself}"]Welcome new users[/page]} and help make sure people don\'t get lost.[html]<br />[/html]Also {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Post your location}"]put yourself on the map[/page]} so people near you can get in contact.'),
                 array('Help others on the forum', 'Where you can, answer other user\'s questions.'),
-                array('Hang out in the chat', 'If we have users in the [page="site:chat"]chat room[/page] 24&times;7 then users (including yourself) are less likely to feel stuck or isolated.'),
+                array('Hang out in the chat', 'If we have users in the [page="site:chat"]chatroom[/page] 24&times;7 then users (including yourself) are less likely to feel stuck or isolated.'),
                 array('Give gift points', 'If you see other members doing good things, give them some gift points.'),
             ),
         ),
@@ -230,7 +230,7 @@ $featuretree = array(
                 null, // divider
                 array('Sound effects', 'Members may configure their own'),
                 array('Programmers can write their own chat bots'),
-                array('Download chat rooms logs'),
+                array('Download chatroom logs'),
                 array('Blocking', 'Choose to appear offline to certain members'),
             ),
         ),

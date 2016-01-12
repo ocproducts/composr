@@ -20,8 +20,23 @@ function init__composr_homesite()
     define('DEMONSTRATR_DEMO_LAST_DAYS', 30);
 }
 
-// RELEASES
-// --------
+// IDENTIFYING RELEASES
+// --------------------
+
+function get_latest_version_pretty()
+{
+    static $version = null;
+    if ($version !== null) {
+        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        if ($version !== null) {
+            $version = preg_replace('# \(.*#', '', $version);
+        }
+    }
+    return $version;
+}
+
+// MAKING RELEASES
+// ---------------
 
 function server__public__get_tracker_categories()
 {

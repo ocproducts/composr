@@ -91,10 +91,11 @@ $decision_tree = array(
 
     'free' => array(
         'title' => 'Free options',
-        'text' => 'We\'re glad you want to get in touch. We are able to respond to the following kinds of request without requiring support credits. We take user feedback very earnestly.' . "\n\n" . 'We regret we cannot provide generally free official 1-on-1 support or informal consultancy on capabilities/usage, due to the free nature of the product. For informal support (i.e. no guarantees, honour system) you can go to the forum and/or chatroom. For formal support, we have paid professional support and can quote on and refer projects (to access this, go back then make that selection). For feedback reports we\'ll usually find time to reply (and really do appreciate them), but regretfully with only a few words due to time constraints.',
+        'text' => "The options below are kinds of request ocProducts can take in without requiring support credits.\n\nWe regret ocProducts cannot provide official 1-on-1 support or consultancy, due to the free status of Composr. For informal support (i.e. no guarantees, honour system) choose the forum or chatroom.",
         'notice' => array(
-            //    Parameter             Value                       Warning
-            array('free_service_type',  'Report a bug',             'Usually we get bugs fixed within a couple of days. Please only report bugs that look to be genuine bugs in the Composr CMS code. You will be taken through to the tracker where you\'ll also see a link to read additional advice about how to make a good bug report.' . "\n\n" . 'If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
+            //    Parameter             Value                               Warning
+            array('free_service_type',  'Report a bug',                     'Usually we get bugs fixed within a couple of days. Please only report bugs that look to be genuine bugs in the Composr CMS code. You will be taken through to the tracker where you\'ll also see a link to read additional advice about how to make a good bug report.' . "\n\n" . 'If you have a [i]very high urgency[/i] to get a bug fixed, or if you want a hotfix deployed and tested for you individually, you may want to consider putting it through as a paid support question.'),
+            array('free_service_type',  'Send some general feedback',       'We really appreciate your feedback. The feedback will be considered carefully, and if appropriate our plans will be adapted for it. Please be aware that while we\'ll usually find time to reply, due to time constraints we usually can only reply with a few words rather than direct explanations.'),
         ),
         'previous' => 'start',
         'form_method' => 'GET',
@@ -112,7 +113,7 @@ $decision_tree = array(
                     'Report a security hole',
                     'Request a feature',
                     'Send some documentation feedback',
-                    'Send some general/other feedback',
+                    'Send some general feedback',
                     'Contribute some code',
                     'Make a partnership enquiry',
                     'Apply for a job with ocProducts Ltd',
@@ -130,7 +131,7 @@ $decision_tree = array(
             array('free_service_type',  'Report a security hole',               get_base_url() . '/tracker/bug_report_page.php?view_state=50&severity=80'),
             array('free_service_type',  'Request a feature',                    get_base_url() . '/tracker/bug_report_page.php?severity=10'),
             array('free_service_type',  'Send some documentation feedback',     get_base_url() . '/tracker/set_project.php?project_id=7'),
-            array('free_service_type',  'Send some general/other feedback',     build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), '_SEARCH')),
+            array('free_service_type',  'Send some general feedback',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), '_SEARCH')),
             array('free_service_type',  'Contribute some code',                 'contribute_code'),
             array('free_service_type',  'Make a partnership enquiry',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Partnership'), '_SEARCH')),
             array('free_service_type',  'Apply for a job with ocProducts Ltd',  'job'),
@@ -1016,7 +1017,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
     ),
 
     'support' => array(
-        'title' => 'Technical support (single question support / very quick jobs)',
+        'title' => 'Technical support <span class="associated_details">(single&nbsp;question&nbsp;support&nbsp;/&nbsp;very&nbsp;quick&nbsp;jobs)</span>',
         'text' => 'Great, let\'s get to it!' . "\n\n" . 'Please do make sure you are entering single-questions only (or at least related-questions); we need to be able to assign the ticket to a particular person with particular experience in the area you are asking about.' . "\n\n" . 'Please make sure your ticket needs to be completely self-explanatory. If it is necessary to reference another ticket please ensure that the exact title/URL of the ticket is given. Different members of staff may work on different tickets so we won\'t necessarily know the details relating to other tickets.' . "\n\n" . 'A professional ticket usually will be charged/due-for-payment only if you agree to the quote we give. Exceptions are if you tell us to work immediately without a quote, or if the quote would be the minimum for the ticket priority selected.' . "\n\n" . 'If you sometimes need things more urgent than the reply times available, you will need to go back and look into our secondment option so that you have someone permanently and directly assigned to you (as we don\'t always have someone available to jump on very urgent tickets; we need ongoing commitments to guarantee staffing of very skilled developers).' . "\n\n" . 'If you already have a ticket for this work/issue please don\'t create a new ticket. It is important to stay within one ticket to ensure the assigned staff member is aware of past progress on that ticket.',
         'notice' => array_merge($extra_support_notice, array(
             //    Parameter         Value                                                   Warning

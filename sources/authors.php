@@ -41,6 +41,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         'TITLE' => $title,
         'SUMMARY' => get_translated_tempcode('author', $row, 'description'),
         'URL' => $url,
+        'RESOURCE_TYPE' => 'author',
     ));
 }
 

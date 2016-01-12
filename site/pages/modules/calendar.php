@@ -1456,7 +1456,7 @@ class Module_calendar
         $is_public = $_is_public ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
 
         // Personal subscriptions (reminders)
-        $subscribed = new Tempcode();
+        $subscribed = array();
         if ((has_privilege(get_member(), 'view_event_subscriptions')) && (cron_installed())) {
             $subscriptions = $GLOBALS['SITE_DB']->query_select('calendar_reminders', array('DISTINCT n_member_id'), array('e_id' => $id), '', 100);
             if (count($subscriptions) < 100) {
@@ -1464,12 +1464,12 @@ class Module_calendar
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id']);
                     if (!is_null($username)) {
                         $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], false, true);
-                        $subscribed->attach(do_template('CALENDAR_EVENT_SCREEN_SUBSCRIPTION', array('_GUID' => 'c756b8b3f0c57494fd46a94e9abce029', 'MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username)));
+                        $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);
                     }
                 }
             }
         }
-        $_subscriptions = new Tempcode();
+        $_subscriptions = array();
         if ((is_guest()) || (!cron_installed())) {
             $subscribe_url = new Tempcode();
         } else {
@@ -1477,7 +1477,7 @@ class Module_calendar
             foreach ($subscriptions as $subscription) {
                 $time = display_time_period(intval($subscription['n_seconds_before']));
                 $unsubscribe_url = build_url(array('page' => '_SELF', 'type' => 'unsubscribe_event', 'id' => $id, 'reminder_id' => $subscription['id']), '_SELF');
-                $_subscriptions->attach(do_template('CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION', array('_GUID' => 'cc36c75ea516abfab1c65328c0e290fc', 'UNSUBSCRIBE_URL' => $unsubscribe_url, 'TIME' => $time)));
+                $_subscriptions[] = array('UNSUBSCRIBE_URL' => $unsubscribe_url, 'TIME' => $time);
             }
             $subscribe_url = build_url(array('page' => '_SELF', 'type' => 'subscribe_event', 'id' => $id), '_SELF');
         }

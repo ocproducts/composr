@@ -56,7 +56,7 @@ class Hook_profiles_tabs_related
 
         $cpf_value = get_cms_cpf(do_lang('RELATED_CPF'), $member_id_of);
         $filter = do_lang('RELATED_CPF') . '=' . $cpf_value . ',id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ',id<>' . strval($member_id_of);
-        $content = do_block('main_multi_content', array('param' => 'member', 'filter' => $filter, 'no_links' => '1'));
+        $content = do_block('main_multi_content', array('param' => 'member', 'filter' => $filter, 'no_links' => '1', 'guid' => 'module'));
 
         return array($title, $content, $order, '');
     }

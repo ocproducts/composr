@@ -22,21 +22,22 @@ require_lang('tickets');
 require_code('tickets');
 require_code('tickets2');
 
-$credits_available = intval(get_cms_cpf('support_credits'));
+$credits = intval(get_cms_cpf('support_credits'));
 
-if (get_page_name() != 'professional_support' && $credits_available == 0) {
-    $professional_support_url = build_url(array('page' => 'professional_support'), '_SEARCH');
+$professional_support_url = build_url(array('page' => 'professional_support'), '_SEARCH');
+
+if (get_page_name() != 'professional_support' && $credits == 0) {
     $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', escape_html($professional_support_url->evaluate()));
 } else {
     $whats_this = new Tempcode();
 }
 
-if ($credits_available == 0) {
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
+if ($credits == 0) {
+    $credits_msg = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
     $help_link = build_url(array('page' => 'tut_software_feedback'), '_SEARCH');
     $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK', escape_html($help_link->evaluate()));
 } else {
-    $credits_message = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', escape_html(integer_format($credits_available)));
+    $credits_msg = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', escape_html(integer_format($credits)), escape_html($professional_support_url->evaluate()));
     $no_credits_link = new Tempcode();
 }
 
@@ -58,9 +59,14 @@ $tickets_open_msg = do_lang_tempcode('SHOW_CREDITS_TICKETS_OPEN', escape_html(in
 
 $tpl = do_template('SHOW_CREDITS_BAR', array(
     '_GUID' => '43e6e18c180cda2e6f4627d2a2bb8677',
+
     'WHATS_THIS' => $whats_this,
-    'CREDITS_AVAILABLE' => $credits_message,
+
+    'CREDITS_MSG' => $credits_msg,
+    'CREDITS' => integer_format($credits),
     'NO_CREDITS_LINK' => $no_credits_link,
+
     'TICKETS_OPEN_MSG' => $tickets_open_msg,
+    'TICKETS_OPEN' => integer_format($tickets_open),
 ));
 $tpl->evaluate_echo();

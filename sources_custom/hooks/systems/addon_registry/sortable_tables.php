@@ -46,7 +46,7 @@ class Hook_addon_registry_sortable_tables
      */
     public function get_category()
     {
-        return 'New Feature';
+        return 'New Features';
     }
 
     /**

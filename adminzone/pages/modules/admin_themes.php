@@ -456,7 +456,7 @@ class Module_admin_themes
 
         // Show all themes
         $site_default_theme = $GLOBALS['FORUM_DRIVER']->_get_theme(true);
-        $themes = new Tempcode();
+        $themes = array();
         $theme_default_reason = do_lang_tempcode('DEFAULT_THEME_BY_DEFAULT', escape_html(get_default_theme_name()));
         foreach ($_themes as $theme => $details) {
             if (is_integer($theme)) {
@@ -516,7 +516,7 @@ class Module_admin_themes
                 require_code('themewizard');
                 $seed = find_theme_seed($theme);
             }
-            $themes->attach(do_template('THEME_MANAGE', array(
+            $themes[] = array(
                 '_GUID' => 'c65c7f3f87d62ad425c7a104a6018840',
                 'SEED' => $seed,
                 'THEME_USAGE' => $theme_usage,
@@ -533,7 +533,7 @@ class Module_admin_themes
                 'EDIT_URL' => $edit_url,
                 'DELETE_URL' => $delete_url,
                 'SCREEN_PREVIEW_URL' => $screen_preview_url,
-            )));
+            );
         }
 
         $zones = find_all_zones(false, true);

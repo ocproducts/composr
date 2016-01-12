@@ -111,7 +111,6 @@ class Hook_addon_registry_custom_comcode
             'sources/hooks/systems/addon_registry/custom_comcode.php',
             'adminzone/pages/modules/admin_custom_comcode.php',
             'themes/default/templates/BLOCK_MAIN_CUSTOM_COMCODE_TAGS.tpl',
-            'themes/default/templates/CUSTOM_COMCODE_TAG_ROW.tpl',
             'lang/EN/custom_comcode.ini',
             'sources/blocks/main_custom_comcode_tags.php',
             'sources/hooks/systems/page_groupings/custom_comcode.php',
@@ -140,7 +139,6 @@ class Hook_addon_registry_custom_comcode
     public function tpl_previews()
     {
         return array(
-            'templates/CUSTOM_COMCODE_TAG_ROW.tpl' => 'block_main_custom_comcode_tags',
             'templates/BLOCK_MAIN_CUSTOM_COMCODE_TAGS.tpl' => 'block_main_custom_comcode_tags'
         );
     }
@@ -154,18 +152,18 @@ class Hook_addon_registry_custom_comcode
      */
     public function tpl_preview__block_main_custom_comcode_tags()
     {
-        $content = new Tempcode();
+        $tags = array();
         foreach (placeholder_array() as $tag) {
-            $content->attach(do_lorem_template('CUSTOM_COMCODE_TAG_ROW', array(
+            $tags[] = array(
                 'TITLE' => lorem_word(),
                 'DESCRIPTION' => lorem_paragraph(),
                 'EXAMPLE' => lorem_word(),
-            )));
+            );
         }
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CUSTOM_COMCODE_TAGS', array(
-                'TAGS' => $content,
+                'TAGS' => $tags,
             )), null, '', true)
         );
     }

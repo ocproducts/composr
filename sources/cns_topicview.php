@@ -499,7 +499,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     if (!is_null($ticket_type_id)) {
                         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_id));
                     }
-                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_id)));
+                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_name)));
                     $_postdetails['p_title'] = '';
                 } else {
                     $out['title'] = do_lang_tempcode('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']));

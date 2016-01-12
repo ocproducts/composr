@@ -142,7 +142,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/chat/chat.png" />Chat<br />(<kbd>chat</kbd>)</td>
-            <td>Chat rooms and instant messaging.</td>
+            <td>Chatrooms and instant messaging.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
             <td><a href="http://compo.sr/docs10/tut-chat.htm">Running chatrooms (features and advice)</a></td>
@@ -752,7 +752,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Installer<br />(<kbd>installer</kbd>)</td>
-            <td>The installer files (can be removed immediately after installing; in-fact Composr makes you remove install.php manually).</td>
+            <td>The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
             <td><a href="http://compo.sr/docs10/tut-install.htm">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/tut-chmod.htm">Linux file permissions</a></td>
@@ -1032,7 +1032,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png" />Staff Messaging<br />(<kbd>staff_messaging</kbd>)</td>
-            <td>Blocks to allow visitors to contact the staff, either via email, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
+            <td>Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
             <td><a href="http://compo.sr/docs10/tut-feedback.htm">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/tut-support-desk.htm">Running a virtual support desk</a></td>
@@ -1151,7 +1151,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
         </tr>
     
         <tr>
-            <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png" />Welcome Emails<br />(<kbd>welcome_emails</kbd>)</td>
+            <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png" />Welcome E-mails<br />(<kbd>welcome_emails</kbd>)</td>
             <td>Welcome e-mails for new members.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>

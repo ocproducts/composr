@@ -38,7 +38,7 @@ function init__chat()
 }
 
 /**
- * Get Tempcode for a chat room 'feature box' for the given row
+ * Get Tempcode for a chatroom 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -64,6 +64,7 @@ function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'room_name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_chat:__edit:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'chat',
     ));
 }
 
@@ -294,7 +295,7 @@ function filter_invites_for_blocking($people)
 }
 
 /**
- * Prune membership of chat room.
+ * Prune membership of chatroom.
  *
  * @param  AUTO_LINK $room_id Room ID (or -1 if all rooms)
  */
@@ -640,12 +641,12 @@ function chatter_active($member_id, $room_id = null)
 }
 
 /**
- * Find whether a member is a moderator of a chat room.
+ * Find whether a member is a moderator of a chatroom.
  *
  * @param  MEMBER $member_id Member ID
  * @param  AUTO_LINK $room_id Room ID
  * @param  ?MEMBER $room_owner Room owner (null: none)
- * @return boolean Whether the member is a moderator of the chat room
+ * @return boolean Whether the member is a moderator of the chatroom
  */
 function is_chat_moderator($member_id, $room_id, $room_owner)
 {
@@ -1069,7 +1070,7 @@ function get_chatroom_name($room_id, $allow_null = false)
  *
  * @param  SHORT_TEXT $room_name The name of the chatroom
  * @param  boolean $must_not_be_im Make sure the room is not an IM room. If it is an IM room, pretend it does not exist.
- * @return ?AUTO_LINK The ID of the chatroom (null: no such chat room)
+ * @return ?AUTO_LINK The ID of the chatroom (null: no such chatroom)
  */
 function get_chatroom_id($room_name, $must_not_be_im = false)
 {
@@ -1520,7 +1521,7 @@ function parse_allow_list_input($_allow)
 /**
  * Check whether a member has access to the chatroom.
  *
- * @param  mixed $room The row of the chat room to check for access OR its ID (AUTO_LINK)
+ * @param  mixed $room The row of the chatroom to check for access OR its ID (AUTO_LINK)
  * @param  boolean $ret Whether to return false if there is no access (as opposed to bombing out)
  * @param  ?MEMBER $member_id The member to check as (null: current member)
  * @param  boolean $must_be_explicit Whether to also ensure for $member_id having explicit access

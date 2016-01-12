@@ -51,7 +51,7 @@ class Hook_addon_registry_staff_messaging
      */
     public function get_description()
     {
-        return 'Blocks to allow visitors to contact the staff, either via email, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.';
+        return 'Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.';
     }
 
     /**

@@ -314,7 +314,7 @@ function dload_script()
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
  * @return AUTO_LINK The ID of the newly added download category
  */
-function add_download_category($category, $parent_id, $description, $notes, $rep_image = '', $id = null, $add_time = null, $meta_keywords = '', $meta_description = '')
+function add_download_category($category, $parent_id, $description, $notes = '', $rep_image = '', $id = null, $add_time = null, $meta_keywords = '', $meta_description = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_DOWNLOAD_CATEGORY', null, $category);

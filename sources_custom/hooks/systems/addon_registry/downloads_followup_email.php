@@ -46,7 +46,7 @@ class Hook_addon_registry_downloads_followup_email
      */
     public function get_category()
     {
-        return 'New Feature';
+        return 'New Features';
     }
 
     /**

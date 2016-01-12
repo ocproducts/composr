@@ -2303,6 +2303,10 @@ function ecv2_STRIP_HTML($lang, $escaped, $param)
 {
     $value = strip_html($param[0]);
 
+    if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($param[0])) {
+        ocp_mark_as_escaped($value);
+    }
+
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);
     }

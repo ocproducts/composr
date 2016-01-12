@@ -174,7 +174,7 @@ class Hook_addon_registry_quizzes
     {
         $fields = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
-            $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW', array(
+            $fields->attach(do_lorem_template('MAP_TABLE_FIELD', array(
                 'ABBR' => '',
                 'NAME' => lorem_phrase(),
                 'VALUE' => lorem_phrase(),

@@ -137,6 +137,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
     }
 
     if (((time() - $post_time) > intval(get_option('edit_time_limit')) * 60) && (!has_privilege($member_id, 'exceed_post_edit_time_limit'))) {
+        require_lang('cns');
         $reason = do_lang('EXCEEDED_TIME_LIMIT', escape_html(display_time_period(intval(get_option('edit_time_limit')) * 60)));
         return false;
     }
@@ -199,6 +200,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
     }
 
     if (((time() - $post_time) > intval(get_option('delete_time_limit')) * 60) && (!has_privilege($member_id, 'exceed_post_delete_time_limit'))) {
+        require_lang('cns');
         $reason = do_lang('EXCEEDED_TIME_LIMIT', escape_html(display_time_period(intval(get_option('delete_time_limit')) * 60)));
         return false;
     }

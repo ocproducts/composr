@@ -144,6 +144,7 @@ and
             'sources_custom/miniblocks/side_recent_points.php',
             'themes/default/templates_custom/POINTS_GIVE.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_STARS.tpl',
+            'themes/default/templates_custom/BLOCK_SIDE_RECENT_POINTS.tpl',
         );
     }
 }

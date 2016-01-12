@@ -92,6 +92,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
         'BREADCRUMBS' => $breadcrumbs,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_forums:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'forum',
     ));
 }
 

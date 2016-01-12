@@ -20,18 +20,9 @@ require_code('composr_homesite');
 require_lang('downloads');
 
 // Put together details about releases
-$t = mixed();
-if ($GLOBALS['DEV_MODE']) {
+$t = get_latest_version_pretty();
+if (($t === null) && ($GLOBALS['DEV_MODE'])) {
     $t = 'Composr version 1337';
-}
-if ($t === null) {
-    $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
-}
-if ($t === null) {
-    $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array('author' => 'ocProducts', 'validated' => 1));
-}
-if ($t !== null) {
-    $t = preg_replace('# \(.*#', '', $t);
 }
 $releases_tpl_map = array();
 if ($t !== null) {

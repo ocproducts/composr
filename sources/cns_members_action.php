@@ -48,7 +48,8 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
             $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, ($field_class == 'dob') ? ('m_' . $field_class . '_day') : ('m_' . $field_class));
         }
 
-        if ((empty($current_value)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
+        $cv = trim($current_value);
+        if ((@empty($cv)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
             return false;
         }
     }

@@ -612,7 +612,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         if (count($members_in_range) == 300) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__TOP_ONLY', escape_html(integer_format(300))), 'warn');
         }
-        $lines = new Tempcode();
+        $lines = array();
         foreach ($members_in_range as $row) {
             if (!is_null($row[$f_name])) {
                 $val = $row[$f_name];
@@ -621,10 +621,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                     continue;
                 }
 
-                $lines->attach(do_template('CNS_CPF_STATS_LINE', array('_GUID' => '874c9b780f625ff4566e7b909f554288', 'CNT' => integer_format($row['cnt']), 'VAL' => is_integer($val) ? integer_format($val) : $val)));
+                $lines[] = array('CNT' => integer_format($row['cnt']), 'VAL' => is_integer($val) ? integer_format($val) : $val);
             }
         }
-        if ($lines->is_empty()) {
+        if ($lines === array()) {
             warn_exit(do_lang_tempcode('NO_DATA'));
         }
 

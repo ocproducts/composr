@@ -1,5 +1,7 @@
 {TITLE}
 
+{$GET,whisper_screen_text}
+
 <div class="cns_whisper_lead_in">
 	<img src="{$IMG*,icons/48x48/buttons/new_topic}" alt="" class="right" />
 

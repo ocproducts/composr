@@ -35,7 +35,22 @@
 		<div class="wiki_page_children">
 			<p class="lonely_label">{!CHILD_PAGES}:</p>
 			<ul itemprop="significantLinks" class="spaced_list">
-				{CHILDREN}
+				{+START,LOOP,CHILDREN}
+					<li>
+						<a title="{CHILD*}: {!WIKI_PAGES}" href="{URL*}">{CHILD*}</a>
+						{+START,IF,{$OR,{$GT,{MY_CHILD_POSTS},0},{$GT,{MY_CHILD_CHILDREN},0},{$IS_NON_EMPTY,{BODY_CONTENT}}}}
+							<br />
+							{+START,IF_PASSED,BODY_CONTENT}{!BODY_CONTENT}, {+END}
+							{!POST_PLU,{MY_CHILD_POSTS*}},
+							{!CHILD_PLU,{MY_CHILD_CHILDREN*}}
+						{+END}
+						{+START,IF,{$NOR,{$GT,{MY_CHILD_POSTS},0},{$GT,{MY_CHILD_CHILDREN},0},{$IS_NON_EMPTY,{BODY_CONTENT}}}}
+							{+START,IF,{HIDE_POSTS}}
+								{!EMPTY}
+							{+END}
+						{+END}
+					</li>
+				{+END}
 			</ul>
 		</div>
 	{+END}

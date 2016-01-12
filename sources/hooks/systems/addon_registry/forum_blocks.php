@@ -102,9 +102,7 @@ class Hook_addon_registry_forum_blocks
         return array(
             'themes/default/templates/BLOCK_MAIN_FORUM_NEWS.tpl',
             'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS.tpl',
-            'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS_TOPIC.tpl',
             'themes/default/templates/BLOCK_SIDE_FORUM_NEWS.tpl',
-            'themes/default/templates/BLOCK_SIDE_FORUM_NEWS_SUMMARY.tpl',
             'sources/blocks/bottom_forum_news.php',
             'sources/blocks/main_forum_news.php',
             'sources/blocks/main_forum_topics.php',
@@ -122,9 +120,7 @@ class Hook_addon_registry_forum_blocks
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_MAIN_FORUM_TOPICS_TOPIC.tpl' => 'block_main_forum_topics',
             'templates/BLOCK_MAIN_FORUM_TOPICS.tpl' => 'block_main_forum_topics',
-            'templates/BLOCK_SIDE_FORUM_NEWS_SUMMARY.tpl' => 'block_side_forum_news',
             'templates/BLOCK_SIDE_FORUM_NEWS.tpl' => 'block_side_forum_news',
             'templates/BLOCK_MAIN_FORUM_NEWS.tpl' => 'block_main_forum_news'
         );
@@ -140,10 +136,9 @@ class Hook_addon_registry_forum_blocks
     public function tpl_preview__block_main_forum_topics()
     {
         require_lang('cns');
-        //Create the 'BLOCK_MAIN_FORUM_TOPICS_TOPIC' template value
-        $out = new Tempcode();
+        $topics = array();
         foreach (placeholder_array() as $k => $v) {
-            $out->attach(do_lorem_template('BLOCK_MAIN_FORUM_TOPICS_TOPIC', array(
+            $topics[] = array(
                 'POST' => lorem_paragraph(),
                 'FORUM_ID' => null,
                 'FORUM_NAME' => lorem_word(),
@@ -154,14 +149,13 @@ class Hook_addon_registry_forum_blocks
                 'USERNAME' => lorem_word(),
                 'MEMBER_ID' => null,
                 'NUM_POSTS' => placeholder_number(),
-            )));
+            );
         }
 
-        //Create the 'BLOCK_MAIN_FORUM_TOPICS' with 'BLOCK_MAIN_FORUM_TOPICS_TOPIC' as sub-template.
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_FORUM_TOPICS', array(
                 'TITLE' => lorem_word(),
-                'CONTENT' => $out,
+                'TOPICS' => $topics,
                 'FORUM_NAME' => lorem_word_html(),
                 'SUBMIT_URL' => placeholder_url(),
             )), null, '', true)
@@ -179,10 +173,10 @@ class Hook_addon_registry_forum_blocks
     {
         require_lang('news');
         require_lang('cns');
-        //Create the 'BLOCK_SIDE_FORUM_NEWS_SUMMARY' template value
-        $out = new Tempcode();
+
+        $news = array();
         foreach (placeholder_array() as $k => $v) {
-            $out->attach(do_lorem_template('BLOCK_SIDE_FORUM_NEWS_SUMMARY', array(
+            $news[] = array(
                 'REPLIES' => lorem_word(),
                 'FIRSTTIME' => lorem_word(),
                 'LASTTIME' => lorem_word(),
@@ -195,15 +189,14 @@ class Hook_addon_registry_forum_blocks
                 'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => escape_html(lorem_word()),
-            )));
+            );
         }
 
-        //Create the 'BLOCK_SIDE_FORUM_NEWS' with 'BLOCK_SIDE_FORUM_NEWS_SUMMARY' as sub-template.
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_FORUM_NEWS', array(
                 'FORUM_NAME' => lorem_word_html(),
                 'TITLE' => lorem_phrase(),
-                'CONTENT' => $out,
+                'NEWS' => $news,
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
             )), null, '', true)

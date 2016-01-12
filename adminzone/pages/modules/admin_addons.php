@@ -853,9 +853,8 @@ class Module_admin_addons
             $frm_files->attach(do_template('ADDON_EXPORT_FILE_CHOICE', array('_GUID' => '77a91b947259c5e0cc7b5240b24425ca', 'ID' => strval($i), 'PATH' => $file)));
             $i++;
         }
-        $tpl_files = do_template('ADDON_EXPORT_LINE_CHOICE', array('_GUID' => '525b161afe5d84268360e960da5e759f', 'URL' => $url, 'FILES' => $frm_files));
 
-        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'FILES' => $tpl_files, 'THEMES' => $tpl_themes));
+        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
     }
 
     /**
@@ -923,7 +922,7 @@ class Module_admin_addons
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $organisation = get_site_name();
         $description = '';
-        $category = is_null($theme) ? ($is_language ? 'Translation' : 'Uncategorised/Unstable') : 'Themes';
+        $category = is_null($theme) ? ($is_language ? 'Translations' : 'Uncategorised/Unstable') : 'Themes';
         $version = '1.0';
         $copyright_attribution = '';
         $licence = 'Creative Commons Attribution-ShareAlike';
@@ -1124,7 +1123,7 @@ class Module_admin_addons
     public function modules_view()
     {
         $zone = get_param_string('id');
-        $tpl_modules = new Tempcode();
+        $tpl_modules = array();
 
         require_code('templates_columned_table');
         require_code('zones2');
@@ -1210,7 +1209,7 @@ class Module_admin_addons
             if (is_null($hack_version)) {
                 $hack_version = do_lang_tempcode('NA_EM');
             }
-            $tpl_modules->attach(do_template('MODULE_SCREEN_MODULE', array('_GUID' => 'cf19adfd129c44a7ef1d6789002c6535', 'STATUS' => $status, 'NAME' => $module, 'AUTHOR' => $author, 'ORGANISATION' => $organisation, 'VERSION' => strval($version), 'HACKED_BY' => $hacked_by, 'HACK_VERSION' => $hack_version, 'ACTIONS' => $actions)));
+            $tpl_modules[] = array('STATUS' => $status, 'NAME' => $module, 'AUTHOR' => $author, 'ORGANISATION' => $organisation, 'VERSION' => strval($version), 'HACKED_BY' => $hacked_by, 'HACK_VERSION' => $hack_version, 'ACTIONS' => $actions);
         }
 
         return do_template('MODULE_SCREEN', array('_GUID' => '132b23107b49a23e0b11db862de1dd56', 'TITLE' => $this->title, 'MODULES' => $tpl_modules));

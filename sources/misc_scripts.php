@@ -456,22 +456,29 @@ function emoticons_script()
     }
 
     // Render UI
-    $content = new Tempcode();
-    $current_row = new Tempcode();
+    $rows = array();
+    $cells = array();
     foreach ($rows as $i => $myrow) {
         if (($i % $cols == 0) && ($i != 0)) {
-            $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => '283bff0bb281039b94ff2d4dcaf79172', 'CELLS' => $current_row)));
-            $current_row = new Tempcode();
+            $rows[] = array('CELLS' => $cells);
+            $cells = array();
         }
 
         $code_esc = $myrow['e_code'];
-        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => filter_naughty_harsh(get_param_string('field_name', 'post')), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
+        $cells[] = array(
+            '_GUID' => 'ddb838e6fa296df41299c8758db92f8d',
+            'COLS' => strval($cols),
+            'FIELD_NAME' => filter_naughty_harsh(get_param_string('field_name', 'post')),
+            'CODE_ESC' => $code_esc,
+            'THEME_IMG_CODE' => $myrow['e_theme_img_code'],
+            'CODE' => $myrow['e_code'],
+        );
     }
-    if (!$current_row->is_empty()) {
-        $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => 'd13e74f7febc560dc5fc241dc7914a03', 'CELLS' => $current_row)));
+    if ($cells !== array()) {
+        $rows[] = array('CELLS' => $cells);
     }
 
-    $content = do_template('CNS_EMOTICON_TABLE', array('_GUID' => 'd3dd9bbfacede738e2aff4712b86944b', 'ROWS' => $content));
+    $content = do_template('CNS_EMOTICON_TABLE', array('ROWS' => $rows));
 
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

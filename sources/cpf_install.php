@@ -94,9 +94,7 @@ function install_address_fields()
     $countries = '';
     $_countries = find_countries();
     foreach ($_countries as $code => $name) {
-        if ($countries != '') {
-            $countries .= '|';
-        }
+        $countries .= '|';
         $countries .= $code . '=' . $name;
     }
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'list', 0, $countries);

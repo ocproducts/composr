@@ -1027,10 +1027,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
             }
 
-            $_parts = new Tempcode();
+            $_parts = array();
             krsort($attributes);
             foreach ($attributes as $num => $val) {
-                $_parts->attach(do_template('COMCODE_RANDOM_PART', array('_GUID' => '5fa49a916304f9caa0ddedeb01531142', 'NUM' => strval($num), 'VAL' => $val)));
+                $_parts[] = array('NUM' => strval($num), 'VAL' => $val);
             }
 
             $temp_tpl = do_template('COMCODE_RANDOM', array('_GUID' => '9b77aaf593b12c763fb0c367fab415b6', 'FULL' => $embed, 'MAX' => strval($max), 'PARTS' => $_parts));
@@ -1039,10 +1039,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'jumping':
             unset($attributes['param']);
 
-            $_parts = new Tempcode();
+            $_parts = array();
             foreach ($attributes as $val) {
                 $_temp = comcode_to_tempcode($val, $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
-                $_parts->attach(do_template('COMCODE_JUMPING_PART', array('_GUID' => 'd163bd11920f39f0cb8ff2f6ba48bc80', 'PART' => $_temp->evaluate())));
+                $_parts[] = array('PART' => $_temp->evaluate());
             }
 
             $embed = $embed->evaluate();
@@ -1050,7 +1050,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'shocker':
-            $_parts = new Tempcode();
+            $_parts = array();
             foreach ($attributes as $key => $val) {
                 if (substr($key, 0, 5) == 'left_') {
                     $left = $val;
@@ -1058,7 +1058,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                     $left = comcode_to_tempcode($left, $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
                     $right = comcode_to_tempcode($right, $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
-                    $_parts->attach(do_template('COMCODE_SHOCKER_PART', array('_GUID' => '512b1cfef8fe56597ae440e924bf38a7', 'LEFT' => $left, 'RIGHT' => $right)));
+
+                    $_parts[] = array('LEFT' => $left, 'RIGHT' => $right);
                 }
             }
 
@@ -1252,14 +1253,14 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'concepts':
             $title = $embed->evaluate();
 
-            $concepts = new Tempcode();
+            $concepts = array();
             foreach ($attributes as $_key => $_value) {
                 if (substr($_key, -4) == '_key') {
                     $key = $_value;
                     $cid = substr($_key, 0, strlen($_key) - 4);
                     $to_parse = array_key_exists($cid . '_value', $attributes) ? $attributes[$cid . '_value'] : '';
                     $value = comcode_to_tempcode($to_parse, $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
-                    $concepts->attach(do_template('COMCODE_CONCEPTS_CONCEPT', array('_GUID' => '4baf6dabc32146c594c7fd922791b6b2', 'A' => 'concept__' . preg_replace('#[^\w]#', '_', $key), 'KEY' => $key, 'VALUE' => $value)));
+                    $concepts[] = array('A' => 'concept__' . preg_replace('#[^\w]#', '_', $key), 'KEY' => $key, 'VALUE' => $value);
                 }
             }
 
@@ -2313,21 +2314,21 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
  */
 function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
 {
-    $lines = new Tempcode();
+    $lines = array();
     foreach ($tree_structure as $level) {
-        $_line = do_template('COMCODE_CONTENTS_LINE_FINAL', array('_GUID' => 'a3dd1bf2e16080993cf72edccb7f3608', 'ID' => $level[0], 'LINE' => $level[1], 'URL' => $level[2]));
         if (array_key_exists(3, $level)) {
             $under = _do_contents_level($level[3], $list_types, $base, $the_level + 1);
             if ($the_level < $base - 1) {
                 return $under; // Top level not assembled because it has top level title, above contents
             }
-            $_line->attach($under);
+        } else {
+            $under = new Tempcode();
         }
 
-        $lines->attach(do_template('COMCODE_CONTENTS_LINE', array('_GUID' => 'f6891cb85d93facbc37f7fd3ef403950', 'LINE' => $_line)));
+        $lines[] = array('ID' => $level[0], 'LINE' => $level[1], 'URL' => $level[2], 'UNDER' => $under);
     }
 
-    if ($lines->is_empty()) {
+    if ($lines === array()) {
         return new Tempcode();
     }
 

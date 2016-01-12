@@ -51,7 +51,7 @@ class Hook_addon_registry_installer
      */
     public function get_description()
     {
-        return 'The installer files (can be removed immediately after installing; in-fact Composr makes you remove install.php manually).';
+        return 'The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).';
     }
 
     /**
