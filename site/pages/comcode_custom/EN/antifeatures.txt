@@ -113,7 +113,7 @@
 				<h3><a href="#">A static content exporter</a></h3>
 
 				<div>
-					<p>Composr does not export content to static HTML files for you to upload to a conventional web server. Whilst this approach might result in very fast websites, it is extremely limiting: social applications need dynamism and a deal of interaction which static sites can not offer. This said, there is a Composr option to cache full page content for guest users, and this provides incredibly high performance. We do actually have a static export addon too, but we don't bundle it and it naturally can't support most of Composr's dynamic features.</p>
+					<p>Composr does not export content to static HTML files for you to upload to a conventional web server. While this approach might result in very fast websites, it is extremely limiting: social applications need dynamism and a deal of interaction which static sites can not offer. This said, there is a Composr option to cache full page content for guest users, and this provides incredibly high performance. We do actually have a static export addon too, but we don't bundle it and it naturally can't support most of Composr's dynamic features.</p>
 				</div>
 
 				<h3><a href="#">One solution to rule them all</a></h3>
@@ -143,7 +143,7 @@
 				<div>
 					<p>Some CMS have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMS's can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through webapps.</p>
 
-					<p>The above all said, Composr does infact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
+					<p>The above all said, Composr does in fact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
 				</div>
 
 				<h3><a href="#">A glorified blog, basic CMS, or &ldquo;site builder&rdquo;</a></h3>

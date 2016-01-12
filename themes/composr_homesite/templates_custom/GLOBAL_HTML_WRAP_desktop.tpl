@@ -1,4 +1,4 @@
-<body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}{+START,IF,{$_GET,overlay}} overlay lightbox{+END}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*} type_running_{$_GET*,type,browse}{+START,IF,{$_GET,overlay}} overlay lightbox{+END}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	{+START,IF,{$SHOW_HEADER}}
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
@@ -137,7 +137,9 @@
 
 			{$LOAD_PANEL,top}
 
-			{MIDDLE}
+			<div class="screenInner">
+				{MIDDLE}
+			</div>
 
 			{$LOAD_PANEL,bottom}
 

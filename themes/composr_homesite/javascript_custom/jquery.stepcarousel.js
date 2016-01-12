@@ -7,8 +7,6 @@
 //** Current version 1.91 (Aug 15th, 11'): See http://www.dynamicdrive.com/dynamicindex4/stepcarouselchangelog.txt for details
 
 
-jQuery.noConflict()
-
 var stepcarousel={
 	ajaxloadingmsg: '<div style="margin: 1em; font-weight: bold"><img src="ajaxloadr.gif" style="vertical-align: middle" /> Fetching Content. Please wait...</div>', //customize HTML to show while fetching Ajax content
 	defaultbuttonsfade: 0.4, //Fade degree for disabled nav buttons (0=completely transparent, 1=completely opaque)
@@ -319,8 +317,6 @@ var stepcarousel={
 	},
 
 	setup:function(config){
-		//Disable Step Gallery scrollbars ASAP dynamically (enabled for sake of users with JS disabled)
-		document.write('<style type="text/css">\n#'+config.galleryid+'{overflow: hidden;}\n</style>')
 		jQuery(document).ready(function($){
 			config.$gallery=$('#'+config.galleryid)
 			stepcarousel.init($, config)

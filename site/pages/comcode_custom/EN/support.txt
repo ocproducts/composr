@@ -59,7 +59,7 @@
 			</div>
 
 			<div class="srTitle">
-				<a href="{$PAGE_LINK*,forum}">Community forum</a><br />(and <a href="{$PAGE_LINK*,site:chat}">chat room</a>)
+				<a href="{$PAGE_LINK*,forum}">Community forum</a><br />(and <a href="{$PAGE_LINK*,site:chat}">chatroom</a>)
 			</div>
 
 			<div class="srPara">

@@ -153,7 +153,7 @@
 				</h3>
 
 				<div class="quoteCst">
-					<p>Composr has it's own forum and member system (Conversr), but can also integrate with some third party ones out-of-the-box:</p>
+					<p>Composr has its own forum and member system (Conversr), but can also integrate with some third party ones out-of-the-box:</p>
 
 					<ul class="liRcol">
 						<li>Burning Board 2.0 / 2.2/Lite</li>

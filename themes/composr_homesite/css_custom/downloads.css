@@ -1,44 +1,56 @@
-.clear { clear:both }
-.addon-box { width:435px; background:url('{$IMG;,composr_homesite/addon-box-bg}') no-repeat bottom left; border-radius:7px; margin:0 3px 10px 0; float:left; padding:32px 15px 30px 26px; }
-.addon-box-img { width:98px; height:98px; float:left; margin-right:25px; }
-.addon-box-title { width:300px; float:left; font-size:21px; color:#667ea4; padding-top:10px; line-height:18px; font-weight:bold; }
-.addon-box-title a { color:#667ea4; text-decoration:none; }
-.addon-box-title a:hover { color:#E5922C; }
-.addon-box-title span { font-size:13px; color:#333; font-weight:normal; }
-.carosol { width:930px; float:left; background:#f2f4f7; border-radius:7px; height:150px; padding:15px; }
+.downloads-cat-box { width:435px; background:url('{$IMG;,composr_homesite/downloads/downloads-cat-box-bg}') no-repeat bottom left; border-radius:7px; margin:0 3px 10px 0; float:left; padding:32px 15px 30px 26px; }
+.downloads-cat-box-img { width:98px; height:98px; float:left; margin-right:25px; }
+.downloads-cat-box-img img { width:100%; height:100%; {$BETA_CSS_PROPERTY,box-sizing: border-box;} opacity: 1.0; padding: 12px; }
+.downloads-cat-box-title { width:300px; float:left; font-size:21px; color:#667ea4; padding-top:10px; line-height:18px; font-weight:bold; }
+.downloads-cat-box-title a { color:#667ea4; text-decoration:none; }
+.downloads-cat-box-title a:hover { color:#E5922C; }
+.downloads-cat-box-title span { font-size:13px; color:#333; font-weight:normal; }
 
-.addon-block { width:99%; float:left; margin-bottom:20px; border:#667ea4 solid 1px; border-radius:7px; }
-.addon-block h2 { font-size:15px; color:#fff; font-weight:normal; padding:7px; background:#667ea4;border-radius:5px 5px 0 0; }
-.addon-block-content { width:95%; float:left; padding:15px 30px 10px 20px; }
-.addon-block-img { width:200px; height:155px; float:left; margin:7px; }
-.addon-block-txt { width:680px; float:right; }
-.addon-block-strip { width:98%; float:left; padding:5px; background:#ececed; color:#667ea4; font-size:13px; margin-bottom:10px; }
-.addon-strip-blk1 { width:124px; float:left; }
-.addon-strip-blk2 { width:150px; float:left; }
-.addon-strip-row { width:100%; float:left; padding:5px 0; border-bottom:#ececed solid 1px; }
+.downloads-block { width:99%; float:left; margin-bottom:20px; border:#667ea4 solid 1px; border-radius:7px; }
+.downloads-block>h2 { font-size:15px; color:#fff; font-weight:normal; padding:7px; background:#667ea4; border-radius:5px 5px 0 0; margin:0; }
+.downloads-block-content { width:95%; float:left; padding:15px 30px 10px 20px; overflow:hidden; }
+.downloads-block-img { width:200px; height:155px; float:left; margin:7px; }
+.downloads-block-txt { width:680px; float:right; overflow:hidden; }
+.downloads-block-txt h2 { font-size:13px; margin:5px 0; }
+.downloads-block-txt>div:first-child { margin-bottom:20px; }
+.downloads-block-txt>div>p:last-child { margin-bottom:0; }
+.downloads-block-strip { width:98%; float:left; padding:5px; background:#ececed; color:#667ea4; font-size:13px; margin-bottom:10px; }
 
-.addon-block-more a { width:110px; height:22px; float:left; background:url('{$IMG;,composr_homesite/arrow-more}') no-repeat left top; color:#f7921e; display:block; font-size:14px; padding-left:35px; margin-top:10px; }
-.addon-block-more a:hover { color:#f7921e; }
-.addon-block-download a { width:200px; height:22px; float:left; background:url('{$IMG;,composr_homesite/download-icon}') no-repeat left top; color:#f7921e; display:block; font-size:14px; padding-left:35px; margin-top:10px; }
-.addon-block-download a:hover { color:#f7921e; }
+.downloads-strip-blk1 { width:124px; float:left; }
+.downloads-strip-blk2 { width:150px; float:left; }
+.downloads-strip-row { width:100%; float:left; padding:5px 0; border-bottom:#ececed solid 1px; }
 
-.stepcarousel{
+.downloads-block-more a { width:110px; height:22px; float:left; background:url('{$IMG;,composr_homesite/downloads/arrow-more}') no-repeat left top; color:#f7921e; display:block; font-size:14px; padding-left:35px; margin-top:10px; }
+.downloads-block-more a:hover { color:#f7921e; }
+
+.downloads-block-download a { width:200px; height:22px; float:left; background:url('{$IMG;,composr_homesite/downloads/download-icon}') no-repeat left top; color:#f7921e; display:block; font-size:14px; padding-left:35px; margin-top:10px; }
+.downloads-block-download a:hover { color:#f7921e; }
+
+.downloads-carousel { width:930px; float:left; background:#f2f4f7; border-radius:7px; height:150px; padding:15px; }
+
+.stepcarousel {
 	position:relative; /*leave this value alone*/
-	overflow:scroll; /*leave this value alone*/
+	overflow:hidden; /*leave this value alone*/
 	width:150px; /*Width of Carousel Viewer itself*/
 	height:150px; /*Height should enough to fit largest content's height*/
 }
-.stepcarousel .belt{
+.stepcarousel .belt {
 	position:absolute; /*leave this value alone*/
 	left:0;
 	top:0;
 }
-.stepcarousel .panel{
+.stepcarousel .panel {
 	float:left; /*leave this value alone*/
 	overflow:hidden; /*clip content that go outside dimensions of holding panel DIV*/
 	margin:10px; /*margin around each panel*/
 	width:165px; /*Width of each panel holding each content. If removed, widths should be individually defined on each content DIV then. */
 	margin-top:25px;
 }
+
+.stepcarousel .panel img {
+	height: 104px;
+}
+
+.cntRow .galleryFT { width:860px; border:none; margin-left:34px }
 
 {+START,INCLUDE,downloads,.css,css,default}{+END}

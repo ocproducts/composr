@@ -2,7 +2,7 @@
 
 To set up your personal demo we just need a few details from you:
  - A name for the demo which we'll use in your temporary URL.
- - Your email address (so emails on the demo go to you, and so we can keep in contact).
+ - Your e-mail address (so e-mails on the demo go to you, and so we can keep in contact).
  - A password for you to log in to the demo with.
 
 Please note that this is a demo system, your demo will only last a few days. Composr is free, but you will need to find a web host.

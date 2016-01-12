@@ -57,9 +57,9 @@ img, img a { border:none; outline:none; }
 :hover { {$BETA_CSS_PROPERTY,transition:color .6s ease-out, background .6s ease-in, border .6s ease-in-out;} }
 
 .text-center { text-align:center !important; }
-.margin-r-19 { margin-right:19px; }
-.margin-r-5 { margin-right:5px; }
-.margin-l-20 { margin-left:20px; }
+.margin-r-19 { margin-right:19px !important; }
+.margin-r-5 { margin-right:5px !important; }
+.margin-l-20 { margin-left:20px !important; }
 .height-nil { min-height:0 !important; }
 .border-b-no { border-bottom:none !important; }
 .list-none { list-style:none !important; }
@@ -124,7 +124,6 @@ table.gsc-search-box td { padding:0 !important; }
 .cntRow .sub-head { font-size:16px; }
 .cntRow .sub-head-big { font-size:22px; }
 .cntRow .headFT { text-align:center; font-size:21px; color:#667ea4; font-weight:bold; }
-.cntRow .galleryFT { width:860px; border:none; margin-left:34px }
 .cntRow .row-top { margin-top:20px; border-top:#c7c7c7 solid 1px; }
 
 .commonBtn { float:left; display:block; height:40px; display:block; text-align:center; line-height:40px; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:4px;} /*background-image:url('{$IMG;,composr_homesite/btn-left-bg}'); background-repeat:no-repeat; background-position:10px 0px;*/ border-right:2px solid #445673; border-bottom:2px solid #445673; }
@@ -136,7 +135,7 @@ table.gsc-search-box td { padding:0 !important; }
 
 /*Sliders*/
 
-.hSliderHold { float:left; width:960px; height:336px; background:none; }
+.hSliderHold { float:left; width:960px; height:336px; background:none; position:relative; }
 .hSliderInner { float:left; width:960px; height:320px; background-image:url('{$IMG;,composr_homesite/slider-bg}'); background-repeat:repeat; background-position:left top; }
 .hSliderBtm { float:left; width:960px; height:16px; background-image:url('{$IMG;,composr_homesite/slider-btm-bg}'); background-repeat:no-repeat; background-position:center top; margin-top:1px; }
 .hSlider { float:left; width:940px; height:300px; margin:10px; background-color:#FFF; }
@@ -247,9 +246,10 @@ input.email { float:left; width:270px; padding:0px 4px; height:40px; border:1px 
 
 /*Community banners*/
 
+.ftHolder { float: left; width: 960px; padding: 20px 0px; }
 .row-block { width:100%; float:left; background:url('{$IMG;,composr_homesite/sep_comp}') no-repeat top center; padding:10px 0; }
 .row-block .bannerr { width:100%; margin:5px 0; }
-.row-block h2 { font-size:21px; color:#667ea4; font-weight:bold; padding:15px 0; }
+.row-block h2 { font-size:21px; color:#667ea4; font-weight:bold; padding:15px 0; margin:0; }
 .row-block p span { color:#e5922c; }
 
 
@@ -271,6 +271,15 @@ input.email { float:left; width:270px; padding:0px 4px; height:40px; border:1px 
 .quoteCst p.ceo { font-size:13px; }
 
 .quoteCst:last-child { border-bottom:none; }
+
+
+/*Contact page*/
+
+.page_running_contact.type_running_browse .screenInner { background: url('{$IMG;,composr_homesite/contact/feedback-img}') top right no-repeat; }
+.page_running_contact.type_running_free .screenInner { background: url('{$IMG;,composr_homesite/contact/report-img}') top right no-repeat; }
+.page_running_contact.type_running_paid .screenInner { background: url('{$IMG;,composr_homesite/contact/business-img}') top right no-repeat; }
+.page_running_contact.type_running_browse .form_text, .page_running_contact.type_running_free .form_text, .page_running_contact.type_running_paid .form_text { margin-right: 150px; }
+
 
 /*jQuery-UI overrides*/
 
@@ -813,12 +822,12 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
-	font-size: 0.95em;
+	font-size: 0.95em !important;
 	padding-{!en_left}: 15px !important;
 	margin: 1.5em !important;
 	margin-{!en_left}: 10px !important;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
-	background-position: {!en_left} 5px;
+	background-position: {!en_left} 7px;
 	background-repeat: no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -1168,14 +1177,14 @@ td>.box, .right>.box, .left>.box {
 }
 
 .box>.box_inner, .box>.toggleable_tray {
-	margin: 0.5em;
+	margin: 5px; /* not em so that header may be positioned properly */
 }
 .boxless_space .box>.box_inner, .boxless_space .box>.toggleable_tray {
 	margin: 0;
 }
 .email_body .box .box_inner { /* Outlook.com does not support margins or complex use of the sibling selector */
 	margin: 0;
-	padding: 0.5em;
+	padding: 5px; /* not em so that header may be positioned properly */
 }
 
 .box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
@@ -1190,7 +1199,7 @@ td>.box, .right>.box, .left>.box {
 	border: 0;
 
 	/* .box_inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -0.506em 0 0.506em -0.406em; /* Would be -0.5 but Opera does not seem to like */
+	margin: -5px 0 5px -5px;
 	padding: 0.6em 0.5em 0.5em 0.3em;
 	width: 100%;
 }
@@ -2387,6 +2396,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .comments_posting_form_inner textarea {
 	color: {$GET,comfortable_input_field_text};
+	width: 100%;
 }
 
 .comments_posting_form_inner table {

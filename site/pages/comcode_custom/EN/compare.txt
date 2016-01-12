@@ -19,13 +19,80 @@
 			//]]></script>
 
 			<div class="hSlider">
-				<div class="con"><img alt="scroll" src="{$IMG*,composr_homesite/compare/scroll-img}" /></div>
+				<div class="con">
+					<div id="tooltip_container">
+						<div id="tooltip_wordpress" class="slide_tooltip">
+							<div id="wordpress" class="vtip" title="Wordpress is the best choice if you just want an online voice. With a lot of work it can be contorted to do more, but why build on the wrong foundations?"></div>
+						</div>
+						<div id="tooltip_joomla" class="slide_tooltip">
+							<div id="joomla" class="vtip" title="Joomla is designed for news publishing sites (which it does very well). In the core of Joomla everything is an article, whether you want that or not."></div>
+						</div>
+						<div id="tooltip_drupal" class="slide_tooltip">
+							<div id="drupal" class="vtip" title="For a sophisticated site Drupal is all about DIY &ndash; collect the pieces then spend a lot of time/money to hammer them to make it all fit."></div>
+						</div>
+						<div id="tooltip_snarepoint" class="slide_tooltip">
+							<div id="snarepoint" class="vtip" title="Do you have a budget for consultants and a desire to get locked into closed Microsoft technology? Then Share Point is for you!"></div>
+						</div>
+						<div id="tooltip_composr" class="slide_tooltip">
+							<div id="composr" class="vtip" title="Our professionally designed system, with all the features you need designed to work seamlessly together. No licensing costs either!"></div>
+						</div>
+
+						<img id="john_doe" onmouseout="set_opacity(this,0.1);" onmouseover="set_opacity(this,1.0);" title="" alt="John Doe, Purchasing Manager, Naive-Corp" src="{$IMG*,composr_homesite/compare/johndoemagnify}" />
+					</div>
+
+					<img alt="scroll" src="{$IMG*,composr_homesite/compare/scroll-img}" />
+				</div>
 			</div>
 
 			<div class="hSliderBtm"></div>
 		</div>
+
+		<div id="slide_header_text">A whimsical comparison of your CMS choice (Composr vs other common systems).</div>
 	</div>
 </div>
+
+<script>// <![CDATA[
+	set_opacity(document.getElementById('john_doe'),0.1);
+
+	this.vtip = function() {	
+		if ($(".vtip")) $(".vtip").unbind().hover(
+			function(e) {
+				if (!this.t) this.t = this.title;
+				this.title = '';
+					var xOffset=(e.pageX>650)?-280:-50;
+				var yOffset = -100; // y distance from mouse	   
+				this.top = (e.pageY + yOffset - 10);
+					this.left = (e.pageX + xOffset);
+
+				$('body').append( '<p style="display: none" id="vtip"><img id="vtipArrow" />' + this.t + '</p>' );
+
+				$('p#vtip #vtipArrow').attr("src", '{$IMG;,composr_homesite/compare/vtip_arrow}');
+				$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
+				$('p#vtip').css("display","block").css("top", this.top+"px").css("left", this.left+"px").fadeIn("slow");
+
+			},
+			function() {
+				$("p#vtip").fadeOut("slow").remove();
+			}
+		).mousemove(
+			function(e) {
+					var xOffset=(e.pageX>650)?-280:-50;
+				var yOffset = -100; // y distance from mouse	   
+				this.top = (e.pageY + yOffset - 10);
+				this.left = (e.pageX + xOffset);
+
+				$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
+				$("p#vtip").css("top", this.top+"px").css("left", this.left+"px");
+			}
+		);			
+
+	};
+
+	if (typeof window.jQuery!='undefined')
+	{
+		jQuery(document).ready(function($){vtip();})
+	}
+//]]></script>
 
 <div class="headlineRow cntRow">
 	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity). A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}">Web-applications, Composr, and PHP tutorial</a></p>
@@ -373,11 +440,11 @@
 				<th class="col1 tbSlCol">
 					[tooltip="Community-driven development is usually more programmer-focused, with features developed to help programmers with what they need. The best Open Source software tends to be commercially-backed by companies or foundations that depend on user satisfaction for their survival.
 
-	There are many reasons to avoid (most) Open Source software that is not commercially-backed, especially:[list]
-	[*]the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
-	[*]the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
-	[*]whilst the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces[/list]
-	We have to be clear that these don't always hold true, every project is different, but you should check before relying on something!"]Commercially-backed[/tooltip]
+There are many reasons to avoid (most) Open Source software that is not commercially-backed, especially:[list]
+[*]the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
+[*]the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
+[*]while the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces[/list]
+We have to be clear that these don't always hold true, every project is different, but you should check before relying on something!"]Commercially-backed[/tooltip]
 				</th>
 
 				<td class="col2 tbYwCol">

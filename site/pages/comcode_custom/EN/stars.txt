@@ -135,7 +135,7 @@
 
 	<div class="blk3">
 		<ul>
-			<li>Coded the chat room, blogging support, the analytics system, and OcCLE (now Commandr)</li>
+			<li>Coded the chatroom, blogging support, the analytics system, and OcCLE (now Commandr)</li>
 			<li>Masters Degree in Computer Science degree from The University Of Cambridge</li>
 			<li>Other work has included helping out with Firefox, and ongoing work on GNOME</li>
 		</ul>
@@ -157,12 +157,4 @@
 		<li>All 20 or so former and current developers and managers for ocProducts</li>
 	</ul>
 </div>
-
-<!-- Script for Vertical Tab menu -->
-<script>//<![CDATA[
-	$(function() {
-		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	});
-//]]></script>
 [/semihtml]

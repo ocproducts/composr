@@ -3,6 +3,123 @@
 ul.cntLiFull { list-style:none; float:left; width:960px; height:auto; overflow:hidden; padding:10px 0px; margin:0 0 20px 0; }
 ul.cntLiFull li { float:left; width:920px; padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
 
+/*Slider*/
+
+#tooltip_container {
+	width:3000px;
+	height:300px;
+	margin:0;
+	padding:0;
+	z-index:999;
+	position:absolute;
+}
+
+.slide_tooltip {
+	float:left;
+	padding:0;
+	z-index:1000;
+}
+
+#tooltip_wordpress {
+	width:220px;
+	padding:80px 0 0 30px;
+}
+#tooltip_joomla{
+	width:200px;
+	padding:80px 0 20px 30px;
+}
+#tooltip_drupal{
+	width:240px;
+	padding:20px 0 40px 50px;
+}
+#tooltip_snarepoint{
+	width:230px;
+	padding:40px 0 20px 110px;
+}
+#tooltip_composr{
+	width:340px;
+	padding:10px 0 20px 20px;
+}
+
+p#vtip {
+	display: none;
+	position: absolute;
+	padding: 10px;
+	left: 5px;
+	font-size: 13px;
+	text-align:center;
+	background:url({$IMG;,composr_homesite/compare/tooltip_bg}) #FFFFFB repeat-x left top;
+	border: 2px solid #FFFFCC;
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	z-index: 290;
+	width:240px;
+	height: 66px;
+}
+p#vtip #vtipArrow {
+	position: absolute;
+	top: 86px;
+	left:15px;
+}
+
+#wordpress{
+	width:220px;
+	float:left;
+	margin:0;
+	padding:0;
+	height:200px;
+}
+#joomla{
+	width:220px;
+	float:left;
+	margin:0;
+	padding:0;
+	height:140px;
+}
+#drupal{
+	width:240px;
+	float:left;
+	margin:0;
+	padding:0;
+	height:200px;
+}
+#snarepoint{
+	width:280px;
+	float:left;
+	margin:0;
+	padding:0;
+	height:160px;
+}
+#composr{
+	width:340px;
+	float:left;
+	margin:0;
+	padding:0;
+	height:260px;
+}
+
+#slide_header_text{
+	height:20px;
+	position:absolute;
+	z-index:1000;
+	left: 0;
+	bottom:29px;
+	color:#FFF;
+	text-shadow:#427890 1px 1px;
+	margin-left:230px;
+}
+#slide_header_text a{
+	color:#FF0;
+	text-decoration:none;
+}
+#slide_header_text a:hover{
+	text-decoration:underline;
+}
+#john_doe {
+	position: absolute;
+	left: 1015px;
+	top: 150px;
+	z-index: 1300;
+}
 
 /*vTabs*/
 
