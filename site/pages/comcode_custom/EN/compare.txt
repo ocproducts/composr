@@ -644,7 +644,7 @@ We have to be clear that these don't always hold true, every project is differen
 
 			<tr class="tbRow tbList">
 				<th class="col1 tbSlCol">
-					[tooltip="This is the official standard for accessiblity. Composr has been praised for it's high accessibility for blind users."]WAI Compliant[/tooltip]
+					[tooltip="This is the official standard for accessiblity. Composr has been praised for its high accessibility for blind users."]WAI Compliant[/tooltip]
 				</th>
 
 				<td class="col2 tbYwCol">

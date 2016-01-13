@@ -1,29 +1,22 @@
-.vision-list ul { list-style:none; width:100%; float:left; padding-left:20px; }
-.vision-list ul li { line-height:25px; font-size:14px; padding-left:6px; color:#000; margin:12px 0; overflow:hidden; }
-.vision-list ul li span { color:#fff; background:#95A6C0; border-radius:50%; width:30px; height:30px; display:block; float:left; text-align:center; margin-right:40px; line-height:30px; }
-.vision-list ul li p { width:90%; float:left; }
-.vision-box-list ul { margin:0; list-style:none; float:left; width:220px; padding:7px; }
-.vision-box-list ul li { color:#666; border-bottom:#d6d6d6 solid 1px; padding:5px 0; line-height:20px; font-size:14px; }
-.vision-box-list ul li:last-child { border-bottom:0 }
+.partnersFtrImg { margin-top: 40px; float:left; width:320px; height:280px; margin-right:10px; padding-bottom:20px; }
 
-.vision-box2 { width:234px; float:left; min-height:420px; border:#e5922d solid 1px; border-radius:7px; margin:15px 0; margin-right:4px; }
-.vision-box2 h2 { margin:0; border-radius:5px 5px 0 0; background:#e5922d; color:#fff; text-align:center; padding:3px 0; font-size:15px; min-height:41px; }
+.vision-list ul { list-style:none; padding-left:20px; }
+.vision-list ul li { line-height:21px; font-size:14px; padding-left:70px; padding-top:7px; min-height:51px; color:#000; margin:12px 0; overflow:hidden; background-repeat:no-repeat; }
+{+START,LOOP,1\,2\,3\,4\,5\,6\,7\,8\,9\,10}
+.vision-list ul li:nth-child({_loop_var}) { background-image:url('{$IMG;,composr_homesite/vision/manifesto_icons/{_loop_var}}'); }
+{+END}
 
-.vision-meta { width:94%; float:left; background:#f4fafb; border-radius:7px; padding:20px 30px; margin-bottom:20px; }
+.vision-meta { width:94%; overflow:hidden; background:#f4fafb; border-radius:7px; padding:20px 30px; margin-bottom:20px; }
 .vision-meta-img { width:200px; float:left; }
 .vision-meta-txt { width:700px; float:left; }
 .vision-meta-txt h2 { color:#e69838; font-size:14px; }
 .vision-meta-txt p { padding:7px 0; }
+
+ol.cntHf { list-style:none; float:left; width:630px; height:auto; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
+ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }
 
 .vhis-box { width:470px; float:left; }
 .vhis-box-row { width:470px; float:left; margin-bottom:2px; }
 .vhis-box-date { width:100px; float:left; height:44px; background:#667ea4; color:#fff; font-size:17px; text-align:center; padding:3px 0; }
 .vhis-box-date span { font-size:12px; color:#BDC7D8; }
 .vhis-box-txt { width:349px; float:left; height:18px; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }
-
-.tooltip { display:none; position:absolute; border:1px solid #333; background-color:#161616; border-radius:5px; padding:10px; color:#fff; font-size:12px Arial; }
-
-.partnersFtrImg { margin-top: 40px; float:left; width:320px; height:280px; margin-right:10px; padding-bottom:20px; }
-
-ol.cntHf { list-style:none; float:left; width:630px; height:auto; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
-ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }

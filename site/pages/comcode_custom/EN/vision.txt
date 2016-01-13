@@ -39,68 +39,49 @@
 	</div>
 
 	<div class="cntRow">
-		<p>Composr isn't just thrown together on a whim. It is developed to a very particular vision, which we describe below in the Composr manifesto:</p>
+		<p>Composr isn't just thrown together on a whim. It is developed to a very particular vision, which we describe below in the 10 point manifesto:</p>
 
 		<div class="vision-list">
 			<ul>
 				<li>
-					<span>1</span>
-
-					<p>A Composr website should excel at more than just article publishing. Nobody should have to rely on non-standard addons to achieve common website functionality -- conversely, feature must be easily justifiable and software bloat avoided.</p>
+					A Composr website should excel at more than just article publishing. Nobody should have to rely on non-standard addons to achieve common website functionality &ndash; conversely, feature must be easily justifiable and software bloat avoided.
 				</li>
 
 				<li>
-					<span>2</span>
-
-					<p>Features should almost always be designed for users not developers, but developers should also be supported in achieving their optimal productivity.</p>
+					Features should almost always be designed for users not developers.<br />Developers should also be supported in achieving their optimal productivity.
 				</li>
 
 				<li>
-					<span>3</span>
-
-					<p>A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards and tools are other sides of the same coin.</p>
+					A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards&nbsp;and&nbsp;tools are other sides of the same coin.
 				</li>
 
 				<li>
-					<span>4</span>
-
-					<p>Everything should fit together smoothly, into a tidy streamlined model &ndash; from the features running through the software, to the clean design of the Composr website.</p>
+					Everything should fit together smoothly, into a tidy streamlined model:<br />From the features running through the software, to the clean design of the Composr website.
 				</li>
 
 				<li>
-					<span>5</span>
-
-					<p>Composr should remain Open Source software, free to download, install, and modify.</p>
+					Composr should remain Open Source software, free to download, install, and modify.<br />
+					Openness fosters innovation throughout all the corners of society.
 				</li>
 
 				<li>
-					<span>6</span>
-
-					<p>Everything should be as documented and user-friendly as possible &ndash; any area where this can't be done inside the development process should be made achievable by a well-integrated crowd-sourcing mechanism.</p>
+					Everything should be as documented and user-friendly as possible &ndash; any area where this can't be done inside the development process should be made achievable by a well-integrated crowd-sourcing mechanism.
 				</li>
 
 				<li>
-					<span>7</span>
-
-					<p>Composr is here to empower everybody, from casual users, to programmers, to web managers; and people in every country of the world.</p>
+					Composr is here to empower everybody, from casual users, to programmers, to web managers.<br />People in every country of the world.
 				</li>
 
 				<li>
-					<span>8</span>
-
-					<p>Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.</p>
+					Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.
 				</li>
 
 				<li>
-					<span>9</span>
-
-					<p>Composr development should not be guided by short-term fads, reinventions of the wheel, and it should not be biased in it's affiliation with third party companies.</p>
+					Composr development should not be guided by short-term fads, or reinventions of the wheel.<br />Composr should not be biased in its affiliation with third party companies.
 				</li>
 
 				<li>
-					<span>10</span>
-
-					<p>Everything in Composr should be done to best standards, and fully flexible and customisable.</p>
+					Everything in Composr should be done to best standards, and fully flexible and customisable.
 				</li>
 			</ul>
 
