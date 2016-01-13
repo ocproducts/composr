@@ -715,6 +715,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
 }
+.zone_running_docs .comcode_page img {
+	max-width: 100%;
+}
 
 /*{+START,IF,{$MOBILE}}*/
 	.global_middle, .panel_solo {

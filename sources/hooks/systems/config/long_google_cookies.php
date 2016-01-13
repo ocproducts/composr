@@ -50,6 +50,6 @@ class Hook_config_long_google_cookies
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

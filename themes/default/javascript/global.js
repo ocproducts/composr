@@ -3098,7 +3098,7 @@ function ga_track(ob,category,action)
 
 		try
 		{ 
-			_gaq.push(['_trackEvent',category,action]); 
+			ga('send','event',category,action); 
 		}
 		catch(err) {}
 

@@ -117,5 +117,6 @@ We don't consider Google Analytics a competitor to our own inbuilt analytics -- 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
+ - [page="_SEARCH:tut_google_analytics"]Analytics and A/B testing -- using Google Analytics[/page]
 
 {$SET,tutorial_tags,Analytics,stats_block,stats,realtime_rain,Administration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out about the different kinds of statistics/analytics that you can use to analyse your visitors.}[block]main_tutorial_rating[/block]

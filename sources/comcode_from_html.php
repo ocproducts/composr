@@ -263,7 +263,7 @@ function _reorder_css_properties($matches)
 }
 
 /**
- * Convert Semi-HTML into comcode. Cleanup where possible. preg_replace_callback callback
+ * Convert Semi-HTML into Comcode. Cleanup where possible. preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -513,25 +513,26 @@ function semihtml_to_comcode($semihtml, $force = false)
     Actually no, we don't want this. These tags are typed potentially to show HTML and thus the entities must get decoded
     */
 
+    // Not full HTML
+    $semihtml = preg_replace('#<head[^<>]*>.*</head>#Us', '', $semihtml);
+    $semihtml = preg_replace('#</?(html|head|body)[^<>]*>#Us', '', $semihtml);
+
     // Cleanup from certain word processors
     // LibreOffice
     $semihtml = str_replace('<h2 class="western">', '<h2>', $semihtml);
-    $semihtml = preg_replace('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom: 0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
-    $semihtml = preg_replace('#<p style="margin-bottom: 0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '', $semihtml);
-    $semihtml = preg_replace('#<li>\s*<p style="margin-bottom: 0(cm|em|px)?">(.*)</p>\s*</li>#Us', '<li>${2}</li>', $semihtml);
-    $semihtml = preg_replace('#<p style="margin-bottom: 0(cm|em|px)?">(.*)</p>\s*<(ul|ol|h1|h2|h3|h4|h5|h6)>#Us', '${2}<${3}>', $semihtml);
-    $semihtml = str_replace('<p style="margin-bottom: 0cm">', '<p>', $semihtml);
+    $semihtml = preg_replace('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
+    $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '', $semihtml);
+    $semihtml = preg_replace('#<li>\s*<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*</li>#Us', '<li>${2}</li>', $semihtml);
+    $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*<(ul|ol|h1|h2|h3|h4|h5|h6)>#Us', '${2}<${3}>', $semihtml);
     $semihtml = preg_replace('#(<style[^>]*>)(.*)(</style>)#siU', '', $semihtml); // We shouldn't allow this nested anyway (invalid XHTML), and word abuses it
     $semihtml = preg_replace('#<span class="Apple-style-span"[^>]*>(.*)</span>#siU', '${1}', $semihtml); // webkit
     $semihtml = preg_replace('#<meta[^>]*>#siU', '', $semihtml); // We shouldn't allow this nested anyway (invalid XHTML), and word abuses it
     $semihtml = preg_replace('#(<[^>]*) lang="[^"]*"#i', '${1}', $semihtml);
-    $semihtml = preg_replace('#(<[^>]*) style="margin-right: 0\w*;?"#i', '${1}', $semihtml);
+    $semihtml = preg_replace('#(<[^>]*) style="margin-right:\s*0\w*;?"#i', '${1}', $semihtml);
     $semihtml = preg_replace('#(<[^>]*) dir="' . do_lang('dir') . '"#i', '${1}', $semihtml);
     $semihtml = preg_replace_callback('#<[^>"]* style="([^">]*&quot;[^">]*)*"#i', '_css_quot_fixup', $semihtml);
     $semihtml = preg_replace('#<a name="OLE_LINK1">([^<]*)</a>#siU', '${1}', $semihtml);
-    $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right: [\d\.]+pt;\s*)?text-align: right;?"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right: [\d\.]+pt;\s*)?text-align: center;?"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = preg_replace('#(?U)(<[^>]* style="[^"]*)(?-U);?\s*page-break-after: avoid;?"#is', '${1}"', $semihtml);
+    $semihtml = preg_replace('#(?U)(<[^>]* style="[^"]*)(?-U);?\s*page-break-after:\s*avoid;?"#is', '${1}"', $semihtml);
     $semihtml = str_replace('<place>', '', $semihtml);
     $semihtml = str_replace('</place>', '', $semihtml);
     $semihtml = preg_replace('#<link [^>]*href="file://[^"]*"[^>]*/>#sU', '', $semihtml);
@@ -542,7 +543,17 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#(<[^>]*) [ovw]:[^>"]*"[^"]*"([^>]*>)#s', '${1}${2}', $semihtml);
     $semihtml = preg_replace('#</?st1:[^>]*>#', '', $semihtml); // Word smart tags
     $semihtml = str_replace('<br class="Apple-interchange-newline" />', '<br />', $semihtml);
-
+    $semihtml = preg_replace('# class="Mso\w+"#', '', $semihtml);
+    $semihtml = preg_replace('#margin-(top|bottom):\s*0cm#', '', $semihtml);
+    $semihtml = str_replace('text-align:justify', '', $semihtml);
+    $semihtml = str_replace(' type="disc"', '', $semihtml);
+    $semihtml = str_replace(' type="1"', '', $semihtml);
+    $semihtml = str_replace(' start="1"', '', $semihtml);
+    $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '' ,$semihtml);
+    $semihtml = preg_replace('#mso-[\w-]+:[^;"\']*#', '', $semihtml);
+    $semihtml = str_replace('text-autospace:none', '', $semihtml);
+    $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
+    $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = str_replace("\n", ' ', $semihtml);
     // Clean some whitespace (they have a special Comcode meaning, but no special HTML meaning)
     $inline_elements = array(
@@ -558,6 +569,15 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#>\s+#', '>', $semihtml);
     $semihtml = preg_replace('#\s+<#', '<', $semihtml);
     $semihtml = preg_replace('#\s+#', ' ', $semihtml);
+
+    // Clean redundant CSS syntax
+    do
+    {
+        $old = $semihtml;
+        $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
+    }
+    while ($old != $semihtml);
+    $semihtml = str_replace(' style=""', '', $semihtml);
 
     // Cleanup impossible stuff in code tags
     global $CODE_TAGS;
@@ -641,10 +661,10 @@ function semihtml_to_comcode($semihtml, $force = false)
     $array_html_preg_replace = array();
     $array_html_preg_replace[] = array('#^<p class="msoNormal">\s*(.*)\s*</p>$#siU', '${1}<br />');
     $array_html_preg_replace[] = array('#^<p align="(\w+)" class="msoNormal">\s*(.*)\s*</p>$#siU', '[align="${1}"]${2}[/align]');
-    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin: \d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin: 0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p style="margin: \d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p style="margin: 0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin:\s*\d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin:\s*0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p style="margin:\s*\d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p style="margin:\s*0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
     $array_html_preg_replace[] = array('#^<p class="Mso\w*" style="[^"]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Aggressive cleanup from Word (it's here last because we want the nicer matches to get a chance to work instead. It's a shame we need to do this, as we are throwing away potentially important styling (although actually the spans etc far above will have got most of this - we only match p level styling here)- but Word throws so much into a mix it's impossible to "remove the wheat from the chaff". People will need to put it back in using the WYSIWYG editor directly.
     $array_html_preg_replace[] = array('#^<p>\s*(.*)\s*</p>$#siU', '${1}<br /><br />');
     $array_html_preg_replace[] = array('#^<p align="(\w+)">\s*(.*)\s*</p>$#siU', '[align="${1}"]${2}[/align]');
@@ -768,6 +788,20 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = comcode_preg_replace('right', '#^\[right\]\[center\](.*)\[/center\]\[/right\]$#si', '[right]${1}[/right]', $semihtml);
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[left\](.*)\[/left\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[right\](.*)\[/right\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
+
+    // Clean redundant CSS syntax (again)
+    do
+    {
+        $old = $semihtml;
+        $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
+    }
+    while ($old != $semihtml);
+    $semihtml = str_replace(' style=""', '', $semihtml);
+
+    // Clean some now-empty span/p/align tags
+    $semihtml = preg_replace('#<span( style="[^"]*")?>&nbsp;</span>#', ' ', $semihtml);
+    $semihtml = preg_replace('#<p( style="[^"]*")?>\s*(&nbsp;)?\s*</p>#', '<br /><br />', $semihtml);
+    $semihtml = preg_replace('#\[align="\w+"\]\s*(&nbsp;)?\s*\[/align\]#', '', $semihtml);
 
     // Cleanup list Comcode (nice and pretty)
     $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
