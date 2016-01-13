@@ -18,4 +18,83 @@ This tutorial will detail a few of the miscellaneous do and do-nots of running a
  - Use every Composr feature on your site just because they exist
  - Plagiarise content: if you use other peoples content, credit them
 
+[title="2"]Tips[/title]
+
+The Admin Zone dashboard contains a number of tips which are reproduced here also:
+[quote="Admin Zone dashboard"]
+Level 0:
+ - {!TIP_0a,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+
+Level 1:
+ - {!TIP_1a,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1b,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1c,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1d,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1e,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1f,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1g,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1h,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1i,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1j,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1k,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1l,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1m,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_1n,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+
+Level 2:
+ - {!TIP_2a,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2b,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2c,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2d,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2e,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2f,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2g,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2h,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2i,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2j,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2k,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2l,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2m,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2n,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2o,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2p,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2q,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2r,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_2s,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+
+Level 3:
+ - {!TIP_3a,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3b,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3c,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3d,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3e,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3f,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3g,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3h,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3i,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3j,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3k,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3l,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3m,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3n,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3o,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3p,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_3q,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+
+Level 4:
+ - {!TIP_4a,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_4b,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_4c,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_4d,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_4e,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+ - {!TIP_4f,{$PAGE_LINK,:contact:free},Composr,{$PAGE_LINK,site:professional_support},{$PAGE_LINK,forum:}}
+[/quote]
+
+[title="2"]Writing articles[/title]
+
+We have an inbuilt page template for how to write good articles which is reproduced here also:
+[quote="Article template"]
+[include="(template)"]article[/include]
+[/quote]
+
 {$SET,tutorial_tags,core,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2010}{$SET,tutorial_summary,A few of the do and do-nots of running a website powered by Composr.}[block]main_tutorial_rating[/block]

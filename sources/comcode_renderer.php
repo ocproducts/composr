@@ -998,6 +998,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $zone = get_zone_name();
             }
 
+            if ($zone == '(template)') { // Special undocumented feature used by tutorial(s)
+                $temp_tpl = comcode_to_tempcode(file_get_contents(get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/' . filter_naughty($codename) . '.txt'));
+                break;
+            }
+
             $temp_comcode_parse_title = $COMCODE_PARSE_TITLE;
             $temp = request_page($codename, false, $zone, null, true);
             $COMCODE_PARSE_TITLE = $temp_comcode_parse_title;
@@ -2343,7 +2348,7 @@ function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
  */
 function get_tutorial_link($name)
 {
-    return $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => $name));
+    return $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => cms_mb_strtolower($name)));
 }
 
 /**
@@ -2354,6 +2359,6 @@ function get_tutorial_link($name)
  */
 function set_tutorial_link($name, $value)
 {
-    $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => $name), '', 1);
-    $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => $name), false, true); // Allow failure, if there is a race condition
+    $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
+    $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition
 }
