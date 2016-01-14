@@ -187,6 +187,17 @@ class lang_test_set extends cms_test_case
             $this->assertTrue(false, 'The phrase \'Resource-FS\' was used in ' . $file . '. This should be changed to \'Resource-fs\'.');
         }
 
+        // Our canonical way of writing "Open Source"
+        if (strpos($string, 'open source') !== false) {
+            $this->assertTrue(false, 'The phrase \'open source\' was used in ' . $file . '. This should be changed to \'Open Source\'.');
+        }
+        if (stripos($string, 'open-source') !== false) {
+            $this->assertTrue(false, 'The phrase \'open-source\' was used in ' . $file . '. This should be changed to \'Open Source\'.');
+        }
+        if (strpos($string, 'Open source') !== false) {
+            $this->assertTrue(false, 'The phrase \'Open source\' was used in ' . $file . '. This should be changed to \'Open Source\'.');
+        }
+
         // Old-fashioned words
         if (stripos($string, 'amongst') !== false) {
             $this->assertTrue(false, 'The word \'amongst\' was used in ' . $file . '. This should be changed to \'among\'.');

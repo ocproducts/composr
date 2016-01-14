@@ -1139,10 +1139,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
                                             }
                                             $line = curl_exec($ch);
-                                            /*if ((count($curl_headers)!=0) && ((!is_null($files)))) // Useful for debugging
-                                                {
-                                                        var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
-                                                }*/
+                                            /*if ((count($curl_headers)!=0) && ((!is_null($files)))) { // Useful for debugging
+                                                var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
+                                            }*/
                                             if ($line === false) {
                                                 $error = curl_error($ch);
                                                 curl_close($ch);

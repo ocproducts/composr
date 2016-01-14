@@ -1465,7 +1465,11 @@ function fix_page_name_dashing($zone, $page)
 }
 
 /**
- * Take a list of maps, and make one of the values of each array the index of a map to the map
+ * Take a list of maps, and make one of the values of each array the index of a map to the map.
+ *
+ * list_to_map is very useful for handling query results.
+ * Let's imagine you get the result of SELECT id,title FROM sometable.
+ * list_to_map turns the array of rows into a map between the id key and each row.
  *
  * @param  string $map_value The key key of our maps that reside in our map
  * @param  array $list The list of maps
