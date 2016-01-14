@@ -947,7 +947,7 @@ function page_link_decode($page_link)
         $hash = '';
     } else {
         $hash_pos = strpos($page_link, '#');
-        $hash = substr($page_link, $hash_pos);
+        $hash = substr($page_link, $hash_pos + 1);
         $page_link = substr($page_link, 0, $hash_pos);
     }
     if (strpos($page_link, "\n") === false) {

@@ -114,8 +114,8 @@ function cns_read_in_member_profile($member_id, $lite = true)
         $out['custom_fields'] = cns_get_all_custom_fields_match_member($member_id, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
 
         // Birthdate
-        if ($row['m_reveal_age'] == 1) {
-            $out['birthdate'] = $row['m_dob_year'] . '/' . $row['m_dob_month'] . '/' . $row['m_dob_day'];
+        if ($row['m_reveal_age'] == 1 && !is_null($row['m_dob_year'])) {
+            $out['birthdate'] = strval($row['m_dob_year']) . '/' . strval($row['m_dob_month']) . '/' . strval($row['m_dob_day']);
         }
 
         // Find title
@@ -135,6 +135,7 @@ function cns_read_in_member_profile($member_id, $lite = true)
 
         // Any warnings?
         if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {
+            require_code('cns_moderation');
             $out['warnings'] = cns_get_warnings($member_id);
         }
     }

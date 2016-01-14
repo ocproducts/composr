@@ -13,6 +13,10 @@
  * @package    testing_platform
  */
 
+// This test checks the chmod files are consistent.
+// Here's a similar and related thing:
+// If you need the rewrite rule files to be consistent, you need to run data_custom/build_rewrite_rules.php to rebuild them.
+
 /**
  * Composr test case class (unit testing).
  */

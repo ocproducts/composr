@@ -122,20 +122,13 @@
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
 	<script>
-		var _gaq=_gaq || [];
-		_gaq.push(['_setAccount','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}']);
-		_gaq.push(['_trackPageview']);
-		{+START,IF,{$NOT,{$CONFIG_OPTION,long_google_cookies}}}
-			_gaq.push(['_setVisitorCookieTimeout', 0]);
-			_gaq.push(['_setSessionCookieTimeout', 0]);
-			_gaq.push(['_setCampaignCookieTimeout', 0]);
-		{+END}
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		(function() {
-			var ga=document.createElement('script'); ga.type='text/javascript'; ga.async=true;
-			ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-			var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga,s);
-		})();
+		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}',{+START,IF,{$CONFIG_OPTION,long_google_cookies}}'auto'{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,long_google_cookies}}}{cookieExpires:0}{+END});
+		ga('send','pageview');
 	</script>
 {+END}{+END}
 

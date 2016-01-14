@@ -13,7 +13,7 @@ This tutorial covers day-to-day aspects of making and installing addons, especia
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Open source[/title]
+[title="2"]Open Source[/title]
 
 Composr is Free Software and Open Source, meaning it's completely open and customisable.
 

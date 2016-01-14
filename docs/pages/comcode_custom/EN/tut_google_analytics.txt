@@ -1,17 +1,424 @@
-[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Analytics and A/B testing - using Google Analytics[/title]
+[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Analytics and split testing -- using Google Analytics[/title]
 
-TODO
+The objective of this tutorial is to provide brief information about [i]Google Analytics[/i] and guidance on configuring [i]Google Analytics[/i] through Composr. We provide basic setup instructions, as well as some scenarios and guidance touching on advanced usage. We only really scratch the surface, but our aim is to provide you introductory information as directly applied to Composr -- a foundation for applying all standard Google Analytics techniques described in third-party guides.
+
+Some alternatives to Google Analytics are also discussed at the end of the tutorial, for those who prefer non-Google solutions.
 
 [contents]decimal,lower-alpha[/contents]
 
-TODO
+[title="2"]Why bother with analytics?[/title]
 
-http://www.quicksprout.com/2013/01/14/11-obvious-ab-tests-you-should-try/
+Statistical measurement is an important technique for evaluating the activities of a website. It will help you understand the effectiveness and performance of your website investment. The information gathered is both interesting and useful to understand which pages are popular among visitors and which pages may require redesign or content improvements. Analytics is a great approach to improving the [b]effectiveness[/b] of any website.
 
-http://piwik.org/
+[title="2"]Introduction to Google analytics[/title]
+
+[i]Google Analytics[/i] is a free web based tool offered by Google that generates detailed statistics about website visitors. The tool will provide information on how the visitors found the website through tracking all referring sources such as search engines, pay-per-click, redirects, banner advertisements, e-mail links, and any other channels you have. The tool will also gather and provide details of visitor's behaviour like which pages they have visited, the time spent on each page, and where the visitor exits the site.
+
+Further, [i]Google Analytics[/i] is a very capable "enterprise-class" web analytics solution. It provides rich insights into your website traffic and marketing effectiveness. Powerful and flexible features let you see and analyse your traffic data in-depth. With advanced use of [i]Google Analytics[/i], you're more prepared to write better-targeted ads, strengthen your marketing initiatives and create higher converting websites.
+
+[i]Google Analytics[/i] allows you to:
+ - Monitor advertising [acronym="Return On Investment"]ROI[/acronym]
+ - Monitor cross channel and multimedia tracking
+ - Create customised reporting
+ - Monitor sharing and communicating
+ - Visualise your data
+ - Monitor a number of metrics such as visitor location, and upstream and downstream traffic
+
+The following are common items gathered by [i]Google Analytics[/i]:
+ - Where the visitors are from
+ - How the visitors found your website
+ - Keywords used to find your website
+ - Web browsers used by visitors
+
+In addition to the above list, for larger websites built around a [acronym="Content Management System"]CMS[/acronym] the following gathered items are very important:
+ - Users' reaction on various different pages
+ - Guests getting converted to members (i.e. joins)
+ - Other measured goals such as newsletter signups
+
+You can sign up for [url="Google Analytics here"]http://www.google.com/analytics[/url]. If you already have a Google account you can sign in, otherwise you can create a new account. In order to really explore the product it is advisable to sign up with your active website details. Upon signup a [i]Google Analytics[/i] tracking code will be generated for your website.
+
+[title="3"]Google Analytics terminology[/title]
+
+There are three key terms in [i]Google Analytics[/i] which you need to be familiar with in order to set up analytical report conditions. They are:
+1) [i]Events[/i]
+2) [i]Goals[/i]
+3) [i]Content experiments[/i]
+
+[title="4"]Events[/title]
+
+Google Analytics [i]Events[/i] tracking is the method for identifying/tracking [i]events[/i] of user interactions with pages in a website. Actions such as ad clicks, video plays, and downloads, can be tracked by calling the Google script code from the appropriate part of a template/Comcode page. The inputs gathered by [i]events[/i] will be used to build up reports within [i]Google Analytics[/i].
+
+We actually won't be using events in the main scenario of this tutorial, but we will cover them further down.
+
+[title="4"]Goals[/title]
+
+Google Analytics [i]Goals[/i] are pre-defined or user-defined conditions to measure data based on the actions visitors take. [i]Goals[/i] are defined within [i]Google Analytics[/i] to gather information such as how many visitors spend a minimum amount of time on a website, visit more than a minimum number of pages, sign up to a newsletter, download a file, or make an eCommerce transaction.
+
+[i]Goals[/i] once created cannot be deleted but you can switch off any particular [i]goal[/i] that is not required.
+
+[title="4"]Content experiments[/title]
+
+Google Analytics [i]Content experiments[/i] (or just [i]experiments[/i]) allow you to set up [concept]multivariate testing[/concept]. Unlike generic A/B testing, in [i]content experiments[/i] Google allows the user to test up to 10 variation pages from an original page (i.e. true multivariate testing).
+
+For the purpose of this tutorial we will only consider A/B testing, i.e. 1 original version & 1 variation. This is quicker to set up and easier to interpret.
+
+We will use the casual term [concept]split testing[/concept] from now on in the tutorial.
+
+The terms can be a bit confusing, so the concepts table at the bottom summarises them all.
+
+[title="2"]Goals and split tests: worked example[/title]
+
+[title="3"]Google Analytics implementation[/title]
+
+We will define an example scenario, which we will provide instructions against.
+
+To come up with a scenario we first need to decide the required [i]goals[/i] for a website. You need to decide what [i]goals[/i] are most appropriate to your website content/functionality.
+
+Let us make our example that of a political website. Among many interesting [i]goals[/i] for this website would be tracking donations made by visitors. The goal can be implemented by tracking when visitors get to a "thank you" page, that only is shown after a donation is made.
+
+The URLs used will be for our old product name, ocPortal ([tt]ocportal.com[/tt]), but for this example just pretend that's a political site.
+
+Now let's proceed to set this up in [i]Google Analytics[/i]. Follows is a walkthrough on setting up the [i]Goal[/i] and [i]Content experiment[/i].
+
+[title="4"]Creating our goal[/title]
+
+Let us create our two [i]goal[/i]. Here's how:
+[list="1"]
+[*] Log in to [url="Google Analytics"]http://www.google.com/analytics[/url][/*]
+
+[*] Click "Admin" from the menu options (on the top right)[/*]
+
+[*] A three column menu will be shown on the page[/*]
+
+[*] Under the menu you can find "Goals", click that:
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step1.jpg[/img][/*]
+
+[*] Click on the "NEW GOAL" button
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step2.jpg[/img][/*]
+
+[*] We will choose a "Custom" goal, then click "Continue"
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step3.jpg[/img][/*]
+
+[*] Under the "Goal description" section you will be prompted to provide a name for the [i]goal[/i] and [i]goal type[/i]. We'll be doing for a "Destination", which we'll type in later
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step4.jpg[/img][/*]
+
+[*] Click "Continue", which leads to "Goal details"
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step5.jpg[/img][/*]
+
+[*] At the "Goal details" section you can provide the URL to where the [i]goal[/i] is considered reached. In our case we will make it a page, [tt]thankyou[/tt]. We'll put in [tt]thankyou.htm[/tt], which is assuming we have the "Use .htm to identify CMS pages" URL scheme configured in Composr[/*]
+
+[*] The "Value" field is optional. Users sometimes assign "1" for statistical analysis purpose once the report is generated[/*]
+
+[*] Click the "Save" button, taking you to a page listing your new goal
+
+[img]data_custom/images/docs/tut_google_analytics/goal_step6.jpg[/img]
+[/*]
+[/list]
+
+[title="4"]Creating our content experiment[/title]
+
+We will make a [i]content experiment[/i] that sees how different page versions affect the analytics for reaching our [i]goal[/i]. The response trends (effectiveness) can be evaluated analysis within [i]Google Analytics[/i].
+
+[list="1"]
+[*] Log into [url="Google Analytics"]http://www.google.com/analytics[/url][/*]
+
+[*] Click "Reporting" from menu options listed on top right side[/*]
+
+[*] This will open a menu list panel on the left side of the screen[/*]
+
+[*] Scroll down to see "Behavior" as first level menu entry (which usually appears after "Acquisition")[/*]
+
+[*] Click "Behavior" to expand sub-menus, where you can find "Experiments"
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step1.jpg[/img][/*]
+
+[*] Click "Experiments" to get a new page in the main panel[/*]
+
+[*] Click on "Create experiment".[/*]
+
+[*] In the new page provide your inputs for the [concept]split testing[/concept] scenario.[/*]
+
+[*] Fill up the options and. Smart tips are there if you need help to understand particular fields. We will be associating with the goal we created earlier.
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step2.jpg[/img][/*]
+
+[*] Click on "Next Step"
+
+[*] In the next page you can configure your original page by providing the URL of the original page in the first field and its name in the next field.
+
+Next, to configure your variate, provide the URL of the variate page along with its name.
+
+We will differentiate between these different versions using a 'version' URL parameter, as indicated in the screenshot. If no version is specified, we will consider this the same as 'version=1', which will let us omit it from the original URL (we don't want to change/pollute our original URL anyway).
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step3.jpg[/img]
+
+Google will use the URLs of the original and variate page to perform the split testing.[/*]
+
+[*] Once you confirm by clicking "Next Step", the tool will prepare [i]experiments[/i] code and provides you the option either to "Manually insert the code" or "Send code to webmaster".
+
+Grab the [i]experiments[/i] code and save it in a temporary file somewhere.
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step4.jpg[/img]
+
+Later we will put this code for the [i]original[/i] version of the page for which we're doing the split testing -- this will be covered under the "Configuring Google Analytics split testing within Composr" section.[/*]
+[/list]
+
+We will come back to [i]Google Analytics[/i], after configuring the Composr site (the "Starting the split test" section).
+
+[title="3"]Configuring the Google Analytics Tracking ID in Composr[/title]
+
+To include the [i]Google Analytics[/i] tracking ID you just need to set a config option within Composr. It's super-easy, because [i]Google Analytics[/i] is pre-integrated.
+
+Do the following:
+[list="1"]
+[*] Go to Admin Zone > Setup > Configuration > Site options[/*]
+
+[*] Click on the "General" link shown under the Contents section[/*]
+
+[*] Scroll to find "Google Analytics Web Property ID"[/*]
+
+[*] Make sure "Store full Google Analytics cookies" is ticked (checked), to enable cookies (without this tracking may not work correctly)[/*]
+
+[*] Click "Save"[/*]
+[/list]
+
+[title="3"]Configuring Google Analytics split testing within Composr[/title]
+
+To configure through Composr, take the auto-generated [i]experiments[/i] script code from earlier.
+
+It is required to paste this script immediately after opening [tt]<head>[/tt] tag. We have to edit the head template in Composr. Developers familiar with Composr can directly edit the template file directly and non-developers users can edit the template via the Admin Zone.
+
+In either case we also need to surround it with some extra code:
+[code="Tempcode"]
+{+START,IF,{$AND,{$MATCH_KEY_MATCH,:start},{$EQ,{$_GET,version,1},1}}
+... (original code goes here) ...
+{+END}
+[/code]
+
+This extra code contextualises it to just the page we want it on, as we will be putting it into a shared template.
+
+[title="4"]For developers[/title]
+
+[list="1"]
+[*] Go to the [tt]themes/default[/tt] folder and copy [tt]HTML_HEAD.tpl[/tt] into [tt]templates_custom[/tt] (if it is not already there)[/*]
+
+[*] Edit [tt]themes/default/templates_custom/HTML_HEAD.tpl[/tt], pasting the contextualised code after the opening [tt]<head>[/tt] tag[/*]
+[/list]
+
+[title="4"]For non-developers[/title]
+
+[list="1"]
+[*] Go to Admin Zone > Style > Themes[/*]
+
+[*] Click on the "Edit templates" option available for the used theme[/*]
+
+[*] Select [tt]HTML_HEAD.tpl[/tt] from existing template list[/*]
+
+[*] Click on the "Choose" button after selecting the template file[/*]
+
+[*] The template file will be opened in an editor[/*]
+
+[*] Paste the contextualised code immediately after the opening [tt]<head>[/tt] tag[/*]
+
+[*] Click "Save"[/*]
+[/list]
+
+[title="3"]Generating our variant within Composr[/title]
+
+We still need to serve users either the original or the variant somehow (our two "versions").
+
+Recall we used [tt]http://ocportal.com/start.htm[/tt] as original URL and [tt]http://ocportal.com/start.htm?version=2[/tt] as the variate URL.
+
+In Composr, these two versions can be configured in a single Comcode page, [tt]start[/tt]. You can use Tempcode to create the two scenarios in the file.
+
+Here is an example of a page:
+[code="Comcode"]
+[semihtml]
+{+START,IF,{$EQ,{$_GET,version,1},1}}
+	[staff_note]Shown for http://ocportal.com/start.htm or http://ocportal.com/start.htm?version=1[/staff_note]
+
+	<p>We'd like you to make a donation:</p>
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="business" value="payment@ocportal.com" />
+		<input type="hidden" name="cmd" value="_donations" />
+		<input type="hidden" name="item_name" value="ocPortal friend" />
+		<input type="hidden" name="item_number" value="Website donation" />
+		<input type="hidden" name="currency_code" value="USD" />
+		<input type="hidden" name="return" value="http://ocportal.com/thankyou.htm" />
+
+		<input type="image" name="submit" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="PayPal - The safer, easier way to pay online" />
+		<img alt="" border="0" width="1" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" />
+	</form>
+{+END}
+
+{+START,IF,{$EQ,{$_GET,version,1},2}}
+	[staff_note]Shown for http://ocportal.com/start.htm?version=2[/staff_note]
+
+	<p>Donations help pay for our political campaign. Maybe you could help us out with a donation?</p>
+
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="business" value="payment@ocportal.com" />
+		<input type="hidden" name="cmd" value="_donations" />
+		<input type="hidden" name="item_name" value="ocPortal friend" />
+		<input type="hidden" name="item_number" value="Website donation" />
+		<input type="hidden" name="currency_code" value="USD" />
+		<input type="hidden" name="return" value="http://ocportal.com/thankyou.htm" />
+
+		<input type="image" name="submit" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="PayPal - The safer, easier way to pay online" />
+		<img alt="" border="0" width="1" height="1" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" />
+	</form>
+{+END}
+[/semihtml]
+[/code]
+
+These scenarios present PayPal donation buttons, with slightly different text. Perhaps the second will perform better, but only split testing will show us for sure.
+
+[tt]{$_GET,version,1}[/tt] means "retrieve the [tt]version[/tt] URL parameter, and if it is not set then return a default of [tt]1[/tt] for us" (i.e. the default is [tt]version=1[/tt]).
+
+You'll need to create the [tt]thankyou[/tt] page also. There are no special instructions, it will just be a regular page.
+
+[title="4"]Generating very small variations[/title]
+
+Here is a more compact way to do quick inline variations within Tempcode/Comcode:
+[code="Tempcode"]
+{+START,CASES,{$_GET,version,1}}
+1=This is shown in random case 1.
+2=This is shown in random case 2.
+{+END}
+[/code]
+
+[title="3"]Generating links to our versions[/title]
+
+Composr now picks the scenario automatically based on the URL shown to the user (the 'version' parameter we decided to use earlier).
+
+Google's code that we added to our [tt]HTML_HEAD.tpl[/tt] template actually redirects random proportions of your traffic to the variant page. We therefore don't need to do any kind of linking strategy of our own.
+
+[title="4"]Avoiding redirects using JavaScript (advanced)[/title]
+
+The redirect technique is good enough for many, but is sub-optimal because the redirect takes time and resources.
+
+Another approach is to use JavaScript to randomly decide the version ourselves, and to tell [i]Google Analytics[/i] which page variant is loaded.
+
+For this to work we need to:
+1) [url="Follow Google's tutorial"]https://developers.google.com/analytics/solutions/experiments-client-side[/url]
+2) Write the Composr code to pick the random version
+3) Don't put any code in [tt]HTML_HEAD.tpl[/tt] (remove it if you added it already)
+
+The Composr code change is pretty simple. The code from the previous step would look as follows:
+[code="Comcode"]
+[semihtml]
+{$SET,version,{$SET_RAND,1,2}}
+
+{+START,IF,{$EQ,{$GET,version},1}}
+	...
+{+END}
+
+{+START,IF,{$EQ,{$GET,version},2}}
+	...
+{+END}
+[/semihtml]
+[/code]
+
+We used [tt]{$SET_RAND,1,2}[/tt] to choose the number [tt]1[/tt] or [tt]2[/tt] on a 1:1 ratio.
+If we were doing multivariate testing with 3 versions, we could do [tt]{$SET_RAND,1,2,3}[/tt], for a 1:1:1 ratio.
+
+We put this chosen number into a Tempcode variable using [tt]SET[/tt], then retrieved it with the [tt]GET[/tt] symbol. Note how it is now [tt]GET[/tt] (retrieve a Tempcode variable) not [tt]_GET[/tt] like before (retrieve a URL parameter).
+
+We had to use a variable as we are referencing a random number twice in the code, and need it to be the same each time!
+
+Note how we are choosing the random number on-page. Another technique might have been to generate randomised links in advance. However, I doubt this works with [i]Google Analytics[/i] and would come with a range of problems such as bookmarked old links, or ugly links. It's better we don't go down that route.
+
+[title="3"]Starting the split test[/title]
+
+Now that we have configured Composr so that users can get to see one of two randomised page versions, we want to actually start the split test to see which performs best (we haven't enabled it yet).
+
+Go back to the [i]Google Analytics[/i] administration.
+
+[i]Google Analytics[/i] will need to verify the existence of the generated code through the given URL of the original version.
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step5.jpg[/img]
+
+After successful verification, [i]Google Analytics[/i] will start running once the "Start Experiment" button is clicked.
+
+The experiment status will be shown in the "All Experiments" section.
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step6.jpg[/img]
+
+To view the reports about the defined [i]experiments[/i], click on any of the listed experiments. The reports will show the relative performance between the original version and variate version -- i.e. many users were able to reach the thank you page by making a PayPal payment, by version.
+
+[img]data_custom/images/docs/tut_google_analytics/experiment_step7.jpg[/img]
+
+[title="2"]Suggestions for split tests[/title]
+
+Split testing is both a science and an art. [url="Here is a good resource"]http://www.quicksprout.com/2013/01/14/11-obvious-ab-tests-you-should-try/[/url] suggesting some possible ideas to get you going.
+
+To do split testing well you need to be willing to put the time in, and be willing to be mercilessly analytical in your thinking.
+
+You can split test things you might never have thought about, even outside the scope of [i]Google Analytics[/i]. For example:
+ - give a different phone number extension for different randomised versions of copy, and record performance externally
+ - pass through a different Composr [tt]keep_referrer[/tt] parameter to the [tt]join[/tt] module, e.g. [page=":join:keep_referrer=2"]a[/page] or [page=":join:keep_referrer=3"]b[/page]. In this case make sure '2' and '3' are the IDs of admin accounts. You can then use the non-bundled [tt]referrals[/tt] addon to track the referrals these accounts make.
+
+[title="2"]Creating events (advanced)[/title]
+
+The [i]Google Analytics[/i] JavaScript library, which comes pre-integrated as a part of a [i]Google Analytics[/i] deployment, provides a means for tracking custom events. That is events beyond just basic page views.
+
+Composr provides a JavaScript function, [tt]ga_track[/tt], to abstract this, which is pre-integrated in a number of places:
+ - clicking banners
+ - clicking Comcode links (the [tt]url[/tt] Comcode tag)
+ - clicking system links put out for many things (the [tt]HYPERLINK.tpl[/tt] template)
+ - clicking to download within the [tt]downloads[/tt] addon
+ - clicking to view attachment media
+ - clicking to play videos
+ - clicking to download attachments
+
+You may easily extend this with whatever custom events you want, then configure [i]Google Analytics[/i] against those events. Just edit it into HTML within pages/templates, adding an [tt]onclick[/tt] to links like follows:
+[code="HTML"]
+onclick="return ga_track(this,'My Event Name','My Event Parameter');"
+[/code]
+The [tt]'My Event Parameter'[/tt] bit is optional, but often you will want to define different parameter value underneath the same event name. For example, for the banner click events this is the codename of the clicked banner.
+
+[title="2"]Alternatives to Google Analytics[/title]
+
+With Composr we generally take a non-partisan approach to recommending third-party technologies. It is usually best we leave choices to the user when we haven't got our own direct solution, especially given that:
+a) The landscape of web tools is so diverse,
+b) ... and changing so fast.
+c) Third-parties may have onerous policies you can't deal with.
+
+However, in a few very special cases we do think its best to pick one widespread tool and pre-integrate it, hence our strong support for [i]Google Analytics[/i].
+
+In the interest of providing other options, here are some good alternative resources for you to consider...
+
+Split testing tools:
+ - [url="Visual Website Optimizer"]https://vwo.com/[/url]
+ - [url="Optimizely"]https://www.optimizely.com/[/url]
+ - [url="http://blog.crazyegg.com/2014/06/25/best-testing-software/"]Comparison article[/url]
+
+Hosted analytics tool:
+ - http://piwik.org/
 
 [concepts
- 1_key="TODO"   1_value="TODO"
+ 1_key="Multivariate testing"		1_value="An analytical technique to see which of multiple variations performs best."
+ 2_key="Split testing"				2_value="The same as Multivariate testing. A more conversational way of putting it."
+ 3_key="A/B testing"					3_value="Multivariate testing with exactly two versions (original version and 1 variation)."
+ 4_key="Analytics Event"			4_value="An in-page user action that is explicitly triggered via tracking code."
+ 5_key="Analytics Goal"				5_value="A goal is a defined condition against an event."
+ 6_key="Analytics Experiment"		6_value="A configured case of multivariate testing."
+ 7_key="Multivariate original"	7_value="What multivariate testing is being performed against (i.e. with reference against the original version)."
+ 8_key="Multivariate variate"		8_value="A variation on the multivariate original."
+ 9_key="Multivariate version"		9_value="Either the multivariate original or a multivariate variate."
 ]Concepts[/concepts]
 
-{$SET,tutorial_tags,Analytics,Administration,regular,pinned}{$SET,tutorial_add_date,Jan 2014}{$SET,tutorial_summary,TODO}[block]main_tutorial_rating[/block]
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
+ - http://www.simplybusiness.co.uk/microsites/google-analytics-guide/
+ - https://moz.com/blog/absolute-beginners-guide-to-google-analytics
+ - https://econsultancy.com/blog/66230-a-beginner-s-dictionary-of-google-analytics/
+ - [page="_SEARCH:tut_statistics"]Activity statistics for your site (analytics)[/page]
+
+{$SET,tutorial_tags,Analytics,Administration,expert,pinned}{$SET,tutorial_add_date,Jan 2016}{$SET,tutorial_summary,Applying advanced Google Analytics techniques to Composr.}[block]main_tutorial_rating[/block]

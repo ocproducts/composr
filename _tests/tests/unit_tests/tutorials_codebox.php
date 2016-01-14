@@ -59,6 +59,7 @@ class tutorials_codebox_test_set extends cms_test_case
             'htaccess',
             'Page-link',
             'URL',
+            'objc',
 
             // Use this if nothing else (or [font="Courier"]...[/font])
             'Text',
