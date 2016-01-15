@@ -9,61 +9,77 @@
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url]</li>
+		</ul>
 	[/tab]
+
 	[tab="Recent"]
 		[block sort="added DESC" completed="0" project="1"]main_mantis_tracker[/block]
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url]</li>
+		</ul>
 	[/tab]
+
 	[tab="Hard"]
 		[block sort="hours DESC" completed="0" project="1"]main_mantis_tracker[/block]
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url]</li>
+		</ul>
 	[/tab]
+
 	[tab="Easy"]
 		[block sort="hours ASC" completed="0" project="1"]main_mantis_tracker[/block]
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url]</li>
+		</ul>
 	[/tab]
+
 	[tab="My Votes"]
 		[block voted="1" sort="popular DESC" completed="0"]main_mantis_tracker[/block]
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url] ]
-		[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=1&category_id=1&simple=1"]Request new feature[/url]</li>
+		</ul>
 	[/tab]
+
 	[tab="Sponsored"]
 		[block sort="sponsorship_progress DESC" completed="0"]main_mantis_tracker[/block]
 	[/tab]
-	[tab="Tutorials"]
-		<p>The core developers are unlikely to step through solutions outside paid support, but if you can phrase questions in a general way and lots of people vote them up, the chance goes up a video tutorial could be made at some point.</p>
 
-		<p>[b]Cost guide[/b]: Videos take about 5 times longer to make than they are in length, e.g. a 12 minute video would take about 1 hour to make.</p>
+	[tab="Tutorials"]
+		<p>The core developers are unlikely to step through solutions outside paid support, but if you can phrase questions in a general way and lots of people vote them up, the chance goes up a tutorial could be made at some point.</p>
+
+		<p>[b]Cost guide[/b]:</p>
+		<ul>
+			<li>Complex written tutorials take about an hour to make.</li>
+			<li>Step-through videos take about 5 times longer to make than they are in length, e.g. a 12 minute video would take about 1 hour to make.</li>
+		</ul>
 
 		[block sort="popular DESC" completed="0" project="7"]main_mantis_tracker[/block]
 
 		<hr />
 
-		<p class="community_block_tagline">[center]
-			[ [url="http://ocportal.com/tracker"]View full issue tracker[/url] &middot; [url="http://ocportal.com/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]Request video tutorial[/url] ]
-			[/center]</p>
+		<ul class="horizontal_links associated_links_block_group">
+			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]</li>
+		</ul>
 	[/tab]
 [/tabs]
 [/semihtml]
@@ -79,14 +95,20 @@ Before you make requests, it's a good idea to check they aren't already made, an
 [title="2"]The story so far[/title]
 
 [semihtml]
-<div style="padding: 15px">
-	<div style="font-size: 1.4em; float: right; width: 490px">
+<div class="story_so_far">
+	<div class="col1">
 		[img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
 
-		<p style="margin-top: 2em">[size="0.7"](The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)[/size]</p>
+		<p>
+			(The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)
+		</p>
 	</div>
 
-	<div class="ohloh" style="display: inline-block">[box]<div style="padding: 5px"><script src="http://www.ohloh.net/p/480776/widgets/project_cocomo.js"></script></div>[/box]</div>
+	<div class="col2"><div class="box"><div class="box_inner">
+		<div class="ohloh_wrap">
+			<script type='text/javascript' src='https://www.openhub.net/p/composr/widgets/project_cocomo?format=js'></script>
+		</div>
+	</div></div></div>
 </div>
 [/semihtml]
 
@@ -114,7 +136,7 @@ Before you make requests, it's a good idea to check they aren't already made, an
 
 <p><strong>Now a short rant&hellip;</strong></p>
 
-<p>Unfortunately we are regularly asked to work for much less than our rates (few people know how it is calculated and how skilled the work is, and it seems expensive when comparing to other things, especially in today's global economy). Very regularly we are asked to work even for free, or people assume we'll have no life and work evenings and weekends. Sometimes we're fine about this, if it's something we're already passionate about, but in most cases, we're already really over-stretched.</p>
+<p>Unfortunately we are regularly asked to work for much less than our rates (few people know how it is calculated and how skilled the work is, and it seems expensive when comparing to other things, especially in today's global economy). Very regularly we are asked to work even for free, or people assume we'll have no life and work evenings and weekends. Sometimes we're fine about this, if it's something we're already passionate about, but in most cases, we're already really over-stretched. We're a professional project, not volunteer run &ndash; which is reflected in the quality of Composr.</p>
 
 <p>So I hope it is clear why we have developed quite a tough defensive approach to asking that our rates are met for individual Composr service-requests we receive. It's also hard for us just to make accurate cost estimations for the work we do (we're constantly exposed to risk of not getting paid) and to make sure a flow of work keeps coming in.</p>
 [/html][/hide]

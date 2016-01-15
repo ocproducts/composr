@@ -1,0 +1,23 @@
+[semihtml]
+[title]Composr partners[/title]
+
+<div class="cntRow">
+	<p>
+		This page shows companies or individuals who have registered their Composr services. Listing is open (&dagger;) and free so <a href="{$PAGE_LINK*,cms:cms_catalogues:add:catalogue_name=partners}">add your listing now</a>.
+	</p>
+
+	<h2>Map</h2>
+
+	{$BLOCK,block=main_google_map,catalogue=partners,zoom=2,width=100%,height=650px}
+
+	<h2>Companies</h2>
+
+	{$BLOCK,block=main_cc_embed,param={$FIND_ID_VIA_LABEL,catalogue_category,Composr partners}}
+
+	<hr />
+
+	<p>
+		&dagger; It is the responsibility of purchasers of services to assess the suitability of any particular provider they choose.
+	</p>
+</div>
+[/semihtml]

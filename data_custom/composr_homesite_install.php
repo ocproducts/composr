@@ -161,7 +161,54 @@ function composr_homesite_install()
     // Catalogues structure
     // --------------------
 
-    // TODO
+    // Partners...
+
+    $partners_description = 'Partners are shown on the public partners page, and with a map. Partners may also be given project referrals (ocProducts will sometimes directly transfer on projects to appropriate people).';
+    $partner_types = array(
+        'Freelance designer',
+        'Freelance developer',
+        'Freelance consultant',
+        'Small Agency (2-5 full time employees)',
+        'Agency (over 5 full time employees)',
+        'Other',
+    );
+    $project_contribution_types = array(
+        'Translation(s)',
+        'Addon(s)',
+        'Theme(s)',
+        'Tutorial(s)',
+        'Core development',
+        'Seminars / public training',
+        'Feature sponsorship',
+    );
+
+    actual_add_catalogue('partners', 'Composr partners', $partners_description, C_DT_FIELDMAPS, 0, '', 0);
+    $cf_name = actual_add_catalogue_field('partners', 'Name / Company', 'Your name, or your organisation\'s name.', 'short_text', null, /*defines_order*/1, /*visible*/1, /*searchable*/1, '', /*required*/1);
+    $cf_description = actual_add_catalogue_field('partners', 'Description', 'A short description of your services.', 'long_trans', null, /*defines_order*/0, /*visible*/1, /*searchable*/1, '', /*required*/1);
+    $cf_logo = actual_add_catalogue_field('partners', 'Logo', 'A logo, roughly square.', 'picture', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, '', /*required*/1);
+    $cf_url = actual_add_catalogue_field('partners', 'URL', 'URL to your website.', 'url', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, '', /*required*/1);
+    $cf_type = actual_add_catalogue_field('partners', 'Partner type', 'You must select the most honest type. If you are a freelancer who happens to just know some other complementary freelancers, don\'t say you are an agency.', 'list', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, implode('|', $partner_types), /*required*/1);
+    $cf_region = actual_add_catalogue_field('partners', 'Region served', 'Where you are willing to travel to for meetings. Leave as "(Online only)" if you don\'t want to do physical meetings.', 'short_text', null, /*defines_order*/0, /*visible*/1, /*searchable*/1, '(Online only)', /*required*/1);
+    $cf_latitude = actual_add_catalogue_field('partners', 'Latitude', 'This public location may be approximate to the nearest town/city, for privacy reasons.', 'float', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, '', /*required*/1);
+    $cf_longitude = actual_add_catalogue_field('partners', 'Longitude', 'This public location may be approximate to the nearest town/city, for privacy reasons.', 'float', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, '', /*required*/1);
+    $cf_language = actual_add_catalogue_field('partners', 'Language(s)', 'Languages you are comfortable working professionally in.', 'short_text_multi', null, /*defines_order*/0, /*visible*/1, /*searchable*/1, 'English', /*required*/1);
+    $cf_contribution = actual_add_catalogue_field('partners', 'Community contributions', 'What kinds of contribution to Composr have you made? You must be entirely truthful, reflect what is already publicly released, and only include work for which you have not been paid for. There is no obligation to have contributions, but clients are likely to consider this evidence of whether someone is contributing back and knowledgeable.', 'list_multi', null, /*defines_order*/0, /*visible*/1, /*searchable*/0, implode('|', $project_contribution_types), /*required*/0, 1, 1, 'show_unset_values=on,auto_sort=frontend');
+    $cat_id = actual_add_catalogue_category('partners', 'Composr partners', '', '', null, '');
+    set_global_category_access('catalogues_catalogue', 'partners');
+    set_global_category_access('catalogues_category', $cat_id);
+    $ocproducts = array(
+        $cf_name => 'ocProducts',
+        $cf_description => 'ocProducts is the primary sponsor for Composr CMS, managing the development and hosting the community. The ocProducts CEO is the original and current Composr lead developer, Chris&nbsp;Graham.',
+        $cf_logo => 'uploads/website_specific/compo.sr/partners/ocproducts.png',
+        $cf_url => 'http://ocproducts.com',
+        $cf_type => 'Agency',
+        $cf_region => 'England',
+        $cf_latitude => '53.379965',
+        $cf_longitude => '-1.469422',
+        $cf_language => 'English',
+        $cf_contribution => "Addon\nTutorial\nCore development",
+    );
+    actual_add_catalogue_entry($cat_id, 1, '', 0, 0, 0, $ocproducts);
 
     // News structure
     // --------------
@@ -279,11 +326,6 @@ function composr_homesite_install()
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in action', 'g_promotion_threshold' => 400), array('id' => 8), '', 1);
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Fan in training', 'g_promotion_threshold' => 100), array('id' => 9), '', 1);
 
-    // Permissions for all except "Fan in training"
-    foreach (array(5,6,7,8) as $group_id) {
-    	$GLOBALS['SITE_DB']->query_insert('group_privileges', array('group_id' => $group_id, 'privilege' => 'bypass_validation_midrange_content', 'the_page' => 'downloads', 'module_the_name' => '', 'category_name' => '', 'the_value' => 1));
-    }
-
     require_code('cns_groups_action');
     cns_make_group('Composr supporters', 0, 0, 0, 'I supposr Composr', '', null, null, null, null, null, null, null, null, null, null, null, null, 3/*gift points per day*/, 0, 0, 0, null, 1, 1/*open membership*/);
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Composr supporters'), array('id' => 5), '', 1);
@@ -303,11 +345,42 @@ function composr_homesite_install()
     $GLOBALS['SITE_DB']->query_delete('group_zone_access', array('zone_name' => 'collaboration'));
 
     $groups = $GLOBALS['SITE_DB']->query_select('group_zone_access', array('group_id'), array('zone_name' => ''));
-    foreach (array('forum', 'site', 'docs', 'ocproducts') as $zone) {
+    foreach (array('forum', 'site', 'docs', 'ocproducts', 'cms') as $zone) {
         $GLOBALS['SITE_DB']->query_delete('group_zone_access', array('zone_name' => $zone));
         foreach ($groups as $group) {
             $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group['group_id']));
         }
+    }
+
+    // Only allow CMS access in a few places
+    $pages = find_all_pages('cms', 'modules');
+    foreach (array_keys($pages) as $page) {
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => $page));
+        foreach ($groups as $group) {
+            if ($page != 'cms_catalogues' && $page != 'cms_downloads' && $page != 'cms_tutorials') {
+                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => $page, 'zone_name' => 'cms', 'group_id' => $group['group_id']));
+            }
+        }
+    }
+
+    // Some targeted privileges for all except "Fan in training"
+    foreach (array(5, 6, 7, 8) as $group_id) {
+        // Submit download, without validation
+        $map = array('group_id' => $group_id, 'privilege' => 'bypass_validation_midrange_content', 'the_page' => 'cms_downloads', 'module_the_name' => '', 'category_name' => '', 'the_value' => 1);
+    	$GLOBALS['SITE_DB']->query_delete('group_privileges', $map);
+    	$GLOBALS['SITE_DB']->query_insert('group_privileges', $map);
+
+        // Submit partner entry, without validation
+        $map = array('group_id' => $group_id, 'privilege' => 'bypass_validation_midrange_content', 'the_page' => 'cms_catalogues', 'module_the_name' => '', 'category_name' => '', 'the_value' => 1);
+    	$GLOBALS['SITE_DB']->query_delete('group_privileges', $map);
+    	$GLOBALS['SITE_DB']->query_insert('group_privileges', $map);
+    }
+
+    // Nobody public can post releases
+    foreach ($groups as $group) {
+        $map = array('group_id' => $group['group_id'], 'privilege' => 'submit_midrange_content', 'the_page' => '', 'module_the_name' => 'downloads', 'category_name' => strval($GLOBALS['SITE_DB']->query_select_value('download_categories', 'id', array('category' => 'Composr Releases'))), 'the_value' => 0);
+    	$GLOBALS['SITE_DB']->query_delete('group_privileges', $map);
+    	$GLOBALS['SITE_DB']->query_insert('group_privileges', $map);
     }
 
     echo 'Done';

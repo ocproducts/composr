@@ -1,0 +1,33 @@
+.story_so_far {
+	padding: 15px;
+}
+
+.col1 {
+	font-size: 1.4em;
+	margin-top: 2em;
+	float: right;
+	width: 490px;
+}
+
+.col1 p {
+	margin-top: 2em;
+	font-size: 0.7em;
+}
+
+.col2 {
+	display: inline-block;
+}
+
+.col2 .ohloh_wrap {
+	padding: 5px;
+}
+
+.col2 img {
+	display: block;
+}
+
+.col2 h2 {
+	display: none;
+}
+
+{+START,INCLUDE,tracker,.css,css,default}{+END}

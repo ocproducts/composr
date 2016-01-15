@@ -121,7 +121,7 @@
 			<h3><span class="colrBl">We're reaching out for</span> Community Partnerships</h3>
 		</li>
 
-		<li>1. <span class="colrRd">Designers/developers:</span> create and sell niche addons and themes for Composr, or partner with ocProducts for backend work.</li>
+		<li>1. <span class="colrRd">Designers/developers:</span> create and sell niche addons and themes for Composr, or do Composr projects for clients.</li>
 		<li>2. <span class="colrRd">Publishers:</span> work with us to get Composr books onto book-store shelves.</li>
 		<li>3. <span class="colrRd">Consultants:</span> recommend our software and services and earn [page="docs:tut_software_feedback"]referral rewards[/page] for it. Established consultants can apply to be a regional representative.</li>
 		<li>4. <span class="colrRd">Trainers:</span> train teams and run seminars on Composr, and receive free advertising on our site.</li>
@@ -130,6 +130,10 @@
 
 	<div class="commonBtn">
 		[page="site:tickets:ticket:ticket_type=Partnership"]Contact[/page]
+	</div>
+
+	<div class="commonBtn">
+		[page="site:partners"]Partner directory[/page]
 	</div>
 </div>
 
