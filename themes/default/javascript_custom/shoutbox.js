@@ -5,7 +5,7 @@ function sb_chat_check(last_message_id,last_event_id)
 {
 	sb_last_message_id=last_message_id;
 	var url="{$FIND_SCRIPT*,messages}?action=new&no_reenter_message=1&room_id="+window.sb_room_id+"&message_id="+last_message_id+"&event_id="+last_event_id;
-	do_ajax_request(url+keep_stub(false),sb_chat_check_response,false);
+	do_ajax_request(url+keep_stub(false),sb_chat_check_response);
 }
 
 function sb_chat_check_response(ajax_result_frame,ajax_result)

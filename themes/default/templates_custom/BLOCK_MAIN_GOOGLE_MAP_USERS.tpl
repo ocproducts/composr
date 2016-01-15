@@ -140,8 +140,12 @@
 	google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
-<section class="box box___block_main_google_map_users"><div class="box_inner">
+{+START,IF_NON_EMPTY,{TITLE}}
+<section class="box box___block_main_google_map_users inline_block"><div class="box_inner">
 	<h3>{TITLE*}</h3>
+{+END}
 
 	<div id="map_canvas" style="width: {WIDTH}; height: {HEIGHT}"></div>
+{+START,IF_NON_EMPTY,{TITLE}}
 </div></section>
+{+END}

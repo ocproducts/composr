@@ -548,7 +548,7 @@ $s_monitor_bug_button = 'Monitor';
 # Composr Additions
 $s_vote_added = 'You are now monitoring this issue, and your vote is added to the tally.';
 $s_cms_sc_view_details = 'View full details of bug';
-$s_cms_sc_close_window = ' (close this window to return to where you were)';
+$s_cp_sc_close_window = ' (close this window to return to where you were)';
 
 # bug_monitor_delete.php
 $s_unmonitor_bug_button = 'End Monitoring';

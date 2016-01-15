@@ -23,7 +23,7 @@ window.tree_list=function(name,hook,root_id,options,multi_selection,tabindex,all
 	if (root_id!==null) url+='&id='+window.encodeURIComponent(root_id);
 	url+='&options='+options;
 	url+='&default='+window.encodeURIComponent(document.getElementById(name).value);
-	do_ajax_request(url,this,false);
+	do_ajax_request(url,this);
 
 	register_mouse_listener();
 };

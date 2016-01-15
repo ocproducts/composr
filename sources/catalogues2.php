@@ -163,7 +163,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  * @param  mixed $name The name of the field (either language string map or string)
  * @param  mixed $description A description (either language string map or string)
  * @param  ID_TEXT $type The type of the field
- * @param  integer $order The field order (the field order determines what order the fields are displayed within an entry)
+ * @param  ?integer $order The field order (the field order determines what order the fields are displayed within an entry) (null: next)
  * @param  BINARY $defines_order Whether this field defines the catalogue order
  * @param  BINARY $visible Whether this is a visible field
  * @param  BINARY $searchable Whether the field is usable as a search key
@@ -175,8 +175,17 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  * @param  ?AUTO_LINK $id Force this ID (null: auto-increment as normal)
  * @return AUTO_LINK Field ID
  */
-function actual_add_catalogue_field($c_name, $name, $description, $type, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
+function actual_add_catalogue_field($c_name, $name, $description = '', $type = 'short_text', $order = null, $defines_order = 0, $visible = 1, $searchable = 0, $default = '', $required = 0, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
 {
+    if (is_null($order)) {
+        $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'MAX(cf_order)', array('c_name' => $c_name));
+        if (is_null($order)) {
+            $order = 0;
+        } else {
+            $order++;
+        }
+    }
+
     $map = array(
         'c_name' => $c_name,
         'cf_type' => $type,
