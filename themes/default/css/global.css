@@ -1066,7 +1066,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
-	font-size: 0.95em !important;
+	font-size: 13px !important; /* px not em due to careful background positioning */
 	padding-{!en_left}: 15px;
 	margin: 1.5em;
 	margin-{!en_left}: 10px;
@@ -1099,6 +1099,11 @@ div.edited {
 /* Used to align inline images to the top of the rendering context */
 .top_vertical_alignment, .top_vertical_alignment * {
 	vertical-align: top;
+}
+
+/* Used to align a back to top image beside screen item buttons */
+.back_to_top_by_buttons {
+	padding-top: 4px;
 }
 
 /* Used to align next to a floated button(s) */

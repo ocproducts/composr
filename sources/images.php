@@ -676,7 +676,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         unset($from_file);
     }
 
-    $source = remove_white_edges($source);
+    //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
 
     // Derive actual width x height, for the given maximum box (maintain aspect ratio)
     // ===============================================================================

@@ -1245,7 +1245,7 @@ function get_html_trace()
                 $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
-            $trace[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
         $trace[] = array('TRACES' => $traces);
     }

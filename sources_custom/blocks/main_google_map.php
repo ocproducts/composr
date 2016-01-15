@@ -64,8 +64,14 @@ class Block_main_google_map
         if (!isset($map['longitude'])) {
             $map['longitude'] = '0';
         }
-        $mapwidth = isset($map['width']) ? $map['width'] : '100%';
-        $mapheight = isset($map['height']) ? $map['height'] : '300px';
+        $map_width = isset($map['width']) ? $map['width'] : '100%';
+        if (is_numeric($map_width)) {
+            $map_width .= 'px';
+        }
+        $map_height = isset($map['height']) ? $map['height'] : '300px';
+        if (is_numeric($map_height)) {
+            $map_height .= 'px';
+        }
         $api_key = isset($map['api_key']) ? $map['api_key'] : '';
         $set_zoom = isset($map['zoom']) ? $map['zoom'] : '3';
         $set_center = isset($map['center']) ? $map['center'] : '0';
@@ -256,8 +262,8 @@ class Block_main_google_map
             'DIV_ID' => $div_id,
             'CLUSTER' => $cluster,
             'REGION' => $map['region'],
-            'WIDTH' => $mapwidth,
-            'HEIGHT' => $mapheight,
+            'WIDTH' => $map_width,
+            'HEIGHT' => $map_height,
             'LATITUDE' => $map['latitude'],
             'LONGITUDE' => $map['longitude'],
             'ZOOM' => $set_zoom,

@@ -319,7 +319,7 @@ function chat_check(backlog,message_id,event_id)
 				url='{$FIND_SCRIPT;,messages}?action=new&room_id='+window.encodeURIComponent(window.load_from_room_id)+'&message_id='+window.encodeURIComponent(message_id?message_id:-1)+'&event_id='+window.encodeURIComponent(event_id);
 			}
 			if (window.location.href.indexOf('no_reenter_message=1')!=-1) url=url+'&no_reenter_message=1';
-			do_ajax_request(maintain_theme_in_link(url+keep_stub(false)),function(ajax_result_frame,ajax_result) { chat_check_response(ajax_result_frame,ajax_result,backlog/*backlog = skip_incoming_sound*/); },false);
+			do_ajax_request(maintain_theme_in_link(url+keep_stub(false)),function(ajax_result_frame,ajax_result) { chat_check_response(ajax_result_frame,ajax_result,backlog/*backlog = skip_incoming_sound*/); });
 			return false;
 		}
 		return null;
