@@ -33,7 +33,7 @@ class Hook_config_cpf_enable_street_address
         return array(
             'human_name' => 'CPF_ENABLE_STREET_ADDRESS',
             'type' => 'tick',
-            'category' => 'FORUMS',
+            'category' => 'USERS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
             'explanation' => 'CONFIG_OPTION_cpf_enable_street_address',
             'shared_hosting_restricted' => '0',

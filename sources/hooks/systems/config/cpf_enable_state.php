@@ -33,7 +33,7 @@ class Hook_config_cpf_enable_state
         return array(
             'human_name' => 'CPF_ENABLE_STATE',
             'type' => 'tick',
-            'category' => 'FORUMS',
+            'category' => 'USERS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
             'explanation' => 'CONFIG_OPTION_cpf_enable_state',
             'shared_hosting_restricted' => '0',

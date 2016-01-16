@@ -33,7 +33,7 @@ class Hook_config_cpf_enable_country
         return array(
             'human_name' => 'CPF_ENABLE_COUNTRY',
             'type' => 'tick',
-            'category' => 'FORUMS',
+            'category' => 'USERS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
             'explanation' => 'CONFIG_OPTION_cpf_enable_country',
             'shared_hosting_restricted' => '0',

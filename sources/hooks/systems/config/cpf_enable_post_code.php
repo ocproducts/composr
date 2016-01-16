@@ -33,7 +33,7 @@ class Hook_config_cpf_enable_post_code
         return array(
             'human_name' => 'CPF_ENABLE_POST_CODE',
             'type' => 'tick',
-            'category' => 'FORUMS',
+            'category' => 'USERS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
             'explanation' => 'CONFIG_OPTION_cpf_enable_post_code',
             'shared_hosting_restricted' => '0',
