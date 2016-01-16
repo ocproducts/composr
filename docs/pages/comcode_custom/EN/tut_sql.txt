@@ -98,4 +98,4 @@ Composr has been designed to be able to work with many different databases, not 
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [page="_SEARCH:tut_disaster"]Disaster recovery[/page]
 
-{$SET,tutorial_tags,Maintenance,Development,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A primer on databases, and how SQL is used to connect to them - as well as practical advice on using phpMyAdmin.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,Development,core,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A primer on databases, and how SQL is used to connect to them - as well as practical advice on using phpMyAdmin.}[block]main_tutorial_rating[/block]

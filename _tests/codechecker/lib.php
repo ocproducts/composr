@@ -347,6 +347,11 @@ function escape_html($in)
     return $in;
 }
 
+function php_function_allowed($function)
+{
+    return true;
+}
+
 function attach_message($message, $message_type)
 {
     global $TO_USE, $LINE, $COMPOSR_PATH;

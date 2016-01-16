@@ -130,4 +130,4 @@ You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
  - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr users[/page]
 
-{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disastrous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disastrous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]

@@ -103,4 +103,4 @@ Admin Zone > Audit > E-mail queue/log
  - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
 
-{$SET,tutorial_tags,Configuration,Internet Technology,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting up e-mail servers can be complex with all the protocols/standards out there. Let's cut through the confusion.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Configuration,core,Internet Technology,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting up e-mail servers can be complex with all the protocols/standards out there. Let's cut through the confusion.}[block]main_tutorial_rating[/block]

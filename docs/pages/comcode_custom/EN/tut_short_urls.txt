@@ -189,4 +189,4 @@ So don't think that changing the URL Scheme is disasterous for your SEO.
  - [page="_SEARCH:tut_adv_configuration"]Advanced configuration[/page]
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
 
-{$SET,tutorial_tags,SEO,Configuration,regular}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,Enabling attractive short URLs, for usability and SEO.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,SEO,Configuration,core,regular}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,Enabling attractive short URLs, for usability and SEO.}[block]main_tutorial_rating[/block]

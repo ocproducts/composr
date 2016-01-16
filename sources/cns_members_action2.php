@@ -1988,7 +1988,7 @@ function update_member_username_caching($member_id, $username)
 /**
  * Delete a custom profile field from one of the predefined templates (this is often used by importers).
  *
- * @param  ID_TEXT $type The identifier of the boiler custom profile field.
+ * @param  ID_TEXT $field The identifier of the boiler custom profile field.
  */
 function cns_delete_boiler_custom_field($field)
 {

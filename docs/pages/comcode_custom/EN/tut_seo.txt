@@ -207,4 +207,4 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
  - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
 
-{$SET,tutorial_tags,SEO,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

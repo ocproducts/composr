@@ -49,7 +49,7 @@ If you can think of a better approach to what we take, bearing in mind the vario
 By default Composr supplies language codenames and their human-understood names, based on the ISO 639 standards. ISO have defined codenames for all common world languages.
 
 If you want to do something crazy such as create an Elvish language pack, you can add new faux-codenames by overriding the [tt]lang/langs.ini[/tt] file to [tt]lang_custom/langs.ini[/tt]. You'd add a line like:
-[code="ini"]
+[code="INI"]
 EV=Elvish
 [/code]
 
