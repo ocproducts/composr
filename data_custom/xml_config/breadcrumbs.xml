@@ -3,9 +3,6 @@
 	<substitution match_key="cms:cms">
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="adminzone:_WILD_NOT_START:.*">
-		<link label="{!ADMIN_ZONE}">adminzone:</link>
-	</substitution>
 	<substitution match_key="adminzone:start">
 		<link label="{!HOME}">:</link>
 	</substitution>
@@ -29,10 +26,14 @@
 	</substitution>
 
     <!-- ocProducts -->
-	<substitution match_key="ocproducts:_WILD_NOT_START:.*">
+	<substitution match_key="ocproducts:portfolio:_WILD">
+		<link label="ocProducts">ocproducts:</link>
+		<link label="Portfolio">ocproducts:portfolio</link>
+	</substitution>
+	<substitution match_key="ocproducts:portfolio" label="Portfolio">
 		<link label="ocProducts">ocproducts:</link>
 	</substitution>
-	<substitution match_key="ocproducts:start">
+	<substitution match_key="ocproducts:start" label="ocProducts">
 		<link label="{!HOME}">:</link>
 	</substitution>
 
