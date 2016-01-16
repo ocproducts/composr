@@ -343,7 +343,7 @@ Composr does not contain a way for individual sites to be set up automatically o
  1_key="M.S.N."        1_value="A multi-site-network: a network of Composr sites that share a member community. Composr provides special features that are designed for such a situation"
  2_key="Central site"  2_value="Every M.S.N. should have a central site which hosts the community and the netlink system; it often makes sense to also structure things so this site is seen to be the central site in the network, but this is optional"
  3_key="Satellite site"  2_value="A site on an M.S.N. that is not a central site"
- 4_key="netlink"       3_value="The site-jump system intended for multi-site-networks"
+ 4_key="Netlink"       3_value="The site-jump system intended for multi-site-networks"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

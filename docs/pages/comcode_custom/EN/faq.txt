@@ -45,7 +45,7 @@ No honest and competent company can guarantee their web application to be comple
 
 If there does turn out to be a security flaw in Composr, we will endeavour to fix it as quickly as we possibly can.
 
-If you believe you have found a security flaw in Composr please [page="_SEARCH:contact:free"]contact us[/page], so we may fix it before hackers can find and exploit it.
+If you believe you have found a security flaw in Composr please [page=":contact:free"]contact us[/page], so we may fix it before hackers can find and exploit it.
 
 [title="3"]Is Composr standards-compliant?[/title]
 

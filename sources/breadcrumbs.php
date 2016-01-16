@@ -76,14 +76,17 @@ function load_breadcrumb_substitutions($segments)
                     }
 
                     if (isset($attributes['page']) && match_key_match($details[0], false, $attributes, $zone, $attributes['page'])) {
-                        if ($details[1] === null || $details[1] == $segment[1]) {
-                            if (!$done_one) {
-                                $segments_new = $details[2]; // New stem found
-                                $done_one = true;
+                        if (!$done_one) {
+                            $segments_new = $details[2]; // New stem found
+
+                            if ($details[1] !== null && match_key_match($details[0])) {
+                                $GLOBALS['BREADCRUMB_SET_SELF'] = $details[1];
                             }
 
-                            $substitutions[$j] = null; // Stop loops when recursing
+                            $done_one = true;
                         }
+
+                        $substitutions[$j] = null; // Stop loops when recursing
                     }
                 }
             }

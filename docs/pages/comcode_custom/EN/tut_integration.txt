@@ -383,7 +383,7 @@ New endpoint hooks can be created by a PHP programmer easily, providing whatever
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_mobile_sdk"]Writing mobile apps -- the Composr Mobile SDK[/page]
+ - [page="_SEARCH:tut_mobile_sdk"]Mobile apps via Composr Mobile SDK[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of the forum driver system[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]

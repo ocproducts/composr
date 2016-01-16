@@ -493,9 +493,9 @@ If you have sensitive material that might be in a URL moniker, you should either
 
 [concepts
  1_key="SSL"          1_value="Secure Socket Layer -- encryption over Internet connections so as to avoid interception of information"
- 2_key="white-list"   2_value="White lists show what things are allowed, as opposed to what are not (black lists); they are theoretically better (but not always practical), as they guard against changes that could add insecurity (e.g. if a file type suddenly starts supporting dangerous macros and wasn't black-listed, it would spell trouble) or oversights"
- 3_key="obfuscated"   3_value="Muddled up, made difficult to understand: but still correct"
- 4_key="mime-type"    4_value="A special code that identifies a file type; this allows web systems to make it explicit how files should be treated (e.g. as an attachment, as a 'open in' link, or as a pure file download), rather than being bound by the file extension (which can't really be changed)"
+ 2_key="White-list"   2_value="White lists show what things are allowed, as opposed to what are not (black lists); they are theoretically better (but not always practical), as they guard against changes that could add insecurity (e.g. if a file type suddenly starts supporting dangerous macros and wasn't black-listed, it would spell trouble) or oversights"
+ 3_key="Obfuscated"   3_value="Muddled up, made difficult to understand: but still correct"
+ 4_key="Mime-type"    4_value="A special code that identifies a file type; this allows web systems to make it explicit how files should be treated (e.g. as an attachment, as a 'open in' link, or as a pure file download), rather than being bound by the file extension (which can't really be changed)"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -112,7 +112,7 @@ Obviously you should be careful deleting files, as there may be legitimate reaso
 
 [concepts
  1_key="upgrader.php"        1_value="The script that manages the upgrading process"
- 2_key="integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
+ 2_key="Integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

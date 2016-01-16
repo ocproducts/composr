@@ -60,7 +60,7 @@ When you use Composr with LDAP, there are some necessary changes to how Composr 
  4_key="NIS"               4_value="Network information system; the traditional network based authentication scheme used on Linux, to which OpenLDAP/Linux work to for Linux authentication"
  5_key="POSIX"             5_value="A standardisation effort for Unix/Linux that has an implication for users and usergroups"
  6_key="Domain Controller" 6_value="A Windows Server that manages authentication for a Windows Domain (a contained Windows network)"
- 7_key="directory service" 7_value="A service available on a network for looking up entries in a directory. LDAP is an example of a protocol to provide a directory service: a directory that is most often of users"
+ 7_key="Directory service" 7_value="A service available on a network for looking up entries in a directory. LDAP is an example of a protocol to provide a directory service: a directory that is most often of users"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

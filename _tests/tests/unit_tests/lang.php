@@ -133,6 +133,9 @@ class lang_test_set extends cms_test_case
         if (stripos($string, 'set-up') !== false) {
             $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
         }
+        if (strpos($string, 'internet') !== false) {
+            $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
+        }
 
         // No space wanted (we want our canonical way)
         if (stripos($string, 'chat room') !== false) {

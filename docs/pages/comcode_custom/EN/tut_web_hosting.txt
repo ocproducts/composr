@@ -257,11 +257,11 @@ PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
 [concepts
- 1_key="web host"           1_value="A provider of Internet server facilities"
- 2_key="dedicated server"   2_value="A server that is not shared with others"
+ 1_key="Web host"           1_value="A provider of Internet server facilities"
+ 2_key="Dedicated server"   2_value="A server that is not shared with others"
  3_key="VPS"                3_value="A virtual private server. This works via allowing multiple virtual machines to run on a real host machine. Typically this is what cloud hosting is using behind-the-scenes"
  4_key="Linux"              4_value="The Linux operating system, very well suited to servers"
- 5_key="patches"            5_value="Patches are upgrades to software designed to fix problems, especially security ones nowadays"
+ 5_key="Patches"            5_value="Patches are upgrades to software designed to fix problems, especially security ones nowadays"
  6_key="IaaS"               6_value="Infrastructure as a service. This is cloud hosting based on direct provision of VPSs."
  7_key="PaaS"               7_value="Platform as a service. This is cloud hosting based on providing direct support and configurability for particular programming language(s). It typically will hide the complexities of VPS management from you."
  8_key="SaaS"               8_value="Software as a service. This is what you are using when you create something like a Facebook page or a hosted blog, where you don't ever need to directly install/configure the software. This has advantages but severely limits configurability. Composr could be delivered as SaaS but the majority of users want a high degree of control over their sites."

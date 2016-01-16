@@ -98,11 +98,13 @@ class Block_main_staff_tips
                     if (!is_null($lang2)) {
                         $lang = do_lang_tempcode(
                             'TIP_' . $tip_id,
-                            get_brand_page_url(array('page' => 'contact', 'type' => 'free'), ''),
-                            brand_name(),
+                            escape_html(get_brand_page_url(array('page' => 'contact', 'type' => 'free'), '')),
+                            escape_html(brand_name()),
                             array(
-                                get_brand_page_url(array('page' => 'professional_support'), ''/*is site, except runs with single public zone*/),
-                                get_brand_page_url(array('page' => ''), 'forum')
+                                escape_html(get_brand_page_url(array('page' => 'professional_support'), ''/*is site, except runs with single public zone*/)),
+                                escape_html(get_brand_page_url(array('page' => ''), 'forum')),
+                                escape_html(get_tutorial_url('tutorials')),
+                                escape_html(get_tutorial_url(null)),
                             )
                         );
                         $tips[$i][$tip_id] = $lang;

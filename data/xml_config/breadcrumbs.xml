@@ -69,4 +69,4 @@
 	</substitution>-->
 </breadcrumbs>
 
-<!-- Note PHP regular expressions are allowed -->
+<!-- Note PHP regular expressions are not allowed but _WILD is for any component -->

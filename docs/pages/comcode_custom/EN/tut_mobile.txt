@@ -255,6 +255,6 @@ It's not specifically a Composr feature, but can be enabled via putting the appr
 
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
- - [page="_SEARCH:tut_mobile_sdk"]Writing mobile apps -- the Composr Mobile SDK[/page]
+ - [page="_SEARCH:tut_mobile_sdk"]Mobile apps via Composr Mobile SDK[/page]
 
 {$SET,tutorial_tags,Mobile,Design & Themeing,CSS,cns_tapatalk,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]

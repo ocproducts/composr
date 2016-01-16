@@ -375,8 +375,8 @@ If you wish to directly distribute your translation as an addon, you can export 
 [/surround]
 
 [concepts
- 1_key="language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
- 2_key="character set"         2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
+ 1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
+ 2_key="Character set"         2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
  3_key="Unicode"               3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
  4_key="Transifex"             4_value="The translation platform we use to translate Composr"
  5_key="Collation"             5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"

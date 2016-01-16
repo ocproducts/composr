@@ -69,4 +69,8 @@ In summary, take the following into account when preparing a business plan:
 
 (I kind of wrote this tutorial backwards, because I wanted to define terminology and the different techniques before I got into too much detail  --  you should of course study and confirm the market before you decide how to do your promotions)
 
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_irrational_behaviour"]Learn to embrace irrational behaviour in your customers[/page]
+
 {$SET,tutorial_tags,Business Development,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,An overview of how to go about marketing, with a particular emphasis on the personal side of things. For people starting a business but without significant marketing experience.}[block]main_tutorial_rating[/block]

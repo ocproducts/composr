@@ -601,10 +601,10 @@ Enterprise: Connect various big-iron systems together using web services. Each i
 Open Source: Systems tend to be more light-weight, focused on the core behaviours needed. E.g. Direct SQL queries to MySQL, rather than stored procedures (although you can do them if you want to). However, as the code is all open, and no special licenses required, everything has been tuned in a meritocratic kind of way, so things tend to be simple but effective. Particularly for the case of PHP, creating new functionality is extremely time-efficient, because you don't need to compile the code, and you can just plug stuff directly into Composr and essentially have access to all our APIs without needing any web services, or limited public interface, or cut-down scripting system. Things are simple by default, and only get complex when you need to scale things out across multiple tiers etc. You can create tables directly in MySQL using any MySQL frontend you prefer (phpMyAdmin, MySQL workbench, etc).
 
 [concepts
- 1_key="website"                     1_value="A collection of web pages that have something in common (such as being on the same domain name, or controlled by the same company)"
- 2_key="content management system"   2_value="Software for managing content; usually a system designed around the collaboration via a work flow on documents that make up a website, rather than truly dynamic content"
- 3_key="web-application"             3_value="An application used via a web browser and running over the world-wide-web"
- 4_key="framework"                   4_value="A programming framework is a foundation and guide that speeds the development of tailored software solutions"
+ 1_key="Website"                     1_value="A collection of web pages that have something in common (such as being on the same domain name, or controlled by the same company)"
+ 2_key="Content management system"   2_value="Software for managing content; usually a system designed around the collaboration via a work flow on documents that make up a website, rather than truly dynamic content"
+ 3_key="Web-application"             3_value="An application used via a web browser and running over the world-wide-web"
+ 4_key="Framework"                   4_value="A programming framework is a foundation and guide that speeds the development of tailored software solutions"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

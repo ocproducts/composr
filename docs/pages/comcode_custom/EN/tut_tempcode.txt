@@ -2225,11 +2225,11 @@ The template editor has special support for the GUIDs, showing what GUIDs a temp
 If you enter the template editor from the 'Template tree' screen then you will be told the GUID that was used by the node in the tree that you selected.
 
 [concepts
- 1_key="symbol"           1_value="A special element that may be inserted into"
- 2_key="parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
- 3_key="directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
- 4_key="variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
- 5_key="construct"        5_value="A Tempcode symbol, parameter, or language reference"
+ 1_key="Symbol"           1_value="A special element that may be inserted into"
+ 2_key="Parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
+ 3_key="Directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
+ 4_key="Variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
+ 5_key="Construct"        5_value="A Tempcode symbol, parameter, or language reference"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
