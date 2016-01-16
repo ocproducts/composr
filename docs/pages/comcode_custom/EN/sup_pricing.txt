@@ -210,6 +210,20 @@ There are 4 main costs to consider when pricing a project:
 
 [i]Very[/i] roughly these will be equal ratios. So if the development cost is $X, the overall budget should be quadruple that.
 
+[title="2"]Different ways of thinking about investment[/title]
+
+When thinking about website investments, it's worth bearing in mind that there are two opposing scenarios for justifying the investment:
+1) When the website is a revenue-generation centre
+2) When the website is a business cost
+
+The first scenario is typical for a web company, where the website is the centre of their value.
+
+The second scenario is typical for most business, where the website is a necessary adjunct to their core business. The website might serve as a means of contact, or means of providing information.
+
+Somewhere in-between is a scenario where the website is not a value centre, but generates significant value for a company, e.g. by providing business leads.
+
+Companies in scenario 1 would be thinking of [acronym title="Return On Investment"]ROI[/acronym], while those in scenario 2 would be thinking in terms of the damage their business (or non-profit) would have if they weren't providing modern services (&ldquo;keeping with the times&rdquo;) and allocating their capital accordingly.
+
 [title="2"]Getting a third opinion[/title]
 
 I strongly advise that you consult with someone who has been involved in the development of at least one modern and [i]successful[/i] website to get a third-party opinion from them for how much your site should cost (make sure they include the value of your time too).
@@ -235,7 +249,6 @@ However, in actual reality, very skilled core developers with world-class skills
 Here are some links I've collected over the years that talk about website quotation, to help you get a balanced perspective:
 [list]
 [*] http://www.howmuchdoesawebsitecost.com/
-[*] https://web.archive.org/web/20100113014342/http://www.vestadigital.com/173/section.aspx/30/post/how-much-should-a-web-design-cost
 [*] http://www.bigclick.com.au/blog/2009/04/05/is-web-development-expensive/
 [*] http://stackoverflow.com/questions/209170/how-much-does-it-cost-to-develop-an-iphone-application
 [*] http://ezinearticles.com/?iPhone-App-Development&mdash;How-Long-Should-It-Take-to-Build-an-App?&id=5009146

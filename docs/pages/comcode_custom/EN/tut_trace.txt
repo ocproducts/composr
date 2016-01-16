@@ -88,11 +88,11 @@ These tools are:
  1_key="IP address"  1_value="Every computer connected to the Internet has an IP address of its own, although the IP address may change if that computer has 'rented' it via DHCP"
  2_key="DHCP"        2_value="Dynamic Host Configuration Protocol: a protocol that hands out IP addresses to computers on a network (including those connecting to the Internet), often arbitrarily"
  3_key="ISP"         3_value="An Internet Service Provider"
- 4_key="gateway"     4_value="A gateway routes packets between one network to another (e.g. between a network and the Internet) via NAT"
+ 4_key="Gateway"     4_value="A gateway routes packets between one network to another (e.g. between a network and the Internet) via NAT"
  5_key="NAT"         5_value="Network Address Translation. NAT allows two networks to communicate with IP addresses that a normal router could not have joined together"
- 6_key="firewall"    6_value="A computer/box that limits network traffic between networks; some firewalls are also routers"
- 7_key="proxy"       7_value="A proxy server allows computers on a network to connect to the Internet via special proxy server protocols that encapsulate requests; the proxy server then decodes and executes them, relaying the results"
- 8_key="router"      8_value="A router joins two networks; non-gateway routers actually join the networks such that all computers on a network being joined with the Internet become a part of the Internet themselves"
+ 6_key="Firewall"    6_value="A computer/box that limits network traffic between networks; some firewalls are also routers"
+ 7_key="Proxy"       7_value="A proxy server allows computers on a network to connect to the Internet via special proxy server protocols that encapsulate requests; the proxy server then decodes and executes them, relaying the results"
+ 8_key="Router"      8_value="A router joins two networks; non-gateway routers actually join the networks such that all computers on a network being joined with the Internet become a part of the Internet themselves"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

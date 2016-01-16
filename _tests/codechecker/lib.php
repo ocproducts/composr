@@ -347,6 +347,16 @@ function escape_html($in)
     return $in;
 }
 
+function php_function_allowed($function)
+{
+    return true;
+}
+
+function integer_format($num)
+{
+    return number_format($num);
+}
+
 function attach_message($message, $message_type)
 {
     global $TO_USE, $LINE, $COMPOSR_PATH;

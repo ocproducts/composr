@@ -38,11 +38,15 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>API</td>
-			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API.</td>
+			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API. An API is often made available via an SDK (Software Development Kit).</td>
 		</tr>
 		<tr>
 			<td>ASP.net</td>
 			<td>A programming language, similar to PHP.</td>
+		</tr>
+		<tr>
+			<td>Avatar</td>
+			<td>An image representing a user that is not an actual photo.</td>
 		</tr>
 		<tr>
 			<td>Back-end</td>
@@ -89,8 +93,12 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>A navigation mechanism where clickable pictures are shown in a little horizontally-scrollable sub-area of the web page.</td>
 		</tr>
 		<tr>
+			<td>CAPTCHA</td>
+			<td>When you sign up for something and have to enter the numbers/letters from an image to prove you are human, this is called a "CAPTCHA".</td>
+		</tr>
+		<tr>
 			<td>The Cloud</td>
-			<td>The Cloud' is an umbrella term for services delivered over the Internet where it is not fully defined where exactly the service comes from. It works via an intermediate broker service that will disseminate web page requests out to a number of possible actual web servers. This is useful for three main reasons: it allows complex or busy websites to function when the demand exceeds what a single server can do, it allows less complex or busy websites to easily share server resources with others, and it allows general purpose services (such as backup services) to be implemented in a very general way so that individual sites do not need individual maintenance.</td>
+			<td>The Cloud' is an umbrella term for services delivered over the Internet where it is not fully defined where exactly the service comes from. It works via an intermediate broker service that will disseminate web page requests out to a number of possible actual web servers. This is useful for three main reasons: it allows complex or busy websites to function when the demand exceeds what a single server can do, it allows less complex or busy websites to easily share server resources with others, and it allows general purpose services (such as backup services) to be implemented in a very general way so that individual sites do not need individual maintenance. Cloud hosting is made available through VM (virtual machine) technology.</td>
 		</tr>
 		<tr>
 			<td>Composr</td>
@@ -223,7 +231,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Lightbox</td>
-			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightbox's are a type of 'overlay'.</td>
+			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightboxes are a type of 'overlay'.</td>
 		</tr>
 		<tr>
 			<td>Linux</td>
@@ -243,7 +251,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Mobile Phone App</td>
-			<td>iPhone and Android phone handsets support their own kinds of 'app'. These often mix web technologies with more traditional kinds of programming technology, and need to be specially coded. Mobile apps are extremely popular with user's, but also quite costly to develop. Mobile website designs are a lower-cost (but lower quality) alternative, as code can usually be shared with the main desktop web design.</td>
+			<td>iPhone/iPad and Android smartphones and tablets support their own kinds of 'app'. These often mix web technologies with more traditional kinds of programming technology, and need to be specially coded. Mobile apps are extremely popular with users, but also quite costly to develop. Mobile website designs are a lower-cost (but lower quality) alternative, as code can usually be shared with the main desktop web design. iPhone and iPad run the iOS operating system.</td>
 		</tr>
 		<tr>
 			<td>Multivariate testing / split testing</td>
@@ -303,7 +311,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Resolution</td>
-			<td>How many pixels across and down there are on the screen. Websites are typically designed for user's with 1024x768 and upwards, although mobile websites need to work on 320x240. In actual fact, screen quality has improved remarkably in recent years, and we tend to design to a particular "virtual resolution" while showing higher fidelity (higher-dpi) to users with better screens.</td>
+			<td>How many pixels across and down there are on the screen. Websites are typically designed for users with 1024x768 and upwards, although mobile websites need to work on 320x240. In actual fact, screen quality has improved remarkably in recent years, and we tend to design to a particular "virtual resolution" while showing higher fidelity (higher-dpi) to users with better screens.</td>
 		</tr>
 		<tr>
 			<td>Responsive design</td>
@@ -311,7 +319,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>RSS</td>
-			<td>A way for a website to provide a news feed, so that user's may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
+			<td>A way for a website to provide a news feed, so that users may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
 		</tr>
 		<tr>
 			<td>Schema.org</td>
@@ -335,7 +343,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Social media</td>
-			<td>An umbrella term for marketing using online social tools such as Twitter and Facebook, as well as older tools like commenting and forums.</td>
+			<td>An umbrella term for marketing using online social tools such as Twitter and Facebook, as well as older tools like commenting and forums. Commercial users of social media hope that content will go "viral". Very popular content may take the form of a "meme".</td>
 		</tr>
 		<tr>
 			<td>Social network</td>
@@ -371,7 +379,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>WCAG</td>
-			<td>The Web Content Accessibility Guidelines: W3C's guidelines on how to make an accessible website.</td>
+			<td>The Web Content Accessibility Guidelines: W3C's (Web Accessibility Initiative, WAI) guidelines on how to make an accessible website.</td>
 		</tr>
 		<tr>
 			<td>Web 2.0</td>
@@ -407,7 +415,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>WYSIWYG</td>
-			<td>What You See Is What You Get. This term refers to how tools like Microsoft Word work &ndash; during editing text is displayed as it would be printed and displayed to a user. i.e. the actual display is manipulated intuitively until it looks correct. CMS's often have support for creating text content using WYSIWYG. This has advantages (ease of use) and disadvantages (it can mask accessibility issues, and make it hard to make the content automatically adapt for different display scenarios, such as mobile phones, or showing different content to users who are not logged in).</td>
+			<td>What You See Is What You Get. This term refers to how tools like Microsoft Word work &ndash; during editing text is displayed as it would be printed and displayed to a user. i.e. the actual display is manipulated intuitively until it looks correct. CMSs often have support for creating text content using WYSIWYG. This has advantages (ease of use) and disadvantages (it can mask accessibility issues, and make it hard to make the content automatically adapt for different display scenarios, such as mobile phones, or showing different content to users who are not logged in).</td>
 		</tr>
 		<tr>
 			<td>XML</td>

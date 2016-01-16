@@ -142,7 +142,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_Q.tpl',
             'themes/default/templates/COMCODE_VAR.tpl',
             'themes/default/templates/COMCODE_SHOCKER.tpl',
-            'themes/default/templates/COMCODE_SHOCKER_PART.tpl',
             'themes/default/templates/COMCODE_HIDE.tpl',
             'themes/default/templates/COMCODE_HIGHLIGHT.tpl',
             'themes/default/templates/COMCODE_IMG.tpl',

@@ -188,7 +188,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'uploads/website_specific/compo.sr/scripts/version.php',
             'uploads/website_specific/compo.sr/ad-banner.swf.zip',
             'uploads/website_specific/compo.sr/upgrades/make_upgrader.php',
-            'uploads/website_specific/compo.sr/facebook.htm',
+            'uploads/website_specific/compo.sr/facebook.html',
             'uploads/website_specific/compo.sr/index.html',
             'cmscore.rdf',
             'pages/minimodules_custom/contact.php',

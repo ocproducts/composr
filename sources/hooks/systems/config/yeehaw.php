@@ -50,6 +50,10 @@ class Hook_config_yeehaw
      */
     public function get_default()
     {
-        return '1';
+        require_code('locations');
+        if (get_country() == 'US') {
+            return '1';
+        }
+        return '0';
     }
 }

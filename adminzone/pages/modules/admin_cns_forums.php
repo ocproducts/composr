@@ -226,7 +226,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $list->attach(form_input_list_entry('last_post', $order == 'last_post', do_lang_tempcode('FORUM_ORDER_BY_LAST_POST')));
         $list->attach(form_input_list_entry('first_post', $order == 'first_post', do_lang_tempcode('FORUM_ORDER_BY_FIRST_POST')));
         $list->attach(form_input_list_entry('title', $order == 'title', do_lang_tempcode('FORUM_ORDER_BY_TITLE')));
-        $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'order', $list));
+        $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'topic_order', $list));
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
     
@@ -539,7 +539,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
+        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('topic_order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
 
         set_url_moniker('forum', $id);
 
@@ -611,7 +611,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_string('intro_question', STRING_MAGIC_NULL),
             post_param_string('intro_answer', STRING_MAGIC_NULL),
             post_param_string('redirection', STRING_MAGIC_NULL),
-            post_param_string('order', STRING_MAGIC_NULL),
+            post_param_string('topic_order', STRING_MAGIC_NULL),
             post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('reset_intro_acceptance', 0) == 1

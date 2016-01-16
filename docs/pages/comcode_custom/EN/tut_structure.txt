@@ -355,7 +355,7 @@ Information about redirects and virtual roots is covered in the [page="_SEARCH:t
  1_key="Page-link"      1_value="A special syntax that is like 'a Composr URL' that is written in a simplified form, local, and not tied to PHP/Composr URL reality (so if Composr URLs start to look different, Page-links still work)"
  2_key="Zone"           2_value="A sub-directory of Composr that stores pages and has separate configuration (including permissions)"
  3_key="Page"           3_value="A Composr site consists of pages, and some pages (mainly modules) consist of multiple screens"
- 4_key="screen"         4_value="An actual screen that could be roughly categorised distinctly from all other screens (e.g. the backup system has a screen to start a backup, and a screen to view the results)"
+ 4_key="Screen"         4_value="An actual screen that could be roughly categorised distinctly from all other screens (e.g. the backup system has a screen to start a backup, and a screen to view the results)"
  5_key="Module"         5_value="A Composr page that is written in PHP to a very strict structure"
  6_key="Mini-module"    6_value="A module that is easier to write, but less powerful (it has no installation support, for example)"
  7_key="Zone editor"    7_value="A unified zone and panel editor"

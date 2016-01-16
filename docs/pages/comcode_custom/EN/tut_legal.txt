@@ -164,7 +164,7 @@ You should develop a policy about how you handle feedback. This is of particular
  - will you consciously make sure there is no publicly visible outlet for negative feedback on the site, and remove any that is found for being 'off-topic'?
 
 [concepts
- 1_key="privacy policy"   1_value="A standard term applied to the document that lays out a website's privacy policy; some laws specifically refer to a privacy policy and require a separate document for it"
+ 1_key="Privacy policy"   1_value="A standard term applied to the document that lays out a website's privacy policy; some laws specifically refer to a privacy policy and require a separate document for it"
  2_key="COPPA"            2_value="Children's Online Privacy Protection Act; a US law that affects websites that have child members"
 ]Concepts[/concepts]
 

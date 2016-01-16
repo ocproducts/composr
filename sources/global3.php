@@ -1381,11 +1381,21 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 } else {
                     $default = '';
                 }
-                if (
-                    (count($subparts) != 2) ||
-                    (($current_params !== null) && ((isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : $default) != $subparts[1])) ||
-                    (($current_params === null) && (call_user_func_array($req_func, array($subparts[0], $default)) != $subparts[1]))
-                ) {
+                if (count($subparts) != 2) {
+                    $bad = true;
+                    continue;
+                }
+                $env_val = ($current_params === null) ? call_user_func_array($req_func, array($subparts[0], null)) : (isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : null);
+                if ($subparts[1] == '_WILD') {
+                    if ($env_val !== null) {
+                        $subparts[1] = $env_val;
+                    } // null won't match to a wildcard
+                } else {
+                    if ($env_val === null) {
+                        $env_val = $default;
+                    }
+                }
+                if ($env_val !== $subparts[1]) {
                     $bad = true;
                     continue;
                 }
@@ -2864,12 +2874,16 @@ function get_brand_base_url()
 /**
  * Get a URL to a Composr tutorial.
  *
- * @param  ID_TEXT $tutorial Name of a tutorial
+ * @param  ?ID_TEXT $tutorial Name of a tutorial (null: don't include the page part)
  * @return URLPATH URL to a tutorial
  */
 function get_tutorial_url($tutorial)
 {
-    return get_brand_page_url(array('page' => $tutorial), 'docs' . strval(cms_version()));
+    $ret = get_brand_page_url(array('page' => is_null($tutorial) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
+    if (is_null($tutorial)) {
+        $ret = str_replace('abcdef.htm', '', $ret);
+    }
+    return $ret;
 }
 
 /**
@@ -2881,8 +2895,8 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value = get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
-    return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
+    // Assumes brand site supports .htm URLs, which it should
+    return get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
 }
 
 /**

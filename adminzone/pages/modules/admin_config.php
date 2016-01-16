@@ -231,13 +231,12 @@ class Module_admin_config
     {
         // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
         if (count($_POST) == 0) {
-            $proper_url = build_url(array('page' => ''), '');
-            $_proper_url = $proper_url->evaluate();
-            $test_a = http_download_file($_proper_url, 0, false, true);
+            $test_url = get_custom_base_url() . '/uploads/index.html';
+            $test_a = http_download_file($test_url, 0, false, true);
             $message_a = $GLOBALS['HTTP_MESSAGE'];
             if ($message_a == '200')
             {
-                $test_b = http_download_file($_proper_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
+                $test_b = http_download_file($test_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
                 if ($message_b != '200')
                 {
@@ -624,6 +623,8 @@ class Module_admin_config
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
+        require_code('caches3');
+
         global $CONFIG_OPTIONS_CACHE;
 
         $category = get_param_string('id', 'MAIN');
@@ -667,9 +668,13 @@ class Module_admin_config
         // Empty thumbnail cache if needed
         if (function_exists('imagetypes')) {
             if ((!is_null(post_param_string('thumb_width', null))) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
-                require_code('caches3');
                 erase_thumb_cache();
             }
+        }
+
+        // Empty language cache if needed
+        if ((!is_null(post_param_string('yeehaw', null))) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
+            erase_cached_language();
         }
 
         // Find all options in category
@@ -742,7 +747,6 @@ class Module_admin_config
         }
 
         // Clear some caching
-        require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
         //persistent_cache_delete('OPTIONS');  Done by set_option / erase_persistent_cache

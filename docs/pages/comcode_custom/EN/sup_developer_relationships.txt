@@ -1,18 +1,18 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: Maintaining a good agency relationship[/title]
 
 [media description="" width="350" float="right" framed="0"]data_custom/images/docs/sup_developer_relationships/image.jpg[/media]
-Any good relationship is a two-way thing, [page="_SEARCH:sup_choosing_a_developer"]you should hold your web designer to high standards[/page], but treating them with some reasonable respect is also vital to maintaining a good agency relationship.
+Any good relationship is a two-way thing, [page="_SEARCH:sup_choosing_a_developer"]you should hold your web developer to high standards[/page], but treating them with some reasonable respect is also vital to maintaining a good agency relationship.
 
-Sometimes it might seem like web designers are pricey or that they generate too many bugs, but it's a really hard industry to work in and extremely fast-paced and competitive. There are many levels of painstaking work that go into making a modern website, involving a wide set of technical and design skills in an environment that requires sophisticated project management techniques to bring a project to completion on time and on budget. Often clients don't realise this and think that our tools are as simple as using something like Microsoft Publisher, but unfortunately given the amount of interactivity, the level of fidelity, and the requirement for a lot of flexibility, typically every tiny visual detail ends up having to be hand written in various programming languages from scratch.
+Sometimes it might seem like web designer companies are pricey or that they generate too many bugs, but it's a really hard industry to work in and extremely fast-paced and competitive. There are many levels of painstaking work that go into making a modern website, involving a wide set of technical and design skills in an environment that requires sophisticated project management techniques to bring a project to completion on time and on budget. Often clients don't realise this and think that our tools are as simple as using something like Microsoft Publisher, but unfortunately given the amount of interactivity, the level of fidelity, and the requirement for a lot of flexibility, typically every tiny visual detail ends up having to be hand written in various programming languages from scratch.
 
-This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i] to drive your web designer completely insane!
+This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i] to drive your web agency completely insane!
 
 [list="1"]
-[*] Send a 'Request for proposal' document to the web design company that will take two working days for the web designer to write a proposal for, but don't tell them that actually you have a number of pre-decided and inflexible assessment criteria that they will never be able to pass on (such as a particular company location, or very high historical revenues on their company accounts).[/*]
+[*] Send a 'Request for proposal' document to the agency that will take two working days for the agency to write a proposal for, but don't tell them that actually you have a number of pre-decided and inflexible assessment criteria that they will never be able to pass on (such as a particular company location, or very high historical revenues on their company accounts).[/*]
 
-[*] Request a proposal from a web design company, but refuse to discuss any points in sufficient detail (for example, avoiding answering their questions on what are their most important project goals). Refuse to consult further on how to improve their bid before making a final decision. This one is incredibly annoying, as to an extent the web design company is in the dark, throwing darts at a dart board: it's really important for the client to look at the different bids, and then get back to them all on where they aren't so strong and give them a chance to improve those areas and re-bid. This is good for the client as well as the web design company.[/*]
+[*] Request a proposal from an agency, but refuse to discuss any points in sufficient detail (for example, avoiding answering their questions on what are their most important project goals). Refuse to consult further on how to improve their bid before making a final decision. This one is incredibly annoying, as to an extent the agency is in the dark, throwing darts at a dart board: it's really important for the client to look at the different bids, and then get back to them all on where they aren't so strong and give them a chance to improve those areas and re-bid. This is good for the client as well as the agency.[/*]
 
-[*] Make tight deadlines that require development to start within a matter of weeks (there is a need for proper planning, plus any good company will be booked up for a period and need to schedule in advance).
+[*] Make tight deadlines that require development to start within a matter of weeks (there is a need for proper planning, plus any good agency will be booked up for a period and need to schedule in advance).
 
 [*] Send a huge list of feature requests and ask for costing breakdowns to be worked out for all of them, then turn around and say you only have a tiny budget that you surely knew would not be nearly enough. Or just generally ask for quotes on implementing a brief outline, but do not give an idea of what the budget range is (be it tiny or huge). This is a tricky one: no client wants a greedy supplier who will just propose for something near the top of the price range to eat up the whole budget just for the sake of it. However, web design prices vary hugely, and it is important that the supplier knows that the price range is achievable before spending a lot of times costing it out in detail, and also they need to know what kind of level they are pitching at (for a higher level, additional services would be offered that would not be at a lower level, such as formal usability testing sessions).[/*]
 
@@ -22,9 +22,9 @@ This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i]
 
 [*] Request that an agile development practice be done, to a fixed specification, to a fixed budget. Agile processes work on the principle that changes to specifications (usually additions, or having to back-track a bit) should be embraced, but vital to this is that the budget rises or some other less critical planned functionality is dropped to compensate.[/*]
 
-[*] During your fixed-price project, keep making additional requests for functionality but have no way to pay for them. Even if you do have the capacity to find additional budget, it is vital that costs are approved quickly (it should be a matter of a day or two). We have found on some projects that new requirements are requested, and there's a big time pressure to implement them, but that it takes up to two weeks for the cost to be approved. It's easy for the web design company to feel they have to implement them immediately to meet a client's schedule, and then for the client to turn around and say that actually they can't approve the cost.[/*]
+[*] During your fixed-price project, keep making additional requests for functionality but have no way to pay for them. Even if you do have the capacity to find additional budget, it is vital that costs are approved quickly (it should be a matter of a day or two). We have found on some projects that new requirements are requested, and there's a big time pressure to implement them, but that it takes up to two weeks for the cost to be approved. It's easy for the agency to feel they have to implement them immediately to meet a client's schedule, and then for the client to turn around and say that actually they can't approve the cost.[/*]
 
-[*] Expect your web designer to be available on weekends or evenings. Or generally expect very fast responses (such as immediate phone support) during a period where you're not paying for a dedicated developer service.[/*]
+[*] Expect your web developer to be available on weekends or evenings. Or generally expect very fast responses (such as immediate phone support) during a period where you're not paying for a dedicated developer service.[/*]
 
 [*] Offer payment-in-kind rather than cash-money. For example, suggest payment via advertising, mentions on mailing lists, commissions, deferred payments, or skill exchanges. A web developers operating margins are typically quite slim, so a developer would expect a business client to use something like a bank loan to fund their enterprise, rather than the developer taking on the risk for their new project as if they were themselves investors.[/*]
 
@@ -35,11 +35,29 @@ This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i]
 [*] Pay for one programmer-only, and then expect that programmer to be able to do design work, work on any different stack of technologies, or have a high-level of skill in any particular arbitrary areas of your choosing. Be unwilling to learn about the web industry/market and the people that work in it, continuing to make requests of people that do not match their skill-sets -- and do not be willing to discuss adding people with the appropriate skill to the team or paying for highly-specific training that is needed.
 [/list]
 
-You may have noticed a trend kept coming up, and that is not to mess web design companies around at the quotation stage. It takes a lot of time to work out an accurate quote, so the web designer needs to know they have a fair chance of the work they are quoting for is actually going to happen. You might think you're just being diligent by collecting a big set of options to pick for, but there's a good chance you will really annoy the people you need to have a good agency relationship with. If you do need to collect quotes with a low chance of taking them up, discuss this with the web design company and give them a chance to charge for the time taken to produce them, otherwise you are tacitly expecting people to do days of work for you unpaid and not warning them about it.
+[title="2"]Spotted a trend?[/title]
+
+You may have noticed a trend kept coming up in the first few, and that is not to mess web design companies around at the quotation stage.
+
+It takes a lot of time to work out an accurate quote. The agency will need to:
+ - Make appropriate introductions
+ - Learn all about your business
+ - Learn about all your needs
+ - Think things through from a dozen different angles, including the current technology landscape, the competition in your market, and the needs of your users
+ - Do preparatory creative work (or possibly full spec designs)
+ - Translate the business objectives into tasks
+ - Create a cost breakdown
+ - Create a roadmap
+ - Explain everything about the approach
+The agency therefore needs to know they have a fair chance of the work they are quoting for is actually going to happen.
+
+You might think you're just being diligent by collecting a big set of options to pick for, but there's a good chance you will really annoy the people you need to have a good agency relationship with.
+
+If you do need to collect quotes with a low chance of taking them up, discuss this with the web design company and give them a chance to charge for the time taken to produce them, otherwise you are tacitly expecting people to do days of work for you unpaid and not warning them about it.
 
 Additionally, it is very important you have sensible management structures in place from the very start, and are willing to follow proper processes.
 
-I hope this didn't come across too one-sided, but here's for ensuring that client and web designer have a good agency relationship from the beginning of a project and onwards.
+I hope this didn't come across too one-sided, but here's for ensuring that client and agency have a good relationship from the beginning of a project and onwards.
 
 [title="2"]See also[/title]
 

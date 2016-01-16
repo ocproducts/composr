@@ -139,19 +139,6 @@ If somehow a corrupt post makes it through and obscures the delete button after 
 [tt]http://yourbaseurl/forum/index.php?page=topics&type=edit_post&id=<postid>[/tt]
 You can find the post ID from above (before) the post in the topicview.
 
-[concepts
- 1_key="discussion forums"   1_value="A system for discussing issues; topics contain posts, and topics are placed within forums which themselves are structured"
- 2_key="forum"               2_value="A place for the archiving and posting of topics (discussions)"
- 3_key="sub-forum"           3_value="A forum underneath another forum in the forum tree structure"
- 4_key="forum grouping"      4_value="A categorisation of a forum, distinct from the tree structure"
- 5_key="topic"               5_value="A sequence of posts"
- 6_key="post"                6_value="A piece of writing made by a user and displayed as a continuation, or start, of a topic"
- 7_key="pin"                 7_value="A pinned topic is displayed above a non-pinned topic (otherwise, date order is used for sorting)"
- 8_key="sunk"                8_value="A sunk topic is displayed beneath all other topics"
- 9_key="cascade"             9_value="A cascading topic is displayed in its forum, and all subforums there-of"
-10_key="home forum"         10_value="The forum at the root of the forum tree structure"
-]Concepts[/concepts]
-
 [title="2"]Conversr versus other forum software[/title]
 
 Conversr was designed to be a powerful forum in its own right.
@@ -174,6 +161,19 @@ Here are some features we have in Conversr that are mostly unique across forum s
  - Integrated rank/usergroup system (because having rank and usergroup separate just gets confusing)
 
 Since the time of Conversr's development, standalone forums have actually reduced a lot in popularity, for the same reasons that we decided tight integration was the way to go -- a consistent user experience across a whole website is the way to go, instead of having community features mostly siloed off on some separate piece of software. That ended up being called 'Web 2.0' and then 'Social media', but it basically is what Composr's philosophy always has been: an interactive and integrated cross-website experience. However most "new forums", written from scratch to provide this tight integration, are cut down in functionality and lack a lot of really important features, while we've matched and raised the functionality at the same time as properly integrating it. This is one thing we're quite proud of about with Composr: we don't just throw away proven functionality to create the new, we embrace established concepts and build industry innovations right into the core of it all.
+
+[concepts
+ 1_key="Discussion forums"   1_value="A system for discussing issues; topics contain posts, and topics are placed within forums which themselves are structured"
+ 2_key="Forum"               2_value="A place for the archiving and posting of topics (discussions)"
+ 3_key="Sub-forum"           3_value="A forum underneath another forum in the forum tree structure"
+ 4_key="Forum grouping"      4_value="A categorisation of a forum, distinct from the tree structure"
+ 5_key="Topic"               5_value="A sequence of posts"
+ 6_key="Post"                6_value="A piece of writing made by a user and displayed as a continuation, or start, of a topic"
+ 7_key="Pin"                 7_value="A pinned topic is displayed above a non-pinned topic (otherwise, date order is used for sorting)"
+ 8_key="Sunk"                8_value="A sunk topic is displayed beneath all other topics"
+ 9_key="Cascade"             9_value="A cascading topic is displayed in its forum, and all subforums there-of"
+10_key="Home forum"         10_value="The forum at the root of the forum tree structure"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

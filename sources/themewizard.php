@@ -1377,14 +1377,18 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             // GD may have a bug with not loading up non-alpha transparency properly
             if (function_exists('imageistruecolor')) {
                 if (function_exists('imagecreatetruecolor')) {
-                    if (!imageistruecolor($_image)) {
-                        $imagemagick = find_imagemagick();
-                        if (!is_null($imagemagick)) {
-                            $tempnam = cms_tempnam('png32bit');
-                            shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
-                            if (is_file($tempnam)) {
-                                $_image = @imagecreatefrompng($tempnam);
-                                @unlink($tempnam);
+                    if (php_function_allowed('shell_exec')) {
+                        if (php_function_allowed('escapeshellarg')) {
+                            if (!imageistruecolor($_image)) {
+                                $imagemagick = find_imagemagick();
+                                if (!is_null($imagemagick)) {
+                                    $tempnam = cms_tempnam('png32bit');
+                                    shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
+                                    if (is_file($tempnam)) {
+                                        $_image = @imagecreatefrompng($tempnam);
+                                        @unlink($tempnam);
+                                    }
+                                }
                             }
                         }
                     }

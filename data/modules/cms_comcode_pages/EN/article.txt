@@ -26,14 +26,20 @@ If it is a persuasive piece:
 Consider some basic parameters that you can plan against, and assess your final article against...
 
 Do you need images? Original photos, or stock graphics? How many? Note that some people best learn via reading, while others learn better through images, or even video.
+
 How many words should your article be?
+
 Will you be using outbound links?
+
 Do you need to build in particular key words or phrases, for SEO purposes?
+
 Are you intentionally writing the article on the back of a particular craze, and hence aligning it to people interested in that?
+
 If it is a sales piece, have you considered providing an offer to incentivise, and potentially add a sense for urgency (perhaps using the [tt]main_countdown[/tt] block to count down to the end of an offer)?
+
 Do you want to tie in some third-party live chat software, to capture leads who are reading the article?
 
-[quote="Sage"]
+[quote="Dr Expert"]
 Do you need to gather some quotes or testimonials?
 [/quote]
 

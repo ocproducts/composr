@@ -44,4 +44,4 @@ On most web browsers you can activate a key shortcut by holding down the Alt key
 
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
 
-{$SET,tutorial_tags,Web standards & Accessibility,Administration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Many functions may be activated by key code, rather than clicking. Find out the key codes you can use in this tutorial.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Web standards & Accessibility,Administration,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Many functions may be activated by key code, rather than clicking. Find out the key codes you can use in this tutorial.}[block]main_tutorial_rating[/block]

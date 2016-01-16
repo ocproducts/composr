@@ -78,17 +78,17 @@ Composr is designed to support content translatable into multiple languages, alt
 Composr has been designed to be able to work with many different databases, not just MySQL. We dropped official support for this feature, because like multiple language content, we could not thoroughly beta test it, especially due to very strange and varying limitations and differences in different database systems. However, Composr still avoids using MySQL-specific features wherever possible. Instead of using highly specialist (if they exist at all) queries to analyse database table structure, for systems such as backup or Conversr-member-id-migration, Composr actually stores database structure in the [tt]db_meta[/tt] table. Composr's own installation techniques for creating and changing database tables will properly update this table, and if modifications are being made, it is preferable that the db_meta table is updated to reflect them.
 
 [concepts
- 1_key="database"     1_value="Simply a system that stores structured information"
- 2_key="relational database"     2_value="A system that stores information in a very strict pre-determined structure based on set-theory"
+ 1_key="Database"     1_value="Simply a system that stores structured information"
+ 2_key="Relational database"     2_value="A system that stores information in a very strict pre-determined structure based on set-theory"
  3_key="SQL"          3_value="A language for communicating with a database"
  4_key="MySQL"        4_value="A free database system; Composr requires this"
  5_key="phpMyAdmin"   5_value="An excellent web front-end to MySQL"
- 6_key="query"        6_value="An instruction or request to a database"
- 7_key="schema"       7_value="The specification of the fields rows in a table use"
- 8_key="table"        8_value="A collection of rows and the schema the rows fit"
- 9_key="field"        9_value="An element of a row that may store a value, of a certain type"
- 10_key="row"          10_value="A number of elements that together represent a single entry of some sort"
- 11_key="key"          11_value="An identifier for a row, consisting of some pre-chosen (in the schema) combination of fields"
+ 6_key="Query"        6_value="An instruction or request to a database"
+ 7_key="Schema"       7_value="The specification of the fields rows in a table use"
+ 8_key="Table"        8_value="A collection of rows and the schema the rows fit"
+ 9_key="Field"        9_value="An element of a row that may store a value, of a certain type"
+ 10_key="Row"          10_value="A number of elements that together represent a single entry of some sort"
+ 11_key="Key"          11_value="An identifier for a row, consisting of some pre-chosen (in the schema) combination of fields"
  12_key="ID"           12_value="In Composr this is a numeric identifier associated with a row, and usually also associated with a specific piece of Composr content"
 ]Concepts[/concepts]
 
@@ -98,4 +98,4 @@ Composr has been designed to be able to work with many different databases, not 
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [page="_SEARCH:tut_disaster"]Disaster recovery[/page]
 
-{$SET,tutorial_tags,Maintenance,Development,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A primer on databases, and how SQL is used to connect to them - as well as practical advice on using phpMyAdmin.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,Development,core,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A primer on databases, and how SQL is used to connect to them - as well as practical advice on using phpMyAdmin.}[block]main_tutorial_rating[/block]

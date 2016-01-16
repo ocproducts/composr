@@ -492,21 +492,25 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
 
+    global $COMCODE_PARSE_URLS_CHECKED, $HTTP_MESSAGE, $COMCODE_BROKEN_URLS, $DONT_CARE_MISSING_PAGES;
+
     $temp_tpl = new Tempcode();
     require_code('global4');
     if (!handle_has_checked_recently($url_full)) {
-        $GLOBALS['COMCODE_PARSE_URLS_CHECKED']++;
-        $test = ($GLOBALS['COMCODE_PARSE_URLS_CHECKED'] >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
-        if ((is_null($test)) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
-            $temp_tpl = do_template('WARNING_BOX', array(
-                '_GUID' => '7bcea67226f89840394614d88020e3ac',
-                'FOR_GUESTS' => false,
-                //'INLINE' => true, Looks awful
-                'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
-            ));
-            if (array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) {
-                $GLOBALS['COMCODE_BROKEN_URLS'][] = array($url_full, null);
-            } elseif ((!in_array(get_page_name(), $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (running_script('index'))) {
+        $COMCODE_PARSE_URLS_CHECKED++;
+        $test = ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
+        if ((is_null($test)) && (in_array($HTTP_MESSAGE, array('404')))) {
+            if ($HTTP_MESSAGE != 'could not connect to host'/*don't show for random connectivity issue*/) {
+                $temp_tpl = do_template('WARNING_BOX', array(
+                    '_GUID' => '7bcea67226f89840394614d88020e3ac',
+                    'FOR_GUESTS' => false,
+                    //'INLINE' => true, Looks awful
+                    'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
+                ));
+            }
+            if (isset($COMCODE_BROKEN_URLS)) {
+                $COMCODE_BROKEN_URLS[] = array($url_full, null);
+            } elseif ((!in_array(get_page_name(), $DONT_CARE_MISSING_PAGES)) && (running_script('index'))) {
                 $found_in_post = false; // We don't want to send email if someone's just posting it right now, because they'll see the error on their screen, and we don't want staff spammed by member mistakes
                 foreach ($_POST as $val) {
                     if (is_array($_POST)) {
@@ -521,7 +525,11 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
                 }
                 if (!$found_in_post) {
                     require_code('failure');
-                    relay_error_notification(do_lang('MISSING_URL_COMCODE', $tag_type, $url_full), false, $GLOBALS['FORUM_DRIVER']->is_staff($source_member) ? 'error_occurred_missing_reference_important' : 'error_occurred_missing_reference');
+                    relay_error_notification(
+                        do_lang('MISSING_URL_COMCODE', $tag_type, $url_full),
+                        false,
+                        $GLOBALS['FORUM_DRIVER']->is_staff($source_member) ? 'error_occurred_missing_reference_important' : 'error_occurred_missing_reference'
+                    );
                 }
             }
         }

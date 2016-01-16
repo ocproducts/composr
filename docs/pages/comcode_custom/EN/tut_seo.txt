@@ -58,7 +58,7 @@ There are many rogues and companies out there that will promise unachievable thi
 
 If you do want to put in a lot of tuning effort to content, here are some additional techniques:
 
-The key is to understand the goals of the page, yes, you want to get internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something. 
+The key is to understand the goals of the page, yes, you want to get Internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something. 
 Here are a few things to bare in mind
  - Research keywords and select the most appropriate for the topic. This should be used within the Page title, your main title and within the first 25 words of text. Composr automatically makes title you put in for news the article title (Heading1) and the metadata title.
  - Establish useful synonyms. Rather than repeat the same word or phrase over and over again establish a list of useful synonyms so that you don't keep repeating yourself.
@@ -141,12 +141,6 @@ An anally-retentive attitude isn't wholly bad to SEO, especially if you are tuni
 
 Of course, if you are seeing an error on a particular URL and you want that URL to be crawled, you should look into it.
 
-[concepts
- 1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"
- 2_key="Crawler"       2_value="The 'work horse' of search engines that moves between links on the world-wide-web, finding and analysing web-pages"
- 3_key="XML Sitemap"   3_value="A standard format for listing the pages of your website, recognised by all the major search engines"
-]Concepts[/concepts]
-
 [title="2"]A note of caution regarding agencies / Can you really get a google top result?[/title]
 
 A lot of web design companies make a very bold claim: that they can get you a Google top result.
@@ -195,6 +189,12 @@ SEO is certainly a strong possible marketing route for many websites. Two scenar
 [/list]
 If you are going to go down the SEO route, make sure that you have someone who will do 'white-hat' techniques rather than 'black-hat' ones. If you hire the wrong company you might find that they are trying to make your website rank highly by exchanging or buying a lot of links, and Google will likely find out very soon and get you banned.
 
+[concepts
+ 1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"
+ 2_key="Crawler"       2_value="The 'work horse' of search engines that moves between links on the world-wide-web, finding and analysing web-pages"
+ 3_key="XML Sitemap"   3_value="A standard format for listing the pages of your website, recognised by all the major search engines"
+]Concepts[/concepts]
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
@@ -207,4 +207,4 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
  - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
 
-{$SET,tutorial_tags,SEO,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

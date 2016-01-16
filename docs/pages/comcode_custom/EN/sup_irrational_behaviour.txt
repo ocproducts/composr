@@ -1,4 +1,6 @@
-[title sub="Written by Chris Graham"]Composr Supplementary: Learn to embrace irrational behaviour[/title]
+[title sub="Written by Chris Graham"]Composr Supplementary: Learn to embrace irrational behaviour in your customers[/title]
+
+[title="2"]Snap decisions[/title]
 
 A reality that anybody working in marketing has to get to grips with is that people generally make snap decisions about things, and those snap decisions often lead to what seems like very irrational behaviour.
 
@@ -6,24 +8,55 @@ People are often "lazy", "disengaged", "don't think things through", "selfish", 
 
 It's easy to judge, but what you have to realise is that [b]these customer[/b] [i][b]are[/b][/i] [b]in the right[/b] in the way they think and it is up to you to relate to them, not the other way around.
 
-Let's step through these things:
+[title="2"]Internal justifications[/title]
+
+Let's step through our opening criticism of people:
 [list]
 [*][b]Lazy[/b]: A more appropriate word is "busy". We live in a world where the amount expected from us has increased to an almost unmanageable point, with constant technological, change, globalisation, and frequent economic tornados. You need to expect people will not be able to spend much time looking at whatever you are offering to them.[/*]
 [*][b]Disengaged[/b]: (see Lazy)[/*]
 [*][b]Don't think things through[/b]: (see Lazy)[/*]
-[*][b]Selfish[/b]: Everybody is selfish to some point. Even though I like to share knowledge, I'm mainly writing this blog post to help our customers succeed and get more work as a result, to get some Google hits, and to demonstrate my company has a depth of experience. If people aren't selfish to some extent, they don't have much chance of being successful.[/*]
+[*][b]Selfish[/b]: Everybody is selfish to some degree. Even though I like to share knowledge, I'm mainly writing this tutorial to help our customers succeed and get more work as a result, to get some Google hits, and to demonstrate my company has a depth of experience. If people aren't selfish to some extent, they don't have much chance of being successful.[/*]
 [*][b]Hidden agendas[/b]: Often employees in large companies will use various tactics to get what they want personally, such as spinning or burying things. This is a bit harder to justify, but the world is highly competitive and some people will do what they can to get an edge, so that they can pay reasonable attention to themselves and their family.[/*]
 [*][b]Take stuff for granted[/b]: When you turn on your computer you probably don't think of the hard working engineers who invented many of the technologies in it, or the low paid Chinese workers who assembled it. The truth is we all rely on things other people have done, utilising technologies built on top of technologies on top of technologies. There's never going to be enough time to consider and thank all the unsung heros who worked long hours to bring us what we have, however much they deserve it. People rightly focus on their own challenges as they move things even further forward.[/*]
 [*][b]Prejudiced[/b]: I see various forms of prejudice in business fairly regularly. For example, I have had feedback that we shouldn't show pictures of some of the very smart people who developed Composr because their youth gives an impression of immaturity. I have seen some pretty racist denigration of offshore workers. The harsh reality is that many of these kinds are prejudices do, on average, actually present a better-than-random way of assessing things from a selfish point of view. If you're making a snap judgement it is data you might take into account, even though it may be wrong in a proportion of cases. If you work from a basis that people will use whatever direct experiences they have, then you will find people will stereotype and prejudge. We all need to fight this, but we also need to appreciate it will happen and to plan for it.[/*]
 [/list]
-I am writing this blog post because newbie-marketers are often optimistic about how other people will respond to things, lacking real insight into what their potential customers are really thinking. It's important for anyone who has to market something to really connect with the priorities of their customers, and not expect some idealistic philosophical relationship with them.
+
+[title="2"]Actual examples[/title]
+
+I am writing this tutorial because newbie-marketers are often optimistic about how other people will respond to things, lacking real insight into what their potential customers are really thinking. It's important for anyone who has to market something to really connect with the priorities of their customers, and not expect some idealistic philosophical relationship with them.
 
 This is one of my favourite videos on YouTube because it demonstrates the lazy decision making process very well:
 
 [media]http://www.youtube.com/watch?v=GzdmyM4stPc[/media]
 
-This is definitely the kind of process you need if you are targeting consumers. Senior decision-makers, technical people, and business people are a bit more sophisticated in their decision making than this: seeking some evidence, and doing some comparing. But never underestimate how some people, including some less senior people in businesses acting at the start of a decision making process or in committee, or people entrusted to make less important decisions, will decide things without much care at all, using some superficial criteria. Often people will make a decision based on superficial critera, then justify it later on more complex criteria.
+It shows clearly how people make decisions using the biases shown above, rather than any kind of deep analysis.
 
-I should of course note that some people make snap decisions that aren't superficial: by seeking recommendations. That is another topic of its own though.
+This is definitely the kind of process you need if you are targeting consumers.
+
+[title="2"]In business[/title]
+
+Senior decision-makers, technical people, and business people, are a bit more sophisticated in their decision making than this: seeking some evidence, and doing some comparing.
+
+However, never underestimate how some people, including some less senior people in businesses acting at the start of a decision making process or in committee, or people entrusted to make less important decisions, will decide things without much care at all, using some superficial criteria.
+
+Often people will make a decision based on superficial critera, then justify it later on more complex criteria.
+
+[title="2"]Solving the problem[/title]
+
+Now that we've established that people make superficial decisions, how do we deal with that?
+
+There's no easy answer, but essentially you need to appeal to what people care about in a quick and visceral way. Don't try and rely on a water-tight written logical argument for things, try and show things in an instant using graphics, and appealing direct to people's existing thoughts and existing emotions.
+
+Look around at advertising you see every day. Up until now, you might have thought the advertising was just silly. However, given what we've established, you might see that the advertising professionals are trying to simplify things down to the visceral level that they need to work on. Try and learn from them and shift your approach in that direction.
+
+If you want to learn more, I suggest reading more about brand marketing.
+
+[title="2"]Finally[/title]
+
+I should note that some people have a way of making snap decisions that aren't superficial: by seeking recommendations. That is another topic of its own though.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_marketing"]Introduction to marketing[/page]
 
 {$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A marketing primer: recognising the impatience of the modern customer.}[block]main_tutorial_rating[/block]

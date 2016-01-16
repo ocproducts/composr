@@ -549,7 +549,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace(' type="disc"', '', $semihtml);
     $semihtml = str_replace(' type="1"', '', $semihtml);
     $semihtml = str_replace(' start="1"', '', $semihtml);
-    $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '' ,$semihtml);
+    $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '', $semihtml);
     $semihtml = preg_replace('#mso-[\w-]+:[^;"\']*#', '', $semihtml);
     $semihtml = str_replace('text-autospace:none', '', $semihtml);
     $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
@@ -799,8 +799,8 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace(' style=""', '', $semihtml);
 
     // Clean some now-empty span/p/align tags
-    $semihtml = preg_replace('#<span( style="[^"]*")?>&nbsp;</span>#', ' ', $semihtml);
-    $semihtml = preg_replace('#<p( style="[^"]*")?>\s*(&nbsp;)?\s*</p>#', '<br /><br />', $semihtml);
+    $semihtml = preg_replace('#<span( style="[^"]*")?' . '>&nbsp;</span>#', ' ', $semihtml);
+    $semihtml = preg_replace('#<p( style="[^"]*")?' . '>\s*(&nbsp;)?\s*</p>#', '<br /><br />', $semihtml);
     $semihtml = preg_replace('#\[align="\w+"\]\s*(&nbsp;)?\s*\[/align\]#', '', $semihtml);
 
     // Cleanup list Comcode (nice and pretty)
