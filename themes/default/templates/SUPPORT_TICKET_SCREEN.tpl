@@ -78,7 +78,7 @@
 		{+START,IF_NON_EMPTY,{POST_TEMPLATES}}
 			<tr>
 				<th class="de_th">
-					<span class="field_name"><label for="ticket_type_id">{!POST_TEMPLATE}:</label></span>
+					<span class="field_name"><label for="ticket_type_id">{!cns_post_templates:POST_TEMPLATE}:</label></span>
 				</th>
 				<td>
 					{POST_TEMPLATES}

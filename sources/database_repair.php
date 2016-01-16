@@ -390,7 +390,7 @@ class DatabaseRepair
                 continue;
             }
             if (!isset($expected_tables[$table_name])) {
-                $this->delete_table_alien_in_db($table_name, isset($meta_tables[$table_name][$field_name]));
+                $this->delete_table_alien_in_db($table_name, isset($meta_tables[$table_name]));
                 $needs_changes = true;
             }
         }

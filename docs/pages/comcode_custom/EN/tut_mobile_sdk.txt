@@ -704,7 +704,7 @@ Calling:
 [/code]
 
 [i]Description:[/i]
-Check and return a boolean value based on the internet connectivity available for the app. The function will check whether the app is connected to the Internet or not.
+Check and return a boolean value based on the Internet connectivity available for the app. The function will check whether the app is connected to the Internet or not.
 
 [i]Usage:[/i]
 [code="objc"]

@@ -218,7 +218,6 @@ class Hook_addon_registry_core_cns
             'adminzone/pages/modules/admin_cns_merge_members.php',
             'adminzone/pages/modules/admin_cns_members.php',
             'sources/hooks/modules/admin_import/csv_members.php',
-            'themes/default/templates/CNS_BIRTHDAYS.tpl',
             'themes/default/templates/CNS_EMOTICON_TABLE.tpl',
             'themes/default/templates/CNS_JOIN_STEP1_SCREEN.tpl',
             'themes/default/templates/CNS_USERS_ONLINE_SCREEN.tpl',

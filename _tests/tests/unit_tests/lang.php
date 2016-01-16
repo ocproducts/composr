@@ -133,7 +133,7 @@ class lang_test_set extends cms_test_case
         if (stripos($string, 'set-up') !== false) {
             $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
         }
-        if (strpos($string, 'internet') !== false) {
+        if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {
             $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
         }
 
@@ -254,7 +254,7 @@ class lang_test_set extends cms_test_case
                 $this->assertTrue(false, 'The acronym \'url\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'URL\'.');
             }
         }
-        if (stripos($string, 'thankyou') !== false) {
+        if (preg_match('#([^\]/A-Za-z"\_<]+)thankyou#i', $string) != 0) {
             $this->assertTrue(false, 'The word \'thankyou\' was used in ' . $file . '. This should be changed to \'thank you\'.');
         }
 

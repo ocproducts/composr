@@ -58,7 +58,7 @@ There are many rogues and companies out there that will promise unachievable thi
 
 If you do want to put in a lot of tuning effort to content, here are some additional techniques:
 
-The key is to understand the goals of the page, yes, you want to get internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something. 
+The key is to understand the goals of the page, yes, you want to get Internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something. 
 Here are a few things to bare in mind
  - Research keywords and select the most appropriate for the topic. This should be used within the Page title, your main title and within the first 25 words of text. Composr automatically makes title you put in for news the article title (Heading1) and the metadata title.
  - Establish useful synonyms. Rather than repeat the same word or phrase over and over again establish a list of useful synonyms so that you don't keep repeating yourself.

@@ -245,7 +245,7 @@ Please note that the leading [tt]:[/tt] is needed for Commandr to identify that 
 
 [title="2"]Commandrchat (advanced)[/title]
 
-The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
+The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the Internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
 
 Commandrchat is designed to allow website administrators to communicate with each other and share tips, tricks and experiences with Composr.
 
