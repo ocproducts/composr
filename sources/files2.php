@@ -1362,7 +1362,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $buffer_unprocessed = '';
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
             $line = @fread($mysock, (($chunked) && (strlen($buffer_unprocessed) > 10)) ? 10 : 1024);
-
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;

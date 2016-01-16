@@ -33,8 +33,8 @@ class Hook_config_dynamic_firewall
         return array(
             'human_name' => 'DYNAMIC_FIREWALL',
             'type' => 'tick',
-            'category' => 'BLOCKS',
-            'group' => 'PERSONAL_BLOCK',
+            'category' => 'SECURITY',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_dynamic_firewall',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

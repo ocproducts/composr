@@ -2881,7 +2881,7 @@ function get_tutorial_url($tutorial)
 {
     $ret = get_brand_page_url(array('page' => is_null($tutorial) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
     if (is_null($tutorial)) {
-        $tutorial = str_replace('abcdef.htm', '', $tutorial);
+        $ret = str_replace('abcdef.htm', '', $ret);
     }
     return $ret;
 }
