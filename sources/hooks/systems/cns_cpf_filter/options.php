@@ -44,6 +44,10 @@ class Hook_cns_cpf_filter_options
             $cpf = array_merge($cpf, array('state' => true));
         }
 
+        if (get_option('cpf_enable_county') == '1') {
+            $cpf = array_merge($cpf, array('county' => true));
+        }
+
         if (get_option('cpf_enable_country') == '1') {
             $cpf = array_merge($cpf, array('country' => true));
         }
