@@ -72,8 +72,7 @@ class template_previews_test_set extends cms_test_case
         global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
 
-        $only_do_these = array( // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
-        );
+        $only_do_these = array(); // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
 
         $lists = find_all_previews__by_template();
         foreach ($lists as $template => $list) {
