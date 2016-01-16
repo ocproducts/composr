@@ -110,7 +110,7 @@ Hourly cost (approx):
 						<p>Please note that moderate to large programming projects are better suited for secondment or our [page="ocproducts:"]agency service[/page].</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:support}">Ask your question</a>
+							<a href="{$PAGE_LINK*,:contact:support}">Ask your question</a>
 						</div>
 					</li>
 
@@ -127,7 +127,7 @@ Hourly cost (approx):
 						</ul>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:installation}">Send us your details</a>
+							<a href="{$PAGE_LINK*,:contact:installation}">Send us your details</a>
 						</div>
 					</li>
 
@@ -145,7 +145,7 @@ Hourly cost (approx):
 						</ul>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:upgrade}">Brief us</a>
+							<a href="{$PAGE_LINK*,:contact:upgrade}">Brief us</a>
 						</div>
 					</li>
 
@@ -167,7 +167,7 @@ Hourly cost (approx):
 						</ul>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:secondment}">Talk to us</a>
+							<a href="{$PAGE_LINK*,:contact:secondment}">Talk to us</a>
 						</div>
 					</li>
 
@@ -180,7 +180,7 @@ Hourly cost (approx):
 						<p>If you just want to support Composr, we can help you pick something to sponsor:<br />Just open up a ticket with us and let us know.</p>
 
 						<div class="commonBtn margin-l-20">
-							<a href="{$PAGE_LINK*,_SEARCH:contact:sponsor}">Be awesome</a>
+							<a href="{$PAGE_LINK*,:contact:sponsor}">Be awesome</a>
 						</div>
 					</li>
 				</ul>

@@ -32,7 +32,7 @@
 					</ul>
 
 					<div class="headEmail">
-						Briefr: <a class="link_exempt" href="{$PAGE_LINK*,_SEARCH:contact}" title="Bring questions or projects">Contact ocProducts</a>{+START,IF,{$EQ,{$PAGE},support,tickets,professional_support,contact}}. {$BLOCK,block=show_credits}{+END}
+						Briefr: <a class="link_exempt" href="{$PAGE_LINK*,:contact}" title="Bring questions or projects">Contact ocProducts</a>{+START,IF,{$EQ,{$PAGE},support,tickets,professional_support,contact}}. {$BLOCK,block=show_credits}{+END}
 					</div>
 
 					{+START,IF,{$EQ,{$ZONE},docs}}

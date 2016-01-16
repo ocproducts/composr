@@ -13,7 +13,7 @@
 		<div class="hSliderHold">
 			<div class="hSliderInner">
 				<div class="hSlider">
-					<div class="con"><img alt="" src="{$IMG*,composr_homesite/vision/slider_vision_page}" /></div>
+					<div class="con"><img alt="" src="{$IMG*,composr_homesite/vision/slider}" /></div>
 				</div>
 
 				<div class="hSliderBtm"></div>

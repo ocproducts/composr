@@ -13,7 +13,7 @@
 .slidedeck-home-page dl.slidedeck dd {
 	padding: 0px;
 	border-right: 5px solid #d7d7d7;
-	background: url('{$IMG;,composr_homesite/ocproducts/slides}') bottom left  repeat-x;
+	background: url('{$IMG;,composr_homesite/ocproducts/slider/slides}') bottom left  repeat-x;
 }
 .slidedeck-home-page dl.slidedeck dd.slide_4{
 	color:#fff;
@@ -30,7 +30,7 @@
 	font-family: Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	background-image: url('{$IMG;,composr_homesite/ocproducts/spines}');
+	background-image: url('{$IMG;,composr_homesite/ocproducts/slider/spines}');
 	background-position:left top;
 	color: #505050;
 	border: none;
@@ -48,7 +48,7 @@
 }
 .slidedeck-home-page dl.slidedeck dt.spine_4.active, .slidedeck-home-page dl.slidedeck dt.spine_4.active:hover,
 .slidedeck-home-page dl.slidedeck dt.spine_2.active, .slidedeck-home-page dl.slidedeck dt.spine_2.active:hover {
-	background: url('{$IMG;,composr_homesite/ocproducts/spine_slide-5}') bottom left;
+	background: url('{$IMG;,composr_homesite/ocproducts/slider/spine_slide-5}') bottom left;
 } 
 .slidedeck-home-page dl.slidedeck dt .index {
 	font-size: 18px;
@@ -63,7 +63,7 @@
 .slidedeck-home-page dl.slidedeck dt.spine_2.active .index { margin-bottom: 0; }
 .slidedeck-home-page dl.slidedeck .activeCorner {
 	margin-left: -6px;
-	background-image: url('{$IMG;,composr_homesite/ocproducts/corner}');
+	background-image: url('{$IMG;,composr_homesite/ocproducts/slider/corner}');
 	width: 12px;
 	height: 25px;
 	margin-top: 0;
@@ -166,7 +166,7 @@
 	height: 0;
 	overflow: hidden;
    line-height: 12px;
-	background: url('{$IMG;,composr_homesite/ocproducts/vertical-nav_dots}') 0 0 no-repeat;
+	background: url('{$IMG;,composr_homesite/ocproducts/slider/vertical-nav_dots}') 0 0 no-repeat;
 }
 .slidedeck-home-page dl.slidedeck ul.verticalSlideNav li.active a {
     background-position: 0 -24px;
@@ -248,7 +248,7 @@
 	cursor: pointer;
     left: 50%;
     margin: 0 0 0 -13px;
-    background: url('{$IMG;,composr_homesite/ocproducts/vertical_prev-next}');
+    background: url('{$IMG;,composr_homesite/ocproducts/slider/vertical_prev-next}');
 }
 .slidedeck-home-page dl.slidedeck dd:hover .vertical-prev-next { display: block;}
 .slidedeck-home-page dl.slidedeck a.vertical-prev-next.next {

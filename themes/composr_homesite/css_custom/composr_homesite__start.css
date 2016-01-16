@@ -39,19 +39,13 @@
 
 /*Tab menu*/
 
-#tabsHolder { float:left; width:956px; border-left:1px solid #ECEDF0; border-right:1px solid #ECEDF0; border-bottom:1px solid #ECEDF0; padding:0px 1px 1px 1px; background-image:url('{$IMG;,composr_homesite/tut-tab-btm-bg}'); background-repeat:repeat-x; background-position:left bottom; {$BETA_CSS_PROPERTY,border-radius:0px 0px 12px 12px;} }
 .center { width:60%; margin:20px auto 0 auto; }
-.marginBot { border-top:1px solid #ECEDF0; margin-top:1px; padding:0 0 20px; color:#666666; }
 .moreBtn { float:left; width:958px; height:40px; }
 .plusBtn { width:32px; height:32px; margin:3px auto; background-image:url('{$IMG;,composr_homesite/btn-more-img}'); background-repeat:no-repeat; background-position:left top; text-indent:-9999px; overflow:hidden; }
 .plusBtn:hover { background-position:left bottom; }
 .plusBtn a { display:block; height:32px; }
 ul.list li { list-style-type:none; margin-left:20px; }
-ul.tabs { overflow:hidden; background-color:#EDEEF1; width:500px; height:auto; padding:0px 228px; margin:0; }
-ul.tabs li { list-style-type:none; display:block; float:left; color:#666; padding:4px 8px; margin:10px 5px; background:none; cursor:pointer; font-size:14px; }
-ul.tabs li:hover { background-color:#CCC; {$BETA_CSS_PROPERTY,border-radius:4px;} }
-ul.tabs li.current { background-color:#666666; color:#FFF; {$BETA_CSS_PROPERTY,border-radius:4px;} }
-.tabscontent { padding:8px 0 0 0; width:100%; text-align:justify; font-size:13px; color:#666666; line-height:22px; }
+.marginBot { border-top:1px solid #ECEDF0; margin-top:1px; padding:0 0 20px; color:#666666; }
 
 
 /*Palette section*/

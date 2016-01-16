@@ -118,7 +118,7 @@
 		</div>
 
 		<div class="commonBtn cntr">
-			[page="_SEARCH:contact:free"]Contact us[/page]
+			[page=":contact:free"]Contact us[/page]
 		</div>
 	</div>
 
@@ -168,7 +168,7 @@
 		</div>
 
 		<div class="commonBtn cntrLast">
-			[page="_SEARCH:contact:project"]Hire developer[/page]
+			[page=":contact:project"]Hire developer[/page]
 		</div>
 	</div>
 </div>

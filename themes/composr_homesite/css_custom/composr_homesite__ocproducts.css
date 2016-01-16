@@ -1,9 +1,21 @@
+.zone_running_ocproducts.page_running_start h3 { margin:0; }
+
+/* Note at top */
+
 .comTopTxt { width:420px; height:42px; line-height:22px; font-size:15px; color:#667EA4; font-style:italic; text-align:right; display:block; float:right; font-weight:normal; margin-top:-55px; position:relative; }
 
+/* Differentiation icons */
+
 .rowHead { font-size:36px; font-weight:bold; color:#E5922C; padding-bottom:5px; display:block; }
+
+.fWt { font-weight:normal; font-size:16px; margin-top:0; }
+
 .compBoxHold { float:left; width:150px; padding:5px; height:auto; overflow:hidden; }
 .compBoxHold .compPic { float:left; width:150px; text-align:center; }
 .compBoxHold span { font-size:13px; color:#666666; width:150px; float:left; text-align:center; padding:10px 0px; line-height:20px; }
+
+/* PDF strip */
+
 .dlPdf { float:left; width:960px; height:84px; background-image:url('{$IMG;,composr_homesite/ocproducts/download-pdf-line-bg}'); background-position:0px 0px; background-repeat:repeat-x; margin-bottom:20px; }
 .dlPdfBtn { margin:0px auto; width:334px; height:64px; padding:10px 20px 10px 80px; background-image:url('{$IMG;,composr_homesite/ocproducts/download-pdf}'); background-position:0px 0px; background-repeat:no-repeat; }
 .dlPdfBtn p { margin:0; color:#667EA4; font-size:15px; line-height:20px; text-align:left; font-weight:normal; padding:14px 0 0 0; }
@@ -11,10 +23,7 @@
 .dlPdfBtn p a:hover { color:#E5922C; }
 .dlPdfBtn span { font-size:13px; color:#999; }
 
-.fWt { font-weight:normal; }
-
-ul.tabs.comp { width:960px; padding:0px; background-color:#667EA4; }
-/*ul.tabs li.compli { margin:10px 94px; }*/
+/* Slider */
 
 .cont-slider { height:300px; position:relative; overflow:hidden; }
 .slide-Nav { position:absolute; z-index:19999; list-style-type:none; }
@@ -26,13 +35,8 @@ ul.tabs.comp { width:960px; padding:0px; background-color:#667EA4; }
 
 .zone_running_ocproducts .con { overflow-x:hidden; }
 
-.zone_running_ocproducts ul.tabs li { margin:0px auto; color:#FFF; }
-.zone_running_ocproducts #tabz1, .zone_running_ocproducts #tabz2, .zone_running_ocproducts #tabz3 { padding:15px 66px; font-size:22px; border-right:1px solid #8597B6; }
-.zone_running_ocproducts #tabz3 { border-right:none; padding-right:70px; }
-.zone_running_ocproducts ul.tabs li.current { background-color:#E5922C; color:#FFF; border-radius:0px; }
-.zone_running_ocproducts ul.tabs li:hover { border-radius:0px; color:#FFF; background-color:#E5922C; }
+/* Going deeper */
 
-.ceoPic { float:left; width:60px; height:82px; background-color:#D2DEE4; padding:5px; margin:0px 10px 10px 0px; }
 .compSepr { float:left; width:960px; height:11px; margin:10px 0px 30px 0px; background-image:url('{$IMG;,composr_homesite/sep_comp}'); background-repeat:no-repeat; background-position:top center; }
 .thumbComp { float:left; width:200px; height:auto; margin-right:30px; margin-bottom:10px; text-align:center; }
 .thumbCompLast { float:left; width:200px; height:auto; margin-right:0px; margin-bottom:10px; text-align:center; }
@@ -41,31 +45,53 @@ ul.tabs.comp { width:960px; padding:0px; background-color:#667EA4; }
 .thumbComp p span, .thumbCompLast p span { color:#E5922C; }
 .thumbHead { font-size:36px; font-weight:bold; color:#E5922C; padding-bottom:0px; display:block; }
 
-.compColLft { float:left; width:290px; height:80px; padding:20px 15px; background-color:#F2F7F9; {$BETA_CSS_PROPERTY,border-radius:8px;} } 
+.compColLft { float:left; width:290px; min-height:100px; padding:20px 15px; background-color:#F2F7F9; {$BETA_CSS_PROPERTY,border-radius:8px;} } 
 .marRht { margin-right:20px; }
 
-.zone_running_ocproducts.page_running_start h3 { margin:0; }
+/* Quick-fire awesome */
+
+.quoteCst p.ceo { overflow:hidden; float:none; font-size:13px; margin-bottom:0; padding-top:10px; padding-bottom:0; }
+
+.cntRight .quoteCst { margin-bottom:0; }
+
+.ceoPic { float:left; width:60px; height:82px; background-color:#D2DEE4; padding:5px; margin:0px 10px 0px 0px; }
+
+/* We're not all about technology */
 
 .compCnt1 { background-image:url('{$IMG;,composr_homesite/ocproducts/comp_bg1}'); background-repeat:repeat-y; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:8px;} margin-bottom:40px; }
-.compCnt2 { background-image:url('{$IMG;,composr_homesite/ocproducts/comp_bg2}'); background-repeat:repeat-y; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:8px;} margin-bottom:40px; }
 
 .compCol { float:left; width:440px; padding:30px 0px 20px 0px; margin-left:20px; }
 .compColHead { float:left; width:440px; height:42px; font-size:20px; color:#FFF; text-indent:10px; line-height:42px; background-color:#667EA4; {$BETA_CSS_PROPERTY,border-radius:4px;} margin-bottom:10px; }
-
 .compCol ul { list-style:none; margin:0; padding:0; float:left; width:440px; }
 .compCol ul li { float:left; width:400px; padding-left:40px; line-height:22px; font-size:14px; color:#666; padding-bottom:10px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:15px 6px; }
 .compCol ul li span { font-size:12px; }
+
+/* The website design process tabs */
+
+ul.tabs.comp { width:960px; padding:0px; background-color:#667EA4; }
+.zone_running_ocproducts ul.tabs li { margin:0px auto; color:#FFF; }
+.zone_running_ocproducts #tabz1, .zone_running_ocproducts #tabz2, .zone_running_ocproducts #tabz3 { padding:15px 66px; font-size:22px; border-right:1px solid #8597B6; }
+.zone_running_ocproducts #tabz3 { border-right:none !important; padding-right:75px; }
+.zone_running_ocproducts ul.tabs li.current { background-color:#E5922C; color:#FFF; border-radius:0px; }
+.zone_running_ocproducts ul.tabs li:hover { border-radius:0px; color:#FFF; background-color:#E5922C; }
+
+.compCnt2 { background-image:url('{$IMG;,composr_homesite/ocproducts/comp_bg2}'); background-repeat:repeat-y; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:8px;} margin-bottom:40px; }
+.compCnt2>div>div { min-height:25em; overflow:hidden; padding: 0 20px 0 20px; border-top:1px solid #ECEDF0; margin-top:1px; color:#444; }
+.compCnt2>div>div h3 { margin:0; }
+.compCnt2>div>div p { color: #444 !important; }
+.compCnt2>div>div a { background: rgba(255,255,255,0.4); }
+
+.lColTab { float:left; height:200px; width:160px; margin:20px; }
+.lColTab .picDia { float:left; width:160px; height:140px; text-align:center; padding-top:40px; }
+.lColTab .picDia:hover { opacity:0.7; }
+.lColTab .picDia img { vertical-align: top; }
+.lColTab span { float:left; width:160px; text-align:center; }
+
+.rColTab { float:left; width:720px; height:auto; overflow:hidden; padding:30px 0px; }
+
+/* Advisory icon sections at bottom */
 
 .compBtmList { width:960px; height:auto; overflow:hidden; padding-bottom:30px; }
 .compBtmList h3 { margin:0; }
 .btmListImg { float:left; width:110px; height:110px; margin-right:20px; margin-bottom:10px; {$BETA_CSS_PROPERTY,border-radius:4px;} overflow:hidden; }
 .btmliRht { float:left; width:830px; height:auto; }
-
-.contents h3 { margin:0; }
-.lColTab { float:left; height:200px; width:160px; margin:20px; }
-.lColTab .picDia { float:left; width:160px; height:140px; text-align:center; padding-top:40px; }
-.lColTab .picDia:hover { opacity:0.7; }
-.lColTab span { float:left; width:160px; text-align:center; }
-.rColTab { float:left; width:720px; height:auto; overflow:hidden; padding:30px 0px; }
-
-.highLt { display:inline; background-color:#E5922C; color:#FFF; }
