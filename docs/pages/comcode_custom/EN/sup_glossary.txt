@@ -14,7 +14,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 	<tbody>
 		<tr>
 			<td>Accessibility</td>
-			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' or represented on a braille-reader.</td>
+			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' (e.g. JAWS) or represented on a braille-reader. We also use the term 'semantics' to refer to the defined meaningfulness of the structure of a page (regardless of its visual appearance).</td>
 		</tr>
 		<tr>
 			<td>Adsense</td>
@@ -214,10 +214,6 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>The programming language used to give a webpage interactive functionality.</td>
 		</tr>
 		<tr>
-			<td>JAWS</td>
-			<td>A screen reader so that blind users may use a website. JAWS is something users may install on their own computer (it's a commercial software application). If a website has blind users it is advisable to give it some testing with JAWS.</td>
-		</tr>
-		<tr>
 			<td>JPEG</td>
 			<td>A computer file format for images. JPEG files are inaccurate, but as a result they are very small. They make files smaller by representing an image in terms of patterns of nature that we recognise, rather than directly as pixels.</td>
 		</tr>
@@ -328,10 +324,6 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		<tr>
 			<td>Search Engine</td>
 			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Google is a search engine.</td>
-		</tr>
-		<tr>
-			<td>Semantics</td>
-			<td>The meaning of some data. We talk about good web pages being written with 'semantics', which means that they use proper mark-up so that machine tools to identify what they are all about.</td>
 		</tr>
 		<tr>
 			<td>SEO</td>
