@@ -201,7 +201,8 @@ class Module_wiki
             'random' => array('RANDOM_PAGE', 'menu/rich_content/wiki/random_page'),
         );
         if (addon_installed('actionlog')) {
-            $ret['revisions'] = array('actionlog:REVISIONS', 'buttons/revisions');
+            require_lang('actionlog');
+            $ret['revisions'] = array('REVISIONS', 'buttons/revisions');
         }
         return $ret;
     }

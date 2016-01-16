@@ -623,6 +623,8 @@ class Module_admin_config
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
+        require_code('caches3');
+
         global $CONFIG_OPTIONS_CACHE;
 
         $category = get_param_string('id', 'MAIN');
@@ -666,9 +668,13 @@ class Module_admin_config
         // Empty thumbnail cache if needed
         if (function_exists('imagetypes')) {
             if ((!is_null(post_param_string('thumb_width', null))) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
-                require_code('caches3');
                 erase_thumb_cache();
             }
+        }
+
+        // Empty language cache if needed
+        if ((!is_null(post_param_string('yeehaw', null))) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
+            erase_cached_language();
         }
 
         // Find all options in category
@@ -741,7 +747,6 @@ class Module_admin_config
         }
 
         // Clear some caching
-        require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
         //persistent_cache_delete('OPTIONS');  Done by set_option / erase_persistent_cache

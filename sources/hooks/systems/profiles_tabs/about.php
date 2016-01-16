@@ -60,7 +60,7 @@ class Hook_profiles_tabs_about
         }
 
         $photo_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_photo_url');
-        if (($photo_url != '') && (addon_installed('cns_member_photos')) && (has_privilege($member_id_viewing, 'view_member_photos')) && ($privacy_ok)) {
+        if (($photo_url != '') && (addon_installed('cns_member_photos')) && ((has_privilege($member_id_viewing, 'view_member_photos')) || ($member_id_viewing == $member_id_of)) && ($privacy_ok)) {
             require_code('images');
             $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_photo_thumb_url');
             $photo_thumb_url = ensure_thumbnail($photo_url, $photo_thumb_url, (strpos($photo_url, 'uploads/photos') !== false) ? 'photos' : 'cns_photos', 'f_members', $member_id_of, 'm_photo_thumb_url');
@@ -320,7 +320,7 @@ class Hook_profiles_tabs_about
         $b = ($photo_thumb_url == '') ? 0 : intval(get_option('thumb_width'));
         $right_margin = (max($a, $b) == 0) ? 'auto' : (strval(max($a, $b) + 6) . 'px');
 
-        if (has_privilege($member_id_viewing, 'see_ip')) {
+        if ((has_privilege($member_id_viewing, 'see_ip')) || ($member_id_viewing == $member_id_of)) {
             $ip_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_ip_address');
         } else {
             $ip_address = '';
@@ -346,7 +346,7 @@ class Hook_profiles_tabs_about
 
         $user_agent = null;
         $operating_system = null;
-        if ((has_privilege($member_id_viewing, 'show_user_browsing')) && (addon_installed('stats'))) {
+        if (((has_privilege($member_id_viewing, 'show_user_browsing')) || ($member_id_viewing == $member_id_of)) && (addon_installed('stats'))) {
             $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('member_id' => $member_id_of), 'ORDER BY date_and_time DESC', 1);
             if (array_key_exists(0, $last_stats)) {
                 $user_agent = $last_stats[0]['browser'];
