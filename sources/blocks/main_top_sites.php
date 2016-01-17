@@ -86,11 +86,11 @@ class Block_main_top_sites
                 'NAME' => $banner['name'],
                 'URL' => $banner['site_url'],
                 'DESCRIPTION' => $description,
-                'HITSFROM' => strval($banner['hits_from']),
-                'HITSTO' => strval($banner['hits_to']),
-                'VIEWSFROM' => strval($banner['views_from']),
-                'VIEWSTO' => strval($banner['views_to']),
-                'ADDDATE' => strval($banner['add_date']),
+                'HITS_FROM' => strval($banner['hits_from']),
+                'HITS_TO' => strval($banner['hits_to']),
+                'VIEWS_FROM' => strval($banner['views_from']),
+                'VIEWS_TO' => strval($banner['views_to']),
+                'ADD_DATE' => strval($banner['add_date']),
                 'SUBMITTER' => strval($banner['submitter']),
             );
         }

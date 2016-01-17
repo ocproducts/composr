@@ -240,7 +240,12 @@ class Module_cms_comcode_pages
         $fields = new Tempcode();
         $add_new_permission = has_add_comcode_page_permission();
         if ($add_new_permission) {
-            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true));
+            if (get_option('collapse_user_zones') == '1') {
+                $sample_page_name = ':example_new_page';
+            } else {
+                $sample_page_name = 'site:example_new_page';
+            }
+            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', $sample_page_name, true));
 
             $template_list = new Tempcode();
             $template_list->attach(form_input_list_entry('', true, do_lang('NA')));

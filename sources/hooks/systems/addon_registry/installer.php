@@ -496,7 +496,8 @@ class Hook_addon_registry_installer
         require_css('install');
         return array(
             lorem_globalise(do_lorem_template('INSTALLER_STEP_LOG', array(
-                'PREVIOUS_STEP' => lorem_phrase(),
+                'PREVIOUS_STEP' => placeholder_number(),
+                'NEXT_STEP' => placeholder_number(),
                 'URL' => placeholder_url(),
                 'LOG' => $message,
                 'HIDDEN' => '',
@@ -523,7 +524,8 @@ class Hook_addon_registry_installer
 
         return array(
             lorem_globalise(do_lorem_template('INSTALLER_STEP_10', array(
-                'PREVIOUS_STEP' => lorem_phrase(),
+                'PREVIOUS_STEP' => placeholder_number(),
+                'PREVIOUS_STEP' => placeholder_number(),
                 'FINAL' => lorem_phrase(),
                 'LOG' => $message,
             )), null, '', true)

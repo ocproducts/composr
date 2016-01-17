@@ -1,5 +1,5 @@
 <p>
-	{!INSTALL_LOG_BELOW,{PREVIOUS_STEP*}}:
+	{!INSTALL_LOG_BELOW,{CURRENT_STEP*}}:
 </p>
 
 <div class="actions_list installer_main_min">

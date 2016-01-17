@@ -1226,7 +1226,7 @@ function step_5()
         $log->attach(step_5_core_2());
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9', 'PREVIOUS_STEP' => '4', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9', 'PREVIOUS_STEP' => '4', 'CURRENT_STEP' => '5', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2113,7 +2113,7 @@ function step_6()
     install_cns();
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'f268a7e03ca5b06ed9f62b29b1357d25', 'SOMETHING' => do_lang_tempcode('INSTALLED_CNS'))));
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '450f62a4664c67b6780228781218a8f2', 'PREVIOUS_STEP' => '5', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '450f62a4664c67b6780228781218a8f2', 'PREVIOUS_STEP' => '5', 'CURRENT_STEP' => '6', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2203,7 +2203,7 @@ function step_7()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'CURRENT_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2229,7 +2229,7 @@ function step_8()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'CURRENT_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2269,7 +2269,7 @@ function step_9()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'CURRENT_STEP' => '9', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2304,7 +2304,7 @@ function step_10()
         closedir($_dir);
     }
 
-    return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'FINAL' => $final, 'LOG' => $log));
+    return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'CURRENT_STEP' => '10', 'FINAL' => $final, 'LOG' => $log));
 }
 
 /**

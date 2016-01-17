@@ -1,6 +1,6 @@
 <div class="installer_main_min">
 	<p>
-		{!INSTALL_LOG_BELOW,{PREVIOUS_STEP*}}:
+		{!INSTALL_LOG_BELOW,{CURRENT_STEP*}}:
 	</p>
 
 	<div><div class="install_log_table">
