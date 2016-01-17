@@ -1,0 +1,693 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_abstract_interfaces.html" title="core_abstract_interfaces"><i class="icon-folder-open"></i>core_abstract_interfaces</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_columned_table_header_row" title="columned_table_header_row() :: Get the Tempcode for a table header row."><span class="description">Get the Tempcode for a table header row.</span><pre>columned_table_header_row</pre></a></li>
+<li class="function  "><a href="#function_columned_table_row" title="columned_table_row() :: Get the Tempcode for a table row."><span class="description">Get the Tempcode for a table row.</span><pre>columned_table_row</pre></a></li>
+<li class="function  "><a href="#function_confirm_screen" title="confirm_screen() :: Get the Tempcode for a confirmation page."><span class="description">Get the Tempcode for a confirmation page.</span><pre>confirm_screen</pre></a></li>
+<li class="function  "><a href="#function_do_next_manager" title="do_next_manager() :: Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's."><span class="description">Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.</span><pre>do_next_manager</pre></a></li>
+<li class="function  "><a href="#function_do_next_manager_hooked" title="do_next_manager_hooked() :: Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's."><span class="description">Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.</span><pre>do_next_manager_hooked</pre></a></li>
+<li class="function  "><a href="#function_internalise_own_screen" title="internalise_own_screen() :: Put the contents of a screen inside an AJAX updatable area. This is typically used when a page is being used to traverse a result-set that spans multiple screens."><span class="description">Put the contents of a screen inside an AJAX updatable area. This is typically used when a page is being used to traverse a result-set that spans multiple screens.</span><pre>internalise_own_screen</pre></a></li>
+<li class="function  "><a href="#function_map_table" title="map_table() :: Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value)"><span class="description">Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value)</span><pre>map_table</pre></a></li>
+<li class="function  "><a href="#function_map_table_field" title="map_table_field() :: Get the Tempcode for a view space field."><span class="description">Get the Tempcode for a view space field.</span><pre>map_table_field</pre></a></li>
+<li class="function  "><a href="#function_pagination" title="pagination() :: Get the Tempcode for a results browser."><span class="description">Get the Tempcode for a results browser.</span><pre>pagination</pre></a></li>
+<li class="function  "><a href="#function_results_entry" title="results_entry() :: Get the Tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call."><span class="description">Get the Tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.</span><pre>results_entry</pre></a></li>
+<li class="function  "><a href="#function_results_field_title" title="results_field_title() :: Get the Tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call."><span class="description">Get the Tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call.</span><pre>results_field_title</pre></a></li>
+<li class="function  "><a href="#function_results_launcher" title="results_launcher() :: Get the Tempcode for a results launcher."><span class="description">Get the Tempcode for a results launcher.</span><pre>results_launcher</pre></a></li>
+<li class="function  "><a href="#function_results_sorter" title="results_sorter() :: Get the Tempcode for a results sorter."><span class="description">Get the Tempcode for a results sorter.</span><pre>results_sorter</pre></a></li>
+<li class="function  "><a href="#function_results_table" title="results_table() :: Get the Tempcode for a results table."><span class="description">Get the Tempcode for a results table.</span><pre>results_table</pre></a></li>
+<li class="function  "><a href="#function_tpl_crop_text_mouse_over" title="tpl_crop_text_mouse_over() :: Get Tempcode for cropped text, that fully reveals itself on mouse-over."><span class="description">Get Tempcode for cropped text, that fully reveals itself on mouse-over.</span><pre>tpl_crop_text_mouse_over</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_columned_table_header_row"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_columned_table_header_row " data-toggle="collapse" data-target=".function_columned_table_header_row .collapse" title="">
+<h2>Get the Tempcode for a table header row.</h2>
+<pre>columned_table_header_row(array $values) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code><p>The array of field titles that define the entries in the table table</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated header</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_columned_table_row"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_columned_table_row " data-toggle="collapse" data-target=".function_columned_table_row .collapse" title="">
+<h2>Get the Tempcode for a table row.</h2>
+<pre>columned_table_row(array $values, boolean $escape) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code><p>The array of values that make up this row</p></div>
+<div class="subelement argument">
+<h4>$escape</h4>
+<code>boolean</code><p>Whether to add escaping</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated row</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_confirm_screen"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_confirm_screen " data-toggle="collapse" data-target=".function_confirm_screen .collapse" title="">
+<h2>Get the Tempcode for a confirmation page.</h2>
+<pre>confirm_screen(\Tempcode $title, \Tempcode $preview, mixed $url_type, \?mixed $back_url_type<code> = null</code>, \?array $sup_post<code> = null</code>, \?Tempcode $fields<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The title for the confirmation page (out of get_screen_title)</p></div>
+<div class="subelement argument">
+<h4>$preview</h4>
+<code>\Tempcode</code><p>The preview that's being confirmed for actualisation</p></div>
+<div class="subelement argument">
+<h4>$url_type</h4>
+<code>mixed</code><p>The URL type to confirm through to OR a full URL OR a full URL (if long, or if Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$back_url_type</h4>
+<code>\?mixed</code><p>The URL type if we click back OR a full URL (if long, or if Tempcode) (null: none)</p></div>
+<div class="subelement argument">
+<h4>$sup_post</h4>
+<code>\?array</code><p>A map of supplementary post data to get passed through upon confirmation (null: none)</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>\?Tempcode</code><p>Form fields to pass through as post data on confirmation (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The confirmation page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_next_manager"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_next_manager " data-toggle="collapse" data-target=".function_do_next_manager .collapse" title="">
+<h2>Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.</h2>
+<pre>do_next_manager(\?Tempcode $title, \Tempcode $text, \?array $main<code> = null</code>, \?string $main_title<code> = null</code>, \?array $url_add_one<code> = null</code>, \?array $url_edit_this<code> = null</code>, \?array $url_edit_one<code> = null</code>, \?array $url_view_this<code> = null</code>, \?array $url_view_archive<code> = null</code>, \?array $url_add_to_category<code> = null</code>, \?array $url_add_one_category<code> = null</code>, \?array $url_edit_one_category<code> = null</code>, \?array $url_edit_this_category<code> = null</code>, \?array $url_view_this_category<code> = null</code>, \?array $entry_extras<code> = null</code>, \?array $category_extras<code> = null</code>, \?array $additional_extras<code> = null</code>, \?mixed $additional_title<code> = null</code>, \?Tempcode $intro<code> = null</code>, \?Tempcode $entries_title<code> = null</code>, \?Tempcode $categories_title<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\?Tempcode</code><p>The title of what we just did (should have been passed through get_screen_title already) (null: don't do full page)</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\Tempcode</code><p>The 'text' (actually, a full XHTML lump) to show on the page</p></div>
+<div class="subelement argument">
+<h4>$main</h4>
+<code>\?array</code><p>An array of entry types, with each array entry being -- an array consisting of the type codename and a URL array as per following parameters (null: none)</p></div>
+<div class="subelement argument">
+<h4>$main_title</h4>
+<code>\?string</code><p>The title to use for the main links (null: none)</p></div>
+<div class="subelement argument">
+<h4>$url_add_one</h4>
+<code>\?array</code><p>The URL used to 'add-one' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_edit_this</h4>
+<code>\?array</code><p>The URL used to 'edit-this' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_edit_one</h4>
+<code>\?array</code><p>The URL used to 'edit-one' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_view_this</h4>
+<code>\?array</code><p>The URL used to 'view-this' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_view_archive</h4>
+<code>\?array</code><p>The URL used to 'view-archive' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_add_to_category</h4>
+<code>\?array</code><p>The URL used to 'add-to-category' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_add_one_category</h4>
+<code>\?array</code><p>The URL used to 'add-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_edit_one_category</h4>
+<code>\?array</code><p>The URL used to 'edit-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_edit_this_category</h4>
+<code>\?array</code><p>The URL used to 'edit-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$url_view_this_category</h4>
+<code>\?array</code><p>The URL used to 'view-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])</p></div>
+<div class="subelement argument">
+<h4>$entry_extras</h4>
+<code>\?array</code><p>An array of additional entry types, with each array entry being -- an array of type codename and a URL array as before (null: none)</p></div>
+<div class="subelement argument">
+<h4>$category_extras</h4>
+<code>\?array</code><p>As before, but with category types (null: none)</p></div>
+<div class="subelement argument">
+<h4>$additional_extras</h4>
+<code>\?array</code><p>As before, but for an 'extra types' box of do next actions (null: none)</p></div>
+<div class="subelement argument">
+<h4>$additional_title</h4>
+<code>\?mixed</code><p>The title to use for the extra types (null: none)</p></div>
+<div class="subelement argument">
+<h4>$intro</h4>
+<code>\?Tempcode</code><p>Introductory text (null: none)</p></div>
+<div class="subelement argument">
+<h4>$entries_title</h4>
+<code>\?Tempcode</code><p>Entries section title (null: default, Entries)</p></div>
+<div class="subelement argument">
+<h4>$categories_title</h4>
+<code>\?Tempcode</code><p>Categories section title (null: default, Categories)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The do next manager</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_next_manager_hooked"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_next_manager_hooked " data-toggle="collapse" data-target=".function_do_next_manager_hooked .collapse" title="">
+<h2>Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.</h2>
+<pre>do_next_manager_hooked(\ID_TEXT $title, \?mixed $text, \ID_TEXT $type, \?string $main_title<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\ID_TEXT</code><p>The title of what we are doing (a language string)</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\?mixed</code><p>The language code for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The menu 'type' we are doing (filters out any icons that don't match it)</p></div>
+<div class="subelement argument">
+<h4>$main_title</h4>
+<code>\?string</code><p>The title to use for the main links (a language string) (null: same as title)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The do next manager</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_internalise_own_screen"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_internalise_own_screen " data-toggle="collapse" data-target=".function_internalise_own_screen .collapse" title="">
+<h2>Put the contents of a screen inside an AJAX updatable area. This is typically used when a page is being used to traverse a result-set that spans multiple screens.</h2>
+<pre>internalise_own_screen(\Tempcode $screen_content, \?integer $refresh_time<code> = null</code>, \?mixed $refresh_if_changed<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$screen_content</h4>
+<code>\Tempcode</code><p>The screen content</p></div>
+<div class="subelement argument">
+<h4>$refresh_time</h4>
+<code>\?integer</code><p>The time between refreshes (null: do not refresh)</p></div>
+<div class="subelement argument">
+<h4>$refresh_if_changed</h4>
+<code>\?mixed</code><p>Data. A refresh will only happen if an AJAX-check indicates this data has changed (null: no check)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The screen output, wrapped with some AJAX code</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_map_table"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_map_table " data-toggle="collapse" data-target=".function_map_table .collapse" title="">
+<h2>Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value)</h2>
+<pre>map_table(\Tempcode $title, array $fields) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The title of the view space; should be out of get_screen_title</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>An array of mappings between title and value (each mapping being a field)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated view space</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_map_table_field"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_map_table_field " data-toggle="collapse" data-target=".function_map_table_field .collapse" title="">
+<h2>Get the Tempcode for a view space field.</h2>
+<pre>map_table_field(mixed $name, mixed $value, boolean $raw<code> = false</code>, string $abbr<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>mixed</code><p>The field title (Tempcode or string). Assumed unescaped.</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code><p>The field value (Tempcode or string). Assumed unescaped.</p></div>
+<div class="subelement argument">
+<h4>$raw</h4>
+<code>boolean</code><p>Whether the field should be shown as untitled... because it is an element of a subblock of raw rows</p></div>
+<div class="subelement argument">
+<h4>$abbr</h4>
+<code>string</code><p>Field abbreviation (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated view space field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_pagination"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_pagination " data-toggle="collapse" data-target=".function_pagination .collapse" title="">
+<h2>Get the Tempcode for a results browser.</h2>
+<pre>pagination(\Tempcode $title, integer $start, \ID_TEXT $start_name, integer $max, \ID_TEXT $max_name, integer $max_rows, boolean $keep_post<code> = false</code>, integer $max_page_links<code> = 5</code>, \?array $_selectors<code> = null</code>, \ID_TEXT $hash<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The title/name of the resource we are browsing through</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The current position in the browser</p></div>
+<div class="subelement argument">
+<h4>$start_name</h4>
+<code>\ID_TEXT</code><p>The parameter name used to store our position in the results (usually, 'start')</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>The maximum number of rows to show per browser page</p></div>
+<div class="subelement argument">
+<h4>$max_name</h4>
+<code>\ID_TEXT</code><p>The parameter name used to store the total number of results to show per-page (usually, 'max')</p></div>
+<div class="subelement argument">
+<h4>$max_rows</h4>
+<code>integer</code><p>The maximum number of rows in the entire dataset</p></div>
+<div class="subelement argument">
+<h4>$keep_post</h4>
+<code>boolean</code><p>Whether to keep post data when browsing through</p></div>
+<div class="subelement argument">
+<h4>$max_page_links</h4>
+<code>integer</code><p>The maximum number of quick-jump page-links to show</p></div>
+<div class="subelement argument">
+<h4>$_selectors</h4>
+<code>\?array</code><p>List of per-page selectors to show (null: show hard-coded ones)</p></div>
+<div class="subelement argument">
+<h4>$hash</h4>
+<code>\ID_TEXT</code><p>Hash component to URL</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The results browser</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_results_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_results_entry " data-toggle="collapse" data-target=".function_results_entry .collapse" title="">
+<h2>Get the Tempcode for a results entry. You would gather together the outputs of several of these functions, then put them in as the $fields in a results_table function call.</h2>
+<pre>results_entry(array $values, boolean $auto_escape, \?string $tplset<code> = null</code>, string $guid<code> = '9e340dd14173c7320b57243d607718ab'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code><p>The array of values that make up this entry (of Tempcode or string, or mixture)</p></div>
+<div class="subelement argument">
+<h4>$auto_escape</h4>
+<code>boolean</code><p>Whether to automatically escape each entry so that it cannot contain HTML</p></div>
+<div class="subelement argument">
+<h4>$tplset</h4>
+<code>\?string</code><p>The template set to use (null: default)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>string</code><p>GUID to pass to template</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated entry</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_results_field_title"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_results_field_title " data-toggle="collapse" data-target=".function_results_field_title .collapse" title="">
+<h2>Get the Tempcode for a results table title row. You would take the output of this, and feed it in as $fields_title, in a results_table function call.</h2>
+<pre>results_field_title(array $values, \?array $sortables<code> = null</code>, \ID_TEXT $order_param<code> = 'sort'</code>, \ID_TEXT $current_ordering<code> = ''</code>, string $guid<code> = 'fbcaf8b021e3939bfce1dce9ff8ed63a'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code><p>The array of field titles that define the entries in the results table</p></div>
+<div class="subelement argument">
+<h4>$sortables</h4>
+<code>\?array</code><p>A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)</p></div>
+<div class="subelement argument">
+<h4>$order_param</h4>
+<code>\ID_TEXT</code><p>The parameter name used to store our sortable</p></div>
+<div class="subelement argument">
+<h4>$current_ordering</h4>
+<code>\ID_TEXT</code><p>The current ordering ("$sortable $sort_order")</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>string</code><p>GUID to pass to template</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated title</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_results_launcher"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_results_launcher " data-toggle="collapse" data-target=".function_results_launcher .collapse" title="">
+<h2>Get the Tempcode for a results launcher.</h2>
+<pre>results_launcher(\Tempcode $title, \ID_TEXT $page, \AUTO_LINK $category_id, integer $max, integer $max_rows, \ID_TEXT $type, integer $max_page_links<code> = 5</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The title/name of the resource we are browsing through</p></div>
+<div class="subelement argument">
+<h4>$page</h4>
+<code>\ID_TEXT</code><p>The page name we are launching into</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The category ID we are browsing in</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>The maximum number of rows to show per browser page</p></div>
+<div class="subelement argument">
+<h4>$max_rows</h4>
+<code>integer</code><p>The maximum number of rows in the entire dataset</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The page type this browser is browsing through (e.g. 'category')</p></div>
+<div class="subelement argument">
+<h4>$max_page_links</h4>
+<code>integer</code><p>The maximum number of quick-jump page-links to show</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The results launcher</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_results_sorter"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_results_sorter " data-toggle="collapse" data-target=".function_results_sorter .collapse" title="">
+<h2>Get the Tempcode for a results sorter.</h2>
+<pre>results_sorter(\?array $sortables, \?ID_TEXT $sortable<code> = null</code>, \?ID_TEXT $sort_order<code> = null</code>, \?ID_TEXT $sort_name<code> = 'sort'</code>, \?ID_TEXT $hash<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>ASC DESC</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sortables</h4>
+<code>\?array</code><p>A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)</p></div>
+<div class="subelement argument">
+<h4>$sortable</h4>
+<code>\?ID_TEXT</code><p>The current sortable (null: none)</p></div>
+<div class="subelement argument">
+<h4>$sort_order</h4>
+<code>\?ID_TEXT</code><p>The order we are sorting in (null: none)</p></div>
+<div class="subelement argument">
+<h4>$sort_name</h4>
+<code>\?ID_TEXT</code><p>The parameter name used to store our sortable (usually 'sort') (null: none)</p></div>
+<div class="subelement argument">
+<h4>$hash</h4>
+<code>\?ID_TEXT</code><p>URL hash component (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The results sorter</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_results_table"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_results_table " data-toggle="collapse" data-target=".function_results_table .collapse" title="">
+<h2>Get the Tempcode for a results table.</h2>
+<pre>results_table(mixed $text_id, integer $start, \ID_TEXT $start_name, integer $max, \ID_TEXT $max_name, integer $max_rows, \Tempcode $fields_title, \Tempcode $fields, \?array $sortables<code> = null</code>, \?ID_TEXT $sortable<code> = null</code>, \?ID_TEXT $sort_order<code> = null</code>, \?ID_TEXT $sort_name<code> = 'sort'</code>, \?Tempcode $message<code> = null</code>, \?array $widths<code> = null</code>, \?string $tplset<code> = null</code>, integer $max_page_links<code> = 8</code>, string $guid<code> = '1c8645bc2a3ff5bec2e003142185561f'</code>, boolean $skip_sortables_form<code> = false</code>, \?ID_TEXT $hash<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>ASC DESC</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text_id</h4>
+<code>mixed</code><p>Some text/word describing what is being browsed (Tempcode or string)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The result number our table starts at (x of n)</p></div>
+<div class="subelement argument">
+<h4>$start_name</h4>
+<code>\ID_TEXT</code><p>The parameter name used to store our position in the results (usually, 'start')</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>The total number of results to show per-page</p></div>
+<div class="subelement argument">
+<h4>$max_name</h4>
+<code>\ID_TEXT</code><p>The parameter name used to store the total number of results to show per-page (usually, 'max')</p></div>
+<div class="subelement argument">
+<h4>$max_rows</h4>
+<code>integer</code><p>The maximum number of rows in the entire dataset</p></div>
+<div class="subelement argument">
+<h4>$fields_title</h4>
+<code>\Tempcode</code><p>The titles of the fields we are showing in our table, presented in preprepared Tempcode</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>\Tempcode</code><p>The values of the fields we are showing in our table</p></div>
+<div class="subelement argument">
+<h4>$sortables</h4>
+<code>\?array</code><p>A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)</p></div>
+<div class="subelement argument">
+<h4>$sortable</h4>
+<code>\?ID_TEXT</code><p>The current sortable (null: none)</p></div>
+<div class="subelement argument">
+<h4>$sort_order</h4>
+<code>\?ID_TEXT</code><p>The order we are sorting in (null: none)</p></div>
+<div class="subelement argument">
+<h4>$sort_name</h4>
+<code>\?ID_TEXT</code><p>The parameter name used to store our sortable (usually 'sort') (null: none)</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>\?Tempcode</code><p>Message to show (null: auto)</p></div>
+<div class="subelement argument">
+<h4>$widths</h4>
+<code>\?array</code><p>Widths to specify to the table (null: none sent)</p></div>
+<div class="subelement argument">
+<h4>$tplset</h4>
+<code>\?string</code><p>The template set to use (null: default)</p></div>
+<div class="subelement argument">
+<h4>$max_page_links</h4>
+<code>integer</code><p>The maximum number of quick-jump page-links to show</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>string</code><p>GUID to pass to template</p></div>
+<div class="subelement argument">
+<h4>$skip_sortables_form</h4>
+<code>boolean</code><p>Whether to skip showing a sort form (useful if there is another form wrapped around this)</p></div>
+<div class="subelement argument">
+<h4>$hash</h4>
+<code>\?ID_TEXT</code><p>URL hash component (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The results table</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_tpl_crop_text_mouse_over"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_tpl_crop_text_mouse_over " data-toggle="collapse" data-target=".function_tpl_crop_text_mouse_over .collapse" title="">
+<h2>Get Tempcode for cropped text, that fully reveals itself on mouse-over.</h2>
+<pre>tpl_crop_text_mouse_over(string $text, integer $len) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_abstract_interfaces.html">core_abstract_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>The text</p></div>
+<div class="subelement argument">
+<h4>$len</h4>
+<code>integer</code><p>The length to crop at</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The cropped text</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:34+01:00.<br></footer></div>
+</div>
+</body>
+</html>

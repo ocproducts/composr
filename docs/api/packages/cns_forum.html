@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/cns_forum.html" title="cns_forum"><i class="icon-folder-open"></i>cns_forum</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_cns_cache_member_details" title="cns_cache_member_details() :: Mass-load details for a list of members into memory, to reduce queries when we access it later."><span class="description">Mass-load details for a list of members into memory, to reduce queries when we access it later.</span><pre>cns_cache_member_details</pre></a></li>
+<li class="function  "><a href="#function_cns_get_details_to_show_post" title="cns_get_details_to_show_post() :: Turn a post row, into a detailed map of information that is suitable for use as display parameters for that post."><span class="description">Turn a post row, into a detailed map of information that is suitable for use as display parameters for that post.</span><pre>cns_get_details_to_show_post</pre></a></li>
+<li class="function  "><a href="#function_cns_get_forum_view" title="cns_get_forum_view() :: Get a map of details relating to the view of a certain forum of a certain member."><span class="description">Get a map of details relating to the view of a certain forum of a certain member.</span><pre>cns_get_forum_view</pre></a></li>
+<li class="function  "><a href="#function_cns_get_post_emphasis" title="cns_get_post_emphasis() :: Get post emphasis Tempcode."><span class="description">Get post emphasis Tempcode.</span><pre>cns_get_post_emphasis</pre></a></li>
+<li class="function  "><a href="#function_cns_get_private_topics" title="cns_get_private_topics() :: Get a map of details relating to the Private Topics of a certain member."><span class="description">Get a map of details relating to the Private Topics of a certain member.</span><pre>cns_get_private_topics</pre></a></li>
+<li class="function  "><a href="#function_cns_get_topic_array" title="cns_get_topic_array() :: Get details of a topic (to show eventually as a row in a forum or results view). This is a helper function, and thus the interface is not very user friendly."><span class="description">Get details of a topic (to show eventually as a row in a forum or results view). This is a helper function, and thus the interface is not very user friendly.</span><pre>cns_get_topic_array</pre></a></li>
+<li class="function  "><a href="#function_cns_read_in_topic" title="cns_read_in_topic() :: Read in a great big map of details relating to a topic."><span class="description">Read in a great big map of details relating to a topic.</span><pre>cns_read_in_topic</pre></a></li>
+<li class="function  "><a href="#function_cns_render_forumview" title="cns_render_forumview() :: Render the Conversr forumview."><span class="description">Render the Conversr forumview.</span><pre>cns_render_forumview</pre></a></li>
+<li class="function  "><a href="#function_cns_render_post_buttons" title="cns_render_post_buttons() :: Get buttons for showing under a post."><span class="description">Get buttons for showing under a post.</span><pre>cns_render_post_buttons</pre></a></li>
+<li class="function  "><a href="#function_cns_render_topic" title="cns_render_topic() :: Render a topic row (i.e. a row in a forum or results view), from given details (from cns_get_topic_array)."><span class="description">Render a topic row (i.e. a row in a forum or results view), from given details (from cns_get_topic_array).</span><pre>cns_render_topic</pre></a></li>
+<li class="function  "><a href="#function_find_first_unread_url" title="find_first_unread_url() :: Find the URL to the latest unread post in a topic."><span class="description">Find the URL to the latest unread post in a topic.</span><pre>find_first_unread_url</pre></a></li>
+<li class="function  "><a href="#function_find_post_id_url" title="find_post_id_url() :: Find the URL to a post."><span class="description">Find the URL to a post.</span><pre>find_post_id_url</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/cns_forum.html">cns_forum</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_cns_cache_member_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_cache_member_details " data-toggle="collapse" data-target=".function_cns_cache_member_details .collapse" title="">
+<h2>Mass-load details for a list of members into memory, to reduce queries when we access it later.</h2>
+<pre>cns_cache_member_details(array $members) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$members</h4>
+<code>array</code><p>List of members.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_details_to_show_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_details_to_show_post " data-toggle="collapse" data-target=".function_cns_get_details_to_show_post .collapse" title="">
+<h2>Turn a post row, into a detailed map of information that is suitable for use as display parameters for that post.</h2>
+<pre>cns_get_details_to_show_post(array $_postdetails, array $topic_info, boolean $only_post<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_postdetails</h4>
+<code>array</code><p>The post row.</p></div>
+<div class="subelement argument">
+<h4>$topic_info</h4>
+<code>array</code><p>The topic row.</p></div>
+<div class="subelement argument">
+<h4>$only_post</h4>
+<code>boolean</code><p>Whether the post is the only post in the topic.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The detailed map.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_forum_view"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_forum_view " data-toggle="collapse" data-target=".function_cns_get_forum_view .collapse" title="">
+<h2>Get a map of details relating to the view of a certain forum of a certain member.</h2>
+<pre>cns_get_forum_view(\AUTO_LINK $forum_id, array $forum_info, integer $start<code> = 0</code>, \?integer $max<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum_id</h4>
+<code>\AUTO_LINK</code><p>The forum ID.</p></div>
+<div class="subelement argument">
+<h4>$forum_info</h4>
+<code>array</code><p>The forum row.</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The start row for getting details of topics in the forum (i.e. 0 is newest, higher is starting further back in time).</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of topics to get detail of (null: default).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The details.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_post_emphasis"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_post_emphasis " data-toggle="collapse" data-target=".function_cns_get_post_emphasis .collapse" title="">
+<h2>Get post emphasis Tempcode.</h2>
+<pre>cns_get_post_emphasis(array $_postdetails) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_postdetails</h4>
+<code>array</code><p>Map of post info.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_private_topics"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_private_topics " data-toggle="collapse" data-target=".function_cns_get_private_topics .collapse" title="">
+<h2>Get a map of details relating to the Private Topics of a certain member.</h2>
+<pre>cns_get_private_topics(integer $start<code> = 0</code>, \?integer $max<code> = null</code>, \?MEMBER $member_id<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The start row for getting details of topics in the Private Topic forum (i.e. 0 is newest, higher is starting further back in time).</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of topics to get detail of (null: default).</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>The member to get Private Topics of (null: current member).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The details.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_topic_array"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_topic_array " data-toggle="collapse" data-target=".function_cns_get_topic_array .collapse" title="">
+<h2>Get details of a topic (to show eventually as a row in a forum or results view). This is a helper function, and thus the interface is not very user friendly.</h2>
+<pre>cns_get_topic_array(array $topic_row, \MEMBER $member_id, integer $hot_topic_definition, boolean $involved) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_row</h4>
+<code>array</code><p>The DB row of the topic.</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member the details are being prepared for.</p></div>
+<div class="subelement argument">
+<h4>$hot_topic_definition</h4>
+<code>integer</code><p>The hot topic definition (taken from the config options).</p></div>
+<div class="subelement argument">
+<h4>$involved</h4>
+<code>boolean</code><p>Whether the viewing member has a post in the topic.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The details.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_read_in_topic"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_read_in_topic " data-toggle="collapse" data-target=".function_cns_read_in_topic .collapse" title="">
+<h2>Read in a great big map of details relating to a topic.</h2>
+<pre>cns_read_in_topic(\?AUTO_LINK $topic_id, integer $start, integer $max, boolean $view_poll_results<code> = false</code>, boolean $check_perms<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the topic we are getting details of (null: whispers).</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The start row for getting details of posts in the topic (i.e. 0 is start of topic, higher is further through).</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>The maximum number of posts to get detail of.</p></div>
+<div class="subelement argument">
+<h4>$view_poll_results</h4>
+<code>boolean</code><p>Whether we are viewing poll results for the topic (if there is no poll for the topic, this is irrelevant).</p></div>
+<div class="subelement argument">
+<h4>$check_perms</h4>
+<code>boolean</code><p>Whether to check permissions.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map of details.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_render_forumview"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_render_forumview " data-toggle="collapse" data-target=".function_cns_render_forumview .collapse" title="">
+<h2>Render the Conversr forumview.</h2>
+<pre>cns_render_forumview(\?integer $id, \?array $forum_info, string $current_filter_cat, integer $max, integer $start, \AUTO_LINK $root, \?MEMBER $of_member_id, \Tempcode $breadcrumbs) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?integer</code><p>Forum ID (null: private topics).</p></div>
+<div class="subelement argument">
+<h4>$forum_info</h4>
+<code>\?array</code><p>The forum row (null: private topics).</p></div>
+<div class="subelement argument">
+<h4>$current_filter_cat</h4>
+<code>string</code><p>The filter category (blank if no filter)</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>Maximum results to show</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Offset for result showing</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\AUTO_LINK</code><p>Virtual root</p></div>
+<div class="subelement argument">
+<h4>$of_member_id</h4>
+<code>\?MEMBER</code><p>The member to show private topics of (null: not showing private topics)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\Tempcode</code><p>The breadcrumbs</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Either Tempcode (an interface that must be shown) or a pair: The main Tempcode, the forum name (string). For a PT view, it is always a tuple, never raw Tempcode (as it can go inside a tabset).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_render_post_buttons"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_render_post_buttons " data-toggle="collapse" data-target=".function_cns_render_post_buttons .collapse" title="">
+<h2>Get buttons for showing under a post.</h2>
+<pre>cns_render_post_buttons(array $topic_info, array $_postdetails, boolean $may_reply, \ID_TEXT $rendering_context<code> = 'cns'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_info</h4>
+<code>array</code><p>Map of topic info.</p></div>
+<div class="subelement argument">
+<h4>$_postdetails</h4>
+<code>array</code><p>Map of post info.</p></div>
+<div class="subelement argument">
+<h4>$may_reply</h4>
+<code>boolean</code><p>Whether the current member may reply to the topic</p></div>
+<div class="subelement argument">
+<h4>$rendering_context</h4>
+<code>\ID_TEXT</code><p>Rendering context</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The buttons.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_render_topic"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_render_topic " data-toggle="collapse" data-target=".function_cns_render_topic .collapse" title="">
+<h2>Render a topic row (i.e. a row in a forum or results view), from given details (from cns_get_topic_array).</h2>
+<pre>cns_render_topic(array $topic, boolean $has_topic_marking, boolean $pt<code> = false</code>, \?string $show_forum<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic</h4>
+<code>array</code><p>The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views).</p></div>
+<div class="subelement argument">
+<h4>$has_topic_marking</h4>
+<code>boolean</code><p>Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).</p></div>
+<div class="subelement argument">
+<h4>$pt</h4>
+<code>boolean</code><p>Whether the topic is a Private Topic.</p></div>
+<div class="subelement argument">
+<h4>$show_forum</h4>
+<code>\?string</code><p>The forum name (null: do not show the forum name).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The topic row.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_first_unread_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_first_unread_url " data-toggle="collapse" data-target=".function_find_first_unread_url .collapse" title="">
+<h2>Find the URL to the latest unread post in a topic.</h2>
+<pre>find_first_unread_url(\AUTO_LINK $id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The topic ID.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_post_id_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_post_id_url " data-toggle="collapse" data-target=".function_find_post_id_url .collapse" title="">
+<h2>Find the URL to a post.</h2>
+<pre>find_post_id_url(\AUTO_LINK $post_id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/cns_forum.html">cns_forum</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\AUTO_LINK</code><p>The post ID.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL.</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:33+01:00.<br></footer></div>
+</div>
+</body>
+</html>

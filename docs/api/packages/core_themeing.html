@@ -1,0 +1,1688 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_themeing.html" title="core_themeing"><i class="icon-folder-open"></i>core_themeing</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_actual_add_theme" title="actual_add_theme() :: Add a theme."><span class="description">Add a theme.</span><pre>actual_add_theme</pre></a></li>
+<li class="function  "><a href="#function_actual_add_theme_image" title="actual_add_theme_image() :: Add a theme image."><span class="description">Add a theme image.</span><pre>actual_add_theme_image</pre></a></li>
+<li class="function  "><a href="#function_actual_copy_theme" title="actual_copy_theme() :: Copy a theme."><span class="description">Copy a theme.</span><pre>actual_copy_theme</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_theme" title="actual_delete_theme() :: Delete a theme."><span class="description">Delete a theme.</span><pre>actual_delete_theme</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_theme_image" title="actual_delete_theme_image() :: Delete a theme image."><span class="description">Delete a theme image.</span><pre>actual_delete_theme_image</pre></a></li>
+<li class="function  "><a href="#function_actual_edit_theme_image" title="actual_edit_theme_image() :: Edit a theme image."><span class="description">Edit a theme image.</span><pre>actual_edit_theme_image</pre></a></li>
+<li class="function  "><a href="#function_actual_rename_theme" title="actual_rename_theme() :: Rename a theme."><span class="description">Rename a theme.</span><pre>actual_rename_theme</pre></a></li>
+<li class="function  "><a href="#function_autoprobe_cdns" title="autoprobe_cdns() :: Try and find some CDNs to use."><span class="description">Try and find some CDNs to use.</span><pre>autoprobe_cdns</pre></a></li>
+<li class="function  "><a href="#function_cleanup_theme_images" title="cleanup_theme_images() :: Delete uploaded theme image if not tied into anything."><span class="description">Delete uploaded theme image if not tied into anything.</span><pre>cleanup_theme_images</pre></a></li>
+<li class="function  "><a href="#function_combo_get_image_paths" title="combo_get_image_paths() :: Get Tempcode for a radio list to choose an image from the image FILES in the theme."><span class="description">Get Tempcode for a radio list to choose an image from the image FILES in the theme.</span><pre>combo_get_image_paths</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_theme_images" title="create_selection_list_theme_images() :: Get Tempcode for a dropdown to choose a theme from the themes present."><span class="description">Get Tempcode for a dropdown to choose a theme from the themes present.</span><pre>create_selection_list_theme_images</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_themes" title="create_selection_list_themes() :: Get a UI list for choosing a theme."><span class="description">Get a UI list for choosing a theme.</span><pre>create_selection_list_themes</pre></a></li>
+<li class="function  "><a href="#function_css_preg" title="css_preg() :: Replace colour codes with references (helper callback function)"><span class="description">Replace colour codes with references (helper callback function)</span><pre>css_preg</pre></a></li>
+<li class="function  "><a href="#function_do_lorem_template" title='do_lorem_template() :: Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor'><span class="description">Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor</span><pre>do_lorem_template</pre></a></li>
+<li class="function  "><a href="#function_export_theme_images" title="export_theme_images() :: Export neatly named dump of all theme images for active theme."><span class="description">Export neatly named dump of all theme images for active theme.</span><pre>export_theme_images</pre></a></li>
+<li class="function  "><a href="#function_find_all_previews__by_screen" title="find_all_previews__by_screen() :: Find the template/screen previews"><span class="description">Find the template/screen previews</span><pre>find_all_previews__by_screen</pre></a></li>
+<li class="function  "><a href="#function_find_all_previews__by_template" title="find_all_previews__by_template() :: Find the template/screen previews"><span class="description">Find the template/screen previews</span><pre>find_all_previews__by_template</pre></a></li>
+<li class="function  "><a href="#function_find_all_themes" title="find_all_themes() :: Get an array listing all the themes present."><span class="description">Get an array listing all the themes present.</span><pre>find_all_themes</pre></a></li>
+<li class="function  "><a href="#function_find_comcodes" title="find_comcodes() :: Get all Comcode files."><span class="description">Get all Comcode files.</span><pre>find_comcodes</pre></a></li>
+<li class="function  "><a href="#function_find_html" title="find_html() :: Get all HTML files."><span class="description">Get all HTML files.</span><pre>find_html</pre></a></li>
+<li class="function  "><a href="#function_find_images_do_dir" title="find_images_do_dir() :: Recursively find theme images under the specified details. Does not find custom theme images, as it doesn't check the DB."><span class="description">Recursively find theme images under the specified details. Does not find custom theme images, as it doesn't check the DB.</span><pre>find_images_do_dir</pre></a></li>
+<li class="function  "><a href="#function_get_all_image_codes" title="get_all_image_codes() :: Get all the themes image codes. THIS DOES NOT SEARCH THE DB - DO NOT USE UNLESS IT'S ON A PURE PACKAGED THEME"><span class="description">Get all the themes image codes. THIS DOES NOT SEARCH THE DB - DO NOT USE UNLESS IT'S ON A PURE PACKAGED THEME</span><pre>get_all_image_codes</pre></a></li>
+<li class="function  "><a href="#function_get_all_image_ids_type" title="get_all_image_ids_type() :: Get all the image IDs (both already known, and those uncached) of a certain type (i.e. under a subdirectory)."><span class="description">Get all the image IDs (both already known, and those uncached) of a certain type (i.e. under a subdirectory).</span><pre>get_all_image_ids_type</pre></a></li>
+<li class="function  "><a href="#function_get_image_paths" title="get_image_paths() :: Search under a base path for image FILE URLs (not actually paths as function name would suggest)."><span class="description">Search under a base path for image FILE URLs (not actually paths as function name would suggest).</span><pre>get_image_paths</pre></a></li>
+<li class="function  "><a href="#function_get_text_templates" title="get_text_templates() :: Get an additional list of templates that should be previewed as text."><span class="description">Get an additional list of templates that should be previewed as text.</span><pre>get_text_templates</pre></a></li>
+<li class="function  "><a href="#function_is_full_screen_template" title="is_full_screen_template() :: Checks if the template is a full screen template"><span class="description">Checks if the template is a full screen template</span><pre>is_full_screen_template</pre></a></li>
+<li class="function  "><a href="#function_is_plain_text_template" title="is_plain_text_template() :: Checks if the template is to be previewed as a text template"><span class="description">Checks if the template is to be previewed as a text template</span><pre>is_plain_text_template</pre></a></li>
+<li class="function  "><a href="#function_lorem_chunk" title="lorem_chunk() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_chunk</pre></a></li>
+<li class="function  "><a href="#function_lorem_chunk_html" title="lorem_chunk_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_chunk_html</pre></a></li>
+<li class="function  "><a href="#function_lorem_globalise" title='lorem_globalise() :: Lorem version of globalise. It will wrap the input into something that is "stable XHTML" and thus can work inside an XHTML editor.'><span class="description">Lorem version of globalise. It will wrap the input into something that is "stable XHTML" and thus can work inside an XHTML editor.</span><pre>lorem_globalise</pre></a></li>
+<li class="function  "><a href="#function_lorem_paragraph" title="lorem_paragraph() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_paragraph</pre></a></li>
+<li class="function  "><a href="#function_lorem_paragraph_html" title="lorem_paragraph_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_paragraph_html</pre></a></li>
+<li class="function  "><a href="#function_lorem_phrase" title="lorem_phrase() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_phrase</pre></a></li>
+<li class="function  "><a href="#function_lorem_phrase_html" title="lorem_phrase_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_phrase_html</pre></a></li>
+<li class="function  "><a href="#function_lorem_sentence" title="lorem_sentence() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_sentence</pre></a></li>
+<li class="function  "><a href="#function_lorem_sentence_html" title="lorem_sentence_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_sentence_html</pre></a></li>
+<li class="function  "><a href="#function_lorem_title" title="lorem_title() :: Get suitable placeholder text: title."><span class="description">Get suitable placeholder text: title.</span><pre>lorem_title</pre></a></li>
+<li class="function  "><a href="#function_lorem_word" title="lorem_word() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_word</pre></a></li>
+<li class="function  "><a href="#function_lorem_word_2" title="lorem_word_2() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_word_2</pre></a></li>
+<li class="function  "><a href="#function_lorem_word_2_html" title="lorem_word_2_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_word_2_html</pre></a></li>
+<li class="function  "><a href="#function_lorem_word_html" title="lorem_word_html() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>lorem_word_html</pre></a></li>
+<li class="function  "><a href="#function_placeholder_array" title="placeholder_array() :: Get an array"><span class="description">Get an array</span><pre>placeholder_array</pre></a></li>
+<li class="function  "><a href="#function_placeholder_avatar" title="placeholder_avatar() :: Get an avatar image."><span class="description">Get an avatar image.</span><pre>placeholder_avatar</pre></a></li>
+<li class="function  "><a href="#function_placeholder_blank" title="placeholder_blank() :: Get a blank screen, for a parameter which is not visible and typically blank."><span class="description">Get a blank screen, for a parameter which is not visible and typically blank.</span><pre>placeholder_blank</pre></a></li>
+<li class="function  "><a href="#function_placeholder_breadcrumbs" title="placeholder_breadcrumbs() :: Get suitable placeholder breadcrumbs."><span class="description">Get suitable placeholder breadcrumbs.</span><pre>placeholder_breadcrumbs</pre></a></li>
+<li class="function  "><a href="#function_placeholder_button" title="placeholder_button() :: Get a button"><span class="description">Get a button</span><pre>placeholder_button</pre></a></li>
+<li class="function  "><a href="#function_placeholder_date" title="placeholder_date() :: Get suitable placeholder date."><span class="description">Get suitable placeholder date.</span><pre>placeholder_date</pre></a></li>
+<li class="function  "><a href="#function_placeholder_date_raw" title="placeholder_date_raw() :: Get suitable placeholder timestamp."><span class="description">Get suitable placeholder timestamp.</span><pre>placeholder_date_raw</pre></a></li>
+<li class="function  "><a href="#function_placeholder_emoticon_chooser" title="placeholder_emoticon_chooser() :: Get a table of emoticons."><span class="description">Get a table of emoticons.</span><pre>placeholder_emoticon_chooser</pre></a></li>
+<li class="function  "><a href="#function_placeholder_emoticons" title="placeholder_emoticons() :: Get an array of emoticons."><span class="description">Get an array of emoticons.</span><pre>placeholder_emoticons</pre></a></li>
+<li class="function  "><a href="#function_placeholder_fields" title="placeholder_fields() :: Get fields"><span class="description">Get fields</span><pre>placeholder_fields</pre></a></li>
+<li class="function  "><a href="#function_placeholder_fields_as_divs" title="placeholder_fields_as_divs() :: Get fields, but composed of divs (used by forum)"><span class="description">Get fields, but composed of divs (used by forum)</span><pre>placeholder_fields_as_divs</pre></a></li>
+<li class="function  "><a href="#function_placeholder_filesize" title="placeholder_filesize() :: Get suitable placeholder filesize."><span class="description">Get suitable placeholder filesize.</span><pre>placeholder_filesize</pre></a></li>
+<li class="function  "><a href="#function_placeholder_form" title="placeholder_form() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>placeholder_form</pre></a></li>
+<li class="function  "><a href="#function_placeholder_form_with_field" title="placeholder_form_with_field() :: Get form with a field"><span class="description">Get form with a field</span><pre>placeholder_form_with_field</pre></a></li>
+<li class="function  "><a href="#function_placeholder_id" title="placeholder_id() :: Get suitable placeholder ID."><span class="description">Get suitable placeholder ID.</span><pre>placeholder_id</pre></a></li>
+<li class="function  "><a href="#function_placeholder_image" title="placeholder_image() :: Get an image"><span class="description">Get an image</span><pre>placeholder_image</pre></a></li>
+<li class="function  "><a href="#function_placeholder_image_url" title="placeholder_image_url() :: Get image url"><span class="description">Get image url</span><pre>placeholder_image_url</pre></a></li>
+<li class="function  "><a href="#function_placeholder_img_code" title="placeholder_img_code() :: Get a theme image code."><span class="description">Get a theme image code.</span><pre>placeholder_img_code</pre></a></li>
+<li class="function  "><a href="#function_placeholder_ip" title="placeholder_ip() :: Get suitable placeholder text: title."><span class="description">Get suitable placeholder text: title.</span><pre>placeholder_ip</pre></a></li>
+<li class="function  "><a href="#function_placeholder_javascript_code" title="placeholder_javascript_code() :: Get javascript code"><span class="description">Get javascript code</span><pre>placeholder_javascript_code</pre></a></li>
+<li class="function  "><a href="#function_placeholder_link" title="placeholder_link() :: Get suitable placeholder link."><span class="description">Get suitable placeholder link.</span><pre>placeholder_link</pre></a></li>
+<li class="function  "><a href="#function_placeholder_list_item" title="placeholder_list_item() :: Get a list"><span class="description">Get a list</span><pre>placeholder_list_item</pre></a></li>
+<li class="function  "><a href="#function_placeholder_number" title="placeholder_number() :: Get suitable placeholder number."><span class="description">Get suitable placeholder number.</span><pre>placeholder_number</pre></a></li>
+<li class="function  "><a href="#function_placeholder_options" title="placeholder_options() :: Get options for drop-down box"><span class="description">Get options for drop-down box</span><pre>placeholder_options</pre></a></li>
+<li class="function  "><a href="#function_placeholder_pagination" title="placeholder_pagination() :: Get pagination."><span class="description">Get pagination.</span><pre>placeholder_pagination</pre></a></li>
+<li class="function  "><a href="#function_placeholder_random" title="placeholder_random() :: Get a random number"><span class="description">Get a random number</span><pre>placeholder_random</pre></a></li>
+<li class="function  "><a href="#function_placeholder_random_id" title="placeholder_random_id() :: Get a random ID"><span class="description">Get a random ID</span><pre>placeholder_random_id</pre></a></li>
+<li class="function  "><a href="#function_placeholder_table" title="placeholder_table() :: Get suitable placeholder text."><span class="description">Get suitable placeholder text.</span><pre>placeholder_table</pre></a></li>
+<li class="function  "><a href="#function_placeholder_time" title="placeholder_time() :: Get time"><span class="description">Get time</span><pre>placeholder_time</pre></a></li>
+<li class="function  "><a href="#function_placeholder_types" title="placeholder_types() :: Get some set of data"><span class="description">Get some set of data</span><pre>placeholder_types</pre></a></li>
+<li class="function  "><a href="#function_placeholder_url" title="placeholder_url() :: Get suitable placeholder URL."><span class="description">Get suitable placeholder URL.</span><pre>placeholder_url</pre></a></li>
+<li class="function  "><a href="#function_post_param_image" title="post_param_image() :: An image has been passed through by POST, either as a file (a new upload), a url, a reference to an existing theme image, or as a filedump reference."><span class="description">An image has been passed through by POST, either as a file (a new upload), a url, a reference to an existing theme image, or as a filedump reference.</span><pre>post_param_image</pre></a></li>
+<li class="function  "><a href="#function_post_param_theme_img_code" title="post_param_theme_img_code() :: A theme image has been passed through by POST, either as a file (a new theme image), or as a reference to an existing one. Get the image code from the POST data."><span class="description">A theme image has been passed through by POST, either as a file (a new theme image), or as a reference to an existing one. Get the image code from the POST data.</span><pre>post_param_theme_img_code</pre></a></li>
+<li class="function  "><a href="#function_regen_theme_images" title="regen_theme_images() :: Regenerate all the theme image paths in the database."><span class="description">Regenerate all the theme image paths in the database.</span><pre>regen_theme_images</pre></a></li>
+<li class="function  "><a href="#function_render_screen_preview" title="render_screen_preview() :: Shows the preview of a screen"><span class="description">Shows the preview of a screen</span><pre>render_screen_preview</pre></a></li>
+<li class="function  "><a href="#function_resize_rep_image" title="resize_rep_image() :: Size down a category representative image."><span class="description">Size down a category representative image.</span><pre>resize_rep_image</pre></a></li>
+<li class="function  "><a href="#function_tempcode_tester_script" title="tempcode_tester_script() :: AJAX script for rendering some Tempcode."><span class="description">AJAX script for rendering some Tempcode.</span><pre>tempcode_tester_script</pre></a></li>
+<li class="function  "><a href="#function_tidy_theme_img_code" title="tidy_theme_img_code() :: Delete a theme image used for a resource that was added, but only if the theme image is now unused."><span class="description">Delete a theme image used for a resource that was added, but only if the theme image is now unused.</span><pre>tidy_theme_img_code</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_themeing.html">core_themeing</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_theme " data-toggle="collapse" data-target=".function_actual_add_theme .collapse" title="">
+<h2>Add a theme.</h2>
+<pre>actual_add_theme(\ID_TEXT $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The theme name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_theme_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_theme_image " data-toggle="collapse" data-target=".function_actual_add_theme_image .collapse" title="">
+<h2>Add a theme image.</h2>
+<pre>actual_add_theme_image(\ID_TEXT $theme, \LANGUAGE_NAME $lang, \SHORT_TEXT $id, \URLPATH $path, boolean $fail_ok<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme the theme image is in</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\LANGUAGE_NAME</code><p>The language the theme image is for</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\SHORT_TEXT</code><p>The theme image ID</p></div>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>\URLPATH</code><p>The URL to the theme image</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure without bombing out</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_copy_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_copy_theme " data-toggle="collapse" data-target=".function_actual_copy_theme .collapse" title="">
+<h2>Copy a theme.</h2>
+<pre>actual_copy_theme(\ID_TEXT $theme, \ID_TEXT $to) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The original theme name</p></div>
+<div class="subelement argument">
+<h4>$to</h4>
+<code>\ID_TEXT</code><p>The copy's theme name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_theme " data-toggle="collapse" data-target=".function_actual_delete_theme .collapse" title="">
+<h2>Delete a theme.</h2>
+<pre>actual_delete_theme(\ID_TEXT $theme) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_theme_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_theme_image " data-toggle="collapse" data-target=".function_actual_delete_theme_image .collapse" title="">
+<h2>Delete a theme image.</h2>
+<pre>actual_delete_theme_image(\SHORT_TEXT $id, \?ID_TEXT $theme<code> = null</code>, \?LANGUAGE_NAME $lang<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\SHORT_TEXT</code><p>The theme image ID</p></div>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\?ID_TEXT</code><p>The theme to delete in (null: all themes)</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?LANGUAGE_NAME</code><p>The language to delete in (null: all languages) (blank: all languages)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_edit_theme_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_edit_theme_image " data-toggle="collapse" data-target=".function_actual_edit_theme_image .collapse" title="">
+<h2>Edit a theme image.</h2>
+<pre>actual_edit_theme_image(\SHORT_TEXT $old_id, \ID_TEXT $theme, \LANGUAGE_NAME $lang, \SHORT_TEXT $id, \URLPATH $path, boolean $quick<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_id</h4>
+<code>\SHORT_TEXT</code><p>The current theme image ID</p></div>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme the theme image is in</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\LANGUAGE_NAME</code><p>The language the theme image is for (blank: all languages)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\SHORT_TEXT</code><p>The new theme image ID</p></div>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>\URLPATH</code><p>The URL to the theme image</p></div>
+<div class="subelement argument">
+<h4>$quick</h4>
+<code>boolean</code><p>Whether to avoid cleanup, etc</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_rename_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_rename_theme " data-toggle="collapse" data-target=".function_actual_rename_theme .collapse" title="">
+<h2>Rename a theme.</h2>
+<pre>actual_rename_theme(\ID_TEXT $theme, \ID_TEXT $to) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The original theme name</p></div>
+<div class="subelement argument">
+<h4>$to</h4>
+<code>\ID_TEXT</code><p>The new theme name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_autoprobe_cdns"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_autoprobe_cdns " data-toggle="collapse" data-target=".function_autoprobe_cdns .collapse" title="">
+<h2>Try and find some CDNs to use.</h2>
+<pre>autoprobe_cdns() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>List of CDNs</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cleanup_theme_images"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cleanup_theme_images " data-toggle="collapse" data-target=".function_cleanup_theme_images .collapse" title="">
+<h2>Delete uploaded theme image if not tied into anything.</h2>
+<pre>cleanup_theme_images(\URLPATH $old_url) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_url</h4>
+<code>\URLPATH</code><p>The URL to the theme image being deleted</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_combo_get_image_paths"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_combo_get_image_paths " data-toggle="collapse" data-target=".function_combo_get_image_paths .collapse" title="">
+<h2>Get Tempcode for a radio list to choose an image from the image FILES in the theme.</h2>
+<pre>combo_get_image_paths(string $selected_path, \URLPATH $base_url, \PATH $base_path) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$selected_path</h4>
+<code>string</code><p>The currently selected image path (blank for none)</p></div>
+<div class="subelement argument">
+<h4>$base_url</h4>
+<code>\URLPATH</code><p>The base-URL to where we are searching for images</p></div>
+<div class="subelement argument">
+<h4>$base_path</h4>
+<code>\PATH</code><p>The base-path to where we are searching for images</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated Tempcode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_theme_images"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_theme_images " data-toggle="collapse" data-target=".function_create_selection_list_theme_images .collapse" title="">
+<h2>Get Tempcode for a dropdown to choose a theme from the themes present.</h2>
+<pre>create_selection_list_theme_images(\?ID_TEXT $it<code> = null</code>, \?string $filter<code> = null</code>, boolean $do_id<code> = false</code>, boolean $include_all<code> = false</code>, string $under<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?ID_TEXT</code><p>The currently selected image ID (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?string</code><p>An SQL where clause (including the WHERE), that filters the query somehow (null: none)</p></div>
+<div class="subelement argument">
+<h4>$do_id</h4>
+<code>boolean</code><p>Whether to show IDs as the list entry captions, rather than paths</p></div>
+<div class="subelement argument">
+<h4>$include_all</h4>
+<code>boolean</code><p>Whether to include images not yet used (i.e not in theme_images map yet)</p></div>
+<div class="subelement argument">
+<h4>$under</h4>
+<code>string</code><p>Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as paths (blank: no limitation)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode for a list selection of theme images</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_themes"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_themes " data-toggle="collapse" data-target=".function_create_selection_list_themes .collapse" title="">
+<h2>Get a UI list for choosing a theme.</h2>
+<pre>create_selection_list_themes(\?ID_TEXT $theme<code> = null</code>, boolean $no_rely<code> = false</code>, boolean $show_everything<code> = false</code>, \ID_TEXT $default_message_string<code> = 'RELY_FORUMS'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\?ID_TEXT</code><p>The theme to select by default (null: no specific default)</p></div>
+<div class="subelement argument">
+<h4>$no_rely</h4>
+<code>boolean</code><p>Whether to skip the 'rely on forums' entry</p></div>
+<div class="subelement argument">
+<h4>$show_everything</h4>
+<code>boolean</code><p>Whether to forget about permissions for this list</p></div>
+<div class="subelement argument">
+<h4>$default_message_string</h4>
+<code>\ID_TEXT</code><p>The language string to use for the default answer</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_css_preg"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_css_preg " data-toggle="collapse" data-target=".function_css_preg .collapse" title="">
+<h2>Replace colour codes with references (helper callback function)</h2>
+<pre>css_preg(array $matches) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$matches</h4>
+<code>array</code><p>List of found regular expression matches (only index 0 relevant).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Replacement.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_lorem_template"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_lorem_template " data-toggle="collapse" data-target=".function_do_lorem_template .collapse" title="">
+<h2>Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor</h2>
+<pre>do_lorem_template(\ID_TEXT $codename, \?array $parameters<code> = null</code>, \?LANGUAGE_NAME $lang<code> = null</code>, boolean $light_error<code> = false</code>, \?ID_TEXT $fallback<code> = null</code>, string $suffix<code> = '.tpl'</code>, string $directory<code> = 'templates'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>templates css javascript xml text</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$codename</h4>
+<code>\ID_TEXT</code><p>The codename of the template being loaded</p></div>
+<div class="subelement argument">
+<h4>$parameters</h4>
+<code>\?array</code><p>A map of parameters for the template (key to value) (null: no parameters)</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?LANGUAGE_NAME</code><p>The language to load the template in (templates can embed language references) (null: users own language)</p></div>
+<div class="subelement argument">
+<h4>$light_error</h4>
+<code>boolean</code><p>Whether to not produce a stack dump if the template is missing</p></div>
+<div class="subelement argument">
+<h4>$fallback</h4>
+<code>\?ID_TEXT</code><p>Alternate template to use if the primary one does not exist (null: none)</p></div>
+<div class="subelement argument">
+<h4>$suffix</h4>
+<code>string</code><p>File type suffix of template file (e.g. .tpl)</p></div>
+<div class="subelement argument">
+<h4>$directory</h4>
+<code>string</code><p>Subdirectory type to look in</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for this template</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_export_theme_images"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_export_theme_images " data-toggle="collapse" data-target=".function_export_theme_images .collapse" title="">
+<h2>Export neatly named dump of all theme images for active theme.</h2>
+<pre>export_theme_images() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_all_previews__by_screen"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_all_previews__by_screen " data-toggle="collapse" data-target=".function_find_all_previews__by_screen .collapse" title="">
+<h2>Find the template/screen previews</h2>
+<pre>find_all_previews__by_screen() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map of previews (screen to a list of templates)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_all_previews__by_template"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_all_previews__by_template " data-toggle="collapse" data-target=".function_find_all_previews__by_template .collapse" title="">
+<h2>Find the template/screen previews</h2>
+<pre>find_all_previews__by_template() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map of previews (template to a tuple of preview details)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_all_themes"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_all_themes " data-toggle="collapse" data-target=".function_find_all_themes .collapse" title="">
+<h2>Get an array listing all the themes present.</h2>
+<pre>find_all_themes(boolean $full_details<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$full_details</h4>
+<code>boolean</code><p>Whether to gather full details for each theme</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map of all themes (name=>title) OR if requested a map of theme name to full theme details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_comcodes"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_comcodes " data-toggle="collapse" data-target=".function_find_comcodes .collapse" title="">
+<h2>Get all Comcode files.</h2>
+<pre>find_comcodes() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of Comcode files.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_html " data-toggle="collapse" data-target=".function_find_html .collapse" title="">
+<h2>Get all HTML files.</h2>
+<pre>find_html() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of HTML files.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_images_do_dir"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_images_do_dir " data-toggle="collapse" data-target=".function_find_images_do_dir .collapse" title="">
+<h2>Recursively find theme images under the specified details. Does not find custom theme images, as it doesn't check the DB.</h2>
+<pre>find_images_do_dir(\ID_TEXT $theme, string $subdir, array $langs) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme</p></div>
+<div class="subelement argument">
+<h4>$subdir</h4>
+<code>string</code><p>The subdirectory to search under</p></div>
+<div class="subelement argument">
+<h4>$langs</h4>
+<code>array</code><p>A map (lang=>true) of the languages in the system, so the codes may be filtered out of the image codes in our result list</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map, theme-image-code=>URL</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_all_image_codes"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_all_image_codes " data-toggle="collapse" data-target=".function_get_all_image_codes .collapse" title="">
+<h2>Get all the themes image codes. THIS DOES NOT SEARCH THE DB - DO NOT USE UNLESS IT'S ON A PURE PACKAGED THEME</h2>
+<pre>get_all_image_codes(\PATH $base_path, \PATH $search_under, boolean $recurse<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$base_path</h4>
+<code>\PATH</code><p>The base-path to where we are searching for images</p></div>
+<div class="subelement argument">
+<h4>$search_under</h4>
+<code>\PATH</code><p>The path to search under, relative to the base-path. This is not the same as the base-path, as we are cropping paths to the base-path</p></div>
+<div class="subelement argument">
+<h4>$recurse</h4>
+<code>boolean</code><p>Whether to search recursively from the given directory</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of image codes</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_all_image_ids_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_all_image_ids_type " data-toggle="collapse" data-target=".function_get_all_image_ids_type .collapse" title="">
+<h2>Get all the image IDs (both already known, and those uncached) of a certain type (i.e. under a subdirectory).</h2>
+<pre>get_all_image_ids_type(\ID_TEXT $type, boolean $recurse<code> = false</code>, \?object $db<code> = null</code>, \?ID_TEXT $theme<code> = null</code>, boolean $dirs_only<code> = false</code>, boolean $db_only<code> = false</code>, \?array $skip<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of image (e.g. 'cns_emoticons')</p></div>
+<div class="subelement argument">
+<h4>$recurse</h4>
+<code>boolean</code><p>Whether to search recursively; i.e. in subdirectories of the type subdirectory</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>\?object</code><p>The database connection to work over (null: site db)</p></div>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\?ID_TEXT</code><p>The theme to search in, in addition to the default theme (null: current theme)</p></div>
+<div class="subelement argument">
+<h4>$dirs_only</h4>
+<code>boolean</code><p>Whether to only return directories (advanced option, rarely used)</p></div>
+<div class="subelement argument">
+<h4>$db_only</h4>
+<code>boolean</code><p>Whether to only return from the database (advanced option, rarely used)</p></div>
+<div class="subelement argument">
+<h4>$skip</h4>
+<code>\?array</code><p>The list of files/directories to skip (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of image IDs</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_image_paths"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_image_paths " data-toggle="collapse" data-target=".function_get_image_paths .collapse" title="">
+<h2>Search under a base path for image FILE URLs (not actually paths as function name would suggest).</h2>
+<pre>get_image_paths(\URLPATH $base_url, \PATH $base_path) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$base_url</h4>
+<code>\URLPATH</code><p>The base-URL to where we are searching for images</p></div>
+<div class="subelement argument">
+<h4>$base_path</h4>
+<code>\PATH</code><p>The base-path to where we are searching for images</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>path->url map of found images</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_text_templates"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_text_templates " data-toggle="collapse" data-target=".function_get_text_templates .collapse" title="">
+<h2>Get an additional list of templates that should be previewed as text.</h2>
+<pre>get_text_templates() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of templates</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_full_screen_template"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_full_screen_template " data-toggle="collapse" data-target=".function_is_full_screen_template .collapse" title="">
+<h2>Checks if the template is a full screen template</h2>
+<pre>is_full_screen_template(\?string $temp_name<code> = null</code>, \?Tempcode $tempcode<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$temp_name</h4>
+<code>\?string</code><p>Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)</p></div>
+<div class="subelement argument">
+<h4>$tempcode</h4>
+<code>\?Tempcode</code><p>The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_plain_text_template"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_plain_text_template " data-toggle="collapse" data-target=".function_is_plain_text_template .collapse" title="">
+<h2>Checks if the template is to be previewed as a text template</h2>
+<pre>is_plain_text_template(string $temp_name) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$temp_name</h4>
+<code>string</code><p>Name of the template</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_chunk"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_chunk " data-toggle="collapse" data-target=".function_lorem_chunk .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_chunk() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_chunk_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_chunk_html " data-toggle="collapse" data-target=".function_lorem_chunk_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_chunk_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_globalise"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_globalise " data-toggle="collapse" data-target=".function_lorem_globalise .collapse" title="">
+<h2>Lorem version of globalise. It will wrap the input into something that is "stable XHTML" and thus can work inside an XHTML editor.</h2>
+<pre>lorem_globalise(\Tempcode $middle, \?mixed $message<code> = null</code>, string $type<code> = ''</code>, boolean $include_header_and_footer<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>inform warn ""</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$middle</h4>
+<code>\Tempcode</code><p>The Tempcode to put into a nice frame</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>\?mixed</code><p>'Additional' message (null: none)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The type of special message</p></div>
+<div class="subelement argument">
+<h4>$include_header_and_footer</h4>
+<code>boolean</code><p>Whether to include the header/footer/panels</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Standalone page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_paragraph"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_paragraph " data-toggle="collapse" data-target=".function_lorem_paragraph .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_paragraph() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_paragraph_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_paragraph_html " data-toggle="collapse" data-target=".function_lorem_paragraph_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_paragraph_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_phrase"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_phrase " data-toggle="collapse" data-target=".function_lorem_phrase .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_phrase() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_phrase_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_phrase_html " data-toggle="collapse" data-target=".function_lorem_phrase_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_phrase_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_sentence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_sentence " data-toggle="collapse" data-target=".function_lorem_sentence .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_sentence() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_sentence_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_sentence_html " data-toggle="collapse" data-target=".function_lorem_sentence_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_sentence_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_title"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_title " data-toggle="collapse" data-target=".function_lorem_title .collapse" title="">
+<h2>Get suitable placeholder text: title.</h2>
+<pre>lorem_title() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_word"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_word " data-toggle="collapse" data-target=".function_lorem_word .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_word() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_word_2"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_word_2 " data-toggle="collapse" data-target=".function_lorem_word_2 .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_word_2() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_word_2_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_word_2_html " data-toggle="collapse" data-target=".function_lorem_word_2_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_word_2_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lorem_word_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lorem_word_html " data-toggle="collapse" data-target=".function_lorem_word_html .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>lorem_word_html() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_array"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_array " data-toggle="collapse" data-target=".function_placeholder_array .collapse" title="">
+<h2>Get an array</h2>
+<pre>placeholder_array(integer $num_elements<code> = 3</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$num_elements</h4>
+<code>integer</code><p>Number of array elements.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Place holder array.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_avatar"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_avatar " data-toggle="collapse" data-target=".function_placeholder_avatar .collapse" title="">
+<h2>Get an avatar image.</h2>
+<pre>placeholder_avatar() : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>Image</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_blank"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_blank " data-toggle="collapse" data-target=".function_placeholder_blank .collapse" title="">
+<h2>Get a blank screen, for a parameter which is not visible and typically blank.</h2>
+<pre>placeholder_blank() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_breadcrumbs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_breadcrumbs " data-toggle="collapse" data-target=".function_placeholder_breadcrumbs .collapse" title="">
+<h2>Get suitable placeholder breadcrumbs.</h2>
+<pre>placeholder_breadcrumbs() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_button"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_button " data-toggle="collapse" data-target=".function_placeholder_button .collapse" title="">
+<h2>Get a button</h2>
+<pre>placeholder_button() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Button</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_date"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_date " data-toggle="collapse" data-target=".function_placeholder_date .collapse" title="">
+<h2>Get suitable placeholder date.</h2>
+<pre>placeholder_date() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_date_raw"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_date_raw " data-toggle="collapse" data-target=".function_placeholder_date_raw .collapse" title="">
+<h2>Get suitable placeholder timestamp.</h2>
+<pre>placeholder_date_raw() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_emoticon_chooser"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_emoticon_chooser " data-toggle="collapse" data-target=".function_placeholder_emoticon_chooser .collapse" title="">
+<h2>Get a table of emoticons.</h2>
+<pre>placeholder_emoticon_chooser() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Emoticons</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_emoticons"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_emoticons " data-toggle="collapse" data-target=".function_placeholder_emoticons .collapse" title="">
+<h2>Get an array of emoticons.</h2>
+<pre>placeholder_emoticons() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Emoticons</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_fields " data-toggle="collapse" data-target=".function_placeholder_fields .collapse" title="">
+<h2>Get fields</h2>
+<pre>placeholder_fields() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_fields_as_divs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_fields_as_divs " data-toggle="collapse" data-target=".function_placeholder_fields_as_divs .collapse" title="">
+<h2>Get fields, but composed of divs (used by forum)</h2>
+<pre>placeholder_fields_as_divs() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_filesize"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_filesize " data-toggle="collapse" data-target=".function_placeholder_filesize .collapse" title="">
+<h2>Get suitable placeholder filesize.</h2>
+<pre>placeholder_filesize() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_form"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_form " data-toggle="collapse" data-target=".function_placeholder_form .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>placeholder_form() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_form_with_field"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_form_with_field " data-toggle="collapse" data-target=".function_placeholder_form_with_field .collapse" title="">
+<h2>Get form with a field</h2>
+<pre>placeholder_form_with_field(\ID_TEXT $field_name) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>\ID_TEXT</code><p>The field name wanted.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_id " data-toggle="collapse" data-target=".function_placeholder_id .collapse" title="">
+<h2>Get suitable placeholder ID.</h2>
+<pre>placeholder_id() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_image " data-toggle="collapse" data-target=".function_placeholder_image .collapse" title="">
+<h2>Get an image</h2>
+<pre>placeholder_image() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_image_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_image_url " data-toggle="collapse" data-target=".function_placeholder_image_url .collapse" title="">
+<h2>Get image url</h2>
+<pre>placeholder_image_url() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Image url</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_img_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_img_code " data-toggle="collapse" data-target=".function_placeholder_img_code .collapse" title="">
+<h2>Get a theme image code.</h2>
+<pre>placeholder_img_code(string $type<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The theme image directory to find a code under</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The code</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_ip"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_ip " data-toggle="collapse" data-target=".function_placeholder_ip .collapse" title="">
+<h2>Get suitable placeholder text: title.</h2>
+<pre>placeholder_ip() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_javascript_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_javascript_code " data-toggle="collapse" data-target=".function_placeholder_javascript_code .collapse" title="">
+<h2>Get javascript code</h2>
+<pre>placeholder_javascript_code() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_link " data-toggle="collapse" data-target=".function_placeholder_link .collapse" title="">
+<h2>Get suitable placeholder link.</h2>
+<pre>placeholder_link() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder link.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_list_item"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_list_item " data-toggle="collapse" data-target=".function_placeholder_list_item .collapse" title="">
+<h2>Get a list</h2>
+<pre>placeholder_list_item() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_number"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_number " data-toggle="collapse" data-target=".function_placeholder_number .collapse" title="">
+<h2>Get suitable placeholder number.</h2>
+<pre>placeholder_number() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_options"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_options " data-toggle="collapse" data-target=".function_placeholder_options .collapse" title="">
+<h2>Get options for drop-down box</h2>
+<pre>placeholder_options() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_pagination"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_pagination " data-toggle="collapse" data-target=".function_placeholder_pagination .collapse" title="">
+<h2>Get pagination.</h2>
+<pre>placeholder_pagination() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Pagination.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_random"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_random " data-toggle="collapse" data-target=".function_placeholder_random .collapse" title="">
+<h2>Get a random number</h2>
+<pre>placeholder_random() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Random number</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_random_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_random_id " data-toggle="collapse" data-target=".function_placeholder_random_id .collapse" title="">
+<h2>Get a random ID</h2>
+<pre>placeholder_random_id() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Random ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_table"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_table " data-toggle="collapse" data-target=".function_placeholder_table .collapse" title="">
+<h2>Get suitable placeholder text.</h2>
+<pre>placeholder_table() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_time"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_time " data-toggle="collapse" data-target=".function_placeholder_time .collapse" title="">
+<h2>Get time</h2>
+<pre>placeholder_time() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_types"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_types " data-toggle="collapse" data-target=".function_placeholder_types .collapse" title="">
+<h2>Get some set of data</h2>
+<pre>placeholder_types() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Place holder text.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_placeholder_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_placeholder_url " data-toggle="collapse" data-target=".function_placeholder_url .collapse" title="">
+<h2>Get suitable placeholder URL.</h2>
+<pre>placeholder_url() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Place holder URL.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_post_param_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_post_param_image " data-toggle="collapse" data-target=".function_post_param_image .collapse" title="">
+<h2>An image has been passed through by POST, either as a file (a new upload), a url, a reference to an existing theme image, or as a filedump reference.</h2>
+<pre>post_param_image(\ID_TEXT $name<code> = 'image'</code>, \?PATH $upload_to<code> = null</code>, \?ID_TEXT $theme_image_type<code> = null</code>, boolean $required<code> = true</code>, boolean $is_edit<code> = false</code>, \?string $filename<code> = null</code>, \?string $thumb_url<code> = null</code>) : \?URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Used with form_input_upload_multi_source.
+Get the image URL from the POST data.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>Form field prefix (input type suffixes will be added automatically)</p></div>
+<div class="subelement argument">
+<h4>$upload_to</h4>
+<code>\?PATH</code><p>Where to upload to (null: the correct place for $theme_image_type)</p></div>
+<div class="subelement argument">
+<h4>$theme_image_type</h4>
+<code>\?ID_TEXT</code><p>The directory of theme images to store under (null: do not support theme images)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether an image is required</p></div>
+<div class="subelement argument">
+<h4>$is_edit</h4>
+<code>boolean</code><p>Whether this is an edit operation</p></div>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>\?string</code><p>Pass the filename back by reference (null: do not pass)</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\?string</code><p>Pass the thumbnail back by reference (null: do not pass & do not collect a thumbnail)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?URLPATH</code>The URL (either to an independent upload, or the theme image, or a filedump URL) (null: leave alone, when doing an edit operation)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_post_param_theme_img_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_post_param_theme_img_code " data-toggle="collapse" data-target=".function_post_param_theme_img_code .collapse" title="">
+<h2>A theme image has been passed through by POST, either as a file (a new theme image), or as a reference to an existing one. Get the image code from the POST data.</h2>
+<pre>post_param_theme_img_code(\ID_TEXT $type, boolean $required<code> = false</code>, \ID_TEXT $field_file<code> = 'file'</code>, \ID_TEXT $field_choose<code> = 'theme_img_code'</code>, \?object $db<code> = null</code>, \?PATH $upload_to<code> = null</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note that post_param_image is a more comprehensive function, if you accept other types of inputs too.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of theme image</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether a code is required</p></div>
+<div class="subelement argument">
+<h4>$field_file</h4>
+<code>\ID_TEXT</code><p>Form field for uploading</p></div>
+<div class="subelement argument">
+<h4>$field_choose</h4>
+<code>\ID_TEXT</code><p>Form field for choosing</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>\?object</code><p>Database connection (null: site database)</p></div>
+<div class="subelement argument">
+<h4>$upload_to</h4>
+<code>\?PATH</code><p>Where to upload the theme images to (null: something sensible)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The (possibly randomised) theme image code</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_regen_theme_images"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_regen_theme_images " data-toggle="collapse" data-target=".function_regen_theme_images .collapse" title="">
+<h2>Regenerate all the theme image paths in the database.</h2>
+<pre>regen_theme_images(\ID_TEXT $theme, \?array $langs<code> = null</code>, \?ID_TEXT $target_theme<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme we're searching in.</p></div>
+<div class="subelement argument">
+<h4>$langs</h4>
+<code>\?array</code><p>A map of languages (lang=>true) (null: find it in-function).</p></div>
+<div class="subelement argument">
+<h4>$target_theme</h4>
+<code>\?ID_TEXT</code><p>The theme we're storing in (null: same as $theme).</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_screen_preview"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_screen_preview " data-toggle="collapse" data-target=".function_render_screen_preview .collapse" title="">
+<h2>Shows the preview of a screen</h2>
+<pre>render_screen_preview(\ID_TEXT $template, \?ID_TEXT $hook, \ID_TEXT $function) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$template</h4>
+<code>\ID_TEXT</code><p>The template to be previewed (e.g. templates/DOWNLOAD_BOX.tpl)</p></div>
+<div class="subelement argument">
+<h4>$hook</h4>
+<code>\?ID_TEXT</code><p>The hook the preview is in (null: search)</p></div>
+<div class="subelement argument">
+<h4>$function</h4>
+<code>\ID_TEXT</code><p>The name of the screen preview</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The previewed screen</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_resize_rep_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_resize_rep_image " data-toggle="collapse" data-target=".function_resize_rep_image .collapse" title="">
+<h2>Size down a category representative image.</h2>
+<pre>resize_rep_image(\URLPATH $rep_image) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The rep image</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The rep image</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_tempcode_tester_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_tempcode_tester_script " data-toggle="collapse" data-target=".function_tempcode_tester_script .collapse" title="">
+<h2>AJAX script for rendering some Tempcode.</h2>
+<pre>tempcode_tester_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_tidy_theme_img_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_tidy_theme_img_code " data-toggle="collapse" data-target=".function_tidy_theme_img_code .collapse" title="">
+<h2>Delete a theme image used for a resource that was added, but only if the theme image is now unused.</h2>
+<pre>tidy_theme_img_code(\?ID_TEXT $new, \ID_TEXT $old, \ID_TEXT $table, \ID_TEXT $field, \?object $db<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_themeing.html">core_themeing</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$new</h4>
+<code>\?ID_TEXT</code><p>The new theme image (null: no new one)</p></div>
+<div class="subelement argument">
+<h4>$old</h4>
+<code>\ID_TEXT</code><p>The old theme image we might be tidying up</p></div>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>Table to check against</p></div>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>\ID_TEXT</code><p>Field in table</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>\?object</code><p>Database connection to check against (null: site database)</p></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:37+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct() :: Constructor function. Starts command parsing on the supplied command."><span class="description">Constructor function. Starts command parsing on the supplied command.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_output_html" title="output_html() :: Return the HTML rendering of the parsed command's output."><span class="description">Return the HTML rendering of the parsed command's output.</span><pre>output_html()</pre></a></li>
+<li class="method public "><a href="#method_output_xml" title="output_xml() :: Output an XML-RPC packet (hopefully) to the AJAX in the frontend."><span class="description">Output an XML-RPC packet (hopefully) to the AJAX in the frontend.</span><pre>output_xml()</pre></a></li>
+<li class="method public "><a href="#method_parse_input" title="parse_input() :: Parses input setup in constructor, and creates a parse tree."><span class="description">Parses input setup in constructor, and creates a parse tree.</span><pre>parse_input()</pre></a></li>
+<li class="method public "><a href="#method_return_output" title="return_output() :: Returns the output for the command just parsed."><span class="description">Returns the output for the command just parsed.</span><pre>return_output()</pre></a></li>
+<li class="method public "><a href="#method_return_parse_tree" title="return_parse_tree() :: Returns the parse tree for the command just parsed."><span class="description">Returns the parse tree for the command just parsed.</span><pre>return_parse_tree()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__array_to_html" title="_array_to_html() :: Convert an array to Tempcode for display."><span class="description">Convert an array to Tempcode for display.</span><pre>_array_to_html()</pre></a></li>
+<li class="method protected "><a href="#method__array_to_text" title="_array_to_text() :: Convert an array to text for display."><span class="description">Convert an array to text for display.</span><pre>_array_to_text()</pre></a></li>
+<li class="method protected "><a href="#method__check_is_redirection" title="_check_is_redirection() :: Is the current block a valid redirection instruction?"><span class="description">Is the current block a valid redirection instruction?</span><pre>_check_is_redirection()</pre></a></li>
+<li class="method protected "><a href="#method__combine_streams" title="_combine_streams() :: Combine two streams regardless of their format."><span class="description">Combine two streams regardless of their format.</span><pre>_combine_streams()</pre></a></li>
+<li class="method protected "><a href="#method__do_indentation" title="_do_indentation() :: Return a specified number of tabs."><span class="description">Return a specified number of tabs.</span><pre>_do_indentation()</pre></a></li>
+<li class="method protected "><a href="#method__extract_command" title="_extract_command() :: Extract the command name from the input."><span class="description">Extract the command name from the input.</span><pre>_extract_command()</pre></a></li>
+<li class="method protected "><a href="#method__extract_extras" title="_extract_extras() :: Extract extra tokens from the input."><span class="description">Extract extra tokens from the input.</span><pre>_extract_extras()</pre></a></li>
+<li class="method protected "><a href="#method__extract_options" title="_extract_options() :: Extract options (switches) from the input."><span class="description">Extract options (switches) from the input.</span><pre>_extract_options()</pre></a></li>
+<li class="method protected "><a href="#method__extract_parameters" title="_extract_parameters() :: Extract parameters from the input."><span class="description">Extract parameters from the input.</span><pre>_extract_parameters()</pre></a></li>
+<li class="method protected "><a href="#method__find_script_file" title="_find_script_file() :: Find a script file."><span class="description">Find a script file.</span><pre>_find_script_file()</pre></a></li>
+<li class="method protected "><a href="#method__handle_php_command" title="_handle_php_command() :: Handle a PHP command by executing it, dealing with variables from the class."><span class="description">Handle a PHP command by executing it, dealing with variables from the class.</span><pre>_handle_php_command()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_current_input" title="$current_input() :: "><span class="description"></span><pre>$current_input</pre></a></li>
+<li class="property public "><a href="#property_fs" title="$fs() :: "><span class="description"></span><pre>$fs</pre></a></li>
+<li class="property public "><a href="#property_input_parameters" title="$input_parameters() :: "><span class="description"></span><pre>$input_parameters</pre></a></li>
+<li class="property public "><a href="#property_output" title="$output() :: "><span class="description"></span><pre>$output</pre></a></li>
+<li class="property public "><a href="#property_parse_runtime" title="$parse_runtime() :: "><span class="description"></span><pre>$parse_runtime</pre></a></li>
+<li class="property public "><a href="#property_parsed_input" title="$parsed_input() :: "><span class="description"></span><pre>$parsed_input</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Virtual_shell"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Virtual_shell.html">Virtual_shell</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Commandr.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct " data-toggle="collapse" data-target=".method___construct .collapse" title="public">
+<h2>Constructor function. Starts command parsing on the supplied command.</h2>
+<pre>__construct(string $inputted_command, \?array $prior_output<code> = null</code>, \?array $parameters<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$inputted_command</h4>
+<code>string</code><p>The inputted command, unparsed</p></div>
+<div class="subelement argument">
+<h4>$prior_output</h4>
+<code>\?array</code><p>An array of prior output to be prepended (null: none)</p></div>
+<div class="subelement argument">
+<h4>$parameters</h4>
+<code>\?array</code><p>An array of prior parameters (null: none)</p></div>
+</div></div>
+</div>
+<a id="method_output_html"></a><div class="element clickable method public method_output_html " data-toggle="collapse" data-target=".method_output_html .collapse" title="public">
+<h2>Return the HTML rendering of the parsed command's output.</h2>
+<pre>output_html(boolean $blank_ok<code> = false</code>) : \~Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$blank_ok</h4>
+<code>boolean</code><p>Whether it is okay to have blank output</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~Tempcode</code>The HTML (false: error)</div>
+</div></div>
+</div>
+<a id="method_output_xml"></a><div class="element clickable method public method_output_xml " data-toggle="collapse" data-target=".method_output_xml .collapse" title="public">
+<h2>Output an XML-RPC packet (hopefully) to the AJAX in the frontend.</h2>
+<pre>output_xml() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_parse_input"></a><div class="element clickable method public method_parse_input " data-toggle="collapse" data-target=".method_parse_input .collapse" title="public">
+<h2>Parses input setup in constructor, and creates a parse tree.</h2>
+<pre>parse_input() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_return_output"></a><div class="element clickable method public method_return_output " data-toggle="collapse" data-target=".method_return_output .collapse" title="public">
+<h2>Returns the output for the command just parsed.</h2>
+<pre>return_output() : \~array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~array</code>The output (false: failure)</div>
+</div></div>
+</div>
+<a id="method_return_parse_tree"></a><div class="element clickable method public method_return_parse_tree " data-toggle="collapse" data-target=".method_return_parse_tree .collapse" title="public">
+<h2>Returns the parse tree for the command just parsed.</h2>
+<pre>return_parse_tree() : \~array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~array</code>The parse tree (false: failure)</div>
+</div></div>
+</div>
+<a id="method__array_to_html"></a><div class="element clickable method protected method__array_to_html " data-toggle="collapse" data-target=".method__array_to_html .collapse" title="protected">
+<h2>Convert an array to Tempcode for display.</h2>
+<pre>_array_to_html(array $array) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code><p>Array to display</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode for array</div>
+</div></div>
+</div>
+<a id="method__array_to_text"></a><div class="element clickable method protected method__array_to_text " data-toggle="collapse" data-target=".method__array_to_text .collapse" title="protected">
+<h2>Convert an array to text for display.</h2>
+<pre>_array_to_text(array $array, integer $indentation<code> = 0</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code><p>Array to display</p></div>
+<div class="subelement argument">
+<h4>$indentation</h4>
+<code>integer</code><p>Global indentation</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Text representation of array</div>
+</div></div>
+</div>
+<a id="method__check_is_redirection"></a><div class="element clickable method protected method__check_is_redirection " data-toggle="collapse" data-target=".method__check_is_redirection .collapse" title="protected">
+<h2>Is the current block a valid redirection instruction?</h2>
+<pre>_check_is_redirection() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Redirection instruction?</div>
+</div></div>
+</div>
+<a id="method__combine_streams"></a><div class="element clickable method protected method__combine_streams " data-toggle="collapse" data-target=".method__combine_streams .collapse" title="protected">
+<h2>Combine two streams regardless of their format.</h2>
+<pre>_combine_streams(array $stream1, array $stream2) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$stream1</h4>
+<code>array</code><p>Stream 1</p></div>
+<div class="subelement argument">
+<h4>$stream2</h4>
+<code>array</code><p>Stream 2</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Combined streams</div>
+</div></div>
+</div>
+<a id="method__do_indentation"></a><div class="element clickable method protected method__do_indentation " data-toggle="collapse" data-target=".method__do_indentation .collapse" title="protected">
+<h2>Return a specified number of tabs.</h2>
+<pre>_do_indentation(integer $indentation) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$indentation</h4>
+<code>integer</code><p>Number of tabs to return</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Tabs</div>
+</div></div>
+</div>
+<a id="method__extract_command"></a><div class="element clickable method protected method__extract_command " data-toggle="collapse" data-target=".method__extract_command .collapse" title="protected">
+<h2>Extract the command name from the input.</h2>
+<pre>_extract_command() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method__extract_extras"></a><div class="element clickable method protected method__extract_extras " data-toggle="collapse" data-target=".method__extract_extras .collapse" title="protected">
+<h2>Extract extra tokens from the input.</h2>
+<pre>_extract_extras() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method__extract_options"></a><div class="element clickable method protected method__extract_options " data-toggle="collapse" data-target=".method__extract_options .collapse" title="protected">
+<h2>Extract options (switches) from the input.</h2>
+<pre>_extract_options() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method__extract_parameters"></a><div class="element clickable method protected method__extract_parameters " data-toggle="collapse" data-target=".method__extract_parameters .collapse" title="protected">
+<h2>Extract parameters from the input.</h2>
+<pre>_extract_parameters() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method__find_script_file"></a><div class="element clickable method protected method__find_script_file " data-toggle="collapse" data-target=".method__find_script_file .collapse" title="protected">
+<h2>Find a script file.</h2>
+<pre>_find_script_file(string $script_name, \?string $dir<code> = null</code>) : \~string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$script_name</h4>
+<code>string</code><p>Script name</p></div>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\?string</code><p>Directory (null: Commandr module data dir)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~string</code>Path or failure (false: failure)</div>
+</div></div>
+</div>
+<a id="method__handle_php_command"></a><div class="element clickable method protected method__handle_php_command " data-toggle="collapse" data-target=".method__handle_php_command .collapse" title="protected">
+<h2>Handle a PHP command by executing it, dealing with variables from the class.</h2>
+<pre>_handle_php_command() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_current_input"> </a><div class="element clickable property public property_current_input" data-toggle="collapse" data-target=".property_current_input .collapse" title="public">
+<h2>$current_input</h2>
+<pre>$current_input </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_fs"> </a><div class="element clickable property public property_fs" data-toggle="collapse" data-target=".property_fs .collapse" title="public">
+<h2>$fs</h2>
+<pre>$fs </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_input_parameters"> </a><div class="element clickable property public property_input_parameters" data-toggle="collapse" data-target=".property_input_parameters .collapse" title="public">
+<h2>$input_parameters</h2>
+<pre>$input_parameters </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_output"> </a><div class="element clickable property public property_output" data-toggle="collapse" data-target=".property_output .collapse" title="public">
+<h2>$output</h2>
+<pre>$output </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_parse_runtime"> </a><div class="element clickable property public property_parse_runtime" data-toggle="collapse" data-target=".property_parse_runtime .collapse" title="public">
+<h2>$parse_runtime</h2>
+<pre>$parse_runtime </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_parsed_input"> </a><div class="element clickable property public property_parsed_input" data-toggle="collapse" data-target=".property_parsed_input .collapse" title="public">
+<h2>$parsed_input</h2>
+<pre>$parsed_input </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:50+01:00.<br></footer></div>
+</div>
+</body>
+</html>

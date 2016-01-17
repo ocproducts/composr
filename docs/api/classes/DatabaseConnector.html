@@ -1,0 +1,961 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct() :: Construct a database driver from connection parameters."><span class="description">Construct a database driver from connection parameters.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method__query" title="_query() :: This function is a very basic query executor. It shouldn't usually be used by you, as there are specialised abstracted versions available."><span class="description">This function is a very basic query executor. It shouldn't usually be used by you, as there are specialised abstracted versions available.</span><pre>_query()</pre></a></li>
+<li class="method public "><a href="#method_add_table_field" title="add_table_field() :: Adds a field to an existing table."><span class="description">Adds a field to an existing table.</span><pre>add_table_field()</pre></a></li>
+<li class="method public "><a href="#method_alter_table_field" title="alter_table_field() :: Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability"><span class="description">Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability</span><pre>alter_table_field()</pre></a></li>
+<li class="method public "><a href="#method_change_primary_key" title="change_primary_key() :: Change the primary key of a table."><span class="description">Change the primary key of a table.</span><pre>change_primary_key()</pre></a></li>
+<li class="method public "><a href="#method_create_index" title="create_index() :: Add an index to a table without disturbing the contents, after the table has been created."><span class="description">Add an index to a table without disturbing the contents, after the table has been created.</span><pre>create_index()</pre></a></li>
+<li class="method public "><a href="#method_create_table" title="create_table() :: Create a table with the given name and the given array of field name to type mappings."><span class="description">Create a table with the given name and the given array of field name to type mappings.</span><pre>create_table()</pre></a></li>
+<li class="method public "><a href="#method_delete_index_if_exists" title="delete_index_if_exists() :: Delete an index from a table."><span class="description">Delete an index from a table.</span><pre>delete_index_if_exists()</pre></a></li>
+<li class="method public "><a href="#method_delete_table_field" title="delete_table_field() :: Delete the specified field from the specified table."><span class="description">Delete the specified field from the specified table.</span><pre>delete_table_field()</pre></a></li>
+<li class="method public "><a href="#method_drop_table_if_exists" title="drop_table_if_exists() :: Drop the given table, or if it doesn't exist, silently return."><span class="description">Drop the given table, or if it doesn't exist, silently return.</span><pre>drop_table_if_exists()</pre></a></li>
+<li class="method public "><a href="#method_get_table_prefix" title="get_table_prefix() :: Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'."><span class="description">Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'.</span><pre>get_table_prefix()</pre></a></li>
+<li class="method public "><a href="#method_initialise_filesystem_db" title="initialise_filesystem_db() :: Initialise a filesystem DB that we can use for caching."><span class="description">Initialise a filesystem DB that we can use for caching.</span><pre>initialise_filesystem_db()</pre></a></li>
+<li class="method public "><a href="#method_promote_text_field_to_comcode" title="promote_text_field_to_comcode() :: If a text field has picked up Comcode support, we will need to run this."><span class="description">If a text field has picked up Comcode support, we will need to run this.</span><pre>promote_text_field_to_comcode()</pre></a></li>
+<li class="method public "><a href="#method_query" title="query() :: This function is a raw query executor. It shouldn't usually be used unless you need to write SQL involving 'OR' statements or other complexities. There are abstracted versions available which you probably want instead (mainly, query_select)."><span class="description">This function is a raw query executor. It shouldn't usually be used unless you need to write SQL involving 'OR' statements or other complexities. There are abstracted versions available which you probably want instead (mainly, query_select).</span><pre>query()</pre></a></li>
+<li class="method public "><a href="#method_query_delete" title="query_delete() :: Deletes rows from the specified table, that match the specified conditions (if any). It may be limited to a row range (it is likely, only a maximum, of 1, will be used, if any kind of range at all)."><span class="description">Deletes rows from the specified table, that match the specified conditions (if any). It may be limited to a row range (it is likely, only a maximum, of 1, will be used, if any kind of range at all).</span><pre>query_delete()</pre></a></li>
+<li class="method public "><a href="#method_query_insert" title="query_insert() :: Insert a row."><span class="description">Insert a row.</span><pre>query_insert()</pre></a></li>
+<li class="method public "><a href="#method_query_parameterised" title="query_parameterised() :: Do a named-parameter query, like &quot;SELECT * FROM foo WHERE a='{value}';&quot; with array('value' =&gt; 'b')."><span class="description">Do a named-parameter query, like "SELECT * FROM foo WHERE a='{value}';" with array('value' =&gt; 'b').</span><pre>query_parameterised()</pre></a></li>
+<li class="method public "><a href="#method_query_select" title="query_select() :: Get the database rows found matching the specified parameters. Unlike 'query', it doesn't take raw SQL -- it assembles SQL based the parameters requested."><span class="description">Get the database rows found matching the specified parameters. Unlike 'query', it doesn't take raw SQL -- it assembles SQL based the parameters requested.</span><pre>query_select()</pre></a></li>
+<li class="method public "><a href="#method_query_select_value" title="query_select_value() :: Get the specified value from the database. This is the specified value of the first row returned. A fatal error is produced if there is no matching row."><span class="description">Get the specified value from the database. This is the specified value of the first row returned. A fatal error is produced if there is no matching row.</span><pre>query_select_value()</pre></a></li>
+<li class="method public "><a href="#method_query_select_value_if_there" title="query_select_value_if_there() :: Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present."><span class="description">Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present.</span><pre>query_select_value_if_there()</pre></a></li>
+<li class="method public "><a href="#method_query_update" title="query_update() :: Update (edit) a row in the database."><span class="description">Update (edit) a row in the database.</span><pre>query_update()</pre></a></li>
+<li class="method public "><a href="#method_query_value_if_there" title="query_value_if_there() :: This function is a variant of query_select_value_if_there, by the fact that it only accepts a complete (and perfect) SQL query, instead of assembling one itself from the specified parameters."><span class="description">This function is a variant of query_select_value_if_there, by the fact that it only accepts a complete (and perfect) SQL query, instead of assembling one itself from the specified parameters.</span><pre>query_value_if_there()</pre></a></li>
+<li class="method public "><a href="#method_refresh_field_definition" title="refresh_field_definition() :: If we've changed what $type is stored as, this function will need to be called to change the typing in the DB."><span class="description">If we've changed what $type is stored as, this function will need to be called to change the typing in the DB.</span><pre>refresh_field_definition()</pre></a></li>
+<li class="method public "><a href="#method_rename_table" title="rename_table() :: Rename the given table."><span class="description">Rename the given table.</span><pre>rename_table()</pre></a></li>
+<li class="method public "><a href="#method_table_exists" title="table_exists() :: Check if a table exists."><span class="description">Check if a table exists.</span><pre>table_exists()</pre></a></li>
+<li class="method public "><a href="#method_table_is_locked" title="table_is_locked() :: Find if a table is locked for more than 5 seconds. Only works with MySQL."><span class="description">Find if a table is locked for more than 5 seconds. Only works with MySQL.</span><pre>table_is_locked()</pre></a></li>
+<li class="method public "><a href="#method_translate_field_ref" title="translate_field_ref() :: Convert a field name of type SHORT/LONG_TRANS[__COMCODE] into something we may use directly in our SQL."><span class="description">Convert a field name of type SHORT/LONG_TRANS[__COMCODE] into something we may use directly in our SQL.</span><pre>translate_field_ref()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__automatic_lang_fields" title="_automatic_lang_fields() :: Work out $lang_fields from analysing the table, if needed."><span class="description">Work out $lang_fields from analysing the table, if needed.</span><pre>_automatic_lang_fields()</pre></a></li>
+<li class="method protected "><a href="#method__get_where_expand" title="_get_where_expand() :: Create a SELECT query from some abstract data."><span class="description">Create a SELECT query from some abstract data.</span><pre>_get_where_expand()</pre></a></li>
+<li class="method protected "><a href="#method__query_select_value" title="_query_select_value() :: Extract the first of the first of the list of maps."><span class="description">Extract the first of the first of the list of maps.</span><pre>_query_select_value()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_connection_read" title="$connection_read() :: "><span class="description"></span><pre>$connection_read</pre></a></li>
+<li class="property public "><a href="#property_connection_write" title="$connection_write() :: "><span class="description"></span><pre>$connection_write</pre></a></li>
+<li class="property public "><a href="#property_dedupe_mode" title="$dedupe_mode() :: "><span class="description"></span><pre>$dedupe_mode</pre></a></li>
+<li class="property public "><a href="#property_static_ob" title="$static_ob() :: "><span class="description"></span><pre>$static_ob</pre></a></li>
+<li class="property public "><a href="#property_table_exists_cache" title="$table_exists_cache() :: "><span class="description"></span><pre>$table_exists_cache</pre></a></li>
+<li class="property public "><a href="#property_table_prefix" title="$table_prefix() :: "><span class="description"></span><pre>$table_prefix</pre></a></li>
+<li class="property public "><a href="#property_text_lookup_cache" title="$text_lookup_cache() :: "><span class="description"></span><pre>$text_lookup_cache</pre></a></li>
+<li class="property public "><a href="#property_text_lookup_original_cache" title="$text_lookup_original_cache() :: "><span class="description"></span><pre>$text_lookup_original_cache</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\DatabaseConnector"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/DatabaseConnector.html">DatabaseConnector</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Database handling.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core.html">core</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct " data-toggle="collapse" data-target=".method___construct .collapse" title="public">
+<h2>Construct a database driver from connection parameters.</h2>
+<pre>__construct(string $db_name, string $db_host, string $db_user, string $db_password, string $table_prefix, boolean $fail_ok<code> = false</code>, \?object $static<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db_name</h4>
+<code>string</code><p>The database name</p></div>
+<div class="subelement argument">
+<h4>$db_host</h4>
+<code>string</code><p>The database server</p></div>
+<div class="subelement argument">
+<h4>$db_user</h4>
+<code>string</code><p>The connection username</p></div>
+<div class="subelement argument">
+<h4>$db_password</h4>
+<code>string</code><p>The connection password</p></div>
+<div class="subelement argument">
+<h4>$table_prefix</h4>
+<code>string</code><p>The table prefix</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to on error echo an error and return with a NULL, rather than giving a critical error</p></div>
+<div class="subelement argument">
+<h4>$static</h4>
+<code>\?object</code><p>Static call object (null: use global static call object)</p></div>
+</div></div>
+</div>
+<a id="method__query"></a><div class="element clickable method public method__query " data-toggle="collapse" data-target=".method__query .collapse" title="public">
+<h2>This function is a very basic query executor. It shouldn't usually be used by you, as there are specialised abstracted versions available.</h2>
+<pre>_query(string $query, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>, boolean $get_insert_id<code> = false</code>, \?array $lang_fields<code> = null</code>, string $field_prefix<code> = ''</code>, boolean $save_as_volatile<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The complete SQL query</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to output an error on failure</p></div>
+<div class="subelement argument">
+<h4>$get_insert_id</h4>
+<code>boolean</code><p>Whether to get an insert ID</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<div class="subelement argument">
+<h4>$field_prefix</h4>
+<code>string</code><p>All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no result set) (empty array: empty result set)</div>
+</div></div>
+</div>
+<a id="method_add_table_field"></a><div class="element clickable method public method_add_table_field " data-toggle="collapse" data-target=".method_add_table_field .collapse" title="public">
+<h2>Adds a field to an existing table.</h2>
+<pre>add_table_field(\ID_TEXT $table_name, \ID_TEXT $name, \ID_TEXT $_type, \?mixed $default<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$_type</h4>
+<code>\ID_TEXT</code><p>The field type</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?mixed</code><p>The default value (null: no default)</p></div>
+</div></div>
+</div>
+<a id="method_alter_table_field"></a><div class="element clickable method public method_alter_table_field " data-toggle="collapse" data-target=".method_alter_table_field .collapse" title="public">
+<h2>Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability</h2>
+<pre>alter_table_field(\ID_TEXT $table_name, \ID_TEXT $name, \ID_TEXT $_type, \?ID_TEXT $new_name<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$_type</h4>
+<code>\ID_TEXT</code><p>The new field type</p></div>
+<div class="subelement argument">
+<h4>$new_name</h4>
+<code>\?ID_TEXT</code><p>The new field name (null: leave name)</p></div>
+</div></div>
+</div>
+<a id="method_change_primary_key"></a><div class="element clickable method public method_change_primary_key " data-toggle="collapse" data-target=".method_change_primary_key .collapse" title="public">
+<h2>Change the primary key of a table.</h2>
+<pre>change_primary_key(\ID_TEXT $table_name, array $new_key) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The name of the table to create the index on</p></div>
+<div class="subelement argument">
+<h4>$new_key</h4>
+<code>array</code><p>A list of fields to put in the new key</p></div>
+</div></div>
+</div>
+<a id="method_create_index"></a><div class="element clickable method public method_create_index " data-toggle="collapse" data-target=".method_create_index .collapse" title="public">
+<h2>Add an index to a table without disturbing the contents, after the table has been created.</h2>
+<pre>create_index(\ID_TEXT $table_name, \ID_TEXT $index_name, array $fields, \ID_TEXT $unique_key_field<code> = 'id'</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$index_name</h4>
+<code>\ID_TEXT</code><p>The index name</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>The fields</p></div>
+<div class="subelement argument">
+<h4>$unique_key_field</h4>
+<code>\ID_TEXT</code><p>The name of the unique key field for the table</p></div>
+</div></div>
+</div>
+<a id="method_create_table"></a><div class="element clickable method public method_create_table " data-toggle="collapse" data-target=".method_create_table .collapse" title="public">
+<h2>Create a table with the given name and the given array of field name to type mappings.</h2>
+<pre>create_table(\ID_TEXT $table_name, array $fields, boolean $skip_size_check<code> = false</code>, boolean $skip_null_check<code> = false</code>, boolean $save_bytes<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If a field type starts '*', then it is part of that field's key. If it starts '?', then it is an optional field.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>The fields</p></div>
+<div class="subelement argument">
+<h4>$skip_size_check</h4>
+<code>boolean</code><p>Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)</p></div>
+<div class="subelement argument">
+<h4>$skip_null_check</h4>
+<code>boolean</code><p>Whether to skip the check for NULL string fields</p></div>
+<div class="subelement argument">
+<h4>$save_bytes</h4>
+<code>boolean</code><p>Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue</p></div>
+</div></div>
+</div>
+<a id="method_delete_index_if_exists"></a><div class="element clickable method public method_delete_index_if_exists " data-toggle="collapse" data-target=".method_delete_index_if_exists .collapse" title="public">
+<h2>Delete an index from a table.</h2>
+<pre>delete_index_if_exists(\ID_TEXT $table_name, \ID_TEXT $index_name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$index_name</h4>
+<code>\ID_TEXT</code><p>The index name</p></div>
+</div></div>
+</div>
+<a id="method_delete_table_field"></a><div class="element clickable method public method_delete_table_field " data-toggle="collapse" data-target=".method_delete_table_field .collapse" title="public">
+<h2>Delete the specified field from the specified table.</h2>
+<pre>delete_table_field(\ID_TEXT $table_name, \ID_TEXT $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+</div></div>
+</div>
+<a id="method_drop_table_if_exists"></a><div class="element clickable method public method_drop_table_if_exists " data-toggle="collapse" data-target=".method_drop_table_if_exists .collapse" title="public">
+<h2>Drop the given table, or if it doesn't exist, silently return.</h2>
+<pre>drop_table_if_exists(\ID_TEXT $table) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+</div></div>
+</div>
+<a id="method_get_table_prefix"></a><div class="element clickable method public method_get_table_prefix " data-toggle="collapse" data-target=".method_get_table_prefix .collapse" title="public">
+<h2>Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'.</h2>
+<pre>get_table_prefix() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The table prefix</div>
+</div></div>
+</div>
+<a id="method_initialise_filesystem_db"></a><div class="element clickable method public method_initialise_filesystem_db " data-toggle="collapse" data-target=".method_initialise_filesystem_db .collapse" title="public">
+<h2>Initialise a filesystem DB that we can use for caching.</h2>
+<pre>initialise_filesystem_db() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_promote_text_field_to_comcode"></a><div class="element clickable method public method_promote_text_field_to_comcode " data-toggle="collapse" data-target=".method_promote_text_field_to_comcode .collapse" title="public">
+<h2>If a text field has picked up Comcode support, we will need to run this.</h2>
+<pre>promote_text_field_to_comcode(\ID_TEXT $table_name, \ID_TEXT $name, \ID_TEXT $key<code> = 'id'</code>, integer $level<code> = 2</code>, boolean $in_assembly<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>set</th>
+<td>1 2 3 4</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$key</h4>
+<code>\ID_TEXT</code><p>The tables key field name</p></div>
+<div class="subelement argument">
+<h4>$level</h4>
+<code>integer</code><p>The translation level to use</p></div>
+<div class="subelement argument">
+<h4>$in_assembly</h4>
+<code>boolean</code><p>Whether our data is already stored in Tempcode assembly format</p></div>
+</div></div>
+</div>
+<a id="method_query"></a><div class="element clickable method public method_query " data-toggle="collapse" data-target=".method_query .collapse" title="public">
+<h2>This function is a raw query executor. It shouldn't usually be used unless you need to write SQL involving 'OR' statements or other complexities. There are abstracted versions available which you probably want instead (mainly, query_select).</h2>
+<pre>query(string $query, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>, boolean $skip_safety_check<code> = false</code>, \?array $lang_fields<code> = null</code>, string $field_prefix<code> = ''</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The complete SQL query</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to output an error on failure</p></div>
+<div class="subelement argument">
+<h4>$skip_safety_check</h4>
+<code>boolean</code><p>Whether to skip the query safety check</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<div class="subelement argument">
+<h4>$field_prefix</h4>
+<code>string</code><p>All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no result set) (empty array: empty result set)</div>
+</div></div>
+</div>
+<a id="method_query_delete"></a><div class="element clickable method public method_query_delete " data-toggle="collapse" data-target=".method_query_delete .collapse" title="public">
+<h2>Deletes rows from the specified table, that match the specified conditions (if any). It may be limited to a row range (it is likely, only a maximum, of 1, will be used, if any kind of range at all).</h2>
+<pre>query_delete(string $table, \?array $where_map<code> = null</code>, string $end<code> = ''</code>, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end of the statement</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to delete (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The starting row to delete (null: no specific start)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+</div></div>
+</div>
+<a id="method_query_insert"></a><div class="element clickable method public method_query_insert " data-toggle="collapse" data-target=".method_query_insert .collapse" title="public">
+<h2>Insert a row.</h2>
+<pre>query_insert(string $table, array $map, boolean $ret<code> = false</code>, boolean $fail_ok<code> = false</code>, boolean $save_as_volatile<code> = false</code>) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$map</h4>
+<code>array</code><p>The insertion map</p></div>
+<div class="subelement argument">
+<h4>$ret</h4>
+<code>boolean</code><p>Whether to return the auto-insert-id</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The ID of the new row</div>
+</div></div>
+</div>
+<a id="method_query_parameterised"></a><div class="element clickable method public method_query_parameterised " data-toggle="collapse" data-target=".method_query_parameterised .collapse" title="public">
+<h2>Do a named-parameter query, like "SELECT * FROM foo WHERE a='{value}';" with array('value' =&gt; 'b').</h2>
+<pre>query_parameterised(string $query, array $parameters, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>, boolean $skip_safety_check<code> = false</code>, \?array $lang_fields<code> = null</code>, string $field_prefix<code> = ''</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Assumes nothing looking like {example} is in the query already.
+Also supports {prefix} for encoding the table prefix.
+Lots of programmers like to do queries like this as it reduces the chance of accidentally forgetting to escape a parameter inserted directly/manually within a longer query.
+Usually in Composr we use APIs like query_select, which avoids the need for SQL all-together, but this doesn't work for all patterns of query.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The complete SQL query</p></div>
+<div class="subelement argument">
+<h4>$parameters</h4>
+<code>array</code><p>The query parameters (a map)</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to output an error on failure</p></div>
+<div class="subelement argument">
+<h4>$skip_safety_check</h4>
+<code>boolean</code><p>Whether to skip the query safety check</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<div class="subelement argument">
+<h4>$field_prefix</h4>
+<code>string</code><p>All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no result set) (empty array: empty result set)</div>
+</div></div>
+</div>
+<a id="method_query_select"></a><div class="element clickable method public method_query_select " data-toggle="collapse" data-target=".method_query_select .collapse" title="public">
+<h2>Get the database rows found matching the specified parameters. Unlike 'query', it doesn't take raw SQL -- it assembles SQL based the parameters requested.</h2>
+<pre>query_select(string $table, \?array $select<code> = null</code>, \?array $where_map<code> = null</code>, string $end<code> = ''</code>, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>, \?array $lang_fields<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Only use this if you're where condition is a series of AND clauses doing simple property comparisons.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$select</h4>
+<code>\?array</code><p>The SELECT map (null: all fields)</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end of the SQL query</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to select (null: get all)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The starting row to select (null: start at first)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The results (empty array: empty result set)</div>
+</div></div>
+</div>
+<a id="method_query_select_value"></a><div class="element clickable method public method_query_select_value " data-toggle="collapse" data-target=".method_query_select_value .collapse" title="public">
+<h2>Get the specified value from the database. This is the specified value of the first row returned. A fatal error is produced if there is no matching row.</h2>
+<pre>query_select_value(string $table, string $selected_value, \?array $where_map<code> = null</code>, string $end<code> = ''</code>, boolean $fail_ok<code> = false</code>, \?array $lang_fields<code> = null</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$selected_value</h4>
+<code>string</code><p>The field to select</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no where conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The first value of the first row returned</div>
+</div></div>
+</div>
+<a id="method_query_select_value_if_there"></a><div class="element clickable method public method_query_select_value_if_there " data-toggle="collapse" data-target=".method_query_select_value_if_there .collapse" title="public">
+<h2>Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present.</h2>
+<pre>query_select_value_if_there(string $table, string $select, \?array $where_map<code> = null</code>, string $end<code> = ''</code>, boolean $fail_ok<code> = false</code>, \?array $lang_fields<code> = null</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$select</h4>
+<code>string</code><p>The field to select</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no where conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The first value of the first row returned (null: nothing found, or null value found)</div>
+</div></div>
+</div>
+<a id="method_query_update"></a><div class="element clickable method public method_query_update " data-toggle="collapse" data-target=".method_query_update .collapse" title="public">
+<h2>Update (edit) a row in the database.</h2>
+<pre>query_update(string $table, array $update_map, \?array $where_map<code> = null</code>, string $end<code> = ''</code>, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $num_touched<code> = false</code>, boolean $fail_ok<code> = false</code>) : \?integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$update_map</h4>
+<code>array</code><p>The UPDATE map</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end of the statement</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to update (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The starting row to update (null: no specific start)</p></div>
+<div class="subelement argument">
+<h4>$num_touched</h4>
+<code>boolean</code><p>Whether to get the number of touched rows. WARNING: Do not use in core Composr code as it does not work on all database drivers</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?integer</code>The number of touched records (null: hasn't been asked / error)</div>
+</div></div>
+</div>
+<a id="method_query_value_if_there"></a><div class="element clickable method public method_query_value_if_there " data-toggle="collapse" data-target=".method_query_value_if_there .collapse" title="public">
+<h2>This function is a variant of query_select_value_if_there, by the fact that it only accepts a complete (and perfect) SQL query, instead of assembling one itself from the specified parameters.</h2>
+<pre>query_value_if_there(string $query, boolean $fail_ok<code> = false</code>, boolean $skip_safety_check<code> = false</code>, \?array $lang_fields<code> = null</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The complete SQL query</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to allow failure (outputting a message instead of exiting completely)</p></div>
+<div class="subelement argument">
+<h4>$skip_safety_check</h4>
+<code>boolean</code><p>Whether to skip the query safety check</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The first value of the first row returned (null: nothing found, or null value found)</div>
+</div></div>
+</div>
+<a id="method_refresh_field_definition"></a><div class="element clickable method public method_refresh_field_definition " data-toggle="collapse" data-target=".method_refresh_field_definition .collapse" title="public">
+<h2>If we've changed what $type is stored as, this function will need to be called to change the typing in the DB.</h2>
+<pre>refresh_field_definition(\ID_TEXT $type) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The field type</p></div>
+</div></div>
+</div>
+<a id="method_rename_table"></a><div class="element clickable method public method_rename_table " data-toggle="collapse" data-target=".method_rename_table .collapse" title="public">
+<h2>Rename the given table.</h2>
+<pre>rename_table(\ID_TEXT $old, \ID_TEXT $new) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old</h4>
+<code>\ID_TEXT</code><p>The old table name</p></div>
+<div class="subelement argument">
+<h4>$new</h4>
+<code>\ID_TEXT</code><p>The new table name</p></div>
+</div></div>
+</div>
+<a id="method_table_exists"></a><div class="element clickable method public method_table_exists " data-toggle="collapse" data-target=".method_table_exists .collapse" title="public">
+<h2>Check if a table exists.</h2>
+<pre>table_exists(\ID_TEXT $tablename) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tablename</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it exists</div>
+</div></div>
+</div>
+<a id="method_table_is_locked"></a><div class="element clickable method public method_table_is_locked " data-toggle="collapse" data-target=".method_table_is_locked .collapse" title="public">
+<h2>Find if a table is locked for more than 5 seconds. Only works with MySQL.</h2>
+<pre>table_is_locked(\ID_TEXT $table) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the table is locked</div>
+</div></div>
+</div>
+<a id="method_translate_field_ref"></a><div class="element clickable method public method_translate_field_ref " data-toggle="collapse" data-target=".method_translate_field_ref .collapse" title="public">
+<h2>Convert a field name of type SHORT/LONG_TRANS[__COMCODE] into something we may use directly in our SQL.</h2>
+<pre>translate_field_ref(\ID_TEXT $field_name) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Assumes the query has separately been informed of the $lang_fields parameter (which is automatic for query_select).</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>\ID_TEXT</code><p>Language field name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>SQL field name reference</div>
+</div></div>
+</div>
+<a id="method__automatic_lang_fields"></a><div class="element clickable method protected method__automatic_lang_fields " data-toggle="collapse" data-target=".method__automatic_lang_fields .collapse" title="protected">
+<h2>Work out $lang_fields from analysing the table, if needed.</h2>
+<pre>_automatic_lang_fields(string $table, string $full_table, array $select, \?array $where_map, string $end, \?array $lang_fields) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$full_table</h4>
+<code>string</code><p>The table name, with prefix too</p></div>
+<div class="subelement argument">
+<h4>$select</h4>
+<code>array</code><p>The SELECT map</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>The WHERE map [will all be AND'd together] (null: no conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Something to tack onto the end of the SQL query</p></div>
+<div class="subelement argument">
+<h4>$lang_fields</h4>
+<code>\?array</code><p>Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)</p></div>
+</div></div>
+</div>
+<a id="method__get_where_expand"></a><div class="element clickable method protected method__get_where_expand " data-toggle="collapse" data-target=".method__get_where_expand .collapse" title="protected">
+<h2>Create a SELECT query from some abstract data.</h2>
+<pre>_get_where_expand(string $table, \?array $select_map<code> = null</code>, \?array $where_map<code> = null</code>, string $end<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>The table to select from</p></div>
+<div class="subelement argument">
+<h4>$select_map</h4>
+<code>\?array</code><p>List of field selections (null: all fields)</p></div>
+<div class="subelement argument">
+<h4>$where_map</h4>
+<code>\?array</code><p>Map of conditions to enforce (null: no conditions)</p></div>
+<div class="subelement argument">
+<h4>$end</h4>
+<code>string</code><p>Additional stuff to tack onto the query</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>SQL query</div>
+</div></div>
+</div>
+<a id="method__query_select_value"></a><div class="element clickable method protected method__query_select_value " data-toggle="collapse" data-target=".method__query_select_value .collapse" title="protected">
+<h2>Extract the first of the first of the list of maps.</h2>
+<pre>_query_select_value(array $values) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code><p>The list of maps</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The first value of the first row in the list</div>
+</div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_connection_read"> </a><div class="element clickable property public property_connection_read" data-toggle="collapse" data-target=".property_connection_read .collapse" title="public">
+<h2>$connection_read</h2>
+<pre>$connection_read </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_connection_write"> </a><div class="element clickable property public property_connection_write" data-toggle="collapse" data-target=".property_connection_write .collapse" title="public">
+<h2>$connection_write</h2>
+<pre>$connection_write </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_dedupe_mode"> </a><div class="element clickable property public property_dedupe_mode" data-toggle="collapse" data-target=".property_dedupe_mode .collapse" title="public">
+<h2>$dedupe_mode</h2>
+<pre>$dedupe_mode </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_static_ob"> </a><div class="element clickable property public property_static_ob" data-toggle="collapse" data-target=".property_static_ob .collapse" title="public">
+<h2>$static_ob</h2>
+<pre>$static_ob </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table_exists_cache"> </a><div class="element clickable property public property_table_exists_cache" data-toggle="collapse" data-target=".property_table_exists_cache .collapse" title="public">
+<h2>$table_exists_cache</h2>
+<pre>$table_exists_cache </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table_prefix"> </a><div class="element clickable property public property_table_prefix" data-toggle="collapse" data-target=".property_table_prefix .collapse" title="public">
+<h2>$table_prefix</h2>
+<pre>$table_prefix </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_text_lookup_cache"> </a><div class="element clickable property public property_text_lookup_cache" data-toggle="collapse" data-target=".property_text_lookup_cache .collapse" title="public">
+<h2>$text_lookup_cache</h2>
+<pre>$text_lookup_cache </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_text_lookup_original_cache"> </a><div class="element clickable property public property_text_lookup_original_cache" data-toggle="collapse" data-target=".property_text_lookup_original_cache .collapse" title="public">
+<h2>$text_lookup_original_cache</h2>
+<pre>$text_lookup_original_cache </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:47+01:00.<br></footer></div>
+</div>
+</body>
+</html>

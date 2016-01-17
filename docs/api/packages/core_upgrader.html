@@ -1,0 +1,643 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_upgrader.html" title="core_upgrader"><i class="icon-folder-open"></i>core_upgrader</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_automate_upgrade" title="automate_upgrade() :: Automatically go through full upgrade for current site."><span class="description">Automatically go through full upgrade for current site.</span><pre>automate_upgrade</pre></a></li>
+<li class="function  "><a href="#function_automate_upgrade__safe" title="automate_upgrade__safe() :: Automatically go through a partial upgrade for current site."><span class="description">Automatically go through a partial upgrade for current site.</span><pre>automate_upgrade__safe</pre></a></li>
+<li class="function  "><a href="#function_change_mysql_database_charset" title="change_mysql_database_charset() :: Refresh a MySQL database's character set."><span class="description">Refresh a MySQL database's character set.</span><pre>change_mysql_database_charset</pre></a></li>
+<li class="function  "><a href="#function_check_alien" title="check_alien() :: Check for alien files."><span class="description">Check for alien files.</span><pre>check_alien</pre></a></li>
+<li class="function  "><a href="#function_check_excess_perms" title="check_excess_perms() :: Find any excess permissions"><span class="description">Find any excess permissions</span><pre>check_excess_perms</pre></a></li>
+<li class="function  "><a href="#function_check_outdated__handle_overrides" title="check_outdated__handle_overrides() :: Check for out-dated files."><span class="description">Check for out-dated files.</span><pre>check_outdated__handle_overrides</pre></a></li>
+<li class="function  "><a href="#function_check_perms" title="check_perms() :: Do permission checking"><span class="description">Do permission checking</span><pre>check_perms</pre></a></li>
+<li class="function  "><a href="#function_clear_caches_1" title="clear_caches_1() :: Clear many caches."><span class="description">Clear many caches.</span><pre>clear_caches_1</pre></a></li>
+<li class="function  "><a href="#function_clear_caches_2" title="clear_caches_2() :: Clear more caches. This is intentionally done after db upgrading."><span class="description">Clear more caches. This is intentionally done after db upgrading.</span><pre>clear_caches_2</pre></a></li>
+<li class="function  "><a href="#function_cns_upgrade" title="cns_upgrade() :: Upgrade Conversr if appropriate."><span class="description">Upgrade Conversr if appropriate.</span><pre>cns_upgrade</pre></a></li>
+<li class="function  "><a href="#function_fix_mysql_database_charset" title="fix_mysql_database_charset() :: Make sure the site database has the correct character set internally. Composr already ensures the communication charset makes sense for what Composr is using, this makes sure it stores sanely too."><span class="description">Make sure the site database has the correct character set internally. Composr already ensures the communication charset makes sense for what Composr is using, this makes sure it stores sanely too.</span><pre>fix_mysql_database_charset</pre></a></li>
+<li class="function  "><a href="#function_fix_perms" title="fix_perms() :: Do permission setting"><span class="description">Do permission setting</span><pre>fix_perms</pre></a></li>
+<li class="function  "><a href="#function_fu_link" title="fu_link() :: Generate a form-based link to relay POST information to a URL."><span class="description">Generate a form-based link to relay POST information to a URL.</span><pre>fu_link</pre></a></li>
+<li class="function  "><a href="#function_fu_rename_zone" title="fu_rename_zone() :: Rename a zone in the database and move any custom pages in it."><span class="description">Rename a zone in the database and move any custom pages in it.</span><pre>fu_rename_zone</pre></a></li>
+<li class="function  "><a href="#function_get_chmod_array_2" title="get_chmod_array_2() :: Find extra directories to chmod"><span class="description">Find extra directories to chmod</span><pre>get_chmod_array_2</pre></a></li>
+<li class="function  "><a href="#function_move_modules" title="move_modules() :: Tell the user about any modules that need moving again (because the cms ones haven't moved)."><span class="description">Tell the user about any modules that need moving again (because the cms ones haven't moved).</span><pre>move_modules</pre></a></li>
+<li class="function  "><a href="#function_post_fields_relay" title="post_fields_relay() :: Get hidden form fields for relaying POST information."><span class="description">Get hidden form fields for relaying POST information.</span><pre>post_fields_relay</pre></a></li>
+<li class="function  "><a href="#function_run_integrity_check" title="run_integrity_check() :: Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function."><span class="description">Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.</span><pre>run_integrity_check</pre></a></li>
+<li class="function  "><a href="#function_up_do_footer" title="up_do_footer() :: Output the upgrader page footer."><span class="description">Output the upgrader page footer.</span><pre>up_do_footer</pre></a></li>
+<li class="function  "><a href="#function_up_do_header" title="up_do_header() :: Output the upgrader page header."><span class="description">Output the upgrader page header.</span><pre>up_do_header</pre></a></li>
+<li class="function  "><a href="#function_up_do_login" title="up_do_login() :: Output a login page."><span class="description">Output a login page.</span><pre>up_do_login</pre></a></li>
+<li class="function  "><a href="#function_upgrade_modules" title="upgrade_modules() :: Upgrade all modules."><span class="description">Upgrade all modules.</span><pre>upgrade_modules</pre></a></li>
+<li class="function  "><a href="#function_upgrade_script" title="upgrade_script() :: The upgrader.php script handler."><span class="description">The upgrader.php script handler.</span><pre>upgrade_script</pre></a></li>
+<li class="function  "><a href="#function_upgrade_sharedinstall_sites" title="upgrade_sharedinstall_sites() :: Upgrade shared installs."><span class="description">Upgrade shared installs.</span><pre>upgrade_sharedinstall_sites</pre></a></li>
+<li class="function  "><a href="#function_upgrade_theme" title="upgrade_theme() :: Upgrade a theme automatically, using hand-coded migration arrays."><span class="description">Upgrade a theme automatically, using hand-coded migration arrays.</span><pre>upgrade_theme</pre></a></li>
+<li class="function  "><a href="#function_upgrade_themes" title="upgrade_themes() :: Upgrade all themes."><span class="description">Upgrade all themes.</span><pre>upgrade_themes</pre></a></li>
+<li class="function  "><a href="#function_version_specific" title="version_specific() :: Version specific upgrading. These are things that are relatively major structural changes and therefore will get done outside the module upgrade system."><span class="description">Version specific upgrading. These are things that are relatively major structural changes and therefore will get done outside the module upgrade system.</span><pre>version_specific</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_upgrader.html">core_upgrader</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_automate_upgrade"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_automate_upgrade " data-toggle="collapse" data-target=".function_automate_upgrade .collapse" title="">
+<h2>Automatically go through full upgrade for current site.</h2>
+<pre>automate_upgrade() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_automate_upgrade__safe"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_automate_upgrade__safe " data-toggle="collapse" data-target=".function_automate_upgrade__safe .collapse" title="">
+<h2>Automatically go through a partial upgrade for current site.</h2>
+<pre>automate_upgrade__safe() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_change_mysql_database_charset"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_change_mysql_database_charset " data-toggle="collapse" data-target=".function_change_mysql_database_charset .collapse" title="">
+<h2>Refresh a MySQL database's character set.</h2>
+<pre>change_mysql_database_charset(\ID_TEXT $new_charset, object $db, boolean $reencode<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$new_charset</h4>
+<code>\ID_TEXT</code><p>Character set</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>object</code><p>Database</p></div>
+<div class="subelement argument">
+<h4>$reencode</h4>
+<code>boolean</code><p>Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation whilst leaving the disk data the same)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_alien"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_alien " data-toggle="collapse" data-target=".function_check_alien .collapse" title="">
+<h2>Check for alien files.</h2>
+<pre>check_alien(array $addon_files, array $old_files, array $files, \SHORT_TEXT $dir, \SHORT_TEXT $rela<code> = ''</code>, boolean $raw<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$addon_files</h4>
+<code>array</code><p>List of files from non-bundled addons (a map: relative file paths as keys of map)</p></div>
+<div class="subelement argument">
+<h4>$old_files</h4>
+<code>array</code><p>List of files from old version</p></div>
+<div class="subelement argument">
+<h4>$files</h4>
+<code>array</code><p>List of verbatim files</p></div>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\SHORT_TEXT</code><p>The directory we are scanning relative to</p></div>
+<div class="subelement argument">
+<h4>$rela</h4>
+<code>\SHORT_TEXT</code><p>The directory (relative) we are scanning</p></div>
+<div class="subelement argument">
+<h4>$raw</h4>
+<code>boolean</code><p>Whether to give raw output (no UI)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: HTML list of alien files, HTML list of addon files</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_excess_perms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_excess_perms " data-toggle="collapse" data-target=".function_check_excess_perms .collapse" title="">
+<h2>Find any excess permissions</h2>
+<pre>check_excess_perms(array $array, string $rel<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code><p>Permissions that DO need to be set</p></div>
+<div class="subelement argument">
+<h4>$rel</h4>
+<code>string</code><p>Where we are searching under</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Messages</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_outdated__handle_overrides"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_outdated__handle_overrides " data-toggle="collapse" data-target=".function_check_outdated__handle_overrides .collapse" title="">
+<h2>Check for out-dated files.</h2>
+<pre>check_outdated__handle_overrides(\SHORT_TEXT $dir, \SHORT_TEXT $rela, array $master_data, array $hook_files, boolean $allow_merging) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\SHORT_TEXT</code><p>The directory we are scanning relative to</p></div>
+<div class="subelement argument">
+<h4>$rela</h4>
+<code>\SHORT_TEXT</code><p>The directory (relative) we are scanning</p></div>
+<div class="subelement argument">
+<h4>$master_data</h4>
+<code>array</code><p>Unserialised data/files.dat</p></div>
+<div class="subelement argument">
+<h4>$hook_files</h4>
+<code>array</code><p>A list of the contents of our addon registry hook files</p></div>
+<div class="subelement argument">
+<h4>$allow_merging</h4>
+<code>boolean</code><p>Whether merging of CSS changes is allowed</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Tuple of various kinds of outdated/missing files</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_perms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_perms " data-toggle="collapse" data-target=".function_check_perms .collapse" title="">
+<h2>Do permission checking</h2>
+<pre>check_perms() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Output messages</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_clear_caches_1"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_clear_caches_1 " data-toggle="collapse" data-target=".function_clear_caches_1 .collapse" title="">
+<h2>Clear many caches.</h2>
+<pre>clear_caches_1() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_clear_caches_2"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_clear_caches_2 " data-toggle="collapse" data-target=".function_clear_caches_2 .collapse" title="">
+<h2>Clear more caches. This is intentionally done after db upgrading.</h2>
+<pre>clear_caches_2() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_upgrade"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_upgrade " data-toggle="collapse" data-target=".function_cns_upgrade .collapse" title="">
+<h2>Upgrade Conversr if appropriate.</h2>
+<pre>cns_upgrade() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether anything was done</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fix_mysql_database_charset"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fix_mysql_database_charset " data-toggle="collapse" data-target=".function_fix_mysql_database_charset .collapse" title="">
+<h2>Make sure the site database has the correct character set internally. Composr already ensures the communication charset makes sense for what Composr is using, this makes sure it stores sanely too.</h2>
+<pre>fix_mysql_database_charset() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fix_perms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fix_perms " data-toggle="collapse" data-target=".function_fix_perms .collapse" title="">
+<h2>Do permission setting</h2>
+<pre>fix_perms() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Output messages</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fu_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fu_link " data-toggle="collapse" data-target=".function_fu_link .collapse" title="">
+<h2>Generate a form-based link to relay POST information to a URL.</h2>
+<pre>fu_link(string $url, string $text, boolean $disabled<code> = false</code>, string $js<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>string</code><p>The URL (something like 'upgrader.php?type=cns')</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>The URL caption text</p></div>
+<div class="subelement argument">
+<h4>$disabled</h4>
+<code>boolean</code><p>Whether it is disabled</p></div>
+<div class="subelement argument">
+<h4>$js</h4>
+<code>string</code><p>Extra JavaScript</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The form-based link</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fu_rename_zone"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fu_rename_zone " data-toggle="collapse" data-target=".function_fu_rename_zone .collapse" title="">
+<h2>Rename a zone in the database and move any custom pages in it.</h2>
+<pre>fu_rename_zone(\ID_TEXT $zone, \ID_TEXT $new_zone, boolean $dont_bother_with_main_row<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The old name of the zone</p></div>
+<div class="subelement argument">
+<h4>$new_zone</h4>
+<code>\ID_TEXT</code><p>The new name of the zone</p></div>
+<div class="subelement argument">
+<h4>$dont_bother_with_main_row</h4>
+<code>boolean</code><p>Whether to assume the main zone row has already been renamed as part of a wider editing operation</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chmod_array_2"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chmod_array_2 " data-toggle="collapse" data-target=".function_get_chmod_array_2 .collapse" title="">
+<h2>Find extra directories to chmod</h2>
+<pre>get_chmod_array_2() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Extra directories to chmod</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_move_modules"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_move_modules " data-toggle="collapse" data-target=".function_move_modules .collapse" title="">
+<h2>Tell the user about any modules that need moving again (because the cms ones haven't moved).</h2>
+<pre>move_modules() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Pair: HTML list of moved files, raw list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_post_fields_relay"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_post_fields_relay " data-toggle="collapse" data-target=".function_post_fields_relay .collapse" title="">
+<h2>Get hidden form fields for relaying POST information.</h2>
+<pre>post_fields_relay() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The hidden form fields for relaying POST information.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_run_integrity_check"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_run_integrity_check " data-toggle="collapse" data-target=".function_run_integrity_check .collapse" title="">
+<h2>Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.</h2>
+<pre>run_integrity_check(boolean $basic<code> = false</code>, boolean $allow_merging<code> = true</code>, boolean $unix_help<code> = false</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$basic</h4>
+<code>boolean</code><p>Whether to just do the minimum basic scan.</p></div>
+<div class="subelement argument">
+<h4>$allow_merging</h4>
+<code>boolean</code><p>Whether merging of CSS changes is allowed.</p></div>
+<div class="subelement argument">
+<h4>$unix_help</h4>
+<code>boolean</code><p>Whether to give some help to unix people.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Results.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_up_do_footer"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_up_do_footer " data-toggle="collapse" data-target=".function_up_do_footer .collapse" title="">
+<h2>Output the upgrader page footer.</h2>
+<pre>up_do_footer() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_up_do_header"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_up_do_header " data-toggle="collapse" data-target=".function_up_do_header .collapse" title="">
+<h2>Output the upgrader page header.</h2>
+<pre>up_do_header() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_up_do_login"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_up_do_login " data-toggle="collapse" data-target=".function_up_do_login .collapse" title="">
+<h2>Output a login page.</h2>
+<pre>up_do_login(\?string $message<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>\?string</code><p>Error message (null: none)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_upgrade_modules"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_upgrade_modules " data-toggle="collapse" data-target=".function_upgrade_modules .collapse" title="">
+<h2>Upgrade all modules.</h2>
+<pre>upgrade_modules() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>List of upgraded/installed modules/blocks</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_upgrade_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_upgrade_script " data-toggle="collapse" data-target=".function_upgrade_script .collapse" title="">
+<h2>The upgrader.php script handler.</h2>
+<pre>upgrade_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_upgrade_sharedinstall_sites"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_upgrade_sharedinstall_sites " data-toggle="collapse" data-target=".function_upgrade_sharedinstall_sites .collapse" title="">
+<h2>Upgrade shared installs.</h2>
+<pre>upgrade_sharedinstall_sites(integer $from<code> = 0</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$from</h4>
+<code>integer</code><p>Position to proceed from</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_upgrade_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_upgrade_theme " data-toggle="collapse" data-target=".function_upgrade_theme .collapse" title="">
+<h2>Upgrade a theme automatically, using hand-coded migration arrays.</h2>
+<pre>upgrade_theme(\ID_TEXT $theme, float $from_version, float $to_version, boolean $test_run<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>Theme to be upgraded</p></div>
+<div class="subelement argument">
+<h4>$from_version</h4>
+<code>float</code><p>From version</p></div>
+<div class="subelement argument">
+<h4>$to_version</h4>
+<code>float</code><p>Target version</p></div>
+<div class="subelement argument">
+<h4>$test_run</h4>
+<code>boolean</code><p>Whether executing a test run (i.e. not do anything)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: List of errors, List of successes</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_upgrade_themes"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_upgrade_themes " data-toggle="collapse" data-target=".function_upgrade_themes .collapse" title="">
+<h2>Upgrade all themes.</h2>
+<pre>upgrade_themes() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML output</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_version_specific"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_version_specific " data-toggle="collapse" data-target=".function_version_specific .collapse" title="">
+<h2>Version specific upgrading. These are things that are relatively major structural changes and therefore will get done outside the module upgrade system.</h2>
+<pre>version_specific() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_upgrader.html">core_upgrader</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether anything was done</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:38+01:00.<br></footer></div>
+</div>
+</body>
+</html>

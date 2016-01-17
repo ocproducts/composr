@@ -1,0 +1,749 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct() :: Constructor."><span class="description">Constructor.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_get_posting_form" title="get_posting_form() :: Get a form for posting."><span class="description">Get a form for posting.</span><pre>get_posting_form()</pre></a></li>
+<li class="method public "><a href="#method_inject_meta_data" title="inject_meta_data() :: Put posts count into environment."><span class="description">Put posts count into environment.</span><pre>inject_meta_data()</pre></a></li>
+<li class="method public "><a href="#method_inject_posts_for_scoring_algorithm" title="inject_posts_for_scoring_algorithm() :: Put in posts to our scoring algorithm in preparation for shooting out later."><span class="description">Put in posts to our scoring algorithm in preparation for shooting out later.</span><pre>inject_posts_for_scoring_algorithm()</pre></a></li>
+<li class="method public "><a href="#method_inject_rss_url" title="inject_rss_url() :: Put comments RSS link into environment."><span class="description">Put comments RSS link into environment.</span><pre>inject_rss_url()</pre></a></li>
+<li class="method public "><a href="#method_load_from_topic" title="load_from_topic() :: Load from a given topic ID."><span class="description">Load from a given topic ID.</span><pre>load_from_topic()</pre></a></li>
+<li class="method public "><a href="#method_render_as_comment_topic" title="render_as_comment_topic() :: Render a comment topic."><span class="description">Render a comment topic.</span><pre>render_as_comment_topic()</pre></a></li>
+<li class="method public "><a href="#method_render_posts" title="render_posts() :: Render a topic."><span class="description">Render a topic.</span><pre>render_posts()</pre></a></li>
+<li class="method public "><a href="#method_render_posts_from_topic" title="render_posts_from_topic() :: Render posts from a topic (usually tied into AJAX, to get iterative results)."><span class="description">Render posts from a topic (usually tied into AJAX, to get iterative results).</span><pre>render_posts_from_topic()</pre></a></li>
+<li class="method public "><a href="#method_set_rendering_context" title="set_rendering_context() :: Set a rendering context."><span class="description">Set a rendering context.</span><pre>set_rendering_context()</pre></a></li>
+<li class="method public "><a href="#method_set_reviews_rating_criteria" title="set_reviews_rating_criteria() :: Set the particular review criteria we'll be dealing with."><span class="description">Set the particular review criteria we'll be dealing with.</span><pre>set_reviews_rating_criteria()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__arrange_posts_in_tree" title="_arrange_posts_in_tree() :: Arrange posts underneath a post in the thread (not including the post itself)."><span class="description">Arrange posts underneath a post in the thread (not including the post itself).</span><pre>_arrange_posts_in_tree()</pre></a></li>
+<li class="method protected "><a href="#method__decide_what_to_render" title="_decide_what_to_render() :: Filter posts, deciding what to render."><span class="description">Filter posts, deciding what to render.</span><pre>_decide_what_to_render()</pre></a></li>
+<li class="method protected "><a href="#method__get_sort_order" title="_get_sort_order() :: Get the sort order."><span class="description">Get the sort order.</span><pre>_get_sort_order()</pre></a></li>
+<li class="method protected "><a href="#method__grab_at_and_above_and_remove" title="_grab_at_and_above_and_remove() :: Grab posts at or above a reference post and remove from queue."><span class="description">Grab posts at or above a reference post and remove from queue.</span><pre>_grab_at_and_above_and_remove()</pre></a></li>
+<li class="method protected "><a href="#method__grab_at_and_underneath" title="_grab_at_and_underneath() :: Grab posts at or underneath a reference post."><span class="description">Grab posts at or underneath a reference post.</span><pre>_grab_at_and_underneath()</pre></a></li>
+<li class="method protected "><a href="#method__grab_full_post_details" title="_grab_full_post_details() :: Load full details for posts (we had not done so far to preserve memory)."><span class="description">Load full details for posts (we had not done so far to preserve memory).</span><pre>_grab_full_post_details()</pre></a></li>
+<li class="method protected "><a href="#method__render_post_tree" title="_render_post_tree() :: Render posts."><span class="description">Render posts.</span><pre>_render_post_tree()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_all_posts_ordered" title="$all_posts_ordered() :: "><span class="description"></span><pre>$all_posts_ordered</pre></a></li>
+<li class="property public "><a href="#property_error" title="$error() :: "><span class="description"></span><pre>$error</pre></a></li>
+<li class="property public "><a href="#property_first_post_id" title="$first_post_id() :: "><span class="description"></span><pre>$first_post_id</pre></a></li>
+<li class="property public "><a href="#property_is_threaded" title="$is_threaded() :: "><span class="description"></span><pre>$is_threaded</pre></a></li>
+<li class="property public "><a href="#property_rendering_context" title="$rendering_context() :: "><span class="description"></span><pre>$rendering_context</pre></a></li>
+<li class="property public "><a href="#property_replied" title="$replied() :: "><span class="description"></span><pre>$replied</pre></a></li>
+<li class="property public "><a href="#property_reverse" title="$reverse() :: "><span class="description"></span><pre>$reverse</pre></a></li>
+<li class="property public "><a href="#property_reviews_rating_criteria" title="$reviews_rating_criteria() :: "><span class="description"></span><pre>$reviews_rating_criteria</pre></a></li>
+<li class="property public "><a href="#property_topic_description" title="$topic_description() :: "><span class="description"></span><pre>$topic_description</pre></a></li>
+<li class="property public "><a href="#property_topic_description_link" title="$topic_description_link() :: "><span class="description"></span><pre>$topic_description_link</pre></a></li>
+<li class="property public "><a href="#property_topic_id" title="$topic_id() :: "><span class="description"></span><pre>$topic_id</pre></a></li>
+<li class="property public "><a href="#property_topic_info" title="$topic_info() :: "><span class="description"></span><pre>$topic_info</pre></a></li>
+<li class="property public "><a href="#property_topic_title" title="$topic_title() :: "><span class="description"></span><pre>$topic_title</pre></a></li>
+<li class="property public "><a href="#property_total_posts" title="$total_posts() :: "><span class="description"></span><pre>$total_posts</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\CMS_Topic"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/CMS_Topic.html">CMS_Topic</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Manage threaded topics / comment topics.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct " data-toggle="collapse" data-target=".method___construct .collapse" title="public">
+<h2>Constructor.</h2>
+<pre>__construct() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_get_posting_form"></a><div class="element clickable method public method_get_posting_form " data-toggle="collapse" data-target=".method_get_posting_form .collapse" title="public">
+<h2>Get a form for posting.</h2>
+<pre>get_posting_form(\ID_TEXT $type, \ID_TEXT $id, boolean $allow_reviews, \Tempcode $post_url, \?string $post_warning) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The content type of what this posting will be for</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The content ID of what this posting will be for</p></div>
+<div class="subelement argument">
+<h4>$allow_reviews</h4>
+<code>boolean</code><p>Whether to accept reviews</p></div>
+<div class="subelement argument">
+<h4>$post_url</h4>
+<code>\Tempcode</code><p>URL where form submit will go</p></div>
+<div class="subelement argument">
+<h4>$post_warning</h4>
+<code>\?string</code><p>The default post to use (null: standard courtesy warning)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Posting form</div>
+</div></div>
+</div>
+<a id="method_inject_meta_data"></a><div class="element clickable method public method_inject_meta_data " data-toggle="collapse" data-target=".method_inject_meta_data .collapse" title="public">
+<h2>Put posts count into environment.</h2>
+<pre>inject_meta_data() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_inject_posts_for_scoring_algorithm"></a><div class="element clickable method public method_inject_posts_for_scoring_algorithm " data-toggle="collapse" data-target=".method_inject_posts_for_scoring_algorithm .collapse" title="public">
+<h2>Put in posts to our scoring algorithm in preparation for shooting out later.</h2>
+<pre>inject_posts_for_scoring_algorithm(array $posts) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>array</code><p>Review titles</p></div>
+</div></div>
+</div>
+<a id="method_inject_rss_url"></a><div class="element clickable method public method_inject_rss_url " data-toggle="collapse" data-target=".method_inject_rss_url .collapse" title="public">
+<h2>Put comments RSS link into environment.</h2>
+<pre>inject_rss_url(\ID_TEXT $forum, \ID_TEXT $type, \ID_TEXT $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\ID_TEXT</code><p>The forum we are working in</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The content type the comments are for</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The content ID the comments are for</p></div>
+</div></div>
+</div>
+<a id="method_load_from_topic"></a><div class="element clickable method public method_load_from_topic " data-toggle="collapse" data-target=".method_load_from_topic .collapse" title="public">
+<h2>Load from a given topic ID.</h2>
+<pre>load_from_topic(\?AUTO_LINK $topic_id, integer $num_to_show_limit, integer $start<code> = 0</code>, \?boolean $reverse<code> = null</code>, \?array $posts<code> = null</code>, boolean $load_spacer_posts_too<code> = false</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\?AUTO_LINK</code><p>Topic ID (null: none yet, set up empty structure)</p></div>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>integer</code><p>Maximum to load</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Pagination start if non-threaded</p></div>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>\?boolean</code><p>Whether to show in reverse date order (affects default search order only) (null: read config)</p></div>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>\?array</code><p>List of post IDs to load (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$load_spacer_posts_too</h4>
+<code>boolean</code><p>Whether to allow spacer posts to flow through the renderer</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success status</div>
+</div></div>
+</div>
+<a id="method_render_as_comment_topic"></a><div class="element clickable method public method_render_as_comment_topic " data-toggle="collapse" data-target=".method_render_as_comment_topic .collapse" title="public">
+<h2>Render a comment topic.</h2>
+<pre>render_as_comment_topic(\ID_TEXT $content_type, \ID_TEXT $content_id, boolean $allow_comments, boolean $invisible_if_no_comments, \?string $forum_name, \?string $post_warning, \?mixed $preloaded_comments, boolean $explicit_allow, boolean $reverse, \?MEMBER $highlight_by_member, boolean $allow_reviews, \?integer $num_to_show_limit) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>Content type to show topic for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>Content ID of content type to show topic for</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$invisible_if_no_comments</h4>
+<code>boolean</code><p>Whether the comment box will be invisible if there are not yet any comments (and you're not staff)</p></div>
+<div class="subelement argument">
+<h4>$forum_name</h4>
+<code>\?string</code><p>The name of the forum to use (null: default comment forum)</p></div>
+<div class="subelement argument">
+<h4>$post_warning</h4>
+<code>\?string</code><p>The default post to use (null: standard courtesy warning)</p></div>
+<div class="subelement argument">
+<h4>$preloaded_comments</h4>
+<code>\?mixed</code><p>The raw comment array (null: lookup). This is useful if we want to pass it through a filter</p></div>
+<div class="subelement argument">
+<h4>$explicit_allow</h4>
+<code>boolean</code><p>Whether to skip permission checks</p></div>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>boolean</code><p>Whether to reverse the posts</p></div>
+<div class="subelement argument">
+<h4>$highlight_by_member</h4>
+<code>\?MEMBER</code><p>Member to highlight the posts of (null: none)</p></div>
+<div class="subelement argument">
+<h4>$allow_reviews</h4>
+<code>boolean</code><p>Whether to allow ratings along with the comment (like reviews)</p></div>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>\?integer</code><p>Maximum to load (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for the comment topic</div>
+</div></div>
+</div>
+<a id="method_render_posts"></a><div class="element clickable method public method_render_posts " data-toggle="collapse" data-target=".method_render_posts .collapse" title="public">
+<h2>Render a topic.</h2>
+<pre>render_posts(\?integer $num_to_show_limit, integer $max_thread_depth, boolean $may_reply, \?MEMBER $highlight_by_member, array $all_individual_review_ratings, \AUTO_LINK $forum_id, \?array $topic_info, \?AUTO_LINK $parent_post_id<code> = null</code>, boolean $maybe_missing_links<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>\?integer</code><p>Number of posts to show initially (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$max_thread_depth</h4>
+<code>integer</code><p>Maximum thread depth</p></div>
+<div class="subelement argument">
+<h4>$may_reply</h4>
+<code>boolean</code><p>Whether the current user may reply to the topic (influences what buttons show)</p></div>
+<div class="subelement argument">
+<h4>$highlight_by_member</h4>
+<code>\?MEMBER</code><p>Member to highlight the posts of (null: none)</p></div>
+<div class="subelement argument">
+<h4>$all_individual_review_ratings</h4>
+<code>array</code><p>Review ratings rows</p></div>
+<div class="subelement argument">
+<h4>$forum_id</h4>
+<code>\AUTO_LINK</code><p>ID of forum this topic in in</p></div>
+<div class="subelement argument">
+<h4>$topic_info</h4>
+<code>\?array</code><p>The topic row (null: not running Conversr).</p></div>
+<div class="subelement argument">
+<h4>$parent_post_id</h4>
+<code>\?AUTO_LINK</code><p>Only show posts under here (null: show posts from root)</p></div>
+<div class="subelement argument">
+<h4>$maybe_missing_links</h4>
+<code>boolean</code><p>Whether to just render everything as flat (used when doing AJAX post loading). NOT actually used since we wrote better post-orphaning-fixing code.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Tuple: Rendered topic, serialized options to render more posts, secure hash of serialized options to prevent tampering</div>
+</div></div>
+</div>
+<a id="method_render_posts_from_topic"></a><div class="element clickable method public method_render_posts_from_topic " data-toggle="collapse" data-target=".method_render_posts_from_topic .collapse" title="public">
+<h2>Render posts from a topic (usually tied into AJAX, to get iterative results).</h2>
+<pre>render_posts_from_topic(\AUTO_LINK $topic_id, integer $num_to_show_limit, boolean $allow_comments, boolean $invisible_if_no_comments, \?string $forum_name, \?mixed $preloaded_comments, boolean $reverse, boolean $may_reply, \?MEMBER $highlight_by_member, boolean $allow_reviews, array $posts, \AUTO_LINK $parent_id) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\AUTO_LINK</code><p>The topic ID</p></div>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>integer</code><p>Maximum to load</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$invisible_if_no_comments</h4>
+<code>boolean</code><p>Whether the comment box will be invisible if there are not yet any comments (and you're not staff)</p></div>
+<div class="subelement argument">
+<h4>$forum_name</h4>
+<code>\?string</code><p>The name of the forum to use (null: default comment forum)</p></div>
+<div class="subelement argument">
+<h4>$preloaded_comments</h4>
+<code>\?mixed</code><p>The raw comment array (null: lookup). This is useful if we want to pass it through a filter</p></div>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>boolean</code><p>Whether to reverse the posts</p></div>
+<div class="subelement argument">
+<h4>$may_reply</h4>
+<code>boolean</code><p>Whether the current user may reply to the topic (influences what buttons show)</p></div>
+<div class="subelement argument">
+<h4>$highlight_by_member</h4>
+<code>\?MEMBER</code><p>Member to highlight the posts of (null: none)</p></div>
+<div class="subelement argument">
+<h4>$allow_reviews</h4>
+<code>boolean</code><p>Whether to allow ratings along with the comment (like reviews)</p></div>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>array</code><p>List of post IDs to load</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\AUTO_LINK</code><p>Parent node being loaded to</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for the comment topic</div>
+</div></div>
+</div>
+<a id="method_set_rendering_context"></a><div class="element clickable method public method_set_rendering_context " data-toggle="collapse" data-target=".method_set_rendering_context .collapse" title="public">
+<h2>Set a rendering context.</h2>
+<pre>set_rendering_context(\ID_TEXT $rendering_context) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rendering_context</h4>
+<code>\ID_TEXT</code><p>Rendering context</p></div>
+</div></div>
+</div>
+<a id="method_set_reviews_rating_criteria"></a><div class="element clickable method public method_set_reviews_rating_criteria " data-toggle="collapse" data-target=".method_set_reviews_rating_criteria .collapse" title="public">
+<h2>Set the particular review criteria we'll be dealing with.</h2>
+<pre>set_reviews_rating_criteria(array $reviews_rating_criteria) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$reviews_rating_criteria</h4>
+<code>array</code><p>Review criteria</p></div>
+</div></div>
+</div>
+<a id="method__arrange_posts_in_tree"></a><div class="element clickable method protected method__arrange_posts_in_tree " data-toggle="collapse" data-target=".method__arrange_posts_in_tree .collapse" title="protected">
+<h2>Arrange posts underneath a post in the thread (not including the post itself).</h2>
+<pre>_arrange_posts_in_tree(\?AUTO_LINK $post_id, array $posts, array $queue, integer $max_thread_depth, integer $depth<code> = 0</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\?AUTO_LINK</code><p>Reference post in thread (null: root)</p></div>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>array</code><p>Posts we will be rendering and have not arranged yet (only some of which will be underneath $post_id)</p></div>
+<div class="subelement argument">
+<h4>$queue</h4>
+<code>array</code><p>Posts we won't be rendering</p></div>
+<div class="subelement argument">
+<h4>$max_thread_depth</h4>
+<code>integer</code><p>Maximum depth to render to</p></div>
+<div class="subelement argument">
+<h4>$depth</h4>
+<code>integer</code><p>Current depth in recursion</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Array structure of rendered posts</div>
+</div></div>
+</div>
+<a id="method__decide_what_to_render"></a><div class="element clickable method protected method__decide_what_to_render " data-toggle="collapse" data-target=".method__decide_what_to_render .collapse" title="protected">
+<h2>Filter posts, deciding what to render.</h2>
+<pre>_decide_what_to_render(integer $num_to_show_limit, array $queue) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>integer</code><p>Number of posts to show initially</p></div>
+<div class="subelement argument">
+<h4>$queue</h4>
+<code>array</code><p>Posts to choose from, in preference order</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Chosen posts</div>
+</div></div>
+</div>
+<a id="method__get_sort_order"></a><div class="element clickable method protected method__get_sort_order " data-toggle="collapse" data-target=".method__get_sort_order .collapse" title="protected">
+<h2>Get the sort order.</h2>
+<pre>_get_sort_order(\?boolean $reverse) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>set</th>
+<td>relevance rating newest oldest</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>\?boolean</code><p>Whether to show in reverse date order (affects default search order only) (null: read config)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>Sort order</div>
+</div></div>
+</div>
+<a id="method__grab_at_and_above_and_remove"></a><div class="element clickable method protected method__grab_at_and_above_and_remove " data-toggle="collapse" data-target=".method__grab_at_and_above_and_remove .collapse" title="protected">
+<h2>Grab posts at or above a reference post and remove from queue.</h2>
+<pre>_grab_at_and_above_and_remove(\AUTO_LINK $post_id, array $queue, array $posts) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\AUTO_LINK</code><p>Reference post in thread</p></div>
+<div class="subelement argument">
+<h4>$queue</h4>
+<code>array</code><p>Posts to choose from (the queue)</p></div>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>array</code><p>Posts picked out (passed by reference)</p></div>
+</div></div>
+</div>
+<a id="method__grab_at_and_underneath"></a><div class="element clickable method protected method__grab_at_and_underneath " data-toggle="collapse" data-target=".method__grab_at_and_underneath .collapse" title="protected">
+<h2>Grab posts at or underneath a reference post.</h2>
+<pre>_grab_at_and_underneath(\?AUTO_LINK $parent_post_id, array $posts_in) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$parent_post_id</h4>
+<code>\?AUTO_LINK</code><p>Reference post in thread (null: root)</p></div>
+<div class="subelement argument">
+<h4>$posts_in</h4>
+<code>array</code><p>Posts to choose from</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Relevant posts</div>
+</div></div>
+</div>
+<a id="method__grab_full_post_details"></a><div class="element clickable method protected method__grab_full_post_details " data-toggle="collapse" data-target=".method__grab_full_post_details .collapse" title="protected">
+<h2>Load full details for posts (we had not done so far to preserve memory).</h2>
+<pre>_grab_full_post_details(array $posts) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$posts</h4>
+<code>array</code><p>Posts to load</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Upgraded posts</div>
+</div></div>
+</div>
+<a id="method__render_post_tree"></a><div class="element clickable method protected method__render_post_tree " data-toggle="collapse" data-target=".method__render_post_tree .collapse" title="protected">
+<h2>Render posts.</h2>
+<pre>_render_post_tree(integer $num_to_show_limit, array $tree, boolean $may_reply, \?AUTO_LINK $highlight_by_member, array $all_individual_review_ratings, \AUTO_LINK $forum_id, \?array $topic_info, integer $depth<code> = 0</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>integer</code><p>Maximum to load</p></div>
+<div class="subelement argument">
+<h4>$tree</h4>
+<code>array</code><p>Tree structure of posts</p></div>
+<div class="subelement argument">
+<h4>$may_reply</h4>
+<code>boolean</code><p>Whether the current user may reply to the topic (influences what buttons show)</p></div>
+<div class="subelement argument">
+<h4>$highlight_by_member</h4>
+<code>\?AUTO_LINK</code><p>Only show posts under here (null: show posts from root)</p></div>
+<div class="subelement argument">
+<h4>$all_individual_review_ratings</h4>
+<code>array</code><p>Review ratings rows</p></div>
+<div class="subelement argument">
+<h4>$forum_id</h4>
+<code>\AUTO_LINK</code><p>ID of forum this topic in in</p></div>
+<div class="subelement argument">
+<h4>$topic_info</h4>
+<code>\?array</code><p>The topic row (null: not running Conversr).</p></div>
+<div class="subelement argument">
+<h4>$depth</h4>
+<code>integer</code><p>The recursion depth</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Rendered tree structure</div>
+</div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_all_posts_ordered"> </a><div class="element clickable property public property_all_posts_ordered" data-toggle="collapse" data-target=".property_all_posts_ordered .collapse" title="public">
+<h2>$all_posts_ordered</h2>
+<pre>$all_posts_ordered </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_error"> </a><div class="element clickable property public property_error" data-toggle="collapse" data-target=".property_error .collapse" title="public">
+<h2>$error</h2>
+<pre>$error </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_first_post_id"> </a><div class="element clickable property public property_first_post_id" data-toggle="collapse" data-target=".property_first_post_id .collapse" title="public">
+<h2>$first_post_id</h2>
+<pre>$first_post_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_is_threaded"> </a><div class="element clickable property public property_is_threaded" data-toggle="collapse" data-target=".property_is_threaded .collapse" title="public">
+<h2>$is_threaded</h2>
+<pre>$is_threaded </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_rendering_context"> </a><div class="element clickable property public property_rendering_context" data-toggle="collapse" data-target=".property_rendering_context .collapse" title="public">
+<h2>$rendering_context</h2>
+<pre>$rendering_context </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>'cns'</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_replied"> </a><div class="element clickable property public property_replied" data-toggle="collapse" data-target=".property_replied .collapse" title="public">
+<h2>$replied</h2>
+<pre>$replied </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_reverse"> </a><div class="element clickable property public property_reverse" data-toggle="collapse" data-target=".property_reverse .collapse" title="public">
+<h2>$reverse</h2>
+<pre>$reverse </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_reviews_rating_criteria"> </a><div class="element clickable property public property_reviews_rating_criteria" data-toggle="collapse" data-target=".property_reviews_rating_criteria .collapse" title="public">
+<h2>$reviews_rating_criteria</h2>
+<pre>$reviews_rating_criteria </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>array()</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_topic_description"> </a><div class="element clickable property public property_topic_description" data-toggle="collapse" data-target=".property_topic_description .collapse" title="public">
+<h2>$topic_description</h2>
+<pre>$topic_description </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_topic_description_link"> </a><div class="element clickable property public property_topic_description_link" data-toggle="collapse" data-target=".property_topic_description_link .collapse" title="public">
+<h2>$topic_description_link</h2>
+<pre>$topic_description_link </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_topic_id"> </a><div class="element clickable property public property_topic_id" data-toggle="collapse" data-target=".property_topic_id .collapse" title="public">
+<h2>$topic_id</h2>
+<pre>$topic_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_topic_info"> </a><div class="element clickable property public property_topic_info" data-toggle="collapse" data-target=".property_topic_info .collapse" title="public">
+<h2>$topic_info</h2>
+<pre>$topic_info </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_topic_title"> </a><div class="element clickable property public property_topic_title" data-toggle="collapse" data-target=".property_topic_title .collapse" title="public">
+<h2>$topic_title</h2>
+<pre>$topic_title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_total_posts"> </a><div class="element clickable property public property_total_posts" data-toggle="collapse" data-target=".property_total_posts .collapse" title="public">
+<h2>$total_posts</h2>
+<pre>$total_posts </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:52+01:00.<br></footer></div>
+</div>
+</body>
+</html>

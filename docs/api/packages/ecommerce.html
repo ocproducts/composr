@@ -1,0 +1,1074 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/ecommerce.html" title="ecommerce"><i class="icon-folder-open"></i>ecommerce</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_usergroup_subscription" title="add_usergroup_subscription() :: Add a usergroup subscription."><span class="description">Add a usergroup subscription.</span><pre>add_usergroup_subscription</pre></a></li>
+<li class="function  "><a href="#function_country_to_currency" title="country_to_currency() :: Convert a country code to a currency code."><span class="description">Convert a country code to a currency code.</span><pre>country_to_currency</pre></a></li>
+<li class="function  "><a href="#function_currency_convert" title="currency_convert() :: Perform a currency conversion."><span class="description">Perform a currency conversion.</span><pre>currency_convert</pre></a></li>
+<li class="function  "><a href="#function_delete_usergroup_subscription" title="delete_usergroup_subscription() :: Delete a usergroup subscription."><span class="description">Delete a usergroup subscription.</span><pre>delete_usergroup_subscription</pre></a></li>
+<li class="function  "><a href="#function_dev__ipn_debug" title="dev__ipn_debug() :: Send an IPN call to a remote host for debugging purposes."><span class="description">Send an IPN call to a remote host for debugging purposes.</span><pre>dev__ipn_debug</pre></a></li>
+<li class="function  "><a href="#function_ecommerce_get_currency_symbol" title="ecommerce_get_currency_symbol() :: Get the symbol of the currency we're trading in."><span class="description">Get the symbol of the currency we're trading in.</span><pre>ecommerce_get_currency_symbol</pre></a></li>
+<li class="function  "><a href="#function_ecommerce_test_mode" title="ecommerce_test_mode() :: Check whether the system is in test mode (normally, not)."><span class="description">Check whether the system is in test mode (normally, not).</span><pre>ecommerce_test_mode</pre></a></li>
+<li class="function  "><a href="#function_edit_usergroup_subscription" title="edit_usergroup_subscription() :: Edit a usergroup subscription."><span class="description">Edit a usergroup subscription.</span><pre>edit_usergroup_subscription</pre></a></li>
+<li class="function  "><a href="#function_fatal_ipn_exit" title="fatal_ipn_exit() :: Exit Composr and write to the error log file."><span class="description">Exit Composr and write to the error log file.</span><pre>fatal_ipn_exit</pre></a></li>
+<li class="function  "><a href="#function_find_all_products" title="find_all_products() :: Find all products, except ones from hooks that might have too many to list (so don't rely on this for important backend tasks)."><span class="description">Find all products, except ones from hooks that might have too many to list (so don't rely on this for important backend tasks).</span><pre>find_all_products</pre></a></li>
+<li class="function  "><a href="#function_find_member_subscriptions" title="find_member_subscriptions() :: Find member subscriptions."><span class="description">Find member subscriptions.</span><pre>find_member_subscriptions</pre></a></li>
+<li class="function  "><a href="#function_find_product" title="find_product() :: Find product."><span class="description">Find product.</span><pre>find_product</pre></a></li>
+<li class="function  "><a href="#function_find_product_row" title="find_product_row() :: Find product info row."><span class="description">Find product info row.</span><pre>find_product_row</pre></a></li>
+<li class="function  "><a href="#function_get_currency_map" title="get_currency_map() :: Get the currency map."><span class="description">Get the currency map.</span><pre>get_currency_map</pre></a></li>
+<li class="function  "><a href="#function_get_currency_symbol" title="get_currency_symbol() :: Get the symbol for a currency."><span class="description">Get the symbol for a currency.</span><pre>get_currency_symbol</pre></a></li>
+<li class="function  "><a href="#function_get_transaction_fee" title="get_transaction_fee() :: Find a transaction fee from a transaction amount. Regular fees aren't taken into account."><span class="description">Find a transaction fee from a transaction amount. Regular fees aren't taken into account.</span><pre>get_transaction_fee</pre></a></li>
+<li class="function  "><a href="#function_get_transaction_form_fields" title="get_transaction_form_fields() :: Find a transaction fee from a transaction amount. Regular fees aren't taken into account."><span class="description">Find a transaction fee from a transaction amount. Regular fees aren't taken into account.</span><pre>get_transaction_form_fields</pre></a></li>
+<li class="function  "><a href="#function_handle_confirmed_transaction" title="handle_confirmed_transaction() :: Handle IPN's that have been confirmed as backed up by real money."><span class="description">Handle IPN's that have been confirmed as backed up by real money.</span><pre>handle_confirmed_transaction</pre></a></li>
+<li class="function  "><a href="#function_handle_transaction_script" title="handle_transaction_script() :: Handle IPN's."><span class="description">Handle IPN's.</span><pre>handle_transaction_script</pre></a></li>
+<li class="function  "><a href="#function_ip_to_currency" title="ip_to_currency() :: Convert an IP address to a currency code."><span class="description">Convert an IP address to a currency code.</span><pre>ip_to_currency</pre></a></li>
+<li class="function  "><a href="#function_make_cancel_button" title="make_cancel_button() :: Make a subscription cancellation button."><span class="description">Make a subscription cancellation button.</span><pre>make_cancel_button</pre></a></li>
+<li class="function  "><a href="#function_make_cart_payment_button" title="make_cart_payment_button() :: Make a shopping cart payment button."><span class="description">Make a shopping cart payment button.</span><pre>make_cart_payment_button</pre></a></li>
+<li class="function  "><a href="#function_make_subscription_button" title="make_subscription_button() :: Make a subscription (payment) button."><span class="description">Make a subscription (payment) button.</span><pre>make_subscription_button</pre></a></li>
+<li class="function  "><a href="#function_make_transaction_button" title="make_transaction_button() :: Make a transaction (payment) button."><span class="description">Make a transaction (payment) button.</span><pre>make_transaction_button</pre></a></li>
+<li class="function  "><a href="#function_perform_local_payment" title="perform_local_payment() :: Find whether local payment will be performed."><span class="description">Find whether local payment will be performed.</span><pre>perform_local_payment</pre></a></li>
+<li class="function  "><a href="#function_prepare_templated_subscription" title="prepare_templated_subscription() :: Get template-ready parameters for displaying a subscription."><span class="description">Get template-ready parameters for displaying a subscription.</span><pre>prepare_templated_subscription</pre></a></li>
+<li class="function  "><a href="#function_send_invoice_notification" title="send_invoice_notification() :: Send an invoice notification to a member."><span class="description">Send an invoice notification to a member.</span><pre>send_invoice_notification</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_ALREADY_HAS" title="ECOMMERCE_PRODUCT_ALREADY_HAS() :: "><span class="description">ECOMMERCE_PRODUCT_ALREADY_HAS</span><pre>ECOMMERCE_PRODUCT_ALREADY_HAS</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_AVAILABLE" title="ECOMMERCE_PRODUCT_AVAILABLE() :: "><span class="description">ECOMMERCE_PRODUCT_AVAILABLE</span><pre>ECOMMERCE_PRODUCT_AVAILABLE</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_DISABLED" title="ECOMMERCE_PRODUCT_DISABLED() :: "><span class="description">ECOMMERCE_PRODUCT_DISABLED</span><pre>ECOMMERCE_PRODUCT_DISABLED</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_INTERNAL_ERROR" title="ECOMMERCE_PRODUCT_INTERNAL_ERROR() :: "><span class="description">ECOMMERCE_PRODUCT_INTERNAL_ERROR</span><pre>ECOMMERCE_PRODUCT_INTERNAL_ERROR</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_MISSING" title="ECOMMERCE_PRODUCT_MISSING() :: "><span class="description">ECOMMERCE_PRODUCT_MISSING</span><pre>ECOMMERCE_PRODUCT_MISSING</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_NO_GUESTS" title="ECOMMERCE_PRODUCT_NO_GUESTS() :: "><span class="description">ECOMMERCE_PRODUCT_NO_GUESTS</span><pre>ECOMMERCE_PRODUCT_NO_GUESTS</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_OUT_OF_STOCK" title="ECOMMERCE_PRODUCT_OUT_OF_STOCK() :: "><span class="description">ECOMMERCE_PRODUCT_OUT_OF_STOCK</span><pre>ECOMMERCE_PRODUCT_OUT_OF_STOCK</pre></a></li>
+<li class="constant  "><a href="#constant_ECOMMERCE_PRODUCT_PROHIBITED" title="ECOMMERCE_PRODUCT_PROHIBITED() :: "><span class="description">ECOMMERCE_PRODUCT_PROHIBITED</span><pre>ECOMMERCE_PRODUCT_PROHIBITED</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_CATALOGUE" title="PRODUCT_CATALOGUE() :: "><span class="description">PRODUCT_CATALOGUE</span><pre>PRODUCT_CATALOGUE</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_INVOICE" title="PRODUCT_INVOICE() :: "><span class="description">PRODUCT_INVOICE</span><pre>PRODUCT_INVOICE</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_ORDERS" title="PRODUCT_ORDERS() :: "><span class="description">PRODUCT_ORDERS</span><pre>PRODUCT_ORDERS</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_OTHER" title="PRODUCT_OTHER() :: "><span class="description">PRODUCT_OTHER</span><pre>PRODUCT_OTHER</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_PURCHASE_WIZARD" title="PRODUCT_PURCHASE_WIZARD() :: "><span class="description">PRODUCT_PURCHASE_WIZARD</span><pre>PRODUCT_PURCHASE_WIZARD</pre></a></li>
+<li class="constant  "><a href="#constant_PRODUCT_SUBSCRIPTION" title="PRODUCT_SUBSCRIPTION() :: "><span class="description">PRODUCT_SUBSCRIPTION</span><pre>PRODUCT_SUBSCRIPTION</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/ecommerce.html">ecommerce</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_usergroup_subscription"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_usergroup_subscription " data-toggle="collapse" data-target=".function_add_usergroup_subscription .collapse" title="">
+<h2>Add a usergroup subscription.</h2>
+<pre>add_usergroup_subscription(\SHORT_TEXT $title, \LONG_TEXT $description, \SHORT_TEXT $cost, integer $length, \SHORT_TEXT $length_units, \BINARY $auto_recur, \?GROUP $group_id, \BINARY $uses_primary, \BINARY $enabled, \?LONG_TEXT $mail_start, \?LONG_TEXT $mail_end, \?LONG_TEXT $mail_uhoh, array $mails) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>y m d w</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description</p></div>
+<div class="subelement argument">
+<h4>$cost</h4>
+<code>\SHORT_TEXT</code><p>The cost</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>integer</code><p>The length</p></div>
+<div class="subelement argument">
+<h4>$length_units</h4>
+<code>\SHORT_TEXT</code><p>The units for the length</p></div>
+<div class="subelement argument">
+<h4>$auto_recur</h4>
+<code>\BINARY</code><p>Auto-recur</p></div>
+<div class="subelement argument">
+<h4>$group_id</h4>
+<code>\?GROUP</code><p>The usergroup that purchasing gains membership to (null: super members)</p></div>
+<div class="subelement argument">
+<h4>$uses_primary</h4>
+<code>\BINARY</code><p>Whether this is applied to primary usergroup membership</p></div>
+<div class="subelement argument">
+<h4>$enabled</h4>
+<code>\BINARY</code><p>Whether this is currently enabled</p></div>
+<div class="subelement argument">
+<h4>$mail_start</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription is start (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mail_end</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription is ended (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mail_uhoh</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mails</h4>
+<code>array</code><p>Other e-mails to send</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_country_to_currency"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_country_to_currency " data-toggle="collapse" data-target=".function_country_to_currency .collapse" title="">
+<h2>Convert a country code to a currency code.</h2>
+<pre>country_to_currency(\ID_TEXT $country) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$country</h4>
+<code>\ID_TEXT</code><p>The country code.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The currency code.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_currency_convert"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_currency_convert " data-toggle="collapse" data-target=".function_currency_convert .collapse" title="">
+<h2>Perform a currency conversion.</h2>
+<pre>currency_convert(mixed $amount, \ID_TEXT $from_currency, \?ID_TEXT $to_currency<code> = null</code>, boolean $string<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>mixed</code><p>The starting amount (integer or float).</p></div>
+<div class="subelement argument">
+<h4>$from_currency</h4>
+<code>\ID_TEXT</code><p>The start currency code.</p></div>
+<div class="subelement argument">
+<h4>$to_currency</h4>
+<code>\?ID_TEXT</code><p>The end currency code (null: unknown, guess it).</p></div>
+<div class="subelement argument">
+<h4>$string</h4>
+<code>boolean</code><p>Whether to get as a string.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The new amount as float, or if $string then as a string (null: failed to do it).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_usergroup_subscription"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_usergroup_subscription " data-toggle="collapse" data-target=".function_delete_usergroup_subscription .collapse" title="">
+<h2>Delete a usergroup subscription.</h2>
+<pre>delete_usergroup_subscription(\AUTO_LINK $id, \LONG_TEXT $uhoh_mail<code> = ''</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+<div class="subelement argument">
+<h4>$uhoh_mail</h4>
+<code>\LONG_TEXT</code><p>The cancellation mail to send out (blank: none)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dev__ipn_debug"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dev__ipn_debug " data-toggle="collapse" data-target=".function_dev__ipn_debug .collapse" title="">
+<h2>Send an IPN call to a remote host for debugging purposes.</h2>
+<pre>dev__ipn_debug(\URLPATH $ipn_target, string $ipn_message) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Useful for making one Composr site (caller site) pretend to be PayPal, when talking to another (target site).
+Make sure the target site has the caller site listed as the backdoor_ip in the base config, or the verification will happen and fail.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ipn_target</h4>
+<code>\URLPATH</code><p>URL to send IPN to</p></div>
+<div class="subelement argument">
+<h4>$ipn_message</h4>
+<code>string</code><p>Post parameters to send, in query string format</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Output</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ecommerce_get_currency_symbol"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ecommerce_get_currency_symbol " data-toggle="collapse" data-target=".function_ecommerce_get_currency_symbol .collapse" title="">
+<h2>Get the symbol of the currency we're trading in.</h2>
+<pre>ecommerce_get_currency_symbol(\?ID_TEXT $currency<code> = null</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$currency</h4>
+<code>\?ID_TEXT</code><p>The currency (null: configured).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The currency symbol.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ecommerce_test_mode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ecommerce_test_mode " data-toggle="collapse" data-target=".function_ecommerce_test_mode .collapse" title="">
+<h2>Check whether the system is in test mode (normally, not).</h2>
+<pre>ecommerce_test_mode() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_usergroup_subscription"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_usergroup_subscription " data-toggle="collapse" data-target=".function_edit_usergroup_subscription .collapse" title="">
+<h2>Edit a usergroup subscription.</h2>
+<pre>edit_usergroup_subscription(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $description, \SHORT_TEXT $cost, integer $length, \SHORT_TEXT $length_units, \BINARY $auto_recur, \?GROUP $group_id, \BINARY $uses_primary, \BINARY $enabled, \?LONG_TEXT $mail_start, \?LONG_TEXT $mail_end, \?LONG_TEXT $mail_uhoh, \?array $mails<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>y m d w</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description</p></div>
+<div class="subelement argument">
+<h4>$cost</h4>
+<code>\SHORT_TEXT</code><p>The cost</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>integer</code><p>The length</p></div>
+<div class="subelement argument">
+<h4>$length_units</h4>
+<code>\SHORT_TEXT</code><p>The units for the length</p></div>
+<div class="subelement argument">
+<h4>$auto_recur</h4>
+<code>\BINARY</code><p>Auto-recur</p></div>
+<div class="subelement argument">
+<h4>$group_id</h4>
+<code>\?GROUP</code><p>The usergroup that purchasing gains membership to (null: super members)</p></div>
+<div class="subelement argument">
+<h4>$uses_primary</h4>
+<code>\BINARY</code><p>Whether this is applied to primary usergroup membership</p></div>
+<div class="subelement argument">
+<h4>$enabled</h4>
+<code>\BINARY</code><p>Whether this is currently enabled</p></div>
+<div class="subelement argument">
+<h4>$mail_start</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription is start (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mail_end</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription is ended (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mail_uhoh</h4>
+<code>\?LONG_TEXT</code><p>The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)</p></div>
+<div class="subelement argument">
+<h4>$mails</h4>
+<code>\?array</code><p>Other e-mails to send (null: do not change)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fatal_ipn_exit"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fatal_ipn_exit " data-toggle="collapse" data-target=".function_fatal_ipn_exit .collapse" title="">
+<h2>Exit Composr and write to the error log file.</h2>
+<pre>fatal_ipn_exit(string $error, boolean $dont_trigger<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$error</h4>
+<code>string</code><p>The message.</p></div>
+<div class="subelement argument">
+<h4>$dont_trigger</h4>
+<code>boolean</code><p>Dont trigger an error</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Never returns (i.e. exits)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_all_products"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_all_products " data-toggle="collapse" data-target=".function_find_all_products .collapse" title="">
+<h2>Find all products, except ones from hooks that might have too many to list (so don't rely on this for important backend tasks).</h2>
+<pre>find_all_products(boolean $site_lang<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$site_lang</h4>
+<code>boolean</code><p>Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps of product details.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_member_subscriptions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_member_subscriptions " data-toggle="collapse" data-target=".function_find_member_subscriptions .collapse" title="">
+<h2>Find member subscriptions.</h2>
+<pre>find_member_subscriptions(\MEMBER $member_id, boolean $usergroup_subscriptions_only<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member.</p></div>
+<div class="subelement argument">
+<h4>$usergroup_subscriptions_only</h4>
+<code>boolean</code><p>Whether to limit us to usergroup subscriptions.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of subscriptions and subscription lifetime positions.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_product"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_product " data-toggle="collapse" data-target=".function_find_product .collapse" title="">
+<h2>Find product.</h2>
+<pre>find_product(\ID_TEXT $search, boolean $site_lang<code> = false</code>, boolean $search_item_names<code> = false</code>) : \?object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$search</h4>
+<code>\ID_TEXT</code><p>The item name/product_id</p></div>
+<div class="subelement argument">
+<h4>$site_lang</h4>
+<code>boolean</code><p>Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).</p></div>
+<div class="subelement argument">
+<h4>$search_item_names</h4>
+<code>boolean</code><p>Whether $search refers to the item name rather than the product codename</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?object</code>The product-class object (null: not found).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_product_row"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_product_row " data-toggle="collapse" data-target=".function_find_product_row .collapse" title="">
+<h2>Find product info row.</h2>
+<pre>find_product_row(\ID_TEXT $search, boolean $site_lang<code> = false</code>, boolean $search_item_names<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$search</h4>
+<code>\ID_TEXT</code><p>The product codename/item name</p></div>
+<div class="subelement argument">
+<h4>$site_lang</h4>
+<code>boolean</code><p>Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).</p></div>
+<div class="subelement argument">
+<h4>$search_item_names</h4>
+<code>boolean</code><p>Whether $search refers to the item name rather than the product codename</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The product-class map, and the formal product name (both will be NULL if not found).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_currency_map"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_currency_map " data-toggle="collapse" data-target=".function_get_currency_map .collapse" title="">
+<h2>Get the currency map.</h2>
+<pre>get_currency_map() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The currency map, currency code, to an array of country codes.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_currency_symbol"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_currency_symbol " data-toggle="collapse" data-target=".function_get_currency_symbol .collapse" title="">
+<h2>Get the symbol for a currency.</h2>
+<pre>get_currency_symbol(\ID_TEXT $currency) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$currency</h4>
+<code>\ID_TEXT</code><p>The currency.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The symbol, and whether the symbol is okay to use on it's own (as it is the accepted default for the symbol).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_transaction_fee"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_transaction_fee " data-toggle="collapse" data-target=".function_get_transaction_fee .collapse" title="">
+<h2>Find a transaction fee from a transaction amount. Regular fees aren't taken into account.</h2>
+<pre>get_transaction_fee(float $amount, \ID_TEXT $via) : float</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>float</code><p>A transaction amount.</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\ID_TEXT</code><p>The service the payment went via.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>float</code>The fee</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_transaction_form_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_transaction_form_fields " data-toggle="collapse" data-target=".function_get_transaction_form_fields .collapse" title="">
+<h2>Find a transaction fee from a transaction amount. Regular fees aren't taken into account.</h2>
+<pre>get_transaction_form_fields(\?ID_TEXT $trans_id, \ID_TEXT $purchase_id, \SHORT_TEXT $item_name, \SHORT_TEXT $amount, \?integer $length, \ID_TEXT $length_units, \?ID_TEXT $via<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$trans_id</h4>
+<code>\?ID_TEXT</code><p>The transaction ID (null: auto-generate)</p></div>
+<div class="subelement argument">
+<h4>$purchase_id</h4>
+<code>\ID_TEXT</code><p>The purchase ID</p></div>
+<div class="subelement argument">
+<h4>$item_name</h4>
+<code>\SHORT_TEXT</code><p>The item name</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>\SHORT_TEXT</code><p>The amount</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>\?integer</code><p>The length (null: not a subscription)</p></div>
+<div class="subelement argument">
+<h4>$length_units</h4>
+<code>\ID_TEXT</code><p>The length units</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\?ID_TEXT</code><p>The service the payment will go via via (null: autodetect).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The form fields, Hidden fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_handle_confirmed_transaction"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_handle_confirmed_transaction " data-toggle="collapse" data-target=".function_handle_confirmed_transaction .collapse" title="">
+<h2>Handle IPN's that have been confirmed as backed up by real money.</h2>
+<pre>handle_confirmed_transaction(\ID_TEXT $purchase_id, \SHORT_TEXT $item_name, \ID_TEXT $payment_status, \SHORT_TEXT $reason_code, \SHORT_TEXT $pending_reason, \SHORT_TEXT $memo, \SHORT_TEXT $mc_gross, \SHORT_TEXT $mc_currency, \SHORT_TEXT $txn_id, \SHORT_TEXT $parent_txn_id, string $period, \ID_TEXT $via) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>Pending Completed SModified SCancelled</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$purchase_id</h4>
+<code>\ID_TEXT</code><p>The ID of the purchase-type (meaning depends on item_name)</p></div>
+<div class="subelement argument">
+<h4>$item_name</h4>
+<code>\SHORT_TEXT</code><p>The item being purchased (aka the product) (blank: subscription, so we need to look it up). One might wonder why we use $item_name instead of $type_code. This is because we pass human-readable-names (hopefully unique!!!) through payment gateways because they are visually shown to the user. (blank: it's a subscription, so look up via a key map across the subscriptions table)</p></div>
+<div class="subelement argument">
+<h4>$payment_status</h4>
+<code>\ID_TEXT</code><p>The status this transaction is telling of</p></div>
+<div class="subelement argument">
+<h4>$reason_code</h4>
+<code>\SHORT_TEXT</code><p>The code that gives reason to the status</p></div>
+<div class="subelement argument">
+<h4>$pending_reason</h4>
+<code>\SHORT_TEXT</code><p>The reason it is in pending status (if it is)</p></div>
+<div class="subelement argument">
+<h4>$memo</h4>
+<code>\SHORT_TEXT</code><p>A note attached to the transaction</p></div>
+<div class="subelement argument">
+<h4>$mc_gross</h4>
+<code>\SHORT_TEXT</code><p>The amount of money</p></div>
+<div class="subelement argument">
+<h4>$mc_currency</h4>
+<code>\SHORT_TEXT</code><p>The currency the amount is in</p></div>
+<div class="subelement argument">
+<h4>$txn_id</h4>
+<code>\SHORT_TEXT</code><p>The transaction ID</p></div>
+<div class="subelement argument">
+<h4>$parent_txn_id</h4>
+<code>\SHORT_TEXT</code><p>The ID of the parent transaction</p></div>
+<div class="subelement argument">
+<h4>$period</h4>
+<code>string</code><p>The subscription period (blank: N/A / unknown: trust is correct on the gateway)</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\ID_TEXT</code><p>The payment gateway</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The product purchased</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_handle_transaction_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_handle_transaction_script " data-toggle="collapse" data-target=".function_handle_transaction_script .collapse" title="">
+<h2>Handle IPN's.</h2>
+<pre>handle_transaction_script() : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The ID of the purchase-type (meaning depends on item_name)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ip_to_currency"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ip_to_currency " data-toggle="collapse" data-target=".function_ip_to_currency .collapse" title="">
+<h2>Convert an IP address to a currency code.</h2>
+<pre>ip_to_currency(\?IP $ip<code> = null</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ip</h4>
+<code>\?IP</code><p>IP address (null: that of current member).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The currency code.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_cancel_button"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_cancel_button " data-toggle="collapse" data-target=".function_make_cancel_button .collapse" title="">
+<h2>Make a subscription cancellation button.</h2>
+<pre>make_cancel_button(\AUTO_LINK $purchase_id, \ID_TEXT $via) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$purchase_id</h4>
+<code>\AUTO_LINK</code><p>The purchase ID.</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\ID_TEXT</code><p>The service the payment will go via via.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_cart_payment_button"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_cart_payment_button " data-toggle="collapse" data-target=".function_make_cart_payment_button .collapse" title="">
+<h2>Make a shopping cart payment button.</h2>
+<pre>make_cart_payment_button(\AUTO_LINK $order_id, \ID_TEXT $currency) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$order_id</h4>
+<code>\AUTO_LINK</code><p>Order ID</p></div>
+<div class="subelement argument">
+<h4>$currency</h4>
+<code>\ID_TEXT</code><p>The currency to use.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The button</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_subscription_button"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_subscription_button " data-toggle="collapse" data-target=".function_make_subscription_button .collapse" title="">
+<h2>Make a subscription (payment) button.</h2>
+<pre>make_subscription_button(\ID_TEXT $type_code, \SHORT_TEXT $item_name, \ID_TEXT $purchase_id, float $amount, integer $length, \ID_TEXT $length_units, \ID_TEXT $currency, \?ID_TEXT $via<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>d w m y</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type_code</h4>
+<code>\ID_TEXT</code><p>The product codename.</p></div>
+<div class="subelement argument">
+<h4>$item_name</h4>
+<code>\SHORT_TEXT</code><p>The human-readable product title.</p></div>
+<div class="subelement argument">
+<h4>$purchase_id</h4>
+<code>\ID_TEXT</code><p>The purchase ID.</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>float</code><p>A transaction amount.</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>integer</code><p>The subscription length in the units.</p></div>
+<div class="subelement argument">
+<h4>$length_units</h4>
+<code>\ID_TEXT</code><p>The length units.</p></div>
+<div class="subelement argument">
+<h4>$currency</h4>
+<code>\ID_TEXT</code><p>The currency to use.</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\?ID_TEXT</code><p>The service the payment will go via via (null: autodetect).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The button</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_transaction_button"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_transaction_button " data-toggle="collapse" data-target=".function_make_transaction_button .collapse" title="">
+<h2>Make a transaction (payment) button.</h2>
+<pre>make_transaction_button(\ID_TEXT $type_code, \SHORT_TEXT $item_name, \ID_TEXT $purchase_id, float $amount, \ID_TEXT $currency, \?ID_TEXT $via<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type_code</h4>
+<code>\ID_TEXT</code><p>The product codename.</p></div>
+<div class="subelement argument">
+<h4>$item_name</h4>
+<code>\SHORT_TEXT</code><p>The human-readable product title.</p></div>
+<div class="subelement argument">
+<h4>$purchase_id</h4>
+<code>\ID_TEXT</code><p>The purchase ID.</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>float</code><p>A transaction amount.</p></div>
+<div class="subelement argument">
+<h4>$currency</h4>
+<code>\ID_TEXT</code><p>The currency to use.</p></div>
+<div class="subelement argument">
+<h4>$via</h4>
+<code>\?ID_TEXT</code><p>The service the payment will go via via (null: autodetect).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The button</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_perform_local_payment"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_perform_local_payment " data-toggle="collapse" data-target=".function_perform_local_payment .collapse" title="">
+<h2>Find whether local payment will be performed.</h2>
+<pre>perform_local_payment() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether local payment will be performed.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_prepare_templated_subscription"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_prepare_templated_subscription " data-toggle="collapse" data-target=".function_prepare_templated_subscription .collapse" title="">
+<h2>Get template-ready parameters for displaying a subscription.</h2>
+<pre>prepare_templated_subscription(array $subscription) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$subscription</h4>
+<code>array</code><p>Subscription details.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Template-ready parameters.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_send_invoice_notification"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_send_invoice_notification " data-toggle="collapse" data-target=".function_send_invoice_notification .collapse" title="">
+<h2>Send an invoice notification to a member.</h2>
+<pre>send_invoice_notification(\MEMBER $member_id, \AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to send to.</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The invoice ID.</p></div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_ALREADY_HAS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_ALREADY_HAS" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_ALREADY_HAS .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_ALREADY_HAS</h2>
+<pre>ECOMMERCE_PRODUCT_ALREADY_HAS = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_AVAILABLE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_AVAILABLE" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_AVAILABLE .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_AVAILABLE</h2>
+<pre>ECOMMERCE_PRODUCT_AVAILABLE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_DISABLED"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_DISABLED" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_DISABLED .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_DISABLED</h2>
+<pre>ECOMMERCE_PRODUCT_DISABLED = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_INTERNAL_ERROR"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_INTERNAL_ERROR" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_INTERNAL_ERROR .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_INTERNAL_ERROR</h2>
+<pre>ECOMMERCE_PRODUCT_INTERNAL_ERROR = 7 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_MISSING"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_MISSING" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_MISSING .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_MISSING</h2>
+<pre>ECOMMERCE_PRODUCT_MISSING = 6 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_NO_GUESTS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_NO_GUESTS" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_NO_GUESTS .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_NO_GUESTS</h2>
+<pre>ECOMMERCE_PRODUCT_NO_GUESTS = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_OUT_OF_STOCK"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_OUT_OF_STOCK" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_OUT_OF_STOCK .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_OUT_OF_STOCK</h2>
+<pre>ECOMMERCE_PRODUCT_OUT_OF_STOCK = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_ECOMMERCE_PRODUCT_PROHIBITED"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ECOMMERCE_PRODUCT_PROHIBITED" data-toggle="collapse" data-target=".constant_ECOMMERCE_PRODUCT_PROHIBITED .collapse" title="">
+<h2>ECOMMERCE_PRODUCT_PROHIBITED</h2>
+<pre>ECOMMERCE_PRODUCT_PROHIBITED = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_CATALOGUE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_CATALOGUE" data-toggle="collapse" data-target=".constant_PRODUCT_CATALOGUE .collapse" title="">
+<h2>PRODUCT_CATALOGUE</h2>
+<pre>PRODUCT_CATALOGUE = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_INVOICE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_INVOICE" data-toggle="collapse" data-target=".constant_PRODUCT_INVOICE .collapse" title="">
+<h2>PRODUCT_INVOICE</h2>
+<pre>PRODUCT_INVOICE = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_ORDERS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_ORDERS" data-toggle="collapse" data-target=".constant_PRODUCT_ORDERS .collapse" title="">
+<h2>PRODUCT_ORDERS</h2>
+<pre>PRODUCT_ORDERS = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_OTHER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_OTHER" data-toggle="collapse" data-target=".constant_PRODUCT_OTHER .collapse" title="">
+<h2>PRODUCT_OTHER</h2>
+<pre>PRODUCT_OTHER = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_PURCHASE_WIZARD"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_PURCHASE_WIZARD" data-toggle="collapse" data-target=".constant_PRODUCT_PURCHASE_WIZARD .collapse" title="">
+<h2>PRODUCT_PURCHASE_WIZARD</h2>
+<pre>PRODUCT_PURCHASE_WIZARD = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_PRODUCT_SUBSCRIPTION"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_PRODUCT_SUBSCRIPTION" data-toggle="collapse" data-target=".constant_PRODUCT_SUBSCRIPTION .collapse" title="">
+<h2>PRODUCT_SUBSCRIPTION</h2>
+<pre>PRODUCT_SUBSCRIPTION = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ecommerce.html">ecommerce</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:39+01:00.<br></footer></div>
+</div>
+</body>
+</html>

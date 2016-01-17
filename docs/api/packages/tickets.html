@@ -1,0 +1,755 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/tickets.html" title="tickets"><i class="icon-folder-open"></i>tickets</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_ticket_type" title="add_ticket_type() :: Add a ticket type."><span class="description">Add a ticket type.</span><pre>add_ticket_type</pre></a></li>
+<li class="function  "><a href="#function_build_types_list" title="build_types_list() :: Build a list of ticket types."><span class="description">Build a list of ticket types.</span><pre>build_types_list</pre></a></li>
+<li class="function  "><a href="#function_check_ticket_access" title="check_ticket_access() :: Checks the ticket ID is valid, and there is access for the current member to view it. Bombs out if there's a problem."><span class="description">Checks the ticket ID is valid, and there is access for the current member to view it. Bombs out if there's a problem.</span><pre>check_ticket_access</pre></a></li>
+<li class="function  "><a href="#function_delete_ticket_by_topic_id" title="delete_ticket_by_topic_id() :: Remove a ticket from the database. This does not remove the associated forum topic."><span class="description">Remove a ticket from the database. This does not remove the associated forum topic.</span><pre>delete_ticket_by_topic_id</pre></a></li>
+<li class="function  "><a href="#function_delete_ticket_type" title="delete_ticket_type() :: Delete a ticket type."><span class="description">Delete a ticket type.</span><pre>delete_ticket_type</pre></a></li>
+<li class="function  "><a href="#function_edit_ticket_type" title="edit_ticket_type() :: Edit a ticket type, keeping the integer ID the same."><span class="description">Edit a ticket type, keeping the integer ID the same.</span><pre>edit_ticket_type</pre></a></li>
+<li class="function  "><a href="#function_email_comcode_from_html" title="email_comcode_from_html() :: Convert e-mail HTML to Comcode."><span class="description">Convert e-mail HTML to Comcode.</span><pre>email_comcode_from_html</pre></a></li>
+<li class="function  "><a href="#function_email_comcode_from_text" title="email_comcode_from_text() :: Convert e-mail text to Comcode."><span class="description">Convert e-mail text to Comcode.</span><pre>email_comcode_from_text</pre></a></li>
+<li class="function  "><a href="#function_find_ticket_assigned_to" title="find_ticket_assigned_to() :: Build a list of ticket types."><span class="description">Build a list of ticket types.</span><pre>find_ticket_assigned_to</pre></a></li>
+<li class="function  "><a href="#function_get_ticket_details" title="get_ticket_details() :: Get ticket details."><span class="description">Get ticket details.</span><pre>get_ticket_details</pre></a></li>
+<li class="function  "><a href="#function_get_ticket_forum_id" title="get_ticket_forum_id() :: Get the forum ID for a given ticket type and member, taking the ticket_member_forums and ticket_type_forums options
+into account."><span class="description">Get the forum ID for a given ticket type and member, taking the ticket_member_forums and ticket_type_forums options
+into account.</span><pre>get_ticket_forum_id</pre></a></li>
+<li class="function  "><a href="#function_get_ticket_posts" title="get_ticket_posts() :: Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
+that of get_forum_topic_posts(), except in error conditions"><span class="description">Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
+that of get_forum_topic_posts(), except in error conditions</span><pre>get_ticket_posts</pre></a></li>
+<li class="function  "><a href="#function_get_ticket_type" title="get_ticket_type() :: Get a map of properties for the given ticket type."><span class="description">Get a map of properties for the given ticket type.</span><pre>get_ticket_type</pre></a></li>
+<li class="function  "><a href="#function_get_tickets" title="get_tickets() :: Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
+in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type."><span class="description">Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
+in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.</span><pre>get_tickets</pre></a></li>
+<li class="function  "><a href="#function_incoming_ticket_email_script" title="incoming_ticket_email_script() :: Script to read in an e-mailed ticket/reply."><span class="description">Script to read in an e-mailed ticket/reply.</span><pre>incoming_ticket_email_script</pre></a></li>
+<li class="function  "><a href="#function_is_non_human_email" title="is_non_human_email() :: See if we need to skip over an e-mail message, due to it not being from a human."><span class="description">See if we need to skip over an e-mail message, due to it not being from a human.</span><pre>is_non_human_email</pre></a></li>
+<li class="function  "><a href="#function_is_ticket_forum" title="is_ticket_forum() :: Returns whether the given forum ID is for a ticket forum (subforum of the root ticket forum)."><span class="description">Returns whether the given forum ID is for a ticket forum (subforum of the root ticket forum).</span><pre>is_ticket_forum</pre></a></li>
+<li class="function  "><a href="#function_is_ticket_post_staff_only" title="is_ticket_post_staff_only() :: Is the given ticket post intended for staff only? Works only on Conversr."><span class="description">Is the given ticket post intended for staff only? Works only on Conversr.</span><pre>is_ticket_post_staff_only</pre></a></li>
+<li class="function  "><a href="#function_send_ticket_email" title="send_ticket_email() :: Send an e-mail notification for a new post in a support ticket, either to the staff or to the ticket's owner."><span class="description">Send an e-mail notification for a new post in a support ticket, either to the staff or to the ticket's owner.</span><pre>send_ticket_email</pre></a></li>
+<li class="function  "><a href="#function_ticket_add_post" title="ticket_add_post() :: Add a new post to a ticket, or create a new ticket if a ticket with the given ID doesn't exist."><span class="description">Add a new post to a ticket, or create a new ticket if a ticket with the given ID doesn't exist.</span><pre>ticket_add_post</pre></a></li>
+<li class="function  "><a href="#function_ticket_email_cannot_bind" title="ticket_email_cannot_bind() :: Send out an e-mail about us not recognising an e-mail address for a ticket."><span class="description">Send out an e-mail about us not recognising an e-mail address for a ticket.</span><pre>ticket_email_cannot_bind</pre></a></li>
+<li class="function  "><a href="#function_ticket_incoming_message" title="ticket_incoming_message() :: Process an e-mail found, sent to the support ticket system."><span class="description">Process an e-mail found, sent to the support ticket system.</span><pre>ticket_incoming_message</pre></a></li>
+<li class="function  "><a href="#function_ticket_incoming_scan" title="ticket_incoming_scan() :: Scan for new e-mails in the support inbox."><span class="description">Scan for new e-mails in the support inbox.</span><pre>ticket_incoming_scan</pre></a></li>
+<li class="function  "><a href="#function_ticket_outgoing_message" title="ticket_outgoing_message() :: Send out an e-mail message for a ticket / ticket reply."><span class="description">Send out an e-mail message for a ticket / ticket reply.</span><pre>ticket_outgoing_message</pre></a></li>
+<li class="function  "><a href="#function_update_ticket_type_lead_times" title="update_ticket_type_lead_times() :: Update the cache of ticket type lead times (average time taken for a response to tickets of that type) in the database."><span class="description">Update the cache of ticket type lead times (average time taken for a response to tickets of that type) in the database.</span><pre>update_ticket_type_lead_times</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/tickets.html">tickets</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_ticket_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_ticket_type " data-toggle="collapse" data-target=".function_add_ticket_type .collapse" title="">
+<h2>Add a ticket type.</h2>
+<pre>add_ticket_type(\SHORT_TEXT $ticket_type_name, \BINARY $guest_emails_mandatory<code> = 0</code>, \BINARY $search_faq<code> = 0</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_type_name</h4>
+<code>\SHORT_TEXT</code><p>The ticket type name</p></div>
+<div class="subelement argument">
+<h4>$guest_emails_mandatory</h4>
+<code>\BINARY</code><p>Whether guest e-mail addresses are mandatory for new tickets</p></div>
+<div class="subelement argument">
+<h4>$search_faq</h4>
+<code>\BINARY</code><p>Whether the FAQ should be searched before submitting a new ticket</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ticket type ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_build_types_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_build_types_list " data-toggle="collapse" data-target=".function_build_types_list .collapse" title="">
+<h2>Build a list of ticket types.</h2>
+<pre>build_types_list(\?AUTO_LINK $selected_ticket_type_id, \?array $ticket_types_to_let_through<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$selected_ticket_type_id</h4>
+<code>\?AUTO_LINK</code><p>The current selected ticket type (null: none)</p></div>
+<div class="subelement argument">
+<h4>$ticket_types_to_let_through</h4>
+<code>\?array</code><p>List of ticket types to show regardless of access permissions (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map between ticket types, and template-ready details about them</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_ticket_access"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_ticket_access " data-toggle="collapse" data-target=".function_check_ticket_access .collapse" title="">
+<h2>Checks the ticket ID is valid, and there is access for the current member to view it. Bombs out if there's a problem.</h2>
+<pre>check_ticket_access(string $id) : \MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>The ticket ID to check</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\MEMBER</code>The ticket owner</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_ticket_by_topic_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_ticket_by_topic_id " data-toggle="collapse" data-target=".function_delete_ticket_by_topic_id .collapse" title="">
+<h2>Remove a ticket from the database. This does not remove the associated forum topic.</h2>
+<pre>delete_ticket_by_topic_id(\AUTO_LINK $topic_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\AUTO_LINK</code><p>The associated topic ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_ticket_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_ticket_type " data-toggle="collapse" data-target=".function_delete_ticket_type .collapse" title="">
+<h2>Delete a ticket type.</h2>
+<pre>delete_ticket_type(\AUTO_LINK $ticket_type_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>\AUTO_LINK</code><p>The ticket type ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_ticket_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_ticket_type " data-toggle="collapse" data-target=".function_edit_ticket_type .collapse" title="">
+<h2>Edit a ticket type, keeping the integer ID the same.</h2>
+<pre>edit_ticket_type(\AUTO_LINK $ticket_type_id, \?SHORT_TEXT $ticket_type_name, \BINARY $guest_emails_mandatory, \BINARY $search_faq) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>\AUTO_LINK</code><p>The ticket type ID</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_name</h4>
+<code>\?SHORT_TEXT</code><p>The new ticket type text (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$guest_emails_mandatory</h4>
+<code>\BINARY</code><p>Whether guest e-mail addresses are mandatory for new tickets</p></div>
+<div class="subelement argument">
+<h4>$search_faq</h4>
+<code>\BINARY</code><p>Whether the FAQ should be searched before submitting a new ticket</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_email_comcode_from_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_email_comcode_from_html " data-toggle="collapse" data-target=".function_email_comcode_from_html .collapse" title="">
+<h2>Convert e-mail HTML to Comcode.</h2>
+<pre>email_comcode_from_html(string $body) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$body</h4>
+<code>string</code><p>HTML body</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Comcode version</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_email_comcode_from_text"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_email_comcode_from_text " data-toggle="collapse" data-target=".function_email_comcode_from_text .collapse" title="">
+<h2>Convert e-mail text to Comcode.</h2>
+<pre>email_comcode_from_text(string $body) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$body</h4>
+<code>string</code><p>Text body</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Comcode version</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_ticket_assigned_to"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_ticket_assigned_to " data-toggle="collapse" data-target=".function_find_ticket_assigned_to .collapse" title="">
+<h2>Build a list of ticket types.</h2>
+<pre>find_ticket_assigned_to(\ID_TEXT $ticket_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>\ID_TEXT</code><p>Ticket ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Map of assigned members (member ID to display name)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_ticket_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_ticket_details " data-toggle="collapse" data-target=".function_get_ticket_details .collapse" title="">
+<h2>Get ticket details.</h2>
+<pre>get_ticket_details(string $ticket_id, boolean $hard_error<code> = true</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>string</code><p>The ticket ID</p></div>
+<div class="subelement argument">
+<h4>$hard_error</h4>
+<code>boolean</code><p>Exit with an error message if it cannot find the ticket</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A tuple: The ticket title, the topic ID, the ticket type ID, the ticket owner (null: not found)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_ticket_forum_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_ticket_forum_id " data-toggle="collapse" data-target=".function_get_ticket_forum_id .collapse" title="">
+<h2>Get the forum ID for a given ticket type and member, taking the ticket_member_forums and ticket_type_forums options
+into account.</h2>
+<pre>get_ticket_forum_id(\?AUTO_LINK $member<code> = null</code>, \?integer $ticket_type_id<code> = null</code>, boolean $create<code> = false</code>, boolean $silent_error_handling<code> = false</code>) : \?AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?AUTO_LINK</code><p>The member ID (null: no member)</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>\?integer</code><p>The ticket type (null: all ticket types)</p></div>
+<div class="subelement argument">
+<h4>$create</h4>
+<code>boolean</code><p>Create the forum if it's missing</p></div>
+<div class="subelement argument">
+<h4>$silent_error_handling</h4>
+<code>boolean</code><p>Whether to skip showing errors, returning NULL instead</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?AUTO_LINK</code>Forum ID (null: not found)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_ticket_posts"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_ticket_posts " data-toggle="collapse" data-target=".function_get_ticket_posts .collapse" title="">
+<h2>Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
+that of get_forum_topic_posts(), except in error conditions</h2>
+<pre>get_ticket_posts(string $ticket_id, \AUTO_LINK $forum, \AUTO_LINK $topic_id, \AUTO_LINK $ticket_type, integer $start<code> = 0</code>, \?integer $max<code> = null</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>string</code><p>The ticket ID</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\AUTO_LINK</code><p>Return location for the forum ID</p></div>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\AUTO_LINK</code><p>Return location for the topic ID</p></div>
+<div class="subelement argument">
+<h4>$ticket_type</h4>
+<code>\AUTO_LINK</code><p>Return location for the ticket type</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Start offset in pagination</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>Max per page in pagination (null: no limit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The array of maps (Each map is: title, message, member, date) (null: no such ticket)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_ticket_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_ticket_type " data-toggle="collapse" data-target=".function_get_ticket_type .collapse" title="">
+<h2>Get a map of properties for the given ticket type.</h2>
+<pre>get_ticket_type(\?AUTO_LINK $ticket_type_id) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>\?AUTO_LINK</code><p>The ticket type (null: fallback for old tickets)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Array of properties (null: ticket type not found)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_tickets"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_tickets " data-toggle="collapse" data-target=".function_get_tickets .collapse" title="">
+<h2>Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
+in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.</h2>
+<pre>get_tickets(\AUTO_LINK $member, \?AUTO_LINK $ticket_type_id<code> = null</code>, boolean $override_view_others_tickets<code> = false</code>, boolean $silent_error_handling<code> = false</code>, boolean $open_only<code> = false</code>, boolean $include_first_posts<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\AUTO_LINK</code><p>The member ID</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>\?AUTO_LINK</code><p>The ticket type (null: all ticket types)</p></div>
+<div class="subelement argument">
+<h4>$override_view_others_tickets</h4>
+<code>boolean</code><p>Don't view others' tickets, even if the member has permission to</p></div>
+<div class="subelement argument">
+<h4>$silent_error_handling</h4>
+<code>boolean</code><p>Whether to skip showing errors, returning NULL instead</p></div>
+<div class="subelement argument">
+<h4>$open_only</h4>
+<code>boolean</code><p>Open tickets only</p></div>
+<div class="subelement argument">
+<h4>$include_first_posts</h4>
+<code>boolean</code><p>Whether to include first posts</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Array of tickets, empty on failure</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_incoming_ticket_email_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_incoming_ticket_email_script " data-toggle="collapse" data-target=".function_incoming_ticket_email_script .collapse" title="">
+<h2>Script to read in an e-mailed ticket/reply.</h2>
+<pre>incoming_ticket_email_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_non_human_email"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_non_human_email " data-toggle="collapse" data-target=".function_is_non_human_email .collapse" title="">
+<h2>See if we need to skip over an e-mail message, due to it not being from a human.</h2>
+<pre>is_non_human_email(string $subject, string $body, string $full_header) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>string</code><p>Subject line</p></div>
+<div class="subelement argument">
+<h4>$body</h4>
+<code>string</code><p>Message body</p></div>
+<div class="subelement argument">
+<h4>$full_header</h4>
+<code>string</code><p>Message headers</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it should not be processed</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_ticket_forum"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_ticket_forum " data-toggle="collapse" data-target=".function_is_ticket_forum .collapse" title="">
+<h2>Returns whether the given forum ID is for a ticket forum (subforum of the root ticket forum).</h2>
+<pre>is_ticket_forum(\?AUTO_LINK $forum_id) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum_id</h4>
+<code>\?AUTO_LINK</code><p>The forum ID (null: private topics forum)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the given forum is a ticket forum</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_ticket_post_staff_only"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_ticket_post_staff_only " data-toggle="collapse" data-target=".function_is_ticket_post_staff_only .collapse" title="">
+<h2>Is the given ticket post intended for staff only? Works only on Conversr.</h2>
+<pre>is_ticket_post_staff_only(array $post) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>array</code><p>Array of data for the post</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the post's staff only</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_send_ticket_email"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_send_ticket_email " data-toggle="collapse" data-target=".function_send_ticket_email .collapse" title="">
+<h2>Send an e-mail notification for a new post in a support ticket, either to the staff or to the ticket's owner.</h2>
+<pre>send_ticket_email(string $ticket_id, \LONG_TEXT $title, \LONG_TEXT $post, mixed $ticket_url, \EMAIL $uid_email, integer $ticket_type_id_if_new, \?MEMBER $new_poster<code> = null</code>, boolean $auto_created<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>string</code><p>The ticket ID</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\LONG_TEXT</code><p>The ticket title</p></div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>\LONG_TEXT</code><p>The ticket post's content</p></div>
+<div class="subelement argument">
+<h4>$ticket_url</h4>
+<code>mixed</code><p>The home URL (to view the ticket) (URLPATH or Tempcode URL)</p></div>
+<div class="subelement argument">
+<h4>$uid_email</h4>
+<code>\EMAIL</code><p>Ticket owner's e-mail address, in the case of a new ticket</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_id_if_new</h4>
+<code>integer</code><p>The new ticket type, or -1 if it is a reply to an existing ticket</p></div>
+<div class="subelement argument">
+<h4>$new_poster</h4>
+<code>\?MEMBER</code><p>Posting member (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$auto_created</h4>
+<code>boolean</code><p>Whether the ticket was auto-created</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ticket_add_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ticket_add_post " data-toggle="collapse" data-target=".function_ticket_add_post .collapse" title="">
+<h2>Add a new post to a ticket, or create a new ticket if a ticket with the given ID doesn't exist.</h2>
+<pre>ticket_add_post(\AUTO_LINK $member, string $ticket_id, integer $ticket_type_id, \LONG_TEXT $title, \LONG_TEXT $post, string $ticket_url, boolean $staff_only<code> = false</code>, \?TIME $time_post<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>It has the same return value as make_post_forum_topic().</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\AUTO_LINK</code><p>The member ID</p></div>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>string</code><p>The ticket ID (doesn't have to exist)</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_id</h4>
+<code>integer</code><p>The ticket type (-1 reply to ticket)</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\LONG_TEXT</code><p>The post title</p></div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>\LONG_TEXT</code><p>The post content in Comcode format</p></div>
+<div class="subelement argument">
+<h4>$ticket_url</h4>
+<code>string</code><p>The home URL</p></div>
+<div class="subelement argument">
+<h4>$staff_only</h4>
+<code>boolean</code><p>Whether the reply is staff only (invisible to ticket owner, only on Conversr)</p></div>
+<div class="subelement argument">
+<h4>$time_post</h4>
+<code>\?TIME</code><p>The post time (null: use current time)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ticket_email_cannot_bind"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ticket_email_cannot_bind " data-toggle="collapse" data-target=".function_ticket_email_cannot_bind .collapse" title="">
+<h2>Send out an e-mail about us not recognising an e-mail address for a ticket.</h2>
+<pre>ticket_email_cannot_bind(string $subject, string $body, string $email, string $email_bounce_to) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>string</code><p>Subject line of original message</p></div>
+<div class="subelement argument">
+<h4>$body</h4>
+<code>string</code><p>Body of original message</p></div>
+<div class="subelement argument">
+<h4>$email</h4>
+<code>string</code><p>E-mail address we tried to bind to</p></div>
+<div class="subelement argument">
+<h4>$email_bounce_to</h4>
+<code>string</code><p>E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ticket_incoming_message"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ticket_incoming_message " data-toggle="collapse" data-target=".function_ticket_incoming_message .collapse" title="">
+<h2>Process an e-mail found, sent to the support ticket system.</h2>
+<pre>ticket_incoming_message(\EMAIL $from_email, string $subject, string $body, array $attachments) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$from_email</h4>
+<code>\EMAIL</code><p>From e-mail</p></div>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>string</code><p>E-mail subject</p></div>
+<div class="subelement argument">
+<h4>$body</h4>
+<code>string</code><p>E-mail body</p></div>
+<div class="subelement argument">
+<h4>$attachments</h4>
+<code>array</code><p>Map of attachments (name to file data); only populated if $mime_type is APPLICATION/OCTET-STREAM</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ticket_incoming_scan"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ticket_incoming_scan " data-toggle="collapse" data-target=".function_ticket_incoming_scan .collapse" title="">
+<h2>Scan for new e-mails in the support inbox.</h2>
+<pre>ticket_incoming_scan() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ticket_outgoing_message"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ticket_outgoing_message " data-toggle="collapse" data-target=".function_ticket_outgoing_message .collapse" title="">
+<h2>Send out an e-mail message for a ticket / ticket reply.</h2>
+<pre>ticket_outgoing_message(\ID_TEXT $ticket_id, mixed $ticket_url, string $ticket_type_name, string $subject, string $message, string $to_name, \EMAIL $to_email, string $from_displayname, boolean $new<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ticket_id</h4>
+<code>\ID_TEXT</code><p>Ticket ID</p></div>
+<div class="subelement argument">
+<h4>$ticket_url</h4>
+<code>mixed</code><p>URL to the ticket (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$ticket_type_name</h4>
+<code>string</code><p>The ticket type's label</p></div>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>string</code><p>Ticket subject</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>Ticket message</p></div>
+<div class="subelement argument">
+<h4>$to_name</h4>
+<code>string</code><p>Display name of ticket owner</p></div>
+<div class="subelement argument">
+<h4>$to_email</h4>
+<code>\EMAIL</code><p>E-mail address of ticket owner</p></div>
+<div class="subelement argument">
+<h4>$from_displayname</h4>
+<code>string</code><p>Display name of staff poster</p></div>
+<div class="subelement argument">
+<h4>$new</h4>
+<code>boolean</code><p>Whether this is a new ticket, just created by the ticket owner</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_update_ticket_type_lead_times"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_update_ticket_type_lead_times " data-toggle="collapse" data-target=".function_update_ticket_type_lead_times .collapse" title="">
+<h2>Update the cache of ticket type lead times (average time taken for a response to tickets of that type) in the database.</h2>
+<pre>update_ticket_type_lead_times() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This is a query-intensive function, so should only be run occasionally.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/tickets.html">tickets</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:44+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/shopping.html" title="shopping"><i class="icon-folder-open"></i>shopping</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_to_cart" title="add_to_cart() :: Function to add new item to cart."><span class="description">Function to add new item to cart.</span><pre>add_to_cart</pre></a></li>
+<li class="function  "><a href="#function_delete_incomplete_orders" title="delete_incomplete_orders() :: Delete incomplete orders from ages ago."><span class="description">Delete incomplete orders from ages ago.</span><pre>delete_incomplete_orders</pre></a></li>
+<li class="function  "><a href="#function_delete_pending_orders_for_current_user" title="delete_pending_orders_for_current_user() :: Delete any pending orders for the current user. E.g. if cart purchase was cancelled, or cart was changed."><span class="description">Delete any pending orders for the current user. E.g. if cart purchase was cancelled, or cart was changed.</span><pre>delete_pending_orders_for_current_user</pre></a></li>
+<li class="function  "><a href="#function_empty_cart" title="empty_cart() :: Delete cart contents for the current user."><span class="description">Delete cart contents for the current user.</span><pre>empty_cart</pre></a></li>
+<li class="function  "><a href="#function_find_products_in_cart" title="find_products_in_cart() :: Find products in cart"><span class="description">Find products in cart</span><pre>find_products_in_cart</pre></a></li>
+<li class="function  "><a href="#function_get_current_order_id" title="get_current_order_id() :: Find current order ID"><span class="description">Find current order ID</span><pre>get_current_order_id</pre></a></li>
+<li class="function  "><a href="#function_get_order_status_list" title="get_order_status_list() :: Return list entry of common order statuses of orders"><span class="description">Return list entry of common order statuses of orders</span><pre>get_order_status_list</pre></a></li>
+<li class="function  "><a href="#function_get_order_tax_opt_out_status" title="get_order_tax_opt_out_status() :: Find current order tax opt out status"><span class="description">Find current order tax opt out status</span><pre>get_order_tax_opt_out_status</pre></a></li>
+<li class="function  "><a href="#function_get_ordered_product_list_string" title="get_ordered_product_list_string() :: Return a string of order products to export as csv"><span class="description">Return a string of order products to export as csv</span><pre>get_ordered_product_list_string</pre></a></li>
+<li class="function  "><a href="#function_get_product_details" title="get_product_details() :: Get product details array, according to the hook specified in the 'hook' GET parameter"><span class="description">Get product details array, according to the hook specified in the 'hook' GET parameter</span><pre>get_product_details</pre></a></li>
+<li class="function  "><a href="#function_log_cart_actions" title="log_cart_actions() :: Log cart actions"><span class="description">Log cart actions</span><pre>log_cart_actions</pre></a></li>
+<li class="function  "><a href="#function_payment_form" title="payment_form() :: Payment step."><span class="description">Payment step.</span><pre>payment_form</pre></a></li>
+<li class="function  "><a href="#function_purchase_done_staff_mail" title="purchase_done_staff_mail() :: Tell the staff the shopping order was placed"><span class="description">Tell the staff the shopping order was placed</span><pre>purchase_done_staff_mail</pre></a></li>
+<li class="function  "><a href="#function_remove_from_cart" title="remove_from_cart() :: Remove from cart."><span class="description">Remove from cart.</span><pre>remove_from_cart</pre></a></li>
+<li class="function  "><a href="#function_show_cart_link" title="show_cart_link() :: Show cart link"><span class="description">Show cart link</span><pre>show_cart_link</pre></a></li>
+<li class="function  "><a href="#function_stock_maintain_warn_mail" title="stock_maintain_warn_mail() :: Stock maintain warning mail"><span class="description">Stock maintain warning mail</span><pre>stock_maintain_warn_mail</pre></a></li>
+<li class="function  "><a href="#function_update_cart" title="update_cart() :: Update cart"><span class="description">Update cart</span><pre>update_cart</pre></a></li>
+<li class="function  "><a href="#function_update_stock" title="update_stock() :: Stock reduction"><span class="description">Stock reduction</span><pre>update_stock</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/shopping.html">shopping</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_to_cart"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_to_cart " data-toggle="collapse" data-target=".function_add_to_cart .collapse" title="">
+<h2>Function to add new item to cart.</h2>
+<pre>add_to_cart(array $product_det) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$product_det</h4>
+<code>array</code><p>Product details</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_incomplete_orders"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_incomplete_orders " data-toggle="collapse" data-target=".function_delete_incomplete_orders .collapse" title="">
+<h2>Delete incomplete orders from ages ago.</h2>
+<pre>delete_incomplete_orders() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_pending_orders_for_current_user"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_pending_orders_for_current_user " data-toggle="collapse" data-target=".function_delete_pending_orders_for_current_user .collapse" title="">
+<h2>Delete any pending orders for the current user. E.g. if cart purchase was cancelled, or cart was changed.</h2>
+<pre>delete_pending_orders_for_current_user() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_empty_cart"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_empty_cart " data-toggle="collapse" data-target=".function_empty_cart .collapse" title="">
+<h2>Delete cart contents for the current user.</h2>
+<pre>empty_cart(boolean $soft_delete<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$soft_delete</h4>
+<code>boolean</code><p>Whether to just do a soft delete, i.e. mark as deleted.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_products_in_cart"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_products_in_cart " data-toggle="collapse" data-target=".function_find_products_in_cart .collapse" title="">
+<h2>Find products in cart</h2>
+<pre>find_products_in_cart() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Product details in cart</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_current_order_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_current_order_id " data-toggle="collapse" data-target=".function_get_current_order_id .collapse" title="">
+<h2>Find current order ID</h2>
+<pre>get_current_order_id() : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>Order ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_order_status_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_order_status_list " data-toggle="collapse" data-target=".function_get_order_status_list .collapse" title="">
+<h2>Return list entry of common order statuses of orders</h2>
+<pre>get_order_status_list() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Order status list entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_order_tax_opt_out_status"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_order_tax_opt_out_status " data-toggle="collapse" data-target=".function_get_order_tax_opt_out_status .collapse" title="">
+<h2>Find current order tax opt out status</h2>
+<pre>get_order_tax_opt_out_status() : \BINARY</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\BINARY</code>Tax opt out status of current order</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_ordered_product_list_string"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_ordered_product_list_string " data-toggle="collapse" data-target=".function_get_ordered_product_list_string .collapse" title="">
+<h2>Return a string of order products to export as csv</h2>
+<pre>get_ordered_product_list_string(\AUTO_LINK $order_id) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$order_id</h4>
+<code>\AUTO_LINK</code><p>Order ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>Products names and quantity</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_product_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_product_details " data-toggle="collapse" data-target=".function_get_product_details .collapse" title="">
+<h2>Get product details array, according to the hook specified in the 'hook' GET parameter</h2>
+<pre>get_product_details() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Product details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_log_cart_actions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_log_cart_actions " data-toggle="collapse" data-target=".function_log_cart_actions .collapse" title="">
+<h2>Log cart actions</h2>
+<pre>log_cart_actions(\ID_TEXT $action) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$action</h4>
+<code>\ID_TEXT</code><p>The data</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_payment_form"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_payment_form " data-toggle="collapse" data-target=".function_payment_form .collapse" title="">
+<h2>Payment step.</h2>
+<pre>payment_form() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The result of execution.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_purchase_done_staff_mail"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_purchase_done_staff_mail " data-toggle="collapse" data-target=".function_purchase_done_staff_mail .collapse" title="">
+<h2>Tell the staff the shopping order was placed</h2>
+<pre>purchase_done_staff_mail(\AUTO_LINK $order_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$order_id</h4>
+<code>\AUTO_LINK</code><p>Order ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_remove_from_cart"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_remove_from_cart " data-toggle="collapse" data-target=".function_remove_from_cart .collapse" title="">
+<h2>Remove from cart.</h2>
+<pre>remove_from_cart(array $product_to_remove) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$product_to_remove</h4>
+<code>array</code><p>Products to remove</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_show_cart_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_show_cart_link " data-toggle="collapse" data-target=".function_show_cart_link .collapse" title="">
+<h2>Show cart link</h2>
+<pre>show_cart_link() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>\Tempcode</code></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_stock_maintain_warn_mail"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_stock_maintain_warn_mail " data-toggle="collapse" data-target=".function_stock_maintain_warn_mail .collapse" title="">
+<h2>Stock maintain warning mail</h2>
+<pre>stock_maintain_warn_mail(\SHORT_TEXT $product_name, \AUTO_LINK $product_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$product_name</h4>
+<code>\SHORT_TEXT</code><p>Product name</p></div>
+<div class="subelement argument">
+<h4>$product_id</h4>
+<code>\AUTO_LINK</code><p>Product ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_update_cart"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_update_cart " data-toggle="collapse" data-target=".function_update_cart .collapse" title="">
+<h2>Update cart</h2>
+<pre>update_cart(array $product_det) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$product_det</h4>
+<code>array</code><p>Product details</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_update_stock"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_update_stock " data-toggle="collapse" data-target=".function_update_stock .collapse" title="">
+<h2>Stock reduction</h2>
+<pre>update_stock(\AUTO_LINK $order_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/shopping.html">shopping</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$order_id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:43+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1094 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/commandr.html" title="commandr"><i class="icon-folder-open"></i>commandr</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_commandr_make_normal_html_visible" title="commandr_make_normal_html_visible() :: Put something non-Commandr in a standard box so it looks OK."><span class="description">Put something non-Commandr in a standard box so it looks OK.</span><pre>commandr_make_normal_html_visible</pre></a></li>
+<li class="function  "><a href="#function_commandr_script" title="commandr_script() :: Commandr entry script."><span class="description">Commandr entry script.</span><pre>commandr_script</pre></a></li>
+<li class="function  "><a href="#function_do_command_help" title="do_command_help() :: Template for a command's help."><span class="description">Template for a command's help.</span><pre>do_command_help</pre></a></li>
+<li class="function  "><a href="#function_expunge_resourcefs_moniker" title="expunge_resourcefs_moniker() :: Generate, and save, a resource-fs moniker."><span class="description">Generate, and save, a resource-fs moniker.</span><pre>expunge_resourcefs_moniker</pre></a></li>
+<li class="function  "><a href="#function_find_commandrfs_filename_via_id" title="find_commandrfs_filename_via_id() :: Find the Commandr-fs (repository) filename from the resource ID."><span class="description">Find the Commandr-fs (repository) filename from the resource ID.</span><pre>find_commandrfs_filename_via_id</pre></a></li>
+<li class="function  "><a href="#function_find_guid_via_id" title="find_guid_via_id() :: Find the resource GUID from the resource ID."><span class="description">Find the resource GUID from the resource ID.</span><pre>find_guid_via_id</pre></a></li>
+<li class="function  "><a href="#function_find_id_via_commandrfs_filename" title="find_id_via_commandrfs_filename() :: Find the resource ID from the Commandr-fs (repository) filename."><span class="description">Find the resource ID from the Commandr-fs (repository) filename.</span><pre>find_id_via_commandrfs_filename</pre></a></li>
+<li class="function  "><a href="#function_find_id_via_guid" title="find_id_via_guid() :: Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type."><span class="description">Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</span><pre>find_id_via_guid</pre></a></li>
+<li class="function  "><a href="#function_find_id_via_label" title="find_id_via_label() :: Find the resource ID from the resource label."><span class="description">Find the resource ID from the resource label.</span><pre>find_id_via_label</pre></a></li>
+<li class="function  "><a href="#function_find_id_via_moniker" title="find_id_via_moniker() :: Find the resource ID from the resource moniker."><span class="description">Find the resource ID from the resource moniker.</span><pre>find_id_via_moniker</pre></a></li>
+<li class="function  "><a href="#function_find_ids_via_guids" title="find_ids_via_guids() :: Find the resource IDs from the resource GUIDs. This is useful if you need to resolve many GUIDs at once during performant-critical code."><span class="description">Find the resource IDs from the resource GUIDs. This is useful if you need to resolve many GUIDs at once during performant-critical code.</span><pre>find_ids_via_guids</pre></a></li>
+<li class="function  "><a href="#function_find_label_via_id" title="find_label_via_id() :: Find the resource label from the resource ID."><span class="description">Find the resource label from the resource ID.</span><pre>find_label_via_id</pre></a></li>
+<li class="function  "><a href="#function_find_moniker_via_id" title="find_moniker_via_id() :: Find the resource moniker from the resource ID."><span class="description">Find the resource moniker from the resource ID.</span><pre>find_moniker_via_id</pre></a></li>
+<li class="function  "><a href="#function_generate_resourcefs_moniker" title="generate_resourcefs_moniker() :: Generate, and save, a resource-fs moniker."><span class="description">Generate, and save, a resource-fs moniker.</span><pre>generate_resourcefs_moniker</pre></a></li>
+<li class="function  "><a href="#function_get_queued_messages" title="get_queued_messages() :: Returns a string containing the XML for any messages queued to be sent to the client."><span class="description">Returns a string containing the XML for any messages queued to be sent to the client.</span><pre>get_queued_messages</pre></a></li>
+<li class="function  "><a href="#function_get_resource_commandrfs_object" title="get_resource_commandrfs_object() :: Get the Commandr-fs object for a resource type."><span class="description">Get the Commandr-fs object for a resource type.</span><pre>get_resource_commandrfs_object</pre></a></li>
+<li class="function  "><a href="#function_remap_portable_as_resource_id" title="remap_portable_as_resource_id() :: Convert a portable ID to something local."><span class="description">Convert a portable ID to something local.</span><pre>remap_portable_as_resource_id</pre></a></li>
+<li class="function  "><a href="#function_remap_resource_id_as_portable" title="remap_resource_id_as_portable() :: Convert a local ID to something portable."><span class="description">Convert a local ID to something portable.</span><pre>remap_resource_id_as_portable</pre></a></li>
+<li class="function  "><a href="#function_resourcefs_logging" title="resourcefs_logging() :: Log a message."><span class="description">Log a message.</span><pre>resourcefs_logging</pre></a></li>
+<li class="function  "><a href="#function_resourcefs_logging__end" title="resourcefs_logging__end() :: Disengage logging."><span class="description">Disengage logging.</span><pre>resourcefs_logging__end</pre></a></li>
+<li class="function  "><a href="#function_resourcefs_logging__start" title="resourcefs_logging__start() :: Disengage logging."><span class="description">Disengage logging.</span><pre>resourcefs_logging__start</pre></a></li>
+<li class="nav-header">
+<i title="Classes" class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#Commandr_fs" title="Virtual filesystems.">Commandr_fs</a></li>
+<li><a href="#Virtual_shell" title="Commandr.">Virtual_shell</a></li>
+<li><a href="#Resource_fs_base" title="Resource-fs base class.">Resource_fs_base</a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_ASSIGNMENT" title="ASSIGNMENT() :: "><span class="description">ASSIGNMENT</span><pre>ASSIGNMENT</pre></a></li>
+<li class="constant  "><a href="#constant_COMMANDRFS_DIR" title="COMMANDRFS_DIR() :: "><span class="description">COMMANDRFS_DIR</span><pre>COMMANDRFS_DIR</pre></a></li>
+<li class="constant  "><a href="#constant_COMMANDRFS_FILE" title="COMMANDRFS_FILE() :: "><span class="description">COMMANDRFS_FILE</span><pre>COMMANDRFS_FILE</pre></a></li>
+<li class="constant  "><a href="#constant_COMMAND_LONE" title="COMMAND_LONE() :: "><span class="description">COMMAND_LONE</span><pre>COMMAND_LONE</pre></a></li>
+<li class="constant  "><a href="#constant_COMMAND_NATIVE" title="COMMAND_NATIVE() :: "><span class="description">COMMAND_NATIVE</span><pre>COMMAND_NATIVE</pre></a></li>
+<li class="constant  "><a href="#constant_COMMAND_PHP" title="COMMAND_PHP() :: "><span class="description">COMMAND_PHP</span><pre>COMMAND_PHP</pre></a></li>
+<li class="constant  "><a href="#constant_COMMAND_SCRIPT" title="COMMAND_SCRIPT() :: "><span class="description">COMMAND_SCRIPT</span><pre>COMMAND_SCRIPT</pre></a></li>
+<li class="constant  "><a href="#constant_COMMAND_SQL" title="COMMAND_SQL() :: "><span class="description">COMMAND_SQL</span><pre>COMMAND_SQL</pre></a></li>
+<li class="constant  "><a href="#constant_IN_EXTRA_SYNTAX_ASSIGNMENT" title="IN_EXTRA_SYNTAX_ASSIGNMENT() :: "><span class="description">IN_EXTRA_SYNTAX_ASSIGNMENT</span><pre>IN_EXTRA_SYNTAX_ASSIGNMENT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_EXTRA_SYNTAX_STREAM" title="IN_EXTRA_SYNTAX_STREAM() :: "><span class="description">IN_EXTRA_SYNTAX_STREAM</span><pre>IN_EXTRA_SYNTAX_STREAM</pre></a></li>
+<li class="constant  "><a href="#constant_IN_EXTRA_VALUE" title="IN_EXTRA_VALUE() :: "><span class="description">IN_EXTRA_VALUE</span><pre>IN_EXTRA_VALUE</pre></a></li>
+<li class="constant  "><a href="#constant_IN_OPTION" title="IN_OPTION() :: "><span class="description">IN_OPTION</span><pre>IN_OPTION</pre></a></li>
+<li class="constant  "><a href="#constant_IN_OPTION_SYNTAX" title="IN_OPTION_SYNTAX() :: "><span class="description">IN_OPTION_SYNTAX</span><pre>IN_OPTION_SYNTAX</pre></a></li>
+<li class="constant  "><a href="#constant_IN_OPTION_VALUE" title="IN_OPTION_VALUE() :: "><span class="description">IN_OPTION_VALUE</span><pre>IN_OPTION_VALUE</pre></a></li>
+<li class="constant  "><a href="#constant_IN_PARAMETER" title="IN_PARAMETER() :: "><span class="description">IN_PARAMETER</span><pre>IN_PARAMETER</pre></a></li>
+<li class="constant  "><a href="#constant_MODE_NORMAL" title="MODE_NORMAL() :: "><span class="description">MODE_NORMAL</span><pre>MODE_NORMAL</pre></a></li>
+<li class="constant  "><a href="#constant_MODE_QUOTES" title="MODE_QUOTES() :: "><span class="description">MODE_QUOTES</span><pre>MODE_QUOTES</pre></a></li>
+<li class="constant  "><a href="#constant_OUT_EXTRA" title="OUT_EXTRA() :: "><span class="description">OUT_EXTRA</span><pre>OUT_EXTRA</pre></a></li>
+<li class="constant  "><a href="#constant_OUT_OPTION" title="OUT_OPTION() :: "><span class="description">OUT_OPTION</span><pre>OUT_OPTION</pre></a></li>
+<li class="constant  "><a href="#constant_OUT_PARAMETER" title="OUT_PARAMETER() :: "><span class="description">OUT_PARAMETER</span><pre>OUT_PARAMETER</pre></a></li>
+<li class="constant  "><a href="#constant_REDIRECT_APPEND" title="REDIRECT_APPEND() :: "><span class="description">REDIRECT_APPEND</span><pre>REDIRECT_APPEND</pre></a></li>
+<li class="constant  "><a href="#constant_REDIRECT_IDENTIFIER" title="REDIRECT_IDENTIFIER() :: "><span class="description">REDIRECT_IDENTIFIER</span><pre>REDIRECT_IDENTIFIER</pre></a></li>
+<li class="constant  "><a href="#constant_REDIRECT_INPUT" title="REDIRECT_INPUT() :: "><span class="description">REDIRECT_INPUT</span><pre>REDIRECT_INPUT</pre></a></li>
+<li class="constant  "><a href="#constant_REDIRECT_OVERWRITE" title="REDIRECT_OVERWRITE() :: "><span class="description">REDIRECT_OVERWRITE</span><pre>REDIRECT_OVERWRITE</pre></a></li>
+<li class="constant  "><a href="#constant_REDIRECT_PIPE" title="REDIRECT_PIPE() :: "><span class="description">REDIRECT_PIPE</span><pre>REDIRECT_PIPE</pre></a></li>
+<li class="constant  "><a href="#constant_RESOURCEFS_DEFAULT_EXTENSION" title="RESOURCEFS_DEFAULT_EXTENSION() :: "><span class="description">RESOURCEFS_DEFAULT_EXTENSION</span><pre>RESOURCEFS_DEFAULT_EXTENSION</pre></a></li>
+<li class="constant  "><a href="#constant_SECTION_COMMAND" title="SECTION_COMMAND() :: "><span class="description">SECTION_COMMAND</span><pre>SECTION_COMMAND</pre></a></li>
+<li class="constant  "><a href="#constant_SECTION_EXTRAS" title="SECTION_EXTRAS() :: "><span class="description">SECTION_EXTRAS</span><pre>SECTION_EXTRAS</pre></a></li>
+<li class="constant  "><a href="#constant_SECTION_OPTIONS" title="SECTION_OPTIONS() :: "><span class="description">SECTION_OPTIONS</span><pre>SECTION_OPTIONS</pre></a></li>
+<li class="constant  "><a href="#constant_SECTION_PARAMETERS" title="SECTION_PARAMETERS() :: "><span class="description">SECTION_PARAMETERS</span><pre>SECTION_PARAMETERS</pre></a></li>
+<li class="constant  "><a href="#constant_STREAM_IDENTIFIER" title="STREAM_IDENTIFIER() :: "><span class="description">STREAM_IDENTIFIER</span><pre>STREAM_IDENTIFIER</pre></a></li>
+<li class="constant  "><a href="#constant_STREAM_STDCOMMAND" title="STREAM_STDCOMMAND() :: "><span class="description">STREAM_STDCOMMAND</span><pre>STREAM_STDCOMMAND</pre></a></li>
+<li class="constant  "><a href="#constant_STREAM_STDERR" title="STREAM_STDERR() :: "><span class="description">STREAM_STDERR</span><pre>STREAM_STDERR</pre></a></li>
+<li class="constant  "><a href="#constant_STREAM_STDHTML" title="STREAM_STDHTML() :: "><span class="description">STREAM_STDHTML</span><pre>STREAM_STDHTML</pre></a></li>
+<li class="constant  "><a href="#constant_STREAM_STDOUT" title="STREAM_STDOUT() :: "><span class="description">STREAM_STDOUT</span><pre>STREAM_STDOUT</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/commandr.html">commandr</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_commandr_make_normal_html_visible"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_commandr_make_normal_html_visible " data-toggle="collapse" data-target=".function_commandr_make_normal_html_visible .collapse" title="">
+<h2>Put something non-Commandr in a standard box so it looks OK.</h2>
+<pre>commandr_make_normal_html_visible(mixed $html) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$html</h4>
+<code>mixed</code><p>HTML (string or Tempcode)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Boxed HTML</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_commandr_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_commandr_script " data-toggle="collapse" data-target=".function_commandr_script .collapse" title="">
+<h2>Commandr entry script.</h2>
+<pre>commandr_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_command_help"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_command_help " data-toggle="collapse" data-target=".function_do_command_help .collapse" title="">
+<h2>Template for a command's help.</h2>
+<pre>do_command_help(string $command, array $options, array $parameters) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$command</h4>
+<code>string</code><p>Command name</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>array</code><p>Options</p></div>
+<div class="subelement argument">
+<h4>$parameters</h4>
+<code>array</code><p>Parameters (keys are the parameters, values are always set to true, i.e. it is an array of as many trues as there are parameters)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Help template</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_expunge_resourcefs_moniker"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_expunge_resourcefs_moniker " data-toggle="collapse" data-target=".function_expunge_resourcefs_moniker .collapse" title="">
+<h2>Generate, and save, a resource-fs moniker.</h2>
+<pre>expunge_resourcefs_moniker(\ID_TEXT $resource_type, \ID_TEXT $resource_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_commandrfs_filename_via_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_commandrfs_filename_via_id " data-toggle="collapse" data-target=".function_find_commandrfs_filename_via_id .collapse" title="">
+<h2>Find the Commandr-fs (repository) filename from the resource ID.</h2>
+<pre>find_commandrfs_filename_via_id(\ID_TEXT $resource_type, \ID_TEXT $resource_id, boolean $include_subpath<code> = false</code>) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<div class="subelement argument">
+<h4>$include_subpath</h4>
+<code>boolean</code><p>Whether to include the subpath</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The filename (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_guid_via_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_guid_via_id " data-toggle="collapse" data-target=".function_find_guid_via_id .collapse" title="">
+<h2>Find the resource GUID from the resource ID.</h2>
+<pre>find_guid_via_id(\ID_TEXT $resource_type, \ID_TEXT $resource_id) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The GUID (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_id_via_commandrfs_filename"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_id_via_commandrfs_filename " data-toggle="collapse" data-target=".function_find_id_via_commandrfs_filename .collapse" title="">
+<h2>Find the resource ID from the Commandr-fs (repository) filename.</h2>
+<pre>find_id_via_commandrfs_filename(\ID_TEXT $resource_type, \ID_TEXT $filename) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>\ID_TEXT</code><p>The filename</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The ID (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_id_via_guid"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_id_via_guid " data-toggle="collapse" data-target=".function_find_id_via_guid .collapse" title="">
+<h2>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</h2>
+<pre>find_id_via_guid(\ID_TEXT $resource_guid) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_guid</h4>
+<code>\ID_TEXT</code><p>The GUID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The ID (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_id_via_label"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_id_via_label " data-toggle="collapse" data-target=".function_find_id_via_label .collapse" title="">
+<h2>Find the resource ID from the resource label.</h2>
+<pre>find_id_via_label(\ID_TEXT $resource_type, \LONG_TEXT $_resource_label, \?string $subpath<code> = null</code>) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$_resource_label</h4>
+<code>\LONG_TEXT</code><p>The label</p></div>
+<div class="subelement argument">
+<h4>$subpath</h4>
+<code>\?string</code><p>The subpath (null: don't care). It may end in "/*" if you want to look for a match under a certain directory</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The ID (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_id_via_moniker"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_id_via_moniker " data-toggle="collapse" data-target=".function_find_id_via_moniker .collapse" title="">
+<h2>Find the resource ID from the resource moniker.</h2>
+<pre>find_id_via_moniker(\ID_TEXT $resource_type, \ID_TEXT $resource_moniker) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_moniker</h4>
+<code>\ID_TEXT</code><p>The moniker</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The ID (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_ids_via_guids"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_ids_via_guids " data-toggle="collapse" data-target=".function_find_ids_via_guids .collapse" title="">
+<h2>Find the resource IDs from the resource GUIDs. This is useful if you need to resolve many GUIDs at once during performant-critical code.</h2>
+<pre>find_ids_via_guids(array $guids) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$guids</h4>
+<code>array</code><p>The GUIDs</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Mapping between GUIDs and IDs (anything where there's no match will result in no array entry being present for that GUID)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_label_via_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_label_via_id " data-toggle="collapse" data-target=".function_find_label_via_id .collapse" title="">
+<h2>Find the resource label from the resource ID.</h2>
+<pre>find_label_via_id(\ID_TEXT $resource_type, \ID_TEXT $resource_id) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The label (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_moniker_via_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_moniker_via_id " data-toggle="collapse" data-target=".function_find_moniker_via_id .collapse" title="">
+<h2>Find the resource moniker from the resource ID.</h2>
+<pre>find_moniker_via_id(\ID_TEXT $resource_type, \ID_TEXT $resource_id) : \?ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?ID_TEXT</code>The moniker (null: no match)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_generate_resourcefs_moniker"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_generate_resourcefs_moniker " data-toggle="collapse" data-target=".function_generate_resourcefs_moniker .collapse" title="">
+<h2>Generate, and save, a resource-fs moniker.</h2>
+<pre>generate_resourcefs_moniker(\ID_TEXT $resource_type, \ID_TEXT $resource_id, \?LONG_TEXT $label<code> = null</code>, \?ID_TEXT $new_guid<code> = null</code>, boolean $definitely_new<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<div class="subelement argument">
+<h4>$label</h4>
+<code>\?LONG_TEXT</code><p>The (new) label (null: lookup for specified resource)</p></div>
+<div class="subelement argument">
+<h4>$new_guid</h4>
+<code>\?ID_TEXT</code><p>GUID to forcibly assign (null: don't force)</p></div>
+<div class="subelement argument">
+<h4>$definitely_new</h4>
+<code>boolean</code><p>If we know this is new, i.e. has no existing moniker</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A triple: The moniker (may be new, or the prior one if the moniker did not need to change), the GUID, the label</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_queued_messages"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_queued_messages " data-toggle="collapse" data-target=".function_get_queued_messages .collapse" title="">
+<h2>Returns a string containing the XML for any messages queued to be sent to the client.</h2>
+<pre>get_queued_messages(boolean $xml<code> = true</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$xml</h4>
+<code>boolean</code><p>Output as XML or Tempcode?</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The queued message XML</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_resource_commandrfs_object"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_resource_commandrfs_object " data-toggle="collapse" data-target=".function_get_resource_commandrfs_object .collapse" title="">
+<h2>Get the Commandr-fs object for a resource type.</h2>
+<pre>get_resource_commandrfs_object(\ID_TEXT $resource_type) : \?object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?object</code>The object (null: could not get one)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_remap_portable_as_resource_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_remap_portable_as_resource_id " data-toggle="collapse" data-target=".function_remap_portable_as_resource_id .collapse" title="">
+<h2>Convert a portable ID to something local.</h2>
+<pre>remap_portable_as_resource_id(\ID_TEXT $resource_type, array $portable) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$portable</h4>
+<code>array</code><p>Portable ID details</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The resource ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_remap_resource_id_as_portable"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_remap_resource_id_as_portable " data-toggle="collapse" data-target=".function_remap_resource_id_as_portable .collapse" title="">
+<h2>Convert a local ID to something portable.</h2>
+<pre>remap_resource_id_as_portable(\ID_TEXT $resource_type, \ID_TEXT $resource_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$resource_type</h4>
+<code>\ID_TEXT</code><p>The resource type</p></div>
+<div class="subelement argument">
+<h4>$resource_id</h4>
+<code>\ID_TEXT</code><p>The resource ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Portable ID details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_resourcefs_logging"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_resourcefs_logging " data-toggle="collapse" data-target=".function_resourcefs_logging .collapse" title="">
+<h2>Log a message.</h2>
+<pre>resourcefs_logging(string $message, \ID_TEXT $type<code> = 'warn'</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>inform notice warn</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The message</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The template to use</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_resourcefs_logging__end"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_resourcefs_logging__end " data-toggle="collapse" data-target=".function_resourcefs_logging__end .collapse" title="">
+<h2>Disengage logging.</h2>
+<pre>resourcefs_logging__end() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_resourcefs_logging__start"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_resourcefs_logging__start " data-toggle="collapse" data-target=".function_resourcefs_logging__start .collapse" title="">
+<h2>Disengage logging.</h2>
+<pre>resourcefs_logging__start(string $level<code> = 'notice'</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>inform notice warn</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$level</h4>
+<code>string</code><p>The minimum logging level</p></div>
+</div></div>
+</div>
+<h3>
+<i title="Classes" class="icon-custom icon-class"></i> Classes, interfaces, and traits</h3>
+<div xmlns:php="http://php.net/xsl" id="Commandr_fs" class="element ajax clickable class">
+<h1>Commandr_fs<a href="../classes/Commandr_fs.html">¶</a>
+</h1>
+<p class="short_description">Virtual filesystems.</p>
+<div class="details collapse"></div>
+<a href="../classes/Commandr_fs.html" class="more">« More »</a>
+</div>
+<div xmlns:php="http://php.net/xsl" id="Resource_fs_base" class="element ajax clickable class">
+<h1>Resource_fs_base<a href="../classes/Resource_fs_base.html">¶</a>
+</h1>
+<p class="short_description">Resource-fs base class.</p>
+<div class="details collapse"></div>
+<a href="../classes/Resource_fs_base.html" class="more">« More »</a>
+</div>
+<div xmlns:php="http://php.net/xsl" id="Virtual_shell" class="element ajax clickable class">
+<h1>Virtual_shell<a href="../classes/Virtual_shell.html">¶</a>
+</h1>
+<p class="short_description">Commandr.</p>
+<div class="details collapse"></div>
+<a href="../classes/Virtual_shell.html" class="more">« More »</a>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_ASSIGNMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_ASSIGNMENT" data-toggle="collapse" data-target=".constant_ASSIGNMENT .collapse" title="">
+<h2>ASSIGNMENT</h2>
+<pre>ASSIGNMENT = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMANDRFS_DIR"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMANDRFS_DIR" data-toggle="collapse" data-target=".constant_COMMANDRFS_DIR .collapse" title="">
+<h2>COMMANDRFS_DIR</h2>
+<pre>COMMANDRFS_DIR = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMANDRFS_FILE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMANDRFS_FILE" data-toggle="collapse" data-target=".constant_COMMANDRFS_FILE .collapse" title="">
+<h2>COMMANDRFS_FILE</h2>
+<pre>COMMANDRFS_FILE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMAND_LONE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMAND_LONE" data-toggle="collapse" data-target=".constant_COMMAND_LONE .collapse" title="">
+<h2>COMMAND_LONE</h2>
+<pre>COMMAND_LONE = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMAND_NATIVE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMAND_NATIVE" data-toggle="collapse" data-target=".constant_COMMAND_NATIVE .collapse" title="">
+<h2>COMMAND_NATIVE</h2>
+<pre>COMMAND_NATIVE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMAND_PHP"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMAND_PHP" data-toggle="collapse" data-target=".constant_COMMAND_PHP .collapse" title="">
+<h2>COMMAND_PHP</h2>
+<pre>COMMAND_PHP = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMAND_SCRIPT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMAND_SCRIPT" data-toggle="collapse" data-target=".constant_COMMAND_SCRIPT .collapse" title="">
+<h2>COMMAND_SCRIPT</h2>
+<pre>COMMAND_SCRIPT = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_COMMAND_SQL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_COMMAND_SQL" data-toggle="collapse" data-target=".constant_COMMAND_SQL .collapse" title="">
+<h2>COMMAND_SQL</h2>
+<pre>COMMAND_SQL = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_EXTRA_SYNTAX_ASSIGNMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_EXTRA_SYNTAX_ASSIGNMENT" data-toggle="collapse" data-target=".constant_IN_EXTRA_SYNTAX_ASSIGNMENT .collapse" title="">
+<h2>IN_EXTRA_SYNTAX_ASSIGNMENT</h2>
+<pre>IN_EXTRA_SYNTAX_ASSIGNMENT = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_EXTRA_SYNTAX_STREAM"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_EXTRA_SYNTAX_STREAM" data-toggle="collapse" data-target=".constant_IN_EXTRA_SYNTAX_STREAM .collapse" title="">
+<h2>IN_EXTRA_SYNTAX_STREAM</h2>
+<pre>IN_EXTRA_SYNTAX_STREAM = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_EXTRA_VALUE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_EXTRA_VALUE" data-toggle="collapse" data-target=".constant_IN_EXTRA_VALUE .collapse" title="">
+<h2>IN_EXTRA_VALUE</h2>
+<pre>IN_EXTRA_VALUE = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_OPTION"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_OPTION" data-toggle="collapse" data-target=".constant_IN_OPTION .collapse" title="">
+<h2>IN_OPTION</h2>
+<pre>IN_OPTION = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_OPTION_SYNTAX"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_OPTION_SYNTAX" data-toggle="collapse" data-target=".constant_IN_OPTION_SYNTAX .collapse" title="">
+<h2>IN_OPTION_SYNTAX</h2>
+<pre>IN_OPTION_SYNTAX = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_OPTION_VALUE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_OPTION_VALUE" data-toggle="collapse" data-target=".constant_IN_OPTION_VALUE .collapse" title="">
+<h2>IN_OPTION_VALUE</h2>
+<pre>IN_OPTION_VALUE = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_PARAMETER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_PARAMETER" data-toggle="collapse" data-target=".constant_IN_PARAMETER .collapse" title="">
+<h2>IN_PARAMETER</h2>
+<pre>IN_PARAMETER = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MODE_NORMAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MODE_NORMAL" data-toggle="collapse" data-target=".constant_MODE_NORMAL .collapse" title="">
+<h2>MODE_NORMAL</h2>
+<pre>MODE_NORMAL = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MODE_QUOTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MODE_QUOTES" data-toggle="collapse" data-target=".constant_MODE_QUOTES .collapse" title="">
+<h2>MODE_QUOTES</h2>
+<pre>MODE_QUOTES = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_OUT_EXTRA"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_OUT_EXTRA" data-toggle="collapse" data-target=".constant_OUT_EXTRA .collapse" title="">
+<h2>OUT_EXTRA</h2>
+<pre>OUT_EXTRA = -1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_OUT_OPTION"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_OUT_OPTION" data-toggle="collapse" data-target=".constant_OUT_OPTION .collapse" title="">
+<h2>OUT_OPTION</h2>
+<pre>OUT_OPTION = -1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_OUT_PARAMETER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_OUT_PARAMETER" data-toggle="collapse" data-target=".constant_OUT_PARAMETER .collapse" title="">
+<h2>OUT_PARAMETER</h2>
+<pre>OUT_PARAMETER = -1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_REDIRECT_APPEND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_REDIRECT_APPEND" data-toggle="collapse" data-target=".constant_REDIRECT_APPEND .collapse" title="">
+<h2>REDIRECT_APPEND</h2>
+<pre>REDIRECT_APPEND = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_REDIRECT_IDENTIFIER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_REDIRECT_IDENTIFIER" data-toggle="collapse" data-target=".constant_REDIRECT_IDENTIFIER .collapse" title="">
+<h2>REDIRECT_IDENTIFIER</h2>
+<pre>REDIRECT_IDENTIFIER = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_REDIRECT_INPUT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_REDIRECT_INPUT" data-toggle="collapse" data-target=".constant_REDIRECT_INPUT .collapse" title="">
+<h2>REDIRECT_INPUT</h2>
+<pre>REDIRECT_INPUT = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_REDIRECT_OVERWRITE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_REDIRECT_OVERWRITE" data-toggle="collapse" data-target=".constant_REDIRECT_OVERWRITE .collapse" title="">
+<h2>REDIRECT_OVERWRITE</h2>
+<pre>REDIRECT_OVERWRITE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_REDIRECT_PIPE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_REDIRECT_PIPE" data-toggle="collapse" data-target=".constant_REDIRECT_PIPE .collapse" title="">
+<h2>REDIRECT_PIPE</h2>
+<pre>REDIRECT_PIPE = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_RESOURCEFS_DEFAULT_EXTENSION"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_RESOURCEFS_DEFAULT_EXTENSION" data-toggle="collapse" data-target=".constant_RESOURCEFS_DEFAULT_EXTENSION .collapse" title="">
+<h2>RESOURCEFS_DEFAULT_EXTENSION</h2>
+<pre>RESOURCEFS_DEFAULT_EXTENSION = 'cms' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_SECTION_COMMAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_SECTION_COMMAND" data-toggle="collapse" data-target=".constant_SECTION_COMMAND .collapse" title="">
+<h2>SECTION_COMMAND</h2>
+<pre>SECTION_COMMAND = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_SECTION_EXTRAS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_SECTION_EXTRAS" data-toggle="collapse" data-target=".constant_SECTION_EXTRAS .collapse" title="">
+<h2>SECTION_EXTRAS</h2>
+<pre>SECTION_EXTRAS = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_SECTION_OPTIONS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_SECTION_OPTIONS" data-toggle="collapse" data-target=".constant_SECTION_OPTIONS .collapse" title="">
+<h2>SECTION_OPTIONS</h2>
+<pre>SECTION_OPTIONS = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_SECTION_PARAMETERS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_SECTION_PARAMETERS" data-toggle="collapse" data-target=".constant_SECTION_PARAMETERS .collapse" title="">
+<h2>SECTION_PARAMETERS</h2>
+<pre>SECTION_PARAMETERS = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STREAM_IDENTIFIER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STREAM_IDENTIFIER" data-toggle="collapse" data-target=".constant_STREAM_IDENTIFIER .collapse" title="">
+<h2>STREAM_IDENTIFIER</h2>
+<pre>STREAM_IDENTIFIER = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STREAM_STDCOMMAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STREAM_STDCOMMAND" data-toggle="collapse" data-target=".constant_STREAM_STDCOMMAND .collapse" title="">
+<h2>STREAM_STDCOMMAND</h2>
+<pre>STREAM_STDCOMMAND = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STREAM_STDERR"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STREAM_STDERR" data-toggle="collapse" data-target=".constant_STREAM_STDERR .collapse" title="">
+<h2>STREAM_STDERR</h2>
+<pre>STREAM_STDERR = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STREAM_STDHTML"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STREAM_STDHTML" data-toggle="collapse" data-target=".constant_STREAM_STDHTML .collapse" title="">
+<h2>STREAM_STDHTML</h2>
+<pre>STREAM_STDHTML = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STREAM_STDOUT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STREAM_STDOUT" data-toggle="collapse" data-target=".constant_STREAM_STDOUT .collapse" title="">
+<h2>STREAM_STDOUT</h2>
+<pre>STREAM_STDOUT = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:33+01:00.<br></footer></div>
+</div>
+</body>
+</html>

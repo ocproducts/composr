@@ -1,0 +1,729 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/ldap.html" title="ldap"><i class="icon-folder-open"></i>ldap</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_cns_get_all_ldap_groups" title="cns_get_all_ldap_groups() :: Get a list of usergroups on the LDAP server."><span class="description">Get a list of usergroups on the LDAP server.</span><pre>cns_get_all_ldap_groups</pre></a></li>
+<li class="function  "><a href="#function_cns_get_group_members_raw_ldap" title="cns_get_group_members_raw_ldap() :: (LDAP helper for cns_get_group_members_raw) Get a list of members in a group (or more full details if $non_validated is true)."><span class="description">(LDAP helper for cns_get_group_members_raw) Get a list of members in a group (or more full details if $non_validated is true).</span><pre>cns_get_group_members_raw_ldap</pre></a></li>
+<li class="function  "><a href="#function_cns_get_ldap_hash" title="cns_get_ldap_hash() :: Find the LDAP servers password for a certain member."><span class="description">Find the LDAP servers password for a certain member.</span><pre>cns_get_ldap_hash</pre></a></li>
+<li class="function  "><a href="#function_cns_get_members_groups_ldap" title="cns_get_members_groups_ldap() :: (LDAP helper for cns_get_members_groups) Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant)."><span class="description">(LDAP helper for cns_get_members_groups) Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).</span><pre>cns_get_members_groups_ldap</pre></a></li>
+<li class="function  "><a href="#function_cns_group_cnsid_to_ldapcn" title="cns_group_cnsid_to_ldapcn() :: Find the named LDAP usergroup for an Conversr ID. Note that the returned MAY NOT ACTUALLY EXIST!"><span class="description">Find the named LDAP usergroup for an Conversr ID. Note that the returned MAY NOT ACTUALLY EXIST!</span><pre>cns_group_cnsid_to_ldapcn</pre></a></li>
+<li class="function  "><a href="#function_cns_group_ldapcn_to_cnsid" title="cns_group_ldapcn_to_cnsid() :: Find the Composr-ID for a named LDAP usergroup."><span class="description">Find the Composr-ID for a named LDAP usergroup.</span><pre>cns_group_ldapcn_to_cnsid</pre></a></li>
+<li class="function  "><a href="#function_cns_group_ldapcn_to_ldapgid" title="cns_group_ldapcn_to_ldapgid() :: Find the LDAP ID for a named LDAP usergroup. POSIX Only."><span class="description">Find the LDAP ID for a named LDAP usergroup. POSIX Only.</span><pre>cns_group_ldapcn_to_ldapgid</pre></a></li>
+<li class="function  "><a href="#function_cns_group_ldapgid_to_cnsid" title="cns_group_ldapgid_to_cnsid() :: Find the Composr-ID for an LDAP usergroup-ID. POSIX Only."><span class="description">Find the Composr-ID for an LDAP usergroup-ID. POSIX Only.</span><pre>cns_group_ldapgid_to_cnsid</pre></a></li>
+<li class="function  "><a href="#function_cns_is_ldap_member_potential" title="cns_is_ldap_member_potential() :: Find whether a member of a certain username WOULD be bound to LDAP authentication (an exceptional situation, only for sites that use it)."><span class="description">Find whether a member of a certain username WOULD be bound to LDAP authentication (an exceptional situation, only for sites that use it).</span><pre>cns_is_ldap_member_potential</pre></a></li>
+<li class="function  "><a href="#function_cns_is_on_ldap" title="cns_is_on_ldap() :: Find whether a member exists on the LDAP server."><span class="description">Find whether a member exists on the LDAP server.</span><pre>cns_is_on_ldap</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_authorise_login" title="cns_ldap_authorise_login() :: Authorise an LDAP login."><span class="description">Authorise an LDAP login.</span><pre>cns_ldap_authorise_login</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_bind" title="cns_ldap_bind() :: Performs the Conversr LDAP connection bind, used to do general querying (not a user login)."><span class="description">Performs the Conversr LDAP connection bind, used to do general querying (not a user login).</span><pre>cns_ldap_bind</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_connect" title="cns_ldap_connect() :: Set up the Conversr LDAP connection."><span class="description">Set up the Conversr LDAP connection.</span><pre>cns_ldap_connect</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_get_member_primary_group" title="cns_ldap_get_member_primary_group() :: Get the primary usergroup of a member in LDAP."><span class="description">Get the primary usergroup of a member in LDAP.</span><pre>cns_ldap_get_member_primary_group</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_guess_email" title="cns_ldap_guess_email() :: Get the e-mail of a member in LDAP."><span class="description">Get the e-mail of a member in LDAP.</span><pre>cns_ldap_guess_email</pre></a></li>
+<li class="function  "><a href="#function_cns_ldap_hash" title="cns_ldap_hash() :: Convert a plain-text password into a hashed password."><span class="description">Convert a plain-text password into a hashed password.</span><pre>cns_ldap_hash</pre></a></li>
+<li class="function  "><a href="#function_cns_long_cn_to_short_cn" title="cns_long_cn_to_short_cn() :: Converts an active directory style long-CN to a short one."><span class="description">Converts an active directory style long-CN to a short one.</span><pre>cns_long_cn_to_short_cn</pre></a></li>
+<li class="function  "><a href="#function_cns_member_cnsid_to_ldapcn" title="cns_member_cnsid_to_ldapcn() :: Find the LDAP username for a Composr member-ID."><span class="description">Find the LDAP username for a Composr member-ID.</span><pre>cns_member_cnsid_to_ldapcn</pre></a></li>
+<li class="function  "><a href="#function_cns_member_ldapcn_to_cnsid" title="cns_member_ldapcn_to_cnsid() :: Find the Composr member-ID for an LDAP username."><span class="description">Find the Composr member-ID for an LDAP username.</span><pre>cns_member_ldapcn_to_cnsid</pre></a></li>
+<li class="function  "><a href="#function_get_group_class" title="get_group_class() :: The LDAP class indicating a group."><span class="description">The LDAP class indicating a group.</span><pre>get_group_class</pre></a></li>
+<li class="function  "><a href="#function_get_mapped_admin_group" title="get_mapped_admin_group() :: The LDAP group that maps to the first administrative group in Composr (db_get_first_id()+1)."><span class="description">The LDAP group that maps to the first administrative group in Composr (db_get_first_id()+1).</span><pre>get_mapped_admin_group</pre></a></li>
+<li class="function  "><a href="#function_get_mapped_users_group" title="get_mapped_users_group() :: The LDAP group that maps to the default Composr group."><span class="description">The LDAP group that maps to the default Composr group.</span><pre>get_mapped_users_group</pre></a></li>
+<li class="function  "><a href="#function_get_member_class" title="get_member_class() :: The LDAP class indicating an account."><span class="description">The LDAP class indicating an account.</span><pre>get_member_class</pre></a></li>
+<li class="function  "><a href="#function_group_property" title="group_property() :: The group naming property LDAP will be using."><span class="description">The group naming property LDAP will be using.</span><pre>group_property</pre></a></li>
+<li class="function  "><a href="#function_group_search_qualifier" title="group_search_qualifier() :: Where in the LDAP hierarchy to search for members."><span class="description">Where in the LDAP hierarchy to search for members.</span><pre>group_search_qualifier</pre></a></li>
+<li class="function  "><a href="#function_ldap_escape" title="ldap_escape() :: Escape, ready for an LDAP query."><span class="description">Escape, ready for an LDAP query.</span><pre>ldap_escape</pre></a></li>
+<li class="function  "><a href="#function_ldap_get_login_string" title="ldap_get_login_string() :: Get an LDAP login string to do a bind against."><span class="description">Get an LDAP login string to do a bind against.</span><pre>ldap_get_login_string</pre></a></li>
+<li class="function  "><a href="#function_ldap_unescape" title="ldap_unescape() :: Unescape data from LDAP. Technically this is not unescaping, it's just a character set conversion, but function is named to provide symmetry with ldap_escape which does both escaping and character set conversion."><span class="description">Unescape data from LDAP. Technically this is not unescaping, it's just a character set conversion, but function is named to provide symmetry with ldap_escape which does both escaping and character set conversion.</span><pre>ldap_unescape</pre></a></li>
+<li class="function  "><a href="#function_member_property" title="member_property() :: The property in LDAP used for logins."><span class="description">The property in LDAP used for logins.</span><pre>member_property</pre></a></li>
+<li class="function  "><a href="#function_member_search_qualifier" title="member_search_qualifier() :: Where in the LDAP hierarchy to search for groups."><span class="description">Where in the LDAP hierarchy to search for groups.</span><pre>member_search_qualifier</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_LDAP_OPT_DIAGNOSTIC_MESSAGE" title="LDAP_OPT_DIAGNOSTIC_MESSAGE() :: "><span class="description">LDAP_OPT_DIAGNOSTIC_MESSAGE</span><pre>LDAP_OPT_DIAGNOSTIC_MESSAGE</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/ldap.html">ldap</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_all_ldap_groups"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_all_ldap_groups " data-toggle="collapse" data-target=".function_cns_get_all_ldap_groups .collapse" title="">
+<h2>Get a list of usergroups on the LDAP server.</h2>
+<pre>cns_get_all_ldap_groups() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of user-groups (string).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_group_members_raw_ldap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_group_members_raw_ldap " data-toggle="collapse" data-target=".function_cns_get_group_members_raw_ldap .collapse" title="">
+<h2>(LDAP helper for cns_get_group_members_raw) Get a list of members in a group (or more full details if $non_validated is true).</h2>
+<pre>cns_get_group_members_raw_ldap(array $members, \GROUP $group_id, boolean $include_primaries, boolean $non_validated, boolean $include_secondaries) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$members</h4>
+<code>array</code><p>The list is written into this.</p></div>
+<div class="subelement argument">
+<h4>$group_id</h4>
+<code>\GROUP</code><p>The ID of the usergroup.</p></div>
+<div class="subelement argument">
+<h4>$include_primaries</h4>
+<code>boolean</code><p>Whether to include those in the usergroup as a primary member.</p></div>
+<div class="subelement argument">
+<h4>$non_validated</h4>
+<code>boolean</code><p>Whether to include those applied to join the usergroup, but not validated in.</p></div>
+<div class="subelement argument">
+<h4>$include_secondaries</h4>
+<code>boolean</code><p>Whether to include those in the usergroup as a secondary member.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_ldap_hash"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_ldap_hash " data-toggle="collapse" data-target=".function_cns_get_ldap_hash .collapse" title="">
+<h2>Find the LDAP servers password for a certain member.</h2>
+<pre>cns_get_ldap_hash(string $cn) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>The password (null: no such user).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_get_members_groups_ldap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_get_members_groups_ldap " data-toggle="collapse" data-target=".function_cns_get_members_groups_ldap .collapse" title="">
+<h2>(LDAP helper for cns_get_members_groups) Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).</h2>
+<pre>cns_get_members_groups_ldap(\?MEMBER $member_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>The member to find the usergroups of (null: current member).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Reverse list (e.g. array(1=>true,2=>true,3=>true) for someone in (1,2,3)).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_group_cnsid_to_ldapcn"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_group_cnsid_to_ldapcn " data-toggle="collapse" data-target=".function_cns_group_cnsid_to_ldapcn .collapse" title="">
+<h2>Find the named LDAP usergroup for an Conversr ID. Note that the returned MAY NOT ACTUALLY EXIST!</h2>
+<pre>cns_group_cnsid_to_ldapcn(\GROUP $id) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\GROUP</code><p>The Conversr ID.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The named LDAP usergroup (null: none).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_group_ldapcn_to_cnsid"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_group_ldapcn_to_cnsid " data-toggle="collapse" data-target=".function_cns_group_ldapcn_to_cnsid .collapse" title="">
+<h2>Find the Composr-ID for a named LDAP usergroup.</h2>
+<pre>cns_group_ldapcn_to_cnsid(string $cn) : \?GROUP</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The usergroup.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?GROUP</code>The Composr-ID (null: none).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_group_ldapcn_to_ldapgid"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_group_ldapcn_to_ldapgid " data-toggle="collapse" data-target=".function_cns_group_ldapcn_to_ldapgid .collapse" title="">
+<h2>Find the LDAP ID for a named LDAP usergroup. POSIX Only.</h2>
+<pre>cns_group_ldapcn_to_ldapgid(string $cn) : \?integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The named LDAP usergroup.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?integer</code>The LDAP usergroup ID (null: none).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_group_ldapgid_to_cnsid"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_group_ldapgid_to_cnsid " data-toggle="collapse" data-target=".function_cns_group_ldapgid_to_cnsid .collapse" title="">
+<h2>Find the Composr-ID for an LDAP usergroup-ID. POSIX Only.</h2>
+<pre>cns_group_ldapgid_to_cnsid(integer $gid) : \?GROUP</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$gid</h4>
+<code>integer</code><p>The LDAP ID.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?GROUP</code>The Composr-ID (null: could not find).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_is_ldap_member_potential"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_is_ldap_member_potential " data-toggle="collapse" data-target=".function_cns_is_ldap_member_potential .collapse" title="">
+<h2>Find whether a member of a certain username WOULD be bound to LDAP authentication (an exceptional situation, only for sites that use it).</h2>
+<pre>cns_is_ldap_member_potential(string $cn) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_is_on_ldap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_is_on_ldap " data-toggle="collapse" data-target=".function_cns_is_on_ldap .collapse" title="">
+<h2>Find whether a member exists on the LDAP server.</h2>
+<pre>cns_is_on_ldap(\SHORT_TEXT $cn) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>\SHORT_TEXT</code><p>The username.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_authorise_login"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_authorise_login " data-toggle="collapse" data-target=".function_cns_ldap_authorise_login .collapse" title="">
+<h2>Authorise an LDAP login.</h2>
+<pre>cns_ldap_authorise_login(string $cn, \?string $password) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username.</p></div>
+<div class="subelement argument">
+<h4>$password</h4>
+<code>\?string</code><p>The password (null: no such user).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Part of the member row to put back in and authorise normally (hackerish, but it works kind of like a filter / stage in a chain).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_bind"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_bind " data-toggle="collapse" data-target=".function_cns_ldap_bind .collapse" title="">
+<h2>Performs the Conversr LDAP connection bind, used to do general querying (not a user login).</h2>
+<pre>cns_ldap_bind() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_connect"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_connect " data-toggle="collapse" data-target=".function_cns_ldap_connect .collapse" title="">
+<h2>Set up the Conversr LDAP connection.</h2>
+<pre>cns_ldap_connect() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_get_member_primary_group"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_get_member_primary_group " data-toggle="collapse" data-target=".function_cns_ldap_get_member_primary_group .collapse" title="">
+<h2>Get the primary usergroup of a member in LDAP.</h2>
+<pre>cns_ldap_get_member_primary_group(\MEMBER $member_id) : \GROUP</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\GROUP</code>The.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_guess_email"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_guess_email " data-toggle="collapse" data-target=".function_cns_ldap_guess_email .collapse" title="">
+<h2>Get the e-mail of a member in LDAP.</h2>
+<pre>cns_ldap_guess_email(\ID_TEXT $cn) : \SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>\ID_TEXT</code><p>The CN of the member.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\SHORT_TEXT</code>Guessed e-mail address (blank: couldn't find).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_ldap_hash"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_ldap_hash " data-toggle="collapse" data-target=".function_cns_ldap_hash .collapse" title="">
+<h2>Convert a plain-text password into a hashed password.</h2>
+<pre>cns_ldap_hash(string $cn, string $password) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username (we use this to extract the hash algorithm being used by the member).</p></div>
+<div class="subelement argument">
+<h4>$password</h4>
+<code>string</code><p>The password.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The hashed password.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_long_cn_to_short_cn"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_long_cn_to_short_cn " data-toggle="collapse" data-target=".function_cns_long_cn_to_short_cn .collapse" title="">
+<h2>Converts an active directory style long-CN to a short one.</h2>
+<pre>cns_long_cn_to_short_cn(string $long, string $type) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$long</h4>
+<code>string</code><p>The long one.</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The type (e.g. CN, DN).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The short one.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_member_cnsid_to_ldapcn"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_member_cnsid_to_ldapcn " data-toggle="collapse" data-target=".function_cns_member_cnsid_to_ldapcn .collapse" title="">
+<h2>Find the LDAP username for a Composr member-ID.</h2>
+<pre>cns_member_cnsid_to_ldapcn(integer $id) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The Composr member-ID.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The username (null: none).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cns_member_ldapcn_to_cnsid"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cns_member_ldapcn_to_cnsid " data-toggle="collapse" data-target=".function_cns_member_ldapcn_to_cnsid .collapse" title="">
+<h2>Find the Composr member-ID for an LDAP username.</h2>
+<pre>cns_member_ldapcn_to_cnsid(string $cn) : \?integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?integer</code>The Composr member-ID (null: none).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_group_class"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_group_class " data-toggle="collapse" data-target=".function_get_group_class .collapse" title="">
+<h2>The LDAP class indicating a group.</h2>
+<pre>get_group_class() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_mapped_admin_group"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_mapped_admin_group " data-toggle="collapse" data-target=".function_get_mapped_admin_group .collapse" title="">
+<h2>The LDAP group that maps to the first administrative group in Composr (db_get_first_id()+1).</h2>
+<pre>get_mapped_admin_group() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The group.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_mapped_users_group"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_mapped_users_group " data-toggle="collapse" data-target=".function_get_mapped_users_group .collapse" title="">
+<h2>The LDAP group that maps to the default Composr group.</h2>
+<pre>get_mapped_users_group() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The group.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_member_class"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_member_class " data-toggle="collapse" data-target=".function_get_member_class .collapse" title="">
+<h2>The LDAP class indicating an account.</h2>
+<pre>get_member_class() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_group_property"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_group_property " data-toggle="collapse" data-target=".function_group_property .collapse" title="">
+<h2>The group naming property LDAP will be using.</h2>
+<pre>group_property() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_group_search_qualifier"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_group_search_qualifier " data-toggle="collapse" data-target=".function_group_search_qualifier .collapse" title="">
+<h2>Where in the LDAP hierarchy to search for members.</h2>
+<pre>group_search_qualifier() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ldap_escape"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ldap_escape " data-toggle="collapse" data-target=".function_ldap_escape .collapse" title="">
+<h2>Escape, ready for an LDAP query.</h2>
+<pre>ldap_escape(string $str, boolean $for_dn<code> = false</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$str</h4>
+<code>string</code><p>The value.</p></div>
+<div class="subelement argument">
+<h4>$for_dn</h4>
+<code>boolean</code><p>Whether this is for use in a DN string.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The escaped value.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ldap_get_login_string"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ldap_get_login_string " data-toggle="collapse" data-target=".function_ldap_get_login_string .collapse" title="">
+<h2>Get an LDAP login string to do a bind against.</h2>
+<pre>ldap_get_login_string(string $cn) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cn</h4>
+<code>string</code><p>The username.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The login string.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ldap_unescape"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ldap_unescape " data-toggle="collapse" data-target=".function_ldap_unescape .collapse" title="">
+<h2>Unescape data from LDAP. Technically this is not unescaping, it's just a character set conversion, but function is named to provide symmetry with ldap_escape which does both escaping and character set conversion.</h2>
+<pre>ldap_unescape(string $str) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$str</h4>
+<code>string</code><p>The escaped value.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The value.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_member_property"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_member_property " data-toggle="collapse" data-target=".function_member_property .collapse" title="">
+<h2>The property in LDAP used for logins.</h2>
+<pre>member_property() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_member_search_qualifier"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_member_search_qualifier " data-toggle="collapse" data-target=".function_member_search_qualifier .collapse" title="">
+<h2>Where in the LDAP hierarchy to search for groups.</h2>
+<pre>member_search_qualifier() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The property.</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_LDAP_OPT_DIAGNOSTIC_MESSAGE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LDAP_OPT_DIAGNOSTIC_MESSAGE" data-toggle="collapse" data-target=".constant_LDAP_OPT_DIAGNOSTIC_MESSAGE .collapse" title="">
+<h2>LDAP_OPT_DIAGNOSTIC_MESSAGE</h2>
+<pre>LDAP_OPT_DIAGNOSTIC_MESSAGE = 50 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ldap.html">ldap</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:40+01:00.<br></footer></div>
+</div>
+</body>
+</html>

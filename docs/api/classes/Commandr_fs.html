@@ -1,0 +1,663 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method__is_dir" title="_is_dir() :: Is it a directory?"><span class="description">Is it a directory?</span><pre>_is_dir()</pre></a></li>
+<li class="method public "><a href="#method__is_file" title="_is_file() :: Is it a file?"><span class="description">Is it a file?</span><pre>_is_file()</pre></a></li>
+<li class="method public "><a href="#method__pwd_to_array" title="_pwd_to_array() :: Convert a string-form path to an array."><span class="description">Convert a string-form path to an array.</span><pre>_pwd_to_array()</pre></a></li>
+<li class="method public "><a href="#method_append_file" title="append_file() :: Append to a file."><span class="description">Append to a file.</span><pre>append_file()</pre></a></li>
+<li class="method public "><a href="#method_change_directory" title='change_directory() :: Change the current working directory. Equivalent to Unix "cd".'><span class="description">Change the current working directory. Equivalent to Unix "cd".</span><pre>change_directory()</pre></a></li>
+<li class="method public "><a href="#method_commandr_fs" title="commandr_fs() :: Constructor function. Setup a virtual filesystem, but do nothing with it."><span class="description">Constructor function. Setup a virtual filesystem, but do nothing with it.</span><pre>commandr_fs()</pre></a></li>
+<li class="method public "><a href="#method_copy_directory" title='copy_directory() :: Copy a directory. Equivalent to Unix "cp".'><span class="description">Copy a directory. Equivalent to Unix "cp".</span><pre>copy_directory()</pre></a></li>
+<li class="method public "><a href="#method_copy_file" title='copy_file() :: Copy a file. Equivalent to Unix "cp".'><span class="description">Copy a file. Equivalent to Unix "cp".</span><pre>copy_file()</pre></a></li>
+<li class="method public "><a href="#method_listing" title='listing() :: Return a directory and file listing of the current working directory. Equivalent to Unix "ls".'><span class="description">Return a directory and file listing of the current working directory. Equivalent to Unix "ls".</span><pre>listing()</pre></a></li>
+<li class="method public "><a href="#method_make_directory" title='make_directory() :: Create a directory under the current working directory. Equivalent to Unix "mkdir".'><span class="description">Create a directory under the current working directory. Equivalent to Unix "mkdir".</span><pre>make_directory()</pre></a></li>
+<li class="method public "><a href="#method_move_directory" title='move_directory() :: Move a directory. Equivalent to Unix "mv".'><span class="description">Move a directory. Equivalent to Unix "mv".</span><pre>move_directory()</pre></a></li>
+<li class="method public "><a href="#method_move_file" title='move_file() :: Move a file. Equivalent to Unix "mv".'><span class="description">Move a file. Equivalent to Unix "mv".</span><pre>move_file()</pre></a></li>
+<li class="method public "><a href="#method_prepare_dir_contents_for_listing" title="prepare_dir_contents_for_listing() :: Convert a directory contents structure into a template parameter structure."><span class="description">Convert a directory contents structure into a template parameter structure.</span><pre>prepare_dir_contents_for_listing()</pre></a></li>
+<li class="method public "><a href="#method_print_working_directory" title='print_working_directory() :: Return the current working directory of the virtual filesystem. Equivalent to Unix "pwd".'><span class="description">Return the current working directory of the virtual filesystem. Equivalent to Unix "pwd".</span><pre>print_working_directory()</pre></a></li>
+<li class="method public "><a href="#method_pwd_to_string" title="pwd_to_string() :: Convert an array-form path to a string."><span class="description">Convert an array-form path to a string.</span><pre>pwd_to_string()</pre></a></li>
+<li class="method public "><a href="#method_read_file" title="read_file() :: Read a file and return the contents."><span class="description">Read a file and return the contents.</span><pre>read_file()</pre></a></li>
+<li class="method public "><a href="#method_remove_directory" title='remove_directory() :: Remove a directory under the current working directory. Equivalent to Unix "rmdir".'><span class="description">Remove a directory under the current working directory. Equivalent to Unix "rmdir".</span><pre>remove_directory()</pre></a></li>
+<li class="method public "><a href="#method_remove_file" title='remove_file() :: Remove a file. Equivalent to Unix "rm".'><span class="description">Remove a file. Equivalent to Unix "rm".</span><pre>remove_file()</pre></a></li>
+<li class="method public "><a href="#method_search" title='search() :: Return a listing of all the files/directories found matching the specified pattern. Equivalent to Unix "find".'><span class="description">Return a listing of all the files/directories found matching the specified pattern. Equivalent to Unix "find".</span><pre>search()</pre></a></li>
+<li class="method public "><a href="#method_write_file" title="write_file() :: Write to a file; create the file if it doesn't exist."><span class="description">Write to a file; create the file if it doesn't exist.</span><pre>write_file()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__convert_meta_dir_to_detailed_dir" title="_convert_meta_dir_to_detailed_dir() :: Fill out a hardcoded meta-dir to use our more detailed internal format."><span class="description">Fill out a hardcoded meta-dir to use our more detailed internal format.</span><pre>_convert_meta_dir_to_detailed_dir()</pre></a></li>
+<li class="method protected "><a href="#method__discern_meta_dir" title="_discern_meta_dir() :: Get details of the current meta directory."><span class="description">Get details of the current meta directory.</span><pre>_discern_meta_dir()</pre></a></li>
+<li class="method protected "><a href="#method__get_current_dir_contents" title="_get_current_dir_contents() :: Return the contents of the given directory in $this-&gt;commandr_fs (i.e. ls without the fancy bits)."><span class="description">Return the contents of the given directory in $this-&gt;commandr_fs (i.e. ls without the fancy bits).</span><pre>_get_current_dir_contents()</pre></a></li>
+<li class="method protected "><a href="#method__get_filename" title="_get_filename() :: Return filename from a path."><span class="description">Return filename from a path.</span><pre>_get_filename()</pre></a></li>
+<li class="method protected "><a href="#method__merge_pwds" title='_merge_pwds() :: Merge an absolute array-form path with a non-absolute array-form path, with support for "."/".'><span class="description">Merge an absolute array-form path with a non-absolute array-form path, with support for "."/".</span><pre>_merge_pwds()</pre></a></li>
+<li class="method protected "><a href="#method__start_pwd" title="_start_pwd() :: Fetch the current directory from a cookie, or the default."><span class="description">Fetch the current directory from a cookie, or the default.</span><pre>_start_pwd()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_commandr_fs" title="$commandr_fs() :: "><span class="description"></span><pre>$commandr_fs</pre></a></li>
+<li class="property public "><a href="#property_current_meta" title="$current_meta() :: "><span class="description"></span><pre>$current_meta</pre></a></li>
+<li class="property public "><a href="#property_current_meta_pwd" title="$current_meta_pwd() :: "><span class="description"></span><pre>$current_meta_pwd</pre></a></li>
+<li class="property public "><a href="#property_pwd" title="$pwd() :: "><span class="description"></span><pre>$pwd</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Commandr_fs"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Commandr_fs.html">Commandr_fs</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Virtual filesystems.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/commandr.html">commandr</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method__is_dir"></a><div class="element clickable method public method__is_dir " data-toggle="collapse" data-target=".method__is_dir .collapse" title="public">
+<h2>Is it a directory?</h2>
+<pre>_is_dir(\?array $dir<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\?array</code><p>Path to check (null: current dir is used)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Directory?</div>
+</div></div>
+</div>
+<a id="method__is_file"></a><div class="element clickable method public method__is_file " data-toggle="collapse" data-target=".method__is_file .collapse" title="public">
+<h2>Is it a file?</h2>
+<pre>_is_file(array $dir) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>array</code><p>Path (with filename) to use</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Directory?</div>
+</div></div>
+</div>
+<a id="method__pwd_to_array"></a><div class="element clickable method public method__pwd_to_array " data-toggle="collapse" data-target=".method__pwd_to_array .collapse" title="public">
+<h2>Convert a string-form path to an array.</h2>
+<pre>_pwd_to_array(string $pwd) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pwd</h4>
+<code>string</code><p>Path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Array-form path</div>
+</div></div>
+</div>
+<a id="method_append_file"></a><div class="element clickable method public method_append_file " data-toggle="collapse" data-target=".method_append_file .collapse" title="public">
+<h2>Append to a file.</h2>
+<pre>append_file(array $to_append, string $contents) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_append</h4>
+<code>array</code><p>The file to which to append</p></div>
+<div class="subelement argument">
+<h4>$contents</h4>
+<code>string</code><p>The contents to append</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_change_directory"></a><div class="element clickable method public method_change_directory " data-toggle="collapse" data-target=".method_change_directory .collapse" title="public">
+<h2>Change the current working directory. Equivalent to Unix "cd".</h2>
+<pre>change_directory(array $target_directory) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$target_directory</h4>
+<code>array</code><p>The target directory path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_commandr_fs"></a><div class="element clickable method public method_commandr_fs " data-toggle="collapse" data-target=".method_commandr_fs .collapse" title="public">
+<h2>Constructor function. Setup a virtual filesystem, but do nothing with it.</h2>
+<pre>commandr_fs() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_copy_directory"></a><div class="element clickable method public method_copy_directory " data-toggle="collapse" data-target=".method_copy_directory .collapse" title="public">
+<h2>Copy a directory. Equivalent to Unix "cp".</h2>
+<pre>copy_directory(array $to_copy, array $destination) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_copy</h4>
+<code>array</code><p>The directory to copy</p></div>
+<div class="subelement argument">
+<h4>$destination</h4>
+<code>array</code><p>The destination path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_copy_file"></a><div class="element clickable method public method_copy_file " data-toggle="collapse" data-target=".method_copy_file .collapse" title="public">
+<h2>Copy a file. Equivalent to Unix "cp".</h2>
+<pre>copy_file(array $to_copy, array $destination) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_copy</h4>
+<code>array</code><p>The file to copy</p></div>
+<div class="subelement argument">
+<h4>$destination</h4>
+<code>array</code><p>The destination path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_listing"></a><div class="element clickable method public method_listing " data-toggle="collapse" data-target=".method_listing .collapse" title="public">
+<h2>Return a directory and file listing of the current working directory. Equivalent to Unix "ls".</h2>
+<pre>listing(\?array $dir<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\?array</code><p>An alternate directory in which to perform the action (null: current directory is used)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Directories and files in the current working directory</div>
+</div></div>
+</div>
+<a id="method_make_directory"></a><div class="element clickable method public method_make_directory " data-toggle="collapse" data-target=".method_make_directory .collapse" title="public">
+<h2>Create a directory under the current working directory. Equivalent to Unix "mkdir".</h2>
+<pre>make_directory(array $directory) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$directory</h4>
+<code>array</code><p>The new directory's path and name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_move_directory"></a><div class="element clickable method public method_move_directory " data-toggle="collapse" data-target=".method_move_directory .collapse" title="public">
+<h2>Move a directory. Equivalent to Unix "mv".</h2>
+<pre>move_directory(array $to_move, array $destination) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_move</h4>
+<code>array</code><p>The directory to move</p></div>
+<div class="subelement argument">
+<h4>$destination</h4>
+<code>array</code><p>The destination path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_move_file"></a><div class="element clickable method public method_move_file " data-toggle="collapse" data-target=".method_move_file .collapse" title="public">
+<h2>Move a file. Equivalent to Unix "mv".</h2>
+<pre>move_file(array $to_move, array $destination) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_move</h4>
+<code>array</code><p>The file to move</p></div>
+<div class="subelement argument">
+<h4>$destination</h4>
+<code>array</code><p>The destination path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_prepare_dir_contents_for_listing"></a><div class="element clickable method public method_prepare_dir_contents_for_listing " data-toggle="collapse" data-target=".method_prepare_dir_contents_for_listing .collapse" title="public">
+<h2>Convert a directory contents structure into a template parameter structure.</h2>
+<pre>prepare_dir_contents_for_listing(array $entries) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$entries</h4>
+<code>array</code><p>Structure</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Template parameter structure</div>
+</div></div>
+</div>
+<a id="method_print_working_directory"></a><div class="element clickable method public method_print_working_directory " data-toggle="collapse" data-target=".method_print_working_directory .collapse" title="public">
+<h2>Return the current working directory of the virtual filesystem. Equivalent to Unix "pwd".</h2>
+<pre>print_working_directory(boolean $array_form<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array_form</h4>
+<code>boolean</code><p>Return the pwd in array form?</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The current working directory (array or string)</div>
+</div></div>
+</div>
+<a id="method_pwd_to_string"></a><div class="element clickable method public method_pwd_to_string " data-toggle="collapse" data-target=".method_pwd_to_string .collapse" title="public">
+<h2>Convert an array-form path to a string.</h2>
+<pre>pwd_to_string(\?array $pwd<code> = null</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pwd</h4>
+<code>\?array</code><p>Path (null: use $this->pwd)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>String-form path</div>
+</div></div>
+</div>
+<a id="method_read_file"></a><div class="element clickable method public method_read_file " data-toggle="collapse" data-target=".method_read_file .collapse" title="public">
+<h2>Read a file and return the contents.</h2>
+<pre>read_file(array $to_read) : \~string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_read</h4>
+<code>array</code><p>The file to read</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~string</code>The file contents (false: failure)</div>
+</div></div>
+</div>
+<a id="method_remove_directory"></a><div class="element clickable method public method_remove_directory " data-toggle="collapse" data-target=".method_remove_directory .collapse" title="public">
+<h2>Remove a directory under the current working directory. Equivalent to Unix "rmdir".</h2>
+<pre>remove_directory(array $directory) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$directory</h4>
+<code>array</code><p>The directory-to-remove's path and name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_remove_file"></a><div class="element clickable method public method_remove_file " data-toggle="collapse" data-target=".method_remove_file .collapse" title="public">
+<h2>Remove a file. Equivalent to Unix "rm".</h2>
+<pre>remove_file(array $to_remove) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_remove</h4>
+<code>array</code><p>The file to remove</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method_search"></a><div class="element clickable method public method_search " data-toggle="collapse" data-target=".method_search .collapse" title="public">
+<h2>Return a listing of all the files/directories found matching the specified pattern. Equivalent to Unix "find".</h2>
+<pre>search(string $pattern, boolean $regexp<code> = false</code>, boolean $recursive<code> = false</code>, boolean $files<code> = true</code>, boolean $directories<code> = false</code>, \?array $dir<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>string</code><p>The search pattern (PRCE regexp or plain)</p></div>
+<div class="subelement argument">
+<h4>$regexp</h4>
+<code>boolean</code><p>Is the search pattern a regexp?</p></div>
+<div class="subelement argument">
+<h4>$recursive</h4>
+<code>boolean</code><p>Should the search be recursive?</p></div>
+<div class="subelement argument">
+<h4>$files</h4>
+<code>boolean</code><p>Should files be included in the results?</p></div>
+<div class="subelement argument">
+<h4>$directories</h4>
+<code>boolean</code><p>Should directories be included in the results?</p></div>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\?array</code><p>Directory (null: current directory is used)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The search results</div>
+</div></div>
+</div>
+<a id="method_write_file"></a><div class="element clickable method public method_write_file " data-toggle="collapse" data-target=".method_write_file .collapse" title="public">
+<h2>Write to a file; create the file if it doesn't exist.</h2>
+<pre>write_file(array $to_write, string $contents) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$to_write</h4>
+<code>array</code><p>The file to write</p></div>
+<div class="subelement argument">
+<h4>$contents</h4>
+<code>string</code><p>The contents to write</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a id="method__convert_meta_dir_to_detailed_dir"></a><div class="element clickable method protected method__convert_meta_dir_to_detailed_dir " data-toggle="collapse" data-target=".method__convert_meta_dir_to_detailed_dir .collapse" title="protected">
+<h2>Fill out a hardcoded meta-dir to use our more detailed internal format.</h2>
+<pre>_convert_meta_dir_to_detailed_dir(array $_inspected_dir) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_inspected_dir</h4>
+<code>array</code><p>Simple list of directories under here</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Full detailed directory contents</div>
+</div></div>
+</div>
+<a id="method__discern_meta_dir"></a><div class="element clickable method protected method__discern_meta_dir " data-toggle="collapse" data-target=".method__discern_meta_dir .collapse" title="protected">
+<h2>Get details of the current meta directory.</h2>
+<pre>_discern_meta_dir(array $meta_dir, string $meta_root_node, string $meta_root_node_type, \?array $target_dir<code> = null</code>) : \~array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$meta_dir</h4>
+<code>array</code><p>Meta directory result: returned by reference</p></div>
+<div class="subelement argument">
+<h4>$meta_root_node</h4>
+<code>string</code><p>Meta root node result: returned by reference</p></div>
+<div class="subelement argument">
+<h4>$meta_root_node_type</h4>
+<code>string</code><p>Meta root node type result: returned by reference</p></div>
+<div class="subelement argument">
+<h4>$target_dir</h4>
+<code>\?array</code><p>Directory (null: current directory is used)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~array</code>Current directory contents (false: error)</div>
+</div></div>
+</div>
+<a id="method__get_current_dir_contents"></a><div class="element clickable method protected method__get_current_dir_contents " data-toggle="collapse" data-target=".method__get_current_dir_contents .collapse" title="protected">
+<h2>Return the contents of the given directory in $this-&gt;commandr_fs (i.e. ls without the fancy bits).</h2>
+<pre>_get_current_dir_contents(\?array $dir<code> = null</code>, boolean $full_paths<code> = false</code>) : \~array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$dir</h4>
+<code>\?array</code><p>Directory (null: current directory is used)</p></div>
+<div class="subelement argument">
+<h4>$full_paths</h4>
+<code>boolean</code><p>Whether to use full paths</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~array</code>Directory contents (false: failure)</div>
+</div></div>
+</div>
+<a id="method__get_filename"></a><div class="element clickable method protected method__get_filename " data-toggle="collapse" data-target=".method__get_filename .collapse" title="protected">
+<h2>Return filename from a path.</h2>
+<pre>_get_filename(string $filename) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>string</code><p>Path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Filename</div>
+</div></div>
+</div>
+<a id="method__merge_pwds"></a><div class="element clickable method protected method__merge_pwds " data-toggle="collapse" data-target=".method__merge_pwds .collapse" title="protected">
+<h2>Merge an absolute array-form path with a non-absolute array-form path, with support for "."/".</h2>
+<pre>_merge_pwds(array $pwd1, array $pwd2) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>.&quot; resolution.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pwd1</h4>
+<code>array</code><p>Absolute path</p></div>
+<div class="subelement argument">
+<h4>$pwd2</h4>
+<code>array</code><p>Non-absolute path</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Merged path</div>
+</div></div>
+</div>
+<a id="method__start_pwd"></a><div class="element clickable method protected method__start_pwd " data-toggle="collapse" data-target=".method__start_pwd .collapse" title="protected">
+<h2>Fetch the current directory from a cookie, or the default.</h2>
+<pre>_start_pwd() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Current directory</div>
+</div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_commandr_fs"> </a><div class="element clickable property public property_commandr_fs" data-toggle="collapse" data-target=".property_commandr_fs .collapse" title="public">
+<h2>$commandr_fs</h2>
+<pre>$commandr_fs </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_current_meta"> </a><div class="element clickable property public property_current_meta" data-toggle="collapse" data-target=".property_current_meta .collapse" title="public">
+<h2>$current_meta</h2>
+<pre>$current_meta </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_current_meta_pwd"> </a><div class="element clickable property public property_current_meta_pwd" data-toggle="collapse" data-target=".property_current_meta_pwd .collapse" title="public">
+<h2>$current_meta_pwd</h2>
+<pre>$current_meta_pwd </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_pwd"> </a><div class="element clickable property public property_pwd" data-toggle="collapse" data-target=".property_pwd .collapse" title="public">
+<h2>$pwd</h2>
+<pre>$pwd </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:48+01:00.<br></footer></div>
+</div>
+</body>
+</html>

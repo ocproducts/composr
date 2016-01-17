@@ -1,0 +1,885 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_feedback_features.html" title="core_feedback_features"><i class="icon-folder-open"></i>core_feedback_features</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_actualise_give_rating_points" title="actualise_give_rating_points() :: Assign points to the current member for rating."><span class="description">Assign points to the current member for rating.</span><pre>actualise_give_rating_points</pre></a></li>
+<li class="function  "><a href="#function_actualise_post_comment" title="actualise_post_comment() :: Add comments to the specified resource."><span class="description">Add comments to the specified resource.</span><pre>actualise_post_comment</pre></a></li>
+<li class="function  "><a href="#function_actualise_post_trackback" title="actualise_post_trackback() :: Add trackbacks to the specified resource."><span class="description">Add trackbacks to the specified resource.</span><pre>actualise_post_trackback</pre></a></li>
+<li class="function  "><a href="#function_actualise_rating" title="actualise_rating() :: Actually adds a rating to the specified resource."><span class="description">Actually adds a rating to the specified resource.</span><pre>actualise_rating</pre></a></li>
+<li class="function  "><a href="#function_actualise_specific_rating" title="actualise_specific_rating() :: Implement a rating at the quantum level."><span class="description">Implement a rating at the quantum level.</span><pre>actualise_specific_rating</pre></a></li>
+<li class="function  "><a href="#function_already_rated" title="already_rated() :: Find whether you have rated the specified resource before."><span class="description">Find whether you have rated the specified resource before.</span><pre>already_rated</pre></a></li>
+<li class="function  "><a href="#function_display_rating" title="display_rating() :: Display rating using images"><span class="description">Display rating using images</span><pre>display_rating</pre></a></li>
+<li class="function  "><a href="#function_embed_feedback_systems" title="embed_feedback_systems() :: Main wrapper function to embed miscellaneous feedback systems into a module output."><span class="description">Main wrapper function to embed miscellaneous feedback systems into a module output.</span><pre>embed_feedback_systems</pre></a></li>
+<li class="function  "><a href="#function_extract_topic_identifier" title="extract_topic_identifier() :: Topic titles/descriptions (depending on forum driver) are encoded for both human readable data, and a special ID code: this will extract just the ID code, or return the whole thing if no specific pattern match"><span class="description">Topic titles/descriptions (depending on forum driver) are encoded for both human readable data, and a special ID code: this will extract just the ID code, or return the whole thing if no specific pattern match</span><pre>extract_topic_identifier</pre></a></li>
+<li class="function  "><a href="#function_feedback_fields" title="feedback_fields() :: Get the Tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone."><span class="description">Get the Tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone.</span><pre>feedback_fields</pre></a></li>
+<li class="function  "><a href="#function_find_overridden_comment_forum" title="find_overridden_comment_forum() :: Get the comment topic forum for a feedback scenario."><span class="description">Get the comment topic forum for a feedback scenario.</span><pre>find_overridden_comment_forum</pre></a></li>
+<li class="function  "><a href="#function_get_comments" title="get_comments() :: Get the Tempcode containing all the comments posted, and the comments posting form for the specified resource."><span class="description">Get the Tempcode containing all the comments posted, and the comments posting form for the specified resource.</span><pre>get_comments</pre></a></li>
+<li class="function  "><a href="#function_get_details_behind_feedback_code" title="get_details_behind_feedback_code() :: Find who submitted a piece of feedbackable content."><span class="description">Find who submitted a piece of feedbackable content.</span><pre>get_details_behind_feedback_code</pre></a></li>
+<li class="function  "><a href="#function_get_rating_box" title="get_rating_box() :: Get Tempcode for doing ratings (sits above get_rating_simple_array)"><span class="description">Get Tempcode for doing ratings (sits above get_rating_simple_array)</span><pre>get_rating_box</pre></a></li>
+<li class="function  "><a href="#function_get_rating_simple_array" title="get_rating_simple_array() :: Get rating information for the specified resource."><span class="description">Get rating information for the specified resource.</span><pre>get_rating_simple_array</pre></a></li>
+<li class="function  "><a href="#function_get_trackbacks" title="get_trackbacks() :: Get the Tempcode containing all the trackbacks received, and the trackback posting form for the specified resource."><span class="description">Get the Tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.</span><pre>get_trackbacks</pre></a></li>
+<li class="function  "><a href="#function_post_comment_script" title="post_comment_script() :: Do an AJAX comment post"><span class="description">Do an AJAX comment post</span><pre>post_comment_script</pre></a></li>
+<li class="function  "><a href="#function_process_overridden_comment_forum" title="process_overridden_comment_forum() :: Get the comment topic forum for a feedback scenario, and move an existing comment topic to a different forum if the category has moved and the categories have divergent configured comment topic forums (Conversr only)."><span class="description">Get the comment topic forum for a feedback scenario, and move an existing comment topic to a different forum if the category has moved and the categories have divergent configured comment topic forums (Conversr only).</span><pre>process_overridden_comment_forum</pre></a></li>
+<li class="function  "><a href="#function_send_trackbacks" title="send_trackbacks() :: Send a trackback to somebody else's website."><span class="description">Send a trackback to somebody else's website.</span><pre>send_trackbacks</pre></a></li>
+<li class="function  "><a href="#function_set_comment_forum_for" title="set_comment_forum_for() :: Set an overridden comment topic forum for a feedback scenario. Moves topics if required."><span class="description">Set an overridden comment topic forum for a feedback scenario. Moves topics if required.</span><pre>set_comment_forum_for</pre></a></li>
+<li class="function  "><a href="#function_trackback_script" title="trackback_script() :: Output the trackback script and handle trackbacks."><span class="description">Output the trackback script and handle trackbacks.</span><pre>trackback_script</pre></a></li>
+<li class="function  "><a href="#function_update_spacer_post" title="update_spacer_post() :: Update the spacer post of a comment topic, after an edit."><span class="description">Update the spacer post of a comment topic, after an edit.</span><pre>update_spacer_post</pre></a></li>
+<li class="nav-header">
+<i title="Classes" class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#CMS_Topic" title="Manage threaded topics / comment topics.">CMS_Topic</a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_MAX_LIKES_TO_SHOW" title="MAX_LIKES_TO_SHOW() :: "><span class="description">MAX_LIKES_TO_SHOW</span><pre>MAX_LIKES_TO_SHOW</pre></a></li>
+<li class="constant  "><a href="#constant_RATING_TYPE_like_dislike" title="RATING_TYPE_like_dislike() :: "><span class="description">RATING_TYPE_like_dislike</span><pre>RATING_TYPE_like_dislike</pre></a></li>
+<li class="constant  "><a href="#constant_RATING_TYPE_star_choice" title="RATING_TYPE_star_choice() :: "><span class="description">RATING_TYPE_star_choice</span><pre>RATING_TYPE_star_choice</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_feedback_features.html">core_feedback_features</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_actualise_give_rating_points"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actualise_give_rating_points " data-toggle="collapse" data-target=".function_actualise_give_rating_points .collapse" title="">
+<h2>Assign points to the current member for rating.</h2>
+<pre>actualise_give_rating_points() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actualise_post_comment"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actualise_post_comment " data-toggle="collapse" data-target=".function_actualise_post_comment .collapse" title="">
+<h2>Add comments to the specified resource.</h2>
+<pre>actualise_post_comment(boolean $allow_comments, \ID_TEXT $content_type, \ID_TEXT $content_id, mixed $content_url, \?string $content_title, \?string $forum<code> = null</code>, boolean $avoid_captcha<code> = false</code>, \?BINARY $validated<code> = null</code>, boolean $explicit_allow<code> = false</code>, boolean $no_success_message<code> = false</code>, boolean $private<code> = false</code>, \?string $post_title<code> = null</code>, \?string $post<code> = null</code>, \?TIME $time<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\?string</code><p>The name of the forum to use (null: default comment forum)</p></div>
+<div class="subelement argument">
+<h4>$avoid_captcha</h4>
+<code>boolean</code><p>Whether to not require a captcha</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\?BINARY</code><p>Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver (hence is the last parameter).</p></div>
+<div class="subelement argument">
+<h4>$explicit_allow</h4>
+<code>boolean</code><p>Whether to force allowance</p></div>
+<div class="subelement argument">
+<h4>$no_success_message</h4>
+<code>boolean</code><p>Whether to skip a success message</p></div>
+<div class="subelement argument">
+<h4>$private</h4>
+<code>boolean</code><p>Whether posts made should not be shared</p></div>
+<div class="subelement argument">
+<h4>$post_title</h4>
+<code>\?string</code><p>Title of the post (null: lookup from POST environment)</p></div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>\?string</code><p>Body of the post (null: lookup from POST environment)</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>Time of comment topic (null: now)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether a hidden post has been made</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actualise_post_trackback"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actualise_post_trackback " data-toggle="collapse" data-target=".function_actualise_post_trackback .collapse" title="">
+<h2>Add trackbacks to the specified resource.</h2>
+<pre>actualise_post_trackback(boolean $allow_trackbacks, \ID_TEXT $content_type, \ID_TEXT $content_id) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>boolean</code><p>Whether this resource allows trackback (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this trackback is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this trackback is for</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether trackbacks are on</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actualise_rating"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actualise_rating " data-toggle="collapse" data-target=".function_actualise_rating .collapse" title="">
+<h2>Actually adds a rating to the specified resource.</h2>
+<pre>actualise_rating(boolean $allow_rating, \ID_TEXT $content_type, \ID_TEXT $content_id, mixed $content_url, \?string $content_title) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>It performs full checking of inputs, and will log a hackattack if the rating is not between 1 and 10.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>boolean</code><p>Whether this resource allows rating (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actualise_specific_rating"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actualise_specific_rating " data-toggle="collapse" data-target=".function_actualise_specific_rating .collapse" title="">
+<h2>Implement a rating at the quantum level.</h2>
+<pre>actualise_specific_rating(\?integer $rating, \ID_TEXT $page_name, \MEMBER $member_id, \ID_TEXT $content_type, \ID_TEXT $type, \ID_TEXT $content_id, mixed $content_url, \?string $content_title) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 10</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rating</h4>
+<code>\?integer</code><p>Rating given (null: unrate)</p></div>
+<div class="subelement argument">
+<h4>$page_name</h4>
+<code>\ID_TEXT</code><p>The page name the rating is on</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member doing the rating</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The second level type (probably blank)</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_already_rated"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_already_rated " data-toggle="collapse" data-target=".function_already_rated .collapse" title="">
+<h2>Find whether you have rated the specified resource before.</h2>
+<pre>already_rated(array $rating_for_types, \ID_TEXT $content_id) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rating_for_types</h4>
+<code>array</code><p>List of types (download, etc) that this rating is for. All need to be rated for it to return true.</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the resource has already been rated</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_display_rating"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_display_rating " data-toggle="collapse" data-target=".function_display_rating .collapse" title="">
+<h2>Display rating using images</h2>
+<pre>display_rating(mixed $content_url, \?string $content_title, \ID_TEXT $content_type, \ID_TEXT $content_id, \ID_TEXT $display_tpl<code> = 'RATING_INLINE_STATIC'</code>, \?MEMBER $submitter<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$display_tpl</h4>
+<code>\ID_TEXT</code><p>The template to use to display the rating box</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Content owner (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode for complete trackback box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_embed_feedback_systems"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_embed_feedback_systems " data-toggle="collapse" data-target=".function_embed_feedback_systems .collapse" title="">
+<h2>Main wrapper function to embed miscellaneous feedback systems into a module output.</h2>
+<pre>embed_feedback_systems(\ID_TEXT $page_name, \ID_TEXT $content_id, \BINARY $allow_rating, integer $allow_comments, \BINARY $allow_trackbacks, \BINARY $validated, \?MEMBER $submitter, mixed $content_url, \SHORT_TEXT $content_title, \?string $forum, \?TIME $time<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>0 1 2</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$page_name</h4>
+<code>\ID_TEXT</code><p>The page name</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>Content ID</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether rating is allowed</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>integer</code><p>Whether comments/reviews is allowed (reviews allowed=2)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether trackbacks are allowed</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the content is validated</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Content owner (null: none)</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>URL to view the content</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\SHORT_TEXT</code><p>Content title</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\?string</code><p>Forum to post comments in (null: site-wide default)</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>Time of comment topic (null: now)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Tuple: Rating details, Comment details, Trackback details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_extract_topic_identifier"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_extract_topic_identifier " data-toggle="collapse" data-target=".function_extract_topic_identifier .collapse" title="">
+<h2>Topic titles/descriptions (depending on forum driver) are encoded for both human readable data, and a special ID code: this will extract just the ID code, or return the whole thing if no specific pattern match</h2>
+<pre>extract_topic_identifier(string $full_text) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$full_text</h4>
+<code>string</code><p>Potentially complex topic title</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Simplified topic title</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_feedback_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_feedback_fields " data-toggle="collapse" data-target=".function_feedback_fields .collapse" title="">
+<h2>Get the Tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone.</h2>
+<pre>feedback_fields(boolean $allow_rating, boolean $allow_comments, \?boolean $allow_trackbacks, boolean $send_trackbacks, \LONG_TEXT $notes, \?boolean $allow_reviews<code> = null</code>, boolean $default_off<code> = false</code>, boolean $has_notes<code> = true</code>, boolean $show_header<code> = true</code>, string $field_name_prefix<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>boolean</code><p>Whether rating is currently/by-default allowed for this resource</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether comments are currently/by-default allowed for this resource</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\?boolean</code><p>Whether trackbacks are currently/by-default allowed for this resource (null: this resource does not support trackbacks regardless)</p></div>
+<div class="subelement argument">
+<h4>$send_trackbacks</h4>
+<code>boolean</code><p>Whether we're allowed to send trackbacks for this resource</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>The current/by-default notes for this content</p></div>
+<div class="subelement argument">
+<h4>$allow_reviews</h4>
+<code>\?boolean</code><p>Whether reviews are currently/by-default allowed for this resource (null: no reviews allowed here)</p></div>
+<div class="subelement argument">
+<h4>$default_off</h4>
+<code>boolean</code><p>Whether the default values for the allow options is actually off (this determines how the tray auto-hides itself)</p></div>
+<div class="subelement argument">
+<h4>$has_notes</h4>
+<code>boolean</code><p>If there's to be a notes field</p></div>
+<div class="subelement argument">
+<h4>$show_header</h4>
+<code>boolean</code><p>Whether to show a header</p></div>
+<div class="subelement argument">
+<h4>$field_name_prefix</h4>
+<code>string</code><p>Field name prefix</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The feedback editing fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_overridden_comment_forum"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_overridden_comment_forum " data-toggle="collapse" data-target=".function_find_overridden_comment_forum .collapse" title="">
+<h2>Get the comment topic forum for a feedback scenario.</h2>
+<pre>find_overridden_comment_forum(\ID_TEXT $feedback_code, \?ID_TEXT $category_id<code> = null</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$feedback_code</h4>
+<code>\ID_TEXT</code><p>The feedback code, which we may have overridden the comment forum against</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?ID_TEXT</code><p>The category ID, which we may have overridden the comment forum against (null: no category ID to override against)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The comment topic forum (may be integer as string, or string forum name - so use forum_id_from_name on the result)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_comments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_comments " data-toggle="collapse" data-target=".function_get_comments .collapse" title="">
+<h2>Get the Tempcode containing all the comments posted, and the comments posting form for the specified resource.</h2>
+<pre>get_comments(\ID_TEXT $content_type, boolean $allow_comments, \ID_TEXT $content_id, boolean $invisible_if_no_comments<code> = false</code>, \?string $forum<code> = null</code>, \?string $post_warning<code> = null</code>, \?mixed $_comments<code> = null</code>, boolean $explicit_allow<code> = false</code>, \?boolean $reverse<code> = null</code>, \?MEMBER $highlight_by_user<code> = null</code>, boolean $allow_reviews<code> = false</code>, \?integer $num_to_show_limit<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$invisible_if_no_comments</h4>
+<code>boolean</code><p>Whether the comment box will be invisible if there are not yet any comments (and you're not staff)</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\?string</code><p>The name of the forum to use (null: default comment forum)</p></div>
+<div class="subelement argument">
+<h4>$post_warning</h4>
+<code>\?string</code><p>The default post to use (null: standard courtesy warning)</p></div>
+<div class="subelement argument">
+<h4>$_comments</h4>
+<code>\?mixed</code><p>The raw comment array (null: lookup). This is useful if we want to pass it through a filter</p></div>
+<div class="subelement argument">
+<h4>$explicit_allow</h4>
+<code>boolean</code><p>Whether to skip permission checks</p></div>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>\?boolean</code><p>Whether to show in reverse date order (affects default search order only) (null: read config)</p></div>
+<div class="subelement argument">
+<h4>$highlight_by_user</h4>
+<code>\?MEMBER</code><p>User to highlight the posts of (null: none)</p></div>
+<div class="subelement argument">
+<h4>$allow_reviews</h4>
+<code>boolean</code><p>Whether to allow ratings along with the comment (like reviews)</p></div>
+<div class="subelement argument">
+<h4>$num_to_show_limit</h4>
+<code>\?integer</code><p>Maximum to load (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for the comment topic</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_details_behind_feedback_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_details_behind_feedback_code " data-toggle="collapse" data-target=".function_get_details_behind_feedback_code .collapse" title="">
+<h2>Find who submitted a piece of feedbackable content.</h2>
+<pre>get_details_behind_feedback_code(\ID_TEXT $content_type, \ID_TEXT $content_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>Content type</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>Content ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple: Content title (null: unknown), Submitter (null: unknown), URL (for use within current browser session), URL (for use in emails / sharing), Content meta aware info array</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_rating_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_rating_box " data-toggle="collapse" data-target=".function_get_rating_box .collapse" title="">
+<h2>Get Tempcode for doing ratings (sits above get_rating_simple_array)</h2>
+<pre>get_rating_box(mixed $content_url, \?string $content_title, \ID_TEXT $content_type, \ID_TEXT $content_id, boolean $allow_rating, \?MEMBER $submitter<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>boolean</code><p>Whether this resource allows rating (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Content owner (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode for complete rating box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_rating_simple_array"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_rating_simple_array " data-toggle="collapse" data-target=".function_get_rating_simple_array .collapse" title="">
+<h2>Get rating information for the specified resource.</h2>
+<pre>get_rating_simple_array(mixed $content_url, \?string $content_title, \ID_TEXT $content_type, \ID_TEXT $content_id, \ID_TEXT $form_tpl<code> = 'RATING_FORM'</code>, \?MEMBER $submitter<code> = null</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this rating is for</p></div>
+<div class="subelement argument">
+<h4>$form_tpl</h4>
+<code>\ID_TEXT</code><p>The template to use to display the rating box</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Content owner (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Current rating information (ready to be passed into a template). RATING is the rating (out of 10), NUM_RATINGS is the number of ratings so far, RATING_FORM is the Tempcode of the rating box (null: rating disabled)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_trackbacks"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_trackbacks " data-toggle="collapse" data-target=".function_get_trackbacks .collapse" title="">
+<h2>Get the Tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.</h2>
+<pre>get_trackbacks(\ID_TEXT $content_type, \ID_TEXT $content_id, boolean $allow_trackback, \ID_TEXT $type<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this trackback is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this trackback is for</p></div>
+<div class="subelement argument">
+<h4>$allow_trackback</h4>
+<code>boolean</code><p>Whether this resource allows trackback (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of details being fetched (currently: blank or XML)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode for complete trackback box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_post_comment_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_post_comment_script " data-toggle="collapse" data-target=".function_post_comment_script .collapse" title="">
+<h2>Do an AJAX comment post</h2>
+<pre>post_comment_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_process_overridden_comment_forum"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_process_overridden_comment_forum " data-toggle="collapse" data-target=".function_process_overridden_comment_forum .collapse" title="">
+<h2>Get the comment topic forum for a feedback scenario, and move an existing comment topic to a different forum if the category has moved and the categories have divergent configured comment topic forums (Conversr only).</h2>
+<pre>process_overridden_comment_forum(\ID_TEXT $feedback_code, \ID_TEXT $id, \ID_TEXT $category_id, \ID_TEXT $old_category_id) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$feedback_code</h4>
+<code>\ID_TEXT</code><p>The feedback code, which we may have overridden the comment forum against</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The resource ID whose comment topic may need moving</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\ID_TEXT</code><p>The new/current category ID, which we may have overridden the comment forum against</p></div>
+<div class="subelement argument">
+<h4>$old_category_id</h4>
+<code>\ID_TEXT</code><p>The old category ID, which we may have overridden the comment forum against</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The comment topic forum</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_send_trackbacks"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_send_trackbacks " data-toggle="collapse" data-target=".function_send_trackbacks .collapse" title="">
+<h2>Send a trackback to somebody else's website.</h2>
+<pre>send_trackbacks(string $_urls, string $title, string $excerpt) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_urls</h4>
+<code>string</code><p>A comma-separated list of URLs to which we should trackback</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>string</code><p>The article title</p></div>
+<div class="subelement argument">
+<h4>$excerpt</h4>
+<code>string</code><p>The excerpt to send</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success?</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_set_comment_forum_for"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_set_comment_forum_for " data-toggle="collapse" data-target=".function_set_comment_forum_for .collapse" title="">
+<h2>Set an overridden comment topic forum for a feedback scenario. Moves topics if required.</h2>
+<pre>set_comment_forum_for(\ID_TEXT $feedback_code, \?ID_TEXT $category_id, \ID_TEXT $forum_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$feedback_code</h4>
+<code>\ID_TEXT</code><p>The feedback code to override the comment topic forum for</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?ID_TEXT</code><p>The category ID to override the comment topic forum for (null: none)</p></div>
+<div class="subelement argument">
+<h4>$forum_id</h4>
+<code>\ID_TEXT</code><p>The new comment topic forum</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_trackback_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_trackback_script " data-toggle="collapse" data-target=".function_trackback_script .collapse" title="">
+<h2>Output the trackback script and handle trackbacks.</h2>
+<pre>trackback_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_update_spacer_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_update_spacer_post " data-toggle="collapse" data-target=".function_update_spacer_post .collapse" title="">
+<h2>Update the spacer post of a comment topic, after an edit.</h2>
+<pre>update_spacer_post(boolean $allow_comments, \ID_TEXT $content_type, \ID_TEXT $content_id, mixed $content_url, \?string $content_title, \?string $forum<code> = null</code>, \?AUTO_LINK $post_id<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>boolean</code><p>Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)</p></div>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The type (download, etc) that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The ID of the type that this commenting is for</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>mixed</code><p>The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>\?string</code><p>The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>\?string</code><p>The name of the forum to use (null: default comment forum)</p></div>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\?AUTO_LINK</code><p>ID of spacer post (null: unknown)</p></div>
+</div></div>
+</div>
+<h3>
+<i title="Classes" class="icon-custom icon-class"></i> Classes, interfaces, and traits</h3>
+<div xmlns:php="http://php.net/xsl" id="CMS_Topic" class="element ajax clickable class">
+<h1>CMS_Topic<a href="../classes/CMS_Topic.html">¶</a>
+</h1>
+<p class="short_description">Manage threaded topics / comment topics.</p>
+<div class="details collapse"></div>
+<a href="../classes/CMS_Topic.html" class="more">« More »</a>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_MAX_LIKES_TO_SHOW"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MAX_LIKES_TO_SHOW" data-toggle="collapse" data-target=".constant_MAX_LIKES_TO_SHOW .collapse" title="">
+<h2>MAX_LIKES_TO_SHOW</h2>
+<pre>MAX_LIKES_TO_SHOW = 20 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_RATING_TYPE_like_dislike"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_RATING_TYPE_like_dislike" data-toggle="collapse" data-target=".constant_RATING_TYPE_like_dislike .collapse" title="">
+<h2>RATING_TYPE_like_dislike</h2>
+<pre>RATING_TYPE_like_dislike = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_RATING_TYPE_star_choice"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_RATING_TYPE_star_choice" data-toggle="collapse" data-target=".constant_RATING_TYPE_star_choice .collapse" title="">
+<h2>RATING_TYPE_star_choice</h2>
+<pre>RATING_TYPE_star_choice = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_feedback_features.html">core_feedback_features</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:35+01:00.<br></footer></div>
+</div>
+</body>
+</html>

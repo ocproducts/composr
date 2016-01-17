@@ -1,0 +1,688 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/themewizard.html" title="themewizard"><i class="icon-folder-open"></i>themewizard</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_calculate_dynamic_css_colours" title="calculate_dynamic_css_colours() :: Augment an array of CSS colours with colours that are derived actually inside the CSS-sheets."><span class="description">Augment an array of CSS colours with colours that are derived actually inside the CSS-sheets.</span><pre>calculate_dynamic_css_colours</pre></a></li>
+<li class="function  "><a href="#function_calculate_theme" title="calculate_theme() :: Calculate some component relating to a theme from a colour seed."><span class="description">Calculate some component relating to a theme from a colour seed.</span><pre>calculate_theme</pre></a></li>
+<li class="function  "><a href="#function_execute_css_colour_expression" title="execute_css_colour_expression() :: Execute CSS colour expression."><span class="description">Execute CSS colour expression.</span><pre>execute_css_colour_expression</pre></a></li>
+<li class="function  "><a href="#function_find_theme_dark" title="find_theme_dark() :: Find whether a theme is dark."><span class="description">Find whether a theme is dark.</span><pre>find_theme_dark</pre></a></li>
+<li class="function  "><a href="#function_find_theme_image_themewizard_preview" title="find_theme_image_themewizard_preview() :: Called by find_theme_image to allow on-the-fly previewing of what theme wizard output would look like."><span class="description">Called by find_theme_image to allow on-the-fly previewing of what theme wizard output would look like.</span><pre>find_theme_image_themewizard_preview</pre></a></li>
+<li class="function  "><a href="#function_find_theme_seed" title="find_theme_seed() :: Find the seed of a theme."><span class="description">Find the seed of a theme.</span><pre>find_theme_seed</pre></a></li>
+<li class="function  "><a href="#function_fix_colour" title="fix_colour() :: Make sure a colour component fits within the necessary range (0&lt;=x&lt;256)."><span class="description">Make sure a colour component fits within the necessary range (0&lt;=x&lt;256).</span><pre>fix_colour</pre></a></li>
+<li class="function  "><a href="#function_generate_gradient" title="generate_gradient() :: Generate a gradient for a theme."><span class="description">Generate a gradient for a theme.</span><pre>generate_gradient</pre></a></li>
+<li class="function  "><a href="#function_generate_logo" title="generate_logo() :: Generate a logo from the template."><span class="description">Generate a logo from the template.</span><pre>generate_logo</pre></a></li>
+<li class="function  "><a href="#function_generate_recoloured_image" title="generate_recoloured_image() :: Generate a theme image by converting an existing one to a new colour scheme via intelligent blending correlation."><span class="description">Generate a theme image by converting an existing one to a new colour scheme via intelligent blending correlation.</span><pre>generate_recoloured_image</pre></a></li>
+<li class="function  "><a href="#function_hsv_to_rgb" title="hsv_to_rgb() :: Convert HSV colour components to an RGB colour. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain."><span class="description">Convert HSV colour components to an RGB colour. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain.</span><pre>hsv_to_rgb</pre></a></li>
+<li class="function  "><a href="#function_load_themewizard_params_from_theme" title="load_themewizard_params_from_theme() :: Given a source theme name, configure the theme wizard for theme generation from it."><span class="description">Given a source theme name, configure the theme wizard for theme generation from it.</span><pre>load_themewizard_params_from_theme</pre></a></li>
+<li class="function  "><a href="#function_make_theme" title="make_theme() :: Make a theme. Note that this will trigger the AFM."><span class="description">Make a theme. Note that this will trigger the AFM.</span><pre>make_theme</pre></a></li>
+<li class="function  "><a href="#function_parse_css_colour_expression" title="parse_css_colour_expression() :: Convert a textual CSS colour expression into an expression tree."><span class="description">Convert a textual CSS colour expression into an expression tree.</span><pre>parse_css_colour_expression</pre></a></li>
+<li class="function  "><a href="#function_re_hue_image" title="re_hue_image() :: Generate a theme image by converting an existing one to a new colour scheme via re-hueing."><span class="description">Generate a theme image by converting an existing one to a new colour scheme via re-hueing.</span><pre>re_hue_image</pre></a></li>
+<li class="function  "><a href="#function_rgb_to_hsv" title="rgb_to_hsv() :: Convert an RGB colour to HSV colour components. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain."><span class="description">Convert an RGB colour to HSV colour components. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain.</span><pre>rgb_to_hsv</pre></a></li>
+<li class="function  "><a href="#function_theme_wizard_colours_to_css" title="theme_wizard_colours_to_css() :: Rewrite some CSS code according to a CSS landscape."><span class="description">Rewrite some CSS code according to a CSS landscape.</span><pre>theme_wizard_colours_to_css</pre></a></li>
+<li class="function  "><a href="#function_theme_wizard_colours_to_sheet" title="theme_wizard_colours_to_sheet() :: Rewrite some CSS code according to a CSS landscape."><span class="description">Rewrite some CSS code according to a CSS landscape.</span><pre>theme_wizard_colours_to_sheet</pre></a></li>
+<li class="function  "><a href="#function_themewizard_script" title="themewizard_script() :: Output a theme component straight to the browser."><span class="description">Output a theme component straight to the browser.</span><pre>themewizard_script</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/themewizard.html">themewizard</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_calculate_dynamic_css_colours"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_calculate_dynamic_css_colours " data-toggle="collapse" data-target=".function_calculate_dynamic_css_colours .collapse" title="">
+<h2>Augment an array of CSS colours with colours that are derived actually inside the CSS-sheets.</h2>
+<pre>calculate_dynamic_css_colours(array $colours, \ID_TEXT $source_theme) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$colours</h4>
+<code>array</code><p>Map of colours.</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme it's being generated from</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: extended map of colours, colour expression landscape</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_calculate_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_calculate_theme " data-toggle="collapse" data-target=".function_calculate_theme .collapse" title="">
+<h2>Calculate some component relating to a theme from a colour seed.</h2>
+<pre>calculate_theme(string $seed, \ID_TEXT $source_theme, \ID_TEXT $algorithm, \ID_TEXT $show<code> = 'colours'</code>, \?boolean $dark<code> = null</code>, \?array $colours<code> = null</code>, \?array $landscape<code> = null</code>, \?LANGUAGE_NAME $lang<code> = null</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>equations hsv</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$seed</h4>
+<code>string</code><p>Colour seed.</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme it's being generated from</p></div>
+<div class="subelement argument">
+<h4>$algorithm</h4>
+<code>\ID_TEXT</code><p>The algorithm to use</p></div>
+<div class="subelement argument">
+<h4>$show</h4>
+<code>\ID_TEXT</code><p>What to generate ('colours', or the name of a theme image).</p></div>
+<div class="subelement argument">
+<h4>$dark</h4>
+<code>\?boolean</code><p>Whether it will be a dark theme (null: autodetect).</p></div>
+<div class="subelement argument">
+<h4>$colours</h4>
+<code>\?array</code><p>The colour map to use (null: compute).</p></div>
+<div class="subelement argument">
+<h4>$landscape</h4>
+<code>\?array</code><p>The computed colour landscape to use (null: compute).</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?LANGUAGE_NAME</code><p>The language to work in (null: default).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Image resource OR A pair: extended map of colours, colour expression landscape</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_execute_css_colour_expression"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_execute_css_colour_expression " data-toggle="collapse" data-target=".function_execute_css_colour_expression .collapse" title="">
+<h2>Execute CSS colour expression.</h2>
+<pre>execute_css_colour_expression(mixed $expression, array $colours) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$expression</h4>
+<code>mixed</code><p>Expression tree (array) OR leaf (string).</p></div>
+<div class="subelement argument">
+<h4>$colours</h4>
+<code>array</code><p>Known colours at this point.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>RRGGBB colour or possibly just a number (null: answer cannot be computed).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_theme_dark"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_theme_dark " data-toggle="collapse" data-target=".function_find_theme_dark .collapse" title="">
+<h2>Find whether a theme is dark.</h2>
+<pre>find_theme_dark(\ID_TEXT $theme) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the theme is dark</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_theme_image_themewizard_preview"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_theme_image_themewizard_preview " data-toggle="collapse" data-target=".function_find_theme_image_themewizard_preview .collapse" title="">
+<h2>Called by find_theme_image to allow on-the-fly previewing of what theme wizard output would look like.</h2>
+<pre>find_theme_image_themewizard_preview(\ID_TEXT $id, boolean $silent_fail<code> = false</code>) : \?URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The theme image ID</p></div>
+<div class="subelement argument">
+<h4>$silent_fail</h4>
+<code>boolean</code><p>Whether to silently fail (i.e. not give out an error message when a theme image cannot be found)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?URLPATH</code>URL to image (null: use standard one, this one is not theme wizard influenced).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_theme_seed"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_theme_seed " data-toggle="collapse" data-target=".function_find_theme_seed .collapse" title="">
+<h2>Find the seed of a theme.</h2>
+<pre>find_theme_seed(\ID_TEXT $theme, boolean $no_easy_anchor<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme name</p></div>
+<div class="subelement argument">
+<h4>$no_easy_anchor</h4>
+<code>boolean</code><p>Whether we can't assume the theme has any Composr default colour information defined, if not in theme.ini</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The seed colour</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fix_colour"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fix_colour " data-toggle="collapse" data-target=".function_fix_colour .collapse" title="">
+<h2>Make sure a colour component fits within the necessary range (0&lt;=x&lt;256).</h2>
+<pre>fix_colour(mixed $x, boolean $hue<code> = false</code>) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$x</h4>
+<code>mixed</code><p>Colour component (float or integer).</p></div>
+<div class="subelement argument">
+<h4>$hue</h4>
+<code>boolean</code><p>Whether this is hue (meaning it cycles around)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Constrained colour component.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_generate_gradient"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_generate_gradient " data-toggle="collapse" data-target=".function_generate_gradient .collapse" title="">
+<h2>Generate a gradient for a theme.</h2>
+<pre>generate_gradient(string $top, string $bottom) : resource</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$top</h4>
+<code>string</code><p>Colour for the top.</p></div>
+<div class="subelement argument">
+<h4>$bottom</h4>
+<code>string</code><p>Colour for the bottom.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>resource</code>The image</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_generate_logo"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_generate_logo " data-toggle="collapse" data-target=".function_generate_logo .collapse" title="">
+<h2>Generate a logo from the template.</h2>
+<pre>generate_logo(string $name, string $font_choice<code> = 'Vera'</code>, string $logo_theme_image<code> = 'logo/default_logos/1'</code>, string $background_theme_image<code> = 'logo/default_backgrounds/banner1'</code>, boolean $raw<code> = false</code>, \?string $theme<code> = null</code>, boolean $standalone_version<code> = false</code>) : resource</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The site name.</p></div>
+<div class="subelement argument">
+<h4>$font_choice</h4>
+<code>string</code><p>The font name (in data/fonts).</p></div>
+<div class="subelement argument">
+<h4>$logo_theme_image</h4>
+<code>string</code><p>The logo theme image.</p></div>
+<div class="subelement argument">
+<h4>$background_theme_image</h4>
+<code>string</code><p>The background theme image.</p></div>
+<div class="subelement argument">
+<h4>$raw</h4>
+<code>boolean</code><p>Whether to output the logo to the browser, destroy then image, and exit the script (i.e. never returns)</p></div>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\?string</code><p>The theme to use the logo template from (null: default root zone theme).</p></div>
+<div class="subelement argument">
+<h4>$standalone_version</h4>
+<code>boolean</code><p>Whether we are generating the standalone version (smaller, used in e-mails etc).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>resource</code>The image resource.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_generate_recoloured_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_generate_recoloured_image " data-toggle="collapse" data-target=".function_generate_recoloured_image .collapse" title="">
+<h2>Generate a theme image by converting an existing one to a new colour scheme via intelligent blending correlation.</h2>
+<pre>generate_recoloured_image(mixed $path, string $colour_a_orig, string $colour_a_new, string $colour_b1_orig, string $colour_b1_new, \?string $colour_b2_orig<code> = null</code>, \?string $colour_b2_new<code> = null</code>, string $gradient_direction<code> = 'vertical'</code>, \?array $pixel_x_start_array<code> = null</code>, integer $gradient_offset<code> = 0</code>, boolean $end_array<code> = false</code>) : resource</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>vertical horizontal</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>mixed</code><p>The image path OR a preloaded GD image resource</p></div>
+<div class="subelement argument">
+<h4>$colour_a_orig</h4>
+<code>string</code><p>The colour code of what we have as our "minor" colour (often a border colour)</p></div>
+<div class="subelement argument">
+<h4>$colour_a_new</h4>
+<code>string</code><p>The colour code of what we want as our "minor" colour (often a border colour)</p></div>
+<div class="subelement argument">
+<h4>$colour_b1_orig</h4>
+<code>string</code><p>The colour code of what we have as our first major colour (often the only major colour)</p></div>
+<div class="subelement argument">
+<h4>$colour_b1_new</h4>
+<code>string</code><p>The colour code of what we want as our first major colour (often the only major colour)</p></div>
+<div class="subelement argument">
+<h4>$colour_b2_orig</h4>
+<code>\?string</code><p>The colour code of what we have as our second major colour (the gradient target, at the bottom/right of the image) (null: not gradiented)</p></div>
+<div class="subelement argument">
+<h4>$colour_b2_new</h4>
+<code>\?string</code><p>The colour code of what we want as our second major colour (the gradient target, at the bottom/right of the image) (null: not gradiented)</p></div>
+<div class="subelement argument">
+<h4>$gradient_direction</h4>
+<code>string</code><p>The directional code for the gradient</p></div>
+<div class="subelement argument">
+<h4>$pixel_x_start_array</h4>
+<code>\?array</code><p>An array that is used to limit where we do our conversion on. It specifies, for each y-offset, the x-offset we start from (null: no such limitation)</p></div>
+<div class="subelement argument">
+<h4>$gradient_offset</h4>
+<code>integer</code><p>What the gradient assumed start-position will be offset by (in the gradient direction).</p></div>
+<div class="subelement argument">
+<h4>$end_array</h4>
+<code>boolean</code><p>Whether the pixel_x_start array is actually an end array.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>resource</code>The image</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_hsv_to_rgb"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_hsv_to_rgb " data-toggle="collapse" data-target=".function_hsv_to_rgb .collapse" title="">
+<h2>Convert HSV colour components to an RGB colour. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain.</h2>
+<pre>hsv_to_rgb(float $h, float $s, float $v) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$h</h4>
+<code>float</code><p>H component</p></div>
+<div class="subelement argument">
+<h4>$s</h4>
+<code>float</code><p>S component</p></div>
+<div class="subelement argument">
+<h4>$v</h4>
+<code>float</code><p>V component</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>RGB colour.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_load_themewizard_params_from_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_load_themewizard_params_from_theme " data-toggle="collapse" data-target=".function_load_themewizard_params_from_theme .collapse" title="">
+<h2>Given a source theme name, configure the theme wizard for theme generation from it.</h2>
+<pre>load_themewizard_params_from_theme(\ID_TEXT $theme, boolean $guess_images_if_needed<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\ID_TEXT</code><p>The theme name</p></div>
+<div class="subelement argument">
+<h4>$guess_images_if_needed</h4>
+<code>boolean</code><p>Whether we suspect the theme might not be well defined</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_theme"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_theme " data-toggle="collapse" data-target=".function_make_theme .collapse" title="">
+<h2>Make a theme. Note that this will trigger the AFM.</h2>
+<pre>make_theme(string $themename, \ID_TEXT $source_theme, \ID_TEXT $algorithm, string $seed, boolean $use, \?boolean $dark<code> = false</code>, boolean $inherit_css<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>equations hsv</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$themename</h4>
+<code>string</code><p>Name of the theme.</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme it's being generated from</p></div>
+<div class="subelement argument">
+<h4>$algorithm</h4>
+<code>\ID_TEXT</code><p>The algorithm to use</p></div>
+<div class="subelement argument">
+<h4>$seed</h4>
+<code>string</code><p>Seed colour to use.</p></div>
+<div class="subelement argument">
+<h4>$use</h4>
+<code>boolean</code><p>Whether to use the theme immediately.</p></div>
+<div class="subelement argument">
+<h4>$dark</h4>
+<code>\?boolean</code><p>Whether it will be a dark theme (null: autodetect).</p></div>
+<div class="subelement argument">
+<h4>$inherit_css</h4>
+<code>boolean</code><p>Whether to inherit the CSS, for easier theme upgrading.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parse_css_colour_expression"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parse_css_colour_expression " data-toggle="collapse" data-target=".function_parse_css_colour_expression .collapse" title="">
+<h2>Convert a textual CSS colour expression into an expression tree.</h2>
+<pre>parse_css_colour_expression(string $textual) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$textual</h4>
+<code>string</code><p>Textual expression.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Expression tree (null: not real).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_re_hue_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_re_hue_image " data-toggle="collapse" data-target=".function_re_hue_image .collapse" title="">
+<h2>Generate a theme image by converting an existing one to a new colour scheme via re-hueing.</h2>
+<pre>re_hue_image(mixed $path, string $seed, \ID_TEXT $source_theme, boolean $also_s_and_v<code> = false</code>, boolean $invert<code> = false</code>) : resource</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>mixed</code><p>The image path OR a preloaded GD image resource</p></div>
+<div class="subelement argument">
+<h4>$seed</h4>
+<code>string</code><p>The colour code of our hue</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme this is being generated from</p></div>
+<div class="subelement argument">
+<h4>$also_s_and_v</h4>
+<code>boolean</code><p>Whether to also adjust the S and V components</p></div>
+<div class="subelement argument">
+<h4>$invert</h4>
+<code>boolean</code><p>Whether to invert the colours</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>resource</code>The image</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_rgb_to_hsv"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_rgb_to_hsv " data-toggle="collapse" data-target=".function_rgb_to_hsv .collapse" title="">
+<h2>Convert an RGB colour to HSV colour components. Based on publicly distributed code fragments which were themselves based on others: reasonably assumed as public domain.</h2>
+<pre>rgb_to_hsv(string $rgb) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rgb</h4>
+<code>string</code><p>RRGGBB colour.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Triplet of (0-255) components: H, S, V</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_theme_wizard_colours_to_css"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_theme_wizard_colours_to_css " data-toggle="collapse" data-target=".function_theme_wizard_colours_to_css .collapse" title="">
+<h2>Rewrite some CSS code according to a CSS landscape.</h2>
+<pre>theme_wizard_colours_to_css(string $contents, array $landscape, \ID_TEXT $source_theme, \ID_TEXT $algorithm, \ID_TEXT $seed) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>equations hsv</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$contents</h4>
+<code>string</code><p>CSS to apply to.</p></div>
+<div class="subelement argument">
+<h4>$landscape</h4>
+<code>array</code><p>The colour expression landscape which we'll make substitutions using.</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme this is being generated from</p></div>
+<div class="subelement argument">
+<h4>$algorithm</h4>
+<code>\ID_TEXT</code><p>The algorithm to use</p></div>
+<div class="subelement argument">
+<h4>$seed</h4>
+<code>\ID_TEXT</code><p>The seed colour</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The sheet</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_theme_wizard_colours_to_sheet"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_theme_wizard_colours_to_sheet " data-toggle="collapse" data-target=".function_theme_wizard_colours_to_sheet .collapse" title="">
+<h2>Rewrite some CSS code according to a CSS landscape.</h2>
+<pre>theme_wizard_colours_to_sheet(\ID_TEXT $sheet, array $landscape, \ID_TEXT $source_theme, \ID_TEXT $algorithm, \ID_TEXT $seed) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>equations hsv</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sheet</h4>
+<code>\ID_TEXT</code><p>CSS filename of source file.</p></div>
+<div class="subelement argument">
+<h4>$landscape</h4>
+<code>array</code><p>The colour expression landscape which we'll make substitutions using.</p></div>
+<div class="subelement argument">
+<h4>$source_theme</h4>
+<code>\ID_TEXT</code><p>The theme this is being generated from</p></div>
+<div class="subelement argument">
+<h4>$algorithm</h4>
+<code>\ID_TEXT</code><p>The algorithm to use</p></div>
+<div class="subelement argument">
+<h4>$seed</h4>
+<code>\ID_TEXT</code><p>The seed colour</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The sheet</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_themewizard_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_themewizard_script " data-toggle="collapse" data-target=".function_themewizard_script .collapse" title="">
+<h2>Output a theme component straight to the browser.</h2>
+<pre>themewizard_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/themewizard.html">themewizard</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:44+01:00.<br></footer></div>
+</div>
+</body>
+</html>

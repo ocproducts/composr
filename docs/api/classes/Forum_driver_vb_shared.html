@@ -1,0 +1,1539 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method__get_theme" title="_get_theme() :: Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme."><span class="description">Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.</span><pre>_get_theme()</pre></a></li>
+<li class="method public "><a href="#method_check_db" title="check_db() :: Check the connected DB is valid for this forum driver."><span class="description">Check the connected DB is valid for this forum driver.</span><pre>check_db()</pre></a></li>
+<li class="method public inherited"><a href="#method_disable_staff_filter" title="disable_staff_filter() :: If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync)."><span class="description">If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync).</span><pre>disable_staff_filter()</pre></a></li>
+<li class="method public "><a href="#method_find_emoticons" title="find_emoticons() :: Get a map between emoticon codes and templates representing the HTML-image-code for this emoticon. The emoticons presented of course depend on the forum involved."><span class="description">Get a map between emoticon codes and templates representing the HTML-image-code for this emoticon. The emoticons presented of course depend on the forum involved.</span><pre>find_emoticons()</pre></a></li>
+<li class="method public "><a href="#method_find_topic_id_for_topic_identifier" title="find_topic_id_for_topic_identifier() :: Get the topic ID from a topic identifier in the specified forum. It is used by comment topics, which means that the unique-topic-name assumption holds valid."><span class="description">Get the topic ID from a topic identifier in the specified forum. It is used by comment topics, which means that the unique-topic-name assumption holds valid.</span><pre>find_topic_id_for_topic_identifier()</pre></a></li>
+<li class="method public "><a href="#method_forum_get_lang" title="forum_get_lang() :: Attempt to to find the member's language from their forum profile. It converts between language-identifiers using a map (lang/map.ini)."><span class="description">Attempt to to find the member's language from their forum profile. It converts between language-identifiers using a map (lang/map.ini).</span><pre>forum_get_lang()</pre></a></li>
+<li class="method public "><a href="#method_forum_id_from_name" title="forum_id_from_name() :: Get the forum ID from a forum name."><span class="description">Get the forum ID from a forum name.</span><pre>forum_id_from_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_forum_url" title="forum_url() :: Get a URL to a forum."><span class="description">Get a URL to a forum.</span><pre>forum_url()</pre></a></li>
+<li class="method public "><a href="#method_get_custom_fields" title="get_custom_fields() :: Get custom profile fields values for all 'cms_' prefixed keys."><span class="description">Get custom profile fields values for all 'cms_' prefixed keys.</span><pre>get_custom_fields()</pre></a></li>
+<li class="method public "><a href="#method_get_drivered_table_prefix" title="get_drivered_table_prefix() :: Get the forums' table prefix for the database."><span class="description">Get the forums' table prefix for the database.</span><pre>get_drivered_table_prefix()</pre></a></li>
+<li class="method public "><a href="#method_get_emo_dir" title="get_emo_dir() :: Find the base URL to the emoticons."><span class="description">Find the base URL to the emoticons.</span><pre>get_emo_dir()</pre></a></li>
+<li class="method public "><a href="#method_get_emoticon_chooser" title="get_emoticon_chooser() :: Get an emoticon chooser template."><span class="description">Get an emoticon chooser template.</span><pre>get_emoticon_chooser()</pre></a></li>
+<li class="method public "><a href="#method_get_forum_topic_posts" title="get_forum_topic_posts() :: Get an array of maps for the topic in the given forum."><span class="description">Get an array of maps for the topic in the given forum.</span><pre>get_forum_topic_posts()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_guest_group" title="get_guest_group() :: Find the usergroup ID of the forum guest member."><span class="description">Find the usergroup ID of the forum guest member.</span><pre>get_guest_group()</pre></a></li>
+<li class="method public "><a href="#method_get_guest_id" title="get_guest_id() :: Find the member ID of the forum guest member."><span class="description">Find the member ID of the forum guest member.</span><pre>get_guest_id()</pre></a></li>
+<li class="method public "><a href="#method_get_matching_members" title="get_matching_members() :: Find all members with a name matching the given SQL LIKE string."><span class="description">Find all members with a name matching the given SQL LIKE string.</span><pre>get_matching_members()</pre></a></li>
+<li class="method public "><a href="#method_get_member_avatar_url" title="get_member_avatar_url() :: Get the avatar URL for the specified member ID."><span class="description">Get the avatar URL for the specified member ID.</span><pre>get_member_avatar_url()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_member_email_address" title="get_member_email_address() :: Get a member's e-mail address."><span class="description">Get a member's e-mail address.</span><pre>get_member_email_address()</pre></a></li>
+<li class="method public "><a href="#method_get_member_email_allowed" title="get_member_email_allowed() :: Find if this member may have e-mails sent to them"><span class="description">Find if this member may have e-mails sent to them</span><pre>get_member_email_allowed()</pre></a></li>
+<li class="method public "><a href="#method_get_member_from_username" title="get_member_from_username() :: Get a member ID from the given member's username."><span class="description">Get a member ID from the given member's username.</span><pre>get_member_from_username()</pre></a></li>
+<li class="method public "><a href="#method_get_member_ip" title="get_member_ip() :: Get a first known IP address of the given member."><span class="description">Get a first known IP address of the given member.</span><pre>get_member_ip()</pre></a></li>
+<li class="method public "><a href="#method_get_member_join_timestamp" title="get_member_join_timestamp() :: Get the timestamp of a member's join date."><span class="description">Get the timestamp of a member's join date.</span><pre>get_member_join_timestamp()</pre></a></li>
+<li class="method public "><a href="#method_get_member_photo_url" title="get_member_photo_url() :: Get the photo thumbnail URL for the specified member ID."><span class="description">Get the photo thumbnail URL for the specified member ID.</span><pre>get_member_photo_url()</pre></a></li>
+<li class="method public "><a href="#method_get_member_row" title="get_member_row() :: Gets a whole member row from the database."><span class="description">Gets a whole member row from the database.</span><pre>get_member_row()</pre></a></li>
+<li class="method public "><a href="#method_get_member_row_field" title="get_member_row_field() :: Gets a named field of a member row from the database."><span class="description">Gets a named field of a member row from the database.</span><pre>get_member_row_field()</pre></a></li>
+<li class="method public "><a href="#method_get_members" title="get_members() :: Get the number of members registered on the forum."><span class="description">Get the number of members registered on the forum.</span><pre>get_members()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_members_groups" title="get_members_groups() :: Get a list of usergroups a member is in."><span class="description">Get a list of usergroups a member is in.</span><pre>get_members_groups()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_moderator_groups" title="get_moderator_groups() :: Get a list of the moderator usergroups."><span class="description">Get a list of the moderator usergroups.</span><pre>get_moderator_groups()</pre></a></li>
+<li class="method public "><a href="#method_get_mrow" title="get_mrow() :: Get a member row for the member of the given name."><span class="description">Get a member row for the member of the given name.</span><pre>get_mrow()</pre></a></li>
+<li class="method public "><a href="#method_get_next_member" title="get_next_member() :: Get the member ID of the next member after the given one, or NULL."><span class="description">Get the member ID of the next member after the given one, or NULL.</span><pre>get_next_member()</pre></a></li>
+<li class="method public "><a href="#method_get_num_forum_posts" title="get_num_forum_posts() :: Get the total posts ever made on the forum."><span class="description">Get the total posts ever made on the forum.</span><pre>get_num_forum_posts()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_num_new_forum_posts" title="get_num_new_forum_posts() :: Get the number of new forum posts on the system in the last 24 hours."><span class="description">Get the number of new forum posts on the system in the last 24 hours.</span><pre>get_num_new_forum_posts()</pre></a></li>
+<li class="method public "><a href="#method_get_num_users_forums" title="get_num_users_forums() :: Get the number of members currently online on the forums."><span class="description">Get the number of members currently online on the forums.</span><pre>get_num_users_forums()</pre></a></li>
+<li class="method public "><a href="#method_get_post_count" title="get_post_count() :: Get the given member's post count."><span class="description">Get the given member's post count.</span><pre>get_post_count()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_post_remaining_details" title="get_post_remaining_details() :: Load extra details for a list of posts. Does not need to return anything if forum driver doesn't support partial post loading (which is only useful for threaded topic partial-display)."><span class="description">Load extra details for a list of posts. Does not need to return anything if forum driver doesn't support partial post loading (which is only useful for threaded topic partial-display).</span><pre>get_post_remaining_details()</pre></a></li>
+<li class="method public "><a href="#method_get_previous_member" title="get_previous_member() :: This is the opposite of the get_next_member function."><span class="description">This is the opposite of the get_next_member function.</span><pre>get_previous_member()</pre></a></li>
+<li class="method public "><a href="#method_get_skin_list" title="get_skin_list() :: Find a list of all forum skins (aka themes)."><span class="description">Find a list of all forum skins (aka themes).</span><pre>get_skin_list()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_super_admin_groups" title="get_super_admin_groups() :: Get a list of the super admin usergroups."><span class="description">Get a list of the super admin usergroups.</span><pre>get_super_admin_groups()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_theme" title="get_theme() :: Get the current member's theme identifier."><span class="description">Get the current member's theme identifier.</span><pre>get_theme()</pre></a></li>
+<li class="method public "><a href="#method_get_top_posters" title="get_top_posters() :: Get the rows for the top given number of posters on the forum."><span class="description">Get the rows for the top given number of posters on the forum.</span><pre>get_top_posters()</pre></a></li>
+<li class="method public "><a href="#method_get_topic_count" title="get_topic_count() :: Get the given member's topic count."><span class="description">Get the given member's topic count.</span><pre>get_topic_count()</pre></a></li>
+<li class="method public "><a href="#method_get_topics" title="get_topics() :: Get the total topics ever made on the forum."><span class="description">Get the total topics ever made on the forum.</span><pre>get_topics()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_usergroup_list" title="get_usergroup_list() :: Get a map of forum usergroups (id=&gt;name)."><span class="description">Get a map of forum usergroups (id=&gt;name).</span><pre>get_usergroup_list()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_username" title="get_username() :: Get a member's username."><span class="description">Get a member's username.</span><pre>get_username()</pre></a></li>
+<li class="method public "><a href="#method_install_create_custom_field" title="install_create_custom_field() :: Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field)."><span class="description">Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).</span><pre>install_create_custom_field()</pre></a></li>
+<li class="method public inherited"><a href="#method_install_delete_custom_field" title="install_delete_custom_field() :: Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field)."><span class="description">Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).</span><pre>install_delete_custom_field()</pre></a></li>
+<li class="method public "><a href="#method_is_cookie_login_name" title="is_cookie_login_name() :: Find if the login cookie contains the login name instead of the member ID."><span class="description">Find if the login cookie contains the login name instead of the member ID.</span><pre>is_cookie_login_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_is_staff" title="is_staff() :: Find whether a member is staff."><span class="description">Find whether a member is staff.</span><pre>is_staff()</pre></a></li>
+<li class="method public inherited"><a href="#method_is_super_admin" title="is_super_admin() :: Find whether a member is a super administrator."><span class="description">Find whether a member is a super administrator.</span><pre>is_super_admin()</pre></a></li>
+<li class="method public inherited"><a href="#method_join_url" title="join_url() :: Get a URL to a forum join page."><span class="description">Get a URL to a forum join page.</span><pre>join_url()</pre></a></li>
+<li class="method public "><a href="#method_make_post_forum_topic" title="make_post_forum_topic() :: Makes a post in the specified forum, in the specified topic according to the given specifications. If the topic doesn't exist, it is created along with a spacer-post."><span class="description">Makes a post in the specified forum, in the specified topic according to the given specifications. If the topic doesn't exist, it is created along with a spacer-post.</span><pre>make_post_forum_topic()</pre></a></li>
+<li class="method public "><a href="#method_member_group_query" title="member_group_query() :: Get an array of members who are in at least one of the given array of usergroups."><span class="description">Get an array of members who are in at least one of the given array of usergroups.</span><pre>member_group_query()</pre></a></li>
+<li class="method public "><a href="#method_member_home_url" title="member_home_url() :: Get a URL to the specified member's home (control panel)."><span class="description">Get a URL to the specified member's home (control panel).</span><pre>member_home_url()</pre></a></li>
+<li class="method public inherited"><a href="#method_member_pm_url" title="member_pm_url() :: Get a URL to send a forum member a PM."><span class="description">Get a URL to send a forum member a PM.</span><pre>member_pm_url()</pre></a></li>
+<li class="method public inherited"><a href="#method_member_profile_hyperlink" title="member_profile_hyperlink() :: Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile."><span class="description">Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile.</span><pre>member_profile_hyperlink()</pre></a></li>
+<li class="method public inherited"><a href="#method_member_profile_url" title="member_profile_url() :: Get a URL to a forum member's member profile."><span class="description">Get a URL to a forum member's member profile.</span><pre>member_profile_url()</pre></a></li>
+<li class="method public "><a href="#method_mrow_email" title="mrow_email() :: From a member row, get the member's e-mail address."><span class="description">From a member row, get the member's e-mail address.</span><pre>mrow_email()</pre></a></li>
+<li class="method public "><a href="#method_mrow_group" title="mrow_group() :: From a member row, get the member's primary usergroup."><span class="description">From a member row, get the member's primary usergroup.</span><pre>mrow_group()</pre></a></li>
+<li class="method public "><a href="#method_mrow_id" title="mrow_id() :: From a member row, get the member's member ID."><span class="description">From a member row, get the member's member ID.</span><pre>mrow_id()</pre></a></li>
+<li class="method public "><a href="#method_mrow_username" title="mrow_username() :: From a member row, get the member's name."><span class="description">From a member row, get the member's name.</span><pre>mrow_username()</pre></a></li>
+<li class="method public "><a href="#method_pin_topic" title="pin_topic() :: Pin a topic."><span class="description">Pin a topic.</span><pre>pin_topic()</pre></a></li>
+<li class="method public "><a href="#method_post_url" title="post_url() :: Get a URL to the specified post ID."><span class="description">Get a URL to the specified post ID.</span><pre>post_url()</pre></a></li>
+<li class="method public "><a href="#method_probe_ip" title="probe_ip() :: Try to find a member with the given IP address"><span class="description">Try to find a member with the given IP address</span><pre>probe_ip()</pre></a></li>
+<li class="method public "><a href="#method_set_custom_field" title="set_custom_field() :: Set a custom profile fields value. It should not be called directly."><span class="description">Set a custom profile fields value. It should not be called directly.</span><pre>set_custom_field()</pre></a></li>
+<li class="method public "><a href="#method_show_forum_topics" title="show_forum_topics() :: Get an array of topics in the given forum. Each topic is an array with the following attributes:
+- id, the topic ID
+- title, the topic title
+- lastusername, the username of the last poster
+- lasttime, the timestamp of the last reply
+- closed, a Boolean for whether the topic is currently closed or not
+- firsttitle, the title of the first post
+- firstpost, the first post (only set if $show_first_posts was true)"><span class="description">Get an array of topics in the given forum. Each topic is an array with the following attributes:
+- id, the topic ID
+- title, the topic title
+- lastusername, the username of the last poster
+- lasttime, the timestamp of the last reply
+- closed, a Boolean for whether the topic is currently closed or not
+- firsttitle, the title of the first post
+- firstpost, the first post (only set if $show_first_posts was true)</span><pre>show_forum_topics()</pre></a></li>
+<li class="method public inherited"><a href="#method_topic_is_threaded" title="topic_is_threaded() :: Find whether a forum is threaded."><span class="description">Find whether a forum is threaded.</span><pre>topic_is_threaded()</pre></a></li>
+<li class="method public "><a href="#method_topic_url" title="topic_url() :: Get a URL to the specified topic ID. Most forums don't require the second parameter, but some do, so it is required in the interface."><span class="description">Get a URL to the specified topic ID. Most forums don't require the second parameter, but some do, so it is required in the interface.</span><pre>topic_url()</pre></a></li>
+<li class="method public inherited"><a href="#method_users_online_url" title="users_online_url() :: Get a URL to a forum 'user online' list."><span class="description">Get a URL to a forum 'user online' list.</span><pre>users_online_url()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__forum_url" title="_forum_url() :: Get a URL to the specified forum."><span class="description">Get a URL to the specified forum.</span><pre>_forum_url()</pre></a></li>
+<li class="method protected "><a href="#method__get_member_email_address" title="_get_member_email_address() :: Get the e-mail address for the specified member ID."><span class="description">Get the e-mail address for the specified member ID.</span><pre>_get_member_email_address()</pre></a></li>
+<li class="method protected "><a href="#method__get_num_new_forum_posts" title="_get_num_new_forum_posts() :: Get the number of new forum posts."><span class="description">Get the number of new forum posts.</span><pre>_get_num_new_forum_posts()</pre></a></li>
+<li class="method protected "><a href="#method__get_username" title="_get_username() :: Get the name relating to the specified member ID."><span class="description">Get the name relating to the specified member ID.</span><pre>_get_username()</pre></a></li>
+<li class="method protected "><a href="#method__join_url" title="_join_url() :: Get a URL to the registration page (for people to create member accounts)."><span class="description">Get a URL to the registration page (for people to create member accounts).</span><pre>_join_url()</pre></a></li>
+<li class="method protected "><a href="#method__member_pm_url" title="_member_pm_url() :: Get a URL to send a private/personal message to the given member."><span class="description">Get a URL to send a private/personal message to the given member.</span><pre>_member_pm_url()</pre></a></li>
+<li class="method protected "><a href="#method__member_profile_url" title="_member_profile_url() :: Get a URL to the specified member's profile."><span class="description">Get a URL to the specified member's profile.</span><pre>_member_profile_url()</pre></a></li>
+<li class="method protected "><a href="#method__users_online_url" title="_users_online_url() :: Get a URL to the members-online page."><span class="description">Get a URL to the members-online page.</span><pre>_users_online_url()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_EMOTICON_CACHE" title="$EMOTICON_CACHE() :: "><span class="description"></span><pre>$EMOTICON_CACHE</pre></a></li>
+<li class="property public "><a href="#property_MEMBER_ROWS_CACHED" title="$MEMBER_ROWS_CACHED() :: "><span class="description"></span><pre>$MEMBER_ROWS_CACHED</pre></a></li>
+<li class="property public "><a href="#property_connection" title="$connection() :: "><span class="description"></span><pre>$connection</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Forum_driver_vb_shared"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Forum_driver_vb_shared.html">Forum_driver_vb_shared</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Forum driver class.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_forum_drivers.html">core_forum_drivers</a></td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Forum_driver_base</td>
+</tr>
+</table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method__get_theme"></a><div class="element clickable method public method__get_theme " data-toggle="collapse" data-target=".method__get_theme .collapse" title="public">
+<h2>Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.</h2>
+<pre>_get_theme(boolean $skip_member_specific<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, whilst others made the humanly readeable name.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$skip_member_specific</h4>
+<code>boolean</code><p>Whether to avoid member-specific lookup</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The theme</div>
+</div></div>
+</div>
+<a id="method_check_db"></a><div class="element clickable method public method_check_db " data-toggle="collapse" data-target=".method_check_db .collapse" title="public">
+<h2>Check the connected DB is valid for this forum driver.</h2>
+<pre>check_db() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is valid</div>
+</div></div>
+</div>
+<a id="method_disable_staff_filter"></a><div class="element clickable method public method_disable_staff_filter inherited" data-toggle="collapse" data-target=".method_disable_staff_filter .collapse" title="public">
+<h2>If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync).</h2>
+<pre>disable_staff_filter() : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the staff filter is disabled</div>
+</div></div>
+</div>
+<a id="method_find_emoticons"></a><div class="element clickable method public method_find_emoticons " data-toggle="collapse" data-target=".method_find_emoticons .collapse" title="public">
+<h2>Get a map between emoticon codes and templates representing the HTML-image-code for this emoticon. The emoticons presented of course depend on the forum involved.</h2>
+<pre>find_emoticons() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map</div>
+</div></div>
+</div>
+<a id="method_find_topic_id_for_topic_identifier"></a><div class="element clickable method public method_find_topic_id_for_topic_identifier " data-toggle="collapse" data-target=".method_find_topic_id_for_topic_identifier .collapse" title="public">
+<h2>Get the topic ID from a topic identifier in the specified forum. It is used by comment topics, which means that the unique-topic-name assumption holds valid.</h2>
+<pre>find_topic_id_for_topic_identifier(string $forum, \SHORT_TEXT $topic_identifier) : \?integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>string</code><p>The forum name / ID</p></div>
+<div class="subelement argument">
+<h4>$topic_identifier</h4>
+<code>\SHORT_TEXT</code><p>The topic identifier</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?integer</code>The topic ID (null: not found)</div>
+</div></div>
+</div>
+<a id="method_forum_get_lang"></a><div class="element clickable method public method_forum_get_lang " data-toggle="collapse" data-target=".method_forum_get_lang .collapse" title="public">
+<h2>Attempt to to find the member's language from their forum profile. It converts between language-identifiers using a map (lang/map.ini).</h2>
+<pre>forum_get_lang(\MEMBER $member) : \?LANGUAGE_NAME</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member who's language needs to be fetched</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?LANGUAGE_NAME</code>The member's language (null: unknown)</div>
+</div></div>
+</div>
+<a id="method_forum_id_from_name"></a><div class="element clickable method public method_forum_id_from_name " data-toggle="collapse" data-target=".method_forum_id_from_name .collapse" title="public">
+<h2>Get the forum ID from a forum name.</h2>
+<pre>forum_id_from_name(\SHORT_TEXT $forum_name) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum_name</h4>
+<code>\SHORT_TEXT</code><p>The forum name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The forum ID</div>
+</div></div>
+</div>
+<a id="method_forum_url"></a><div class="element clickable method public method_forum_url inherited" data-toggle="collapse" data-target=".method_forum_url .collapse" title="public">
+<h2>Get a URL to a forum.</h2>
+<pre>forum_url(integer $id, boolean $tempcode_okay<code> = false</code>) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The ID of the forum</p></div>
+<div class="subelement argument">
+<h4>$tempcode_okay</h4>
+<code>boolean</code><p>Whether it is okay to return the result using Tempcode (more efficient)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The URL</div>
+</div></div>
+</div>
+<a id="method_get_custom_fields"></a><div class="element clickable method public method_get_custom_fields " data-toggle="collapse" data-target=".method_get_custom_fields .collapse" title="public">
+<h2>Get custom profile fields values for all 'cms_' prefixed keys.</h2>
+<pre>get_custom_fields(\MEMBER $member) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A map of the custom profile fields, key_suffix=>value (null: no fields)</div>
+</div></div>
+</div>
+<a id="method_get_drivered_table_prefix"></a><div class="element clickable method public method_get_drivered_table_prefix " data-toggle="collapse" data-target=".method_get_drivered_table_prefix .collapse" title="public">
+<h2>Get the forums' table prefix for the database.</h2>
+<pre>get_drivered_table_prefix() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The forum database table prefix</div>
+</div></div>
+</div>
+<a id="method_get_emo_dir"></a><div class="element clickable method public method_get_emo_dir " data-toggle="collapse" data-target=".method_get_emo_dir .collapse" title="public">
+<h2>Find the base URL to the emoticons.</h2>
+<pre>get_emo_dir() : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The base URL</div>
+</div></div>
+</div>
+<a id="method_get_emoticon_chooser"></a><div class="element clickable method public method_get_emoticon_chooser " data-toggle="collapse" data-target=".method_get_emoticon_chooser .collapse" title="public">
+<h2>Get an emoticon chooser template.</h2>
+<pre>get_emoticon_chooser(string $field_name<code> = 'post'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>string</code><p>The ID of the form field the emoticon chooser adds to</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The emoticon chooser template</div>
+</div></div>
+</div>
+<a id="method_get_forum_topic_posts"></a><div class="element clickable method public method_get_forum_topic_posts " data-toggle="collapse" data-target=".method_get_forum_topic_posts .collapse" title="public">
+<h2>Get an array of maps for the topic in the given forum.</h2>
+<pre>get_forum_topic_posts(integer $topic_id, integer $count, integer $max<code> = 100</code>, integer $start<code> = 0</code>, boolean $mark_read<code> = true</code>, boolean $reverse<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>integer</code><p>The topic ID</p></div>
+<div class="subelement argument">
+<h4>$count</h4>
+<code>integer</code><p>The comment count will be returned here by reference</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>Maximum comments to returned</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Comment to start at</p></div>
+<div class="subelement argument">
+<h4>$mark_read</h4>
+<code>boolean</code><p>Whether to mark the topic read (ignored for this forum driver)</p></div>
+<div class="subelement argument">
+<h4>$reverse</h4>
+<code>boolean</code><p>Whether to show in reverse</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The array of maps (Each map is: title, message, member, date) (-1 for no such forum, -2 for no such topic)</div>
+</div></div>
+</div>
+<a id="method_get_guest_group"></a><div class="element clickable method public method_get_guest_group inherited" data-toggle="collapse" data-target=".method_get_guest_group .collapse" title="public">
+<h2>Find the usergroup ID of the forum guest member.</h2>
+<pre>get_guest_group() : \GROUP</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\GROUP</code>The usergroup ID of the forum guest member</div>
+</div></div>
+</div>
+<a id="method_get_guest_id"></a><div class="element clickable method public method_get_guest_id " data-toggle="collapse" data-target=".method_get_guest_id .collapse" title="public">
+<h2>Find the member ID of the forum guest member.</h2>
+<pre>get_guest_id() : \MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\MEMBER</code>The member ID of the forum guest member</div>
+</div></div>
+</div>
+<a id="method_get_matching_members"></a><div class="element clickable method public method_get_matching_members " data-toggle="collapse" data-target=".method_get_matching_members .collapse" title="public">
+<h2>Find all members with a name matching the given SQL LIKE string.</h2>
+<pre>get_matching_members(string $pattern, \?integer $limit<code> = null</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>string</code><p>The pattern</p></div>
+<div class="subelement argument">
+<h4>$limit</h4>
+<code>\?integer</code><p>Maximum number to return (limits to the most recent active) (null: no limit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The array of matched members (null: none found)</div>
+</div></div>
+</div>
+<a id="method_get_member_avatar_url"></a><div class="element clickable method public method_get_member_avatar_url " data-toggle="collapse" data-target=".method_get_member_avatar_url .collapse" title="public">
+<h2>Get the avatar URL for the specified member ID.</h2>
+<pre>get_member_avatar_url(\MEMBER $member) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL (blank: none)</div>
+</div></div>
+</div>
+<a id="method_get_member_email_address"></a><div class="element clickable method public method_get_member_email_address inherited" data-toggle="collapse" data-target=".method_get_member_email_address .collapse" title="public">
+<h2>Get a member's e-mail address.</h2>
+<pre>get_member_email_address(\MEMBER $id) : \SHORT_TEXT</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\SHORT_TEXT</code>The e-mail address (blank: not known)</div>
+</div></div>
+</div>
+<a id="method_get_member_email_allowed"></a><div class="element clickable method public method_get_member_email_allowed " data-toggle="collapse" data-target=".method_get_member_email_allowed .collapse" title="public">
+<h2>Find if this member may have e-mails sent to them</h2>
+<pre>get_member_email_allowed(\MEMBER $member) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the member may have e-mails sent to them</div>
+</div></div>
+</div>
+<a id="method_get_member_from_username"></a><div class="element clickable method public method_get_member_from_username " data-toggle="collapse" data-target=".method_get_member_from_username .collapse" title="public">
+<h2>Get a member ID from the given member's username.</h2>
+<pre>get_member_from_username(\SHORT_TEXT $name) : \MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The member name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\MEMBER</code>The member ID</div>
+</div></div>
+</div>
+<a id="method_get_member_ip"></a><div class="element clickable method public method_get_member_ip " data-toggle="collapse" data-target=".method_get_member_ip .collapse" title="public">
+<h2>Get a first known IP address of the given member.</h2>
+<pre>get_member_ip(\MEMBER $member) : \IP</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\IP</code>The IP address</div>
+</div></div>
+</div>
+<a id="method_get_member_join_timestamp"></a><div class="element clickable method public method_get_member_join_timestamp " data-toggle="collapse" data-target=".method_get_member_join_timestamp .collapse" title="public">
+<h2>Get the timestamp of a member's join date.</h2>
+<pre>get_member_join_timestamp(\MEMBER $member) : \TIME</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\TIME</code>The timestamp</div>
+</div></div>
+</div>
+<a id="method_get_member_photo_url"></a><div class="element clickable method public method_get_member_photo_url " data-toggle="collapse" data-target=".method_get_member_photo_url .collapse" title="public">
+<h2>Get the photo thumbnail URL for the specified member ID.</h2>
+<pre>get_member_photo_url(\MEMBER $member) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL (blank: none)</div>
+</div></div>
+</div>
+<a id="method_get_member_row"></a><div class="element clickable method public method_get_member_row " data-toggle="collapse" data-target=".method_get_member_row .collapse" title="public">
+<h2>Gets a whole member row from the database.</h2>
+<pre>get_member_row(\MEMBER $member) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The member row (null: no such member)</div>
+</div></div>
+</div>
+<a id="method_get_member_row_field"></a><div class="element clickable method public method_get_member_row_field " data-toggle="collapse" data-target=".method_get_member_row_field .collapse" title="public">
+<h2>Gets a named field of a member row from the database.</h2>
+<pre>get_member_row_field(\MEMBER $member, string $field) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field identifier</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The field</div>
+</div></div>
+</div>
+<a id="method_get_members"></a><div class="element clickable method public method_get_members " data-toggle="collapse" data-target=".method_get_members .collapse" title="public">
+<h2>Get the number of members registered on the forum.</h2>
+<pre>get_members() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of members</div>
+</div></div>
+</div>
+<a id="method_get_members_groups"></a><div class="element clickable method public method_get_members_groups inherited" data-toggle="collapse" data-target=".method_get_members_groups .collapse" title="public">
+<h2>Get a list of usergroups a member is in.</h2>
+<pre>get_members_groups(\MEMBER $id, boolean $skip_secret<code> = false</code>, boolean $handle_probation<code> = true</code>) : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<div class="subelement argument">
+<h4>$skip_secret</h4>
+<code>boolean</code><p>Whether to skip looking at secret usergroups.</p></div>
+<div class="subelement argument">
+<h4>$handle_probation</h4>
+<code>boolean</code><p>Whether to take probation into account</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of usergroups</div>
+</div></div>
+</div>
+<a id="method_get_moderator_groups"></a><div class="element clickable method public method_get_moderator_groups inherited" data-toggle="collapse" data-target=".method_get_moderator_groups .collapse" title="public">
+<h2>Get a list of the moderator usergroups.</h2>
+<pre>get_moderator_groups() : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of usergroups</div>
+</div></div>
+</div>
+<a id="method_get_mrow"></a><div class="element clickable method public method_get_mrow " data-toggle="collapse" data-target=".method_get_mrow .collapse" title="public">
+<h2>Get a member row for the member of the given name.</h2>
+<pre>get_mrow(\SHORT_TEXT $name) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The member name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The profile-row (null: could not find)</div>
+</div></div>
+</div>
+<a id="method_get_next_member"></a><div class="element clickable method public method_get_next_member " data-toggle="collapse" data-target=".method_get_next_member .collapse" title="public">
+<h2>Get the member ID of the next member after the given one, or NULL.</h2>
+<pre>get_next_member(\MEMBER $member) : \?MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>It cannot be assumed there are no gaps in member IDs, as members may be deleted.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID to increment</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?MEMBER</code>The next member ID (null: no next member)</div>
+</div></div>
+</div>
+<a id="method_get_num_forum_posts"></a><div class="element clickable method public method_get_num_forum_posts " data-toggle="collapse" data-target=".method_get_num_forum_posts .collapse" title="public">
+<h2>Get the total posts ever made on the forum.</h2>
+<pre>get_num_forum_posts() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of posts</div>
+</div></div>
+</div>
+<a id="method_get_num_new_forum_posts"></a><div class="element clickable method public method_get_num_new_forum_posts inherited" data-toggle="collapse" data-target=".method_get_num_new_forum_posts .collapse" title="public">
+<h2>Get the number of new forum posts on the system in the last 24 hours.</h2>
+<pre>get_num_new_forum_posts() : integer</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Number of forum posts</div>
+</div></div>
+</div>
+<a id="method_get_num_users_forums"></a><div class="element clickable method public method_get_num_users_forums " data-toggle="collapse" data-target=".method_get_num_users_forums .collapse" title="public">
+<h2>Get the number of members currently online on the forums.</h2>
+<pre>get_num_users_forums() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of members</div>
+</div></div>
+</div>
+<a id="method_get_post_count"></a><div class="element clickable method public method_get_post_count " data-toggle="collapse" data-target=".method_get_post_count .collapse" title="public">
+<h2>Get the given member's post count.</h2>
+<pre>get_post_count(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The post count</div>
+</div></div>
+</div>
+<a id="method_get_post_remaining_details"></a><div class="element clickable method public method_get_post_remaining_details inherited" data-toggle="collapse" data-target=".method_get_post_remaining_details .collapse" title="public">
+<h2>Load extra details for a list of posts. Does not need to return anything if forum driver doesn't support partial post loading (which is only useful for threaded topic partial-display).</h2>
+<pre>get_post_remaining_details(\AUTO_LINK $topic_id, array $post_ids) : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>\AUTO_LINK</code><p>Topic the posts come from</p></div>
+<div class="subelement argument">
+<h4>$post_ids</h4>
+<code>array</code><p>List of post IDs</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Extra details</div>
+</div></div>
+</div>
+<a id="method_get_previous_member"></a><div class="element clickable method public method_get_previous_member " data-toggle="collapse" data-target=".method_get_previous_member .collapse" title="public">
+<h2>This is the opposite of the get_next_member function.</h2>
+<pre>get_previous_member(\MEMBER $member) : \?MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID to decrement</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?MEMBER</code>The previous member ID (null: no previous member)</div>
+</div></div>
+</div>
+<a id="method_get_skin_list"></a><div class="element clickable method public method_get_skin_list " data-toggle="collapse" data-target=".method_get_skin_list .collapse" title="public">
+<h2>Find a list of all forum skins (aka themes).</h2>
+<pre>get_skin_list() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of skins</div>
+</div></div>
+</div>
+<a id="method_get_super_admin_groups"></a><div class="element clickable method public method_get_super_admin_groups inherited" data-toggle="collapse" data-target=".method_get_super_admin_groups .collapse" title="public">
+<h2>Get a list of the super admin usergroups.</h2>
+<pre>get_super_admin_groups() : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The list of usergroups</div>
+</div></div>
+</div>
+<a id="method_get_theme"></a><div class="element clickable method public method_get_theme inherited" data-toggle="collapse" data-target=".method_get_theme .collapse" title="public">
+<h2>Get the current member's theme identifier.</h2>
+<pre>get_theme(\?ID_TEXT $zone_for<code> = null</code>) : \ID_TEXT</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$zone_for</h4>
+<code>\?ID_TEXT</code><p>The zone we are getting the theme for (null: current zone)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The theme identifier</div>
+</div></div>
+</div>
+<a id="method_get_top_posters"></a><div class="element clickable method public method_get_top_posters " data-toggle="collapse" data-target=".method_get_top_posters .collapse" title="public">
+<h2>Get the rows for the top given number of posters on the forum.</h2>
+<pre>get_top_posters(integer $limit) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$limit</h4>
+<code>integer</code><p>The limit to the number of top posters to fetch</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The rows for the given number of top posters in the forum</div>
+</div></div>
+</div>
+<a id="method_get_topic_count"></a><div class="element clickable method public method_get_topic_count " data-toggle="collapse" data-target=".method_get_topic_count .collapse" title="public">
+<h2>Get the given member's topic count.</h2>
+<pre>get_topic_count(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The topic count</div>
+</div></div>
+</div>
+<a id="method_get_topics"></a><div class="element clickable method public method_get_topics " data-toggle="collapse" data-target=".method_get_topics .collapse" title="public">
+<h2>Get the total topics ever made on the forum.</h2>
+<pre>get_topics() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of topics</div>
+</div></div>
+</div>
+<a id="method_get_usergroup_list"></a><div class="element clickable method public method_get_usergroup_list inherited" data-toggle="collapse" data-target=".method_get_usergroup_list .collapse" title="public">
+<h2>Get a map of forum usergroups (id=&gt;name).</h2>
+<pre>get_usergroup_list(boolean $hide_hidden<code> = false</code>, boolean $only_permissive<code> = false</code>, boolean $force_show_all<code> = false</code>, \?array $force_find<code> = null</code>, \?MEMBER $for_member<code> = null</code>, boolean $skip_hidden<code> = false</code>) : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$hide_hidden</h4>
+<code>boolean</code><p>Whether to obscure the name of hidden usergroups</p></div>
+<div class="subelement argument">
+<h4>$only_permissive</h4>
+<code>boolean</code><p>Whether to only grab permissive usergroups</p></div>
+<div class="subelement argument">
+<h4>$force_show_all</h4>
+<code>boolean</code><p>Do not limit things even if there are huge numbers of usergroups</p></div>
+<div class="subelement argument">
+<h4>$force_find</h4>
+<code>\?array</code><p>Usergroups that must be included in the results (null: no extras must be)</p></div>
+<div class="subelement argument">
+<h4>$for_member</h4>
+<code>\?MEMBER</code><p>Always return usergroups of this member (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$skip_hidden</h4>
+<code>boolean</code><p>Whether to completely skip hidden usergroups</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map</div>
+</div></div>
+</div>
+<a id="method_get_username"></a><div class="element clickable method public method_get_username inherited" data-toggle="collapse" data-target=".method_get_username .collapse" title="public">
+<h2>Get a member's username.</h2>
+<pre>get_username(\MEMBER $id, boolean $use_displayname<code> = false</code>) : \?SHORT_TEXT</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<div class="subelement argument">
+<h4>$use_displayname</h4>
+<code>boolean</code><p>Whether to use the displayname rather than the username (if we have them)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The username (null: deleted member)</div>
+</div></div>
+</div>
+<a id="method_install_create_custom_field"></a><div class="element clickable method public method_install_create_custom_field " data-toggle="collapse" data-target=".method_install_create_custom_field .collapse" title="public">
+<h2>Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).</h2>
+<pre>install_create_custom_field(string $name, integer $length, \BINARY $locked<code> = 1</code>, \BINARY $viewable<code> = 0</code>, \BINARY $settable<code> = 0</code>, \BINARY $required<code> = 0</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The name of the new custom field</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>integer</code><p>The length of the new custom field</p></div>
+<div class="subelement argument">
+<h4>$locked</h4>
+<code>\BINARY</code><p>Whether the field is locked</p></div>
+<div class="subelement argument">
+<h4>$viewable</h4>
+<code>\BINARY</code><p>Whether the field is for viewing</p></div>
+<div class="subelement argument">
+<h4>$settable</h4>
+<code>\BINARY</code><p>Whether the field is for setting</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>\BINARY</code><p>Whether the field is required</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the custom field was created successfully</div>
+</div></div>
+</div>
+<a id="method_install_delete_custom_field"></a><div class="element clickable method public method_install_delete_custom_field inherited" data-toggle="collapse" data-target=".method_install_delete_custom_field .collapse" title="public">
+<h2>Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).</h2>
+<pre>install_delete_custom_field(string $name) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The name of the new custom field</p></div>
+</div></div>
+</div>
+<a id="method_is_cookie_login_name"></a><div class="element clickable method public method_is_cookie_login_name " data-toggle="collapse" data-target=".method_is_cookie_login_name .collapse" title="public">
+<h2>Find if the login cookie contains the login name instead of the member ID.</h2>
+<pre>is_cookie_login_name() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the login cookie contains a login name or a member ID</div>
+</div></div>
+</div>
+<a id="method_is_staff"></a><div class="element clickable method public method_is_staff inherited" data-toggle="collapse" data-target=".method_is_staff .collapse" title="public">
+<h2>Find whether a member is staff.</h2>
+<pre>is_staff(\MEMBER $id, boolean $skip_staff_filter<code> = false</code>) : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<div class="subelement argument">
+<h4>$skip_staff_filter</h4>
+<code>boolean</code><p>Whether to avoid checking the staff filter (i.e. ignore M.S.N.'s)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer</div>
+</div></div>
+</div>
+<a id="method_is_super_admin"></a><div class="element clickable method public method_is_super_admin inherited" data-toggle="collapse" data-target=".method_is_super_admin .collapse" title="public">
+<h2>Find whether a member is a super administrator.</h2>
+<pre>is_super_admin(\MEMBER $id) : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer</div>
+</div></div>
+</div>
+<a id="method_join_url"></a><div class="element clickable method public method_join_url inherited" data-toggle="collapse" data-target=".method_join_url .collapse" title="public">
+<h2>Get a URL to a forum join page.</h2>
+<pre>join_url() : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The URL</div>
+</div></div>
+</div>
+<a id="method_make_post_forum_topic"></a><div class="element clickable method public method_make_post_forum_topic " data-toggle="collapse" data-target=".method_make_post_forum_topic .collapse" title="public">
+<h2>Makes a post in the specified forum, in the specified topic according to the given specifications. If the topic doesn't exist, it is created along with a spacer-post.</h2>
+<pre>make_post_forum_topic(\SHORT_TEXT $forum_name, \SHORT_TEXT $topic_identifier, \MEMBER $member, \LONG_TEXT $post_title, \LONG_TEXT $post, string $content_title, string $topic_identifier_encapsulation_prefix, \?URLPATH $content_url<code> = null</code>, \?TIME $time<code> = null</code>, \?IP $ip<code> = null</code>, \?BINARY $validated<code> = null</code>, \?BINARY $topic_validated<code> = 1</code>, boolean $skip_post_checks<code> = false</code>, \SHORT_TEXT $poster_name_if_guest<code> = ''</code>, \?AUTO_LINK $parent_id<code> = null</code>, boolean $staff_only<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Spacer posts exist in order to allow staff to delete the first true post in a topic. Without spacers, this would not be possible with most forum systems. They also serve to provide meta information on the topic that cannot be encoded in the title (such as a link to the content being commented upon).</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$forum_name</h4>
+<code>\SHORT_TEXT</code><p>The forum name</p></div>
+<div class="subelement argument">
+<h4>$topic_identifier</h4>
+<code>\SHORT_TEXT</code><p>The topic identifier (usually <content-type>_<content-id>)</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<div class="subelement argument">
+<h4>$post_title</h4>
+<code>\LONG_TEXT</code><p>The post title</p></div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>\LONG_TEXT</code><p>The post content in Comcode format</p></div>
+<div class="subelement argument">
+<h4>$content_title</h4>
+<code>string</code><p>The topic title; must be same as content title if this is for a comment topic</p></div>
+<div class="subelement argument">
+<h4>$topic_identifier_encapsulation_prefix</h4>
+<code>string</code><p>This is put together with the topic identifier to make a more-human-readable topic title or topic description (hopefully the latter and a $content_title title, but only if the forum supports descriptions)</p></div>
+<div class="subelement argument">
+<h4>$content_url</h4>
+<code>\?URLPATH</code><p>URL to the content (null: do not make spacer post)</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The post time (null: use current time)</p></div>
+<div class="subelement argument">
+<h4>$ip</h4>
+<code>\?IP</code><p>The post IP address (null: use current members IP address)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\?BINARY</code><p>Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.</p></div>
+<div class="subelement argument">
+<h4>$topic_validated</h4>
+<code>\?BINARY</code><p>Whether the topic is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.</p></div>
+<div class="subelement argument">
+<h4>$skip_post_checks</h4>
+<code>boolean</code><p>Whether to skip post checks</p></div>
+<div class="subelement argument">
+<h4>$poster_name_if_guest</h4>
+<code>\SHORT_TEXT</code><p>The name of the poster</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\?AUTO_LINK</code><p>ID of post being replied to (null: N/A)</p></div>
+<div class="subelement argument">
+<h4>$staff_only</h4>
+<code>boolean</code><p>Whether the reply is only visible to staff</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Topic ID (may be NULL), and whether a hidden post has been made</div>
+</div></div>
+</div>
+<a id="method_member_group_query"></a><div class="element clickable method public method_member_group_query " data-toggle="collapse" data-target=".method_member_group_query .collapse" title="public">
+<h2>Get an array of members who are in at least one of the given array of usergroups.</h2>
+<pre>member_group_query(array $groups, \?integer $max<code> = null</code>, integer $start<code> = 0</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$groups</h4>
+<code>array</code><p>The array of usergroups</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>Return up to this many entries for primary members and this many entries for secondary members (null: no limit, only use no limit if querying very restricted usergroups!)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Return primary members after this offset and secondary members after this offset</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The array of members (null: no members)</div>
+</div></div>
+</div>
+<a id="method_member_home_url"></a><div class="element clickable method public method_member_home_url " data-toggle="collapse" data-target=".method_member_home_url .collapse" title="public">
+<h2>Get a URL to the specified member's home (control panel).</h2>
+<pre>member_home_url(\MEMBER $id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the members home</div>
+</div></div>
+</div>
+<a id="method_member_pm_url"></a><div class="element clickable method public method_member_pm_url inherited" data-toggle="collapse" data-target=".method_member_pm_url .collapse" title="public">
+<h2>Get a URL to send a forum member a PM.</h2>
+<pre>member_pm_url(\MEMBER $id, boolean $tempcode_okay<code> = false</code>) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The forum member</p></div>
+<div class="subelement argument">
+<h4>$tempcode_okay</h4>
+<code>boolean</code><p>Whether it is okay to return the result using Tempcode (more efficient)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The URL</div>
+</div></div>
+</div>
+<a id="method_member_profile_hyperlink"></a><div class="element clickable method public method_member_profile_hyperlink inherited" data-toggle="collapse" data-target=".method_member_profile_hyperlink .collapse" title="public">
+<h2>Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile.</h2>
+<pre>member_profile_hyperlink(\MEMBER $id, boolean $definitely_profile<code> = false</code>, string $_username<code> = ''</code>, boolean $use_displayname<code> = true</code>) : \Tempcode</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The forum member</p></div>
+<div class="subelement argument">
+<h4>$definitely_profile</h4>
+<code>boolean</code><p>Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile</p></div>
+<div class="subelement argument">
+<h4>$_username</h4>
+<code>string</code><p>The username (blank: look it up)</p></div>
+<div class="subelement argument">
+<h4>$use_displayname</h4>
+<code>boolean</code><p>Whether to use the displayname rather than the username (if we have them)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The hyperlink</div>
+</div></div>
+</div>
+<a id="method_member_profile_url"></a><div class="element clickable method public method_member_profile_url inherited" data-toggle="collapse" data-target=".method_member_profile_url .collapse" title="public">
+<h2>Get a URL to a forum member's member profile.</h2>
+<pre>member_profile_url(\MEMBER $id, boolean $definitely_profile<code> = false</code>, boolean $tempcode_okay<code> = false</code>) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The forum member</p></div>
+<div class="subelement argument">
+<h4>$definitely_profile</h4>
+<code>boolean</code><p>Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile</p></div>
+<div class="subelement argument">
+<h4>$tempcode_okay</h4>
+<code>boolean</code><p>Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The URL</div>
+</div></div>
+</div>
+<a id="method_mrow_email"></a><div class="element clickable method public method_mrow_email " data-toggle="collapse" data-target=".method_mrow_email .collapse" title="public">
+<h2>From a member row, get the member's e-mail address.</h2>
+<pre>mrow_email(array $r) : \SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$r</h4>
+<code>array</code><p>The profile-row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\SHORT_TEXT</code>The member e-mail address</div>
+</div></div>
+</div>
+<a id="method_mrow_group"></a><div class="element clickable method public method_mrow_group " data-toggle="collapse" data-target=".method_mrow_group .collapse" title="public">
+<h2>From a member row, get the member's primary usergroup.</h2>
+<pre>mrow_group(array $r) : \GROUP</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$r</h4>
+<code>array</code><p>The profile-row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\GROUP</code>The member's primary usergroup</div>
+</div></div>
+</div>
+<a id="method_mrow_id"></a><div class="element clickable method public method_mrow_id " data-toggle="collapse" data-target=".method_mrow_id .collapse" title="public">
+<h2>From a member row, get the member's member ID.</h2>
+<pre>mrow_id(array $r) : \MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$r</h4>
+<code>array</code><p>The profile-row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\MEMBER</code>The member ID</div>
+</div></div>
+</div>
+<a id="method_mrow_username"></a><div class="element clickable method public method_mrow_username " data-toggle="collapse" data-target=".method_mrow_username .collapse" title="public">
+<h2>From a member row, get the member's name.</h2>
+<pre>mrow_username(array $r) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$r</h4>
+<code>array</code><p>The profile-row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The member name</div>
+</div></div>
+</div>
+<a id="method_pin_topic"></a><div class="element clickable method public method_pin_topic " data-toggle="collapse" data-target=".method_pin_topic .collapse" title="public">
+<h2>Pin a topic.</h2>
+<pre>pin_topic(\AUTO_LINK $id, boolean $pin<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The topic ID</p></div>
+<div class="subelement argument">
+<h4>$pin</h4>
+<code>boolean</code><p>True: pin it, False: unpin it</p></div>
+</div></div>
+</div>
+<a id="method_post_url"></a><div class="element clickable method public method_post_url " data-toggle="collapse" data-target=".method_post_url .collapse" title="public">
+<h2>Get a URL to the specified post ID.</h2>
+<pre>post_url(integer $id, string $forum) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The post ID</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>string</code><p>The forum ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the post</div>
+</div></div>
+</div>
+<a id="method_probe_ip"></a><div class="element clickable method public method_probe_ip " data-toggle="collapse" data-target=".method_probe_ip .collapse" title="public">
+<h2>Try to find a member with the given IP address</h2>
+<pre>probe_ip(\IP $ip) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ip</h4>
+<code>\IP</code><p>The IP address</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The distinct rows found</div>
+</div></div>
+</div>
+<a id="method_set_custom_field"></a><div class="element clickable method public method_set_custom_field " data-toggle="collapse" data-target=".method_set_custom_field .collapse" title="public">
+<h2>Set a custom profile fields value. It should not be called directly.</h2>
+<pre>set_custom_field(\MEMBER $member, string $field, string $value) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code><p>The value</p></div>
+</div></div>
+</div>
+<a id="method_show_forum_topics"></a><div class="element clickable method public method_show_forum_topics " data-toggle="collapse" data-target=".method_show_forum_topics .collapse" title="public">
+<h2>Get an array of topics in the given forum. Each topic is an array with the following attributes:
+- id, the topic ID
+- title, the topic title
+- lastusername, the username of the last poster
+- lasttime, the timestamp of the last reply
+- closed, a Boolean for whether the topic is currently closed or not
+- firsttitle, the title of the first post
+- firstpost, the first post (only set if $show_first_posts was true)</h2>
+<pre>show_forum_topics(mixed $name, integer $limit, integer $start, integer $max_rows, \SHORT_TEXT $filter_topic_title<code> = ''</code>, boolean $show_first_posts<code> = false</code>, string $date_key<code> = 'lasttime'</code>, boolean $hot<code> = false</code>, \SHORT_TEXT $filter_topic_description<code> = ''</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>set</th>
+<td>lasttime firsttime</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>mixed</code><p>The forum name or an array of forum IDs</p></div>
+<div class="subelement argument">
+<h4>$limit</h4>
+<code>integer</code><p>The limit</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>The start position</p></div>
+<div class="subelement argument">
+<h4>$max_rows</h4>
+<code>integer</code><p>The total rows (not a parameter: returns by reference)</p></div>
+<div class="subelement argument">
+<h4>$filter_topic_title</h4>
+<code>\SHORT_TEXT</code><p>The topic title filter</p></div>
+<div class="subelement argument">
+<h4>$show_first_posts</h4>
+<code>boolean</code><p>Whether to show the first posts</p></div>
+<div class="subelement argument">
+<h4>$date_key</h4>
+<code>string</code><p>The date key to sort by</p></div>
+<div class="subelement argument">
+<h4>$hot</h4>
+<code>boolean</code><p>Whether to limit to hot topics</p></div>
+<div class="subelement argument">
+<h4>$filter_topic_description</h4>
+<code>\SHORT_TEXT</code><p>The topic description filter</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The array of topics (null: error)</div>
+</div></div>
+</div>
+<a id="method_topic_is_threaded"></a><div class="element clickable method public method_topic_is_threaded inherited" data-toggle="collapse" data-target=".method_topic_is_threaded .collapse" title="public">
+<h2>Find whether a forum is threaded.</h2>
+<pre>topic_is_threaded(integer $topic_id) : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$topic_id</h4>
+<code>integer</code><p>The topic ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method_topic_url"></a><div class="element clickable method public method_topic_url " data-toggle="collapse" data-target=".method_topic_url .collapse" title="public">
+<h2>Get a URL to the specified topic ID. Most forums don't require the second parameter, but some do, so it is required in the interface.</h2>
+<pre>topic_url(integer $id, string $forum) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The topic ID</p></div>
+<div class="subelement argument">
+<h4>$forum</h4>
+<code>string</code><p>The forum ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the topic</div>
+</div></div>
+</div>
+<a id="method_users_online_url"></a><div class="element clickable method public method_users_online_url inherited" data-toggle="collapse" data-target=".method_users_online_url .collapse" title="public">
+<h2>Get a URL to a forum 'user online' list.</h2>
+<pre>users_online_url(boolean $tempcode_okay<code> = false</code>) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tempcode_okay</h4>
+<code>boolean</code><p>Whether it is okay to return the result using Tempcode (more efficient)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The URL</div>
+</div></div>
+</div>
+<a id="method__forum_url"></a><div class="element clickable method protected method__forum_url " data-toggle="collapse" data-target=".method__forum_url .collapse" title="protected">
+<h2>Get a URL to the specified forum.</h2>
+<pre>_forum_url(integer $id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The forum ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the specified forum</div>
+</div></div>
+</div>
+<a id="method__get_member_email_address"></a><div class="element clickable method protected method__get_member_email_address " data-toggle="collapse" data-target=".method__get_member_email_address .collapse" title="protected">
+<h2>Get the e-mail address for the specified member ID.</h2>
+<pre>_get_member_email_address(\MEMBER $member) : \SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\SHORT_TEXT</code>The e-mail address</div>
+</div></div>
+</div>
+<a id="method__get_num_new_forum_posts"></a><div class="element clickable method protected method__get_num_new_forum_posts " data-toggle="collapse" data-target=".method__get_num_new_forum_posts .collapse" title="protected">
+<h2>Get the number of new forum posts.</h2>
+<pre>_get_num_new_forum_posts() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of posts</div>
+</div></div>
+</div>
+<a id="method__get_username"></a><div class="element clickable method protected method__get_username " data-toggle="collapse" data-target=".method__get_username .collapse" title="protected">
+<h2>Get the name relating to the specified member ID.</h2>
+<pre>_get_username(\MEMBER $member) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If this returns NULL, then the member has been deleted. Always take potential NULL output into account.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The member name (null: member deleted)</div>
+</div></div>
+</div>
+<a id="method__join_url"></a><div class="element clickable method protected method__join_url " data-toggle="collapse" data-target=".method__join_url .collapse" title="protected">
+<h2>Get a URL to the registration page (for people to create member accounts).</h2>
+<pre>_join_url() : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the registration page</div>
+</div></div>
+</div>
+<a id="method__member_pm_url"></a><div class="element clickable method protected method__member_pm_url " data-toggle="collapse" data-target=".method__member_pm_url .collapse" title="protected">
+<h2>Get a URL to send a private/personal message to the given member.</h2>
+<pre>_member_pm_url(\MEMBER $id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the private/personal message page</div>
+</div></div>
+</div>
+<a id="method__member_profile_url"></a><div class="element clickable method protected method__member_profile_url " data-toggle="collapse" data-target=".method__member_profile_url .collapse" title="protected">
+<h2>Get a URL to the specified member's profile.</h2>
+<pre>_member_profile_url(\MEMBER $id) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\MEMBER</code><p>The member ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the member profile</div>
+</div></div>
+</div>
+<a id="method__users_online_url"></a><div class="element clickable method protected method__users_online_url " data-toggle="collapse" data-target=".method__users_online_url .collapse" title="protected">
+<h2>Get a URL to the members-online page.</h2>
+<pre>_users_online_url() : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL to the members-online page</div>
+</div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_EMOTICON_CACHE"> </a><div class="element clickable property public property_EMOTICON_CACHE" data-toggle="collapse" data-target=".property_EMOTICON_CACHE .collapse" title="public">
+<h2>$EMOTICON_CACHE</h2>
+<pre>$EMOTICON_CACHE </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_MEMBER_ROWS_CACHED"> </a><div class="element clickable property public property_MEMBER_ROWS_CACHED" data-toggle="collapse" data-target=".property_MEMBER_ROWS_CACHED .collapse" title="public">
+<h2>$MEMBER_ROWS_CACHED</h2>
+<pre>$MEMBER_ROWS_CACHED </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>array()</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_connection"> </a><div class="element clickable property public property_connection" data-toggle="collapse" data-target=".property_connection .collapse" title="public">
+<h2>$connection</h2>
+<pre>$connection </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:46+01:00.<br></footer></div>
+</div>
+</body>
+</html>

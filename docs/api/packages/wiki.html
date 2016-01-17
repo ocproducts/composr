@@ -1,0 +1,665 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/wiki.html" title="wiki"><i class="icon-folder-open"></i>wiki</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_create_selection_list_wiki_page_tree" title="create_selection_list_wiki_page_tree() :: Get a nice formatted XHTML list of all the children beneath the specified Wiki+ page. This function is recursive."><span class="description">Get a nice formatted XHTML list of all the children beneath the specified Wiki+ page. This function is recursive.</span><pre>create_selection_list_wiki_page_tree</pre></a></li>
+<li class="function  "><a href="#function_dispatch_wiki_page_notification" title="dispatch_wiki_page_notification() :: Dispatch a notification about a Wiki+ page"><span class="description">Dispatch a notification about a Wiki+ page</span><pre>dispatch_wiki_page_notification</pre></a></li>
+<li class="function  "><a href="#function_dispatch_wiki_post_notification" title="dispatch_wiki_post_notification() :: Dispatch a notification about a Wiki+ post"><span class="description">Dispatch a notification about a Wiki+ post</span><pre>dispatch_wiki_post_notification</pre></a></li>
+<li class="function  "><a href="#function_get_num_wiki_pages" title="get_num_wiki_pages() :: Get the number of Wiki+ pages currently in the database."><span class="description">Get the number of Wiki+ pages currently in the database.</span><pre>get_num_wiki_pages</pre></a></li>
+<li class="function  "><a href="#function_get_num_wiki_posts" title="get_num_wiki_posts() :: Get the number of Wiki+ posts currently in the database."><span class="description">Get the number of Wiki+ posts currently in the database.</span><pre>get_num_wiki_posts</pre></a></li>
+<li class="function  "><a href="#function_get_param_wiki_chain" title="get_param_wiki_chain() :: Get a chain script parameter or just an ID, in which case it does more work), and converts it into a ID/chain pair"><span class="description">Get a chain script parameter or just an ID, in which case it does more work), and converts it into a ID/chain pair</span><pre>get_param_wiki_chain</pre></a></li>
+<li class="function  "><a href="#function_get_wiki_page_tree" title="get_wiki_page_tree() :: Get a list of maps containing all the subpages, and path information, of the specified page - and those beneath it, recursively."><span class="description">Get a list of maps containing all the subpages, and path information, of the specified page - and those beneath it, recursively.</span><pre>get_wiki_page_tree</pre></a></li>
+<li class="function  "><a href="#function_render_wiki_page_box" title="render_wiki_page_box() :: Get Tempcode for a Wiki+ post 'feature box' for the given row"><span class="description">Get Tempcode for a Wiki+ post 'feature box' for the given row</span><pre>render_wiki_page_box</pre></a></li>
+<li class="function  "><a href="#function_render_wiki_post_box" title="render_wiki_post_box() :: Get Tempcode for a Wiki+ post 'feature box' for the given row"><span class="description">Get Tempcode for a Wiki+ post 'feature box' for the given row</span><pre>render_wiki_post_box</pre></a></li>
+<li class="function  "><a href="#function_wiki_add_page" title="wiki_add_page() :: Add a Wiki+ page"><span class="description">Add a Wiki+ page</span><pre>wiki_add_page</pre></a></li>
+<li class="function  "><a href="#function_wiki_add_post" title="wiki_add_post() :: Edit a Wiki+ post"><span class="description">Edit a Wiki+ post</span><pre>wiki_add_post</pre></a></li>
+<li class="function  "><a href="#function_wiki_breadcrumbs" title="wiki_breadcrumbs() :: Convert a Wiki+ chain to a nice breadcrumb trail."><span class="description">Convert a Wiki+ chain to a nice breadcrumb trail.</span><pre>wiki_breadcrumbs</pre></a></li>
+<li class="function  "><a href="#function_wiki_delete_page" title="wiki_delete_page() :: Delete a Wiki+ page"><span class="description">Delete a Wiki+ page</span><pre>wiki_delete_page</pre></a></li>
+<li class="function  "><a href="#function_wiki_delete_post" title="wiki_delete_post() :: Delete a Wiki+ post"><span class="description">Delete a Wiki+ post</span><pre>wiki_delete_post</pre></a></li>
+<li class="function  "><a href="#function_wiki_derive_chain" title="wiki_derive_chain() :: Create a Wiki+ chain from the specified page ID"><span class="description">Create a Wiki+ chain from the specified page ID</span><pre>wiki_derive_chain</pre></a></li>
+<li class="function  "><a href="#function_wiki_edit_page" title="wiki_edit_page() :: Edit a Wiki+ page"><span class="description">Edit a Wiki+ page</span><pre>wiki_edit_page</pre></a></li>
+<li class="function  "><a href="#function_wiki_edit_post" title="wiki_edit_post() :: Edit a Wiki+ post"><span class="description">Edit a Wiki+ post</span><pre>wiki_edit_post</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/wiki.html">wiki</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_wiki_page_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_wiki_page_tree " data-toggle="collapse" data-target=".function_create_selection_list_wiki_page_tree .collapse" title="">
+<h2>Get a nice formatted XHTML list of all the children beneath the specified Wiki+ page. This function is recursive.</h2>
+<pre>create_selection_list_wiki_page_tree(\?AUTO_LINK $select<code> = null</code>, \?AUTO_LINK $id<code> = null</code>, string $breadcrumbs<code> = ''</code>, boolean $include_orphans<code> = true</code>, boolean $use_compound_list<code> = false</code>, boolean $ins_format<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$select</h4>
+<code>\?AUTO_LINK</code><p>The Wiki+ page to select by default (null: none)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>The Wiki+ page to look beneath (null: the root)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>string</code><p>Breadcrumbs built up so far, in recursion (blank: starting recursion)</p></div>
+<div class="subelement argument">
+<h4>$include_orphans</h4>
+<code>boolean</code><p>Whether to include orphaned pages in the breadcrumbs</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to create a compound list (gets pairs: Tempcode, and comma-separated list of children)</p></div>
+<div class="subelement argument">
+<h4>$ins_format</h4>
+<code>boolean</code><p>Whether to use titles in IDs after a ! (used on tree edit page)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Tempcode for the list / pair of Tempcode and compound</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dispatch_wiki_page_notification"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dispatch_wiki_page_notification " data-toggle="collapse" data-target=".function_dispatch_wiki_page_notification .collapse" title="">
+<h2>Dispatch a notification about a Wiki+ page</h2>
+<pre>dispatch_wiki_page_notification(\AUTO_LINK $page_id, \ID_TEXT $type) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>ADD EDIT</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$page_id</h4>
+<code>\AUTO_LINK</code><p>The page ID</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The action type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dispatch_wiki_post_notification"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dispatch_wiki_post_notification " data-toggle="collapse" data-target=".function_dispatch_wiki_post_notification .collapse" title="">
+<h2>Dispatch a notification about a Wiki+ post</h2>
+<pre>dispatch_wiki_post_notification(\AUTO_LINK $post_id, \ID_TEXT $type) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>ADD EDIT</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\AUTO_LINK</code><p>The post ID</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The action type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_wiki_pages"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_wiki_pages " data-toggle="collapse" data-target=".function_get_num_wiki_pages .collapse" title="">
+<h2>Get the number of Wiki+ pages currently in the database.</h2>
+<pre>get_num_wiki_pages() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of pages in the Wiki+ database</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_wiki_posts"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_wiki_posts " data-toggle="collapse" data-target=".function_get_num_wiki_posts .collapse" title="">
+<h2>Get the number of Wiki+ posts currently in the database.</h2>
+<pre>get_num_wiki_posts() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of posts in the Wiki+ database</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_param_wiki_chain"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_param_wiki_chain " data-toggle="collapse" data-target=".function_get_param_wiki_chain .collapse" title="">
+<h2>Get a chain script parameter or just an ID, in which case it does more work), and converts it into a ID/chain pair</h2>
+<pre>get_param_wiki_chain(\ID_TEXT $parameter_name, \?string $default_value<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$parameter_name</h4>
+<code>\ID_TEXT</code><p>The name of the GET parameter that stores the chain</p></div>
+<div class="subelement argument">
+<h4>$default_value</h4>
+<code>\?string</code><p>The default value for the chain (null: no default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>An array of two elements: an ID and a chain</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_wiki_page_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_wiki_page_tree " data-toggle="collapse" data-target=".function_get_wiki_page_tree .collapse" title="">
+<h2>Get a list of maps containing all the subpages, and path information, of the specified page - and those beneath it, recursively.</h2>
+<pre>get_wiki_page_tree(array $wiki_seen, \?AUTO_LINK $page_id<code> = null</code>, \?string $breadcrumbs<code> = null</code>, \?array $page_details<code> = null</code>, boolean $do_stats<code> = false</code>, boolean $use_compound_list<code> = false</code>, \?integer $levels<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$wiki_seen</h4>
+<code>array</code><p>A list of pages we've already seen (we don't repeat them in multiple list positions)</p></div>
+<div class="subelement argument">
+<h4>$page_id</h4>
+<code>\?AUTO_LINK</code><p>The page being at the root of our recursion (null: true root page)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\?string</code><p>The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)</p></div>
+<div class="subelement argument">
+<h4>$page_details</h4>
+<code>\?array</code><p>The details of the $page_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title</p></div>
+<div class="subelement argument">
+<h4>$do_stats</h4>
+<code>boolean</code><p>Whether to collect post counts with our breadcrumbs information</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to make a compound list (a pair of a comma-separated list of children, and the child array)</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all subcategories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title). There is also an additional 'downloadcount' entry if stats were requested</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_wiki_page_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_wiki_page_box " data-toggle="collapse" data-target=".function_render_wiki_page_box .collapse" title="">
+<h2>Get Tempcode for a Wiki+ post 'feature box' for the given row</h2>
+<pre>render_wiki_page_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_wiki_post_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_wiki_post_box " data-toggle="collapse" data-target=".function_render_wiki_post_box .collapse" title="">
+<h2>Get Tempcode for a Wiki+ post 'feature box' for the given row</h2>
+<pre>render_wiki_post_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_add_page"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_add_page " data-toggle="collapse" data-target=".function_wiki_add_page .collapse" title="">
+<h2>Add a Wiki+ page</h2>
+<pre>wiki_add_page(\SHORT_TEXT $title, \LONG_TEXT $description, \LONG_TEXT $notes, \BINARY $hide_posts, \?MEMBER $member<code> = null</code>, \?TIME $add_time<code> = null</code>, integer $views<code> = 0</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>, \?TIME $edit_date<code> = null</code>, boolean $send_notification<code> = true</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The page title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The page description</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the page</p></div>
+<div class="subelement argument">
+<h4>$hide_posts</h4>
+<code>\BINARY</code><p>Whether to hide the posts on the page by default</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?MEMBER</code><p>The member doing the action (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views so far</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The edit time (null: N/A)</p></div>
+<div class="subelement argument">
+<h4>$send_notification</h4>
+<code>boolean</code><p>Whether to send a notification</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The page ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_add_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_add_post " data-toggle="collapse" data-target=".function_wiki_add_post .collapse" title="">
+<h2>Edit a Wiki+ post</h2>
+<pre>wiki_add_post(\AUTO_LINK $page_id, string $message, \BINARY $validated<code> = 1</code>, \?MEMBER $member<code> = null</code>, boolean $send_notification<code> = true</code>, \?TIME $add_time<code> = null</code>, integer $views<code> = 0</code>, \?TIME $edit_date<code> = null</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$page_id</h4>
+<code>\AUTO_LINK</code><p>The page ID</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The new post</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the post will be validated</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?MEMBER</code><p>The member doing the action (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$send_notification</h4>
+<code>boolean</code><p>Whether to send out a notification out</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views so far</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The edit time (null: N/A)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The post ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_breadcrumbs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_breadcrumbs " data-toggle="collapse" data-target=".function_wiki_breadcrumbs .collapse" title="">
+<h2>Convert a Wiki+ chain to a nice breadcrumb trail.</h2>
+<pre>wiki_breadcrumbs(string $chain, \?string $current_title<code> = null</code>, boolean $final_link<code> = false</code>, boolean $links<code> = true</code>, boolean $this_link_virtual_root<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$chain</h4>
+<code>string</code><p>The chain to convert (which should include the current page ID)</p></div>
+<div class="subelement argument">
+<h4>$current_title</h4>
+<code>\?string</code><p>The title of the current Wiki+ page (if not given, it is looked up) (null: work it out)</p></div>
+<div class="subelement argument">
+<h4>$final_link</h4>
+<code>boolean</code><p>Whether to show the final breadcrumbs element with a link to it (all others will always have links if $links is true)</p></div>
+<div class="subelement argument">
+<h4>$links</h4>
+<code>boolean</code><p>Whether to show links to pages in the breadcrumbs</p></div>
+<div class="subelement argument">
+<h4>$this_link_virtual_root</h4>
+<code>boolean</code><p>Whether to make the link as a virtual-root link (only applies if $final_link is true)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Breadcrumbs</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_delete_page"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_delete_page " data-toggle="collapse" data-target=".function_wiki_delete_page .collapse" title="">
+<h2>Delete a Wiki+ page</h2>
+<pre>wiki_delete_page(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The page ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_delete_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_delete_post " data-toggle="collapse" data-target=".function_wiki_delete_post .collapse" title="">
+<h2>Delete a Wiki+ post</h2>
+<pre>wiki_delete_post(\AUTO_LINK $post_id, \?MEMBER $member<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>\AUTO_LINK</code><p>The post ID</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?MEMBER</code><p>The member doing the action (null: current member)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_derive_chain"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_derive_chain " data-toggle="collapse" data-target=".function_wiki_derive_chain .collapse" title="">
+<h2>Create a Wiki+ chain from the specified page ID</h2>
+<pre>wiki_derive_chain(\AUTO_LINK $id, \?AUTO_LINK $root<code> = null</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the page to derive a chain for</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The Wiki+ chain derived</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_edit_page"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_edit_page " data-toggle="collapse" data-target=".function_wiki_edit_page .collapse" title="">
+<h2>Edit a Wiki+ page</h2>
+<pre>wiki_edit_page(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $description, \LONG_TEXT $notes, \BINARY $hide_posts, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?MEMBER $member<code> = null</code>, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The page ID</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The page title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The page description</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the page</p></div>
+<div class="subelement argument">
+<h4>$hide_posts</h4>
+<code>\BINARY</code><p>Whether to hide the posts on the page by default</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?MEMBER</code><p>The member doing the action (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wiki_edit_post"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wiki_edit_post " data-toggle="collapse" data-target=".function_wiki_edit_post .collapse" title="">
+<h2>Edit a Wiki+ post</h2>
+<pre>wiki_edit_post(\AUTO_LINK $id, string $message, \BINARY $validated, \?MEMBER $member<code> = null</code>, \?AUTO_LINK $page_id<code> = null</code>, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/wiki.html">wiki</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The post ID</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The new post</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the post will be validated</p></div>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\?MEMBER</code><p>The member doing the action (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$page_id</h4>
+<code>\?AUTO_LINK</code><p>The page ID (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:45+01:00.<br></footer></div>
+</div>
+</body>
+</html>

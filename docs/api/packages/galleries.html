@@ -1,0 +1,1536 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/galleries.html" title="galleries"><i class="icon-folder-open"></i>galleries</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_gallery" title="add_gallery() :: Add a gallery with the specified parameters."><span class="description">Add a gallery with the specified parameters.</span><pre>add_gallery</pre></a></li>
+<li class="function  "><a href="#function_add_image" title="add_image() :: Add an image to a specified gallery."><span class="description">Add an image to a specified gallery.</span><pre>add_image</pre></a></li>
+<li class="function  "><a href="#function_add_video" title="add_video() :: Add a video to a specified gallery."><span class="description">Add a video to a specified gallery.</span><pre>add_video</pre></a></li>
+<li class="function  "><a href="#function_can_submit_to_gallery" title="can_submit_to_gallery() :: See whether the current member can submit to the named *member* gallery. Note - this function assumes that members have general submit permission, and does not check for gallery read access."><span class="description">See whether the current member can submit to the named *member* gallery. Note - this function assumes that members have general submit permission, and does not check for gallery read access.</span><pre>can_submit_to_gallery</pre></a></li>
+<li class="function  "><a href="#function_constrain_gallery_image_to_max_size" title="constrain_gallery_image_to_max_size() :: Make sure the detailed image file is not bigger than the defined box width."><span class="description">Make sure the detailed image file is not bigger than the defined box width.</span><pre>constrain_gallery_image_to_max_size</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_gallery_content_tree" title="create_selection_list_gallery_content_tree() :: Get a nice, formatted XHTML list of gallery entries, in gallery tree structure"><span class="description">Get a nice, formatted XHTML list of gallery entries, in gallery tree structure</span><pre>create_selection_list_gallery_content_tree</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_gallery_tree" title="create_selection_list_gallery_tree() :: Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub."><span class="description">Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub.</span><pre>create_selection_list_gallery_tree</pre></a></li>
+<li class="function  "><a href="#function_create_video_thumb" title="create_video_thumb() :: Create a video thumbnail."><span class="description">Create a video thumbnail.</span><pre>create_video_thumb</pre></a></li>
+<li class="function  "><a href="#function_delete_gallery" title="delete_gallery() :: Delete a specified gallery."><span class="description">Delete a specified gallery.</span><pre>delete_gallery</pre></a></li>
+<li class="function  "><a href="#function_delete_image" title="delete_image() :: Delete a specified image from the database, and delete the file if possible."><span class="description">Delete a specified image from the database, and delete the file if possible.</span><pre>delete_image</pre></a></li>
+<li class="function  "><a href="#function_delete_video" title="delete_video() :: Delete a video in a specified gallery."><span class="description">Delete a video in a specified gallery.</span><pre>delete_video</pre></a></li>
+<li class="function  "><a href="#function_download_gallery_script" title="download_gallery_script() :: Script handler for downloading a gallery, as specified by GET parameters."><span class="description">Script handler for downloading a gallery, as specified by GET parameters.</span><pre>download_gallery_script</pre></a></li>
+<li class="function  "><a href="#function_edit_gallery" title="edit_gallery() :: Edit a gallery."><span class="description">Edit a gallery.</span><pre>edit_gallery</pre></a></li>
+<li class="function  "><a href="#function_edit_image" title="edit_image() :: Edit an image in a specified gallery."><span class="description">Edit an image in a specified gallery.</span><pre>edit_image</pre></a></li>
+<li class="function  "><a href="#function_edit_video" title="edit_video() :: Edit a video in a specified gallery."><span class="description">Edit a video in a specified gallery.</span><pre>edit_video</pre></a></li>
+<li class="function  "><a href="#function_gallery_breadcrumbs" title="gallery_breadcrumbs() :: Get a route from a known gallery back to the declared root of the tree."><span class="description">Get a route from a known gallery back to the declared root of the tree.</span><pre>gallery_breadcrumbs</pre></a></li>
+<li class="function  "><a href="#function_gallery_has_content" title="gallery_has_content() :: Find whether a certain gallery has any content (images, videos, or subgalleries)."><span class="description">Find whether a certain gallery has any content (images, videos, or subgalleries).</span><pre>gallery_has_content</pre></a></li>
+<li class="function  "><a href="#function_get_default_gallery_max" title="get_default_gallery_max() :: Find the default number of images per page in the galleries."><span class="description">Find the default number of images per page in the galleries.</span><pre>get_default_gallery_max</pre></a></li>
+<li class="function  "><a href="#function_get_gallery_content_tree" title="get_gallery_content_tree() :: Get a list of maps containing all the gallery entries, and path information, under the specified gallery - and those beneath it, recursively."><span class="description">Get a list of maps containing all the gallery entries, and path information, under the specified gallery - and those beneath it, recursively.</span><pre>get_gallery_content_tree</pre></a></li>
+<li class="function  "><a href="#function_get_gallery_tree" title="get_gallery_tree() :: Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub."><span class="description">Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub.</span><pre>get_gallery_tree</pre></a></li>
+<li class="function  "><a href="#function_get_member_id_from_gallery_name" title="get_member_id_from_gallery_name() :: Find the owner of a gallery."><span class="description">Find the owner of a gallery.</span><pre>get_member_id_from_gallery_name</pre></a></li>
+<li class="function  "><a href="#function_get_potential_gallery_title" title="get_potential_gallery_title() :: Get the potential title of a gallery - real name if gallery exists."><span class="description">Get the potential title of a gallery - real name if gallery exists.</span><pre>get_potential_gallery_title</pre></a></li>
+<li class="function  "><a href="#function_get_recursive_gallery_details" title="get_recursive_gallery_details() :: Get details of the contents of a gallery."><span class="description">Get details of the contents of a gallery.</span><pre>get_recursive_gallery_details</pre></a></li>
+<li class="function  "><a href="#function_get_video_details" title="get_video_details() :: Get width,height,length of a video file. Note: unfortunately mpeg is not possible without huge amounts of code."><span class="description">Get width,height,length of a video file. Note: unfortunately mpeg is not possible without huge amounts of code.</span><pre>get_video_details</pre></a></li>
+<li class="function  "><a href="#function_make_member_gallery_if_needed" title="make_member_gallery_if_needed() :: The UI shows member galleries that do not exist. If it is a member gallery, and it does not exist, it'll need making, before something can be added. This gallery performs the check and makes the gallery if needed."><span class="description">The UI shows member galleries that do not exist. If it is a member gallery, and it does not exist, it'll need making, before something can be added. This gallery performs the check and makes the gallery if needed.</span><pre>make_member_gallery_if_needed</pre></a></li>
+<li class="function  "><a href="#function_only_conventional_galleries" title="only_conventional_galleries() :: See whether a gallery is NOT a download gallery (designed as a filter)."><span class="description">See whether a gallery is NOT a download gallery (designed as a filter).</span><pre>only_conventional_galleries</pre></a></li>
+<li class="function  "><a href="#function_only_download_galleries" title="only_download_galleries() :: See whether a gallery is a download gallery (designed as a filter)."><span class="description">See whether a gallery is a download gallery (designed as a filter).</span><pre>only_download_galleries</pre></a></li>
+<li class="function  "><a href="#function_only_galleries_accepting_media" title="only_galleries_accepting_media() :: See whether a gallery accepts some media (designed as a filter)."><span class="description">See whether a gallery accepts some media (designed as a filter).</span><pre>only_galleries_accepting_media</pre></a></li>
+<li class="function  "><a href="#function_only_member_galleries_of_id" title="only_member_galleries_of_id() :: See whether the GET parameter 'id' is of a gallery that is a member gallery of the given member gallery container, or just a normal gallery."><span class="description">See whether the GET parameter 'id' is of a gallery that is a member gallery of the given member gallery container, or just a normal gallery.</span><pre>only_member_galleries_of_id</pre></a></li>
+<li class="function  "><a href="#function_read_intel_endian_int" title="read_intel_endian_int() :: Read an integer from the given binary chunk. The integer is in intel endian form."><span class="description">Read an integer from the given binary chunk. The integer is in intel endian form.</span><pre>read_intel_endian_int</pre></a></li>
+<li class="function  "><a href="#function_read_network_endian_int" title="read_network_endian_int() :: Read an integer from the given binary chunk. The integer is in network endian form."><span class="description">Read an integer from the given binary chunk. The integer is in network endian form.</span><pre>read_network_endian_int</pre></a></li>
+<li class="function  "><a href="#function_render_gallery_box" title="render_gallery_box() :: Get preview detailing for a gallery."><span class="description">Get preview detailing for a gallery.</span><pre>render_gallery_box</pre></a></li>
+<li class="function  "><a href="#function_render_image_box" title="render_image_box() :: Render an image box."><span class="description">Render an image box.</span><pre>render_image_box</pre></a></li>
+<li class="function  "><a href="#function_render_video_box" title="render_video_box() :: Render a video box."><span class="description">Render a video box.</span><pre>render_video_box</pre></a></li>
+<li class="function  "><a href="#function_show_gallery_video_media" title="show_gallery_video_media() :: Show a gallery media entry (not an image, something more complex); all these will render under the 'video' type even if they're technically not."><span class="description">Show a gallery media entry (not an image, something more complex); all these will render under the 'video' type even if they're technically not.</span><pre>show_gallery_video_media</pre></a></li>
+<li class="function  "><a href="#function_show_video_details" title="show_video_details() :: Get preview detailing for a video."><span class="description">Get preview detailing for a video.</span><pre>show_video_details</pre></a></li>
+<li class="function  "><a href="#function_store_transcoding_failure" title="store_transcoding_failure() :: Note that a zencoder transcode has failed."><span class="description">Note that a zencoder transcode has failed.</span><pre>store_transcoding_failure</pre></a></li>
+<li class="function  "><a href="#function_store_transcoding_success" title="store_transcoding_success() :: Handle that a transcode has worked."><span class="description">Handle that a transcode has worked.</span><pre>store_transcoding_success</pre></a></li>
+<li class="function  "><a href="#function_transcode_video" title="transcode_video() :: Transcode a video."><span class="description">Transcode a video.</span><pre>transcode_video</pre></a></li>
+<li class="function  "><a href="#function_watermark_gallery_image" title="watermark_gallery_image() :: Watermarks an image with the appropriate gallery watermarks."><span class="description">Watermarks an image with the appropriate gallery watermarks.</span><pre>watermark_gallery_image</pre></a></li>
+<li class="function  "><a href="#function_zencoder_receive_script" title="zencoder_receive_script() :: Receive a message from zencoder that a video has transcoded."><span class="description">Receive a message from zencoder that a video has transcoded.</span><pre>zencoder_receive_script</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_GETID3_HELPERAPPSDIR" title="GETID3_HELPERAPPSDIR() :: "><span class="description">GETID3_HELPERAPPSDIR</span><pre>GETID3_HELPERAPPSDIR</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/galleries.html">galleries</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_gallery"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_gallery " data-toggle="collapse" data-target=".function_add_gallery .collapse" title="">
+<h2>Add a gallery with the specified parameters.</h2>
+<pre>add_gallery(\ID_TEXT $name, \SHORT_TEXT $fullname, \LONG_TEXT $description, \LONG_TEXT $notes, \ID_TEXT $parent_id, \BINARY $accept_images<code> = 1</code>, \BINARY $accept_videos<code> = 1</code>, \BINARY $is_member_synched<code> = 0</code>, \BINARY $flow_mode_interface<code> = 0</code>, \URLPATH $rep_image<code> = ''</code>, \URLPATH $watermark_top_left<code> = ''</code>, \URLPATH $watermark_top_right<code> = ''</code>, \URLPATH $watermark_bottom_left<code> = ''</code>, \URLPATH $watermark_bottom_right<code> = ''</code>, \BINARY $allow_rating<code> = 1</code>, \BINARY $allow_comments<code> = 1</code>, boolean $skip_exists_check<code> = false</code>, \?TIME $add_date<code> = null</code>, \?MEMBER $g_owner<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The gallery codename</p></div>
+<div class="subelement argument">
+<h4>$fullname</h4>
+<code>\SHORT_TEXT</code><p>The full human-readeable name of the gallery</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description of the gallery</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the gallery</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\ID_TEXT</code><p>The parent gallery (blank: no parent)</p></div>
+<div class="subelement argument">
+<h4>$accept_images</h4>
+<code>\BINARY</code><p>Whether images may be put in this gallery</p></div>
+<div class="subelement argument">
+<h4>$accept_videos</h4>
+<code>\BINARY</code><p>Whether videos may be put in this gallery</p></div>
+<div class="subelement argument">
+<h4>$is_member_synched</h4>
+<code>\BINARY</code><p>Whether the gallery serves as a container for automatically created member galleries</p></div>
+<div class="subelement argument">
+<h4>$flow_mode_interface</h4>
+<code>\BINARY</code><p>Whether the gallery uses the flow mode interface</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image of the gallery (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_top_left</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_top_right</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_bottom_left</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_bottom_right</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether rating are allowed</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether comments are allowed</p></div>
+<div class="subelement argument">
+<h4>$skip_exists_check</h4>
+<code>boolean</code><p>Whether to skip the check for whether the gallery exists (useful for importers)</p></div>
+<div class="subelement argument">
+<h4>$add_date</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$g_owner</h4>
+<code>\?MEMBER</code><p>The gallery owner (null: nobody)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_image " data-toggle="collapse" data-target=".function_add_image .collapse" title="">
+<h2>Add an image to a specified gallery.</h2>
+<pre>add_image(\SHORT_TEXT $title, \ID_TEXT $cat, \LONG_TEXT $description, \URLPATH $url, \URLPATH $thumb_url, \BINARY $validated, \BINARY $allow_rating, \BINARY $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \?MEMBER $submitter<code> = null</code>, \?TIME $add_date<code> = null</code>, \?TIME $edit_date<code> = null</code>, integer $views<code> = 0</code>, \?AUTO_LINK $id<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>Image title</p></div>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The image description</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the actual image</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\URLPATH</code><p>The URL to the thumbnail of the actual image</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the image has been validated for display on the site</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the image may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether the image may be commented upon</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the image may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the image</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$add_date</h4>
+<code>\?TIME</code><p>The time of adding (null: now)</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The time of editing (null: never)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the new entry</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_video"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_video " data-toggle="collapse" data-target=".function_add_video .collapse" title="">
+<h2>Add a video to a specified gallery.</h2>
+<pre>add_video(\SHORT_TEXT $title, \ID_TEXT $cat, \LONG_TEXT $description, \URLPATH $url, \URLPATH $thumb_url, \BINARY $validated, \BINARY $allow_rating, \BINARY $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, integer $video_length, integer $video_width, integer $video_height, \?MEMBER $submitter<code> = null</code>, \?TIME $add_date<code> = null</code>, \?TIME $edit_date<code> = null</code>, integer $views<code> = 0</code>, \?AUTO_LINK $id<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>Video title</p></div>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The video description</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the actual video</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\URLPATH</code><p>The URL to the thumbnail of the actual video</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the video has been validated for display on the site</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the video may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether the video may be commented upon</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the video may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the video</p></div>
+<div class="subelement argument">
+<h4>$video_length</h4>
+<code>integer</code><p>The length of the video</p></div>
+<div class="subelement argument">
+<h4>$video_width</h4>
+<code>integer</code><p>The width of the video</p></div>
+<div class="subelement argument">
+<h4>$video_height</h4>
+<code>integer</code><p>The height of the video</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$add_date</h4>
+<code>\?TIME</code><p>The time of adding (null: now)</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The time of editing (null: never)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the new entry</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_can_submit_to_gallery"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_can_submit_to_gallery " data-toggle="collapse" data-target=".function_can_submit_to_gallery .collapse" title="">
+<h2>See whether the current member can submit to the named *member* gallery. Note - this function assumes that members have general submit permission, and does not check for gallery read access.</h2>
+<pre>can_submit_to_gallery(\ID_TEXT $name) : \~integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~integer</code>The owner of the gallery (false: we aren't allowed to submit to it) (-2: not a member gallery)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_constrain_gallery_image_to_max_size"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_constrain_gallery_image_to_max_size " data-toggle="collapse" data-target=".function_constrain_gallery_image_to_max_size .collapse" title="">
+<h2>Make sure the detailed image file is not bigger than the defined box width.</h2>
+<pre>constrain_gallery_image_to_max_size(\PATH $file_path, string $filename, integer $box_width) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$file_path</h4>
+<code>\PATH</code><p>The path to the image file</p></div>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>string</code><p>The original filename of the image</p></div>
+<div class="subelement argument">
+<h4>$box_width</h4>
+<code>integer</code><p>The box width</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_gallery_content_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_gallery_content_tree " data-toggle="collapse" data-target=".function_create_selection_list_gallery_content_tree .collapse" title="">
+<h2>Get a nice, formatted XHTML list of gallery entries, in gallery tree structure</h2>
+<pre>create_selection_list_gallery_content_tree(\ID_TEXT $table, \?ID_TEXT $it<code> = null</code>, \?AUTO_LINK $submitter<code> = null</code>, boolean $use_compound_list<code> = false</code>, boolean $editable_filter<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>images videos</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table we are working with</p></div>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?ID_TEXT</code><p>The currently selected entry (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?AUTO_LINK</code><p>Only show images/videos submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_gallery_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_gallery_tree " data-toggle="collapse" data-target=".function_create_selection_list_gallery_tree .collapse" title="">
+<h2>Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub.</h2>
+<pre>create_selection_list_gallery_tree(\?ID_TEXT $it<code> = null</code>, \?string $filter<code> = null</code>, boolean $must_accept_images<code> = false</code>, boolean $must_accept_videos<code> = false</code>, boolean $purity<code> = false</code>, boolean $use_compound_list<code> = false</code>, \?MEMBER $member_id<code> = null</code>, boolean $addable_filter<code> = false</code>, boolean $editable_filter<code> = false</code>, \?TIME $updated_since<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>..)galleries.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?ID_TEXT</code><p>The gallery to select by default (null: no specific default)</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?string</code><p>A function name to filter galleries with (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$must_accept_images</h4>
+<code>boolean</code><p>Whether displayed galleries must support images</p></div>
+<div class="subelement argument">
+<h4>$must_accept_videos</h4>
+<code>boolean</code><p>Whether displayed galleries must support videos</p></div>
+<div class="subelement argument">
+<h4>$purity</h4>
+<code>boolean</code><p>Whether to NOT show member galleries that do not exist yet</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>Member we are filtering for (null: not needed)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<div class="subelement argument">
+<h4>$updated_since</h4>
+<code>\?TIME</code><p>Time from which content must be updated (null: no limit).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The tree list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_video_thumb"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_video_thumb " data-toggle="collapse" data-target=".function_create_video_thumb .collapse" title="">
+<h2>Create a video thumbnail.</h2>
+<pre>create_video_thumb(\URLPATH $src_url, \?PATH $expected_output_path<code> = null</code>) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$src_url</h4>
+<code>\URLPATH</code><p>Video to get thumbail from (must be local)</p></div>
+<div class="subelement argument">
+<h4>$expected_output_path</h4>
+<code>\?PATH</code><p>Where to save to (null: decide for ourselves)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>Thumbnail, only valid if expected_output_path was passed as NULL (blank: could not generate)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_gallery"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_gallery " data-toggle="collapse" data-target=".function_delete_gallery .collapse" title="">
+<h2>Delete a specified gallery.</h2>
+<pre>delete_gallery(\ID_TEXT $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The gallery codename</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_image " data-toggle="collapse" data-target=".function_delete_image .collapse" title="">
+<h2>Delete a specified image from the database, and delete the file if possible.</h2>
+<pre>delete_image(\AUTO_LINK $id, boolean $delete_full<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the image</p></div>
+<div class="subelement argument">
+<h4>$delete_full</h4>
+<code>boolean</code><p>Whether to delete the actual file also</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_video"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_video " data-toggle="collapse" data-target=".function_delete_video .collapse" title="">
+<h2>Delete a video in a specified gallery.</h2>
+<pre>delete_video(\AUTO_LINK $id, boolean $delete_full<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the entry to delete</p></div>
+<div class="subelement argument">
+<h4>$delete_full</h4>
+<code>boolean</code><p>Whether to delete the actual video file from disk as well as the entry</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_download_gallery_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_download_gallery_script " data-toggle="collapse" data-target=".function_download_gallery_script .collapse" title="">
+<h2>Script handler for downloading a gallery, as specified by GET parameters.</h2>
+<pre>download_gallery_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_gallery"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_gallery " data-toggle="collapse" data-target=".function_edit_gallery .collapse" title="">
+<h2>Edit a gallery.</h2>
+<pre>edit_gallery(\ID_TEXT $old_name, \ID_TEXT $name, \SHORT_TEXT $fullname, \LONG_TEXT $description, \LONG_TEXT $notes, \?ID_TEXT $parent_id<code> = null</code>, \BINARY $accept_images<code> = 1</code>, \BINARY $accept_videos<code> = 1</code>, \BINARY $is_member_synched<code> = 0</code>, \BINARY $flow_mode_interface<code> = 0</code>, \URLPATH $rep_image<code> = ''</code>, \URLPATH $watermark_top_left<code> = ''</code>, \URLPATH $watermark_top_right<code> = ''</code>, \URLPATH $watermark_bottom_left<code> = ''</code>, \URLPATH $watermark_bottom_right<code> = ''</code>, \?SHORT_TEXT $meta_keywords<code> = null</code>, \?LONG_TEXT $meta_description<code> = null</code>, \BINARY $allow_rating<code> = 1</code>, \BINARY $allow_comments<code> = 1</code>, \?MEMBER $g_owner<code> = null</code>, \?TIME $add_time<code> = null</code>, boolean $null_is_literal<code> = false</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_name</h4>
+<code>\ID_TEXT</code><p>The old gallery codename (in case we are renaming)</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The gallery codename (maybe the same as the old one)</p></div>
+<div class="subelement argument">
+<h4>$fullname</h4>
+<code>\SHORT_TEXT</code><p>The full human-readeable name of the gallery</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description of the gallery</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the gallery</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\?ID_TEXT</code><p>The parent gallery (null: no parent)</p></div>
+<div class="subelement argument">
+<h4>$accept_images</h4>
+<code>\BINARY</code><p>Whether images may be put in this gallery</p></div>
+<div class="subelement argument">
+<h4>$accept_videos</h4>
+<code>\BINARY</code><p>Whether videos may be put in this gallery</p></div>
+<div class="subelement argument">
+<h4>$is_member_synched</h4>
+<code>\BINARY</code><p>Whether the gallery serves as a container for automatically created member galleries</p></div>
+<div class="subelement argument">
+<h4>$flow_mode_interface</h4>
+<code>\BINARY</code><p>Whether the gallery uses the flow mode interface</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image of the gallery (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_top_left</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_top_right</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_bottom_left</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$watermark_bottom_right</h4>
+<code>\URLPATH</code><p>Watermark (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether rating are allowed</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether comments are allowed</p></div>
+<div class="subelement argument">
+<h4>$g_owner</h4>
+<code>\?MEMBER</code><p>The gallery owner (null: nobody)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_image " data-toggle="collapse" data-target=".function_edit_image .collapse" title="">
+<h2>Edit an image in a specified gallery.</h2>
+<pre>edit_image(\AUTO_LINK $id, \SHORT_TEXT $title, \ID_TEXT $cat, \LONG_TEXT $description, \URLPATH $url, \URLPATH $thumb_url, \BINARY $validated, \BINARY $allow_rating, \BINARY $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the image to edit</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>Image title</p></div>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The image description</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the actual image</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\URLPATH</code><p>The URL to the thumbnail of the actual image</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the image has been validated for display on the site</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the image may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether the image may be commented upon</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the image may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the image</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_video"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_video " data-toggle="collapse" data-target=".function_edit_video .collapse" title="">
+<h2>Edit a video in a specified gallery.</h2>
+<pre>edit_video(\AUTO_LINK $id, \SHORT_TEXT $title, \ID_TEXT $cat, \LONG_TEXT $description, \URLPATH $url, \URLPATH $thumb_url, \BINARY $validated, \BINARY $allow_rating, \BINARY $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, integer $video_length, integer $video_width, integer $video_height, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the entry to edit</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>Video title</p></div>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The video description</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the actual video</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\URLPATH</code><p>The URL to the thumbnail of the actual video</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the video has been validated for display on the site</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the video may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\BINARY</code><p>Whether the video may be commented upon</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the video may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes associated with the video</p></div>
+<div class="subelement argument">
+<h4>$video_length</h4>
+<code>integer</code><p>The length of the video</p></div>
+<div class="subelement argument">
+<h4>$video_width</h4>
+<code>integer</code><p>The width of the video</p></div>
+<div class="subelement argument">
+<h4>$video_height</h4>
+<code>integer</code><p>The height of the video</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_gallery_breadcrumbs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_gallery_breadcrumbs " data-toggle="collapse" data-target=".function_gallery_breadcrumbs .collapse" title="">
+<h2>Get a route from a known gallery back to the declared root of the tree.</h2>
+<pre>gallery_breadcrumbs(\ID_TEXT $gallery, \?ID_TEXT $root<code> = 'root'</code>, boolean $no_link_for_me_sir<code> = true</code>, \ID_TEXT $zone<code> = ''</code>, boolean $attach_to_url_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$gallery</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?ID_TEXT</code><p>The virtual root (null: none)</p></div>
+<div class="subelement argument">
+<h4>$no_link_for_me_sir</h4>
+<code>boolean</code><p>Whether not to put a link at this point in the breadcrumbs (usually, because the viewer is already at it)</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone that the linked to gallery module is in</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The navigation element</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_gallery_has_content"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_gallery_has_content " data-toggle="collapse" data-target=".function_gallery_has_content .collapse" title="">
+<h2>Find whether a certain gallery has any content (images, videos, or subgalleries).</h2>
+<pre>gallery_has_content(\ID_TEXT $name) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the gallery</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_default_gallery_max"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_default_gallery_max " data-toggle="collapse" data-target=".function_get_default_gallery_max .collapse" title="">
+<h2>Find the default number of images per page in the galleries.</h2>
+<pre>get_default_gallery_max() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Images per page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_gallery_content_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_gallery_content_tree " data-toggle="collapse" data-target=".function_get_gallery_content_tree .collapse" title="">
+<h2>Get a list of maps containing all the gallery entries, and path information, under the specified gallery - and those beneath it, recursively.</h2>
+<pre>get_gallery_content_tree(\ID_TEXT $table, \?AUTO_LINK $submitter<code> = null</code>, \?ID_TEXT $gallery<code> = null</code>, \?string $breadcrumbs<code> = null</code>, \?ID_TEXT $title<code> = null</code>, \?integer $levels<code> = null</code>, boolean $use_compound_list<code> = false</code>, boolean $editable_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>images videos</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table we are working with</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?AUTO_LINK</code><p>Only show images/videos submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$gallery</h4>
+<code>\?ID_TEXT</code><p>The gallery being at the root of our recursion (null: true root)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\?string</code><p>The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\?ID_TEXT</code><p>The name of the $gallery we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all galleries. Each map entry containins the fields 'id' (gallery ID) and 'breadcrumbs' (path to the category, including the categories own title), and more. Or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_gallery_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_gallery_tree " data-toggle="collapse" data-target=".function_get_gallery_tree .collapse" title="">
+<h2>Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub.</h2>
+<pre>get_gallery_tree(\?ID_TEXT $gallery<code> = 'root'</code>, string $breadcrumbs<code> = ''</code>, \?array $gallery_info<code> = null</code>, boolean $do_stats<code> = false</code>, \?string $filter<code> = null</code>, boolean $must_accept_images<code> = false</code>, boolean $must_accept_videos<code> = false</code>, boolean $purity<code> = false</code>, boolean $use_compound_list<code> = false</code>, \?integer $levels<code> = null</code>, \?MEMBER $member_id<code> = null</code>, boolean $addable_filter<code> = false</code>, boolean $editable_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>..)galleries.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$gallery</h4>
+<code>\?ID_TEXT</code><p>The gallery we are getting the tree starting from (null: root)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>string</code><p>The parent breadcrumbs at this point of the recursion</p></div>
+<div class="subelement argument">
+<h4>$gallery_info</h4>
+<code>\?array</code><p>The database row for the $gallery gallery (null: get it from the DB)</p></div>
+<div class="subelement argument">
+<h4>$do_stats</h4>
+<code>boolean</code><p>Whether to include video/image statistics in the returned tree</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?string</code><p>A function name to filter galleries with (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$must_accept_images</h4>
+<code>boolean</code><p>Whether displayed galleries must support images</p></div>
+<div class="subelement argument">
+<h4>$must_accept_videos</h4>
+<code>boolean</code><p>Whether displayed galleries must support videos</p></div>
+<div class="subelement argument">
+<h4>$purity</h4>
+<code>boolean</code><p>Whether to NOT show member galleries that do not exist yet</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>Member we are filtering for (null: not needed)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The tree structure, or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_member_id_from_gallery_name"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_member_id_from_gallery_name " data-toggle="collapse" data-target=".function_get_member_id_from_gallery_name .collapse" title="">
+<h2>Find the owner of a gallery.</h2>
+<pre>get_member_id_from_gallery_name(\ID_TEXT $gallery_name, \?array $row<code> = null</code>, boolean $only_if_personal_gallery<code> = false</code>) : \?MEMBER</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$gallery_name</h4>
+<code>\ID_TEXT</code><p>The name of the gallery</p></div>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>\?array</code><p>Gallery row (null: look it up)</p></div>
+<div class="subelement argument">
+<h4>$only_if_personal_gallery</h4>
+<code>boolean</code><p>Only non-NULL if it is a personal gallery</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?MEMBER</code>The owner of the gallery (null: not a member owned gallery)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_potential_gallery_title"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_potential_gallery_title " data-toggle="collapse" data-target=".function_get_potential_gallery_title .collapse" title="">
+<h2>Get the potential title of a gallery - real name if gallery exists.</h2>
+<pre>get_potential_gallery_title(\ID_TEXT $cat) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery codename</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The gallery title (null: does not exist and won't be auto-created)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_recursive_gallery_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_recursive_gallery_details " data-toggle="collapse" data-target=".function_get_recursive_gallery_details .collapse" title="">
+<h2>Get details of the contents of a gallery.</h2>
+<pre>get_recursive_gallery_details(\ID_TEXT $name, boolean $test_videos<code> = true</code>, boolean $test_images<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the gallery</p></div>
+<div class="subelement argument">
+<h4>$test_videos</h4>
+<code>boolean</code><p>Whether to test for videos when making counts (ignore this parameter - used internally)</p></div>
+<div class="subelement argument">
+<h4>$test_images</h4>
+<code>boolean</code><p>Whether to test for images when making counts (ignore this parameter - used internally)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A triplet: (num children, num images, num videos)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_video_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_video_details " data-toggle="collapse" data-target=".function_get_video_details .collapse" title="">
+<h2>Get width,height,length of a video file. Note: unfortunately mpeg is not possible without huge amounts of code.</h2>
+<pre>get_video_details(\PATH $file_path, string $filename, boolean $delay_errors<code> = false</code>) : \~array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$file_path</h4>
+<code>\PATH</code><p>The path to the video file</p></div>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>string</code><p>The original filename of the video file (so we can find the file type from the file extension)</p></div>
+<div class="subelement argument">
+<h4>$delay_errors</h4>
+<code>boolean</code><p>Whether to skip over errored files instead of dying. We don't currently make use of this as our readers aren't sophisticard enough to properly spot erroneous situations.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\~array</code>The triplet of width/height/length (possibly containing NULL's for when we can't detect properties) (false: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_make_member_gallery_if_needed"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_make_member_gallery_if_needed " data-toggle="collapse" data-target=".function_make_member_gallery_if_needed .collapse" title="">
+<h2>The UI shows member galleries that do not exist. If it is a member gallery, and it does not exist, it'll need making, before something can be added. This gallery performs the check and makes the gallery if needed.</h2>
+<pre>make_member_gallery_if_needed(\ID_TEXT $cat) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery codename</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_only_conventional_galleries"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_only_conventional_galleries " data-toggle="collapse" data-target=".function_only_conventional_galleries .collapse" title="">
+<h2>See whether a gallery is NOT a download gallery (designed as a filter).</h2>
+<pre>only_conventional_galleries(\ID_TEXT $cat) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the gallery is NOT a download gallery</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_only_download_galleries"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_only_download_galleries " data-toggle="collapse" data-target=".function_only_download_galleries .collapse" title="">
+<h2>See whether a gallery is a download gallery (designed as a filter).</h2>
+<pre>only_download_galleries(\ID_TEXT $cat) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the gallery is a download gallery</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_only_galleries_accepting_media"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_only_galleries_accepting_media " data-toggle="collapse" data-target=".function_only_galleries_accepting_media .collapse" title="">
+<h2>See whether a gallery accepts some media (designed as a filter).</h2>
+<pre>only_galleries_accepting_media(\ID_TEXT $cat) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the gallery accepts some media</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_only_member_galleries_of_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_only_member_galleries_of_id " data-toggle="collapse" data-target=".function_only_member_galleries_of_id .collapse" title="">
+<h2>See whether the GET parameter 'id' is of a gallery that is a member gallery of the given member gallery container, or just a normal gallery.</h2>
+<pre>only_member_galleries_of_id(\ID_TEXT $cat, \?MEMBER $member_id, integer $child_count) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat</h4>
+<code>\ID_TEXT</code><p>The gallery name</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>Member we are filtering for (null: not needed)</p></div>
+<div class="subelement argument">
+<h4>$child_count</h4>
+<code>integer</code><p>The number of children for this gallery</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>The answer</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_read_intel_endian_int"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_read_intel_endian_int " data-toggle="collapse" data-target=".function_read_intel_endian_int .collapse" title="">
+<h2>Read an integer from the given binary chunk. The integer is in intel endian form.</h2>
+<pre>read_intel_endian_int(string $buffer) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$buffer</h4>
+<code>string</code><p>The binary chunk</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The integer</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_read_network_endian_int"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_read_network_endian_int " data-toggle="collapse" data-target=".function_read_network_endian_int .collapse" title="">
+<h2>Read an integer from the given binary chunk. The integer is in network endian form.</h2>
+<pre>read_network_endian_int(string $buffer) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$buffer</h4>
+<code>string</code><p>The binary chunk</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The integer</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_gallery_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_gallery_box " data-toggle="collapse" data-target=".function_render_gallery_box .collapse" title="">
+<h2>Get preview detailing for a gallery.</h2>
+<pre>render_gallery_box(array $myrow, \ID_TEXT $root<code> = 'root'</code>, boolean $show_member_stats_if_appropriate<code> = false</code>, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $quit_if_empty<code> = true</code>, boolean $preview<code> = false</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, boolean $attach_to_url_filter<code> = false</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$myrow</h4>
+<code>array</code><p>The database row of the gallery</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\ID_TEXT</code><p>The virtual root of the gallery</p></div>
+<div class="subelement argument">
+<h4>$show_member_stats_if_appropriate</h4>
+<code>boolean</code><p>Whether to show member stats if it is a member owned gallery</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone that the gallery module we are linking to is in</p></div>
+<div class="subelement argument">
+<h4>$quit_if_empty</h4>
+<code>boolean</code><p>Whether to not show anything if the gallery is empty</p></div>
+<div class="subelement argument">
+<h4>$preview</h4>
+<code>boolean</code><p>Whether only to show 'preview' details</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The preview</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_image_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_image_box " data-toggle="collapse" data-target=".function_render_image_box .collapse" title="">
+<h2>Render an image box.</h2>
+<pre>render_image_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?ID_TEXT $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The image row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone the galleries module is in</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?ID_TEXT</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The rendered box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_video_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_video_box " data-toggle="collapse" data-target=".function_render_video_box .collapse" title="">
+<h2>Render a video box.</h2>
+<pre>render_video_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?ID_TEXT $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The video row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone the galleries module is in</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?ID_TEXT</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The rendered box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_show_gallery_video_media"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_show_gallery_video_media " data-toggle="collapse" data-target=".function_show_gallery_video_media .collapse" title="">
+<h2>Show a gallery media entry (not an image, something more complex); all these will render under the 'video' type even if they're technically not.</h2>
+<pre>show_gallery_video_media(\URLPATH $url, \URLPATH $thumb_url, integer $width, integer $height, integer $length, \MEMBER $submitter) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>URL to media</p></div>
+<div class="subelement argument">
+<h4>$thumb_url</h4>
+<code>\URLPATH</code><p>URL to thumbnail</p></div>
+<div class="subelement argument">
+<h4>$width</h4>
+<code>integer</code><p>Width</p></div>
+<div class="subelement argument">
+<h4>$height</h4>
+<code>integer</code><p>Height</p></div>
+<div class="subelement argument">
+<h4>$length</h4>
+<code>integer</code><p>Length</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\MEMBER</code><p>The entry submitter</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Displayed media</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_show_video_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_show_video_details " data-toggle="collapse" data-target=".function_show_video_details .collapse" title="">
+<h2>Get preview detailing for a video.</h2>
+<pre>show_video_details(array $myrow) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$myrow</h4>
+<code>array</code><p>The database row of the video</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The preview</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_store_transcoding_failure"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_store_transcoding_failure " data-toggle="collapse" data-target=".function_store_transcoding_failure .collapse" title="">
+<h2>Note that a zencoder transcode has failed.</h2>
+<pre>store_transcoding_failure(\ID_TEXT $transcoder_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$transcoder_id</h4>
+<code>\ID_TEXT</code><p>Transcoding ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_store_transcoding_success"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_store_transcoding_success " data-toggle="collapse" data-target=".function_store_transcoding_success .collapse" title="">
+<h2>Handle that a transcode has worked.</h2>
+<pre>store_transcoding_success(\ID_TEXT $transcoder_id, \?URLPATH $new_url<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$transcoder_id</h4>
+<code>\ID_TEXT</code><p>Transcoding ID</p></div>
+<div class="subelement argument">
+<h4>$new_url</h4>
+<code>\?URLPATH</code><p>Transcoded URL (null: Discerned using t_output_filename field, which we assume is where transcoder has copied file to)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_transcode_video"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_transcode_video " data-toggle="collapse" data-target=".function_transcode_video .collapse" title="">
+<h2>Transcode a video.</h2>
+<pre>transcode_video(\URLPATH $url, \?ID_TEXT $table, \?AUTO_LINK $local_id, \?ID_TEXT $local_id_field, \?ID_TEXT $url_field, \?ID_TEXT $orig_filename_field, \?ID_TEXT $width_field, \?ID_TEXT $height_field) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>URL of the video to be transcoded</p></div>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\?ID_TEXT</code><p>The table we are saving into (null: don't save into DB)</p></div>
+<div class="subelement argument">
+<h4>$local_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the video being transcoded (null: don't save into DB)</p></div>
+<div class="subelement argument">
+<h4>$local_id_field</h4>
+<code>\?ID_TEXT</code><p>Name of the ID field in the table (null: don't save into DB)</p></div>
+<div class="subelement argument">
+<h4>$url_field</h4>
+<code>\?ID_TEXT</code><p>Name of the URL field in the table (null: don't save into DB)</p></div>
+<div class="subelement argument">
+<h4>$orig_filename_field</h4>
+<code>\?ID_TEXT</code><p>Name of the original filename field in the table (null: built into URL field)</p></div>
+<div class="subelement argument">
+<h4>$width_field</h4>
+<code>\?ID_TEXT</code><p>Name of the width field in the table (null: none)</p></div>
+<div class="subelement argument">
+<h4>$height_field</h4>
+<code>\?ID_TEXT</code><p>Name of the height field in the table (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>Transcoded file (or original URL if no change was made)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_watermark_gallery_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_watermark_gallery_image " data-toggle="collapse" data-target=".function_watermark_gallery_image .collapse" title="">
+<h2>Watermarks an image with the appropriate gallery watermarks.</h2>
+<pre>watermark_gallery_image(\ID_TEXT $gallery, \PATH $file_path, string $filename) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$gallery</h4>
+<code>\ID_TEXT</code><p>The name of the gallery for the image</p></div>
+<div class="subelement argument">
+<h4>$file_path</h4>
+<code>\PATH</code><p>The path to the image file</p></div>
+<div class="subelement argument">
+<h4>$filename</h4>
+<code>string</code><p>The original file name of the image</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_zencoder_receive_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_zencoder_receive_script " data-toggle="collapse" data-target=".function_zencoder_receive_script .collapse" title="">
+<h2>Receive a message from zencoder that a video has transcoded.</h2>
+<pre>zencoder_receive_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_GETID3_HELPERAPPSDIR"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_GETID3_HELPERAPPSDIR" data-toggle="collapse" data-target=".constant_GETID3_HELPERAPPSDIR .collapse" title="">
+<h2>GETID3_HELPERAPPSDIR</h2>
+<pre>GETID3_HELPERAPPSDIR = get_file_base() . '/sources_custom/getid3/helperapps' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/galleries.html">galleries</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:39+01:00.<br></footer></div>
+</div>
+</body>
+</html>

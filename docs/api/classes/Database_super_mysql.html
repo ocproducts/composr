@@ -1,0 +1,429 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list"><li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method_can_arbitrary_groupby" title="can_arbitrary_groupby() :: Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions"><span class="description">Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions</span><pre>can_arbitrary_groupby()</pre></a></li>
+<li class="method public "><a href="#method_db_change_primary_key" title="db_change_primary_key() :: Change the primary key of a table."><span class="description">Change the primary key of a table.</span><pre>db_change_primary_key()</pre></a></li>
+<li class="method public "><a href="#method_db_close_connections" title="db_close_connections() :: Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them."><span class="description">Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.</span><pre>db_close_connections()</pre></a></li>
+<li class="method public "><a href="#method_db_create_index" title="db_create_index() :: Create a table index."><span class="description">Create a table index.</span><pre>db_create_index()</pre></a></li>
+<li class="method public "><a href="#method_db_create_table" title="db_create_table() :: Create a new table."><span class="description">Create a new table.</span><pre>db_create_table()</pre></a></li>
+<li class="method public "><a href="#method_db_default_password" title="db_default_password() :: Get the default password for making db connections (used by the installer as a default)."><span class="description">Get the default password for making db connections (used by the installer as a default).</span><pre>db_default_password()</pre></a></li>
+<li class="method public "><a href="#method_db_default_user" title="db_default_user() :: Get the default user for making db connections (used by the installer as a default)."><span class="description">Get the default user for making db connections (used by the installer as a default).</span><pre>db_default_user()</pre></a></li>
+<li class="method public "><a href="#method_db_drop_table_if_exists" title="db_drop_table_if_exists() :: Delete a table."><span class="description">Delete a table.</span><pre>db_drop_table_if_exists()</pre></a></li>
+<li class="method public "><a href="#method_db_empty_is_null" title="db_empty_is_null() :: This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings."><span class="description">This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.</span><pre>db_empty_is_null()</pre></a></li>
+<li class="method public "><a href="#method_db_encode_like" title="db_encode_like() :: Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols."><span class="description">Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.</span><pre>db_encode_like()</pre></a></li>
+<li class="method public "><a href="#method_db_full_text_assemble" title="db_full_text_assemble() :: Assemble part of a WHERE clause for doing full-text search"><span class="description">Assemble part of a WHERE clause for doing full-text search</span><pre>db_full_text_assemble()</pre></a></li>
+<li class="method public "><a href="#method_db_get_first_id" title="db_get_first_id() :: Get the ID of the first row in an auto-increment table (used whenever we need to reference the first)."><span class="description">Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).</span><pre>db_get_first_id()</pre></a></li>
+<li class="method public "><a href="#method_db_get_type_remap" title="db_get_type_remap() :: Get a map of Composr field types, to actual database types."><span class="description">Get a map of Composr field types, to actual database types.</span><pre>db_get_type_remap()</pre></a></li>
+<li class="method public "><a href="#method_db_has_expression_ordering" title="db_has_expression_ordering() :: Find whether expression ordering support is present"><span class="description">Find whether expression ordering support is present</span><pre>db_has_expression_ordering()</pre></a></li>
+<li class="method public "><a href="#method_db_is_flat_file_simple" title="db_is_flat_file_simple() :: Determine whether the database is a flat file database, and thus not have a meaningful connect username and password."><span class="description">Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.</span><pre>db_is_flat_file_simple()</pre></a></li>
+<li class="method public "><a href="#method_db_string_equal_to" title="db_string_equal_to() :: Encode an SQL statement fragment for a conditional to see if two strings are equal."><span class="description">Encode an SQL statement fragment for a conditional to see if two strings are equal.</span><pre>db_string_equal_to()</pre></a></li>
+<li class="method public "><a href="#method_db_string_not_equal_to" title="db_string_not_equal_to() :: Encode an SQL statement fragment for a conditional to see if two strings are not equal."><span class="description">Encode an SQL statement fragment for a conditional to see if two strings are not equal.</span><pre>db_string_not_equal_to()</pre></a></li>
+<li class="method public "><a href="#method_using_innodb" title="using_innodb() :: Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported"><span class="description">Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported</span><pre>using_innodb()</pre></a></li>
+</ul>
+</li></ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Database_super_mysql"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Database_super_mysql.html">Database_super_mysql</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Base class for MySQL database drivers.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_database_drivers.html">core_database_drivers</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_can_arbitrary_groupby"></a><div class="element clickable method public method_can_arbitrary_groupby " data-toggle="collapse" data-target=".method_can_arbitrary_groupby .collapse" title="public">
+<h2>Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions</h2>
+<pre>can_arbitrary_groupby() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it can</div>
+</div></div>
+</div>
+<a id="method_db_change_primary_key"></a><div class="element clickable method public method_db_change_primary_key " data-toggle="collapse" data-target=".method_db_change_primary_key .collapse" title="public">
+<h2>Change the primary key of a table.</h2>
+<pre>db_change_primary_key(\ID_TEXT $table_name, array $new_key, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The name of the table to create the index on</p></div>
+<div class="subelement argument">
+<h4>$new_key</h4>
+<code>array</code><p>A list of fields to put in the new key</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+</div></div>
+</div>
+<a id="method_db_close_connections"></a><div class="element clickable method public method_db_close_connections " data-toggle="collapse" data-target=".method_db_close_connections .collapse" title="public">
+<h2>Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.</h2>
+<pre>db_close_connections() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_db_create_index"></a><div class="element clickable method public method_db_create_index " data-toggle="collapse" data-target=".method_db_create_index .collapse" title="public">
+<h2>Create a table index.</h2>
+<pre>db_create_index(\ID_TEXT $table_name, \ID_TEXT $index_name, string $_fields, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The name of the table to create the index on</p></div>
+<div class="subelement argument">
+<h4>$index_name</h4>
+<code>\ID_TEXT</code><p>The index name (not really important at all)</p></div>
+<div class="subelement argument">
+<h4>$_fields</h4>
+<code>string</code><p>Part of the SQL query: a comma-separated list of fields to use on the index</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+</div></div>
+</div>
+<a id="method_db_create_table"></a><div class="element clickable method public method_db_create_table " data-toggle="collapse" data-target=".method_db_create_table .collapse" title="public">
+<h2>Create a new table.</h2>
+<pre>db_create_table(\ID_TEXT $table_name, array $fields, array $db, \ID_TEXT $raw_table_name, boolean $save_bytes<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>A map of field names to Composr field types (with *#? encodings)</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+<div class="subelement argument">
+<h4>$raw_table_name</h4>
+<code>\ID_TEXT</code><p>The table name with no table prefix</p></div>
+<div class="subelement argument">
+<h4>$save_bytes</h4>
+<code>boolean</code><p>Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue</p></div>
+</div></div>
+</div>
+<a id="method_db_default_password"></a><div class="element clickable method public method_db_default_password " data-toggle="collapse" data-target=".method_db_default_password .collapse" title="public">
+<h2>Get the default password for making db connections (used by the installer as a default).</h2>
+<pre>db_default_password() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The default password for db connections</div>
+</div></div>
+</div>
+<a id="method_db_default_user"></a><div class="element clickable method public method_db_default_user " data-toggle="collapse" data-target=".method_db_default_user .collapse" title="public">
+<h2>Get the default user for making db connections (used by the installer as a default).</h2>
+<pre>db_default_user() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The default user for db connections</div>
+</div></div>
+</div>
+<a id="method_db_drop_table_if_exists"></a><div class="element clickable method public method_db_drop_table_if_exists " data-toggle="collapse" data-target=".method_db_drop_table_if_exists .collapse" title="public">
+<h2>Delete a table.</h2>
+<pre>db_drop_table_if_exists(\ID_TEXT $table, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to delete on</p></div>
+</div></div>
+</div>
+<a id="method_db_empty_is_null"></a><div class="element clickable method public method_db_empty_is_null " data-toggle="collapse" data-target=".method_db_empty_is_null .collapse" title="public">
+<h2>This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.</h2>
+<pre>db_empty_is_null() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether a blank string IS NULL</div>
+</div></div>
+</div>
+<a id="method_db_encode_like"></a><div class="element clickable method public method_db_encode_like " data-toggle="collapse" data-target=".method_db_encode_like .collapse" title="public">
+<h2>Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.</h2>
+<pre>db_encode_like(string $pattern) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>string</code><p>The pattern</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The encoded pattern</div>
+</div></div>
+</div>
+<a id="method_db_full_text_assemble"></a><div class="element clickable method public method_db_full_text_assemble " data-toggle="collapse" data-target=".method_db_full_text_assemble .collapse" title="public">
+<h2>Assemble part of a WHERE clause for doing full-text search</h2>
+<pre>db_full_text_assemble(string $content, boolean $boolean) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><p>Our match string (assumes "?" has been stripped already)</p></div>
+<div class="subelement argument">
+<h4>$boolean</h4>
+<code>boolean</code><p>Whether to do a boolean full text search</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Part of a WHERE clause for doing full-text search</div>
+</div></div>
+</div>
+<a id="method_db_get_first_id"></a><div class="element clickable method public method_db_get_first_id " data-toggle="collapse" data-target=".method_db_get_first_id .collapse" title="public">
+<h2>Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).</h2>
+<pre>db_get_first_id() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>First ID used</div>
+</div></div>
+</div>
+<a id="method_db_get_type_remap"></a><div class="element clickable method public method_db_get_type_remap " data-toggle="collapse" data-target=".method_db_get_type_remap .collapse" title="public">
+<h2>Get a map of Composr field types, to actual database types.</h2>
+<pre>db_get_type_remap() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map</div>
+</div></div>
+</div>
+<a id="method_db_has_expression_ordering"></a><div class="element clickable method public method_db_has_expression_ordering " data-toggle="collapse" data-target=".method_db_has_expression_ordering .collapse" title="public">
+<h2>Find whether expression ordering support is present</h2>
+<pre>db_has_expression_ordering(array $db) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>A DB connection</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method_db_is_flat_file_simple"></a><div class="element clickable method public method_db_is_flat_file_simple " data-toggle="collapse" data-target=".method_db_is_flat_file_simple .collapse" title="public">
+<h2>Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.</h2>
+<pre>db_is_flat_file_simple() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the database is a flat file database</div>
+</div></div>
+</div>
+<a id="method_db_string_equal_to"></a><div class="element clickable method public method_db_string_equal_to " data-toggle="collapse" data-target=".method_db_string_equal_to .collapse" title="public">
+<h2>Encode an SQL statement fragment for a conditional to see if two strings are equal.</h2>
+<pre>db_string_equal_to(\ID_TEXT $attribute, string $compare) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attribute</h4>
+<code>\ID_TEXT</code><p>The attribute</p></div>
+<div class="subelement argument">
+<h4>$compare</h4>
+<code>string</code><p>The comparison</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The SQL</div>
+</div></div>
+</div>
+<a id="method_db_string_not_equal_to"></a><div class="element clickable method public method_db_string_not_equal_to " data-toggle="collapse" data-target=".method_db_string_not_equal_to .collapse" title="public">
+<h2>Encode an SQL statement fragment for a conditional to see if two strings are not equal.</h2>
+<pre>db_string_not_equal_to(\ID_TEXT $attribute, string $compare) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attribute</h4>
+<code>\ID_TEXT</code><p>The attribute</p></div>
+<div class="subelement argument">
+<h4>$compare</h4>
+<code>string</code><p>The comparison</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The SQL</div>
+</div></div>
+</div>
+<a id="method_using_innodb"></a><div class="element clickable method public method_using_innodb " data-toggle="collapse" data-target=".method_using_innodb .collapse" title="public">
+<h2>Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported</h2>
+<pre>using_innodb() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Answer</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:46+01:00.<br></footer></div>
+</div>
+</body>
+</html>

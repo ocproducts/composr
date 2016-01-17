@@ -1,0 +1,1491 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/catalogues.html" title="catalogues"><i class="icon-folder-open"></i>catalogues</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_actual_add_catalogue" title="actual_add_catalogue() :: Add a catalogue using all the specified values."><span class="description">Add a catalogue using all the specified values.</span><pre>actual_add_catalogue</pre></a></li>
+<li class="function  "><a href="#function_actual_add_catalogue_category" title="actual_add_catalogue_category() :: Add a catalogue category"><span class="description">Add a catalogue category</span><pre>actual_add_catalogue_category</pre></a></li>
+<li class="function  "><a href="#function_actual_add_catalogue_entry" title="actual_add_catalogue_entry() :: Adds an entry to the specified catalogue."><span class="description">Adds an entry to the specified catalogue.</span><pre>actual_add_catalogue_entry</pre></a></li>
+<li class="function  "><a href="#function_actual_add_catalogue_field" title="actual_add_catalogue_field() :: Add a field to the specified catalogue, without disturbing any other data in that catalogue."><span class="description">Add a field to the specified catalogue, without disturbing any other data in that catalogue.</span><pre>actual_add_catalogue_field</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_catalogue" title="actual_delete_catalogue() :: Delete a catalogue."><span class="description">Delete a catalogue.</span><pre>actual_delete_catalogue</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_catalogue_category" title="actual_delete_catalogue_category() :: Delete a catalogue category."><span class="description">Delete a catalogue category.</span><pre>actual_delete_catalogue_category</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_catalogue_entry" title="actual_delete_catalogue_entry() :: Delete a catalogue entry."><span class="description">Delete a catalogue entry.</span><pre>actual_delete_catalogue_entry</pre></a></li>
+<li class="function  "><a href="#function_actual_delete_catalogue_field" title="actual_delete_catalogue_field() :: Delete a catalogue field."><span class="description">Delete a catalogue field.</span><pre>actual_delete_catalogue_field</pre></a></li>
+<li class="function  "><a href="#function_actual_edit_catalogue" title="actual_edit_catalogue() :: Edit a catalogue."><span class="description">Edit a catalogue.</span><pre>actual_edit_catalogue</pre></a></li>
+<li class="function  "><a href="#function_actual_edit_catalogue_category" title="actual_edit_catalogue_category() :: Edit a catalogue category."><span class="description">Edit a catalogue category.</span><pre>actual_edit_catalogue_category</pre></a></li>
+<li class="function  "><a href="#function_actual_edit_catalogue_entry" title="actual_edit_catalogue_entry() :: Edit the specified catalogue entry"><span class="description">Edit the specified catalogue entry</span><pre>actual_edit_catalogue_entry</pre></a></li>
+<li class="function  "><a href="#function_actual_edit_catalogue_field" title="actual_edit_catalogue_field() :: Edit a catalogue field."><span class="description">Edit a catalogue field.</span><pre>actual_edit_catalogue_field</pre></a></li>
+<li class="function  "><a href="#function_calculate_category_child_count_cache" title="calculate_category_child_count_cache() :: Update cache for a categories child counts."><span class="description">Update cache for a categories child counts.</span><pre>calculate_category_child_count_cache</pre></a></li>
+<li class="function  "><a href="#function_catalogue_category_breadcrumbs" title="catalogue_category_breadcrumbs() :: Get a formatted XHTML string of the route back to the specified root, from the specified category."><span class="description">Get a formatted XHTML string of the route back to the specified root, from the specified category.</span><pre>catalogue_category_breadcrumbs</pre></a></li>
+<li class="function  "><a href="#function_catalogue_entries_manual_sort" title="catalogue_entries_manual_sort() :: Manually sort some catalogue entries."><span class="description">Manually sort some catalogue entries.</span><pre>catalogue_entries_manual_sort</pre></a></li>
+<li class="function  "><a href="#function_catalogue_from_tree" title="catalogue_from_tree() :: Converts a non-tree catalogue from a tree catalogue."><span class="description">Converts a non-tree catalogue from a tree catalogue.</span><pre>catalogue_from_tree</pre></a></li>
+<li class="function  "><a href="#function_catalogue_to_tree" title="catalogue_to_tree() :: Converts a non-tree catalogue to a tree catalogue."><span class="description">Converts a non-tree catalogue to a tree catalogue.</span><pre>catalogue_to_tree</pre></a></li>
+<li class="function  "><a href="#function_count_catalogue_category_children" title="count_catalogue_category_children() :: Count the entries and subcategories underneath the specified category, recursively."><span class="description">Count the entries and subcategories underneath the specified category, recursively.</span><pre>count_catalogue_category_children</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_catalogue_category_tree" title="create_selection_list_catalogue_category_tree() :: Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum)."><span class="description">Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum).</span><pre>create_selection_list_catalogue_category_tree</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_catalogue_entries_tree" title="create_selection_list_catalogue_entries_tree() :: Get a nice, formatted XHTML list of entries, in catalogue category tree structure"><span class="description">Get a nice, formatted XHTML list of entries, in catalogue category tree structure</span><pre>create_selection_list_catalogue_entries_tree</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_catalogues" title="create_selection_list_catalogues() :: Get a nice, formatted, XHTML list of all the catalogues."><span class="description">Get a nice, formatted, XHTML list of all the catalogues.</span><pre>create_selection_list_catalogues</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_category_entry_buildup" title="get_catalogue_category_entry_buildup() :: Get an ordered array of all the entries in the specified catalogue."><span class="description">Get an ordered array of all the entries in the specified catalogue.</span><pre>get_catalogue_category_entry_buildup</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_category_tree" title="get_catalogue_category_tree() :: Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively."><span class="description">Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.</span><pre>get_catalogue_category_tree</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_entries" title="get_catalogue_entries() :: Fetch entries from database, with sorting if possible."><span class="description">Fetch entries from database, with sorting if possible.</span><pre>get_catalogue_entries</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_entries_tree" title="get_catalogue_entries_tree() :: Get a list of maps containing all the catalogue entries, and path information, under the specified category - and those beneath it, recursively."><span class="description">Get a list of maps containing all the catalogue entries, and path information, under the specified category - and those beneath it, recursively.</span><pre>get_catalogue_entries_tree</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_entry_field_values" title="get_catalogue_entry_field_values() :: Get the values for the specified fields, for the stated catalogue entry."><span class="description">Get the values for the specified fields, for the stated catalogue entry.</span><pre>get_catalogue_entry_field_values</pre></a></li>
+<li class="function  "><a href="#function_get_catalogue_entry_map" title="get_catalogue_entry_map() :: Get a map of the fields for the given entry."><span class="description">Get a map of the fields for the given entry.</span><pre>get_catalogue_entry_map</pre></a></li>
+<li class="function  "><a href="#function_grant_catalogue_full_access" title="grant_catalogue_full_access() :: Grant all usergroups access to the specified catalogue category."><span class="description">Grant all usergroups access to the specified catalogue category.</span><pre>grant_catalogue_full_access</pre></a></li>
+<li class="function  "><a href="#function_is_ecommerce_catalogue" title="is_ecommerce_catalogue() :: Check the current catalogue is an ecommerce catalogue"><span class="description">Check the current catalogue is an ecommerce catalogue</span><pre>is_ecommerce_catalogue</pre></a></li>
+<li class="function  "><a href="#function_is_ecommerce_catalogue_entry" title="is_ecommerce_catalogue_entry() :: Check selected entry is an ecommerce catalogue entry"><span class="description">Check selected entry is an ecommerce catalogue entry</span><pre>is_ecommerce_catalogue_entry</pre></a></li>
+<li class="function  "><a href="#function_load_catalogue_row" title="load_catalogue_row() :: Get a catalogue row."><span class="description">Get a catalogue row.</span><pre>load_catalogue_row</pre></a></li>
+<li class="function  "><a href="#function_rebuild_catalogue_cat_treecache" title="rebuild_catalogue_cat_treecache() :: Re-build the efficient catalogue category tree structure ancestry cache."><span class="description">Re-build the efficient catalogue category tree structure ancestry cache.</span><pre>rebuild_catalogue_cat_treecache</pre></a></li>
+<li class="function  "><a href="#function_render_catalogue_box" title="render_catalogue_box() :: Render a catalogue box."><span class="description">Render a catalogue box.</span><pre>render_catalogue_box</pre></a></li>
+<li class="function  "><a href="#function_render_catalogue_category_box" title="render_catalogue_category_box() :: Get Tempcode for a catalogue category 'feature box' for the given row"><span class="description">Get Tempcode for a catalogue category 'feature box' for the given row</span><pre>render_catalogue_category_box</pre></a></li>
+<li class="function  "><a href="#function_render_catalogue_entry_box" title="render_catalogue_entry_box() :: Render a catalogue box."><span class="description">Render a catalogue box.</span><pre>render_catalogue_entry_box</pre></a></li>
+<li class="function  "><a href="#function_render_catalogue_entry_screen" title="render_catalogue_entry_screen() :: Display a catalogue entry"><span class="description">Display a catalogue entry</span><pre>render_catalogue_entry_screen</pre></a></li>
+<li class="function  "><a href="#function_store_in_catalogue_cat_treecache" title="store_in_catalogue_cat_treecache() :: Update the treecache for a catalogue category node."><span class="description">Update the treecache for a catalogue category node.</span><pre>store_in_catalogue_cat_treecache</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_C_DT_FIELDMAPS" title="C_DT_FIELDMAPS() :: "><span class="description">C_DT_FIELDMAPS</span><pre>C_DT_FIELDMAPS</pre></a></li>
+<li class="constant  "><a href="#constant_C_DT_GRID" title="C_DT_GRID() :: "><span class="description">C_DT_GRID</span><pre>C_DT_GRID</pre></a></li>
+<li class="constant  "><a href="#constant_C_DT_TABULAR" title="C_DT_TABULAR() :: "><span class="description">C_DT_TABULAR</span><pre>C_DT_TABULAR</pre></a></li>
+<li class="constant  "><a href="#constant_C_DT_TITLELIST" title="C_DT_TITLELIST() :: "><span class="description">C_DT_TITLELIST</span><pre>C_DT_TITLELIST</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/catalogues.html">catalogues</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_catalogue"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_catalogue " data-toggle="collapse" data-target=".function_actual_add_catalogue .collapse" title="">
+<h2>Add a catalogue using all the specified values.</h2>
+<pre>actual_add_catalogue(\ID_TEXT $name, mixed $title, mixed $description, \SHORT_INTEGER $display_type, \BINARY $is_tree, \LONG_TEXT $notes, integer $submit_points, \BINARY $ecommerce<code> = 0</code>, \ID_TEXT $send_view_reports<code> = 'never'</code>, \?integer $default_review_freq<code> = null</code>, \?TIME $add_time<code> = null</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>never daily weekly monthly quarterly</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The codename of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>mixed</code><p>The title of the catalogue (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$display_type</h4>
+<code>\SHORT_INTEGER</code><p>The display type</p></div>
+<div class="subelement argument">
+<h4>$is_tree</h4>
+<code>\BINARY</code><p>Whether the catalogue uses a tree system (as opposed to mere categories in an index)</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to this catalogue</p></div>
+<div class="subelement argument">
+<h4>$submit_points</h4>
+<code>integer</code><p>How many points a member gets by submitting to this catalogue</p></div>
+<div class="subelement argument">
+<h4>$ecommerce</h4>
+<code>\BINARY</code><p>Whether the catalogue is an eCommerce catalogue</p></div>
+<div class="subelement argument">
+<h4>$send_view_reports</h4>
+<code>\ID_TEXT</code><p>How to send view reports</p></div>
+<div class="subelement argument">
+<h4>$default_review_freq</h4>
+<code>\?integer</code><p>Default review frequency for catalogue entries (null: none)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_catalogue_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_catalogue_category " data-toggle="collapse" data-target=".function_actual_add_catalogue_category .collapse" title="">
+<h2>Add a catalogue category</h2>
+<pre>actual_add_catalogue_category(\ID_TEXT $catalogue_name, mixed $title, mixed $description, \LONG_TEXT $notes, \?AUTO_LINK $parent_id, \URLPATH $rep_image<code> = ''</code>, integer $move_days_lower<code> = 30</code>, integer $move_days_higher<code> = 60</code>, \?AUTO_LINK $move_target<code> = null</code>, \?TIME $add_date<code> = null</code>, \?AUTO_LINK $id<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The codename of the catalogue the category is in</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>mixed</code><p>The title of this category (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to this category</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of this categories parent (null: a root category, or not a tree catalogue)</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image for the category (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$move_days_lower</h4>
+<code>integer</code><p>The number of days before expiry (lower limit)</p></div>
+<div class="subelement argument">
+<h4>$move_days_higher</h4>
+<code>integer</code><p>The number of days before expiry (higher limit)</p></div>
+<div class="subelement argument">
+<h4>$move_target</h4>
+<code>\?AUTO_LINK</code><p>The expiry category (null: do not expire)</p></div>
+<div class="subelement argument">
+<h4>$add_date</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the new category</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_catalogue_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_catalogue_entry " data-toggle="collapse" data-target=".function_actual_add_catalogue_entry .collapse" title="">
+<h2>Adds an entry to the specified catalogue.</h2>
+<pre>actual_add_catalogue_entry(\AUTO_LINK $category_id, \BINARY $validated, \LONG_TEXT $notes, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, array $map, \?TIME $time<code> = null</code>, \?MEMBER $submitter<code> = null</code>, \?TIME $edit_date<code> = null</code>, integer $views<code> = 0</code>, \?AUTO_LINK $id<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category that the entry is in</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the entry has been validated</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the entry</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the entry may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the entry may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$map</h4>
+<code>array</code><p>A map of field IDs, to values, that defines the entries settings</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The time the entry was added (null: now)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The entries submitter (null: current user)</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The edit time (null: never)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the newly added entry</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_add_catalogue_field"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_add_catalogue_field " data-toggle="collapse" data-target=".function_actual_add_catalogue_field .collapse" title="">
+<h2>Add a field to the specified catalogue, without disturbing any other data in that catalogue.</h2>
+<pre>actual_add_catalogue_field(\ID_TEXT $c_name, mixed $name, mixed $description, \ID_TEXT $type, integer $order, \BINARY $defines_order, \BINARY $visible, \BINARY $searchable, \LONG_TEXT $default, \BINARY $required, \BINARY $put_in_category<code> = 1</code>, \BINARY $put_in_search<code> = 1</code>, \SHORT_TEXT $options<code> = ''</code>, \?AUTO_LINK $id<code> = null</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$c_name</h4>
+<code>\ID_TEXT</code><p>The codename of the catalogue the field is for</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>mixed</code><p>The name of the field (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description (either language string map or string)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of the field</p></div>
+<div class="subelement argument">
+<h4>$order</h4>
+<code>integer</code><p>The field order (the field order determines what order the fields are displayed within an entry)</p></div>
+<div class="subelement argument">
+<h4>$defines_order</h4>
+<code>\BINARY</code><p>Whether this field defines the catalogue order</p></div>
+<div class="subelement argument">
+<h4>$visible</h4>
+<code>\BINARY</code><p>Whether this is a visible field</p></div>
+<div class="subelement argument">
+<h4>$searchable</h4>
+<code>\BINARY</code><p>Whether the field is usable as a search key</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\LONG_TEXT</code><p>The default value for the field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>\BINARY</code><p>Whether this field is required</p></div>
+<div class="subelement argument">
+<h4>$put_in_category</h4>
+<code>\BINARY</code><p>Whether the field is to be shown in category views (not applicable for the list display type)</p></div>
+<div class="subelement argument">
+<h4>$put_in_search</h4>
+<code>\BINARY</code><p>Whether the field is to be shown in search views (not applicable for the list display type)</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>\SHORT_TEXT</code><p>Field options</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force this ID (null: auto-increment as normal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>Field ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_catalogue"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_catalogue " data-toggle="collapse" data-target=".function_actual_delete_catalogue .collapse" title="">
+<h2>Delete a catalogue.</h2>
+<pre>actual_delete_catalogue(\ID_TEXT $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the catalogue</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_catalogue_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_catalogue_category " data-toggle="collapse" data-target=".function_actual_delete_catalogue_category .collapse" title="">
+<h2>Delete a catalogue category.</h2>
+<pre>actual_delete_catalogue_category(\AUTO_LINK $id, boolean $deleting_all<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category</p></div>
+<div class="subelement argument">
+<h4>$deleting_all</h4>
+<code>boolean</code><p>Whether we're deleting everything under the category; if FALSE we will actively reassign child categories to be directly under the root</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_catalogue_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_catalogue_entry " data-toggle="collapse" data-target=".function_actual_delete_catalogue_entry .collapse" title="">
+<h2>Delete a catalogue entry.</h2>
+<pre>actual_delete_catalogue_entry(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the entry to delete</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_delete_catalogue_field"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_delete_catalogue_field " data-toggle="collapse" data-target=".function_actual_delete_catalogue_field .collapse" title="">
+<h2>Delete a catalogue field.</h2>
+<pre>actual_delete_catalogue_field(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the field</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_edit_catalogue"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_edit_catalogue " data-toggle="collapse" data-target=".function_actual_edit_catalogue .collapse" title="">
+<h2>Edit a catalogue.</h2>
+<pre>actual_edit_catalogue(\ID_TEXT $old_name, \ID_TEXT $name, \SHORT_TEXT $title, \LONG_TEXT $description, \SHORT_INTEGER $display_type, \LONG_TEXT $notes, integer $submit_points, \BINARY $ecommerce, \ID_TEXT $send_view_reports, \?integer $default_review_freq, \?TIME $add_time<code> = null</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>never daily weekly monthly quarterly</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_name</h4>
+<code>\ID_TEXT</code><p>The current name of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The new name of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The human readable name/title of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description</p></div>
+<div class="subelement argument">
+<h4>$display_type</h4>
+<code>\SHORT_INTEGER</code><p>The display type</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Admin notes</p></div>
+<div class="subelement argument">
+<h4>$submit_points</h4>
+<code>integer</code><p>How many points are given to a member that submits to the catalogue</p></div>
+<div class="subelement argument">
+<h4>$ecommerce</h4>
+<code>\BINARY</code><p>Whether the catalogue is an eCommerce catalogue</p></div>
+<div class="subelement argument">
+<h4>$send_view_reports</h4>
+<code>\ID_TEXT</code><p>How to send view reports</p></div>
+<div class="subelement argument">
+<h4>$default_review_freq</h4>
+<code>\?integer</code><p>Default review frequency for catalogue entries (null: none)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_edit_catalogue_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_edit_catalogue_category " data-toggle="collapse" data-target=".function_actual_edit_catalogue_category .collapse" title="">
+<h2>Edit a catalogue category.</h2>
+<pre>actual_edit_catalogue_category(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $description, \LONG_TEXT $notes, \?AUTO_LINK $parent_id, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \URLPATH $rep_image, integer $move_days_lower, integer $move_days_higher, \?AUTO_LINK $move_target, \?TIME $add_time<code> = null</code>, \?ID_TEXT $c_name<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the category</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>Description for the category</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Admin notes</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the parent category (null: no parent)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords for the category</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description for the category</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image for the category (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$move_days_lower</h4>
+<code>integer</code><p>The number of days before expiry (lower limit)</p></div>
+<div class="subelement argument">
+<h4>$move_days_higher</h4>
+<code>integer</code><p>The number of days before expiry (higher limit)</p></div>
+<div class="subelement argument">
+<h4>$move_target</h4>
+<code>\?AUTO_LINK</code><p>The expiry category (null: do not expire)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$c_name</h4>
+<code>\?ID_TEXT</code><p>The catalogue name (null: do not change)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_edit_catalogue_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_edit_catalogue_entry " data-toggle="collapse" data-target=".function_actual_edit_catalogue_entry .collapse" title="">
+<h2>Edit the specified catalogue entry</h2>
+<pre>actual_edit_catalogue_entry(\AUTO_LINK $id, \AUTO_LINK $category_id, \BINARY $validated, \LONG_TEXT $notes, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, array $map, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the entry being edited</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category that the entry is in</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the entry has been validated</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the entry</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the entry may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the entry may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$map</h4>
+<code>array</code><p>A map of field IDs, to values, that defines the entries settings</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_actual_edit_catalogue_field"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_edit_catalogue_field " data-toggle="collapse" data-target=".function_actual_edit_catalogue_field .collapse" title="">
+<h2>Edit a catalogue field.</h2>
+<pre>actual_edit_catalogue_field(\AUTO_LINK $id, \ID_TEXT $c_name, \?SHORT_TEXT $name, \?LONG_TEXT $description, integer $order, \BINARY $defines_order, \BINARY $visible, \BINARY $searchable, \LONG_TEXT $default, \BINARY $required, \BINARY $put_in_category<code> = 1</code>, \BINARY $put_in_search<code> = 1</code>, \SHORT_TEXT $options<code> = ''</code>, \?ID_TEXT $type<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the field</p></div>
+<div class="subelement argument">
+<h4>$c_name</h4>
+<code>\ID_TEXT</code><p>The name of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\?SHORT_TEXT</code><p>The name of the field (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\?LONG_TEXT</code><p>Description for the field (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$order</h4>
+<code>integer</code><p>The field order (the field order determines what order the fields are displayed within an entry)</p></div>
+<div class="subelement argument">
+<h4>$defines_order</h4>
+<code>\BINARY</code><p>Whether the field defines entry ordering</p></div>
+<div class="subelement argument">
+<h4>$visible</h4>
+<code>\BINARY</code><p>Whether the field is visible when an entry is viewed</p></div>
+<div class="subelement argument">
+<h4>$searchable</h4>
+<code>\BINARY</code><p>Whether the field is usable as a search key</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\LONG_TEXT</code><p>The default value for the field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>\BINARY</code><p>Whether the field is required</p></div>
+<div class="subelement argument">
+<h4>$put_in_category</h4>
+<code>\BINARY</code><p>Whether the field is to be shown in category views (not applicable for the list display type)</p></div>
+<div class="subelement argument">
+<h4>$put_in_search</h4>
+<code>\BINARY</code><p>Whether the field is to be shown in search views (not applicable for the list display type)</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>\SHORT_TEXT</code><p>Field options</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\?ID_TEXT</code><p>The field type (null: do not change)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_calculate_category_child_count_cache"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_calculate_category_child_count_cache " data-toggle="collapse" data-target=".function_calculate_category_child_count_cache .collapse" title="">
+<h2>Update cache for a categories child counts.</h2>
+<pre>calculate_category_child_count_cache(\?AUTO_LINK $cat_id, boolean $recursive_updates<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cat_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the category (null: skip, called by some code that didn't realise it didn't impact a tree parent)</p></div>
+<div class="subelement argument">
+<h4>$recursive_updates</h4>
+<code>boolean</code><p>Whether to recurse up the tree to force recalculations on other categories (recommended, unless you are doing a complete rebuild)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_catalogue_category_breadcrumbs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_catalogue_category_breadcrumbs " data-toggle="collapse" data-target=".function_catalogue_category_breadcrumbs .collapse" title="">
+<h2>Get a formatted XHTML string of the route back to the specified root, from the specified category.</h2>
+<pre>catalogue_category_breadcrumbs(\AUTO_LINK $category_id, \?AUTO_LINK $root<code> = null</code>, boolean $no_link_for_me_sir<code> = true</code>, boolean $attach_to_url_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The category we are finding for</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>The root of the tree (null: the true root)</p></div>
+<div class="subelement argument">
+<h4>$no_link_for_me_sir</h4>
+<code>boolean</code><p>Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The breadcrumbs</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_catalogue_entries_manual_sort"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_catalogue_entries_manual_sort " data-toggle="collapse" data-target=".function_catalogue_entries_manual_sort .collapse" title="">
+<h2>Manually sort some catalogue entries.</h2>
+<pre>catalogue_entries_manual_sort(array $fields, array $entries, \ID_TEXT $order_by, \ID_TEXT $direction) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>Fields array for catalogue</p></div>
+<div class="subelement argument">
+<h4>$entries</h4>
+<code>array</code><p>Entries to sort (by reference)</p></div>
+<div class="subelement argument">
+<h4>$order_by</h4>
+<code>\ID_TEXT</code><p>What to sort by</p></div>
+<div class="subelement argument">
+<h4>$direction</h4>
+<code>\ID_TEXT</code><p>Sort direction</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_catalogue_from_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_catalogue_from_tree " data-toggle="collapse" data-target=".function_catalogue_from_tree .collapse" title="">
+<h2>Converts a non-tree catalogue from a tree catalogue.</h2>
+<pre>catalogue_from_tree(\ID_TEXT $catalogue_name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>Catalogue name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_catalogue_to_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_catalogue_to_tree " data-toggle="collapse" data-target=".function_catalogue_to_tree .collapse" title="">
+<h2>Converts a non-tree catalogue to a tree catalogue.</h2>
+<pre>catalogue_to_tree(\ID_TEXT $catalogue_name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>Catalogue name</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_count_catalogue_category_children"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_count_catalogue_category_children " data-toggle="collapse" data-target=".function_count_catalogue_category_children .collapse" title="">
+<h2>Count the entries and subcategories underneath the specified category, recursively.</h2>
+<pre>count_catalogue_category_children(\AUTO_LINK $category_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category for which count details are collected</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The number of entries is returned in $output['num_entries'], and the number of subcategories is returned in $output['num_children'], the (possibly recursive) number of subcategories in $output['num_children_children'], and the (possibly recursive) number of entries is returned in $output['num_entries_children'].</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_catalogue_category_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_catalogue_category_tree " data-toggle="collapse" data-target=".function_create_selection_list_catalogue_category_tree .collapse" title="">
+<h2>Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum).</h2>
+<pre>create_selection_list_catalogue_category_tree(\ID_TEXT $catalogue_name, \?AUTO_LINK $it<code> = null</code>, boolean $addable_filter<code> = false</code>, boolean $use_compound_list<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The catalogue name</p></div>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The currently selected entry (null: none)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to make the list elements store comma-separated child lists instead of IDs</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of categories</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_catalogue_entries_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_catalogue_entries_tree " data-toggle="collapse" data-target=".function_create_selection_list_catalogue_entries_tree .collapse" title="">
+<h2>Get a nice, formatted XHTML list of entries, in catalogue category tree structure</h2>
+<pre>create_selection_list_catalogue_entries_tree(\ID_TEXT $catalogue_name, \?AUTO_LINK $it<code> = null</code>, \?AUTO_LINK $submitter<code> = null</code>, boolean $editable_filter<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The catalogue name</p></div>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The currently selected entry (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?AUTO_LINK</code><p>Only show entries submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_catalogues"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_catalogues " data-toggle="collapse" data-target=".function_create_selection_list_catalogues .collapse" title="">
+<h2>Get a nice, formatted, XHTML list of all the catalogues.</h2>
+<pre>create_selection_list_catalogues(\?ID_TEXT $it<code> = null</code>, boolean $prefer_ones_with_entries<code> = false</code>, boolean $only_submittable<code> = false</code>, \?TIME $updated_since<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?ID_TEXT</code><p>The name of the currently selected catalogue (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$prefer_ones_with_entries</h4>
+<code>boolean</code><p>If there are too many to list prefer to get ones with entries rather than just the newest</p></div>
+<div class="subelement argument">
+<h4>$only_submittable</h4>
+<code>boolean</code><p>Whether to only show catalogues that can be submitted to</p></div>
+<div class="subelement argument">
+<h4>$updated_since</h4>
+<code>\?TIME</code><p>Time from which content must be updated (null: no limit).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Catalogue selection list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_category_entry_buildup"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_category_entry_buildup " data-toggle="collapse" data-target=".function_get_catalogue_category_entry_buildup .collapse" title="">
+<h2>Get an ordered array of all the entries in the specified catalogue.</h2>
+<pre>get_catalogue_category_entry_buildup(\?AUTO_LINK $category_id, \ID_TEXT $catalogue_name, \?array $catalogue, \ID_TEXT $view_type, \ID_TEXT $tpl_set, \?integer $max, \?integer $start, \?mixed $filter, \?AUTO_LINK $root, \?SHORT_INTEGER $display_type<code> = null</code>, boolean $do_sorting<code> = true</code>, \?array $entries<code> = null</code>, string $_filtercode<code> = ''</code>, \?ID_TEXT $_order_by<code> = null</code>, \ID_TEXT $ordering_param<code> = 'sort'</code>, \?MEMBER $viewing_member_id<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>PAGE SEARCH CATEGORY</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)</p></div>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The name of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$catalogue</h4>
+<code>\?array</code><p>A database row of the catalogue we are working with (null: read it in)</p></div>
+<div class="subelement argument">
+<h4>$view_type</h4>
+<code>\ID_TEXT</code><p>The view type we're doing</p></div>
+<div class="subelement argument">
+<h4>$tpl_set</h4>
+<code>\ID_TEXT</code><p>The template set we are rendering this category using</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of entries to show on a single page of this this category (null: all)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The entry number to start at (null: all)</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?mixed</code><p>The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>The virtual root for display of this category (null: default)</p></div>
+<div class="subelement argument">
+<h4>$display_type</h4>
+<code>\?SHORT_INTEGER</code><p>The display type to use (null: lookup from $catalogue)</p></div>
+<div class="subelement argument">
+<h4>$do_sorting</h4>
+<code>boolean</code><p>Whether to perform sorting</p></div>
+<div class="subelement argument">
+<h4>$entries</h4>
+<code>\?array</code><p>A list of entry rows (null: select them normally)</p></div>
+<div class="subelement argument">
+<h4>$_filtercode</h4>
+<code>string</code><p>Filtercode to apply (blank: none).</p></div>
+<div class="subelement argument">
+<h4>$_order_by</h4>
+<code>\?ID_TEXT</code><p>Orderer (null: read from environment)</p></div>
+<div class="subelement argument">
+<h4>$ordering_param</h4>
+<code>\ID_TEXT</code><p>Environment param used for ordering</p></div>
+<div class="subelement argument">
+<h4>$viewing_member_id</h4>
+<code>\?MEMBER</code><p>Viewing member ID (null: current user)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>An array containing our built up entries (renderable Tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_category_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_category_tree " data-toggle="collapse" data-target=".function_get_catalogue_category_tree .collapse" title="">
+<h2>Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.</h2>
+<pre>get_catalogue_category_tree(\ID_TEXT $catalogue_name, \?AUTO_LINK $category_id, string $breadcrumbs<code> = ''</code>, \?array $category_details<code> = null</code>, \?integer $levels<code> = null</code>, boolean $addable_filter<code> = false</code>, boolean $use_compound_list<code> = false</code>, boolean $do_stats<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The catalogue name</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The category being at the root of our recursion (null: true root category)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>string</code><p>The breadcrumbs up to this point in the recursion</p></div>
+<div class="subelement argument">
+<h4>$category_details</h4>
+<code>\?array</code><p>The category details of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs details</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to make the list elements store comma-separated child lists instead of IDs</p></div>
+<div class="subelement argument">
+<h4>$do_stats</h4>
+<code>boolean</code><p>Whether to collect entry counts with our tree information</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all subcategories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and 'entries_count' (the number of entries in the category).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_entries"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_entries " data-toggle="collapse" data-target=".function_get_catalogue_entries .collapse" title="">
+<h2>Fetch entries from database, with sorting if possible.</h2>
+<pre>get_catalogue_entries(\ID_TEXT $catalogue_name, \?AUTO_LINK $category_id, \?integer $max, \?integer $start, \?mixed $filter, boolean $do_sorting, \?array $filtercode, \ID_TEXT $order_by, \ID_TEXT $direction, string $extra_where<code> = ''</code>, \?MEMBER $viewing_member_id<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>Name of the catalogue</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of entries to show on a single page of this this category (ignored if $filter is not NULL) (null: all)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The entry number to start at (ignored if $filter is not NULL) (null: all)</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?mixed</code><p>The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)</p></div>
+<div class="subelement argument">
+<h4>$do_sorting</h4>
+<code>boolean</code><p>Whether to perform sorting</p></div>
+<div class="subelement argument">
+<h4>$filtercode</h4>
+<code>\?array</code><p>List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value</p></div>
+<div class="subelement argument">
+<h4>$order_by</h4>
+<code>\ID_TEXT</code><p>Orderer</p></div>
+<div class="subelement argument">
+<h4>$direction</h4>
+<code>\ID_TEXT</code><p>Order direction</p></div>
+<div class="subelement argument">
+<h4>$extra_where</h4>
+<code>string</code><p>Additional WHERE SQL to add on to query</p></div>
+<div class="subelement argument">
+<h4>$viewing_member_id</h4>
+<code>\?MEMBER</code><p>Viewing member ID (null: current user)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple: whether sorting was done, number of entries returned, list of entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_entries_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_entries_tree " data-toggle="collapse" data-target=".function_get_catalogue_entries_tree .collapse" title="">
+<h2>Get a list of maps containing all the catalogue entries, and path information, under the specified category - and those beneath it, recursively.</h2>
+<pre>get_catalogue_entries_tree(\ID_TEXT $catalogue_name, \?AUTO_LINK $submitter<code> = null</code>, \?AUTO_LINK $category_id<code> = null</code>, \?string $breadcrumbs<code> = null</code>, \?ID_TEXT $title<code> = null</code>, \?integer $levels<code> = null</code>, boolean $editable_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The catalogue name</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?AUTO_LINK</code><p>Only show entries submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The category being at the root of our recursion (null: true root)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\?string</code><p>The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\?ID_TEXT</code><p>The name of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all categories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and more.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_entry_field_values"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_entry_field_values " data-toggle="collapse" data-target=".function_get_catalogue_entry_field_values .collapse" title="">
+<h2>Get the values for the specified fields, for the stated catalogue entry.</h2>
+<pre>get_catalogue_entry_field_values(\?ID_TEXT $catalogue_name, mixed $entry_id, \?array $only_fields<code> = null</code>, \?array $fields<code> = null</code>, boolean $natural_order<code> = false</code>, \ID_TEXT $view_type<code> = 'PAGE'</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>PAGE SEARCH CATEGORY</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\?ID_TEXT</code><p>The catalogue name we are getting an entry in (null: lookup)</p></div>
+<div class="subelement argument">
+<h4>$entry_id</h4>
+<code>mixed</code><p>The ID of the entry we are getting OR the row</p></div>
+<div class="subelement argument">
+<h4>$only_fields</h4>
+<code>\?array</code><p>A list of fields that we are limiting ourselves to (null: get ALL fields)</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>\?array</code><p>The database rows for the fields for this catalogue (null: find them)</p></div>
+<div class="subelement argument">
+<h4>$natural_order</h4>
+<code>boolean</code><p>Whether to order the fields in their natural database order</p></div>
+<div class="subelement argument">
+<h4>$view_type</h4>
+<code>\ID_TEXT</code><p>The view type we're doing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps (each field for the entry gets a map), where each map contains 'effective_value' (the value for the field). Some maps get additional fields (effective_value_pure), depending on the field type</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_catalogue_entry_map"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_catalogue_entry_map " data-toggle="collapse" data-target=".function_get_catalogue_entry_map .collapse" title="">
+<h2>Get a map of the fields for the given entry.</h2>
+<pre>get_catalogue_entry_map(array $entry, \?array $catalogue, \ID_TEXT $view_type, \ID_TEXT $tpl_set, \?AUTO_LINK $root<code> = null</code>, \?array $fields<code> = null</code>, \?array $only_fields<code> = null</code>, boolean $feedback_details<code> = false</code>, boolean $breadcrumbs_details<code> = false</code>, \?integer $order_by<code> = null</code>, \?array $_breadcrumbs<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>PAGE SEARCH CATEGORY</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$entry</h4>
+<code>array</code><p>A database row of the entry we are working with</p></div>
+<div class="subelement argument">
+<h4>$catalogue</h4>
+<code>\?array</code><p>A database row of the catalogue we are working with (null: read it in here)</p></div>
+<div class="subelement argument">
+<h4>$view_type</h4>
+<code>\ID_TEXT</code><p>The view type we're doing</p></div>
+<div class="subelement argument">
+<h4>$tpl_set</h4>
+<code>\ID_TEXT</code><p>The template set we are rendering this category using</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>The virtual root for display of this category (null: none)</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>\?array</code><p>The database rows for the fields for this catalogue (null: find them)</p></div>
+<div class="subelement argument">
+<h4>$only_fields</h4>
+<code>\?array</code><p>A list of fields (sequence numbers) that we are limiting ourselves to (null: get ALL fields)</p></div>
+<div class="subelement argument">
+<h4>$feedback_details</h4>
+<code>boolean</code><p>Whether to grab the feedback details</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs_details</h4>
+<code>boolean</code><p>Whether to grab the breadcrumbs details</p></div>
+<div class="subelement argument">
+<h4>$order_by</h4>
+<code>\?integer</code><p>Field index to order by (null: none)</p></div>
+<div class="subelement argument">
+<h4>$_breadcrumbs</h4>
+<code>\?array</code><p>Write breadcrumbs into here (null: don't bother)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map of information relating to the entry. The map contains 'FIELDS' (Tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_grant_catalogue_full_access"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_grant_catalogue_full_access " data-toggle="collapse" data-target=".function_grant_catalogue_full_access .collapse" title="">
+<h2>Grant all usergroups access to the specified catalogue category.</h2>
+<pre>grant_catalogue_full_access(\AUTO_LINK $category_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category that access is being given to</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_ecommerce_catalogue"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_ecommerce_catalogue " data-toggle="collapse" data-target=".function_is_ecommerce_catalogue .collapse" title="">
+<h2>Check the current catalogue is an ecommerce catalogue</h2>
+<pre>is_ecommerce_catalogue(\SHORT_TEXT $catalogue_name, \?array $catalogue<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\SHORT_TEXT</code><p>Catalogue name</p></div>
+<div class="subelement argument">
+<h4>$catalogue</h4>
+<code>\?array</code><p>Catalogue row (null: look up)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Status of ecommerce catalogue check</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_ecommerce_catalogue_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_ecommerce_catalogue_entry " data-toggle="collapse" data-target=".function_is_ecommerce_catalogue_entry .collapse" title="">
+<h2>Check selected entry is an ecommerce catalogue entry</h2>
+<pre>is_ecommerce_catalogue_entry(\AUTO_LINK $entry_id) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$entry_id</h4>
+<code>\AUTO_LINK</code><p>Entry ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Status of entry type check</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_load_catalogue_row"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_load_catalogue_row " data-toggle="collapse" data-target=".function_load_catalogue_row .collapse" title="">
+<h2>Get a catalogue row.</h2>
+<pre>load_catalogue_row(\ID_TEXT $catalogue_name, boolean $fail_ok<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$catalogue_name</h4>
+<code>\ID_TEXT</code><p>The catalogue name</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to return NULL if we can't find it (as opposed to a fatal error)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Catalogue row (null: could not find it, and $fail_ok was set to true)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_rebuild_catalogue_cat_treecache"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_rebuild_catalogue_cat_treecache " data-toggle="collapse" data-target=".function_rebuild_catalogue_cat_treecache .collapse" title="">
+<h2>Re-build the efficient catalogue category tree structure ancestry cache.</h2>
+<pre>rebuild_catalogue_cat_treecache() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_catalogue_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_catalogue_box " data-toggle="collapse" data-target=".function_render_catalogue_box .collapse" title="">
+<h2>Render a catalogue box.</h2>
+<pre>render_catalogue_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>Catalogue row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>Zone to link through to</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The catalogue box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_catalogue_category_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_catalogue_category_box " data-toggle="collapse" data-target=".function_render_catalogue_category_box .collapse" title="">
+<h2>Get Tempcode for a catalogue category 'feature box' for the given row</h2>
+<pre>render_catalogue_category_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, boolean $attach_to_url_filter<code> = false</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_catalogue_entry_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_catalogue_entry_box " data-toggle="collapse" data-target=".function_render_catalogue_entry_box .collapse" title="">
+<h2>Render a catalogue box.</h2>
+<pre>render_catalogue_entry_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>Catalogue row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>Zone to link through to</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The catalogue box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_catalogue_entry_screen"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_catalogue_entry_screen " data-toggle="collapse" data-target=".function_render_catalogue_entry_screen .collapse" title="">
+<h2>Display a catalogue entry</h2>
+<pre>render_catalogue_entry_screen(\AUTO_LINK $id, boolean $no_title<code> = false</code>, boolean $attach_to_url_filter<code> = true</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>Entry ID</p></div>
+<div class="subelement argument">
+<h4>$no_title</h4>
+<code>boolean</code><p>Whether to skip rendering a title</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode interface to display an entry</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_store_in_catalogue_cat_treecache"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_store_in_catalogue_cat_treecache " data-toggle="collapse" data-target=".function_store_in_catalogue_cat_treecache .collapse" title="">
+<h2>Update the treecache for a catalogue category node.</h2>
+<pre>store_in_catalogue_cat_treecache(\AUTO_LINK $id, \?AUTO_LINK $parent_id, boolean $cleanup_first<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the parent category (null: no parent)</p></div>
+<div class="subelement argument">
+<h4>$cleanup_first</h4>
+<code>boolean</code><p>Whether to delete any possible pre-existing records for the category first</p></div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_C_DT_FIELDMAPS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_C_DT_FIELDMAPS" data-toggle="collapse" data-target=".constant_C_DT_FIELDMAPS .collapse" title="">
+<h2>C_DT_FIELDMAPS</h2>
+<pre>C_DT_FIELDMAPS = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_C_DT_GRID"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_C_DT_GRID" data-toggle="collapse" data-target=".constant_C_DT_GRID .collapse" title="">
+<h2>C_DT_GRID</h2>
+<pre>C_DT_GRID = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_C_DT_TABULAR"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_C_DT_TABULAR" data-toggle="collapse" data-target=".constant_C_DT_TABULAR .collapse" title="">
+<h2>C_DT_TABULAR</h2>
+<pre>C_DT_TABULAR = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_C_DT_TITLELIST"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_C_DT_TITLELIST" data-toggle="collapse" data-target=".constant_C_DT_TITLELIST .collapse" title="">
+<h2>C_DT_TITLELIST</h2>
+<pre>C_DT_TITLELIST = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/catalogues.html">catalogues</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:33+01:00.<br></footer></div>
+</div>
+</body>
+</html>

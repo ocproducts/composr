@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/newsletter.html" title="newsletter"><i class="icon-folder-open"></i>newsletter</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_actual_send_newsletter" title="actual_send_newsletter() :: Send out the newsletter."><span class="description">Send out the newsletter.</span><pre>actual_send_newsletter</pre></a></li>
+<li class="function  "><a href="#function_add_newsletter" title="add_newsletter() :: Make a newsletter."><span class="description">Make a newsletter.</span><pre>add_newsletter</pre></a></li>
+<li class="function  "><a href="#function_basic_newsletter_join" title="basic_newsletter_join() :: Add to the newsletter, in the simplest way."><span class="description">Add to the newsletter, in the simplest way.</span><pre>basic_newsletter_join</pre></a></li>
+<li class="function  "><a href="#function_delete_newsletter" title="delete_newsletter() :: Delete a newsletter."><span class="description">Delete a newsletter.</span><pre>delete_newsletter</pre></a></li>
+<li class="function  "><a href="#function_edit_newsletter" title="edit_newsletter() :: Edit a newsletter."><span class="description">Edit a newsletter.</span><pre>edit_newsletter</pre></a></li>
+<li class="function  "><a href="#function_incoming_bounced_email_script" title="incoming_bounced_email_script() :: Script to read in an e-mailed ticket/reply."><span class="description">Script to read in an e-mailed ticket/reply.</span><pre>incoming_bounced_email_script</pre></a></li>
+<li class="function  "><a href="#function_newsletter_block_list" title="newsletter_block_list() :: Work out newsletter block list."><span class="description">Work out newsletter block list.</span><pre>newsletter_block_list</pre></a></li>
+<li class="function  "><a href="#function_newsletter_variable_substitution" title="newsletter_variable_substitution() :: Sub in newsletter variables."><span class="description">Sub in newsletter variables.</span><pre>newsletter_variable_substitution</pre></a></li>
+<li class="function  "><a href="#function_newsletter_who_send_to" title="newsletter_who_send_to() :: Find a group of members the newsletter will go to."><span class="description">Find a group of members the newsletter will go to.</span><pre>newsletter_who_send_to</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/newsletter.html">newsletter</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_actual_send_newsletter"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_actual_send_newsletter " data-toggle="collapse" data-target=".function_actual_send_newsletter .collapse" title="">
+<h2>Send out the newsletter.</h2>
+<pre>actual_send_newsletter(\LONG_TEXT $message, \SHORT_TEXT $subject, \LANGUAGE_NAME $lang, array $send_details, \BINARY $html_only<code> = 0</code>, string $from_email<code> = ''</code>, string $from_name<code> = ''</code>, integer $priority<code> = 3</code>, string $csv_data<code> = ''</code>, \ID_TEXT $mail_template<code> = 'MAIL'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 5</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>\LONG_TEXT</code><p>The newsletter message</p></div>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>\SHORT_TEXT</code><p>The newsletter subject</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\LANGUAGE_NAME</code><p>The language</p></div>
+<div class="subelement argument">
+<h4>$send_details</h4>
+<code>array</code><p>A map describing what newsletters and newsletter levels the newsletter is being sent to</p></div>
+<div class="subelement argument">
+<h4>$html_only</h4>
+<code>\BINARY</code><p>Whether to only send in HTML format</p></div>
+<div class="subelement argument">
+<h4>$from_email</h4>
+<code>string</code><p>Override the email address the mail is sent from (blank: staff address)</p></div>
+<div class="subelement argument">
+<h4>$from_name</h4>
+<code>string</code><p>Override the name the mail is sent from (blank: site name)</p></div>
+<div class="subelement argument">
+<h4>$priority</h4>
+<code>integer</code><p>The message priority (1=urgent, 3=normal, 5=low)</p></div>
+<div class="subelement argument">
+<h4>$csv_data</h4>
+<code>string</code><p>CSV data of extra subscribers (blank: none). This is in the same Composr newsletter CSV format that we export elsewhere.</p></div>
+<div class="subelement argument">
+<h4>$mail_template</h4>
+<code>\ID_TEXT</code><p>The template used to show the email</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>UI</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_newsletter"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_newsletter " data-toggle="collapse" data-target=".function_add_newsletter .collapse" title="">
+<h2>Make a newsletter.</h2>
+<pre>add_newsletter(\SHORT_TEXT $title, \LONG_TEXT $description) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_basic_newsletter_join"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_basic_newsletter_join " data-toggle="collapse" data-target=".function_basic_newsletter_join .collapse" title="">
+<h2>Add to the newsletter, in the simplest way.</h2>
+<pre>basic_newsletter_join(\EMAIL $email, integer $interest_level<code> = 4</code>, \?LANGUAGE_NAME $lang<code> = null</code>, boolean $get_confirm_mail<code> = false</code>, \?AUTO_LINK $newsletter_id<code> = null</code>, string $forename<code> = ''</code>, string $surname<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>No authorisation support here, checks it works only for non-subscribed or non-confirmed members.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 4</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$email</h4>
+<code>\EMAIL</code><p>The email address of the subscriber</p></div>
+<div class="subelement argument">
+<h4>$interest_level</h4>
+<code>integer</code><p>The interest level</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?LANGUAGE_NAME</code><p>The language (null: users)</p></div>
+<div class="subelement argument">
+<h4>$get_confirm_mail</h4>
+<code>boolean</code><p>Whether to require a confirmation mail</p></div>
+<div class="subelement argument">
+<h4>$newsletter_id</h4>
+<code>\?AUTO_LINK</code><p>The newsletter to join (null: the first)</p></div>
+<div class="subelement argument">
+<h4>$forename</h4>
+<code>string</code><p>Subscribers forename</p></div>
+<div class="subelement argument">
+<h4>$surname</h4>
+<code>string</code><p>Subscribers surname</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Newsletter password</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_newsletter"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_newsletter " data-toggle="collapse" data-target=".function_delete_newsletter .collapse" title="">
+<h2>Delete a newsletter.</h2>
+<pre>delete_newsletter(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_newsletter"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_newsletter " data-toggle="collapse" data-target=".function_edit_newsletter .collapse" title="">
+<h2>Edit a newsletter.</h2>
+<pre>edit_newsletter(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $description) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_incoming_bounced_email_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_incoming_bounced_email_script " data-toggle="collapse" data-target=".function_incoming_bounced_email_script .collapse" title="">
+<h2>Script to read in an e-mailed ticket/reply.</h2>
+<pre>incoming_bounced_email_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_newsletter_block_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_newsletter_block_list " data-toggle="collapse" data-target=".function_newsletter_block_list .collapse" title="">
+<h2>Work out newsletter block list.</h2>
+<pre>newsletter_block_list() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of blocked email addresses (actually a map)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_newsletter_variable_substitution"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_newsletter_variable_substitution " data-toggle="collapse" data-target=".function_newsletter_variable_substitution .collapse" title="">
+<h2>Sub in newsletter variables.</h2>
+<pre>newsletter_variable_substitution(string $message, \SHORT_TEXT $subject, \SHORT_TEXT $forename, \SHORT_TEXT $surname, \SHORT_TEXT $name, \EMAIL $email_address, \ID_TEXT $sendid, \SHORT_TEXT $hash) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The original newsletter message</p></div>
+<div class="subelement argument">
+<h4>$subject</h4>
+<code>\SHORT_TEXT</code><p>The newsletter subject</p></div>
+<div class="subelement argument">
+<h4>$forename</h4>
+<code>\SHORT_TEXT</code><p>Subscribers forename (blank: unknown)</p></div>
+<div class="subelement argument">
+<h4>$surname</h4>
+<code>\SHORT_TEXT</code><p>Subscribers surname (blank: unknown)</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>Subscribers name (or username)</p></div>
+<div class="subelement argument">
+<h4>$email_address</h4>
+<code>\EMAIL</code><p>Subscribers email address</p></div>
+<div class="subelement argument">
+<h4>$sendid</h4>
+<code>\ID_TEXT</code><p>Specially encoded ID of subscriber (begins either 'n' for newsletter subscriber, or 'm' for member - then has normal subscriber/member ID following)</p></div>
+<div class="subelement argument">
+<h4>$hash</h4>
+<code>\SHORT_TEXT</code><p>Double encoded password hash of subscriber (blank: can not unsubscribe by URL)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The new newsletter message</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_newsletter_who_send_to"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_newsletter_who_send_to " data-toggle="collapse" data-target=".function_newsletter_who_send_to .collapse" title="">
+<h2>Find a group of members the newsletter will go to.</h2>
+<pre>newsletter_who_send_to(array $send_details, \LANGUAGE_NAME $lang, integer $start, integer $max, boolean $get_raw_rows<code> = false</code>, string $csv_data<code> = ''</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/newsletter.html">newsletter</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$send_details</h4>
+<code>array</code><p>A map describing what newsletters and newsletter levels the newsletter is being sent to</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\LANGUAGE_NAME</code><p>The language</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>integer</code><p>Start position in result set (results are returned in parallel for each category of result)</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>integer</code><p>Maximum records to return from each category</p></div>
+<div class="subelement argument">
+<h4>$get_raw_rows</h4>
+<code>boolean</code><p>Whether to get raw rows rather than mailer-ready correspondance lists</p></div>
+<div class="subelement argument">
+<h4>$csv_data</h4>
+<code>string</code><p>Serialized CSV data to also consider</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for levels (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:41+01:00.<br></footer></div>
+</div>
+</body>
+</html>

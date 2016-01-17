@@ -1,0 +1,520 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_menus.html" title="core_menus"><i class="icon-folder-open"></i>core_menus</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_menu_item" title="add_menu_item() :: Add a menu item."><span class="description">Add a menu item.</span><pre>add_menu_item</pre></a></li>
+<li class="function  "><a href="#function_add_menu_item_simple" title="add_menu_item_simple() :: Add a menu item, without giving tedious/unnecessary detail."><span class="description">Add a menu item, without giving tedious/unnecessary detail.</span><pre>add_menu_item_simple</pre></a></li>
+<li class="function  "><a href="#function_build_comcode_menu" title="build_comcode_menu() :: Takes some Comcode, and return an XHTML menu created from it."><span class="description">Takes some Comcode, and return an XHTML menu created from it.</span><pre>build_comcode_menu</pre></a></li>
+<li class="function  "><a href="#function_build_menu" title="build_menu() :: Take a menu identifier, and return a menu created from it."><span class="description">Take a menu identifier, and return a menu created from it.</span><pre>build_menu</pre></a></li>
+<li class="function  "><a href="#function_copy_from_sitemap_to_new_menu" title="copy_from_sitemap_to_new_menu() :: Copy a part of the Sitemap to a new menu."><span class="description">Copy a part of the Sitemap to a new menu.</span><pre>copy_from_sitemap_to_new_menu</pre></a></li>
+<li class="function  "><a href="#function_delete_menu" title="delete_menu() :: Delete a menu."><span class="description">Delete a menu.</span><pre>delete_menu</pre></a></li>
+<li class="function  "><a href="#function_delete_menu_item" title="delete_menu_item() :: Delete a menu item."><span class="description">Delete a menu item.</span><pre>delete_menu_item</pre></a></li>
+<li class="function  "><a href="#function_delete_menu_item_simple" title="delete_menu_item_simple() :: Delete a menu item, without giving tedious/unnecessary detail."><span class="description">Delete a menu item, without giving tedious/unnecessary detail.</span><pre>delete_menu_item_simple</pre></a></li>
+<li class="function  "><a href="#function_edit_menu_item" title="edit_menu_item() :: Edit a menu item."><span class="description">Edit a menu item.</span><pre>edit_menu_item</pre></a></li>
+<li class="function  "><a href="#function_export_menu_csv" title="export_menu_csv() :: Export a menu structure to a CSV file."><span class="description">Export a menu structure to a CSV file.</span><pre>export_menu_csv</pre></a></li>
+<li class="function  "><a href="#function_import_menu_csv" title="import_menu_csv() :: Import a CSV menu structure, after ERASING whole current menu structure."><span class="description">Import a CSV menu structure, after ERASING whole current menu structure.</span><pre>import_menu_csv</pre></a></li>
+<li class="function  "><a href="#function_menu_management_script" title="menu_management_script() :: Move a menu branch."><span class="description">Move a menu branch.</span><pre>menu_management_script</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_INCLUDE_SITEMAP_NO" title="INCLUDE_SITEMAP_NO() :: "><span class="description">INCLUDE_SITEMAP_NO</span><pre>INCLUDE_SITEMAP_NO</pre></a></li>
+<li class="constant  "><a href="#constant_INCLUDE_SITEMAP_OVER" title="INCLUDE_SITEMAP_OVER() :: "><span class="description">INCLUDE_SITEMAP_OVER</span><pre>INCLUDE_SITEMAP_OVER</pre></a></li>
+<li class="constant  "><a href="#constant_INCLUDE_SITEMAP_UNDER" title="INCLUDE_SITEMAP_UNDER() :: "><span class="description">INCLUDE_SITEMAP_UNDER</span><pre>INCLUDE_SITEMAP_UNDER</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_menus.html">core_menus</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_menu_item"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_menu_item " data-toggle="collapse" data-target=".function_add_menu_item .collapse" title="">
+<h2>Add a menu item.</h2>
+<pre>add_menu_item(\SHORT_TEXT $menu, integer $order, \?AUTO_LINK $parent, \SHORT_TEXT $caption, \SHORT_TEXT $url, \BINARY $check_permissions, \SHORT_TEXT $page_only, \BINARY $expanded, \BINARY $new_window, \SHORT_TEXT $caption_long, \ID_TEXT $theme_image_code<code> = ''</code>, \SHORT_INTEGER $include_sitemap<code> = 0</code>, \?AUTO_LINK $id<code> = null</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$menu</h4>
+<code>\SHORT_TEXT</code><p>The name of the menu to add the item to.</p></div>
+<div class="subelement argument">
+<h4>$order</h4>
+<code>integer</code><p>The relative order of this item on the menu.</p></div>
+<div class="subelement argument">
+<h4>$parent</h4>
+<code>\?AUTO_LINK</code><p>The menu item ID of the parent branch of the menu item (null: is on root).</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption.</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\SHORT_TEXT</code><p>The URL (in entry point form).</p></div>
+<div class="subelement argument">
+<h4>$check_permissions</h4>
+<code>\BINARY</code><p>Whether people who may not view the entry point do not see the link.</p></div>
+<div class="subelement argument">
+<h4>$page_only</h4>
+<code>\SHORT_TEXT</code><p>Match-keys to identify what pages the item is shown on.</p></div>
+<div class="subelement argument">
+<h4>$expanded</h4>
+<code>\BINARY</code><p>Whether it is an expanded branch.</p></div>
+<div class="subelement argument">
+<h4>$new_window</h4>
+<code>\BINARY</code><p>Whether the link will open in a new window.</p></div>
+<div class="subelement argument">
+<h4>$caption_long</h4>
+<code>\SHORT_TEXT</code><p>The tooltip (blank: none).</p></div>
+<div class="subelement argument">
+<h4>$theme_image_code</h4>
+<code>\ID_TEXT</code><p>The theme image code.</p></div>
+<div class="subelement argument">
+<h4>$include_sitemap</h4>
+<code>\SHORT_INTEGER</code><p>An INCLUDE<em>SITEMAP</em>* constant</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>The ID (null: auto-increment)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the newly added menu item.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_menu_item_simple"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_menu_item_simple " data-toggle="collapse" data-target=".function_add_menu_item_simple .collapse" title="">
+<h2>Add a menu item, without giving tedious/unnecessary detail.</h2>
+<pre>add_menu_item_simple(\SHORT_TEXT $menu, \?mixed $parent, \SHORT_TEXT $caption, \SHORT_TEXT $url<code> = ''</code>, \BINARY $expanded<code> = 0</code>, \BINARY $check_permissions<code> = 0</code>, boolean $dereference_caption<code> = true</code>, \SHORT_TEXT $caption_long<code> = ''</code>, \BINARY $new_window<code> = 0</code>, \ID_TEXT $theme_image_code<code> = ''</code>, \SHORT_INTEGER $include_sitemap<code> = 0</code>, \?integer $order<code> = null</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$menu</h4>
+<code>\SHORT_TEXT</code><p>The name of the menu to add the item to.</p></div>
+<div class="subelement argument">
+<h4>$parent</h4>
+<code>\?mixed</code><p>The menu item ID of the parent branch of the menu item (AUTO_LINK) / the URL of something else on the same menu (URLPATH) (null: is on root).</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption.</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\SHORT_TEXT</code><p>The URL (in entry point form).</p></div>
+<div class="subelement argument">
+<h4>$expanded</h4>
+<code>\BINARY</code><p>Whether it is an expanded branch.</p></div>
+<div class="subelement argument">
+<h4>$check_permissions</h4>
+<code>\BINARY</code><p>Whether people who may not view the entry point do not see the link.</p></div>
+<div class="subelement argument">
+<h4>$dereference_caption</h4>
+<code>boolean</code><p>Whether the caption is a language code.</p></div>
+<div class="subelement argument">
+<h4>$caption_long</h4>
+<code>\SHORT_TEXT</code><p>The tooltip (blank: none).</p></div>
+<div class="subelement argument">
+<h4>$new_window</h4>
+<code>\BINARY</code><p>Whether the link will open in a new window.</p></div>
+<div class="subelement argument">
+<h4>$theme_image_code</h4>
+<code>\ID_TEXT</code><p>The theme image code.</p></div>
+<div class="subelement argument">
+<h4>$include_sitemap</h4>
+<code>\SHORT_INTEGER</code><p>An INCLUDE<em>SITEMAP</em>* constant</p></div>
+<div class="subelement argument">
+<h4>$order</h4>
+<code>\?integer</code><p>Order to use (null: automatic, after the ones that have it specified).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the newly added menu item.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_build_comcode_menu"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_build_comcode_menu " data-toggle="collapse" data-target=".function_build_comcode_menu .collapse" title="">
+<h2>Takes some Comcode, and return an XHTML menu created from it.</h2>
+<pre>build_comcode_menu(\LONG_TEXT $comcode, \SHORT_TEXT $menu, \MEMBER $source_member, \ID_TEXT $type) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The contents of the Comcode menu tag</p></div>
+<div class="subelement argument">
+<h4>$menu</h4>
+<code>\SHORT_TEXT</code><p>An identifier for this menu (will be used as a unique ID by menu javascript code)</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member the menu is being built as</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The menu type (determines what templates get used)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated Tempcode of the menu</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_build_menu"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_build_menu " data-toggle="collapse" data-target=".function_build_menu .collapse" title="">
+<h2>Take a menu identifier, and return a menu created from it.</h2>
+<pre>build_menu(\ID_TEXT $type, \SHORT_TEXT $menu, boolean $silent_failure<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of the menu (determines which templates to use)</p></div>
+<div class="subelement argument">
+<h4>$menu</h4>
+<code>\SHORT_TEXT</code><p>The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)</p></div>
+<div class="subelement argument">
+<h4>$silent_failure</h4>
+<code>boolean</code><p>Whether to silently return blank if the menu does not exist</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The generated Tempcode of the menu</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_copy_from_sitemap_to_new_menu"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_copy_from_sitemap_to_new_menu " data-toggle="collapse" data-target=".function_copy_from_sitemap_to_new_menu .collapse" title="">
+<h2>Copy a part of the Sitemap to a new menu.</h2>
+<pre>copy_from_sitemap_to_new_menu(\ID_TEXT $target_menu, \SHORT_TEXT $source) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$target_menu</h4>
+<code>\ID_TEXT</code><p>The ID of the menu to save into.</p></div>
+<div class="subelement argument">
+<h4>$source</h4>
+<code>\SHORT_TEXT</code><p>Sitemap details.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_menu"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_menu " data-toggle="collapse" data-target=".function_delete_menu .collapse" title="">
+<h2>Delete a menu.</h2>
+<pre>delete_menu(\ID_TEXT $menu_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$menu_id</h4>
+<code>\ID_TEXT</code><p>The ID of the menu.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_menu_item"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_menu_item " data-toggle="collapse" data-target=".function_delete_menu_item .collapse" title="">
+<h2>Delete a menu item.</h2>
+<pre>delete_menu_item(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the menu item to delete.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_menu_item_simple"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_menu_item_simple " data-toggle="collapse" data-target=".function_delete_menu_item_simple .collapse" title="">
+<h2>Delete a menu item, without giving tedious/unnecessary detail.</h2>
+<pre>delete_menu_item_simple(\SHORT_TEXT $url) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\SHORT_TEXT</code><p>The URL (in entry point form).</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_menu_item"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_menu_item " data-toggle="collapse" data-target=".function_edit_menu_item .collapse" title="">
+<h2>Edit a menu item.</h2>
+<pre>edit_menu_item(\AUTO_LINK $id, \SHORT_TEXT $menu, integer $order, \?AUTO_LINK $parent, \SHORT_TEXT $caption, \SHORT_TEXT $url, \BINARY $check_permissions, \SHORT_TEXT $page_only, \BINARY $expanded, \BINARY $new_window, \SHORT_TEXT $caption_long, \ID_TEXT $theme_image_code, \SHORT_INTEGER $include_sitemap) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the menu item to edit.</p></div>
+<div class="subelement argument">
+<h4>$menu</h4>
+<code>\SHORT_TEXT</code><p>The name of the menu to add the item to.</p></div>
+<div class="subelement argument">
+<h4>$order</h4>
+<code>integer</code><p>The relative order of this item on the menu.</p></div>
+<div class="subelement argument">
+<h4>$parent</h4>
+<code>\?AUTO_LINK</code><p>The menu item ID of the parent branch of the menu item (null: is on root).</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption.</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\SHORT_TEXT</code><p>The URL (in entry point form).</p></div>
+<div class="subelement argument">
+<h4>$check_permissions</h4>
+<code>\BINARY</code><p>Whether people who may not view the entry point do not see the link.</p></div>
+<div class="subelement argument">
+<h4>$page_only</h4>
+<code>\SHORT_TEXT</code><p>Match-keys to identify what pages the item is shown on.</p></div>
+<div class="subelement argument">
+<h4>$expanded</h4>
+<code>\BINARY</code><p>Whether it is an expanded branch.</p></div>
+<div class="subelement argument">
+<h4>$new_window</h4>
+<code>\BINARY</code><p>Whether the link will open in a new window.</p></div>
+<div class="subelement argument">
+<h4>$caption_long</h4>
+<code>\SHORT_TEXT</code><p>The tooltip (blank: none).</p></div>
+<div class="subelement argument">
+<h4>$theme_image_code</h4>
+<code>\ID_TEXT</code><p>The theme image code.</p></div>
+<div class="subelement argument">
+<h4>$include_sitemap</h4>
+<code>\SHORT_INTEGER</code><p>An INCLUDE<em>SITEMAP</em>* constant</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_export_menu_csv"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_export_menu_csv " data-toggle="collapse" data-target=".function_export_menu_csv .collapse" title="">
+<h2>Export a menu structure to a CSV file.</h2>
+<pre>export_menu_csv(\?PATH $file_path<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$file_path</h4>
+<code>\?PATH</code><p>The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv).</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_import_menu_csv"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_import_menu_csv " data-toggle="collapse" data-target=".function_import_menu_csv .collapse" title="">
+<h2>Import a CSV menu structure, after ERASING whole current menu structure.</h2>
+<pre>import_menu_csv(\?PATH $file_path<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This function is intended for programmers, writing upgrade scripts for a custom site (dev&gt;staging&gt;live).
+Assumes CSV was generated with export_menu_csv.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$file_path</h4>
+<code>\?PATH</code><p>The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv).</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_menu_management_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_menu_management_script " data-toggle="collapse" data-target=".function_menu_management_script .collapse" title="">
+<h2>Move a menu branch.</h2>
+<pre>menu_management_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_INCLUDE_SITEMAP_NO"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_INCLUDE_SITEMAP_NO" data-toggle="collapse" data-target=".constant_INCLUDE_SITEMAP_NO .collapse" title="">
+<h2>INCLUDE_SITEMAP_NO</h2>
+<pre>INCLUDE_SITEMAP_NO = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_INCLUDE_SITEMAP_OVER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_INCLUDE_SITEMAP_OVER" data-toggle="collapse" data-target=".constant_INCLUDE_SITEMAP_OVER .collapse" title="">
+<h2>INCLUDE_SITEMAP_OVER</h2>
+<pre>INCLUDE_SITEMAP_OVER = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_INCLUDE_SITEMAP_UNDER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_INCLUDE_SITEMAP_UNDER" data-toggle="collapse" data-target=".constant_INCLUDE_SITEMAP_UNDER .collapse" title="">
+<h2>INCLUDE_SITEMAP_UNDER</h2>
+<pre>INCLUDE_SITEMAP_UNDER = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_menus.html">core_menus</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:37+01:00.<br></footer></div>
+</div>
+</body>
+</html>

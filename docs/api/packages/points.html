@@ -1,0 +1,483 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/points.html" title="points"><i class="icon-folder-open"></i>points</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_to_charge_log" title="add_to_charge_log() :: Add an entry to the change log."><span class="description">Add an entry to the change log.</span><pre>add_to_charge_log</pre></a></li>
+<li class="function  "><a href="#function_available_points" title="available_points() :: Get the total points the specified member has"><span class="description">Get the total points the specified member has</span><pre>available_points</pre></a></li>
+<li class="function  "><a href="#function_calculate_latest_leader_board" title="calculate_latest_leader_board() :: Calculate the leader-board."><span class="description">Calculate the leader-board.</span><pre>calculate_latest_leader_board</pre></a></li>
+<li class="function  "><a href="#function_charge_member" title="charge_member() :: Charge points from a specified member's account."><span class="description">Charge points from a specified member's account.</span><pre>charge_member</pre></a></li>
+<li class="function  "><a href="#function_get_gift_points_to_give" title="get_gift_points_to_give() :: Get the number of gifts points to give that the given member has."><span class="description">Get the number of gifts points to give that the given member has.</span><pre>get_gift_points_to_give</pre></a></li>
+<li class="function  "><a href="#function_get_gift_points_used" title="get_gift_points_used() :: Get the number of gift points used by the given member."><span class="description">Get the number of gift points used by the given member.</span><pre>get_gift_points_used</pre></a></li>
+<li class="function  "><a href="#function_get_price" title="get_price() :: Get the price of the specified item for sale in the Point Store (only for tableless items)."><span class="description">Get the price of the specified item for sale in the Point Store (only for tableless items).</span><pre>get_price</pre></a></li>
+<li class="function  "><a href="#function_give_points" title="give_points() :: Give a member some points, from another member."><span class="description">Give a member some points, from another member.</span><pre>give_points</pre></a></li>
+<li class="function  "><a href="#function_has_leader_board_since" title="has_leader_board_since() :: See if a leader-board has been calculated since a particular cut-off time."><span class="description">See if a leader-board has been calculated since a particular cut-off time.</span><pre>has_leader_board_since</pre></a></li>
+<li class="function  "><a href="#function_point_info" title="point_info() :: Get all sorts of information about a specified member's point account."><span class="description">Get all sorts of information about a specified member's point account.</span><pre>point_info</pre></a></li>
+<li class="function  "><a href="#function_points_get_transactions" title="points_get_transactions() :: Show the point transactions a member has had."><span class="description">Show the point transactions a member has had.</span><pre>points_get_transactions</pre></a></li>
+<li class="function  "><a href="#function_points_profile" title="points_profile() :: The UI for a points profile."><span class="description">The UI for a points profile.</span><pre>points_profile</pre></a></li>
+<li class="function  "><a href="#function_points_used" title="points_used() :: Get the total points the specified member has used (spent)."><span class="description">Get the total points the specified member has used (spent).</span><pre>points_used</pre></a></li>
+<li class="function  "><a href="#function_system_gift_transfer" title="system_gift_transfer() :: Transfer gift-points into the specified member's account, courtesy of the system."><span class="description">Transfer gift-points into the specified member's account, courtesy of the system.</span><pre>system_gift_transfer</pre></a></li>
+<li class="function  "><a href="#function_total_points" title="total_points() :: Get the total points in the specified member's account; some of these will probably have been spent already"><span class="description">Get the total points in the specified member's account; some of these will probably have been spent already</span><pre>total_points</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/points.html">points</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_to_charge_log"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_to_charge_log " data-toggle="collapse" data-target=".function_add_to_charge_log .collapse" title="">
+<h2>Add an entry to the change log.</h2>
+<pre>add_to_charge_log(\MEMBER $member_id, integer $amount, \SHORT_TEXT $reason, \?TIME $time<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member that is being charged</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>integer</code><p>The amount being charged</p></div>
+<div class="subelement argument">
+<h4>$reason</h4>
+<code>\SHORT_TEXT</code><p>The reason for the charging</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The time this is recorded to have happened (null: use current time)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_available_points"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_available_points " data-toggle="collapse" data-target=".function_available_points .collapse" title="">
+<h2>Get the total points the specified member has</h2>
+<pre>available_points(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of points the member has</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_calculate_latest_leader_board"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_calculate_latest_leader_board " data-toggle="collapse" data-target=".function_calculate_latest_leader_board .collapse" title="">
+<h2>Calculate the leader-board.</h2>
+<pre>calculate_latest_leader_board(boolean $retrieve<code> = true</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$retrieve</h4>
+<code>boolean</code><p>Whether to retrieve results too (no retrieve -> faster call)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A map of member-IDs to points, sorted by leader-board status (null: not retrieving)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_charge_member"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_charge_member " data-toggle="collapse" data-target=".function_charge_member .collapse" title="">
+<h2>Charge points from a specified member's account.</h2>
+<pre>charge_member(\MEMBER $member_id, integer $amount, \SHORT_TEXT $reason) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member that is being charged</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>integer</code><p>The amount being charged</p></div>
+<div class="subelement argument">
+<h4>$reason</h4>
+<code>\SHORT_TEXT</code><p>The reason for the charging</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_gift_points_to_give"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_gift_points_to_give " data-toggle="collapse" data-target=".function_get_gift_points_to_give .collapse" title="">
+<h2>Get the number of gifts points to give that the given member has.</h2>
+<pre>get_gift_points_to_give(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member we want it for</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of gifts points to give that the given member has</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_gift_points_used"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_gift_points_used " data-toggle="collapse" data-target=".function_get_gift_points_used .collapse" title="">
+<h2>Get the number of gift points used by the given member.</h2>
+<pre>get_gift_points_used(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member we want it for</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of gift points used by the member</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_price"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_price " data-toggle="collapse" data-target=".function_get_price .collapse" title="">
+<h2>Get the price of the specified item for sale in the Point Store (only for tableless items).</h2>
+<pre>get_price(\ID_TEXT $item) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$item</h4>
+<code>\ID_TEXT</code><p>The name of the item</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The price of the item</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_give_points"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_give_points " data-toggle="collapse" data-target=".function_give_points .collapse" title="">
+<h2>Give a member some points, from another member.</h2>
+<pre>give_points(integer $amount, \MEMBER $recipient_id, \MEMBER $sender_id, \SHORT_TEXT $reason, boolean $anonymous<code> = false</code>, boolean $send_email<code> = true</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>integer</code><p>The amount being given</p></div>
+<div class="subelement argument">
+<h4>$recipient_id</h4>
+<code>\MEMBER</code><p>The member receiving the points</p></div>
+<div class="subelement argument">
+<h4>$sender_id</h4>
+<code>\MEMBER</code><p>The member sending the points</p></div>
+<div class="subelement argument">
+<h4>$reason</h4>
+<code>\SHORT_TEXT</code><p>The reason for the gift</p></div>
+<div class="subelement argument">
+<h4>$anonymous</h4>
+<code>boolean</code><p>Does the sender want to remain anonymous?</p></div>
+<div class="subelement argument">
+<h4>$send_email</h4>
+<code>boolean</code><p>Whether to send out an email about it</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_has_leader_board_since"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_has_leader_board_since " data-toggle="collapse" data-target=".function_has_leader_board_since .collapse" title="">
+<h2>See if a leader-board has been calculated since a particular cut-off time.</h2>
+<pre>has_leader_board_since(\TIME $cutoff) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cutoff</h4>
+<code>\TIME</code><p>Cut-off time</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it has</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_point_info"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_point_info " data-toggle="collapse" data-target=".function_point_info .collapse" title="">
+<h2>Get all sorts of information about a specified member's point account.</h2>
+<pre>point_info(\MEMBER $member) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member the point info is of</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map containing the members point info (fields as enumerated in description)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_points_get_transactions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_points_get_transactions " data-toggle="collapse" data-target=".function_points_get_transactions .collapse" title="">
+<h2>Show the point transactions a member has had.</h2>
+<pre>points_get_transactions(\ID_TEXT $type, \MEMBER $member_id_of, \MEMBER $member_id_viewing) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>from to</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type of transactions we are looking for</p></div>
+<div class="subelement argument">
+<h4>$member_id_of</h4>
+<code>\MEMBER</code><p>Who we are looking at transactions for</p></div>
+<div class="subelement argument">
+<h4>$member_id_viewing</h4>
+<code>\MEMBER</code><p>Who we are looking at transactions using the account of</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_points_profile"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_points_profile " data-toggle="collapse" data-target=".function_points_profile .collapse" title="">
+<h2>The UI for a points profile.</h2>
+<pre>points_profile(\MEMBER $member_id_of, \?MEMBER $member_id_viewing) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id_of</h4>
+<code>\MEMBER</code><p>The ID of the member who is being viewed</p></div>
+<div class="subelement argument">
+<h4>$member_id_viewing</h4>
+<code>\?MEMBER</code><p>The ID of the member who is doing the viewing (null: current member)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_points_used"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_points_used " data-toggle="collapse" data-target=".function_points_used .collapse" title="">
+<h2>Get the total points the specified member has used (spent).</h2>
+<pre>points_used(\MEMBER $member) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of points the member has spent</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_system_gift_transfer"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_system_gift_transfer " data-toggle="collapse" data-target=".function_system_gift_transfer .collapse" title="">
+<h2>Transfer gift-points into the specified member's account, courtesy of the system.</h2>
+<pre>system_gift_transfer(\SHORT_TEXT $reason, integer $amount, \MEMBER $member_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$reason</h4>
+<code>\SHORT_TEXT</code><p>The reason for the transfer</p></div>
+<div class="subelement argument">
+<h4>$amount</h4>
+<code>integer</code><p>The size of the transfer</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member the transfer is to</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_total_points"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_total_points " data-toggle="collapse" data-target=".function_total_points .collapse" title="">
+<h2>Get the total points in the specified member's account; some of these will probably have been spent already</h2>
+<pre>total_points(\MEMBER $member, \?TIME $timestamp<code> = null</code>) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/points.html">points</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member</p></div>
+<div class="subelement argument">
+<h4>$timestamp</h4>
+<code>\?TIME</code><p>Time to get for (null: now)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of points the member has</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:41+01:00.<br></footer></div>
+</div>
+</body>
+</html>

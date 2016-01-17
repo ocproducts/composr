@@ -1,0 +1,1446 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___edit" title="__edit() :: Standard CRUD-module UI/actualiser to edit an entry."><span class="description">Standard CRUD-module UI/actualiser to edit an entry.</span><pre>__edit()</pre></a></li>
+<li class="method public "><a href="#method__add" title="_add() :: Standard CRUD-module UI/actualiser to add an entry."><span class="description">Standard CRUD-module UI/actualiser to add an entry.</span><pre>_add()</pre></a></li>
+<li class="method public "><a href="#method__edit" title="_edit() :: Standard CRUD-module UI to edit an entry."><span class="description">Standard CRUD-module UI to edit an entry.</span><pre>_edit()</pre></a></li>
+<li class="method public "><a href="#method_add" title="add() :: Standard CRUD-module UI to add an entry."><span class="description">Standard CRUD-module UI to add an entry.</span><pre>add()</pre></a></li>
+<li class="method public "><a href="#method_choose_catalogue" title="choose_catalogue() :: Get some XHTML for a form to choose a catalogue out of all the available ones."><span class="description">Get some XHTML for a form to choose a catalogue out of all the available ones.</span><pre>choose_catalogue()</pre></a></li>
+<li class="method public "><a href="#method_choose_feedback_fields_statistically" title="choose_feedback_fields_statistically() :: Statistically work out defaults for feedback fields, if not currently set."><span class="description">Statistically work out defaults for feedback fields, if not currently set.</span><pre>choose_feedback_fields_statistically()</pre></a></li>
+<li class="method public "><a href="#method_create_selection_list_entries" title="create_selection_list_entries() :: Standard CRUD-module entry list fetcher."><span class="description">Standard CRUD-module entry list fetcher.</span><pre>create_selection_list_entries()</pre></a></li>
+<li class="method public "><a href="#method_do_next_manager" title="do_next_manager() :: The do-next manager for after content management."><span class="description">The do-next manager for after content management.</span><pre>do_next_manager()</pre></a></li>
+<li class="method public "><a href="#method_edit" title="edit() :: Standard CRUD-module UI to choose an entry to edit."><span class="description">Standard CRUD-module UI to choose an entry to edit.</span><pre>edit()</pre></a></li>
+<li class="method public "><a href="#method_get_entry_points" title="get_entry_points() :: Find entry-points available within this module."><span class="description">Find entry-points available within this module.</span><pre>get_entry_points()</pre></a></li>
+<li class="method public "><a href="#method_get_entry_rows" title="get_entry_rows() :: Standard CRUD-module entry function to get rows for selection from."><span class="description">Standard CRUD-module entry function to get rows for selection from.</span><pre>get_entry_rows()</pre></a></li>
+<li class="method public "><a href="#method_get_permission_fields" title="get_permission_fields() :: Standard CRUD-module permission chooser."><span class="description">Standard CRUD-module permission chooser.</span><pre>get_permission_fields()</pre></a></li>
+<li class="method public "><a href="#method_handle_confirmations" title="handle_confirmations() :: If a confirmation is needed, and not been given, ask for one."><span class="description">If a confirmation is needed, and not been given, ask for one.</span><pre>handle_confirmations()</pre></a></li>
+<li class="method public "><a href="#method_has_tied_catalogue" title="has_tied_catalogue() :: Find whether this content type has a tied catalogue."><span class="description">Find whether this content type has a tied catalogue.</span><pre>has_tied_catalogue()</pre></a></li>
+<li class="method public "><a href="#method_info" title="info() :: Find details of the module."><span class="description">Find details of the module.</span><pre>info()</pre></a></li>
+<li class="method public "><a href="#method_mass_delete" title="mass_delete() :: Mass delete some entries/categories."><span class="description">Mass delete some entries/categories.</span><pre>mass_delete()</pre></a></li>
+<li class="method public "><a href="#method_pre_run" title="pre_run() :: Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output."><span class="description">Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output.</span><pre>pre_run()</pre></a></li>
+<li class="method public "><a href="#method_preview_intercept" title="preview_intercept() :: Standard CRUD-module UI for a separate preview."><span class="description">Standard CRUD-module UI for a separate preview.</span><pre>preview_intercept()</pre></a></li>
+<li class="method public "><a href="#method_run" title="run() :: Execute the module."><span class="description">Execute the module.</span><pre>run()</pre></a></li>
+<li class="method public "><a href="#method_set_permissions" title="set_permissions() :: Set permissions of the news category from POST parameters."><span class="description">Set permissions of the news category from POST parameters.</span><pre>set_permissions()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul><li class="method private "><a href="#method_get_screen_type_for" title="get_screen_type_for() :: Work out a screen type code."><span class="description">Work out a screen type code.</span><pre>get_screen_type_for()</pre></a></li></ul>
+</li>
+<li class="nav-header">
+<i title="Properties" class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_add_one_cat_label" title="$add_one_cat_label() :: "><span class="description"></span><pre>$add_one_cat_label</pre></a></li>
+<li class="property public "><a href="#property_add_one_label" title="$add_one_label() :: "><span class="description"></span><pre>$add_one_label</pre></a></li>
+<li class="property public "><a href="#property_add_submit_name" title="$add_submit_name() :: "><span class="description"></span><pre>$add_submit_name</pre></a></li>
+<li class="property public "><a href="#property_add_text" title="$add_text() :: "><span class="description"></span><pre>$add_text</pre></a></li>
+<li class="property public "><a href="#property_alt_crud_module" title="$alt_crud_module() :: "><span class="description"></span><pre>$alt_crud_module</pre></a></li>
+<li class="property public "><a href="#property_appended_actions_already" title="$appended_actions_already() :: "><span class="description"></span><pre>$appended_actions_already</pre></a></li>
+<li class="property public "><a href="#property_archive_entry_point" title="$archive_entry_point() :: "><span class="description"></span><pre>$archive_entry_point</pre></a></li>
+<li class="property public "><a href="#property_archive_label" title="$archive_label() :: "><span class="description"></span><pre>$archive_label</pre></a></li>
+<li class="property public "><a href="#property_array_key" title="$array_key() :: "><span class="description"></span><pre>$array_key</pre></a></li>
+<li class="property public "><a href="#property_author" title="$author() :: "><span class="description"></span><pre>$author</pre></a></li>
+<li class="property public "><a href="#property_cached_entry_rows" title="$cached_entry_rows() :: "><span class="description"></span><pre>$cached_entry_rows</pre></a></li>
+<li class="property public "><a href="#property_cached_max_rows" title="$cached_max_rows() :: "><span class="description"></span><pre>$cached_max_rows</pre></a></li>
+<li class="property public "><a href="#property_care_please" title="$care_please() :: "><span class="description"></span><pre>$care_please</pre></a></li>
+<li class="property public "><a href="#property_cat_crud_module" title="$cat_crud_module() :: "><span class="description"></span><pre>$cat_crud_module</pre></a></li>
+<li class="property public "><a href="#property_catalogue" title="$catalogue() :: "><span class="description"></span><pre>$catalogue</pre></a></li>
+<li class="property public "><a href="#property_categories_title" title="$categories_title() :: "><span class="description"></span><pre>$categories_title</pre></a></li>
+<li class="property public "><a href="#property_check_validation" title="$check_validation() :: "><span class="description"></span><pre>$check_validation</pre></a></li>
+<li class="property public "><a href="#property_code_require" title="$code_require() :: "><span class="description"></span><pre>$code_require</pre></a></li>
+<li class="property public "><a href="#property_content_type" title="$content_type() :: "><span class="description"></span><pre>$content_type</pre></a></li>
+<li class="property public "><a href="#property_default_type" title="$default_type() :: "><span class="description"></span><pre>$default_type</pre></a></li>
+<li class="property public "><a href="#property_do_next_description" title="$do_next_description() :: "><span class="description"></span><pre>$do_next_description</pre></a></li>
+<li class="property public "><a href="#property_do_next_editing_categories" title="$do_next_editing_categories() :: "><span class="description"></span><pre>$do_next_editing_categories</pre></a></li>
+<li class="property public "><a href="#property_do_preview" title="$do_preview() :: "><span class="description"></span><pre>$do_preview</pre></a></li>
+<li class="property public "><a href="#property_doing" title="$doing() :: "><span class="description"></span><pre>$doing</pre></a></li>
+<li class="property public "><a href="#property_donext_category_id" title="$donext_category_id() :: "><span class="description"></span><pre>$donext_category_id</pre></a></li>
+<li class="property public "><a href="#property_donext_type" title="$donext_type() :: "><span class="description"></span><pre>$donext_type</pre></a></li>
+<li class="property public "><a href="#property_edit_keep_validation" title="$edit_keep_validation() :: "><span class="description"></span><pre>$edit_keep_validation</pre></a></li>
+<li class="property public "><a href="#property_edit_one_cat_label" title="$edit_one_cat_label() :: "><span class="description"></span><pre>$edit_one_cat_label</pre></a></li>
+<li class="property public "><a href="#property_edit_one_label" title="$edit_one_label() :: "><span class="description"></span><pre>$edit_one_label</pre></a></li>
+<li class="property public "><a href="#property_edit_submit_name" title="$edit_submit_name() :: "><span class="description"></span><pre>$edit_submit_name</pre></a></li>
+<li class="property public "><a href="#property_edit_text" title="$edit_text() :: "><span class="description"></span><pre>$edit_text</pre></a></li>
+<li class="property public "><a href="#property_edit_this_cat_label" title="$edit_this_cat_label() :: "><span class="description"></span><pre>$edit_this_cat_label</pre></a></li>
+<li class="property public "><a href="#property_edit_this_label" title="$edit_this_label() :: "><span class="description"></span><pre>$edit_this_label</pre></a></li>
+<li class="property public "><a href="#property_entries_title" title="$entries_title() :: "><span class="description"></span><pre>$entries_title</pre></a></li>
+<li class="property public "><a href="#property_extra_donext_categories" title="$extra_donext_categories() :: "><span class="description"></span><pre>$extra_donext_categories</pre></a></li>
+<li class="property public "><a href="#property_extra_donext_entries" title="$extra_donext_entries() :: "><span class="description"></span><pre>$extra_donext_entries</pre></a></li>
+<li class="property public "><a href="#property_extra_donext_whatever" title="$extra_donext_whatever() :: "><span class="description"></span><pre>$extra_donext_whatever</pre></a></li>
+<li class="property public "><a href="#property_extra_donext_whatever_title" title="$extra_donext_whatever_title() :: "><span class="description"></span><pre>$extra_donext_whatever_title</pre></a></li>
+<li class="property public "><a href="#property_form_id" title="$form_id() :: "><span class="description"></span><pre>$form_id</pre></a></li>
+<li class="property public "><a href="#property_javascript" title="$javascript() :: "><span class="description"></span><pre>$javascript</pre></a></li>
+<li class="property public "><a href="#property_javascript_for_choose" title="$javascript_for_choose() :: "><span class="description"></span><pre>$javascript_for_choose</pre></a></li>
+<li class="property public "><a href="#property_javascript_require" title="$javascript_require() :: "><span class="description"></span><pre>$javascript_require</pre></a></li>
+<li class="property public "><a href="#property_lang_type" title="$lang_type() :: "><span class="description"></span><pre>$lang_type</pre></a></li>
+<li class="property public "><a href="#property_menu_label" title="$menu_label() :: "><span class="description"></span><pre>$menu_label</pre></a></li>
+<li class="property public "><a href="#property_module_type" title="$module_type() :: "><span class="description"></span><pre>$module_type</pre></a></li>
+<li class="property public "><a href="#property_new_id" title="$new_id() :: "><span class="description"></span><pre>$new_id</pre></a></li>
+<li class="property public "><a href="#property_no_blank_ids" title="$no_blank_ids() :: "><span class="description"></span><pre>$no_blank_ids</pre></a></li>
+<li class="property public "><a href="#property_non_integer_id" title="$non_integer_id() :: "><span class="description"></span><pre>$non_integer_id</pre></a></li>
+<li class="property public "><a href="#property_orderer" title="$orderer() :: "><span class="description"></span><pre>$orderer</pre></a></li>
+<li class="property public "><a href="#property_orderer_is_multi_lang" title="$orderer_is_multi_lang() :: "><span class="description"></span><pre>$orderer_is_multi_lang</pre></a></li>
+<li class="property public "><a href="#property_organisation" title="$organisation() :: "><span class="description"></span><pre>$organisation</pre></a></li>
+<li class="property public "><a href="#property_output_of_action_is_confirmation" title="$output_of_action_is_confirmation() :: "><span class="description"></span><pre>$output_of_action_is_confirmation</pre></a></li>
+<li class="property public "><a href="#property_permission_module" title="$permission_module() :: "><span class="description"></span><pre>$permission_module</pre></a></li>
+<li class="property public "><a href="#property_permissions_cat_name" title="$permissions_cat_name() :: "><span class="description"></span><pre>$permissions_cat_name</pre></a></li>
+<li class="property public "><a href="#property_permissions_cat_name_b" title="$permissions_cat_name_b() :: "><span class="description"></span><pre>$permissions_cat_name_b</pre></a></li>
+<li class="property public "><a href="#property_permissions_cat_require" title="$permissions_cat_require() :: "><span class="description"></span><pre>$permissions_cat_require</pre></a></li>
+<li class="property public "><a href="#property_permissions_cat_require_b" title="$permissions_cat_require_b() :: "><span class="description"></span><pre>$permissions_cat_require_b</pre></a></li>
+<li class="property public "><a href="#property_permissions_require" title="$permissions_require() :: "><span class="description"></span><pre>$permissions_require</pre></a></li>
+<li class="property public "><a href="#property_possibly_some_kind_of_upload" title="$possibly_some_kind_of_upload() :: "><span class="description"></span><pre>$possibly_some_kind_of_upload</pre></a></li>
+<li class="property public "><a href="#property_posting_field_required" title="$posting_field_required() :: "><span class="description"></span><pre>$posting_field_required</pre></a></li>
+<li class="property public "><a href="#property_posting_form_tabindex" title="$posting_form_tabindex() :: "><span class="description"></span><pre>$posting_form_tabindex</pre></a></li>
+<li class="property public "><a href="#property_posting_form_text" title="$posting_form_text() :: "><span class="description"></span><pre>$posting_form_text</pre></a></li>
+<li class="property public "><a href="#property_posting_form_text_parsed" title="$posting_form_text_parsed() :: "><span class="description"></span><pre>$posting_form_text_parsed</pre></a></li>
+<li class="property public "><a href="#property_posting_form_title" title="$posting_form_title() :: "><span class="description"></span><pre>$posting_form_title</pre></a></li>
+<li class="property public "><a href="#property_privilege_page" title="$privilege_page() :: "><span class="description"></span><pre>$privilege_page</pre></a></li>
+<li class="property public "><a href="#property_privilege_page_name" title="$privilege_page_name() :: "><span class="description"></span><pre>$privilege_page_name</pre></a></li>
+<li class="property public "><a href="#property_protect_first" title="$protect_first() :: "><span class="description"></span><pre>$protect_first</pre></a></li>
+<li class="property public "><a href="#property_redirect_type" title="$redirect_type() :: "><span class="description"></span><pre>$redirect_type</pre></a></li>
+<li class="property public "><a href="#property_second_stage_preview" title="$second_stage_preview() :: "><span class="description"></span><pre>$second_stage_preview</pre></a></li>
+<li class="property public "><a href="#property_select_name" title="$select_name() :: "><span class="description"></span><pre>$select_name</pre></a></li>
+<li class="property public "><a href="#property_select_name_description" title="$select_name_description() :: "><span class="description"></span><pre>$select_name_description</pre></a></li>
+<li class="property public "><a href="#property_send_validation_request" title="$send_validation_request() :: "><span class="description"></span><pre>$send_validation_request</pre></a></li>
+<li class="property public "><a href="#property_skip_webstandards" title="$skip_webstandards() :: "><span class="description"></span><pre>$skip_webstandards</pre></a></li>
+<li class="property public "><a href="#property_special_edit_frontend" title="$special_edit_frontend() :: "><span class="description"></span><pre>$special_edit_frontend</pre></a></li>
+<li class="property public "><a href="#property_success_message_str" title="$success_message_str() :: "><span class="description"></span><pre>$success_message_str</pre></a></li>
+<li class="property public "><a href="#property_supports_mass_delete" title="$supports_mass_delete() :: "><span class="description"></span><pre>$supports_mass_delete</pre></a></li>
+<li class="property public "><a href="#property_table" title="$table() :: "><span class="description"></span><pre>$table</pre></a></li>
+<li class="property public "><a href="#property_table_prefix" title="$table_prefix() :: "><span class="description"></span><pre>$table_prefix</pre></a></li>
+<li class="property public "><a href="#property_title" title="$title() :: "><span class="description"></span><pre>$title</pre></a></li>
+<li class="property public "><a href="#property_title_is_multi_lang" title="$title_is_multi_lang() :: "><span class="description"></span><pre>$title_is_multi_lang</pre></a></li>
+<li class="property public "><a href="#property_type_code" title="$type_code() :: "><span class="description"></span><pre>$type_code</pre></a></li>
+<li class="property public "><a href="#property_upload" title="$upload() :: "><span class="description"></span><pre>$upload</pre></a></li>
+<li class="property public "><a href="#property_user_facing" title="$user_facing() :: "><span class="description"></span><pre>$user_facing</pre></a></li>
+<li class="property public "><a href="#property_view_entry_point" title="$view_entry_point() :: "><span class="description"></span><pre>$view_entry_point</pre></a></li>
+<li class="property public "><a href="#property_view_label" title="$view_label() :: "><span class="description"></span><pre>$view_label</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Standard_crud_module"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Standard_crud_module.html">Standard_crud_module</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">CRUD module (Create/Update/Delete), for operations on content types.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core.html">core</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___edit"></a><div class="element clickable method public method___edit " data-toggle="collapse" data-target=".method___edit .collapse" title="public">
+<h2>Standard CRUD-module UI/actualiser to edit an entry.</h2>
+<pre>__edit() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method__add"></a><div class="element clickable method public method__add " data-toggle="collapse" data-target=".method__add .collapse" title="public">
+<h2>Standard CRUD-module UI/actualiser to add an entry.</h2>
+<pre>_add() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method__edit"></a><div class="element clickable method public method__edit " data-toggle="collapse" data-target=".method__edit .collapse" title="public">
+<h2>Standard CRUD-module UI to edit an entry.</h2>
+<pre>_edit() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method_add"></a><div class="element clickable method public method_add " data-toggle="collapse" data-target=".method_add .collapse" title="public">
+<h2>Standard CRUD-module UI to add an entry.</h2>
+<pre>add() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method_choose_catalogue"></a><div class="element clickable method public method_choose_catalogue " data-toggle="collapse" data-target=".method_choose_catalogue .collapse" title="public">
+<h2>Get some XHTML for a form to choose a catalogue out of all the available ones.</h2>
+<pre>choose_catalogue(\Tempcode $title) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The get_screen_title converted title for this page</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>The Tempcode for the catalogue chooser (null: already chosen)</div>
+</div></div>
+</div>
+<a id="method_choose_feedback_fields_statistically"></a><div class="element clickable method public method_choose_feedback_fields_statistically " data-toggle="collapse" data-target=".method_choose_feedback_fields_statistically .collapse" title="public">
+<h2>Statistically work out defaults for feedback fields, if not currently set.</h2>
+<pre>choose_feedback_fields_statistically(\?BINARY $allow_rating, \?SHORT_INTEGER $allow_comments, \?BINARY $allow_trackbacks) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\?BINARY</code><p>Whether rating is allowed (null: decide statistically, based on existing choices)</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\?SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\?BINARY</code><p>Whether trackbacks are allowed (null: decide statistically, based on existing choices)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Array of all input parameters, converted</div>
+</div></div>
+</div>
+<a id="method_create_selection_list_entries"></a><div class="element clickable method public method_create_selection_list_entries " data-toggle="collapse" data-target=".method_create_selection_list_entries .collapse" title="public">
+<h2>Standard CRUD-module entry list fetcher.</h2>
+<pre>create_selection_list_entries() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The selection list</div>
+</div></div>
+</div>
+<a id="method_do_next_manager"></a><div class="element clickable method public method_do_next_manager " data-toggle="collapse" data-target=".method_do_next_manager .collapse" title="public">
+<h2>The do-next manager for after content management.</h2>
+<pre>do_next_manager(\Tempcode $title, \Tempcode $description, \?ID_TEXT $id) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The title (output of get_screen_title)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\Tempcode</code><p>Some description to show, saying what happened</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?ID_TEXT</code><p>The ID of whatever we are working with (null: deleted)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method_edit"></a><div class="element clickable method public method_edit " data-toggle="collapse" data-target=".method_edit .collapse" title="public">
+<h2>Standard CRUD-module UI to choose an entry to edit.</h2>
+<pre>edit() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method_get_entry_points"></a><div class="element clickable method public method_get_entry_points " data-toggle="collapse" data-target=".method_get_entry_points .collapse" title="public">
+<h2>Find entry-points available within this module.</h2>
+<pre>get_entry_points(boolean $check_perms<code> = true</code>, \?MEMBER $member_id<code> = null</code>, boolean $support_crosslinks<code> = true</code>, boolean $be_deferential<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$check_perms</h4>
+<code>boolean</code><p>Whether to check permissions.</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>The member to check permissions as (null: current user).</p></div>
+<div class="subelement argument">
+<h4>$support_crosslinks</h4>
+<code>boolean</code><p>Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).</p></div>
+<div class="subelement argument">
+<h4>$be_deferential</h4>
+<code>boolean</code><p>Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).</div>
+</div></div>
+</div>
+<a id="method_get_entry_rows"></a><div class="element clickable method public method_get_entry_rows " data-toggle="collapse" data-target=".method_get_entry_rows .collapse" title="public">
+<h2>Standard CRUD-module entry function to get rows for selection from.</h2>
+<pre>get_entry_rows(boolean $recache<code> = false</code>, \?ID_TEXT $orderer<code> = null</code>, \?array $where<code> = null</code>, boolean $force_site_db<code> = false</code>, string $join<code> = ''</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$recache</h4>
+<code>boolean</code><p>Whether to force a recache</p></div>
+<div class="subelement argument">
+<h4>$orderer</h4>
+<code>\?ID_TEXT</code><p>Order to use (null: automatic)</p></div>
+<div class="subelement argument">
+<h4>$where</h4>
+<code>\?array</code><p>Extra where clauses (null: none)</p></div>
+<div class="subelement argument">
+<h4>$force_site_db</h4>
+<code>boolean</code><p>Whether to always access using the site database</p></div>
+<div class="subelement argument">
+<h4>$join</h4>
+<code>string</code><p>Extra join clause for our query (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: Rows for selection from, Total results</div>
+</div></div>
+</div>
+<a id="method_get_permission_fields"></a><div class="element clickable method public method_get_permission_fields " data-toggle="collapse" data-target=".method_get_permission_fields .collapse" title="public">
+<h2>Standard CRUD-module permission chooser.</h2>
+<pre>get_permission_fields(\?ID_TEXT $category_id, \?Tempcode $help<code> = null</code>, boolean $new_category<code> = false</code>, \?Tempcode $pinterface_view<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?ID_TEXT</code><p>The category ID the permissions are being chosen for (null: new category)</p></div>
+<div class="subelement argument">
+<h4>$help</h4>
+<code>\?Tempcode</code><p>Extra help to show in interface (null: none)</p></div>
+<div class="subelement argument">
+<h4>$new_category</h4>
+<code>boolean</code><p>Whether this is a new category (don't load permissions, default to on)</p></div>
+<div class="subelement argument">
+<h4>$pinterface_view</h4>
+<code>\?Tempcode</code><p>Label for view permissions (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The permission fields</div>
+</div></div>
+</div>
+<a id="method_handle_confirmations"></a><div class="element clickable method public method_handle_confirmations " data-toggle="collapse" data-target=".method_handle_confirmations .collapse" title="public">
+<h2>If a confirmation is needed, and not been given, ask for one.</h2>
+<pre>handle_confirmations(\Tempcode $title) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The page title for what's being done</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>The confirmation UI (null: all is clear - no confirmation needed)</div>
+</div></div>
+</div>
+<a id="method_has_tied_catalogue"></a><div class="element clickable method public method_has_tied_catalogue " data-toggle="collapse" data-target=".method_has_tied_catalogue .collapse" title="public">
+<h2>Find whether this content type has a tied catalogue.</h2>
+<pre>has_tied_catalogue() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it has</div>
+</div></div>
+</div>
+<a id="method_info"></a><div class="element clickable method public method_info " data-toggle="collapse" data-target=".method_info .collapse" title="public">
+<h2>Find details of the module.</h2>
+<pre>info() : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Map of module info (null: module is disabled).</div>
+</div></div>
+</div>
+<a id="method_mass_delete"></a><div class="element clickable method public method_mass_delete " data-toggle="collapse" data-target=".method_mass_delete .collapse" title="public">
+<h2>Mass delete some entries/categories.</h2>
+<pre>mass_delete(boolean $top_level<code> = true</code>) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$top_level</h4>
+<code>boolean</code><p>Whether this is a top level mass delete op (i.e. not a recursion)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>The UI (null: not top level)</div>
+</div></div>
+</div>
+<a id="method_pre_run"></a><div class="element clickable method public method_pre_run " data-toggle="collapse" data-target=".method_pre_run .collapse" title="public">
+<h2>Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output.</h2>
+<pre>pre_run(boolean $top_level<code> = true</code>, \?ID_TEXT $type<code> = null</code>) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$top_level</h4>
+<code>boolean</code><p>Whether this is running at the top level, prior to having sub-objects called.</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\?ID_TEXT</code><p>The screen type to consider for meta-data purposes (null: read from environment).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>Tempcode indicating some kind of exceptional output (null: none).</div>
+</div></div>
+</div>
+<a id="method_preview_intercept"></a><div class="element clickable method public method_preview_intercept " data-toggle="collapse" data-target=".method_preview_intercept .collapse" title="public">
+<h2>Standard CRUD-module UI for a separate preview.</h2>
+<pre>preview_intercept(\Tempcode $title) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\Tempcode</code><p>The page title</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The UI</div>
+</div></div>
+</div>
+<a id="method_run"></a><div class="element clickable method public method_run " data-toggle="collapse" data-target=".method_run .collapse" title="public">
+<h2>Execute the module.</h2>
+<pre>run() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The result of execution.</div>
+</div></div>
+</div>
+<a id="method_set_permissions"></a><div class="element clickable method public method_set_permissions " data-toggle="collapse" data-target=".method_set_permissions .collapse" title="public">
+<h2>Set permissions of the news category from POST parameters.</h2>
+<pre>set_permissions(\ID_TEXT $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The category to set permissions for</p></div>
+</div></div>
+</div>
+<a id="method_get_screen_type_for"></a><div class="element clickable method private method_get_screen_type_for " data-toggle="collapse" data-target=".method_get_screen_type_for .collapse" title="private">
+<h2>Work out a screen type code.</h2>
+<pre>get_screen_type_for(string $type_code, string $stub) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type_code</h4>
+<code>string</code><p>General-purpose screen type code (e.g. 'add')</p></div>
+<div class="subelement argument">
+<h4>$stub</h4>
+<code>string</code><p>Type code for current flow (e.g. '' or 'category')</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Complete screen type code</div>
+</div></div>
+</div>
+<h3>
+<i title="Properties" class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_add_one_cat_label"> </a><div class="element clickable property public property_add_one_cat_label" data-toggle="collapse" data-target=".property_add_one_cat_label .collapse" title="public">
+<h2>$add_one_cat_label</h2>
+<pre>$add_one_cat_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_add_one_label"> </a><div class="element clickable property public property_add_one_label" data-toggle="collapse" data-target=".property_add_one_label .collapse" title="public">
+<h2>$add_one_label</h2>
+<pre>$add_one_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_add_submit_name"> </a><div class="element clickable property public property_add_submit_name" data-toggle="collapse" data-target=".property_add_submit_name .collapse" title="public">
+<h2>$add_submit_name</h2>
+<pre>$add_submit_name </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_add_text"> </a><div class="element clickable property public property_add_text" data-toggle="collapse" data-target=".property_add_text .collapse" title="public">
+<h2>$add_text</h2>
+<pre>$add_text </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>''</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_alt_crud_module"> </a><div class="element clickable property public property_alt_crud_module" data-toggle="collapse" data-target=".property_alt_crud_module .collapse" title="public">
+<h2>$alt_crud_module</h2>
+<pre>$alt_crud_module </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_appended_actions_already"> </a><div class="element clickable property public property_appended_actions_already" data-toggle="collapse" data-target=".property_appended_actions_already .collapse" title="public">
+<h2>$appended_actions_already</h2>
+<pre>$appended_actions_already </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_archive_entry_point"> </a><div class="element clickable property public property_archive_entry_point" data-toggle="collapse" data-target=".property_archive_entry_point .collapse" title="public">
+<h2>$archive_entry_point</h2>
+<pre>$archive_entry_point </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_archive_label"> </a><div class="element clickable property public property_archive_label" data-toggle="collapse" data-target=".property_archive_label .collapse" title="public">
+<h2>$archive_label</h2>
+<pre>$archive_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_array_key"> </a><div class="element clickable property public property_array_key" data-toggle="collapse" data-target=".property_array_key .collapse" title="public">
+<h2>$array_key</h2>
+<pre>$array_key </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>'id'</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_author"> </a><div class="element clickable property public property_author" data-toggle="collapse" data-target=".property_author .collapse" title="public">
+<h2>$author</h2>
+<pre>$author </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>'Chris Graham'</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_cached_entry_rows"> </a><div class="element clickable property public property_cached_entry_rows" data-toggle="collapse" data-target=".property_cached_entry_rows .collapse" title="public">
+<h2>$cached_entry_rows</h2>
+<pre>$cached_entry_rows </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_cached_max_rows"> </a><div class="element clickable property public property_cached_max_rows" data-toggle="collapse" data-target=".property_cached_max_rows .collapse" title="public">
+<h2>$cached_max_rows</h2>
+<pre>$cached_max_rows </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_care_please"> </a><div class="element clickable property public property_care_please" data-toggle="collapse" data-target=".property_care_please .collapse" title="public">
+<h2>$care_please</h2>
+<pre>$care_please </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_cat_crud_module"> </a><div class="element clickable property public property_cat_crud_module" data-toggle="collapse" data-target=".property_cat_crud_module .collapse" title="public">
+<h2>$cat_crud_module</h2>
+<pre>$cat_crud_module </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_catalogue"> </a><div class="element clickable property public property_catalogue" data-toggle="collapse" data-target=".property_catalogue .collapse" title="public">
+<h2>$catalogue</h2>
+<pre>$catalogue </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_categories_title"> </a><div class="element clickable property public property_categories_title" data-toggle="collapse" data-target=".property_categories_title .collapse" title="public">
+<h2>$categories_title</h2>
+<pre>$categories_title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_check_validation"> </a><div class="element clickable property public property_check_validation" data-toggle="collapse" data-target=".property_check_validation .collapse" title="public">
+<h2>$check_validation</h2>
+<pre>$check_validation </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_code_require"> </a><div class="element clickable property public property_code_require" data-toggle="collapse" data-target=".property_code_require .collapse" title="public">
+<h2>$code_require</h2>
+<pre>$code_require </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_content_type"> </a><div class="element clickable property public property_content_type" data-toggle="collapse" data-target=".property_content_type .collapse" title="public">
+<h2>$content_type</h2>
+<pre>$content_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_default_type"> </a><div class="element clickable property public property_default_type" data-toggle="collapse" data-target=".property_default_type .collapse" title="public">
+<h2>$default_type</h2>
+<pre>$default_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_do_next_description"> </a><div class="element clickable property public property_do_next_description" data-toggle="collapse" data-target=".property_do_next_description .collapse" title="public">
+<h2>$do_next_description</h2>
+<pre>$do_next_description </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_do_next_editing_categories"> </a><div class="element clickable property public property_do_next_editing_categories" data-toggle="collapse" data-target=".property_do_next_editing_categories .collapse" title="public">
+<h2>$do_next_editing_categories</h2>
+<pre>$do_next_editing_categories </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_do_preview"> </a><div class="element clickable property public property_do_preview" data-toggle="collapse" data-target=".property_do_preview .collapse" title="public">
+<h2>$do_preview</h2>
+<pre>$do_preview </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_doing"> </a><div class="element clickable property public property_doing" data-toggle="collapse" data-target=".property_doing .collapse" title="public">
+<h2>$doing</h2>
+<pre>$doing </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_donext_category_id"> </a><div class="element clickable property public property_donext_category_id" data-toggle="collapse" data-target=".property_donext_category_id .collapse" title="public">
+<h2>$donext_category_id</h2>
+<pre>$donext_category_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_donext_type"> </a><div class="element clickable property public property_donext_type" data-toggle="collapse" data-target=".property_donext_type .collapse" title="public">
+<h2>$donext_type</h2>
+<pre>$donext_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_keep_validation"> </a><div class="element clickable property public property_edit_keep_validation" data-toggle="collapse" data-target=".property_edit_keep_validation .collapse" title="public">
+<h2>$edit_keep_validation</h2>
+<pre>$edit_keep_validation </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_one_cat_label"> </a><div class="element clickable property public property_edit_one_cat_label" data-toggle="collapse" data-target=".property_edit_one_cat_label .collapse" title="public">
+<h2>$edit_one_cat_label</h2>
+<pre>$edit_one_cat_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_one_label"> </a><div class="element clickable property public property_edit_one_label" data-toggle="collapse" data-target=".property_edit_one_label .collapse" title="public">
+<h2>$edit_one_label</h2>
+<pre>$edit_one_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_submit_name"> </a><div class="element clickable property public property_edit_submit_name" data-toggle="collapse" data-target=".property_edit_submit_name .collapse" title="public">
+<h2>$edit_submit_name</h2>
+<pre>$edit_submit_name </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_text"> </a><div class="element clickable property public property_edit_text" data-toggle="collapse" data-target=".property_edit_text .collapse" title="public">
+<h2>$edit_text</h2>
+<pre>$edit_text </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>''</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_this_cat_label"> </a><div class="element clickable property public property_edit_this_cat_label" data-toggle="collapse" data-target=".property_edit_this_cat_label .collapse" title="public">
+<h2>$edit_this_cat_label</h2>
+<pre>$edit_this_cat_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_edit_this_label"> </a><div class="element clickable property public property_edit_this_label" data-toggle="collapse" data-target=".property_edit_this_label .collapse" title="public">
+<h2>$edit_this_label</h2>
+<pre>$edit_this_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_entries_title"> </a><div class="element clickable property public property_entries_title" data-toggle="collapse" data-target=".property_entries_title .collapse" title="public">
+<h2>$entries_title</h2>
+<pre>$entries_title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_extra_donext_categories"> </a><div class="element clickable property public property_extra_donext_categories" data-toggle="collapse" data-target=".property_extra_donext_categories .collapse" title="public">
+<h2>$extra_donext_categories</h2>
+<pre>$extra_donext_categories </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_extra_donext_entries"> </a><div class="element clickable property public property_extra_donext_entries" data-toggle="collapse" data-target=".property_extra_donext_entries .collapse" title="public">
+<h2>$extra_donext_entries</h2>
+<pre>$extra_donext_entries </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_extra_donext_whatever"> </a><div class="element clickable property public property_extra_donext_whatever" data-toggle="collapse" data-target=".property_extra_donext_whatever .collapse" title="public">
+<h2>$extra_donext_whatever</h2>
+<pre>$extra_donext_whatever </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_extra_donext_whatever_title"> </a><div class="element clickable property public property_extra_donext_whatever_title" data-toggle="collapse" data-target=".property_extra_donext_whatever_title .collapse" title="public">
+<h2>$extra_donext_whatever_title</h2>
+<pre>$extra_donext_whatever_title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_form_id"> </a><div class="element clickable property public property_form_id" data-toggle="collapse" data-target=".property_form_id .collapse" title="public">
+<h2>$form_id</h2>
+<pre>$form_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>'selection_table'</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_javascript"> </a><div class="element clickable property public property_javascript" data-toggle="collapse" data-target=".property_javascript .collapse" title="public">
+<h2>$javascript</h2>
+<pre>$javascript </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_javascript_for_choose"> </a><div class="element clickable property public property_javascript_for_choose" data-toggle="collapse" data-target=".property_javascript_for_choose .collapse" title="public">
+<h2>$javascript_for_choose</h2>
+<pre>$javascript_for_choose </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_javascript_require"> </a><div class="element clickable property public property_javascript_require" data-toggle="collapse" data-target=".property_javascript_require .collapse" title="public">
+<h2>$javascript_require</h2>
+<pre>$javascript_require </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_lang_type"> </a><div class="element clickable property public property_lang_type" data-toggle="collapse" data-target=".property_lang_type .collapse" title="public">
+<h2>$lang_type</h2>
+<pre>$lang_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_menu_label"> </a><div class="element clickable property public property_menu_label" data-toggle="collapse" data-target=".property_menu_label .collapse" title="public">
+<h2>$menu_label</h2>
+<pre>$menu_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_module_type"> </a><div class="element clickable property public property_module_type" data-toggle="collapse" data-target=".property_module_type .collapse" title="public">
+<h2>$module_type</h2>
+<pre>$module_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_new_id"> </a><div class="element clickable property public property_new_id" data-toggle="collapse" data-target=".property_new_id .collapse" title="public">
+<h2>$new_id</h2>
+<pre>$new_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_no_blank_ids"> </a><div class="element clickable property public property_no_blank_ids" data-toggle="collapse" data-target=".property_no_blank_ids .collapse" title="public">
+<h2>$no_blank_ids</h2>
+<pre>$no_blank_ids </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_non_integer_id"> </a><div class="element clickable property public property_non_integer_id" data-toggle="collapse" data-target=".property_non_integer_id .collapse" title="public">
+<h2>$non_integer_id</h2>
+<pre>$non_integer_id </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_orderer"> </a><div class="element clickable property public property_orderer" data-toggle="collapse" data-target=".property_orderer .collapse" title="public">
+<h2>$orderer</h2>
+<pre>$orderer </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_orderer_is_multi_lang"> </a><div class="element clickable property public property_orderer_is_multi_lang" data-toggle="collapse" data-target=".property_orderer_is_multi_lang .collapse" title="public">
+<h2>$orderer_is_multi_lang</h2>
+<pre>$orderer_is_multi_lang </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_organisation"> </a><div class="element clickable property public property_organisation" data-toggle="collapse" data-target=".property_organisation .collapse" title="public">
+<h2>$organisation</h2>
+<pre>$organisation </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>'ocProducts'</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_output_of_action_is_confirmation"> </a><div class="element clickable property public property_output_of_action_is_confirmation" data-toggle="collapse" data-target=".property_output_of_action_is_confirmation .collapse" title="public">
+<h2>$output_of_action_is_confirmation</h2>
+<pre>$output_of_action_is_confirmation </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permission_module"> </a><div class="element clickable property public property_permission_module" data-toggle="collapse" data-target=".property_permission_module .collapse" title="public">
+<h2>$permission_module</h2>
+<pre>$permission_module </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permissions_cat_name"> </a><div class="element clickable property public property_permissions_cat_name" data-toggle="collapse" data-target=".property_permissions_cat_name .collapse" title="public">
+<h2>$permissions_cat_name</h2>
+<pre>$permissions_cat_name </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permissions_cat_name_b"> </a><div class="element clickable property public property_permissions_cat_name_b" data-toggle="collapse" data-target=".property_permissions_cat_name_b .collapse" title="public">
+<h2>$permissions_cat_name_b</h2>
+<pre>$permissions_cat_name_b </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permissions_cat_require"> </a><div class="element clickable property public property_permissions_cat_require" data-toggle="collapse" data-target=".property_permissions_cat_require .collapse" title="public">
+<h2>$permissions_cat_require</h2>
+<pre>$permissions_cat_require </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permissions_cat_require_b"> </a><div class="element clickable property public property_permissions_cat_require_b" data-toggle="collapse" data-target=".property_permissions_cat_require_b .collapse" title="public">
+<h2>$permissions_cat_require_b</h2>
+<pre>$permissions_cat_require_b </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_permissions_require"> </a><div class="element clickable property public property_permissions_require" data-toggle="collapse" data-target=".property_permissions_require .collapse" title="public">
+<h2>$permissions_require</h2>
+<pre>$permissions_require </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_possibly_some_kind_of_upload"> </a><div class="element clickable property public property_possibly_some_kind_of_upload" data-toggle="collapse" data-target=".property_possibly_some_kind_of_upload .collapse" title="public">
+<h2>$possibly_some_kind_of_upload</h2>
+<pre>$possibly_some_kind_of_upload </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_posting_field_required"> </a><div class="element clickable property public property_posting_field_required" data-toggle="collapse" data-target=".property_posting_field_required .collapse" title="public">
+<h2>$posting_field_required</h2>
+<pre>$posting_field_required </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_posting_form_tabindex"> </a><div class="element clickable property public property_posting_form_tabindex" data-toggle="collapse" data-target=".property_posting_form_tabindex .collapse" title="public">
+<h2>$posting_form_tabindex</h2>
+<pre>$posting_form_tabindex </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_posting_form_text"> </a><div class="element clickable property public property_posting_form_text" data-toggle="collapse" data-target=".property_posting_form_text .collapse" title="public">
+<h2>$posting_form_text</h2>
+<pre>$posting_form_text </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>''</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_posting_form_text_parsed"> </a><div class="element clickable property public property_posting_form_text_parsed" data-toggle="collapse" data-target=".property_posting_form_text_parsed .collapse" title="public">
+<h2>$posting_form_text_parsed</h2>
+<pre>$posting_form_text_parsed </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_posting_form_title"> </a><div class="element clickable property public property_posting_form_title" data-toggle="collapse" data-target=".property_posting_form_title .collapse" title="public">
+<h2>$posting_form_title</h2>
+<pre>$posting_form_title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_privilege_page"> </a><div class="element clickable property public property_privilege_page" data-toggle="collapse" data-target=".property_privilege_page .collapse" title="public">
+<h2>$privilege_page</h2>
+<pre>$privilege_page </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_privilege_page_name"> </a><div class="element clickable property public property_privilege_page_name" data-toggle="collapse" data-target=".property_privilege_page_name .collapse" title="public">
+<h2>$privilege_page_name</h2>
+<pre>$privilege_page_name </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_protect_first"> </a><div class="element clickable property public property_protect_first" data-toggle="collapse" data-target=".property_protect_first .collapse" title="public">
+<h2>$protect_first</h2>
+<pre>$protect_first </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>0</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_redirect_type"> </a><div class="element clickable property public property_redirect_type" data-toggle="collapse" data-target=".property_redirect_type .collapse" title="public">
+<h2>$redirect_type</h2>
+<pre>$redirect_type </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_second_stage_preview"> </a><div class="element clickable property public property_second_stage_preview" data-toggle="collapse" data-target=".property_second_stage_preview .collapse" title="public">
+<h2>$second_stage_preview</h2>
+<pre>$second_stage_preview </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_select_name"> </a><div class="element clickable property public property_select_name" data-toggle="collapse" data-target=".property_select_name .collapse" title="public">
+<h2>$select_name</h2>
+<pre>$select_name </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_select_name_description"> </a><div class="element clickable property public property_select_name_description" data-toggle="collapse" data-target=".property_select_name_description .collapse" title="public">
+<h2>$select_name_description</h2>
+<pre>$select_name_description </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_send_validation_request"> </a><div class="element clickable property public property_send_validation_request" data-toggle="collapse" data-target=".property_send_validation_request .collapse" title="public">
+<h2>$send_validation_request</h2>
+<pre>$send_validation_request </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_skip_webstandards"> </a><div class="element clickable property public property_skip_webstandards" data-toggle="collapse" data-target=".property_skip_webstandards .collapse" title="public">
+<h2>$skip_webstandards</h2>
+<pre>$skip_webstandards </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_special_edit_frontend"> </a><div class="element clickable property public property_special_edit_frontend" data-toggle="collapse" data-target=".property_special_edit_frontend .collapse" title="public">
+<h2>$special_edit_frontend</h2>
+<pre>$special_edit_frontend </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_success_message_str"> </a><div class="element clickable property public property_success_message_str" data-toggle="collapse" data-target=".property_success_message_str .collapse" title="public">
+<h2>$success_message_str</h2>
+<pre>$success_message_str </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_supports_mass_delete"> </a><div class="element clickable property public property_supports_mass_delete" data-toggle="collapse" data-target=".property_supports_mass_delete .collapse" title="public">
+<h2>$supports_mass_delete</h2>
+<pre>$supports_mass_delete </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table"> </a><div class="element clickable property public property_table" data-toggle="collapse" data-target=".property_table .collapse" title="public">
+<h2>$table</h2>
+<pre>$table </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table_prefix"> </a><div class="element clickable property public property_table_prefix" data-toggle="collapse" data-target=".property_table_prefix .collapse" title="public">
+<h2>$table_prefix</h2>
+<pre>$table_prefix </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>''</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_title"> </a><div class="element clickable property public property_title" data-toggle="collapse" data-target=".property_title .collapse" title="public">
+<h2>$title</h2>
+<pre>$title </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_title_is_multi_lang"> </a><div class="element clickable property public property_title_is_multi_lang" data-toggle="collapse" data-target=".property_title_is_multi_lang .collapse" title="public">
+<h2>$title_is_multi_lang</h2>
+<pre>$title_is_multi_lang </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>true</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_type_code"> </a><div class="element clickable property public property_type_code" data-toggle="collapse" data-target=".property_type_code .collapse" title="public">
+<h2>$type_code</h2>
+<pre>$type_code </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>''</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_upload"> </a><div class="element clickable property public property_upload" data-toggle="collapse" data-target=".property_upload .collapse" title="public">
+<h2>$upload</h2>
+<pre>$upload </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_user_facing"> </a><div class="element clickable property public property_user_facing" data-toggle="collapse" data-target=".property_user_facing .collapse" title="public">
+<h2>$user_facing</h2>
+<pre>$user_facing </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>false</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_view_entry_point"> </a><div class="element clickable property public property_view_entry_point" data-toggle="collapse" data-target=".property_view_entry_point .collapse" title="public">
+<h2>$view_entry_point</h2>
+<pre>$view_entry_point </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_view_label"> </a><div class="element clickable property public property_view_label" data-toggle="collapse" data-target=".property_view_label .collapse" title="public">
+<h2>$view_label</h2>
+<pre>$view_label </pre>
+<div class="row collapse"><div class="detail-description">
+<h3>Default</h3>
+<div class="subelement argument"><code>null</code></div>
+</div></div>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:51+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/chat.html" title="chat"><i class="icon-folder-open"></i>chat</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_chatroom" title="add_chatroom() :: Add a chatroom."><span class="description">Add a chatroom.</span><pre>add_chatroom</pre></a></li>
+<li class="function  "><a href="#function_blocking_add" title="blocking_add() :: Block a member."><span class="description">Block a member.</span><pre>blocking_add</pre></a></li>
+<li class="function  "><a href="#function_blocking_remove" title="blocking_remove() :: Unblock a member."><span class="description">Unblock a member.</span><pre>blocking_remove</pre></a></li>
+<li class="function  "><a href="#function_chat_get_all_rooms" title="chat_get_all_rooms() :: Get an array of all the chatrooms."><span class="description">Get an array of all the chatrooms.</span><pre>chat_get_all_rooms</pre></a></li>
+<li class="function  "><a href="#function_chat_get_room_content" title="chat_get_room_content() :: Get a multidimensional array of the content of the specified chatroom. It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs."><span class="description">Get a multidimensional array of the content of the specified chatroom. It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.</span><pre>chat_get_room_content</pre></a></li>
+<li class="function  "><a href="#function_chat_logs_script" title="chat_logs_script() :: Pass out chat log files."><span class="description">Pass out chat log files.</span><pre>chat_logs_script</pre></a></li>
+<li class="function  "><a href="#function_chat_poller" title="chat_poller() :: Function to quickly (efficiently) check to see if there's been any chat activity."><span class="description">Function to quickly (efficiently) check to see if there's been any chat activity.</span><pre>chat_poller</pre></a></li>
+<li class="function  "><a href="#function_chat_post_message" title="chat_post_message() :: Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a Tempcode storage format."><span class="description">Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a Tempcode storage format.</span><pre>chat_post_message</pre></a></li>
+<li class="function  "><a href="#function_chat_room_prune" title="chat_room_prune() :: Prune membership of chat room."><span class="description">Prune membership of chat room.</span><pre>chat_room_prune</pre></a></li>
+<li class="function  "><a href="#function_chatroom_ban_to" title="chatroom_ban_to() :: Ban a member from a chatroom."><span class="description">Ban a member from a chatroom.</span><pre>chatroom_ban_to</pre></a></li>
+<li class="function  "><a href="#function_chatroom_unban_to" title="chatroom_unban_to() :: Unban a member from a chatroom."><span class="description">Unban a member from a chatroom.</span><pre>chatroom_unban_to</pre></a></li>
+<li class="function  "><a href="#function_chatter_active" title="chatter_active() :: Find whether a member is active in chat (i.e. not away)."><span class="description">Find whether a member is active in chat (i.e. not away).</span><pre>chatter_active</pre></a></li>
+<li class="function  "><a href="#function_check_chatroom_access" title="check_chatroom_access() :: Check whether a member has access to the chatroom."><span class="description">Check whether a member has access to the chatroom.</span><pre>check_chatroom_access</pre></a></li>
+<li class="function  "><a href="#function_delete_all_chatrooms" title="delete_all_chatrooms() :: Delete all chatrooms."><span class="description">Delete all chatrooms.</span><pre>delete_all_chatrooms</pre></a></li>
+<li class="function  "><a href="#function_delete_chat_messages" title="delete_chat_messages() :: Delete chat messages."><span class="description">Delete chat messages.</span><pre>delete_chat_messages</pre></a></li>
+<li class="function  "><a href="#function_delete_chatroom" title="delete_chatroom() :: Delete a chatroom."><span class="description">Delete a chatroom.</span><pre>delete_chatroom</pre></a></li>
+<li class="function  "><a href="#function_delete_chatroom_messages" title="delete_chatroom_messages() :: Delete all messages in a chatroom."><span class="description">Delete all messages in a chatroom.</span><pre>delete_chatroom_messages</pre></a></li>
+<li class="function  "><a href="#function_edit_chatroom" title="edit_chatroom() :: Edit a chatroom."><span class="description">Edit a chatroom.</span><pre>edit_chatroom</pre></a></li>
+<li class="function  "><a href="#function_enter_chat_lobby" title="enter_chat_lobby() :: Enter the current member to the chat lobby / Mark them available."><span class="description">Enter the current member to the chat lobby / Mark them available.</span><pre>enter_chat_lobby</pre></a></li>
+<li class="function  "><a href="#function_filter_invites_for_blocking" title="filter_invites_for_blocking() :: Filter an invite list to make sure people who are blocking don't get drawn in and hence their blocking unmasked."><span class="description">Filter an invite list to make sure people who are blocking don't get drawn in and hence their blocking unmasked.</span><pre>filter_invites_for_blocking</pre></a></li>
+<li class="function  "><a href="#function_friend_add" title="friend_add() :: Add a friend."><span class="description">Add a friend.</span><pre>friend_add</pre></a></li>
+<li class="function  "><a href="#function_friend_remove" title="friend_remove() :: Remove ('dump') a friend."><span class="description">Remove ('dump') a friend.</span><pre>friend_remove</pre></a></li>
+<li class="function  "><a href="#function_get_chat_sound_tpl" title="get_chat_sound_tpl() :: Get a template that will set up the chat sound effects as for what this member needs."><span class="description">Get a template that will set up the chat sound effects as for what this member needs.</span><pre>get_chat_sound_tpl</pre></a></li>
+<li class="function  "><a href="#function_get_chatroom_fields" title="get_chatroom_fields() :: Get form fields for adding/editing a chatroom."><span class="description">Get form fields for adding/editing a chatroom.</span><pre>get_chatroom_fields</pre></a></li>
+<li class="function  "><a href="#function_get_chatroom_id" title="get_chatroom_id() :: Get the ID of the specified chatroom, from its room name."><span class="description">Get the ID of the specified chatroom, from its room name.</span><pre>get_chatroom_id</pre></a></li>
+<li class="function  "><a href="#function_get_chatroom_name" title="get_chatroom_name() :: Get the textual name of the specified chatroom, from its room ID."><span class="description">Get the textual name of the specified chatroom, from its room ID.</span><pre>get_chatroom_name</pre></a></li>
+<li class="function  "><a href="#function_get_chatters_in_room" title="get_chatters_in_room() :: Get the people who have posted a message in the specified room within the last x minutes (defaults to five). Note that this function performs no pruning- the chat lobby will do that. It does do an activity time-range select though."><span class="description">Get the people who have posted a message in the specified room within the last x minutes (defaults to five). Note that this function performs no pruning- the chat lobby will do that. It does do an activity time-range select though.</span><pre>get_chatters_in_room</pre></a></li>
+<li class="function  "><a href="#function_get_chatters_in_room_tpl" title="get_chatters_in_room_tpl() :: Get some template code showing the number of chatters in a room."><span class="description">Get some template code showing the number of chatters in a room.</span><pre>get_chatters_in_room_tpl</pre></a></li>
+<li class="function  "><a href="#function_get_effect_set" title="get_effect_set() :: Get the list of all available chat sound effects."><span class="description">Get the list of all available chat sound effects.</span><pre>get_effect_set</pre></a></li>
+<li class="function  "><a href="#function_get_effect_settings" title="get_effect_settings() :: Get a list of template mappings for the current member, between sound effect IDs and the URLs to the mp3 fiels."><span class="description">Get a list of template mappings for the current member, between sound effect IDs and the URLs to the mp3 fiels.</span><pre>get_effect_settings</pre></a></li>
+<li class="function  "><a href="#function_get_num_chatposts" title="get_num_chatposts() :: Get the total number of chat posts in all the chatrooms."><span class="description">Get the total number of chat posts in all the chatrooms.</span><pre>get_num_chatposts</pre></a></li>
+<li class="function  "><a href="#function_get_num_chatrooms" title="get_num_chatrooms() :: Get the number of chatrooms in the database. By default, there is only one, but more may be added via the admin panel."><span class="description">Get the number of chatrooms in the database. By default, there is only one, but more may be added via the admin panel.</span><pre>get_num_chatrooms</pre></a></li>
+<li class="function  "><a href="#function_get_num_chatters" title="get_num_chatters() :: Get the number of people using the chat system at the moment. Note that this is intentionally different from 'users online' even if site wide IM is enabled- it has a 60 second timeout, so it really is active people."><span class="description">Get the number of people using the chat system at the moment. Note that this is intentionally different from 'users online' even if site wide IM is enabled- it has a 60 second timeout, so it really is active people.</span><pre>get_num_chatters</pre></a></li>
+<li class="function  "><a href="#function_handle_chatroom_pruning" title="handle_chatroom_pruning() :: Prune timed-out private chatrooms."><span class="description">Prune timed-out private chatrooms.</span><pre>handle_chatroom_pruning</pre></a></li>
+<li class="function  "><a href="#function_is_chat_moderator" title="is_chat_moderator() :: Find whether a member is a moderator of a chat room."><span class="description">Find whether a member is a moderator of a chat room.</span><pre>is_chat_moderator</pre></a></li>
+<li class="function  "><a href="#function_member_befriended" title="member_befriended() :: Find if a member is befriended by the current member."><span class="description">Find if a member is befriended by the current member.</span><pre>member_befriended</pre></a></li>
+<li class="function  "><a href="#function_messages_script" title="messages_script() :: High-level messages script handling"><span class="description">High-level messages script handling</span><pre>messages_script</pre></a></li>
+<li class="function  "><a href="#function_parse_allow_list_input" title="parse_allow_list_input() :: Takes a comma-separated list of usernames, split it up, convert all the usernames to IDs, and put it all back together again."><span class="description">Takes a comma-separated list of usernames, split it up, convert all the usernames to IDs, and put it all back together again.</span><pre>parse_allow_list_input</pre></a></li>
+<li class="function  "><a href="#function_read_in_chat_perm_fields" title="read_in_chat_perm_fields() :: Read in chat permission fields, from the complex posted data."><span class="description">Read in chat permission fields, from the complex posted data.</span><pre>read_in_chat_perm_fields</pre></a></li>
+<li class="function  "><a href="#function_render_chat_box" title="render_chat_box() :: Get Tempcode for a chat room 'feature box' for the given row"><span class="description">Get Tempcode for a chat room 'feature box' for the given row</span><pre>render_chat_box</pre></a></li>
+<li class="function  "><a href="#function_shoutbox_script" title="shoutbox_script() :: Outputs the shoutbox iframe."><span class="description">Outputs the shoutbox iframe.</span><pre>shoutbox_script</pre></a></li>
+<li class="function  "><a href="#function_show_im_contacts" title="show_im_contacts() :: Show IM contacts, with online/offline status and clickability to initiate IM sessions."><span class="description">Show IM contacts, with online/offline status and clickability to initiate IM sessions.</span><pre>show_im_contacts</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_CHAT_ACTIVITY_PRUNE" title="CHAT_ACTIVITY_PRUNE() :: "><span class="description">CHAT_ACTIVITY_PRUNE</span><pre>CHAT_ACTIVITY_PRUNE</pre></a></li>
+<li class="constant  "><a href="#constant_CHAT_ACTIVITY_PRUNE" title="CHAT_ACTIVITY_PRUNE() :: "><span class="description">CHAT_ACTIVITY_PRUNE</span><pre>CHAT_ACTIVITY_PRUNE</pre></a></li>
+<li class="constant  "><a href="#constant_CHAT_ACTIVITY_PRUNE" title="CHAT_ACTIVITY_PRUNE() :: "><span class="description">CHAT_ACTIVITY_PRUNE</span><pre>CHAT_ACTIVITY_PRUNE</pre></a></li>
+<li class="constant  "><a href="#constant_CHAT_BACKLOG_TIME" title="CHAT_BACKLOG_TIME() :: "><span class="description">CHAT_BACKLOG_TIME</span><pre>CHAT_BACKLOG_TIME</pre></a></li>
+<li class="constant  "><a href="#constant_CHAT_EVENT_PRUNE" title="CHAT_EVENT_PRUNE() :: "><span class="description">CHAT_EVENT_PRUNE</span><pre>CHAT_EVENT_PRUNE</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/chat.html">chat</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_chatroom"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_chatroom " data-toggle="collapse" data-target=".function_add_chatroom .collapse" title="">
+<h2>Add a chatroom.</h2>
+<pre>add_chatroom(\SHORT_TEXT $welcome, \SHORT_TEXT $room_name, \MEMBER $room_owner, \LONG_TEXT $allow2, \LONG_TEXT $allow2_groups, \LONG_TEXT $disallow2, \LONG_TEXT $disallow2_groups, \LANGUAGE_NAME $room_language, \BINARY $is_im<code> = 0</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$welcome</h4>
+<code>\SHORT_TEXT</code><p>The welcome message</p></div>
+<div class="subelement argument">
+<h4>$room_name</h4>
+<code>\SHORT_TEXT</code><p>The room name</p></div>
+<div class="subelement argument">
+<h4>$room_owner</h4>
+<code>\MEMBER</code><p>The room owner</p></div>
+<div class="subelement argument">
+<h4>$allow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$allow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may NOT access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may NOT access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$room_language</h4>
+<code>\LANGUAGE_NAME</code><p>The room language</p></div>
+<div class="subelement argument">
+<h4>$is_im</h4>
+<code>\BINARY</code><p>Whether it is an IM room</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The chat room ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_blocking_add"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_blocking_add " data-toggle="collapse" data-target=".function_blocking_add .collapse" title="">
+<h2>Block a member.</h2>
+<pre>blocking_add(\MEMBER $blocker, \MEMBER $blocked, \?TIME $time<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$blocker</h4>
+<code>\MEMBER</code><p>The member blocking</p></div>
+<div class="subelement argument">
+<h4>$blocked</h4>
+<code>\MEMBER</code><p>The member being blocked</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The logged time of the block (null: now)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_blocking_remove"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_blocking_remove " data-toggle="collapse" data-target=".function_blocking_remove .collapse" title="">
+<h2>Unblock a member.</h2>
+<pre>blocking_remove(\MEMBER $blocker, \MEMBER $blocked) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$blocker</h4>
+<code>\MEMBER</code><p>The member unblocking</p></div>
+<div class="subelement argument">
+<h4>$blocked</h4>
+<code>\MEMBER</code><p>The member being unblocked</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_get_all_rooms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_get_all_rooms " data-toggle="collapse" data-target=".function_chat_get_all_rooms .collapse" title="">
+<h2>Get an array of all the chatrooms.</h2>
+<pre>chat_get_all_rooms() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>An array of all the chatrooms</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_get_room_content"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_get_room_content " data-toggle="collapse" data-target=".function_chat_get_room_content .collapse" title="">
+<h2>Get a multidimensional array of the content of the specified chatroom. It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.</h2>
+<pre>chat_get_room_content(\AUTO_LINK $room_id, array $_rooms, \?integer $cutoff<code> = null</code>, boolean $dereference<code> = false</code>, boolean $downloading<code> = false</code>, \?integer $start<code> = null</code>, \?integer $finish<code> = null</code>, \?integer $uptoid<code> = null</code>, \?ID_TEXT $zone<code> = null</code>, \?AUTO_LINK $entering_room<code> = null</code>, boolean $return_my_messages<code> = true</code>, boolean $return_system_messages<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If you set the $dereference flag, all the messages will be dereferenced for you, and if you set the $downloading flag, the array is returned in a format appropriate for things like downloading the chat logs.
+$start and $finish are used to cutoff the number of messages returned, based on their posting date and time, and the $uptoid variable is used to make the function only return the messages newer than the ID specified.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\AUTO_LINK</code><p>The room ID (-1 for IM)</p></div>
+<div class="subelement argument">
+<h4>$_rooms</h4>
+<code>array</code><p>Rooms database rows that we'll need</p></div>
+<div class="subelement argument">
+<h4>$cutoff</h4>
+<code>\?integer</code><p>The maximum number of messages to be returned (null: no maximum)</p></div>
+<div class="subelement argument">
+<h4>$dereference</h4>
+<code>boolean</code><p>Whether to dereference the returned messages</p></div>
+<div class="subelement argument">
+<h4>$downloading</h4>
+<code>boolean</code><p>Whether to return the messages in a downloadeable format (using the templates for log downloading)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The datetime stamp to start gathering messages from (null: all)</p></div>
+<div class="subelement argument">
+<h4>$finish</h4>
+<code>\?integer</code><p>The datetime stamp to stop gathering messages at (null: current time)</p></div>
+<div class="subelement argument">
+<h4>$uptoid</h4>
+<code>\?integer</code><p>The lowest message ID to return (null: no special lowest number)</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\?ID_TEXT</code><p>The zone the chat module is in (null: find it)</p></div>
+<div class="subelement argument">
+<h4>$entering_room</h4>
+<code>\?AUTO_LINK</code><p>The language ID for the "entering room" message (null: not entering the room)</p></div>
+<div class="subelement argument">
+<h4>$return_my_messages</h4>
+<code>boolean</code><p>Return the current user's messages?</p></div>
+<div class="subelement argument">
+<h4>$return_system_messages</h4>
+<code>boolean</code><p>Return system messages</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>An array of all the messages collected according to the search criteria</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_logs_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_logs_script " data-toggle="collapse" data-target=".function_chat_logs_script .collapse" title="">
+<h2>Pass out chat log files.</h2>
+<pre>chat_logs_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_poller"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_poller " data-toggle="collapse" data-target=".function_chat_poller .collapse" title="">
+<h2>Function to quickly (efficiently) check to see if there's been any chat activity.</h2>
+<pre>chat_poller() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_post_message"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_post_message " data-toggle="collapse" data-target=".function_chat_post_message .collapse" title="">
+<h2>Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a Tempcode storage format.</h2>
+<pre>chat_post_message(\AUTO_LINK $room_id, \LONG_TEXT $message, \SHORT_TEXT $font_name, \SHORT_TEXT $text_colour, \SHORT_INTEGER $wrap_pos<code> = 60</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\AUTO_LINK</code><p>The room ID for the message to be posted in</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>\LONG_TEXT</code><p>The message body</p></div>
+<div class="subelement argument">
+<h4>$font_name</h4>
+<code>\SHORT_TEXT</code><p>The font name for the message</p></div>
+<div class="subelement argument">
+<h4>$text_colour</h4>
+<code>\SHORT_TEXT</code><p>The text colour for the message</p></div>
+<div class="subelement argument">
+<h4>$wrap_pos</h4>
+<code>\SHORT_INTEGER</code><p>The wrap position for the message</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the message was successfully posted or not</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chat_room_prune"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chat_room_prune " data-toggle="collapse" data-target=".function_chat_room_prune .collapse" title="">
+<h2>Prune membership of chat room.</h2>
+<pre>chat_room_prune(\AUTO_LINK $room_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\AUTO_LINK</code><p>Room ID (or -1 if all rooms)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chatroom_ban_to"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chatroom_ban_to " data-toggle="collapse" data-target=".function_chatroom_ban_to .collapse" title="">
+<h2>Ban a member from a chatroom.</h2>
+<pre>chatroom_ban_to(\MEMBER $member_id, \AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to ban</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The chat room ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chatroom_unban_to"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chatroom_unban_to " data-toggle="collapse" data-target=".function_chatroom_unban_to .collapse" title="">
+<h2>Unban a member from a chatroom.</h2>
+<pre>chatroom_unban_to(\MEMBER $member_id, \AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to unban</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The chat room ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_chatter_active"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_chatter_active " data-toggle="collapse" data-target=".function_chatter_active .collapse" title="">
+<h2>Find whether a member is active in chat (i.e. not away).</h2>
+<pre>chatter_active(\MEMBER $member_id, \?AUTO_LINK $room_id<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>Member ID</p></div>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\?AUTO_LINK</code><p>Room ID (null: lobby)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the member is active</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_chatroom_access"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_chatroom_access " data-toggle="collapse" data-target=".function_check_chatroom_access .collapse" title="">
+<h2>Check whether a member has access to the chatroom.</h2>
+<pre>check_chatroom_access(mixed $room, boolean $ret<code> = false</code>, \?MEMBER $member_id<code> = null</code>, boolean $must_be_explicit<code> = false</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room</h4>
+<code>mixed</code><p>The row of the chat room to check for access OR it's ID (AUTO_LINK)</p></div>
+<div class="subelement argument">
+<h4>$ret</h4>
+<code>boolean</code><p>Whether to return false if there is no access (as opposed to bombing out)</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>The member to check as (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$must_be_explicit</h4>
+<code>boolean</code><p>Whether to also ensure for $member_id having explicit access</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the current member has access to the chatroom</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_all_chatrooms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_all_chatrooms " data-toggle="collapse" data-target=".function_delete_all_chatrooms .collapse" title="">
+<h2>Delete all chatrooms.</h2>
+<pre>delete_all_chatrooms() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_chat_messages"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_chat_messages " data-toggle="collapse" data-target=".function_delete_chat_messages .collapse" title="">
+<h2>Delete chat messages.</h2>
+<pre>delete_chat_messages(array $where) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$where</h4>
+<code>array</code><p>Where query to specify what to delete</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_chatroom"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_chatroom " data-toggle="collapse" data-target=".function_delete_chatroom .collapse" title="">
+<h2>Delete a chatroom.</h2>
+<pre>delete_chatroom(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The chat room ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_chatroom_messages"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_chatroom_messages " data-toggle="collapse" data-target=".function_delete_chatroom_messages .collapse" title="">
+<h2>Delete all messages in a chatroom.</h2>
+<pre>delete_chatroom_messages(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The chat room ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_chatroom"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_chatroom " data-toggle="collapse" data-target=".function_edit_chatroom .collapse" title="">
+<h2>Edit a chatroom.</h2>
+<pre>edit_chatroom(\AUTO_LINK $id, \SHORT_TEXT $welcome, \SHORT_TEXT $room_name, \MEMBER $room_owner, \LONG_TEXT $allow2, \LONG_TEXT $allow2_groups, \LONG_TEXT $disallow2, \LONG_TEXT $disallow2_groups, \LANGUAGE_NAME $room_language) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The chat room ID</p></div>
+<div class="subelement argument">
+<h4>$welcome</h4>
+<code>\SHORT_TEXT</code><p>The welcome message</p></div>
+<div class="subelement argument">
+<h4>$room_name</h4>
+<code>\SHORT_TEXT</code><p>The room name</p></div>
+<div class="subelement argument">
+<h4>$room_owner</h4>
+<code>\MEMBER</code><p>The room owner</p></div>
+<div class="subelement argument">
+<h4>$allow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$allow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may NOT access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may NOT access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$room_language</h4>
+<code>\LANGUAGE_NAME</code><p>The room language</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_enter_chat_lobby"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_enter_chat_lobby " data-toggle="collapse" data-target=".function_enter_chat_lobby .collapse" title="">
+<h2>Enter the current member to the chat lobby / Mark them available.</h2>
+<pre>enter_chat_lobby() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_filter_invites_for_blocking"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_filter_invites_for_blocking " data-toggle="collapse" data-target=".function_filter_invites_for_blocking .collapse" title="">
+<h2>Filter an invite list to make sure people who are blocking don't get drawn in and hence their blocking unmasked.</h2>
+<pre>filter_invites_for_blocking(string $people) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$people</h4>
+<code>string</code><p>Comma-separated people list</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Filtered comma-separated people list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_friend_add"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_friend_add " data-toggle="collapse" data-target=".function_friend_add .collapse" title="">
+<h2>Add a friend.</h2>
+<pre>friend_add(\MEMBER $likes, \MEMBER $liked, \?TIME $time<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$likes</h4>
+<code>\MEMBER</code><p>The member befriending</p></div>
+<div class="subelement argument">
+<h4>$liked</h4>
+<code>\MEMBER</code><p>The member being befriended</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The logged time of the friendship (null: now)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_friend_remove"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_friend_remove " data-toggle="collapse" data-target=".function_friend_remove .collapse" title="">
+<h2>Remove ('dump') a friend.</h2>
+<pre>friend_remove(\MEMBER $likes, \MEMBER $liked) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$likes</h4>
+<code>\MEMBER</code><p>The member befriending</p></div>
+<div class="subelement argument">
+<h4>$liked</h4>
+<code>\MEMBER</code><p>The member being dumped</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chat_sound_tpl"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chat_sound_tpl " data-toggle="collapse" data-target=".function_get_chat_sound_tpl .collapse" title="">
+<h2>Get a template that will set up the chat sound effects as for what this member needs.</h2>
+<pre>get_chat_sound_tpl() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Template to set up chat sound effects.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chatroom_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chatroom_fields " data-toggle="collapse" data-target=".function_get_chatroom_fields .collapse" title="">
+<h2>Get form fields for adding/editing a chatroom.</h2>
+<pre>get_chatroom_fields(\?AUTO_LINK $id<code> = null</code>, boolean $is_made_by_me<code> = false</code>, \SHORT_TEXT $room_name<code> = ''</code>, \LONG_TEXT $welcome<code> = ''</code>, \SHORT_TEXT $username<code> = ''</code>, \LONG_TEXT $allow2<code> = ''</code>, \LONG_TEXT $allow2_groups<code> = ''</code>, \LONG_TEXT $disallow2<code> = ''</code>, \LONG_TEXT $disallow2_groups<code> = ''</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>The chat room ID (null: new)</p></div>
+<div class="subelement argument">
+<h4>$is_made_by_me</h4>
+<code>boolean</code><p>Whether the room is being made as a private room by the current member</p></div>
+<div class="subelement argument">
+<h4>$room_name</h4>
+<code>\SHORT_TEXT</code><p>The room name</p></div>
+<div class="subelement argument">
+<h4>$welcome</h4>
+<code>\LONG_TEXT</code><p>The welcome message</p></div>
+<div class="subelement argument">
+<h4>$username</h4>
+<code>\SHORT_TEXT</code><p>The owner username</p></div>
+<div class="subelement argument">
+<h4>$allow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$allow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of users that may NOT access it (blank: no restriction)</p></div>
+<div class="subelement argument">
+<h4>$disallow2_groups</h4>
+<code>\LONG_TEXT</code><p>The comma-separated list of usergroups that may NOT access it (blank: no restriction)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The input fields, Hidden fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chatroom_id"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chatroom_id " data-toggle="collapse" data-target=".function_get_chatroom_id .collapse" title="">
+<h2>Get the ID of the specified chatroom, from its room name.</h2>
+<pre>get_chatroom_id(\SHORT_TEXT $room_name, boolean $must_not_be_im<code> = false</code>) : \?AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_name</h4>
+<code>\SHORT_TEXT</code><p>The name of the chatroom</p></div>
+<div class="subelement argument">
+<h4>$must_not_be_im</h4>
+<code>boolean</code><p>Make sure the room is not an IM room. If it is an IM room, pretend it does not exist.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?AUTO_LINK</code>The ID of the chatroom (null: no such chat room)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chatroom_name"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chatroom_name " data-toggle="collapse" data-target=".function_get_chatroom_name .collapse" title="">
+<h2>Get the textual name of the specified chatroom, from its room ID.</h2>
+<pre>get_chatroom_name(\AUTO_LINK $room_id, boolean $allow_null<code> = false</code>) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\AUTO_LINK</code><p>The room ID</p></div>
+<div class="subelement argument">
+<h4>$allow_null</h4>
+<code>boolean</code><p>Allow the chatroom to not be found (i.e. don't die if it can't be)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The room name (null: not found)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chatters_in_room"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chatters_in_room " data-toggle="collapse" data-target=".function_get_chatters_in_room .collapse" title="">
+<h2>Get the people who have posted a message in the specified room within the last x minutes (defaults to five). Note that this function performs no pruning- the chat lobby will do that. It does do an activity time-range select though.</h2>
+<pre>get_chatters_in_room(\?AUTO_LINK $room_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\?AUTO_LINK</code><p>The room ID (null: lobby)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map of members in the room. User ID=>Username</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_chatters_in_room_tpl"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_chatters_in_room_tpl " data-toggle="collapse" data-target=".function_get_chatters_in_room_tpl .collapse" title="">
+<h2>Get some template code showing the number of chatters in a room.</h2>
+<pre>get_chatters_in_room_tpl(array $users) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$users</h4>
+<code>array</code><p>A mapping (user=>username) of the chatters in the room</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_effect_set"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_effect_set " data-toggle="collapse" data-target=".function_get_effect_set .collapse" title="">
+<h2>Get the list of all available chat sound effects.</h2>
+<pre>get_effect_set(boolean $only_overridable<code> = false</code>) : \map</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$only_overridable</h4>
+<code>boolean</code><p>Map to NULL if it is not overridable.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\map</code>All available sound effects (mapping between base code, and actual code).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_effect_settings"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_effect_settings " data-toggle="collapse" data-target=".function_get_effect_settings .collapse" title="">
+<h2>Get a list of template mappings for the current member, between sound effect IDs and the URLs to the mp3 fiels.</h2>
+<pre>get_effect_settings(boolean $full_urls<code> = false</code>, \?MEMBER $for_member<code> = null</code>, boolean $all_members<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$full_urls</h4>
+<code>boolean</code><p>Whether to use full URLs in the mappings.</p></div>
+<div class="subelement argument">
+<h4>$for_member</h4>
+<code>\?MEMBER</code><p>Get settings overridden for this specific member (null: global settings).</p></div>
+<div class="subelement argument">
+<h4>$all_members</h4>
+<code>boolean</code><p>Get global settings and settings overridden for all members (if this is true we'd expect $for_member to be NULL).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The template mappings.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_chatposts"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_chatposts " data-toggle="collapse" data-target=".function_get_num_chatposts .collapse" title="">
+<h2>Get the total number of chat posts in all the chatrooms.</h2>
+<pre>get_num_chatposts() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of chat posts in the database</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_chatrooms"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_chatrooms " data-toggle="collapse" data-target=".function_get_num_chatrooms .collapse" title="">
+<h2>Get the number of chatrooms in the database. By default, there is only one, but more may be added via the admin panel.</h2>
+<pre>get_num_chatrooms() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of chatrooms in the database</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_chatters"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_chatters " data-toggle="collapse" data-target=".function_get_num_chatters .collapse" title="">
+<h2>Get the number of people using the chat system at the moment. Note that this is intentionally different from 'users online' even if site wide IM is enabled- it has a 60 second timeout, so it really is active people.</h2>
+<pre>get_num_chatters() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of people on the chat system</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_handle_chatroom_pruning"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_handle_chatroom_pruning " data-toggle="collapse" data-target=".function_handle_chatroom_pruning .collapse" title="">
+<h2>Prune timed-out private chatrooms.</h2>
+<pre>handle_chatroom_pruning(array $row) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The row of the chat room to possibly prune</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the room was pruned</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_chat_moderator"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_chat_moderator " data-toggle="collapse" data-target=".function_is_chat_moderator .collapse" title="">
+<h2>Find whether a member is a moderator of a chat room.</h2>
+<pre>is_chat_moderator(\MEMBER $member_id, \AUTO_LINK $room_id, \?MEMBER $room_owner) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>Member ID</p></div>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\AUTO_LINK</code><p>Room ID</p></div>
+<div class="subelement argument">
+<h4>$room_owner</h4>
+<code>\?MEMBER</code><p>Room owner (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the member is a moderator of the chat room</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_member_befriended"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_member_befriended " data-toggle="collapse" data-target=".function_member_befriended .collapse" title="">
+<h2>Find if a member is befriended by the current member.</h2>
+<pre>member_befriended(\MEMBER $member_id) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member being checked</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the member is befriended</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_messages_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_messages_script " data-toggle="collapse" data-target=".function_messages_script .collapse" title="">
+<h2>High-level messages script handling</h2>
+<pre>messages_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parse_allow_list_input"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parse_allow_list_input " data-toggle="collapse" data-target=".function_parse_allow_list_input .collapse" title="">
+<h2>Takes a comma-separated list of usernames, split it up, convert all the usernames to IDs, and put it all back together again.</h2>
+<pre>parse_allow_list_input(string $_allow) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_allow</h4>
+<code>string</code><p>A comma-separated list of usernames</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>A comma-separated list of member IDs</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_read_in_chat_perm_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_read_in_chat_perm_fields " data-toggle="collapse" data-target=".function_read_in_chat_perm_fields .collapse" title="">
+<h2>Read in chat permission fields, from the complex posted data.</h2>
+<pre>read_in_chat_perm_fields() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple of permission fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_chat_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_chat_box " data-toggle="collapse" data-target=".function_render_chat_box .collapse" title="">
+<h2>Get Tempcode for a chat room 'feature box' for the given row</h2>
+<pre>render_chat_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_shoutbox_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_shoutbox_script " data-toggle="collapse" data-target=".function_shoutbox_script .collapse" title="">
+<h2>Outputs the shoutbox iframe.</h2>
+<pre>shoutbox_script(boolean $ret<code> = false</code>, \?AUTO_LINK $room_id<code> = null</code>, \?integer $num_messages<code> = null</code>) : \?object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ret</h4>
+<code>boolean</code><p>Whether to get the output instead of outputting it directly</p></div>
+<div class="subelement argument">
+<h4>$room_id</h4>
+<code>\?AUTO_LINK</code><p>Chat room ID (null: read from environment)</p></div>
+<div class="subelement argument">
+<h4>$num_messages</h4>
+<code>\?integer</code><p>The maximum number of messages to show (null: read from environment)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?object</code>Output (null: outputted it already)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_show_im_contacts"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_show_im_contacts " data-toggle="collapse" data-target=".function_show_im_contacts .collapse" title="">
+<h2>Show IM contacts, with online/offline status and clickability to initiate IM sessions.</h2>
+<pre>show_im_contacts(\?MEMBER $member_id<code> = null</code>, boolean $simpler<code> = false</code>, \?integer $max<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\?MEMBER</code><p>The member ID (null: current user).</p></div>
+<div class="subelement argument">
+<h4>$simpler</h4>
+<code>boolean</code><p>Whether to show a simpler, more compact, UI.</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>Maximum to show (null: default).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The contact UI.</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_CHAT_ACTIVITY_PRUNE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CHAT_ACTIVITY_PRUNE" data-toggle="collapse" data-target=".constant_CHAT_ACTIVITY_PRUNE .collapse" title="">
+<h2>CHAT_ACTIVITY_PRUNE</h2>
+<pre>CHAT_ACTIVITY_PRUNE = 25 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CHAT_ACTIVITY_PRUNE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CHAT_ACTIVITY_PRUNE" data-toggle="collapse" data-target=".constant_CHAT_ACTIVITY_PRUNE .collapse" title="">
+<h2>CHAT_ACTIVITY_PRUNE</h2>
+<pre>CHAT_ACTIVITY_PRUNE = 25 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CHAT_ACTIVITY_PRUNE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CHAT_ACTIVITY_PRUNE" data-toggle="collapse" data-target=".constant_CHAT_ACTIVITY_PRUNE .collapse" title="">
+<h2>CHAT_ACTIVITY_PRUNE</h2>
+<pre>CHAT_ACTIVITY_PRUNE = 25 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CHAT_BACKLOG_TIME"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CHAT_BACKLOG_TIME" data-toggle="collapse" data-target=".constant_CHAT_BACKLOG_TIME .collapse" title="">
+<h2>CHAT_BACKLOG_TIME</h2>
+<pre>CHAT_BACKLOG_TIME = 60 * 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CHAT_EVENT_PRUNE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CHAT_EVENT_PRUNE" data-toggle="collapse" data-target=".constant_CHAT_EVENT_PRUNE .collapse" title="">
+<h2>CHAT_EVENT_PRUNE</h2>
+<pre>CHAT_EVENT_PRUNE = 60 * 60 * 24 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/chat.html">chat</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:33+01:00.<br></footer></div>
+</div>
+</body>
+</html>

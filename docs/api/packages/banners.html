@@ -1,0 +1,782 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/banners.html" title="banners"><i class="icon-folder-open"></i>banners</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_banner" title="add_banner() :: Add a banner to the database, and return the new ID of that banner in the database."><span class="description">Add a banner to the database, and return the new ID of that banner in the database.</span><pre>add_banner</pre></a></li>
+<li class="function  "><a href="#function_add_banner_type" title="add_banner_type() :: Add a banner type."><span class="description">Add a banner type.</span><pre>add_banner_type</pre></a></li>
+<li class="function  "><a href="#function_banners_script" title="banners_script() :: Show a banner according to GET parameter specification."><span class="description">Show a banner according to GET parameter specification.</span><pre>banners_script</pre></a></li>
+<li class="function  "><a href="#function_check_banner" title="check_banner() :: Check the uploaded banner is valid."><span class="description">Check the uploaded banner is valid.</span><pre>check_banner</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_banner_types" title="create_selection_list_banner_types() :: Get a nice, formatted XHTML list to select a banner type"><span class="description">Get a nice, formatted XHTML list to select a banner type</span><pre>create_selection_list_banner_types</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_banners" title="create_selection_list_banners() :: Get a list of banners."><span class="description">Get a list of banners.</span><pre>create_selection_list_banners</pre></a></li>
+<li class="function  "><a href="#function_delete_banner" title="delete_banner() :: Delete a banner."><span class="description">Delete a banner.</span><pre>delete_banner</pre></a></li>
+<li class="function  "><a href="#function_delete_banner_type" title="delete_banner_type() :: Delete a banner type."><span class="description">Delete a banner type.</span><pre>delete_banner_type</pre></a></li>
+<li class="function  "><a href="#function_edit_banner" title="edit_banner() :: Edit a banner."><span class="description">Edit a banner.</span><pre>edit_banner</pre></a></li>
+<li class="function  "><a href="#function_edit_banner_type" title="edit_banner_type() :: Edit a banner type."><span class="description">Edit a banner type.</span><pre>edit_banner_type</pre></a></li>
+<li class="function  "><a href="#function_get_banner_form_fields" title="get_banner_form_fields() :: Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in."><span class="description">Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.</span><pre>get_banner_form_fields</pre></a></li>
+<li class="function  "><a href="#function_render_banner_box" title="render_banner_box() :: Get Tempcode for a banner 'feature box' for the given row"><span class="description">Get Tempcode for a banner 'feature box' for the given row</span><pre>render_banner_box</pre></a></li>
+<li class="function  "><a href="#function_render_banner_type_box" title="render_banner_type_box() :: Get Tempcode for a banner type 'feature box' for the given row"><span class="description">Get Tempcode for a banner type 'feature box' for the given row</span><pre>render_banner_type_box</pre></a></li>
+<li class="function  "><a href="#function_show_banner" title="show_banner() :: Get the Tempcode for the display of the defined banner."><span class="description">Get the Tempcode for the display of the defined banner.</span><pre>show_banner</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_BANNER_CAMPAIGN" title="BANNER_CAMPAIGN() :: "><span class="description">BANNER_CAMPAIGN</span><pre>BANNER_CAMPAIGN</pre></a></li>
+<li class="constant  "><a href="#constant_BANNER_DEFAULT" title="BANNER_DEFAULT() :: "><span class="description">BANNER_DEFAULT</span><pre>BANNER_DEFAULT</pre></a></li>
+<li class="constant  "><a href="#constant_BANNER_PERMANENT" title="BANNER_PERMANENT() :: "><span class="description">BANNER_PERMANENT</span><pre>BANNER_PERMANENT</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/banners.html">banners</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_banner"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_banner " data-toggle="collapse" data-target=".function_add_banner .collapse" title="">
+<h2>Add a banner to the database, and return the new ID of that banner in the database.</h2>
+<pre>add_banner(\ID_TEXT $name, \URLPATH $imgurl, \SHORT_TEXT $title_text, \SHORT_TEXT $caption, \LONG_TEXT $direct_code, \?integer $campaignremaining, \URLPATH $site_url, integer $importancemodulus, \LONG_TEXT $notes, \SHORT_INTEGER $the_type, \?TIME $expiry_date, \?MEMBER $submitter, \BINARY $validated<code> = 0</code>, \ID_TEXT $b_type<code> = ''</code>, \?TIME $time<code> = null</code>, integer $hits_from<code> = 0</code>, integer $hits_to<code> = 0</code>, integer $views_from<code> = 0</code>, integer $views_to<code> = 0</code>, \?TIME $edit_date<code> = null</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>0 max</td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 max</td>
+</tr>
+<tr>
+<th>set</th>
+<td>0 1 2</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the banner</p></div>
+<div class="subelement argument">
+<h4>$imgurl</h4>
+<code>\URLPATH</code><p>The URL to the banner image</p></div>
+<div class="subelement argument">
+<h4>$title_text</h4>
+<code>\SHORT_TEXT</code><p>The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption of the banner</p></div>
+<div class="subelement argument">
+<h4>$direct_code</h4>
+<code>\LONG_TEXT</code><p>Complete HTML/PHP for the banner</p></div>
+<div class="subelement argument">
+<h4>$campaignremaining</h4>
+<code>\?integer</code><p>The number of hits the banner may have (null: not applicable for this banner type)</p></div>
+<div class="subelement argument">
+<h4>$site_url</h4>
+<code>\URLPATH</code><p>The URL to the site the banner leads to</p></div>
+<div class="subelement argument">
+<h4>$importancemodulus</h4>
+<code>integer</code><p>The banners "importance modulus"</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Any notes associated with the banner</p></div>
+<div class="subelement argument">
+<h4>$the_type</h4>
+<code>\SHORT_INTEGER</code><p>The type of banner (0=permanent, 1=campaign, 2=default)</p></div>
+<div class="subelement argument">
+<h4>$expiry_date</h4>
+<code>\?TIME</code><p>The banner expiry date (null: never)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The banners submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the banner has been validated</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\ID_TEXT</code><p>The banner type (can be anything, where blank means 'normal')</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The time the banner was added (null: now)</p></div>
+<div class="subelement argument">
+<h4>$hits_from</h4>
+<code>integer</code><p>The number of return hits from this banners site</p></div>
+<div class="subelement argument">
+<h4>$hits_to</h4>
+<code>integer</code><p>The number of banner hits to this banners site</p></div>
+<div class="subelement argument">
+<h4>$views_from</h4>
+<code>integer</code><p>The number of return views from this banners site</p></div>
+<div class="subelement argument">
+<h4>$views_to</h4>
+<code>integer</code><p>The number of banner views to this banners site</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The banner edit date  (null: never)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_banner_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_banner_type " data-toggle="collapse" data-target=".function_add_banner_type .collapse" title="">
+<h2>Add a banner type.</h2>
+<pre>add_banner_type(\ID_TEXT $id, \BINARY $is_textual, integer $image_width, integer $image_height, integer $max_file_size, \BINARY $comcode_inline, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID of the banner type</p></div>
+<div class="subelement argument">
+<h4>$is_textual</h4>
+<code>\BINARY</code><p>Whether this is a textual banner</p></div>
+<div class="subelement argument">
+<h4>$image_width</h4>
+<code>integer</code><p>The image width (ignored for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$image_height</h4>
+<code>integer</code><p>The image height (ignored for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$max_file_size</h4>
+<code>integer</code><p>The maximum file size for the banners in Kilobytes (this is a string length for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$comcode_inline</h4>
+<code>\BINARY</code><p>Whether the banner will be automatically shown via Comcode hot-text (this can only happen if banners of the title are given title-text)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_banners_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_banners_script " data-toggle="collapse" data-target=".function_banners_script .collapse" title="">
+<h2>Show a banner according to GET parameter specification.</h2>
+<pre>banners_script(boolean $ret<code> = false</code>, \?string $type<code> = null</code>, \?string $dest<code> = null</code>, \?string $b_type<code> = null</code>, \?string $source<code> = null</code>, \?integer $width<code> = null</code>, \?integer $height<code> = null</code>) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>"click" ""</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$ret</h4>
+<code>boolean</code><p>Whether to return a result rather than outputting</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\?string</code><p>Whether we are displaying or click-processing (null: get from URL param)</p></div>
+<div class="subelement argument">
+<h4>$dest</h4>
+<code>\?string</code><p>Specific banner to display (null: get from URL param) (blank: randomise)</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\?string</code><p>Banner type to display (null: get from URL param)</p></div>
+<div class="subelement argument">
+<h4>$source</h4>
+<code>\?string</code><p>The banner advertisor who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)</p></div>
+<div class="subelement argument">
+<h4>$width</h4>
+<code>\?integer</code><p>The width (null: standard for banner type)</p></div>
+<div class="subelement argument">
+<h4>$height</h4>
+<code>\?integer</code><p>The height (null: standard for banner type)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>Result (null: we weren't asked to return the result)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_banner"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_banner " data-toggle="collapse" data-target=".function_check_banner .collapse" title="">
+<h2>Check the uploaded banner is valid.</h2>
+<pre>check_banner(\SHORT_TEXT $title_text<code> = ''</code>, \LONG_TEXT $direct_code<code> = ''</code>, \ID_TEXT $b_type<code> = ''</code>, string $url_param_name<code> = 'image_url'</code>, string $file_param_name<code> = 'file'</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title_text</h4>
+<code>\SHORT_TEXT</code><p>The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)</p></div>
+<div class="subelement argument">
+<h4>$direct_code</h4>
+<code>\LONG_TEXT</code><p>Complete HTML/PHP for the banner</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\ID_TEXT</code><p>The banner type (can be anything, where blank means 'normal')</p></div>
+<div class="subelement argument">
+<h4>$url_param_name</h4>
+<code>string</code><p>Param name for possible URL field</p></div>
+<div class="subelement argument">
+<h4>$file_param_name</h4>
+<code>string</code><p>Param name for possible upload field</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The URL, and the title text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_banner_types"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_banner_types " data-toggle="collapse" data-target=".function_create_selection_list_banner_types .collapse" title="">
+<h2>Get a nice, formatted XHTML list to select a banner type</h2>
+<pre>create_selection_list_banner_types(\?ID_TEXT $it<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?ID_TEXT</code><p>The currently selected licence (null: none selected)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of categories</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_banners"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_banners " data-toggle="collapse" data-target=".function_create_selection_list_banners .collapse" title="">
+<h2>Get a list of banners.</h2>
+<pre>create_selection_list_banners(\?AUTO_LINK $it<code> = null</code>, \?MEMBER $only_owned<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The ID of the banner selected by default (null: no specific default)</p></div>
+<div class="subelement argument">
+<h4>$only_owned</h4>
+<code>\?MEMBER</code><p>Only show banners owned by the member (null: no such restriction)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_banner"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_banner " data-toggle="collapse" data-target=".function_delete_banner .collapse" title="">
+<h2>Delete a banner.</h2>
+<pre>delete_banner(\ID_TEXT $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the banner</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_banner_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_banner_type " data-toggle="collapse" data-target=".function_delete_banner_type .collapse" title="">
+<h2>Delete a banner type.</h2>
+<pre>delete_banner_type(\ID_TEXT $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID of the banner type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_banner"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_banner " data-toggle="collapse" data-target=".function_edit_banner .collapse" title="">
+<h2>Edit a banner.</h2>
+<pre>edit_banner(\ID_TEXT $old_name, \ID_TEXT $name, \URLPATH $imgurl, \SHORT_TEXT $title_text, \SHORT_TEXT $caption, \LONG_TEXT $direct_code, \?integer $campaignremaining, \URLPATH $site_url, integer $importancemodulus, \LONG_TEXT $notes, \SHORT_INTEGER $the_type, \?TIME $expiry_date, \?MEMBER $submitter, \BINARY $validated, \ID_TEXT $b_type, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, boolean $null_is_literal<code> = false</code>, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>0 max</td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 max</td>
+</tr>
+<tr>
+<th>set</th>
+<td>0 1 2</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_name</h4>
+<code>\ID_TEXT</code><p>The current name of the banner</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The new name of the banner</p></div>
+<div class="subelement argument">
+<h4>$imgurl</h4>
+<code>\URLPATH</code><p>The URL to the banner image</p></div>
+<div class="subelement argument">
+<h4>$title_text</h4>
+<code>\SHORT_TEXT</code><p>The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption of the banner</p></div>
+<div class="subelement argument">
+<h4>$direct_code</h4>
+<code>\LONG_TEXT</code><p>Complete HTML/PHP for the banner</p></div>
+<div class="subelement argument">
+<h4>$campaignremaining</h4>
+<code>\?integer</code><p>The number of hits the banner may have (null: not applicable for this banner type)</p></div>
+<div class="subelement argument">
+<h4>$site_url</h4>
+<code>\URLPATH</code><p>The URL to the site the banner leads to</p></div>
+<div class="subelement argument">
+<h4>$importancemodulus</h4>
+<code>integer</code><p>The banners "importance modulus"</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Any notes associated with the banner</p></div>
+<div class="subelement argument">
+<h4>$the_type</h4>
+<code>\SHORT_INTEGER</code><p>The type of banner (0=permanent, 1=campaign, 2=default)</p></div>
+<div class="subelement argument">
+<h4>$expiry_date</h4>
+<code>\?TIME</code><p>The banner expiry date (null: never)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The banners submitter (null: leave unchanged)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the banner has been validated</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\ID_TEXT</code><p>The banner type (can be anything, where blank means 'normal')</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_banner_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_banner_type " data-toggle="collapse" data-target=".function_edit_banner_type .collapse" title="">
+<h2>Edit a banner type.</h2>
+<pre>edit_banner_type(\ID_TEXT $old_id, \ID_TEXT $id, \BINARY $is_textual, integer $image_width, integer $image_height, integer $max_file_size, \BINARY $comcode_inline, boolean $uniqify<code> = false</code>) : \ID_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$old_id</h4>
+<code>\ID_TEXT</code><p>The original ID of the banner type</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID of the banner type</p></div>
+<div class="subelement argument">
+<h4>$is_textual</h4>
+<code>\BINARY</code><p>Whether this is a textual banner</p></div>
+<div class="subelement argument">
+<h4>$image_width</h4>
+<code>integer</code><p>The image width (ignored for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$image_height</h4>
+<code>integer</code><p>The image height (ignored for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$max_file_size</h4>
+<code>integer</code><p>The maximum file size for the banners in Kilobytes (this is a string length for textual banners)</p></div>
+<div class="subelement argument">
+<h4>$comcode_inline</h4>
+<code>\BINARY</code><p>Whether the banner will be automatically shown via Comcode hot-text (this can only happen if banners of the title are given title-text)</p></div>
+<div class="subelement argument">
+<h4>$uniqify</h4>
+<code>boolean</code><p>Whether to force the name as unique, if there's a conflict</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\ID_TEXT</code>The name</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_banner_form_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_banner_form_fields " data-toggle="collapse" data-target=".function_get_banner_form_fields .collapse" title="">
+<h2>Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.</h2>
+<pre>get_banner_form_fields(boolean $simplified<code> = false</code>, \ID_TEXT $name<code> = ''</code>, \URLPATH $image_url<code> = ''</code>, \URLPATH $site_url<code> = ''</code>, \SHORT_TEXT $caption<code> = ''</code>, \LONG_TEXT $direct_code<code> = ''</code>, \LONG_TEXT $notes<code> = ''</code>, integer $importancemodulus<code> = 3</code>, \?integer $campaignremaining<code> = 50</code>, \SHORT_INTEGER $the_type<code> = 1</code>, \?TIME $expiry_date<code> = null</code>, \?MEMBER $submitter<code> = null</code>, \BINARY $validated<code> = 1</code>, \ID_TEXT $b_type<code> = ''</code>, \SHORT_TEXT $title_text<code> = ''</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 max</td>
+</tr>
+<tr>
+<th>range</th>
+<td>0 max</td>
+</tr>
+<tr>
+<th>set</th>
+<td>0 1 2</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$simplified</h4>
+<code>boolean</code><p>Whether to simplify the banner interface (for the Point Store buy process)</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the banner</p></div>
+<div class="subelement argument">
+<h4>$image_url</h4>
+<code>\URLPATH</code><p>The URL to the banner image</p></div>
+<div class="subelement argument">
+<h4>$site_url</h4>
+<code>\URLPATH</code><p>The URL to the site the banner leads to</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\SHORT_TEXT</code><p>The caption of the banner</p></div>
+<div class="subelement argument">
+<h4>$direct_code</h4>
+<code>\LONG_TEXT</code><p>Complete HTML/PHP for the banner</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Any notes associated with the banner</p></div>
+<div class="subelement argument">
+<h4>$importancemodulus</h4>
+<code>integer</code><p>The banners "importance modulus"</p></div>
+<div class="subelement argument">
+<h4>$campaignremaining</h4>
+<code>\?integer</code><p>The number of hits the banner may have (null: not applicable for this banner type)</p></div>
+<div class="subelement argument">
+<h4>$the_type</h4>
+<code>\SHORT_INTEGER</code><p>The type of banner (0=permanent, 1=campaign, 2=default)</p></div>
+<div class="subelement argument">
+<h4>$expiry_date</h4>
+<code>\?TIME</code><p>The banner expiry date (null: never expires)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The banners submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the banner has been validated</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\ID_TEXT</code><p>The banner type (can be anything, where blank means 'normal')</p></div>
+<div class="subelement argument">
+<h4>$title_text</h4>
+<code>\SHORT_TEXT</code><p>The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The input field Tempcode, JavaScript code</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_banner_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_banner_box " data-toggle="collapse" data-target=".function_render_banner_box .collapse" title="">
+<h2>Get Tempcode for a banner 'feature box' for the given row</h2>
+<pre>render_banner_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_banner_type_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_banner_type_box " data-toggle="collapse" data-target=".function_render_banner_type_box .collapse" title="">
+<h2>Get Tempcode for a banner type 'feature box' for the given row</h2>
+<pre>render_banner_type_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_show_banner"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_show_banner " data-toggle="collapse" data-target=".function_show_banner .collapse" title="">
+<h2>Get the Tempcode for the display of the defined banner.</h2>
+<pre>show_banner(\ID_TEXT $name, \SHORT_TEXT $title_text, \Tempcode $caption, \LONG_TEXT $direct_code, \URLPATH $img_url, \ID_TEXT $source, \URLPATH $url, \ID_TEXT $b_type, \MEMBER $submitter, \?integer $width<code> = null</code>, \?integer $height<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the banner</p></div>
+<div class="subelement argument">
+<h4>$title_text</h4>
+<code>\SHORT_TEXT</code><p>The title text of the banner (displayed for a text banner only)</p></div>
+<div class="subelement argument">
+<h4>$caption</h4>
+<code>\Tempcode</code><p>The caption of the banner</p></div>
+<div class="subelement argument">
+<h4>$direct_code</h4>
+<code>\LONG_TEXT</code><p>The full HTML/PHP for the banner</p></div>
+<div class="subelement argument">
+<h4>$img_url</h4>
+<code>\URLPATH</code><p>The URL to the banner image</p></div>
+<div class="subelement argument">
+<h4>$source</h4>
+<code>\ID_TEXT</code><p>The name of the banner for the site that will get the return-hit (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the banner's target</p></div>
+<div class="subelement argument">
+<h4>$b_type</h4>
+<code>\ID_TEXT</code><p>The banner type</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\MEMBER</code><p>The submitting user</p></div>
+<div class="subelement argument">
+<h4>$width</h4>
+<code>\?integer</code><p>The width (null: standard for banner type)</p></div>
+<div class="subelement argument">
+<h4>$height</h4>
+<code>\?integer</code><p>The height (null: standard for banner type)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The rendered banner</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_BANNER_CAMPAIGN"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_BANNER_CAMPAIGN" data-toggle="collapse" data-target=".constant_BANNER_CAMPAIGN .collapse" title="">
+<h2>BANNER_CAMPAIGN</h2>
+<pre>BANNER_CAMPAIGN = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_BANNER_DEFAULT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_BANNER_DEFAULT" data-toggle="collapse" data-target=".constant_BANNER_DEFAULT .collapse" title="">
+<h2>BANNER_DEFAULT</h2>
+<pre>BANNER_DEFAULT = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_BANNER_PERMANENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_BANNER_PERMANENT" data-toggle="collapse" data-target=".constant_BANNER_PERMANENT .collapse" title="">
+<h2>BANNER_PERMANENT</h2>
+<pre>BANNER_PERMANENT = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/banners.html">banners</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:31+01:00.<br></footer></div>
+</div>
+</body>
+</html>

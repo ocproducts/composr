@@ -1,0 +1,1759 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/calendar.html" title="calendar"><i class="icon-folder-open"></i>calendar</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_calendar_event" title="add_calendar_event() :: Add a calendar event."><span class="description">Add a calendar event.</span><pre>add_calendar_event</pre></a></li>
+<li class="function  "><a href="#function_add_event_type" title="add_event_type() :: Add a calendar event type."><span class="description">Add a calendar event type.</span><pre>add_event_type</pre></a></li>
+<li class="function  "><a href="#function_adjust_event_dates_for_a_recurrence" title="adjust_event_dates_for_a_recurrence() :: Adjust an event row to match a recurrence on a specific day."><span class="description">Adjust an event row to match a recurrence on a specific day.</span><pre>adjust_event_dates_for_a_recurrence</pre></a></li>
+<li class="function  "><a href="#function_cal_get_end_utctime_for_event" title="cal_get_end_utctime_for_event() :: Get the UTC end time for a specified UTC time event."><span class="description">Get the UTC end time for a specified UTC time event.</span><pre>cal_get_end_utctime_for_event</pre></a></li>
+<li class="function  "><a href="#function_cal_get_start_utctime_for_event" title="cal_get_start_utctime_for_event() :: Get the UTC start time for a specified UTC time event."><span class="description">Get the UTC start time for a specified UTC time event.</span><pre>cal_get_start_utctime_for_event</pre></a></li>
+<li class="function  "><a href="#function_cal_utctime_to_usertime" title="cal_utctime_to_usertime() :: Put a timestamp into the correct timezone for being reported onto the calendar."><span class="description">Put a timestamp into the correct timezone for being reported onto the calendar.</span><pre>cal_utctime_to_usertime</pre></a></li>
+<li class="function  "><a href="#function_calendar_matches" title="calendar_matches() :: Detect calendar matches in a time period, in user-time."><span class="description">Detect calendar matches in a time period, in user-time.</span><pre>calendar_matches</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_event_types" title="create_selection_list_event_types() :: Get a list of event types, taking security into account against the current member."><span class="description">Get a list of event types, taking security into account against the current member.</span><pre>create_selection_list_event_types</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_events" title="create_selection_list_events() :: Get a list of events to edit."><span class="description">Get a list of events to edit.</span><pre>create_selection_list_events</pre></a></li>
+<li class="function  "><a href="#function_date_from_week_of_year" title="date_from_week_of_year() :: Converts year+week to year+month+day. This is really complex. The first week of a year may actually start in December. The first day of the first week is a Monday or a Sunday, depending on configuration."><span class="description">Converts year+week to year+month+day. This is really complex. The first week of a year may actually start in December. The first day of the first week is a Monday or a Sunday, depending on configuration.</span><pre>date_from_week_of_year</pre></a></li>
+<li class="function  "><a href="#function_date_range" title="date_range() :: Create a neatly human-readable date range, using various user-friendly readability tricks."><span class="description">Create a neatly human-readable date range, using various user-friendly readability tricks.</span><pre>date_range</pre></a></li>
+<li class="function  "><a href="#function_delete_calendar_event" title="delete_calendar_event() :: Delete a calendar event."><span class="description">Delete a calendar event.</span><pre>delete_calendar_event</pre></a></li>
+<li class="function  "><a href="#function_delete_event_type" title="delete_event_type() :: Delete a calendar event type."><span class="description">Delete a calendar event type.</span><pre>delete_event_type</pre></a></li>
+<li class="function  "><a href="#function_detect_conflicts" title="detect_conflicts() :: Detect conflicts with an event at a certain time."><span class="description">Detect conflicts with an event at a certain time.</span><pre>detect_conflicts</pre></a></li>
+<li class="function  "><a href="#function_detect_happening_at" title="detect_happening_at() :: Detect conflicts with an event in certain time periods."><span class="description">Detect conflicts with an event in certain time periods.</span><pre>detect_happening_at</pre></a></li>
+<li class="function  "><a href="#function_dst_boundary_difference_for_recurrence" title="dst_boundary_difference_for_recurrence() :: An event moved from 'a' to 'b' may have an hour/minute shift due to a DST."><span class="description">An event moved from 'a' to 'b' may have an hour/minute shift due to a DST.</span><pre>dst_boundary_difference_for_recurrence</pre></a></li>
+<li class="function  "><a href="#function_edit_calendar_event" title="edit_calendar_event() :: Edit a calendar event."><span class="description">Edit a calendar event.</span><pre>edit_calendar_event</pre></a></li>
+<li class="function  "><a href="#function_edit_event_type" title="edit_event_type() :: Edit a calendar event type."><span class="description">Edit a calendar event type.</span><pre>edit_event_type</pre></a></li>
+<li class="function  "><a href="#function_end_find_concrete_day_of_month_wrap" title="end_find_concrete_day_of_month_wrap() :: Find the concrete end day of a month for an event row."><span class="description">Find the concrete end day of a month for an event row.</span><pre>end_find_concrete_day_of_month_wrap</pre></a></li>
+<li class="function  "><a href="#function_find_abstract_day" title="find_abstract_day() :: Given a calendar day of month, work out the day of the month within the specified encoding."><span class="description">Given a calendar day of month, work out the day of the month within the specified encoding.</span><pre>find_abstract_day</pre></a></li>
+<li class="function  "><a href="#function_find_concrete_day_of_month" title="find_concrete_day_of_month() :: Given a specially encoded day of month, work out the real day of the month."><span class="description">Given a specially encoded day of month, work out the real day of the month.</span><pre>find_concrete_day_of_month</pre></a></li>
+<li class="function  "><a href="#function_find_event_end_timestamp" title="find_event_end_timestamp() :: Find the timestamp of an event's end."><span class="description">Find the timestamp of an event's end.</span><pre>find_event_end_timestamp</pre></a></li>
+<li class="function  "><a href="#function_find_event_start_timestamp" title="find_event_start_timestamp() :: Find the timestamp of an event's start."><span class="description">Find the timestamp of an event's start.</span><pre>find_event_start_timestamp</pre></a></li>
+<li class="function  "><a href="#function_find_periods_recurrence" title="find_periods_recurrence() :: Find a list of pairs specifying the times the event occurs, for 20 years into the future, in user-time."><span class="description">Find a list of pairs specifying the times the event occurs, for 20 years into the future, in user-time.</span><pre>find_periods_recurrence</pre></a></li>
+<li class="function  "><a href="#function_find_timezone_end_hour_in_utc" title="find_timezone_end_hour_in_utc() :: Find last hour in day for a timezone."><span class="description">Find last hour in day for a timezone.</span><pre>find_timezone_end_hour_in_utc</pre></a></li>
+<li class="function  "><a href="#function_find_timezone_end_minute_in_utc" title="find_timezone_end_minute_in_utc() :: Find last minute in day for a timezone. Usually 59, but some timezones have 30 min offsets."><span class="description">Find last minute in day for a timezone. Usually 59, but some timezones have 30 min offsets.</span><pre>find_timezone_end_minute_in_utc</pre></a></li>
+<li class="function  "><a href="#function_find_timezone_start_hour_in_utc" title="find_timezone_start_hour_in_utc() :: Find first hour in day for a timezone."><span class="description">Find first hour in day for a timezone.</span><pre>find_timezone_start_hour_in_utc</pre></a></li>
+<li class="function  "><a href="#function_find_timezone_start_minute_in_utc" title="find_timezone_start_minute_in_utc() :: Find first minute in day for a timezone. Usually 0, but some timezones have 30 min offsets."><span class="description">Find first minute in day for a timezone. Usually 0, but some timezones have 30 min offsets.</span><pre>find_timezone_start_minute_in_utc</pre></a></li>
+<li class="function  "><a href="#function_get_calendar_event_first_date" title="get_calendar_event_first_date() :: Find details of when an event happens. Preferably the next recurrence, but if it is in the past, the first."><span class="description">Find details of when an event happens. Preferably the next recurrence, but if it is in the past, the first.</span><pre>get_calendar_event_first_date</pre></a></li>
+<li class="function  "><a href="#function_get_days_between" title="get_days_between() :: Get the number of days between two dates (so first+dif=second)."><span class="description">Get the number of days between two dates (so first+dif=second).</span><pre>get_days_between</pre></a></li>
+<li class="function  "><a href="#function_get_event_data_ical" title="get_event_data_ical() :: Get array of an events from node of an imported ical file"><span class="description">Get array of an events from node of an imported ical file</span><pre>get_event_data_ical</pre></a></li>
+<li class="function  "><a href="#function_get_week_number_for" title="get_week_number_for() :: Get the week number for a time."><span class="description">Get the week number for a time.</span><pre>get_week_number_for</pre></a></li>
+<li class="function  "><a href="#function_ical_escape" title="ical_escape() :: Escapes a string as per the ical format."><span class="description">Escapes a string as per the ical format.</span><pre>ical_escape</pre></a></li>
+<li class="function  "><a href="#function_ical_import" title="ical_import() :: Import ical events to members's event calendar."><span class="description">Import ical events to members's event calendar.</span><pre>ical_import</pre></a></li>
+<li class="function  "><a href="#function_init__calendar" title="init__calendar() :: Standard code module init function."><span class="description">Standard code module init function.</span><pre>init__calendar</pre></a></li>
+<li class="function  "><a href="#function_monthly_spec_type_chooser" title="monthly_spec_type_chooser() :: Choose how a recurring monthly event should be encoded."><span class="description">Choose how a recurring monthly event should be encoded.</span><pre>monthly_spec_type_chooser</pre></a></li>
+<li class="function  "><a href="#function_output_ical" title="output_ical() :: Outputs the logged-in member's calendar view to ical."><span class="description">Outputs the logged-in member's calendar view to ical.</span><pre>output_ical</pre></a></li>
+<li class="function  "><a href="#function_regenerate_event_reminder_jobs" title="regenerate_event_reminder_jobs() :: Regenerate all the calendar jobs for reminders for next occurance of an event (because the event was added or edited)."><span class="description">Regenerate all the calendar jobs for reminders for next occurance of an event (because the event was added or edited).</span><pre>regenerate_event_reminder_jobs</pre></a></li>
+<li class="function  "><a href="#function_render_calendar_type_box" title="render_calendar_type_box() :: Get Tempcode for a calendar type 'feature box' for the given row"><span class="description">Get Tempcode for a calendar type 'feature box' for the given row</span><pre>render_calendar_type_box</pre></a></li>
+<li class="function  "><a href="#function_render_event_box" title="render_event_box() :: Render an event box."><span class="description">Render an event box.</span><pre>render_event_box</pre></a></li>
+<li class="function  "><a href="#function_resolve_complex_event_end_date" title="resolve_complex_event_end_date() :: An event may have a complex end date (e.g. 4th Friday)."><span class="description">An event may have a complex end date (e.g. 4th Friday).</span><pre>resolve_complex_event_end_date</pre></a></li>
+<li class="function  "><a href="#function_start_find_concrete_day_of_month_wrap" title="start_find_concrete_day_of_month_wrap() :: Find the concrete start day of a month for an event row."><span class="description">Find the concrete start day of a month for an event row.</span><pre>start_find_concrete_day_of_month_wrap</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_DETECT_CONFLICT_SCOPE_ALL" title="DETECT_CONFLICT_SCOPE_ALL() :: "><span class="description">DETECT_CONFLICT_SCOPE_ALL</span><pre>DETECT_CONFLICT_SCOPE_ALL</pre></a></li>
+<li class="constant  "><a href="#constant_DETECT_CONFLICT_SCOPE_NONE" title="DETECT_CONFLICT_SCOPE_NONE() :: "><span class="description">DETECT_CONFLICT_SCOPE_NONE</span><pre>DETECT_CONFLICT_SCOPE_NONE</pre></a></li>
+<li class="constant  "><a href="#constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER" title="DETECT_CONFLICT_SCOPE_SAME_MEMBER() :: "><span class="description">DETECT_CONFLICT_SCOPE_SAME_MEMBER</span><pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER</pre></a></li>
+<li class="constant  "><a href="#constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE" title="DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE() :: "><span class="description">DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE</span><pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE</pre></a></li>
+<li class="constant  "><a href="#constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL" title="DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL() :: "><span class="description">DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL</span><pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/calendar.html">calendar</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_calendar_event"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_calendar_event " data-toggle="collapse" data-target=".function_add_calendar_event .collapse" title="">
+<h2>Add a calendar event.</h2>
+<pre>add_calendar_event(\AUTO_LINK $type, \SHORT_TEXT $recurrence, \?integer $recurrences, \BINARY $seg_recurrences, \SHORT_TEXT $title, \LONG_TEXT $content, integer $priority, integer $start_year, integer $start_month, integer $start_day, \ID_TEXT $start_monthly_spec_type, integer $start_hour, integer $start_minute, \?integer $end_year<code> = null</code>, \?integer $end_month<code> = null</code>, \?integer $end_day<code> = null</code>, \ID_TEXT $end_monthly_spec_type<code> = 'day_of_month'</code>, \?integer $end_hour<code> = null</code>, \?integer $end_minute<code> = null</code>, \?ID_TEXT $timezone<code> = null</code>, \BINARY $do_timezone_conv<code> = 1</code>, \?MEMBER $member_calendar<code> = null</code>, \BINARY $validated<code> = 1</code>, \BINARY $allow_rating<code> = 1</code>, \SHORT_INTEGER $allow_comments<code> = 1</code>, \BINARY $allow_trackbacks<code> = 1</code>, \LONG_TEXT $notes<code> = ''</code>, \?MEMBER $submitter<code> = null</code>, integer $views<code> = 0</code>, \?TIME $add_time<code> = null</code>, \?TIME $edit_time<code> = null</code>, \?AUTO_LINK $id<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 5</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\AUTO_LINK</code><p>The event type</p></div>
+<div class="subelement argument">
+<h4>$recurrence</h4>
+<code>\SHORT_TEXT</code><p>The recurrence code (set to 'none' for no recurrences: blank means infinite and will basically time-out Composr)</p></div>
+<div class="subelement argument">
+<h4>$recurrences</h4>
+<code>\?integer</code><p>The number of recurrences (null: none/infinite)</p></div>
+<div class="subelement argument">
+<h4>$seg_recurrences</h4>
+<code>\BINARY</code><p>Whether to segregate the comment-topics/rating/trackbacks per-recurrence</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the event</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\LONG_TEXT</code><p>The full text describing the event</p></div>
+<div class="subelement argument">
+<h4>$priority</h4>
+<code>integer</code><p>The priority</p></div>
+<div class="subelement argument">
+<h4>$start_year</h4>
+<code>integer</code><p>The year the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_month</h4>
+<code>integer</code><p>The month the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_day</h4>
+<code>integer</code><p>The day the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for start date</p></div>
+<div class="subelement argument">
+<h4>$start_hour</h4>
+<code>integer</code><p>The hour the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_minute</h4>
+<code>integer</code><p>The minute the event starts at</p></div>
+<div class="subelement argument">
+<h4>$end_year</h4>
+<code>\?integer</code><p>The year the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_month</h4>
+<code>\?integer</code><p>The month the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_day</h4>
+<code>\?integer</code><p>The day the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for end date</p></div>
+<div class="subelement argument">
+<h4>$end_hour</h4>
+<code>\?integer</code><p>The hour the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_minute</h4>
+<code>\?integer</code><p>The minute the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\?ID_TEXT</code><p>The timezone for the event (null: current user's timezone)</p></div>
+<div class="subelement argument">
+<h4>$do_timezone_conv</h4>
+<code>\BINARY</code><p>Whether the time should be presented in the viewer's own timezone</p></div>
+<div class="subelement argument">
+<h4>$member_calendar</h4>
+<code>\?MEMBER</code><p>The member's calendar it will be on (null: not on a specific member's calendar)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the event has been validated</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the event may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the event may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the event</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The event submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views so far</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>The edit time (null: never)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the event</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_event_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_event_type " data-toggle="collapse" data-target=".function_add_event_type .collapse" title="">
+<h2>Add a calendar event type.</h2>
+<pre>add_event_type(\SHORT_TEXT $title, \ID_TEXT $logo, \URLPATH $external_feed<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the event type</p></div>
+<div class="subelement argument">
+<h4>$logo</h4>
+<code>\ID_TEXT</code><p>The theme image code</p></div>
+<div class="subelement argument">
+<h4>$external_feed</h4>
+<code>\URLPATH</code><p>URL to external feed to associate with this event type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the event type</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_adjust_event_dates_for_a_recurrence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_adjust_event_dates_for_a_recurrence " data-toggle="collapse" data-target=".function_adjust_event_dates_for_a_recurrence .collapse" title="">
+<h2>Adjust an event row to match a recurrence on a specific day.</h2>
+<pre>adjust_event_dates_for_a_recurrence(string $day, array $event, string $timezone) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>string</code><p>A day (Y-m-d)</p></div>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>The event row</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>string</code><p>Timezone of the viewer</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Adjusted event row</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cal_get_end_utctime_for_event"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cal_get_end_utctime_for_event " data-toggle="collapse" data-target=".function_cal_get_end_utctime_for_event .collapse" title="">
+<h2>Get the UTC end time for a specified UTC time event.</h2>
+<pre>cal_get_end_utctime_for_event(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type, \?integer $hour, \?integer $minute, boolean $show_in_users_timezone) : \TIME</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>Timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<div class="subelement argument">
+<h4>$hour</h4>
+<code>\?integer</code><p>Hour (null: end hour of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)</p></div>
+<div class="subelement argument">
+<h4>$minute</h4>
+<code>\?integer</code><p>Minute (null: end minute of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)</p></div>
+<div class="subelement argument">
+<h4>$show_in_users_timezone</h4>
+<code>boolean</code><p>Whether the time should be converted to the viewer's own timezone instead.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\TIME</code>Timestamp</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cal_get_start_utctime_for_event"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cal_get_start_utctime_for_event " data-toggle="collapse" data-target=".function_cal_get_start_utctime_for_event .collapse" title="">
+<h2>Get the UTC start time for a specified UTC time event.</h2>
+<pre>cal_get_start_utctime_for_event(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type, \?integer $hour, \?integer $minute, boolean $show_in_users_timezone) : \TIME</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>The timezone it is in; used to derive $hour and $minute if those are NULL, such that they start the day correctly for this timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<div class="subelement argument">
+<h4>$hour</h4>
+<code>\?integer</code><p>Hour (null: start hour of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)</p></div>
+<div class="subelement argument">
+<h4>$minute</h4>
+<code>\?integer</code><p>Minute (null: start minute of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)</p></div>
+<div class="subelement argument">
+<h4>$show_in_users_timezone</h4>
+<code>boolean</code><p>Whether the time will be converted to the $timezone instead of UTC <em>later</em>. If not then the "UTC time" returned is actually guaged for $timezone, as that's how it was opted to be displayed.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\TIME</code>Timestamp</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_cal_utctime_to_usertime"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_cal_utctime_to_usertime " data-toggle="collapse" data-target=".function_cal_utctime_to_usertime .collapse" title="">
+<h2>Put a timestamp into the correct timezone for being reported onto the calendar.</h2>
+<pre>cal_utctime_to_usertime(\TIME $utc_timestamp, \ID_TEXT $default_timezone, boolean $show_in_users_timezone) : \TIME</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$utc_timestamp</h4>
+<code>\TIME</code><p>Timestamp (proper UTC timestamp, not in user time)</p></div>
+<div class="subelement argument">
+<h4>$default_timezone</h4>
+<code>\ID_TEXT</code><p>The timezone associated with the event (the passed $utc_timestamp should NOT be relative to this timezone, that must be UTC) THIS PARAMETER IS NOT ACTUALLY USED.</p></div>
+<div class="subelement argument">
+<h4>$show_in_users_timezone</h4>
+<code>boolean</code><p>Whether the time should be converted to the viewer's own timezone instead</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\TIME</code>Altered timestamp</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_calendar_matches"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_calendar_matches " data-toggle="collapse" data-target=".function_calendar_matches .collapse" title="">
+<h2>Detect calendar matches in a time period, in user-time.</h2>
+<pre>calendar_matches(\MEMBER $auth_member_id, \MEMBER $member_id, boolean $restrict, \?TIME $period_start, \?TIME $period_end, \?array $filter<code> = null</code>, boolean $do_rss<code> = true</code>, \?BINARY $private<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$auth_member_id</h4>
+<code>\MEMBER</code><p>The member we are running authentication against</p></div>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to detect matches for</p></div>
+<div class="subelement argument">
+<h4>$restrict</h4>
+<code>boolean</code><p>Whether to restrict only to viewable events for the current member (rarely pass this as false!)</p></div>
+<div class="subelement argument">
+<h4>$period_start</h4>
+<code>\?TIME</code><p>The timestamp that found times must exceed. In user-time (null: use find_periods_recurrence default)</p></div>
+<div class="subelement argument">
+<h4>$period_end</h4>
+<code>\?TIME</code><p>The timestamp that found times must not exceed. In user-time (null: use find_periods_recurrence default)</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?array</code><p>The type filter (null: none)</p></div>
+<div class="subelement argument">
+<h4>$do_rss</h4>
+<code>boolean</code><p>Whether to include RSS/iCal events in the results</p></div>
+<div class="subelement argument">
+<h4>$private</h4>
+<code>\?BINARY</code><p>Whether to show private events (1) or public events (0) (null: both public and private)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of events happening, with time details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_event_types"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_event_types " data-toggle="collapse" data-target=".function_create_selection_list_event_types .collapse" title="">
+<h2>Get a list of event types, taking security into account against the current member.</h2>
+<pre>create_selection_list_event_types(\?AUTO_LINK $it<code> = null</code>, \?TIME $updated_since<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The event type to select by default (null: none)</p></div>
+<div class="subelement argument">
+<h4>$updated_since</h4>
+<code>\?TIME</code><p>Time from which content must be updated (null: no limit).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_events"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_events " data-toggle="collapse" data-target=".function_create_selection_list_events .collapse" title="">
+<h2>Get a list of events to edit.</h2>
+<pre>create_selection_list_events(\?MEMBER $only_owned, \?AUTO_LINK $it, boolean $edit_viewable_events<code> = true</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$only_owned</h4>
+<code>\?MEMBER</code><p>Only show events owned by this member (null: no such limitation)</p></div>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>Event to select by default (null: no specific default)</p></div>
+<div class="subelement argument">
+<h4>$edit_viewable_events</h4>
+<code>boolean</code><p>Whether owned public events should be shown</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_date_from_week_of_year"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_date_from_week_of_year " data-toggle="collapse" data-target=".function_date_from_week_of_year .collapse" title="">
+<h2>Converts year+week to year+month+day. This is really complex. The first week of a year may actually start in December. The first day of the first week is a Monday or a Sunday, depending on configuration.</h2>
+<pre>date_from_week_of_year(integer $year, integer $week) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year #</p></div>
+<div class="subelement argument">
+<h4>$week</h4>
+<code>integer</code><p>Week #</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Month #,Day #,Year #</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_date_range"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_date_range " data-toggle="collapse" data-target=".function_date_range .collapse" title="">
+<h2>Create a neatly human-readable date range, using various user-friendly readability tricks.</h2>
+<pre>date_range(\TIME $from, \?TIME $to, boolean $do_time<code> = true</code>, boolean $force_absolute<code> = false</code>, string $timezone<code> = ''</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$from</h4>
+<code>\TIME</code><p>From time in user time</p></div>
+<div class="subelement argument">
+<h4>$to</h4>
+<code>\?TIME</code><p>To time in user time (null: no actual to time)</p></div>
+<div class="subelement argument">
+<h4>$do_time</h4>
+<code>boolean</code><p>Whether time is included in this date range</p></div>
+<div class="subelement argument">
+<h4>$force_absolute</h4>
+<code>boolean</code><p>Whether to force absolute display</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>string</code><p>Display timezone</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Textual specially-formatted range</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_calendar_event"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_calendar_event " data-toggle="collapse" data-target=".function_delete_calendar_event .collapse" title="">
+<h2>Delete a calendar event.</h2>
+<pre>delete_calendar_event(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the event</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_event_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_event_type " data-toggle="collapse" data-target=".function_delete_event_type .collapse" title="">
+<h2>Delete a calendar event type.</h2>
+<pre>delete_event_type(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the event type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_detect_conflicts"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_detect_conflicts " data-toggle="collapse" data-target=".function_detect_conflicts .collapse" title="">
+<h2>Detect conflicts with an event at a certain time.</h2>
+<pre>detect_conflicts(\MEMBER $member_id, \?AUTO_LINK $skip_id, \?integer $start_year, \?integer $start_month, \?integer $start_day, \ID_TEXT $start_monthly_spec_type, \?integer $start_hour, \?integer $start_minute, \?integer $end_year, \?integer $end_month, \?integer $end_day, \ID_TEXT $end_monthly_spec_type, \?integer $end_hour, \?integer $end_minute, string $recurrence, \?integer $recurrences, \AUTO_LINK $type, \?MEMBER $member_calendar, integer $scope_type) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>NB: Only detects future conflicts, not conflicts on past scheduling.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to detect conflicts for</p></div>
+<div class="subelement argument">
+<h4>$skip_id</h4>
+<code>\?AUTO_LINK</code><p>The event ID that we are detecting conflicts with (we need this so we don't think we conflict with ourself) (null: not added yet)</p></div>
+<div class="subelement argument">
+<h4>$start_year</h4>
+<code>\?integer</code><p>The year the event starts at. This and the below are in server time (null: default)</p></div>
+<div class="subelement argument">
+<h4>$start_month</h4>
+<code>\?integer</code><p>The month the event starts at (null: default)</p></div>
+<div class="subelement argument">
+<h4>$start_day</h4>
+<code>\?integer</code><p>The day the event starts at (null: default)</p></div>
+<div class="subelement argument">
+<h4>$start_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for start date</p></div>
+<div class="subelement argument">
+<h4>$start_hour</h4>
+<code>\?integer</code><p>The hour the event starts at (null: default)</p></div>
+<div class="subelement argument">
+<h4>$start_minute</h4>
+<code>\?integer</code><p>The minute the event starts at (null: default)</p></div>
+<div class="subelement argument">
+<h4>$end_year</h4>
+<code>\?integer</code><p>The year the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_month</h4>
+<code>\?integer</code><p>The month the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_day</h4>
+<code>\?integer</code><p>The day the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for end date</p></div>
+<div class="subelement argument">
+<h4>$end_hour</h4>
+<code>\?integer</code><p>The hour the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_minute</h4>
+<code>\?integer</code><p>The minute the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$recurrence</h4>
+<code>string</code><p>The event recurrence</p></div>
+<div class="subelement argument">
+<h4>$recurrences</h4>
+<code>\?integer</code><p>The number of recurrences (null: none/infinite)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\AUTO_LINK</code><p>The event type</p></div>
+<div class="subelement argument">
+<h4>$member_calendar</h4>
+<code>\?MEMBER</code><p>The member calendar (null: none)</p></div>
+<div class="subelement argument">
+<h4>$scope_type</h4>
+<code>integer</code><p>The scope type, DETECT_CONFLICT<em>SCOPE</em>*</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>Information about conflicts (null: none)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_detect_happening_at"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_detect_happening_at " data-toggle="collapse" data-target=".function_detect_happening_at .collapse" title="">
+<h2>Detect conflicts with an event in certain time periods.</h2>
+<pre>detect_happening_at(\MEMBER $member_id, \?AUTO_LINK $skip_id, array $our_times, boolean $restrict<code> = true</code>, \?TIME $period_start<code> = null</code>, \?TIME $period_end<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member_id</h4>
+<code>\MEMBER</code><p>The member to detect conflicts for</p></div>
+<div class="subelement argument">
+<h4>$skip_id</h4>
+<code>\?AUTO_LINK</code><p>The event ID that we are detecting conflicts with (we need this so we don't think we conflict with ourself) (null: not added yet)</p></div>
+<div class="subelement argument">
+<h4>$our_times</h4>
+<code>array</code><p>List of pairs specifying our happening time (in time order)</p></div>
+<div class="subelement argument">
+<h4>$restrict</h4>
+<code>boolean</code><p>Whether to restrict only to viewable events for the current member</p></div>
+<div class="subelement argument">
+<h4>$period_start</h4>
+<code>\?TIME</code><p>The timestamp that found times must exceed. In user-time (null: use find_periods_recurrence default)</p></div>
+<div class="subelement argument">
+<h4>$period_end</h4>
+<code>\?TIME</code><p>The timestamp that found times must not exceed. In user-time (null: use find_periods_recurrence default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of events happening, with time details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dst_boundary_difference_for_recurrence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dst_boundary_difference_for_recurrence " data-toggle="collapse" data-target=".function_dst_boundary_difference_for_recurrence .collapse" title="">
+<h2>An event moved from 'a' to 'b' may have an hour/minute shift due to a DST.</h2>
+<pre>dst_boundary_difference_for_recurrence(integer $a_year, integer $a_month, integer $a_day, integer $b_year, integer $b_month, integer $b_day, \ID_TEXT $timezone) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$a_year</h4>
+<code>integer</code><p>'A' year</p></div>
+<div class="subelement argument">
+<h4>$a_month</h4>
+<code>integer</code><p>'A' month</p></div>
+<div class="subelement argument">
+<h4>$a_day</h4>
+<code>integer</code><p>'A' day</p></div>
+<div class="subelement argument">
+<h4>$b_year</h4>
+<code>integer</code><p>'B' year</p></div>
+<div class="subelement argument">
+<h4>$b_month</h4>
+<code>integer</code><p>'B' month</p></div>
+<div class="subelement argument">
+<h4>$b_day</h4>
+<code>integer</code><p>'B' day</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>The timezone</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: shift in hours, shift in minutes</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_calendar_event"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_calendar_event " data-toggle="collapse" data-target=".function_edit_calendar_event .collapse" title="">
+<h2>Edit a calendar event.</h2>
+<pre>edit_calendar_event(\AUTO_LINK $id, \?AUTO_LINK $type, \SHORT_TEXT $recurrence, \?integer $recurrences, \BINARY $seg_recurrences, \SHORT_TEXT $title, \LONG_TEXT $content, integer $priority, integer $start_year, integer $start_month, integer $start_day, \ID_TEXT $start_monthly_spec_type, integer $start_hour, integer $start_minute, \?integer $end_year, \?integer $end_month, \?integer $end_day, \ID_TEXT $end_monthly_spec_type, \?integer $end_hour, \?integer $end_minute, \?ID_TEXT $timezone, \BINARY $do_timezone_conv, \?MEMBER $member_calendar, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?BINARY $validated, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>range</th>
+<td>1 5</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the event</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\?AUTO_LINK</code><p>The event type (null: default)</p></div>
+<div class="subelement argument">
+<h4>$recurrence</h4>
+<code>\SHORT_TEXT</code><p>The recurrence code</p></div>
+<div class="subelement argument">
+<h4>$recurrences</h4>
+<code>\?integer</code><p>The number of recurrences (null: none/infinite)</p></div>
+<div class="subelement argument">
+<h4>$seg_recurrences</h4>
+<code>\BINARY</code><p>Whether to segregate the comment-topics/rating/trackbacks per-recurrence</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the event</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\LONG_TEXT</code><p>The full text describing the event</p></div>
+<div class="subelement argument">
+<h4>$priority</h4>
+<code>integer</code><p>The priority</p></div>
+<div class="subelement argument">
+<h4>$start_year</h4>
+<code>integer</code><p>The year the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_month</h4>
+<code>integer</code><p>The month the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_day</h4>
+<code>integer</code><p>The day the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for start date</p></div>
+<div class="subelement argument">
+<h4>$start_hour</h4>
+<code>integer</code><p>The hour the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_minute</h4>
+<code>integer</code><p>The minute the event starts at</p></div>
+<div class="subelement argument">
+<h4>$end_year</h4>
+<code>\?integer</code><p>The year the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_month</h4>
+<code>\?integer</code><p>The month the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_day</h4>
+<code>\?integer</code><p>The day the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for end date</p></div>
+<div class="subelement argument">
+<h4>$end_hour</h4>
+<code>\?integer</code><p>The hour the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_minute</h4>
+<code>\?integer</code><p>The minute the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\?ID_TEXT</code><p>The timezone for the event (null: current user's timezone)</p></div>
+<div class="subelement argument">
+<h4>$do_timezone_conv</h4>
+<code>\BINARY</code><p>Whether the time should be presented in the viewer's own timezone</p></div>
+<div class="subelement argument">
+<h4>$member_calendar</h4>
+<code>\?MEMBER</code><p>The member's calendar it will be on (null: not on a specific member's calendar)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\?BINARY</code><p>Whether the event has been validated (null: don't change)</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the event may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the event may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the event</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_event_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_event_type " data-toggle="collapse" data-target=".function_edit_event_type .collapse" title="">
+<h2>Edit a calendar event type.</h2>
+<pre>edit_event_type(\AUTO_LINK $id, \SHORT_TEXT $title, \ID_TEXT $logo, \URLPATH $external_feed) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the event type</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the event type</p></div>
+<div class="subelement argument">
+<h4>$logo</h4>
+<code>\ID_TEXT</code><p>The theme image code</p></div>
+<div class="subelement argument">
+<h4>$external_feed</h4>
+<code>\URLPATH</code><p>URL to external feed to associate with this event type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_end_find_concrete_day_of_month_wrap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_end_find_concrete_day_of_month_wrap " data-toggle="collapse" data-target=".function_end_find_concrete_day_of_month_wrap .collapse" title="">
+<h2>Find the concrete end day of a month for an event row.</h2>
+<pre>end_find_concrete_day_of_month_wrap(array $event) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>Event row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Concrete day</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_abstract_day"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_abstract_day " data-toggle="collapse" data-target=".function_find_abstract_day .collapse" title="">
+<h2>Given a calendar day of month, work out the day of the month within the specified encoding.</h2>
+<pre>find_abstract_day(integer $year, integer $month, integer $day_of_month, \ID_TEXT $monthly_spec_type) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>The concrete year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>The concrete month</p></div>
+<div class="subelement argument">
+<h4>$day_of_month</h4>
+<code>integer</code><p>The concrete day of month</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Concrete day</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_concrete_day_of_month"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_concrete_day_of_month " data-toggle="collapse" data-target=".function_find_concrete_day_of_month .collapse" title="">
+<h2>Given a specially encoded day of month, work out the real day of the month.</h2>
+<pre>find_concrete_day_of_month(integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type, integer $hour, integer $minute, \ID_TEXT $timezone, boolean $show_in_users_timezone) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>The concrete year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>The concrete month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>The encoded day of month</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<div class="subelement argument">
+<h4>$hour</h4>
+<code>integer</code><p>The concrete hour</p></div>
+<div class="subelement argument">
+<h4>$minute</h4>
+<code>integer</code><p>The concrete minute</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>The timezone</p></div>
+<div class="subelement argument">
+<h4>$show_in_users_timezone</h4>
+<code>boolean</code><p>Whether to do a timezone conversion (NB: unused, as this is before conversion to what dates users see - we are only using timezones here to push the nth weekday appropriately to the correct timezone, due to alignment problems)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Concrete day</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_event_end_timestamp"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_event_end_timestamp " data-toggle="collapse" data-target=".function_find_event_end_timestamp .collapse" title="">
+<h2>Find the timestamp of an event's end.</h2>
+<pre>find_event_end_timestamp(array $event) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>Event row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: timestamp, timestamp considering the viewing users timezone</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_event_start_timestamp"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_event_start_timestamp " data-toggle="collapse" data-target=".function_find_event_start_timestamp .collapse" title="">
+<h2>Find the timestamp of an event's start.</h2>
+<pre>find_event_start_timestamp(array $event) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>Event row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: timestamp, timestamp considering the viewing users timezone</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_periods_recurrence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_periods_recurrence " data-toggle="collapse" data-target=".function_find_periods_recurrence .collapse" title="">
+<h2>Find a list of pairs specifying the times the event occurs, for 20 years into the future, in user-time.</h2>
+<pre>find_periods_recurrence(\ID_TEXT $timezone, \BINARY $do_timezone_conv, integer $start_year, integer $start_month, integer $start_day, \ID_TEXT $start_monthly_spec_type, \?integer $start_hour, \?integer $start_minute, \?integer $end_year, \?integer $end_month, \?integer $end_day, \ID_TEXT $end_monthly_spec_type, \?integer $end_hour, \?integer $end_minute, string $recurrence, \?integer $recurrences, \?TIME $period_start<code> = null</code>, \?TIME $period_end<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>The timezone for the event (null: current user's timezone)</p></div>
+<div class="subelement argument">
+<h4>$do_timezone_conv</h4>
+<code>\BINARY</code><p>Whether the time should be converted to the viewer's own timezone</p></div>
+<div class="subelement argument">
+<h4>$start_year</h4>
+<code>integer</code><p>The year the event starts at. This and the below are in server time</p></div>
+<div class="subelement argument">
+<h4>$start_month</h4>
+<code>integer</code><p>The month the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_day</h4>
+<code>integer</code><p>The day the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for start date</p></div>
+<div class="subelement argument">
+<h4>$start_hour</h4>
+<code>\?integer</code><p>The hour the event starts at (null: full day event)</p></div>
+<div class="subelement argument">
+<h4>$start_minute</h4>
+<code>\?integer</code><p>The minute the event starts at (null: full day event)</p></div>
+<div class="subelement argument">
+<h4>$end_year</h4>
+<code>\?integer</code><p>The year the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_month</h4>
+<code>\?integer</code><p>The month the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_day</h4>
+<code>\?integer</code><p>The day the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for end date</p></div>
+<div class="subelement argument">
+<h4>$end_hour</h4>
+<code>\?integer</code><p>The hour the event ends at (null: not a multi day event / all day event)</p></div>
+<div class="subelement argument">
+<h4>$end_minute</h4>
+<code>\?integer</code><p>The minute the event ends at (null: not a multi day event / all day event)</p></div>
+<div class="subelement argument">
+<h4>$recurrence</h4>
+<code>string</code><p>The event recurrence</p></div>
+<div class="subelement argument">
+<h4>$recurrences</h4>
+<code>\?integer</code><p>The number of recurrences (null: none/infinite)</p></div>
+<div class="subelement argument">
+<h4>$period_start</h4>
+<code>\?TIME</code><p>The timestamp that found times must exceed. In user-time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$period_end</h4>
+<code>\?TIME</code><p>The timestamp that found times must not exceed. In user-time (null: 20 years time)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of pairs for period times (timestamps, in user-time). Actually a series of pairs, 'window-bound timestamps' is first pair, then 'true coverage timestamps', then 'true coverage timestamps without timezone conversions'</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_timezone_end_hour_in_utc"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_timezone_end_hour_in_utc " data-toggle="collapse" data-target=".function_find_timezone_end_hour_in_utc .collapse" title="">
+<h2>Find last hour in day for a timezone.</h2>
+<pre>find_timezone_end_hour_in_utc(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>Timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Hour</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_timezone_end_minute_in_utc"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_timezone_end_minute_in_utc " data-toggle="collapse" data-target=".function_find_timezone_end_minute_in_utc .collapse" title="">
+<h2>Find last minute in day for a timezone. Usually 59, but some timezones have 30 min offsets.</h2>
+<pre>find_timezone_end_minute_in_utc(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>Timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Hour</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_timezone_start_hour_in_utc"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_timezone_start_hour_in_utc " data-toggle="collapse" data-target=".function_find_timezone_start_hour_in_utc .collapse" title="">
+<h2>Find first hour in day for a timezone.</h2>
+<pre>find_timezone_start_hour_in_utc(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>Timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Hour</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_timezone_start_minute_in_utc"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_timezone_start_minute_in_utc " data-toggle="collapse" data-target=".function_find_timezone_start_minute_in_utc .collapse" title="">
+<h2>Find first minute in day for a timezone. Usually 0, but some timezones have 30 min offsets.</h2>
+<pre>find_timezone_start_minute_in_utc(\ID_TEXT $timezone, integer $year, integer $month, integer $day, \ID_TEXT $monthly_spec_type) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>Timezone</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>Year</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>Month</p></div>
+<div class="subelement argument">
+<h4>$day</h4>
+<code>integer</code><p>Day</p></div>
+<div class="subelement argument">
+<h4>$monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Hour</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_calendar_event_first_date"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_calendar_event_first_date " data-toggle="collapse" data-target=".function_get_calendar_event_first_date .collapse" title="">
+<h2>Find details of when an event happens. Preferably the next recurrence, but if it is in the past, the first.</h2>
+<pre>get_calendar_event_first_date(\ID_TEXT $timezone, \BINARY $do_timezone_conv, integer $start_year, integer $start_month, integer $start_day, \ID_TEXT $start_monthly_spec_type, integer $start_hour, integer $start_minute, \?integer $end_year, \?integer $end_month, \?integer $end_day, \ID_TEXT $end_monthly_spec_type, \?integer $end_hour, \?integer $end_minute, string $recurrence, \?integer $recurrences, boolean $force_first<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\ID_TEXT</code><p>The timezone for the event (null: current user's timezone)</p></div>
+<div class="subelement argument">
+<h4>$do_timezone_conv</h4>
+<code>\BINARY</code><p>Whether the time should be converted to the viewer's own timezone</p></div>
+<div class="subelement argument">
+<h4>$start_year</h4>
+<code>integer</code><p>The year the event starts at. This and the below are in server time</p></div>
+<div class="subelement argument">
+<h4>$start_month</h4>
+<code>integer</code><p>The month the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_day</h4>
+<code>integer</code><p>The day the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for start date</p></div>
+<div class="subelement argument">
+<h4>$start_hour</h4>
+<code>integer</code><p>The hour the event starts at</p></div>
+<div class="subelement argument">
+<h4>$start_minute</h4>
+<code>integer</code><p>The minute the event starts at</p></div>
+<div class="subelement argument">
+<h4>$end_year</h4>
+<code>\?integer</code><p>The year the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_month</h4>
+<code>\?integer</code><p>The month the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_day</h4>
+<code>\?integer</code><p>The day the event ends at (null: not a multi day event)</p></div>
+<div class="subelement argument">
+<h4>$end_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>In-month specification type for end date</p></div>
+<div class="subelement argument">
+<h4>$end_hour</h4>
+<code>\?integer</code><p>The hour the event ends at (null: not a multi day event / all day event)</p></div>
+<div class="subelement argument">
+<h4>$end_minute</h4>
+<code>\?integer</code><p>The minute the event ends at (null: not a multi day event / all day event)</p></div>
+<div class="subelement argument">
+<h4>$recurrence</h4>
+<code>string</code><p>The event recurrence</p></div>
+<div class="subelement argument">
+<h4>$recurrences</h4>
+<code>\?integer</code><p>The number of recurrences (null: none/infinite)</p></div>
+<div class="subelement argument">
+<h4>$force_first</h4>
+<code>boolean</code><p>Whether to forcibly get the first recurrence, not a future one</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple: Written date [range], from timestamp, to timestamp</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_days_between"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_days_between " data-toggle="collapse" data-target=".function_get_days_between .collapse" title="">
+<h2>Get the number of days between two dates (so first+dif=second).</h2>
+<pre>get_days_between(integer $initial_start_month, integer $initial_start_day, integer $initial_start_year, integer $initial_end_month, integer $initial_end_day, integer $initial_end_year) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$initial_start_month</h4>
+<code>integer</code><p>Start month</p></div>
+<div class="subelement argument">
+<h4>$initial_start_day</h4>
+<code>integer</code><p>Start day</p></div>
+<div class="subelement argument">
+<h4>$initial_start_year</h4>
+<code>integer</code><p>Start year</p></div>
+<div class="subelement argument">
+<h4>$initial_end_month</h4>
+<code>integer</code><p>End month</p></div>
+<div class="subelement argument">
+<h4>$initial_end_day</h4>
+<code>integer</code><p>End day</p></div>
+<div class="subelement argument">
+<h4>$initial_end_year</h4>
+<code>integer</code><p>End year</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The number of days</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_event_data_ical"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_event_data_ical " data-toggle="collapse" data-target=".function_get_event_data_ical .collapse" title="">
+<h2>Get array of an events from node of an imported ical file</h2>
+<pre>get_event_data_ical(array $calendar_nodes) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$calendar_nodes</h4>
+<code>array</code><p>Array of given event details</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Returns array of event details for mapping</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_week_number_for"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_week_number_for " data-toggle="collapse" data-target=".function_get_week_number_for .collapse" title="">
+<h2>Get the week number for a time.</h2>
+<pre>get_week_number_for(\TIME $timestamp, boolean $no_year<code> = false</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$timestamp</h4>
+<code>\TIME</code><p>The week timestamp</p></div>
+<div class="subelement argument">
+<h4>$no_year</h4>
+<code>boolean</code><p>Whether to do it contextually to the year, rather than including the year</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The week number</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ical_escape"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ical_escape " data-toggle="collapse" data-target=".function_ical_escape .collapse" title="">
+<h2>Escapes a string as per the ical format.</h2>
+<pre>ical_escape(string $in) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$in</h4>
+<code>string</code><p>Input</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Output</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_ical_import"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_ical_import " data-toggle="collapse" data-target=".function_ical_import .collapse" title="">
+<h2>Import ical events to members's event calendar.</h2>
+<pre>ical_import(\PATH $file_name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$file_name</h4>
+<code>\PATH</code><p>File path</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_init__calendar"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_init__calendar " data-toggle="collapse" data-target=".function_init__calendar .collapse" title="">
+<h2>Standard code module init function.</h2>
+<pre>init__calendar() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_monthly_spec_type_chooser"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_monthly_spec_type_chooser " data-toggle="collapse" data-target=".function_monthly_spec_type_chooser .collapse" title="">
+<h2>Choose how a recurring monthly event should be encoded.</h2>
+<pre>monthly_spec_type_chooser(integer $day_of_month, integer $month, integer $year, \ID_TEXT $default_monthly_spec_type<code> = 'day_of_month'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This function is timezone-agnostic.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$day_of_month</h4>
+<code>integer</code><p>The concrete day</p></div>
+<div class="subelement argument">
+<h4>$month</h4>
+<code>integer</code><p>The concrete month</p></div>
+<div class="subelement argument">
+<h4>$year</h4>
+<code>integer</code><p>The concrete year</p></div>
+<div class="subelement argument">
+<h4>$default_monthly_spec_type</h4>
+<code>\ID_TEXT</code><p>Current in-month specification type</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Chooser</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_output_ical"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_output_ical " data-toggle="collapse" data-target=".function_output_ical .collapse" title="">
+<h2>Outputs the logged-in member's calendar view to ical.</h2>
+<pre>output_ical() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_regenerate_event_reminder_jobs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_regenerate_event_reminder_jobs " data-toggle="collapse" data-target=".function_regenerate_event_reminder_jobs .collapse" title="">
+<h2>Regenerate all the calendar jobs for reminders for next occurance of an event (because the event was added or edited).</h2>
+<pre>regenerate_event_reminder_jobs(\AUTO_LINK $id, boolean $force<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the event</p></div>
+<div class="subelement argument">
+<h4>$force</h4>
+<code>boolean</code><p>Force evaluation even if it's in the past. Only valid for code events</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_calendar_type_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_calendar_type_box " data-toggle="collapse" data-target=".function_render_calendar_type_box .collapse" title="">
+<h2>Get Tempcode for a calendar type 'feature box' for the given row</h2>
+<pre>render_calendar_type_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_event_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_event_box " data-toggle="collapse" data-target=".function_render_event_box .collapse" title="">
+<h2>Render an event box.</h2>
+<pre>render_event_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>Event row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>Zone to link through to</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The event box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_resolve_complex_event_end_date"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_resolve_complex_event_end_date " data-toggle="collapse" data-target=".function_resolve_complex_event_end_date .collapse" title="">
+<h2>An event may have a complex end date (e.g. 4th Friday).</h2>
+<pre>resolve_complex_event_end_date(array $event) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>We want to fix it to a calendar day for the recurrence (which we assume is already fixed into the event row).
+We also want to define it (trick it) to be stated in the same month of the start date, even if that means the days will exceed the number of days in a month.
+This will allow us to do shifts around in calendar-space.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>Event row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Event row</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_start_find_concrete_day_of_month_wrap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_start_find_concrete_day_of_month_wrap " data-toggle="collapse" data-target=".function_start_find_concrete_day_of_month_wrap .collapse" title="">
+<h2>Find the concrete start day of a month for an event row.</h2>
+<pre>start_find_concrete_day_of_month_wrap(array $event) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$event</h4>
+<code>array</code><p>Event row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Concrete day</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_DETECT_CONFLICT_SCOPE_ALL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DETECT_CONFLICT_SCOPE_ALL" data-toggle="collapse" data-target=".constant_DETECT_CONFLICT_SCOPE_ALL .collapse" title="">
+<h2>DETECT_CONFLICT_SCOPE_ALL</h2>
+<pre>DETECT_CONFLICT_SCOPE_ALL = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DETECT_CONFLICT_SCOPE_NONE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DETECT_CONFLICT_SCOPE_NONE" data-toggle="collapse" data-target=".constant_DETECT_CONFLICT_SCOPE_NONE .collapse" title="">
+<h2>DETECT_CONFLICT_SCOPE_NONE</h2>
+<pre>DETECT_CONFLICT_SCOPE_NONE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER" data-toggle="collapse" data-target=".constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER .collapse" title="">
+<h2>DETECT_CONFLICT_SCOPE_SAME_MEMBER</h2>
+<pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE" data-toggle="collapse" data-target=".constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE .collapse" title="">
+<h2>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE</h2>
+<pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL" data-toggle="collapse" data-target=".constant_DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL .collapse" title="">
+<h2>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL</h2>
+<pre>DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/calendar.html">calendar</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:32+01:00.<br></footer></div>
+</div>
+</body>
+</html>

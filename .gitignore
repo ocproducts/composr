@@ -78,7 +78,6 @@ default/images/*/*__*.jpeg
 /dos.yaml
 /queue.yaml
 /iirf.ini
-/docs/api
 *test.png
 /info.php
 /_config.php

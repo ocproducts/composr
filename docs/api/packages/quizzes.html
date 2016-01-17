@@ -1,0 +1,521 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/quizzes.html" title="quizzes"><i class="icon-folder-open"></i>quizzes</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_quiz" title="add_quiz() :: Add a quiz."><span class="description">Add a quiz.</span><pre>add_quiz</pre></a></li>
+<li class="function  "><a href="#function_delete_quiz" title="delete_quiz() :: Delete a quiz."><span class="description">Delete a quiz.</span><pre>delete_quiz</pre></a></li>
+<li class="function  "><a href="#function_edit_quiz" title="edit_quiz() :: Edit a quiz."><span class="description">Edit a quiz.</span><pre>edit_quiz</pre></a></li>
+<li class="function  "><a href="#function_get_quiz_data_for_csv" title="get_quiz_data_for_csv() :: Get quiz data for exporting it as a CSV."><span class="description">Get quiz data for exporting it as a CSV.</span><pre>get_quiz_data_for_csv</pre></a></li>
+<li class="function  "><a href="#function_load_quiz_questions_to_string" title="load_quiz_questions_to_string() :: Load the questions for a quiz into a single string."><span class="description">Load the questions for a quiz into a single string.</span><pre>load_quiz_questions_to_string</pre></a></li>
+<li class="function  "><a href="#function_parse_quiz_question_line" title="parse_quiz_question_line() :: Parse a quiz question line, to find the question options."><span class="description">Parse a quiz question line, to find the question options.</span><pre>parse_quiz_question_line</pre></a></li>
+<li class="function  "><a href="#function_render_quiz" title="render_quiz() :: Get quiz data for exporting it as CSV."><span class="description">Get quiz data for exporting it as CSV.</span><pre>render_quiz</pre></a></li>
+<li class="function  "><a href="#function_render_quiz_box" title="render_quiz_box() :: Show a quiz box."><span class="description">Show a quiz box.</span><pre>render_quiz_box</pre></a></li>
+<li class="function  "><a href="#function_score_quiz" title="score_quiz() :: Score a particular quiz entry."><span class="description">Score a particular quiz entry.</span><pre>score_quiz</pre></a></li>
+<li class="function  "><a href="#function_typed_answer_is_correct" title="typed_answer_is_correct() :: Is a typed quiz answer correct?"><span class="description">Is a typed quiz answer correct?</span><pre>typed_answer_is_correct</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/quizzes.html">quizzes</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_quiz"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_quiz " data-toggle="collapse" data-target=".function_add_quiz .collapse" title="">
+<h2>Add a quiz.</h2>
+<pre>add_quiz(\SHORT_TEXT $name, \?integer $timeout, \LONG_TEXT $start_text, \LONG_TEXT $end_text, \LONG_TEXT $end_text_fail, \LONG_TEXT $notes, integer $percentage, \?TIME $open_time, \?TIME $close_time, integer $num_winners, integer $redo_time, \ID_TEXT $type, \BINARY $validated, string $text, \?MEMBER $submitter<code> = null</code>, integer $points_for_passing<code> = 0</code>, \?AUTO_LINK $tied_newsletter<code> = null</code>, \BINARY $reveal_answers<code> = 0</code>, \BINARY $shuffle_questions<code> = 0</code>, \BINARY $shuffle_answers<code> = 0</code>, \?TIME $add_time<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>SURVEY COMPETITION TEST</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The name of the quiz</p></div>
+<div class="subelement argument">
+<h4>$timeout</h4>
+<code>\?integer</code><p>The number of minutes allowed for completion (null: NA)</p></div>
+<div class="subelement argument">
+<h4>$start_text</h4>
+<code>\LONG_TEXT</code><p>The text shown at the start of the quiz</p></div>
+<div class="subelement argument">
+<h4>$end_text</h4>
+<code>\LONG_TEXT</code><p>The text shown at the end of the quiz</p></div>
+<div class="subelement argument">
+<h4>$end_text_fail</h4>
+<code>\LONG_TEXT</code><p>The text shown at the end of the quiz on failure</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Notes</p></div>
+<div class="subelement argument">
+<h4>$percentage</h4>
+<code>integer</code><p>Percentage correctness required for competition</p></div>
+<div class="subelement argument">
+<h4>$open_time</h4>
+<code>\?TIME</code><p>The time the quiz is opened (null: now)</p></div>
+<div class="subelement argument">
+<h4>$close_time</h4>
+<code>\?TIME</code><p>The time the quiz is closed (null: never)</p></div>
+<div class="subelement argument">
+<h4>$num_winners</h4>
+<code>integer</code><p>The number of winners for this if it is a competition</p></div>
+<div class="subelement argument">
+<h4>$redo_time</h4>
+<code>integer</code><p>The minimum number of hours between attempts</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether this is validated</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Text for questions</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The member adding it (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$points_for_passing</h4>
+<code>integer</code><p>The number of points awarded for completing/passing the quiz/test</p></div>
+<div class="subelement argument">
+<h4>$tied_newsletter</h4>
+<code>\?AUTO_LINK</code><p>Newsletter for which a member must be on to enter (null: none)</p></div>
+<div class="subelement argument">
+<h4>$reveal_answers</h4>
+<code>\BINARY</code><p>Whether to reveal correct answers after the quiz is complete, so that the answerer can learn from the experience</p></div>
+<div class="subelement argument">
+<h4>$shuffle_questions</h4>
+<code>\BINARY</code><p>Whether to shuffle questions, to make cheating a bit harder</p></div>
+<div class="subelement argument">
+<h4>$shuffle_answers</h4>
+<code>\BINARY</code><p>Whether to shuffle multiple-choice answers, to make cheating a bit harder</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>The add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_quiz"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_quiz " data-toggle="collapse" data-target=".function_delete_quiz .collapse" title="">
+<h2>Delete a quiz.</h2>
+<pre>delete_quiz(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_quiz"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_quiz " data-toggle="collapse" data-target=".function_edit_quiz .collapse" title="">
+<h2>Edit a quiz.</h2>
+<pre>edit_quiz(\AUTO_LINK $id, \SHORT_TEXT $name, \?integer $timeout, \LONG_TEXT $start_text, \LONG_TEXT $end_text, \LONG_TEXT $end_text_fail, \LONG_TEXT $notes, integer $percentage, \?TIME $open_time, \?TIME $close_time, integer $num_winners, integer $redo_time, \ID_TEXT $type, \BINARY $validated, string $text, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, integer $points_for_passing<code> = 0</code>, \?AUTO_LINK $tied_newsletter<code> = null</code>, \BINARY $reveal_answers<code> = 0</code>, \BINARY $shuffle_questions<code> = 0</code>, \BINARY $shuffle_answers<code> = 0</code>, \?TIME $add_time<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>SURVEY COMPETITION TEST</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The name of the quiz</p></div>
+<div class="subelement argument">
+<h4>$timeout</h4>
+<code>\?integer</code><p>The number of minutes allowed for completion (null: NA)</p></div>
+<div class="subelement argument">
+<h4>$start_text</h4>
+<code>\LONG_TEXT</code><p>The text shown at the start of the quiz</p></div>
+<div class="subelement argument">
+<h4>$end_text</h4>
+<code>\LONG_TEXT</code><p>The text shown at the end of the quiz</p></div>
+<div class="subelement argument">
+<h4>$end_text_fail</h4>
+<code>\LONG_TEXT</code><p>The text shown at the end of the quiz on failure</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Notes</p></div>
+<div class="subelement argument">
+<h4>$percentage</h4>
+<code>integer</code><p>Percentage correctness required for competition</p></div>
+<div class="subelement argument">
+<h4>$open_time</h4>
+<code>\?TIME</code><p>The time the quiz is opened (null: now)</p></div>
+<div class="subelement argument">
+<h4>$close_time</h4>
+<code>\?TIME</code><p>The time the quiz is closed (null: never)</p></div>
+<div class="subelement argument">
+<h4>$num_winners</h4>
+<code>integer</code><p>The number of winners for this if it is a competition</p></div>
+<div class="subelement argument">
+<h4>$redo_time</h4>
+<code>integer</code><p>The minimum number of hours between attempts</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether this is validated</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Text for questions</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$points_for_passing</h4>
+<code>integer</code><p>The number of points awarded for completing/passing the quiz/test</p></div>
+<div class="subelement argument">
+<h4>$tied_newsletter</h4>
+<code>\?AUTO_LINK</code><p>Newsletter for which a member must be on to enter (null: none)</p></div>
+<div class="subelement argument">
+<h4>$reveal_answers</h4>
+<code>\BINARY</code><p>Whether to reveal correct answers after the quiz is complete, so that the answerer can learn from the experience</p></div>
+<div class="subelement argument">
+<h4>$shuffle_questions</h4>
+<code>\BINARY</code><p>Whether to shuffle questions, to make cheating a bit harder</p></div>
+<div class="subelement argument">
+<h4>$shuffle_answers</h4>
+<code>\BINARY</code><p>Whether to shuffle multiple-choice answers, to make cheating a bit harder</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_quiz_data_for_csv"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_quiz_data_for_csv " data-toggle="collapse" data-target=".function_get_quiz_data_for_csv .collapse" title="">
+<h2>Get quiz data for exporting it as a CSV.</h2>
+<pre>get_quiz_data_for_csv(\AUTO_LINK $quiz_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$quiz_id</h4>
+<code>\AUTO_LINK</code><p>Quiz ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Quiz data array</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_load_quiz_questions_to_string"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_load_quiz_questions_to_string " data-toggle="collapse" data-target=".function_load_quiz_questions_to_string .collapse" title="">
+<h2>Load the questions for a quiz into a single string.</h2>
+<pre>load_quiz_questions_to_string(\AUTO_LINK $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The quiz ID</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The text string</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parse_quiz_question_line"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parse_quiz_question_line " data-toggle="collapse" data-target=".function_parse_quiz_question_line .collapse" title="">
+<h2>Parse a quiz question line, to find the question options.</h2>
+<pre>parse_quiz_question_line(string $question, array $answers, string $question_extra_text<code> = ''</code>, boolean $do_validation<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$question</h4>
+<code>string</code><p>The quiz question line</p></div>
+<div class="subelement argument">
+<h4>$answers</h4>
+<code>array</code><p>List of possible answers (used for validation purposes)</p></div>
+<div class="subelement argument">
+<h4>$question_extra_text</h4>
+<code>string</code><p>The quiz question description</p></div>
+<div class="subelement argument">
+<h4>$do_validation</h4>
+<code>boolean</code><p>Whether to perform validation / corrections</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple: Question, question type, required?, marked?, question extra text (description)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_quiz"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_quiz " data-toggle="collapse" data-target=".function_render_quiz .collapse" title="">
+<h2>Get quiz data for exporting it as CSV.</h2>
+<pre>render_quiz(array $questions) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$questions</h4>
+<code>array</code><p>The quiz questions</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The rendered quiz</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_quiz_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_quiz_box " data-toggle="collapse" data-target=".function_render_quiz_box .collapse" title="">
+<h2>Show a quiz box.</h2>
+<pre>render_quiz_box(array $row, string $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>string</code><p>The zone to show in</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The rendered quiz link</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_score_quiz"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_score_quiz " data-toggle="collapse" data-target=".function_score_quiz .collapse" title="">
+<h2>Score a particular quiz entry.</h2>
+<pre>score_quiz(\AUTO_LINK $entry_id, \?AUTO_LINK $quiz_id<code> = null</code>, \?array $quiz<code> = null</code>, \?array $questions<code> = null</code>, boolean $reveal_all<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$entry_id</h4>
+<code>\AUTO_LINK</code><p>Entry ID</p></div>
+<div class="subelement argument">
+<h4>$quiz_id</h4>
+<code>\?AUTO_LINK</code><p>Quiz ID (null: look up from entry ID)</p></div>
+<div class="subelement argument">
+<h4>$quiz</h4>
+<code>\?array</code><p>Quiz row (null: look up from entry ID)</p></div>
+<div class="subelement argument">
+<h4>$questions</h4>
+<code>\?array</code><p>Question rows (null: look up from entry ID)</p></div>
+<div class="subelement argument">
+<h4>$reveal_all</h4>
+<code>boolean</code><p>Whether to show answers, regardless of whether the quiz is set to do so</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A tuple of quiz result details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_typed_answer_is_correct"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_typed_answer_is_correct " data-toggle="collapse" data-target=".function_typed_answer_is_correct .collapse" title="">
+<h2>Is a typed quiz answer correct?</h2>
+<pre>typed_answer_is_correct(string $given_answer, array $all_answers, boolean $strict<code> = false</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/quizzes.html">quizzes</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$given_answer</h4>
+<code>string</code><p>The given (typed) answer</p></div>
+<div class="subelement argument">
+<h4>$all_answers</h4>
+<code>array</code><p>Answer rows</p></div>
+<div class="subelement argument">
+<h4>$strict</h4>
+<code>boolean</code><p>Whether to do a strict check</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is correct</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:42+01:00.<br></footer></div>
+</div>
+</body>
+</html>

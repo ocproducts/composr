@@ -1,0 +1,620 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/news.html" title="news"><i class="icon-folder-open"></i>news</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_news" title="add_news() :: Adds a news entry to the database, and send out the news to any RSS cloud listeners."><span class="description">Adds a news entry to the database, and send out the news to any RSS cloud listeners.</span><pre>add_news</pre></a></li>
+<li class="function  "><a href="#function_add_news_category" title="add_news_category() :: Add a news category of the specified details."><span class="description">Add a news category of the specified details.</span><pre>add_news_category</pre></a></li>
+<li class="function  "><a href="#function_build_news_sitemap" title="build_news_sitemap() :: Top level function to (re)generate a news Sitemap (xml file, Google-style)."><span class="description">Top level function to (re)generate a news Sitemap (xml file, Google-style).</span><pre>build_news_sitemap</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_news" title="create_selection_list_news() :: Get a nice formatted XHTML list of news."><span class="description">Get a nice formatted XHTML list of news.</span><pre>create_selection_list_news</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_news_categories" title="create_selection_list_news_categories() :: Get a nice formatted XHTML list of news categories."><span class="description">Get a nice formatted XHTML list of news categories.</span><pre>create_selection_list_news_categories</pre></a></li>
+<li class="function  "><a href="#function_delete_news" title="delete_news() :: Delete a news entry."><span class="description">Delete a news entry.</span><pre>delete_news</pre></a></li>
+<li class="function  "><a href="#function_delete_news_category" title="delete_news_category() :: Delete a news category."><span class="description">Delete a news category.</span><pre>delete_news_category</pre></a></li>
+<li class="function  "><a href="#function_dispatch_news_notification" title="dispatch_news_notification() :: Send out a notification of some new news."><span class="description">Send out a notification of some new news.</span><pre>dispatch_news_notification</pre></a></li>
+<li class="function  "><a href="#function_edit_news" title="edit_news() :: Edit a news entry."><span class="description">Edit a news entry.</span><pre>edit_news</pre></a></li>
+<li class="function  "><a href="#function_edit_news_category" title="edit_news_category() :: Edit a news category."><span class="description">Edit a news category.</span><pre>edit_news_category</pre></a></li>
+<li class="function  "><a href="#function_import_foreign_news_html" title="import_foreign_news_html() :: Get data from wordpress DB."><span class="description">Get data from wordpress DB.</span><pre>import_foreign_news_html</pre></a></li>
+<li class="function  "><a href="#function_import_rss_fields" title="import_rss_fields() :: Import wordpress db
+Get UI fields for starting news import."><span class="description">Import wordpress db
+Get UI fields for starting news import.</span><pre>import_rss_fields</pre></a></li>
+<li class="function  "><a href="#function_render_news_box" title="render_news_box() :: Show a news entry box."><span class="description">Show a news entry box.</span><pre>render_news_box</pre></a></li>
+<li class="function  "><a href="#function_render_news_category_box" title="render_news_category_box() :: Get Tempcode for a news category 'feature box' for the given row"><span class="description">Get Tempcode for a news category 'feature box' for the given row</span><pre>render_news_category_box</pre></a></li>
+<li class="function  "><a href="#function_send_rss_ping" title="send_rss_ping() :: Send out a ping to configured services."><span class="description">Send out a ping to configured services.</span><pre>send_rss_ping</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/news.html">news</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_news"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_news " data-toggle="collapse" data-target=".function_add_news .collapse" title="">
+<h2>Adds a news entry to the database, and send out the news to any RSS cloud listeners.</h2>
+<pre>add_news(\SHORT_TEXT $title, \LONG_TEXT $news, \?ID_TEXT $author<code> = null</code>, \BINARY $validated<code> = 1</code>, \BINARY $allow_rating<code> = 1</code>, \SHORT_INTEGER $allow_comments<code> = 1</code>, \BINARY $allow_trackbacks<code> = 1</code>, \LONG_TEXT $notes<code> = ''</code>, \LONG_TEXT $news_article<code> = ''</code>, \?AUTO_LINK $main_news_category<code> = null</code>, \?array $news_categories<code> = null</code>, \?TIME $time<code> = null</code>, \?MEMBER $submitter<code> = null</code>, integer $views<code> = 0</code>, \?TIME $edit_date<code> = null</code>, \?AUTO_LINK $id<code> = null</code>, \URLPATH $image<code> = ''</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The news title</p></div>
+<div class="subelement argument">
+<h4>$news</h4>
+<code>\LONG_TEXT</code><p>The news summary (or if not an article, the full news)</p></div>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>\?ID_TEXT</code><p>The news author (possibly, a link to an existing author in the system, but does not need to be) (null: current username)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the news has been validated</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the news may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the news may have trackbacks</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Notes for the news</p></div>
+<div class="subelement argument">
+<h4>$news_article</h4>
+<code>\LONG_TEXT</code><p>The news entry (blank means no entry)</p></div>
+<div class="subelement argument">
+<h4>$main_news_category</h4>
+<code>\?AUTO_LINK</code><p>The primary news category (null: personal)</p></div>
+<div class="subelement argument">
+<h4>$news_categories</h4>
+<code>\?array</code><p>The IDs of the news categories that this is in (null: none)</p></div>
+<div class="subelement argument">
+<h4>$time</h4>
+<code>\?TIME</code><p>The time of submission (null: now)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The news submitter (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views the article has had</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The edit date (null: never)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$image</h4>
+<code>\URLPATH</code><p>URL to the image for the news entry (blank: use cat image)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the news just added</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_news_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_news_category " data-toggle="collapse" data-target=".function_add_news_category .collapse" title="">
+<h2>Add a news category of the specified details.</h2>
+<pre>add_news_category(\SHORT_TEXT $title, \ID_TEXT $img, \LONG_TEXT $notes, \?MEMBER $owner<code> = null</code>, \?AUTO_LINK $id<code> = null</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The news category title</p></div>
+<div class="subelement argument">
+<h4>$img</h4>
+<code>\ID_TEXT</code><p>The theme image ID of the picture to use for the news category</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Notes for the news category</p></div>
+<div class="subelement argument">
+<h4>$owner</h4>
+<code>\?MEMBER</code><p>The owner (null: public)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of our new news category</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_build_news_sitemap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_build_news_sitemap " data-toggle="collapse" data-target=".function_build_news_sitemap .collapse" title="">
+<h2>Top level function to (re)generate a news Sitemap (xml file, Google-style).</h2>
+<pre>build_news_sitemap() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_news"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_news " data-toggle="collapse" data-target=".function_create_selection_list_news .collapse" title="">
+<h2>Get a nice formatted XHTML list of news.</h2>
+<pre>create_selection_list_news(\?AUTO_LINK $it, \?MEMBER $only_owned<code> = null</code>, boolean $editable_filter<code> = false</code>, boolean $only_in_blog<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The selected news entry (null: none)</p></div>
+<div class="subelement argument">
+<h4>$only_owned</h4>
+<code>\?MEMBER</code><p>Limit news to those submitted by this member (null: show all)</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<div class="subelement argument">
+<h4>$only_in_blog</h4>
+<code>boolean</code><p>Whether to only show blog posts</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_news_categories"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_news_categories " data-toggle="collapse" data-target=".function_create_selection_list_news_categories .collapse" title="">
+<h2>Get a nice formatted XHTML list of news categories.</h2>
+<pre>create_selection_list_news_categories(\?mixed $it<code> = null</code>, boolean $show_all_personal_categories<code> = false</code>, boolean $addable_filter<code> = false</code>, boolean $only_existing<code> = false</code>, \?boolean $only_blogs<code> = null</code>, boolean $prefer_not_blog_selected<code> = false</code>, \?TIME $updated_since<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?mixed</code><p>The selected news category. Array or AUTO_LINK (null: personal)</p></div>
+<div class="subelement argument">
+<h4>$show_all_personal_categories</h4>
+<code>boolean</code><p>Whether to add all personal categories into the list (for things like the adminzone, where all categories must be shown, regardless of permissions)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$only_existing</h4>
+<code>boolean</code><p>Whether to limit to only existing cats (otherwise we dynamically add unstarted blogs)</p></div>
+<div class="subelement argument">
+<h4>$only_blogs</h4>
+<code>\?boolean</code><p>Whether to limit to only show blog categories (null: don't care, true: blogs only, false: no blogs)</p></div>
+<div class="subelement argument">
+<h4>$prefer_not_blog_selected</h4>
+<code>boolean</code><p>Whether to prefer to choose a non-blog category as the default</p></div>
+<div class="subelement argument">
+<h4>$updated_since</h4>
+<code>\?TIME</code><p>Time from which content must be updated (null: no limit).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for the news category select list</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_news"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_news " data-toggle="collapse" data-target=".function_delete_news .collapse" title="">
+<h2>Delete a news entry.</h2>
+<pre>delete_news(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the news to edit</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_news_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_news_category " data-toggle="collapse" data-target=".function_delete_news_category .collapse" title="">
+<h2>Delete a news category.</h2>
+<pre>delete_news_category(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The news category to delete</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dispatch_news_notification"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dispatch_news_notification " data-toggle="collapse" data-target=".function_dispatch_news_notification .collapse" title="">
+<h2>Send out a notification of some new news.</h2>
+<pre>dispatch_news_notification(\AUTO_LINK $id, \SHORT_TEXT $title, \AUTO_LINK $main_news_category) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the news</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title</p></div>
+<div class="subelement argument">
+<h4>$main_news_category</h4>
+<code>\AUTO_LINK</code><p>The main news category</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_news"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_news " data-toggle="collapse" data-target=".function_edit_news .collapse" title="">
+<h2>Edit a news entry.</h2>
+<pre>edit_news(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $news, \ID_TEXT $author, \BINARY $validated, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \LONG_TEXT $news_article, \AUTO_LINK $main_news_category, \?array $news_categories, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?URLPATH $image, \?TIME $add_time<code> = null</code>, \?TIME $edit_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, boolean $null_is_literal<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the news to edit</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The news title</p></div>
+<div class="subelement argument">
+<h4>$news</h4>
+<code>\LONG_TEXT</code><p>The news summary (or if not an article, the full news)</p></div>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>\ID_TEXT</code><p>The news author (possibly, a link to an existing author in the system, but does not need to be)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the news has been validated</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the news may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the news may have trackbacks</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Notes for the news</p></div>
+<div class="subelement argument">
+<h4>$news_article</h4>
+<code>\LONG_TEXT</code><p>The news entry (blank means no entry)</p></div>
+<div class="subelement argument">
+<h4>$main_news_category</h4>
+<code>\AUTO_LINK</code><p>The primary news category (null: personal)</p></div>
+<div class="subelement argument">
+<h4>$news_categories</h4>
+<code>\?array</code><p>The IDs of the news categories that this is in (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$image</h4>
+<code>\?URLPATH</code><p>URL to the image for the news entry (blank: use cat image) (null: don't delete existing)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_news_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_news_category " data-toggle="collapse" data-target=".function_edit_news_category .collapse" title="">
+<h2>Edit a news category.</h2>
+<pre>edit_news_category(\AUTO_LINK $id, \?SHORT_TEXT $title, \?SHORT_TEXT $img, \?LONG_TEXT $notes, \?MEMBER $owner) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The news category to edit</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\?SHORT_TEXT</code><p>The title (null: keep as-is)</p></div>
+<div class="subelement argument">
+<h4>$img</h4>
+<code>\?SHORT_TEXT</code><p>The image (null: keep as-is)</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\?LONG_TEXT</code><p>The notes (null: keep as-is)</p></div>
+<div class="subelement argument">
+<h4>$owner</h4>
+<code>\?MEMBER</code><p>The owner (null: public)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_import_foreign_news_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_import_foreign_news_html " data-toggle="collapse" data-target=".function_import_foreign_news_html .collapse" title="">
+<h2>Get data from wordpress DB.</h2>
+<pre>import_foreign_news_html(string $html, boolean $force_linebreaks<code> = false</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$html</h4>
+<code>string</code><p>HTML</p></div>
+<div class="subelement argument">
+<h4>$force_linebreaks</h4>
+<code>boolean</code><p>Whether to add in HTML line breaks from whitespace ones.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Comcode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_import_rss_fields"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_import_rss_fields " data-toggle="collapse" data-target=".function_import_rss_fields .collapse" title="">
+<h2>Import wordpress db
+Get UI fields for starting news import.</h2>
+<pre>import_rss_fields(boolean $import_to_blog) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$import_to_blog</h4>
+<code>boolean</code><p>Whether to import to blogs, by default</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>UI fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_news_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_news_box " data-toggle="collapse" data-target=".function_render_news_box .collapse" title="">
+<h2>Show a news entry box.</h2>
+<pre>render_news_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $brief<code> = false</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The news row</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone our news module is in</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$brief</h4>
+<code>boolean</code><p>Whether to use the brief styling</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_news_category_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_news_category_box " data-toggle="collapse" data-target=".function_render_news_category_box .collapse" title="">
+<h2>Get Tempcode for a news category 'feature box' for the given row</h2>
+<pre>render_news_category_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $attach_to_url_filter<code> = false</code>, \?integer $blogs<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<div class="subelement argument">
+<h4>$blogs</h4>
+<code>\?integer</code><p>What to show (null: news and blogs, 0: news, 1: blogs)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_send_rss_ping"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_send_rss_ping " data-toggle="collapse" data-target=".function_send_rss_ping .collapse" title="">
+<h2>Send out a ping to configured services.</h2>
+<pre>send_rss_ping(boolean $show_errors<code> = true</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/news.html">news</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$show_errors</h4>
+<code>boolean</code><p>Whether to show errors</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTTP result output</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:41+01:00.<br></footer></div>
+</div>
+</body>
+</html>

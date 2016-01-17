@@ -1,0 +1,2243 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_form_interfaces.html" title="core_form_interfaces"><i class="icon-folder-open"></i>core_form_interfaces</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_spellchecker_words" title="add_spellchecker_words() :: Add words to the spellchecker."><span class="description">Add words to the spellchecker.</span><pre>add_spellchecker_words</pre></a></li>
+<li class="function  "><a href="#function_alternate_fields_set__end" title="alternate_fields_set__end() :: Show a field set that has just been finished off."><span class="description">Show a field set that has just been finished off.</span><pre>alternate_fields_set__end</pre></a></li>
+<li class="function  "><a href="#function_alternate_fields_set__start" title="alternate_fields_set__start() :: Start off a field set."><span class="description">Start off a field set.</span><pre>alternate_fields_set__start</pre></a></li>
+<li class="function  "><a href="#function_attach_wysiwyg" title="attach_wysiwyg() :: Attach the WYSIWYG editor."><span class="description">Attach the WYSIWYG editor.</span><pre>attach_wysiwyg</pre></a></li>
+<li class="function  "><a href="#function_build_preview" title="build_preview() :: Build up a preview based on what was submitted."><span class="description">Build up a preview based on what was submitted.</span><pre>build_preview</pre></a></li>
+<li class="function  "><a href="#function_check_suhosin_request_quantity" title="check_suhosin_request_quantity() :: Ensure Suhosin is not going to break a request due to number of request form fields. Call this each time a field is added to the output."><span class="description">Ensure Suhosin is not going to break a request due to number of request form fields. Call this each time a field is added to the output.</span><pre>check_suhosin_request_quantity</pre></a></li>
+<li class="function  "><a href="#function_check_suhosin_request_size" title="check_suhosin_request_size() :: Ensure Suhosin is not going to break a request due to request size."><span class="description">Ensure Suhosin is not going to break a request due to request size.</span><pre>check_suhosin_request_size</pre></a></li>
+<li class="function  "><a href="#function_find_words" title="find_words() :: Find all the words in some text."><span class="description">Find all the words in some text.</span><pre>find_words</pre></a></li>
+<li class="function  "><a href="#function_form_input_all_and_not" title="form_input_all_and_not() :: Get the Tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these')."><span class="description">Get the Tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these').</span><pre>form_input_all_and_not</pre></a></li>
+<li class="function  "><a href="#function_form_input_author" title="form_input_author() :: Get the Tempcode for a author/username input line."><span class="description">Get the Tempcode for a author/username input line.</span><pre>form_input_author</pre></a></li>
+<li class="function  "><a href="#function_form_input_codename" title="form_input_codename() :: Get the Tempcode for a codename input line."><span class="description">Get the Tempcode for a codename input line.</span><pre>form_input_codename</pre></a></li>
+<li class="function  "><a href="#function_form_input_colour" title="form_input_colour() :: Get the Tempcode for a colour input."><span class="description">Get the Tempcode for a colour input.</span><pre>form_input_colour</pre></a></li>
+<li class="function  "><a href="#function_form_input_combo" title="form_input_combo() :: Get the Tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available."><span class="description">Get the Tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available.</span><pre>form_input_combo</pre></a></li>
+<li class="function  "><a href="#function_form_input_date" title="form_input_date() :: Get the Tempcode for a date input. Use get_input_date to read the result."><span class="description">Get the Tempcode for a date input. Use get_input_date to read the result.</span><pre>form_input_date</pre></a></li>
+<li class="function  "><a href="#function_form_input_date__scheduler" title="form_input_date__scheduler() :: Get the Tempcode for a date input, or if cron is not on, return blank."><span class="description">Get the Tempcode for a date input, or if cron is not on, return blank.</span><pre>form_input_date__scheduler</pre></a></li>
+<li class="function  "><a href="#function_form_input_dimensions" title="form_input_dimensions() :: Get the Tempcode for an width/height input."><span class="description">Get the Tempcode for an width/height input.</span><pre>form_input_dimensions</pre></a></li>
+<li class="function  "><a href="#function_form_input_email" title="form_input_email() :: Get the Tempcode for a email-address input line."><span class="description">Get the Tempcode for a email-address input line.</span><pre>form_input_email</pre></a></li>
+<li class="function  "><a href="#function_form_input_float" title="form_input_float() :: Get the Tempcode for a float-only input."><span class="description">Get the Tempcode for a float-only input.</span><pre>form_input_float</pre></a></li>
+<li class="function  "><a href="#function_form_input_huge" title="form_input_huge() :: Get the Tempcode for a huge text input (textarea)."><span class="description">Get the Tempcode for a huge text input (textarea).</span><pre>form_input_huge</pre></a></li>
+<li class="function  "><a href="#function_form_input_huge_comcode" title="form_input_huge_comcode() :: Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)"><span class="description">Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)</span><pre>form_input_huge_comcode</pre></a></li>
+<li class="function  "><a href="#function_form_input_huge_list" title="form_input_huge_list() :: Get the Tempcode for a huge listbox."><span class="description">Get the Tempcode for a huge listbox.</span><pre>form_input_huge_list</pre></a></li>
+<li class="function  "><a href="#function_form_input_integer" title="form_input_integer() :: Get the Tempcode for an integer-only input."><span class="description">Get the Tempcode for an integer-only input.</span><pre>form_input_integer</pre></a></li>
+<li class="function  "><a href="#function_form_input_line" title='form_input_line() :: Get the Tempcode for a text input line (an &lt;input type="text" .'><span class="description">Get the Tempcode for a text input line (an &lt;input type="text" .</span><pre>form_input_line</pre></a></li>
+<li class="function  "><a href="#function_form_input_line_comcode" title="form_input_line_comcode() :: Get the Tempcode for a Comcode-enabled text input line."><span class="description">Get the Tempcode for a Comcode-enabled text input line.</span><pre>form_input_line_comcode</pre></a></li>
+<li class="function  "><a href="#function_form_input_line_multi" title="form_input_line_multi() :: Get the Tempcode for a DHTML input field that takes multiple lines. A new line is added when the prior one isn't blank."><span class="description">Get the Tempcode for a DHTML input field that takes multiple lines. A new line is added when the prior one isn't blank.</span><pre>form_input_line_multi</pre></a></li>
+<li class="function  "><a href="#function_form_input_list" title="form_input_list() :: Get the Tempcode for a listbox."><span class="description">Get the Tempcode for a listbox.</span><pre>form_input_list</pre></a></li>
+<li class="function  "><a href="#function_form_input_multi_list" title="form_input_multi_list() :: Get the Tempcode for a listbox with multiple selections."><span class="description">Get the Tempcode for a listbox with multiple selections.</span><pre>form_input_multi_list</pre></a></li>
+<li class="function  "><a href="#function_form_input_na" title="form_input_na() :: Used to create a NULL option for field sets."><span class="description">Used to create a NULL option for field sets.</span><pre>form_input_na</pre></a></li>
+<li class="function  "><a href="#function_form_input_page_link" title="form_input_page_link() :: Get the Tempcode for a page-link input."><span class="description">Get the Tempcode for a page-link input.</span><pre>form_input_page_link</pre></a></li>
+<li class="function  "><a href="#function_form_input_password" title="form_input_password() :: Get the Tempcode for a password input."><span class="description">Get the Tempcode for a password input.</span><pre>form_input_password</pre></a></li>
+<li class="function  "><a href="#function_form_input_radio" title="form_input_radio() :: Get the Tempcode for a radio group."><span class="description">Get the Tempcode for a radio group.</span><pre>form_input_radio</pre></a></li>
+<li class="function  "><a href="#function_form_input_radio_entry" title="form_input_radio_entry() :: Get the Tempcode for a radio input. (You would gather together the outputs of several of these functions, then put them in as the $content in a form_input_radio function call)."><span class="description">Get the Tempcode for a radio input. (You would gather together the outputs of several of these functions, then put them in as the $content in a form_input_radio function call).</span><pre>form_input_radio_entry</pre></a></li>
+<li class="function  "><a href="#function_form_input_text" title="form_input_text() :: Get the Tempcode for a text input (textarea)."><span class="description">Get the Tempcode for a text input (textarea).</span><pre>form_input_text</pre></a></li>
+<li class="function  "><a href="#function_form_input_text_comcode" title="form_input_text_comcode() :: Get the Tempcode for a Comcode-enabled text input (textarea)."><span class="description">Get the Tempcode for a Comcode-enabled text input (textarea).</span><pre>form_input_text_comcode</pre></a></li>
+<li class="function  "><a href="#function_form_input_text_multi" title="form_input_text_multi() :: Get the Tempcode for a DHTML input field that takes multiple textareas. A new textarea is added when the prior one isn't blank."><span class="description">Get the Tempcode for a DHTML input field that takes multiple textareas. A new textarea is added when the prior one isn't blank.</span><pre>form_input_text_multi</pre></a></li>
+<li class="function  "><a href="#function_form_input_theme_image" title="form_input_theme_image() :: Get the Tempcode to choose a picture from the given list of images in the theme image system, with sub-categorisation."><span class="description">Get the Tempcode to choose a picture from the given list of images in the theme image system, with sub-categorisation.</span><pre>form_input_theme_image</pre></a></li>
+<li class="function  "><a href="#function_form_input_tick" title="form_input_tick() :: Get the Tempcode for a checkbox input."><span class="description">Get the Tempcode for a checkbox input.</span><pre>form_input_tick</pre></a></li>
+<li class="function  "><a href="#function_form_input_tree_list" title="form_input_tree_list() :: Get the Tempcode for an AJAX-powered tree listbox."><span class="description">Get the Tempcode for an AJAX-powered tree listbox.</span><pre>form_input_tree_list</pre></a></li>
+<li class="function  "><a href="#function_form_input_upload" title="form_input_upload() :: Get the Tempcode for a file upload input."><span class="description">Get the Tempcode for a file upload input.</span><pre>form_input_upload</pre></a></li>
+<li class="function  "><a href="#function_form_input_upload_multi" title="form_input_upload_multi() :: Get the Tempcode for a multiple file upload input."><span class="description">Get the Tempcode for a multiple file upload input.</span><pre>form_input_upload_multi</pre></a></li>
+<li class="function  "><a href="#function_form_input_upload_multi_source" title="form_input_upload_multi_source() :: Get the Tempcode for a multi-set upload, allowing selection from multiple different sources."><span class="description">Get the Tempcode for a multi-set upload, allowing selection from multiple different sources.</span><pre>form_input_upload_multi_source</pre></a></li>
+<li class="function  "><a href="#function_form_input_url" title="form_input_url() :: Get the Tempcode for a URL."><span class="description">Get the Tempcode for a URL.</span><pre>form_input_url</pre></a></li>
+<li class="function  "><a href="#function_form_input_username" title="form_input_username() :: Get the Tempcode for a username input line."><span class="description">Get the Tempcode for a username input line.</span><pre>form_input_username</pre></a></li>
+<li class="function  "><a href="#function_form_input_username_multi" title="form_input_username_multi() :: Get the Tempcode for a username input line."><span class="description">Get the Tempcode for a username input line.</span><pre>form_input_username_multi</pre></a></li>
+<li class="function  "><a href="#function_form_input_various_ticks" title="form_input_various_ticks() :: Get the Tempcode for a bank of tick boxes."><span class="description">Get the Tempcode for a bank of tick boxes.</span><pre>form_input_various_ticks</pre></a></li>
+<li class="function  "><a href="#function_get_attachments" title="get_attachments() :: Get what we need to get attachments in a form-field interface."><span class="description">Get what we need to get attachments in a form-field interface.</span><pre>get_attachments</pre></a></li>
+<li class="function  "><a href="#function_get_comcode_editor" title="get_comcode_editor() :: Creates a Comcode editor."><span class="description">Creates a Comcode editor.</span><pre>get_comcode_editor</pre></a></li>
+<li class="function  "><a href="#function_get_field_restrict_property" title='get_field_restrict_property() :: Get the value of a scoped field restriction property. Returns "first-found".'><span class="description">Get the value of a scoped field restriction property. Returns "first-found".</span><pre>get_field_restrict_property</pre></a></li>
+<li class="function  "><a href="#function_get_form_field_tabindex" title="get_form_field_tabindex() :: Helper function for tab-index linearisation (serves as a filter)."><span class="description">Helper function for tab-index linearisation (serves as a filter).</span><pre>get_form_field_tabindex</pre></a></li>
+<li class="function  "><a href="#function_get_posting_form" title="get_posting_form() :: Creates a posting form, with attachment support."><span class="description">Creates a posting form, with attachment support.</span><pre>get_posting_form</pre></a></li>
+<li class="function  "><a href="#function_handle_conflict_resolution" title="handle_conflict_resolution() :: Look for editing conflicts, and setup editing pinging."><span class="description">Look for editing conflicts, and setup editing pinging.</span><pre>handle_conflict_resolution</pre></a></li>
+<li class="function  "><a href="#function_handle_max_file_size" title="handle_max_file_size() :: Insert hidden data for the maximum file size of form fields."><span class="description">Insert hidden data for the maximum file size of form fields.</span><pre>handle_max_file_size</pre></a></li>
+<li class="function  "><a href="#function_read_multi_code" title="read_multi_code() :: Read a multi code from a named parameter stub."><span class="description">Read a multi code from a named parameter stub.</span><pre>read_multi_code</pre></a></li>
+<li class="function  "><a href="#function_run_spellcheck" title="run_spellcheck() :: Run a spellcheck on some text."><span class="description">Run a spellcheck on some text.</span><pre>run_spellcheck</pre></a></li>
+<li class="function  "><a href="#function_single_field__end" title="single_field__end() :: Stop serving single field."><span class="description">Stop serving single field.</span><pre>single_field__end</pre></a></li>
+<li class="function  "><a href="#function_single_field__start" title="single_field__start() :: Start serving single field. This is used if you just need the raw widget, not the label (etc)."><span class="description">Start serving single field. This is used if you just need the raw widget, not the label (etc).</span><pre>single_field__start</pre></a></li>
+<li class="function  "><a href="#function_sl_get_custom_file_base" title="sl_get_custom_file_base() :: Find the path to where data is stored."><span class="description">Find the path to where data is stored.</span><pre>sl_get_custom_file_base</pre></a></li>
+<li class="function  "><a href="#function_spell_correct_phrase" title="spell_correct_phrase() :: Fix spellings in input string."><span class="description">Fix spellings in input string.</span><pre>spell_correct_phrase</pre></a></li>
+<li class="function  "><a href="#function_take_param_int_modeavg" title="take_param_int_modeavg() :: Find a default property, defaulting to the average of what is there already, or the given default if really necessary."><span class="description">Find a default property, defaulting to the average of what is there already, or the given default if really necessary.</span><pre>take_param_int_modeavg</pre></a></li>
+<li class="function  "><a href="#function_url_default_parameters__disable" title="url_default_parameters__disable() :: Disable reading in default parameters from the GET environment. This is typically called after 'add' forms."><span class="description">Disable reading in default parameters from the GET environment. This is typically called after 'add' forms.</span><pre>url_default_parameters__disable</pre></a></li>
+<li class="function  "><a href="#function_url_default_parameters__enable" title="url_default_parameters__enable() :: Enable reading in default parameters from the GET environment. This is typically called before 'add' forms."><span class="description">Enable reading in default parameters from the GET environment. This is typically called before 'add' forms.</span><pre>url_default_parameters__enable</pre></a></li>
+<li class="function  "><a href="#function_wysiwyg_on" title="wysiwyg_on() :: Find whether WYSIWYG is currently on."><span class="description">Find whether WYSIWYG is currently on.</span><pre>wysiwyg_on</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_WORD_REGEXP" title="WORD_REGEXP() :: "><span class="description">WORD_REGEXP</span><pre>WORD_REGEXP</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_spellchecker_words"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_spellchecker_words " data-toggle="collapse" data-target=".function_add_spellchecker_words .collapse" title="">
+<h2>Add words to the spellchecker.</h2>
+<pre>add_spellchecker_words(array $words) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$words</h4>
+<code>array</code><p>List of words</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_alternate_fields_set__end"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_alternate_fields_set__end " data-toggle="collapse" data-target=".function_alternate_fields_set__end .collapse" title="">
+<h2>Show a field set that has just been finished off.</h2>
+<pre>alternate_fields_set__end(\ID_TEXT $set_name, mixed $pretty_name, mixed $description, \Tempcode $fields, boolean $required, \?URLPATH $existing_image_preview_url<code> = null</code>, boolean $raw<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$set_name</h4>
+<code>\ID_TEXT</code><p>The codename for this field set (blank: just collect raw fields, no actual field set)</p></div>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>The human-readable name for this field set</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>The human-readable description for this field set</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>\Tempcode</code><p>The field set Tempcode</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether it is required that this field set be filled in</p></div>
+<div class="subelement argument">
+<h4>$existing_image_preview_url</h4>
+<code>\?URLPATH</code><p>Image URL to show, of the existing selection for this field (null: N/A) (blank: N/A)</p></div>
+<div class="subelement argument">
+<h4>$raw</h4>
+<code>boolean</code><p>Whether we just want the raw set contents, without any wrapper field row</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The field set</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_alternate_fields_set__start"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_alternate_fields_set__start " data-toggle="collapse" data-target=".function_alternate_fields_set__start .collapse" title="">
+<h2>Start off a field set.</h2>
+<pre>alternate_fields_set__start(\ID_TEXT $set_name) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>IMPORTANT: Note that this function uses global state -- any fields generated between alternate_fields_set<strong>start and alternate_fields_set</strong>end will be rendered using field set templating.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$set_name</h4>
+<code>\ID_TEXT</code><p>The codename for this field set</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Tempcode to start attaching the field set to</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_attach_wysiwyg"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_attach_wysiwyg " data-toggle="collapse" data-target=".function_attach_wysiwyg .collapse" title="">
+<h2>Attach the WYSIWYG editor.</h2>
+<pre>attach_wysiwyg() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_build_preview"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_build_preview " data-toggle="collapse" data-target=".function_build_preview .collapse" title="">
+<h2>Build up a preview based on what was submitted.</h2>
+<pre>build_preview(boolean $multi_return<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$multi_return</h4>
+<code>boolean</code><p>Whether to return additional data</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Either Tempcode for the preview, or a tuple of details</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_suhosin_request_quantity"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_suhosin_request_quantity " data-toggle="collapse" data-target=".function_check_suhosin_request_quantity .collapse" title="">
+<h2>Ensure Suhosin is not going to break a request due to number of request form fields. Call this each time a field is added to the output.</h2>
+<pre>check_suhosin_request_quantity(integer $inc<code> = 1</code>, integer $name_length<code> = 0</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$inc</h4>
+<code>integer</code><p>How much to increment the counter by</p></div>
+<div class="subelement argument">
+<h4>$name_length</h4>
+<code>integer</code><p>The name length being checked</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_suhosin_request_size"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_suhosin_request_size " data-toggle="collapse" data-target=".function_check_suhosin_request_size .collapse" title="">
+<h2>Ensure Suhosin is not going to break a request due to request size.</h2>
+<pre>check_suhosin_request_size(integer $size) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$size</h4>
+<code>integer</code><p>Most determinitve size within wider request size (we'll assume we actually need 500 more bytes than this)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_words"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_words " data-toggle="collapse" data-target=".function_find_words .collapse" title="">
+<h2>Find all the words in some text.</h2>
+<pre>find_words(string $text) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Text to scan for words in (should be plain text, not be HTML text)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of words</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_all_and_not"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_all_and_not " data-toggle="collapse" data-target=".function_form_input_all_and_not .collapse" title="">
+<h2>Get the Tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these').</h2>
+<pre>form_input_all_and_not(mixed $pretty_name, mixed $description, string $base, \Tempcode $list, string $type<code> = '+'</code>, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>+ - *</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$base</h4>
+<code>string</code><p>The base name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$list</h4>
+<code>\Tempcode</code><p>A list culmulation to select against</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The current type of partial selection</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_author"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_author " data-toggle="collapse" data-target=".function_form_input_author .collapse" title="">
+<h2>Get the Tempcode for a author/username input line.</h2>
+<pre>form_input_author(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_codename"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_codename " data-toggle="collapse" data-target=".function_form_input_codename .collapse" title="">
+<h2>Get the Tempcode for a codename input line.</h2>
+<pre>form_input_codename(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>, \?integer $_maxlength<code> = null</code>, \?array $extra_chars<code> = null</code>, \?string $placeholder<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$_maxlength</h4>
+<code>\?integer</code><p>The maximum length of the field (null: default 80)</p></div>
+<div class="subelement argument">
+<h4>$extra_chars</h4>
+<code>\?array</code><p>List of extra characters to allow (null: none)</p></div>
+<div class="subelement argument">
+<h4>$placeholder</h4>
+<code>\?string</code><p>The placeholder value for this input field (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_colour"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_colour " data-toggle="collapse" data-target=".function_form_input_colour .collapse" title="">
+<h2>Get the Tempcode for a colour input.</h2>
+<pre>form_input_colour(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_combo"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_combo " data-toggle="collapse" data-target=".function_form_input_combo .collapse" title="">
+<h2>Get the Tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available.</h2>
+<pre>form_input_combo(mixed $pretty_name, mixed $description, \ID_TEXT $name, string $default, \Tempcode $options, \?integer $tabindex<code> = null</code>, boolean $required<code> = true</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>Current selection</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>\Tempcode</code><p>The list entries for our list</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is required</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_date"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_date " data-toggle="collapse" data-target=".function_form_input_date .collapse" title="">
+<h2>Get the Tempcode for a date input. Use get_input_date to read the result.</h2>
+<pre>form_input_date(mixed $pretty_name, mixed $description, \ID_TEXT $name, boolean $required, boolean $null_default, boolean $do_time, \?mixed $default_time<code> = null</code>, \?integer $total_years_to_show<code> = 10</code>, \?integer $year_start<code> = null</code>, \?integer $tabindex<code> = null</code>, boolean $do_date<code> = true</code>, \?ID_TEXT $timezone<code> = null</code>, boolean $handle_timezone<code> = true</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The parameter name for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is not a required field</p></div>
+<div class="subelement argument">
+<h4>$null_default</h4>
+<code>boolean</code><p>Whether this field is empty by default</p></div>
+<div class="subelement argument">
+<h4>$do_time</h4>
+<code>boolean</code><p>Whether to input time for this field also</p></div>
+<div class="subelement argument">
+<h4>$default_time</h4>
+<code>\?mixed</code><p>The default timestamp to use (either TIME or array of time components) (null: now)</p></div>
+<div class="subelement argument">
+<h4>$total_years_to_show</h4>
+<code>\?integer</code><p>The number of years to allow selection from (pass a negative number for selection of past years instead of future years) (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$year_start</h4>
+<code>\?integer</code><p>The year to start from (null: this year)</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$do_date</h4>
+<code>boolean</code><p>Whether to input date for this field (if false, will just do time)</p></div>
+<div class="subelement argument">
+<h4>$timezone</h4>
+<code>\?ID_TEXT</code><p>Timezone to input in (null: current user's timezone)</p></div>
+<div class="subelement argument">
+<h4>$handle_timezone</h4>
+<code>boolean</code><p>Convert $default_time to $timezone</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_date__scheduler"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_date__scheduler " data-toggle="collapse" data-target=".function_form_input_date__scheduler .collapse" title="">
+<h2>Get the Tempcode for a date input, or if cron is not on, return blank.</h2>
+<pre>form_input_date__scheduler(mixed $pretty_name, mixed $description, \ID_TEXT $name, boolean $required, boolean $null_default, boolean $do_time, \?mixed $default_time<code> = null</code>, integer $total_years_to_show<code> = 10</code>, \?integer $year_start<code> = null</code>, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The parameter name for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required field</p></div>
+<div class="subelement argument">
+<h4>$null_default</h4>
+<code>boolean</code><p>Whether this field is empty by default</p></div>
+<div class="subelement argument">
+<h4>$do_time</h4>
+<code>boolean</code><p>Whether to input time for this field also</p></div>
+<div class="subelement argument">
+<h4>$default_time</h4>
+<code>\?mixed</code><p>The default timestamp to use (either TIME or array of time components) (null: now)</p></div>
+<div class="subelement argument">
+<h4>$total_years_to_show</h4>
+<code>integer</code><p>The number of years to allow selection from (all into the future, as this field type is not meant for inputting past dates)</p></div>
+<div class="subelement argument">
+<h4>$year_start</h4>
+<code>\?integer</code><p>The year to start from (null: this year)</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_dimensions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_dimensions " data-toggle="collapse" data-target=".function_form_input_dimensions .collapse" title="">
+<h2>Get the Tempcode for an width/height input.</h2>
+<pre>form_input_dimensions(mixed $pretty_name, mixed $description, \ID_TEXT $name_width, \ID_TEXT $name_height, \?integer $default_width, \?integer $default_height, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name_width</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for: width part</p></div>
+<div class="subelement argument">
+<h4>$name_height</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for: height part</p></div>
+<div class="subelement argument">
+<h4>$default_width</h4>
+<code>\?integer</code><p>The default value for this input field: width part (null: no default)</p></div>
+<div class="subelement argument">
+<h4>$default_height</h4>
+<code>\?integer</code><p>The default value for this input field: height part (null: no default)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_email"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_email " data-toggle="collapse" data-target=".function_form_input_email .collapse" title="">
+<h2>Get the Tempcode for a email-address input line.</h2>
+<pre>form_input_email(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_float"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_float " data-toggle="collapse" data-target=".function_form_input_float .collapse" title="">
+<h2>Get the Tempcode for a float-only input.</h2>
+<pre>form_input_float(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?float $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?float</code><p>The default value for this input field (null: no default)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_huge"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_huge " data-toggle="collapse" data-target=".function_form_input_huge .collapse" title="">
+<h2>Get the Tempcode for a huge text input (textarea).</h2>
+<pre>form_input_huge(mixed $pretty_name, mixed $description, \ID_TEXT $name, string $default, boolean $required, \?integer $tabindex<code> = null</code>, integer $rows<code> = 20</code>, mixed $description_side<code> = ''</code>, boolean $scrolls<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>The default value for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$rows</h4>
+<code>integer</code><p>The number of rows to use</p></div>
+<div class="subelement argument">
+<h4>$description_side</h4>
+<code>mixed</code><p>A secondary side description for this input field</p></div>
+<div class="subelement argument">
+<h4>$scrolls</h4>
+<code>boolean</code><p>Whether the field scrolls</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_huge_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_huge_comcode " data-toggle="collapse" data-target=".function_form_input_huge_comcode .collapse" title="">
+<h2>Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)</h2>
+<pre>form_input_huge_comcode(mixed $pretty_name, mixed $description, \ID_TEXT $name, string $default, boolean $required, \?integer $tabindex<code> = null</code>, integer $rows<code> = 20</code>, mixed $description_side<code> = ''</code>, \?Tempcode $default_parsed<code> = null</code>, boolean $scrolls<code> = false</code>, boolean $force_non_wysiwyg<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>The default value for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$rows</h4>
+<code>integer</code><p>The number of rows to use</p></div>
+<div class="subelement argument">
+<h4>$description_side</h4>
+<code>mixed</code><p>A secondary side description for this input field</p></div>
+<div class="subelement argument">
+<h4>$default_parsed</h4>
+<code>\?Tempcode</code><p>The parsed Comcode. (null: calculate)</p></div>
+<div class="subelement argument">
+<h4>$scrolls</h4>
+<code>boolean</code><p>Whether the field scrolls</p></div>
+<div class="subelement argument">
+<h4>$force_non_wysiwyg</h4>
+<code>boolean</code><p>Force non-WYSIWYG and non default-Comcode parsing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_huge_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_huge_list " data-toggle="collapse" data-target=".function_form_input_huge_list .collapse" title="">
+<h2>Get the Tempcode for a huge listbox.</h2>
+<pre>form_input_huge_list(mixed $pretty_name, mixed $description, \ID_TEXT $name, \Tempcode $content, \?integer $tabindex<code> = null</code>, boolean $inline_list<code> = false</code>, boolean $required<code> = true</code>, \?integer $size<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\Tempcode</code><p>The list entries for our list</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$inline_list</h4>
+<code>boolean</code><p>Whether this is an inline displayed list as opposed to a dropdown</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is required</p></div>
+<div class="subelement argument">
+<h4>$size</h4>
+<code>\?integer</code><p>Size of list (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_integer"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_integer " data-toggle="collapse" data-target=".function_form_input_integer .collapse" title="">
+<h2>Get the Tempcode for an integer-only input.</h2>
+<pre>form_input_integer(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?integer $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?integer</code><p>The default value for this input field (null: no default)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_line"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_line " data-toggle="collapse" data-target=".function_form_input_line .collapse" title="">
+<h2>Get the Tempcode for a text input line (an &lt;input type="text" .</h2>
+<pre>form_input_line(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>, \?integer $_maxlength<code> = null</code>, string $type<code> = 'text'</code>, \?string $placeholder<code> = null</code>, \?string $pattern<code> = null</code>, \?string $pattern_error<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>.. /&gt;).</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$_maxlength</h4>
+<code>\?integer</code><p>The maximum length of the field (null: default 255)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The input type</p></div>
+<div class="subelement argument">
+<h4>$placeholder</h4>
+<code>\?string</code><p>The placeholder value for this input field (null: none)</p></div>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>\?string</code><p>Custom regex pattern (null: none)</p></div>
+<div class="subelement argument">
+<h4>$pattern_error</h4>
+<code>\?string</code><p>Custom regex pattern validation error (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_line_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_line_comcode " data-toggle="collapse" data-target=".function_form_input_line_comcode .collapse" title="">
+<h2>Get the Tempcode for a Comcode-enabled text input line.</h2>
+<pre>form_input_line_comcode(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_line_multi"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_line_multi " data-toggle="collapse" data-target=".function_form_input_line_multi .collapse" title="">
+<h2>Get the Tempcode for a DHTML input field that takes multiple lines. A new line is added when the prior one isn't blank.</h2>
+<pre>form_input_line_multi(mixed $pretty_name, mixed $description, \ID_TEXT $name, array $default_array, integer $num_required, \?integer $tabindex<code> = null</code>, string $class<code> = 'line'</code>, \?string $pattern<code> = null</code>, \?string $pattern_error<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>line email</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The base parameter name which this input field is for (as this takes multiple parameters, they are named <name><x>). This name must end with '_'.</p></div>
+<div class="subelement argument">
+<h4>$default_array</h4>
+<code>array</code><p>An array of lines to use as default (at least this many lines, filled by this array, will be presented by default)</p></div>
+<div class="subelement argument">
+<h4>$num_required</h4>
+<code>integer</code><p>The minimum number of inputs allowed.</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><p>CSS class for input.</p></div>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>\?string</code><p>Custom regex pattern (null: none)</p></div>
+<div class="subelement argument">
+<h4>$pattern_error</h4>
+<code>\?string</code><p>Custom regex pattern validation error (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_list " data-toggle="collapse" data-target=".function_form_input_list .collapse" title="">
+<h2>Get the Tempcode for a listbox.</h2>
+<pre>form_input_list(mixed $pretty_name, mixed $description, \ID_TEXT $name, \Tempcode $content, \?integer $tabindex<code> = null</code>, boolean $inline_list<code> = false</code>, boolean $required<code> = true</code>, \?array $images<code> = null</code>, integer $size<code> = 5</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\Tempcode</code><p>The list entries for our list</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$inline_list</h4>
+<code>boolean</code><p>Whether this is an inline displayed list as opposed to a dropdown</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is required</p></div>
+<div class="subelement argument">
+<h4>$images</h4>
+<code>\?array</code><p>List of theme images that $content is allowing selection of (so that we can show the images within the list, if JS is enabled) (null: none)</p></div>
+<div class="subelement argument">
+<h4>$size</h4>
+<code>integer</code><p>How much space the list takes up (inline lists only)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_multi_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_multi_list " data-toggle="collapse" data-target=".function_form_input_multi_list .collapse" title="">
+<h2>Get the Tempcode for a listbox with multiple selections.</h2>
+<pre>form_input_multi_list(mixed $pretty_name, mixed $description, \ID_TEXT $name, \Tempcode $content, \?integer $tabindex<code> = null</code>, integer $size<code> = 5</code>, boolean $required<code> = false</code>, \?ID_TEXT $custom_name<code> = null</code>, \?mixed $custom_value<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\Tempcode</code><p>The list entries for our list</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$size</h4>
+<code>integer</code><p>How much space the list takes up</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether at least one must be selected</p></div>
+<div class="subelement argument">
+<h4>$custom_name</h4>
+<code>\?ID_TEXT</code><p>Name for custom value to be entered to (null: no custom value allowed)</p></div>
+<div class="subelement argument">
+<h4>$custom_value</h4>
+<code>\?mixed</code><p>Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_na"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_na " data-toggle="collapse" data-target=".function_form_input_na .collapse" title="">
+<h2>Used to create a NULL option for field sets.</h2>
+<pre>form_input_na(mixed $pretty_name, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>The human-readable name for this field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index (null: none specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_page_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_page_link " data-toggle="collapse" data-target=".function_form_input_page_link .collapse" title="">
+<h2>Get the Tempcode for a page-link input.</h2>
+<pre>form_input_page_link(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>, \?ID_TEXT $page_type<code> = null</code>, boolean $get_title_too<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$page_type</h4>
+<code>\?ID_TEXT</code><p>Page type to show (null: all)</p></div>
+<div class="subelement argument">
+<h4>$get_title_too</h4>
+<code>boolean</code><p>Whether to also get the title for the page</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_password"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_password " data-toggle="collapse" data-target=".function_form_input_password .collapse" title="">
+<h2>Get the Tempcode for a password input.</h2>
+<pre>form_input_password(mixed $pretty_name, mixed $description, \ID_TEXT $name, boolean $required, \?integer $tabindex<code> = null</code>, string $default<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>The default value for this input field</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_radio"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_radio " data-toggle="collapse" data-target=".function_form_input_radio .collapse" title="">
+<h2>Get the Tempcode for a radio group.</h2>
+<pre>form_input_radio(mixed $pretty_name, mixed $description, \ID_TEXT $name, \Tempcode $content, boolean $required<code> = false</code>, boolean $picture_contents<code> = false</code>, string $selected_path<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>\Tempcode</code><p>The radio buttons for our radio group</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether a radio selection is required</p></div>
+<div class="subelement argument">
+<h4>$picture_contents</h4>
+<code>boolean</code><p>Whether this is a picture-based radio list</p></div>
+<div class="subelement argument">
+<h4>$selected_path</h4>
+<code>string</code><p>Default value (only appropriate if has picture contents)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_radio_entry"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_radio_entry " data-toggle="collapse" data-target=".function_form_input_radio_entry .collapse" title="">
+<h2>Get the Tempcode for a radio input. (You would gather together the outputs of several of these functions, then put them in as the $content in a form_input_radio function call).</h2>
+<pre>form_input_radio_entry(string $name, string $value, boolean $selected<code> = false</code>, mixed $text<code> = ''</code>, \?integer $tabindex<code> = null</code>, mixed $description<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The name of the radio button group this will be put in (i.e. the name the value presented here will be possibly matched against)</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code><p>The value for this entry</p></div>
+<div class="subelement argument">
+<h4>$selected</h4>
+<code>boolean</code><p>Whether this entry is selected by default or not</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>mixed</code><p>The text associated with this choice (blank: just use value for text)</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>An additional long description (blank: no description)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_text"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_text " data-toggle="collapse" data-target=".function_form_input_text .collapse" title="">
+<h2>Get the Tempcode for a text input (textarea).</h2>
+<pre>form_input_text(mixed $pretty_name, mixed $description, \ID_TEXT $name, string $default, boolean $required, \?integer $tabindex<code> = null</code>, boolean $scrolls<code> = false</code>, \?integer $maxlength<code> = null</code>, \?integer $rows<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>The default value for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$scrolls</h4>
+<code>boolean</code><p>Whether the field scrolls</p></div>
+<div class="subelement argument">
+<h4>$maxlength</h4>
+<code>\?integer</code><p>The maximum length of the field (null: unlimited)</p></div>
+<div class="subelement argument">
+<h4>$rows</h4>
+<code>\?integer</code><p>Number of rows for text input (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_text_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_text_comcode " data-toggle="collapse" data-target=".function_form_input_text_comcode .collapse" title="">
+<h2>Get the Tempcode for a Comcode-enabled text input (textarea).</h2>
+<pre>form_input_text_comcode(mixed $pretty_name, mixed $description, \ID_TEXT $name, string $default, boolean $required, \?integer $tabindex<code> = null</code>, boolean $force_non_wysiwyg<code> = false</code>, mixed $description_side<code> = ''</code>, \?Tempcode $default_parsed<code> = null</code>, boolean $scrolls<code> = false</code>, \?integer $rows<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>string</code><p>The default value for this input field</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$force_non_wysiwyg</h4>
+<code>boolean</code><p>Force non-WYSIWYG and non default-Comcode parsing</p></div>
+<div class="subelement argument">
+<h4>$description_side</h4>
+<code>mixed</code><p>A secondary side description for this input field</p></div>
+<div class="subelement argument">
+<h4>$default_parsed</h4>
+<code>\?Tempcode</code><p>The parsed Comcode. (null: calculate)</p></div>
+<div class="subelement argument">
+<h4>$scrolls</h4>
+<code>boolean</code><p>Whether the field scrolls</p></div>
+<div class="subelement argument">
+<h4>$rows</h4>
+<code>\?integer</code><p>Number of rows for text input (null: default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_text_multi"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_text_multi " data-toggle="collapse" data-target=".function_form_input_text_multi .collapse" title="">
+<h2>Get the Tempcode for a DHTML input field that takes multiple textareas. A new textarea is added when the prior one isn't blank.</h2>
+<pre>form_input_text_multi(mixed $pretty_name, mixed $description, \ID_TEXT $name, array $default_array, integer $num_required, \?integer $tabindex<code> = null</code>, \?integer $maxlength<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The base parameter name which this input field is for (as this takes multiple parameters, they are named <name><x>). This name must end with '_'.</p></div>
+<div class="subelement argument">
+<h4>$default_array</h4>
+<code>array</code><p>An array of texts to use as default (at least this many textareas, filled by this array, will be presented by default)</p></div>
+<div class="subelement argument">
+<h4>$num_required</h4>
+<code>integer</code><p>The minimum number of textareas allowed.</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$maxlength</h4>
+<code>\?integer</code><p>The maximum length of the field (null: unlimited)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_theme_image"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_theme_image " data-toggle="collapse" data-target=".function_form_input_theme_image .collapse" title="">
+<h2>Get the Tempcode to choose a picture from the given list of images in the theme image system, with sub-categorisation.</h2>
+<pre>form_input_theme_image(mixed $pretty_name, mixed $description, \ID_TEXT $name, array $ids, \?URLPATH $selected_url<code> = null</code>, \?string $selected_code<code> = null</code>, \?integer $tabindex<code> = null</code>, boolean $allow_none<code> = false</code>, \?object $db<code> = null</code>, \?ID_TEXT $theme<code> = null</code>, \?ID_TEXT $lang<code> = null</code>, boolean $linear<code> = false</code>, boolean $direct_titles<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$ids</h4>
+<code>array</code><p>A list of image IDs (codes) we can choose from, probably found via get_all_image_ids_type</p></div>
+<div class="subelement argument">
+<h4>$selected_url</h4>
+<code>\?URLPATH</code><p>The currently selected entry in our picture choosing, by URL (null: none)</p></div>
+<div class="subelement argument">
+<h4>$selected_code</h4>
+<code>\?string</code><p>The currently selected entry in our picture choosing, by code (null: none)</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$allow_none</h4>
+<code>boolean</code><p>Whether to allow the selection of 'no' picture</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>\?object</code><p>The database connection to the Conversr install we are choosing images from (null: site db)</p></div>
+<div class="subelement argument">
+<h4>$theme</h4>
+<code>\?ID_TEXT</code><p>Theme to use (null: current theme)</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?ID_TEXT</code><p>Language to use (null: current language)</p></div>
+<div class="subelement argument">
+<h4>$linear</h4>
+<code>boolean</code><p>Whether choices are presented in a list (as opposed to a grid); useful when sizes are irregular</p></div>
+<div class="subelement argument">
+<h4>$direct_titles</h4>
+<code>boolean</code><p>Whether to show direct codenames, rather than trying to prettify them into titles</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_tick"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_tick " data-toggle="collapse" data-target=".function_form_input_tick .collapse" title="">
+<h2>Get the Tempcode for a checkbox input.</h2>
+<pre>form_input_tick(mixed $pretty_name, mixed $description, \ID_TEXT $name, boolean $ticked, \?integer $tabindex<code> = null</code>, \ID_TEXT $value<code> = '1'</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$ticked</h4>
+<code>boolean</code><p>Whether this is ticked by default</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>\ID_TEXT</code><p>The value the checkbox passes when ticked</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_tree_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_tree_list " data-toggle="collapse" data-target=".function_form_input_tree_list .collapse" title="">
+<h2>Get the Tempcode for an AJAX-powered tree listbox.</h2>
+<pre>form_input_tree_list(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?ID_TEXT $root_id, string $hook, array $options, boolean $required, \?string $default<code> = null</code>, boolean $use_server_id<code> = false</code>, \?integer $tabindex<code> = null</code>, boolean $multi_select<code> = false</code>, \?string $nice_label<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$root_id</h4>
+<code>\?ID_TEXT</code><p>The ID to do under (null: root)</p></div>
+<div class="subelement argument">
+<h4>$hook</h4>
+<code>string</code><p>The ajax tree-list hook that drives our data</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>array</code><p>A map of special options</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for the field (null: none)</p></div>
+<div class="subelement argument">
+<h4>$use_server_id</h4>
+<code>boolean</code><p>Whether to use the server-ID in the list instead of the ID in the list</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$multi_select</h4>
+<code>boolean</code><p>Whether multiple selections are allowed</p></div>
+<div class="subelement argument">
+<h4>$nice_label</h4>
+<code>\?string</code><p>Label for default value (null: just use the literal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_upload"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_upload " data-toggle="collapse" data-target=".function_form_input_upload .collapse" title="">
+<h2>Get the Tempcode for a file upload input.</h2>
+<pre>form_input_upload(mixed $pretty_name, mixed $description, \ID_TEXT $name, boolean $required, \?string $default<code> = null</code>, \?integer $tabindex<code> = null</code>, boolean $plupload<code> = true</code>, string $filter<code> = ''</code>, \?string $syndication_json<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field. Set this to false if you are using this field on an edit form and already have an uploaded file -- therefore you'd know no new file would mean not to replace the existing file</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for the field (null: none) (blank: none). Should only be passed if $required is false, because it creates a delete button for the existing file, implying that leaving it with no file is valid</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$plupload</h4>
+<code>boolean</code><p>Whether plupload-style is preferred</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>string</code><p>File-type filter to limit to, comma-separated file extensions (might not be supported)</p></div>
+<div class="subelement argument">
+<h4>$syndication_json</h4>
+<code>\?string</code><p>JSON structure of what uploader syndications there will be (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_upload_multi"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_upload_multi " data-toggle="collapse" data-target=".function_form_input_upload_multi .collapse" title="">
+<h2>Get the Tempcode for a multiple file upload input.</h2>
+<pre>form_input_upload_multi(mixed $pretty_name, mixed $description, string $name, boolean $required, \?integer $tabindex<code> = null</code>, \?array $default<code> = null</code>, boolean $plupload<code> = true</code>, string $filter<code> = ''</code>, \?string $syndication_json<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The base name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?array</code><p>The default value for the field (null: none)</p></div>
+<div class="subelement argument">
+<h4>$plupload</h4>
+<code>boolean</code><p>Whether plupload-style is preferred</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>string</code><p>File-type filter to limit to, comma-separated file extensions (might not be supported)</p></div>
+<div class="subelement argument">
+<h4>$syndication_json</h4>
+<code>\?string</code><p>JSON structure of what uploader syndications there will be (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_upload_multi_source"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_upload_multi_source " data-toggle="collapse" data-target=".function_form_input_upload_multi_source .collapse" title="">
+<h2>Get the Tempcode for a multi-set upload, allowing selection from multiple different sources.</h2>
+<pre>form_input_upload_multi_source(mixed $set_title, mixed $set_description, \Tempcode $hidden, \ID_TEXT $set_name<code> = 'image'</code>, \?ID_TEXT $theme_image_type<code> = null</code>, boolean $required<code> = true</code>, \?string $default<code> = null</code>, boolean $support_syndication<code> = false</code>, \?string $filter<code> = null</code>, boolean $images_only<code> = true</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Mainly for images, used with post_param_image or post_param_multi_source_upload.</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$set_title</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$set_description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$hidden</h4>
+<code>\Tempcode</code><p>A reference to where we're putting hidden fields</p></div>
+<div class="subelement argument">
+<h4>$set_name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for (actually, this is a prefix put in front of different input types).</p></div>
+<div class="subelement argument">
+<h4>$theme_image_type</h4>
+<code>\?ID_TEXT</code><p>The directory of theme images to provide selection from (null: do not support theme images)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field. Set this to false if you are using this field on an edit form and already have an uploaded file -- therefore you'd know no new file would mean not to replace the existing file</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for the field (null: none) (blank: none). Should only be passed if $required is false, because it creates a delete button for the existing file, implying that leaving it with no file is valid</p></div>
+<div class="subelement argument">
+<h4>$support_syndication</h4>
+<code>boolean</code><p>Whether to syndicate the file off</p></div>
+<div class="subelement argument">
+<h4>$filter</h4>
+<code>\?string</code><p>File type filter (null: autodetect)</p></div>
+<div class="subelement argument">
+<h4>$images_only</h4>
+<code>boolean</code><p>Whether to accept images only</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_url " data-toggle="collapse" data-target=".function_form_input_url .collapse" title="">
+<h2>Get the Tempcode for a URL.</h2>
+<pre>form_input_url(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_username"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_username " data-toggle="collapse" data-target=".function_form_input_username .collapse" title="">
+<h2>Get the Tempcode for a username input line.</h2>
+<pre>form_input_username(mixed $pretty_name, mixed $description, \ID_TEXT $name, \?string $default, boolean $required, boolean $needs_match<code> = true</code>, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name which this input field is for</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>\?string</code><p>The default value for this input field (null: blank)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$needs_match</h4>
+<code>boolean</code><p>Whether it is required than a valid username is given</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_username_multi"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_username_multi " data-toggle="collapse" data-target=".function_form_input_username_multi .collapse" title="">
+<h2>Get the Tempcode for a username input line.</h2>
+<pre>form_input_username_multi(mixed $pretty_name, mixed $description, \ID_TEXT $name, array $default_array, integer $num_required, boolean $needs_match<code> = true</code>, \?integer $tabindex<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The base parameter name which this input field is for (as this takes multiple parameters, they are named <name><x>). This name must end with '_'.</p></div>
+<div class="subelement argument">
+<h4>$default_array</h4>
+<code>array</code><p>An array of lines to use as default (at least this many lines, filled by this array, will be presented by default)</p></div>
+<div class="subelement argument">
+<h4>$num_required</h4>
+<code>integer</code><p>The minimum number of inputs allowed</p></div>
+<div class="subelement argument">
+<h4>$needs_match</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_form_input_various_ticks"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_form_input_various_ticks " data-toggle="collapse" data-target=".function_form_input_various_ticks .collapse" title="">
+<h2>Get the Tempcode for a bank of tick boxes.</h2>
+<pre>form_input_various_ticks(array $options, mixed $description, \?integer $_tabindex<code> = null</code>, mixed $_pretty_name<code> = ''</code>, boolean $simple_style<code> = false</code>, \?ID_TEXT $custom_name<code> = null</code>, \?mixed $custom_value<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>array</code><p>A list of tuples: (prettyname, name, value, description)</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>mixed</code><p>A description for this input field</p></div>
+<div class="subelement argument">
+<h4>$_tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$_pretty_name</h4>
+<code>mixed</code><p>A human intelligible name for this input field (blank: use default)</p></div>
+<div class="subelement argument">
+<h4>$simple_style</h4>
+<code>boolean</code><p>Whether to place each tick on a new line</p></div>
+<div class="subelement argument">
+<h4>$custom_name</h4>
+<code>\?ID_TEXT</code><p>Name for custom value to be entered to (null: no custom value allowed)</p></div>
+<div class="subelement argument">
+<h4>$custom_value</h4>
+<code>\?mixed</code><p>Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The input field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_attachments " data-toggle="collapse" data-target=".function_get_attachments .collapse" title="">
+<h2>Get what we need to get attachments in a form-field interface.</h2>
+<pre>get_attachments(\ID_TEXT $posting_field_name) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$posting_field_name</h4>
+<code>\ID_TEXT</code><p>The name of the field attachments are for</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: the attachments UI (Tempcode), the hidden attachment field</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_comcode_editor"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_comcode_editor " data-toggle="collapse" data-target=".function_get_comcode_editor .collapse" title="">
+<h2>Creates a Comcode editor.</h2>
+<pre>get_comcode_editor(string $field_name<code> = 'post'</code>, boolean $cut_down<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>string</code><p>The name of the field the editor is working for</p></div>
+<div class="subelement argument">
+<h4>$cut_down</h4>
+<code>boolean</code><p>Whether to make a cut-down version</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Comcode editor</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_field_restrict_property"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_field_restrict_property " data-toggle="collapse" data-target=".function_get_field_restrict_property .collapse" title="">
+<h2>Get the value of a scoped field restriction property. Returns "first-found".</h2>
+<pre>get_field_restrict_property(string $property, string $field, \?string $page<code> = null</code>, \?string $type<code> = null</code>) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$property</h4>
+<code>string</code><p>The name of the property</p></div>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The name of the field it's scoped for</p></div>
+<div class="subelement argument">
+<h4>$page</h4>
+<code>\?string</code><p>The page name scoped for (null: current page)</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\?string</code><p>The page type scoped for (null: current type)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>The property (null: non-existent)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_form_field_tabindex"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_form_field_tabindex " data-toggle="collapse" data-target=".function_get_form_field_tabindex .collapse" title="">
+<h2>Helper function for tab-index linearisation (serves as a filter).</h2>
+<pre>get_form_field_tabindex(\?integer $tabindex<code> = null</code>) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>Requested tab-index (null: no specific request)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>Used tab-index</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_posting_form"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_posting_form " data-toggle="collapse" data-target=".function_get_posting_form .collapse" title="">
+<h2>Creates a posting form, with attachment support.</h2>
+<pre>get_posting_form(mixed $submit_name, \ID_TEXT $submit_icon, \LONG_TEXT $post, mixed $post_url, \Tempcode $hidden_fields, \Tempcode $specialisation, \?mixed $post_comment<code> = null</code>, string $extra<code> = ''</code>, \?Tempcode $specialisation2<code> = null</code>, \?Tempcode $default_parsed<code> = null</code>, \?string $javascript<code> = null</code>, \?integer $tabindex<code> = null</code>, boolean $required<code> = true</code>, boolean $has_preview<code> = true</code>, boolean $avoid_wysiwyg<code> = false</code>, boolean $support_autosave<code> = true</code>, boolean $specialisation2_hidden<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$submit_name</h4>
+<code>mixed</code><p>The title of the form submission button</p></div>
+<div class="subelement argument">
+<h4>$submit_icon</h4>
+<code>\ID_TEXT</code><p>The submit icon CSS class.</p></div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>\LONG_TEXT</code><p>The default post to put in.</p></div>
+<div class="subelement argument">
+<h4>$post_url</h4>
+<code>mixed</code><p>Where the form is sent (URLPATH or Tempcode).</p></div>
+<div class="subelement argument">
+<h4>$hidden_fields</h4>
+<code>\Tempcode</code><p>A form_input_hidden buildup of hidden fields (additional parameters sent to the target URL).</p></div>
+<div class="subelement argument">
+<h4>$specialisation</h4>
+<code>\Tempcode</code><p>A buildup of leading extra fields, in a format compatible with the templates used by this function.</p></div>
+<div class="subelement argument">
+<h4>$post_comment</h4>
+<code>\?mixed</code><p>The post comment (string or Tempcode). This gives information about how you should post. (null: no post comment)</p></div>
+<div class="subelement argument">
+<h4>$extra</h4>
+<code>string</code><p>Extra info to put on the posting form</p></div>
+<div class="subelement argument">
+<h4>$specialisation2</h4>
+<code>\?Tempcode</code><p>A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)</p></div>
+<div class="subelement argument">
+<h4>$default_parsed</h4>
+<code>\?Tempcode</code><p>The parsed Comcode. (null: calculate)</p></div>
+<div class="subelement argument">
+<h4>$javascript</h4>
+<code>\?string</code><p>JavaScript code to include (null: none)</p></div>
+<div class="subelement argument">
+<h4>$tabindex</h4>
+<code>\?integer</code><p>The tab index of the field (null: not specified)</p></div>
+<div class="subelement argument">
+<h4>$required</h4>
+<code>boolean</code><p>Whether this is a required input field</p></div>
+<div class="subelement argument">
+<h4>$has_preview</h4>
+<code>boolean</code><p>Whether the form supports previewing</p></div>
+<div class="subelement argument">
+<h4>$avoid_wysiwyg</h4>
+<code>boolean</code><p>Whether to avoid WYSIWYG mode</p></div>
+<div class="subelement argument">
+<h4>$support_autosave</h4>
+<code>boolean</code><p>Whether to support auto-save</p></div>
+<div class="subelement argument">
+<h4>$specialisation2_hidden</h4>
+<code>boolean</code><p>Whether to support auto-save</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The posting form</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_handle_conflict_resolution"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_handle_conflict_resolution " data-toggle="collapse" data-target=".function_handle_conflict_resolution .collapse" title="">
+<h2>Look for editing conflicts, and setup editing pinging.</h2>
+<pre>handle_conflict_resolution(\?ID_TEXT $id<code> = null</code>, boolean $only_staff<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?ID_TEXT</code><p>The ID we're editing (null: get from param, 'id')</p></div>
+<div class="subelement argument">
+<h4>$only_staff</h4>
+<code>boolean</code><p>Whether to only care about staff conflicts</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: warning details, ping url</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_handle_max_file_size"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_handle_max_file_size " data-toggle="collapse" data-target=".function_handle_max_file_size .collapse" title="">
+<h2>Insert hidden data for the maximum file size of form fields.</h2>
+<pre>handle_max_file_size(\Tempcode $hidden, \ID_TEXT $regular_max_size_type<code> = 'file'</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>image file</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$hidden</h4>
+<code>\Tempcode</code><p>Hidden fields</p></div>
+<div class="subelement argument">
+<h4>$regular_max_size_type</h4>
+<code>\ID_TEXT</code><p>Code representing the media types we are using limits for</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_read_multi_code"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_read_multi_code " data-toggle="collapse" data-target=".function_read_multi_code .collapse" title="">
+<h2>Read a multi code from a named parameter stub.</h2>
+<pre>read_multi_code(\ID_TEXT $param) : \SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$param</h4>
+<code>\ID_TEXT</code><p>The parameter stub (stub of a series of POST parameters, made by cns_get_forum_multi_code_field's field or similar).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\SHORT_TEXT</code>The multi code.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_run_spellcheck"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_run_spellcheck " data-toggle="collapse" data-target=".function_run_spellcheck .collapse" title="">
+<h2>Run a spellcheck on some text.</h2>
+<pre>run_spellcheck(string $text, \?ID_TEXT $lang<code> = null</code>, boolean $skip_known_words_in_db<code> = true</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Text to scan for words in (should be plain text, not be HTML text)</p></div>
+<div class="subelement argument">
+<h4>$lang</h4>
+<code>\?ID_TEXT</code><p>Language to check in (null: current language)</p></div>
+<div class="subelement argument">
+<h4>$skip_known_words_in_db</h4>
+<code>boolean</code><p>Whether to avoid spellchecking known keywords etc</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map of misspellings, lower case bad word => array of corrections</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_single_field__end"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_single_field__end " data-toggle="collapse" data-target=".function_single_field__end .collapse" title="">
+<h2>Stop serving single field.</h2>
+<pre>single_field__end() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_single_field__start"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_single_field__start " data-toggle="collapse" data-target=".function_single_field__start .collapse" title="">
+<h2>Start serving single field. This is used if you just need the raw widget, not the label (etc).</h2>
+<pre>single_field__start() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_sl_get_custom_file_base"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_sl_get_custom_file_base " data-toggle="collapse" data-target=".function_sl_get_custom_file_base .collapse" title="">
+<h2>Find the path to where data is stored.</h2>
+<pre>sl_get_custom_file_base() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Relative path</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_spell_correct_phrase"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_spell_correct_phrase " data-toggle="collapse" data-target=".function_spell_correct_phrase .collapse" title="">
+<h2>Fix spellings in input string.</h2>
+<pre>spell_correct_phrase(string $text) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Input string</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Fixed input string</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_take_param_int_modeavg"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_take_param_int_modeavg " data-toggle="collapse" data-target=".function_take_param_int_modeavg .collapse" title="">
+<h2>Find a default property, defaulting to the average of what is there already, or the given default if really necessary.</h2>
+<pre>take_param_int_modeavg(integer $setting, \ID_TEXT $db_property, \ID_TEXT $table, integer $default) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$setting</h4>
+<code>integer</code><p>The current setting (null: we have to work it out); if non-null, the function will immediately return</p></div>
+<div class="subelement argument">
+<h4>$db_property</h4>
+<code>\ID_TEXT</code><p>The property</p></div>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>\ID_TEXT</code><p>The table to average within</p></div>
+<div class="subelement argument">
+<h4>$default</h4>
+<code>integer</code><p>The last-resort default</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The value</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_url_default_parameters__disable"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_url_default_parameters__disable " data-toggle="collapse" data-target=".function_url_default_parameters__disable .collapse" title="">
+<h2>Disable reading in default parameters from the GET environment. This is typically called after 'add' forms.</h2>
+<pre>url_default_parameters__disable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_url_default_parameters__enable"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_url_default_parameters__enable " data-toggle="collapse" data-target=".function_url_default_parameters__enable .collapse" title="">
+<h2>Enable reading in default parameters from the GET environment. This is typically called before 'add' forms.</h2>
+<pre>url_default_parameters__enable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wysiwyg_on"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wysiwyg_on " data-toggle="collapse" data-target=".function_wysiwyg_on .collapse" title="">
+<h2>Find whether WYSIWYG is currently on.</h2>
+<pre>wysiwyg_on() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_WORD_REGEXP"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WORD_REGEXP" data-toggle="collapse" data-target=".constant_WORD_REGEXP .collapse" title="">
+<h2>WORD_REGEXP</h2>
+<pre>WORD_REGEXP = '#([\w\'\-]{1,200})#' . (get_charset() == 'utf-8' ? 'u' : '') </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_form_interfaces.html">core_form_interfaces</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:36+01:00.<br></footer></div>
+</div>
+</body>
+</html>

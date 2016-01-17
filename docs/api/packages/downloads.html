@@ -1,0 +1,1019 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/downloads.html" title="downloads"><i class="icon-folder-open"></i>downloads</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_add_download" title="add_download() :: Add a download."><span class="description">Add a download.</span><pre>add_download</pre></a></li>
+<li class="function  "><a href="#function_add_download_category" title="add_download_category() :: Add a download category"><span class="description">Add a download category</span><pre>add_download_category</pre></a></li>
+<li class="function  "><a href="#function_add_download_licence" title="add_download_licence() :: Add a download licence."><span class="description">Add a download licence.</span><pre>add_download_licence</pre></a></li>
+<li class="function  "><a href="#function_count_download_category_children" title="count_download_category_children() :: Count the downloads and subcategories underneath the specified category, recursively."><span class="description">Count the downloads and subcategories underneath the specified category, recursively.</span><pre>count_download_category_children</pre></a></li>
+<li class="function  "><a href="#function_create_data_mash" title="create_data_mash() :: Create a data-mash from the file at a URL. This is data useful for the search engine."><span class="description">Create a data-mash from the file at a URL. This is data useful for the search engine.</span><pre>create_data_mash</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_download_category_tree" title="create_selection_list_download_category_tree() :: Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum). The tree bit is because each entry in the list is shown to include the path through the tree that gets to it"><span class="description">Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum). The tree bit is because each entry in the list is shown to include the path through the tree that gets to it</span><pre>create_selection_list_download_category_tree</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_download_licences" title="create_selection_list_download_licences() :: Get a nice, formatted XHTML list to select a download licence"><span class="description">Get a nice, formatted XHTML list to select a download licence</span><pre>create_selection_list_download_licences</pre></a></li>
+<li class="function  "><a href="#function_create_selection_list_downloads_tree" title="create_selection_list_downloads_tree() :: Get a nice, formatted XHTML list of downloads, in download tree structure"><span class="description">Get a nice, formatted XHTML list of downloads, in download tree structure</span><pre>create_selection_list_downloads_tree</pre></a></li>
+<li class="function  "><a href="#function_delete_download" title="delete_download() :: Delete a download."><span class="description">Delete a download.</span><pre>delete_download</pre></a></li>
+<li class="function  "><a href="#function_delete_download_category" title="delete_download_category() :: Delete a download category."><span class="description">Delete a download category.</span><pre>delete_download_category</pre></a></li>
+<li class="function  "><a href="#function_delete_download_licence" title="delete_download_licence() :: Delete a download licence."><span class="description">Delete a download licence.</span><pre>delete_download_licence</pre></a></li>
+<li class="function  "><a href="#function_dload_script" title="dload_script() :: Farm out the files for downloads."><span class="description">Farm out the files for downloads.</span><pre>dload_script</pre></a></li>
+<li class="function  "><a href="#function_download_breadcrumbs" title="download_breadcrumbs() :: Get a formatted XHTML string of the route back to the specified root, from the specified category."><span class="description">Get a formatted XHTML string of the route back to the specified root, from the specified category.</span><pre>download_breadcrumbs</pre></a></li>
+<li class="function  "><a href="#function_download_gateway_script" title="download_gateway_script() :: Farm out the files for downloads."><span class="description">Farm out the files for downloads.</span><pre>download_gateway_script</pre></a></li>
+<li class="function  "><a href="#function_download_licence_script" title="download_licence_script() :: Show a download licence for display"><span class="description">Show a download licence for display</span><pre>download_licence_script</pre></a></li>
+<li class="function  "><a href="#function_edit_download" title="edit_download() :: Edit a download."><span class="description">Edit a download.</span><pre>edit_download</pre></a></li>
+<li class="function  "><a href="#function_edit_download_category" title="edit_download_category() :: Edit the given download category with the new details given"><span class="description">Edit the given download category with the new details given</span><pre>edit_download_category</pre></a></li>
+<li class="function  "><a href="#function_edit_download_licence" title="edit_download_licence() :: Edit a download licence."><span class="description">Edit a download licence.</span><pre>edit_download_licence</pre></a></li>
+<li class="function  "><a href="#function_generate_dload_url" title="generate_dload_url() :: Generate a link to a Composr download."><span class="description">Generate a link to a Composr download.</span><pre>generate_dload_url</pre></a></li>
+<li class="function  "><a href="#function_get_download_archive_size" title="get_download_archive_size() :: Get the total size of all the currently available downloads in a formatted string."><span class="description">Get the total size of all the currently available downloads in a formatted string.</span><pre>get_download_archive_size</pre></a></li>
+<li class="function  "><a href="#function_get_download_bandwidth" title="get_download_bandwidth() :: Get the currently used download bandwidth."><span class="description">Get the currently used download bandwidth.</span><pre>get_download_bandwidth</pre></a></li>
+<li class="function  "><a href="#function_get_download_category_tree" title="get_download_category_tree() :: Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively."><span class="description">Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.</span><pre>get_download_category_tree</pre></a></li>
+<li class="function  "><a href="#function_get_downloads_tree" title="get_downloads_tree() :: Get a list of maps containing all the downloads, and path information, under the specified category - and those beneath it, recursively."><span class="description">Get a list of maps containing all the downloads, and path information, under the specified category - and those beneath it, recursively.</span><pre>get_downloads_tree</pre></a></li>
+<li class="function  "><a href="#function_get_num_archive_downloads" title="get_num_archive_downloads() :: Get the total number of downloads available."><span class="description">Get the total number of downloads available.</span><pre>get_num_archive_downloads</pre></a></li>
+<li class="function  "><a href="#function_get_num_downloads_downloaded" title="get_num_downloads_downloaded() :: Get the total number of files downloaded since installation."><span class="description">Get the total number of files downloaded since installation.</span><pre>get_num_downloads_downloaded</pre></a></li>
+<li class="function  "><a href="#function_log_download" title="log_download() :: Log a file download, update the downloads counter and the download bandwidth counter."><span class="description">Log a file download, update the downloads counter and the download bandwidth counter.</span><pre>log_download</pre></a></li>
+<li class="function  "><a href="#function_render_download_box" title="render_download_box() :: Get Tempcode for a download 'feature box' for the sgiven row"><span class="description">Get Tempcode for a download 'feature box' for the sgiven row</span><pre>render_download_box</pre></a></li>
+<li class="function  "><a href="#function_render_download_category_box" title="render_download_category_box() :: Get Tempcode for a download category 'feature box' for the given row"><span class="description">Get Tempcode for a download category 'feature box' for the given row</span><pre>render_download_category_box</pre></a></li>
+<li class="function  "><a href="#function_set_download_gallery_permissions" title="set_download_gallery_permissions() :: Set the permissions for a download gallery."><span class="description">Set the permissions for a download gallery.</span><pre>set_download_gallery_permissions</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/downloads.html">downloads</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_add_download"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_download " data-toggle="collapse" data-target=".function_add_download .collapse" title="">
+<h2>Add a download.</h2>
+<pre>add_download(\AUTO_LINK $category_id, \SHORT_TEXT $name, \URLPATH $url, \LONG_TEXT $description, \ID_TEXT $author, \LONG_TEXT $additional_details, \?AUTO_LINK $out_mode_id, \BINARY $validated, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \SHORT_TEXT $original_filename, integer $file_size, integer $cost, \BINARY $submitter_gets_points, \?AUTO_LINK $licence<code> = null</code>, \?TIME $add_date<code> = null</code>, integer $num_downloads<code> = 0</code>, integer $views<code> = 0</code>, \?MEMBER $submitter<code> = null</code>, \?TIME $edit_date<code> = null</code>, \?AUTO_LINK $id<code> = null</code>, \SHORT_TEXT $meta_keywords<code> = ''</code>, \LONG_TEXT $meta_description<code> = ''</code>, integer $default_pic<code> = 1</code>, \URLPATH $url_redirect<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category the download is to be in</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The name of the download</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the download</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description of the download</p></div>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>\ID_TEXT</code><p>The author of the download (not necessarily same as the submitter)</p></div>
+<div class="subelement argument">
+<h4>$additional_details</h4>
+<code>\LONG_TEXT</code><p>The supplementary description for the download</p></div>
+<div class="subelement argument">
+<h4>$out_mode_id</h4>
+<code>\?AUTO_LINK</code><p>The out-mode-id (the ID of a download that this download is an old version of). Often people wonder why this is specified with the old version, and not the opposite with the new version - it is because statistically, we perceive more chance of downloads merging than splitting (null: none)</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the download has been validated</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the download may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the download may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the download</p></div>
+<div class="subelement argument">
+<h4>$original_filename</h4>
+<code>\SHORT_TEXT</code><p>The downloads original filename (the URL may be obfuscated)</p></div>
+<div class="subelement argument">
+<h4>$file_size</h4>
+<code>integer</code><p>The file size of the download (we can't really detect this in real-time for remote URLs)</p></div>
+<div class="subelement argument">
+<h4>$cost</h4>
+<code>integer</code><p>The cost of the download that members will have to pay to get it</p></div>
+<div class="subelement argument">
+<h4>$submitter_gets_points</h4>
+<code>\BINARY</code><p>Whether the submitter gets the points for the download (they are selling it) (otherwise they are just thrown out, which is an alternative model - one of enforcing community point building)</p></div>
+<div class="subelement argument">
+<h4>$licence</h4>
+<code>\?AUTO_LINK</code><p>The licence to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$add_date</h4>
+<code>\?TIME</code><p>The add date for the download (null: now)</p></div>
+<div class="subelement argument">
+<h4>$num_downloads</h4>
+<code>integer</code><p>The number of downloads that this download has had</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>integer</code><p>The number of views that this download has had</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The submitter (null: current user)</p></div>
+<div class="subelement argument">
+<h4>$edit_date</h4>
+<code>\?TIME</code><p>The edit date (null: never)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords for this resource (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description for this resource (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$default_pic</h4>
+<code>integer</code><p>The ordered number of the gallery image to use as the download representative image</p></div>
+<div class="subelement argument">
+<h4>$url_redirect</h4>
+<code>\URLPATH</code><p>The URL to redirect</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the newly added download</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_download_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_download_category " data-toggle="collapse" data-target=".function_add_download_category .collapse" title="">
+<h2>Add a download category</h2>
+<pre>add_download_category(\SHORT_TEXT $category, \AUTO_LINK $parent_id, \LONG_TEXT $description, \LONG_TEXT $notes, \URLPATH $rep_image<code> = ''</code>, \?AUTO_LINK $id<code> = null</code>, \?TIME $add_time<code> = null</code>, \?SHORT_TEXT $meta_keywords<code> = ''</code>, \?LONG_TEXT $meta_description<code> = ''</code>) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category</h4>
+<code>\SHORT_TEXT</code><p>The name of the download category</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\AUTO_LINK</code><p>The parent download category</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>A description</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to this download category</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image for the category (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>Force an ID (null: don't force an ID)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: now)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit) (blank: implicit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit) (blank: implicit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the newly added download category</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_download_licence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_download_licence " data-toggle="collapse" data-target=".function_add_download_licence .collapse" title="">
+<h2>Add a download licence.</h2>
+<pre>add_download_licence(\SHORT_TEXT $title, \LONG_TEXT $text) : \AUTO_LINK</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the download licence</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\LONG_TEXT</code><p>The text of the download licence</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\AUTO_LINK</code>The ID of the new download licence</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_count_download_category_children"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_count_download_category_children " data-toggle="collapse" data-target=".function_count_download_category_children .collapse" title="">
+<h2>Count the downloads and subcategories underneath the specified category, recursively.</h2>
+<pre>count_download_category_children(\AUTO_LINK $category_id) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category for which count details are collected</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The number of downloads is returned in $output['num_downloads'], and the number of subcategories is returned in $output['num_children'], and the (possibly recursive) number of downloads is returned in $output['num_downloads_children'].</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_data_mash"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_data_mash " data-toggle="collapse" data-target=".function_create_data_mash .collapse" title="">
+<h2>Create a data-mash from the file at a URL. This is data useful for the search engine.</h2>
+<pre>create_data_mash(\URLPATH $url, \?string $data<code> = null</code>, \?ID_TEXT $extension<code> = null</code>, boolean $direct_path<code> = false</code>) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to make a data-mash of, or a filename if $data isn't blank</p></div>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>\?string</code><p>Data (null: use URL)</p></div>
+<div class="subelement argument">
+<h4>$extension</h4>
+<code>\?ID_TEXT</code><p>File extension (null: get from URL)</p></div>
+<div class="subelement argument">
+<h4>$direct_path</h4>
+<code>boolean</code><p>Whether a direct file path was given instead of a URL</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>The data-mash</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_download_category_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_download_category_tree " data-toggle="collapse" data-target=".function_create_selection_list_download_category_tree .collapse" title="">
+<h2>Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum). The tree bit is because each entry in the list is shown to include the path through the tree that gets to it</h2>
+<pre>create_selection_list_download_category_tree(\?AUTO_LINK $it<code> = null</code>, boolean $use_compound_list<code> = false</code>, boolean $addable_filter<code> = false</code>, \?TIME $updated_since<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The currently selected category (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to make the list elements store comma-separated child lists instead of IDs</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<div class="subelement argument">
+<h4>$updated_since</h4>
+<code>\?TIME</code><p>Time from which content must be updated (null: no limit).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of categories</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_download_licences"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_download_licences " data-toggle="collapse" data-target=".function_create_selection_list_download_licences .collapse" title="">
+<h2>Get a nice, formatted XHTML list to select a download licence</h2>
+<pre>create_selection_list_download_licences(\?AUTO_LINK $it<code> = null</code>, boolean $allow_na<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The currently selected licence (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$allow_na</h4>
+<code>boolean</code><p>Whether to allow an N/A selection</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of categories</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_create_selection_list_downloads_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_create_selection_list_downloads_tree " data-toggle="collapse" data-target=".function_create_selection_list_downloads_tree .collapse" title="">
+<h2>Get a nice, formatted XHTML list of downloads, in download tree structure</h2>
+<pre>create_selection_list_downloads_tree(\?AUTO_LINK $it<code> = null</code>, \?AUTO_LINK $submitter<code> = null</code>, \?AUTO_LINK $shun<code> = null</code>, boolean $use_compound_list<code> = false</code>, boolean $editable_filter<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$it</h4>
+<code>\?AUTO_LINK</code><p>The currently selected entry (null: none selected)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?AUTO_LINK</code><p>Only show entries submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$shun</h4>
+<code>\?AUTO_LINK</code><p>Download we do not want to show (null: none to not show)</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child categories (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The list of entries</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_download"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_download " data-toggle="collapse" data-target=".function_delete_download .collapse" title="">
+<h2>Delete a download.</h2>
+<pre>delete_download(\AUTO_LINK $id, boolean $leave<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download to delete</p></div>
+<div class="subelement argument">
+<h4>$leave</h4>
+<code>boolean</code><p>Whether to leave the actual file behind</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_download_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_download_category " data-toggle="collapse" data-target=".function_delete_download_category .collapse" title="">
+<h2>Delete a download category.</h2>
+<pre>delete_download_category(\AUTO_LINK $category_id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The download category to delete</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_download_licence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_download_licence " data-toggle="collapse" data-target=".function_delete_download_licence .collapse" title="">
+<h2>Delete a download licence.</h2>
+<pre>delete_download_licence(\AUTO_LINK $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download licence to delete</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dload_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dload_script " data-toggle="collapse" data-target=".function_dload_script .collapse" title="">
+<h2>Farm out the files for downloads.</h2>
+<pre>dload_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_download_breadcrumbs"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_download_breadcrumbs " data-toggle="collapse" data-target=".function_download_breadcrumbs .collapse" title="">
+<h2>Get a formatted XHTML string of the route back to the specified root, from the specified category.</h2>
+<pre>download_breadcrumbs(\AUTO_LINK $category_id, \?AUTO_LINK $root<code> = null</code>, boolean $no_link_for_me_sir<code> = true</code>, \?ID_TEXT $zone<code> = null</code>, boolean $attach_to_url_filter<code> = false</code>) : \Tempcode: array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The category we are finding for</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>The root of the tree (null: the true root)</p></div>
+<div class="subelement argument">
+<h4>$no_link_for_me_sir</h4>
+<code>boolean</code><p>Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\?ID_TEXT</code><p>The zone the download module we're using is in (null: find it)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The breadcrumbs</div>
+<div class="subelement response">
+<code>array</code>The breadcrumb segments</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_download_gateway_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_download_gateway_script " data-toggle="collapse" data-target=".function_download_gateway_script .collapse" title="">
+<h2>Farm out the files for downloads.</h2>
+<pre>download_gateway_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_download_licence_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_download_licence_script " data-toggle="collapse" data-target=".function_download_licence_script .collapse" title="">
+<h2>Show a download licence for display</h2>
+<pre>download_licence_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_download"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_download " data-toggle="collapse" data-target=".function_edit_download .collapse" title="">
+<h2>Edit a download.</h2>
+<pre>edit_download(\AUTO_LINK $id, \AUTO_LINK $category_id, \SHORT_TEXT $name, \URLPATH $url, \LONG_TEXT $description, \ID_TEXT $author, \LONG_TEXT $additional_details, \?AUTO_LINK $out_mode_id, integer $default_pic, \BINARY $validated, \BINARY $allow_rating, \SHORT_INTEGER $allow_comments, \BINARY $allow_trackbacks, \LONG_TEXT $notes, \SHORT_TEXT $original_filename, integer $file_size, integer $cost, \BINARY $submitter_gets_points, \?AUTO_LINK $licence, \SHORT_TEXT $meta_keywords, \LONG_TEXT $meta_description, \?TIME $edit_time<code> = null</code>, \?TIME $add_time<code> = null</code>, \?integer $views<code> = null</code>, \?MEMBER $submitter<code> = null</code>, \?integer $num_downloads<code> = null</code>, boolean $null_is_literal<code> = false</code>, \URLPATH $url_redirect<code> = ''</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download to edit</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category the download is to be in</p></div>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\SHORT_TEXT</code><p>The name of the download</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to the download</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>The description of the download</p></div>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>\ID_TEXT</code><p>The author of the download (not necessarily same as the submitter)</p></div>
+<div class="subelement argument">
+<h4>$additional_details</h4>
+<code>\LONG_TEXT</code><p>The supplementary description for the download</p></div>
+<div class="subelement argument">
+<h4>$out_mode_id</h4>
+<code>\?AUTO_LINK</code><p>The out-mode-id (the ID of a download that this download is an old version of). Often people wonder why this is specified with the old version, and not the opposite with the new version - it is because statistically, we perceive more chance of downloads merging than splitting (null: none)</p></div>
+<div class="subelement argument">
+<h4>$default_pic</h4>
+<code>integer</code><p>The ordered number of the gallery image to use as the download representative image</p></div>
+<div class="subelement argument">
+<h4>$validated</h4>
+<code>\BINARY</code><p>Whether the download has been validated</p></div>
+<div class="subelement argument">
+<h4>$allow_rating</h4>
+<code>\BINARY</code><p>Whether the download may be rated</p></div>
+<div class="subelement argument">
+<h4>$allow_comments</h4>
+<code>\SHORT_INTEGER</code><p>Whether comments are allowed (0=no, 1=yes, 2=review style)</p></div>
+<div class="subelement argument">
+<h4>$allow_trackbacks</h4>
+<code>\BINARY</code><p>Whether the download may be trackbacked</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to the download</p></div>
+<div class="subelement argument">
+<h4>$original_filename</h4>
+<code>\SHORT_TEXT</code><p>The downloads original filename (the URL may be obfuscated)</p></div>
+<div class="subelement argument">
+<h4>$file_size</h4>
+<code>integer</code><p>The file size of the download (we can't really detect this in real-time for remote URLs)</p></div>
+<div class="subelement argument">
+<h4>$cost</h4>
+<code>integer</code><p>The cost of the download that members will have to pay to get it</p></div>
+<div class="subelement argument">
+<h4>$submitter_gets_points</h4>
+<code>\BINARY</code><p>Whether the submitter gets the points for the download (they are selling it) (otherwise they are just thrown out, which is an alternative model - one of enforcing community point building)</p></div>
+<div class="subelement argument">
+<h4>$licence</h4>
+<code>\?AUTO_LINK</code><p>The licence to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\SHORT_TEXT</code><p>Meta keywords</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\LONG_TEXT</code><p>Meta description</p></div>
+<div class="subelement argument">
+<h4>$edit_time</h4>
+<code>\?TIME</code><p>Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$views</h4>
+<code>\?integer</code><p>Number of views (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Submitter (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$num_downloads</h4>
+<code>\?integer</code><p>The number of downloads that this download has had (null: do not change)</p></div>
+<div class="subelement argument">
+<h4>$null_is_literal</h4>
+<code>boolean</code><p>Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'</p></div>
+<div class="subelement argument">
+<h4>$url_redirect</h4>
+<code>\URLPATH</code><p>The URL to redirect</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_download_category"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_download_category " data-toggle="collapse" data-target=".function_edit_download_category .collapse" title="">
+<h2>Edit the given download category with the new details given</h2>
+<pre>edit_download_category(\AUTO_LINK $category_id, \SHORT_TEXT $category, \AUTO_LINK $parent_id, \LONG_TEXT $description, \LONG_TEXT $notes, \URLPATH $rep_image, \?SHORT_TEXT $meta_keywords, \?LONG_TEXT $meta_description, \?TIME $add_time<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\AUTO_LINK</code><p>The ID of the category being edited</p></div>
+<div class="subelement argument">
+<h4>$category</h4>
+<code>\SHORT_TEXT</code><p>The name of the download category</p></div>
+<div class="subelement argument">
+<h4>$parent_id</h4>
+<code>\AUTO_LINK</code><p>The parent download category</p></div>
+<div class="subelement argument">
+<h4>$description</h4>
+<code>\LONG_TEXT</code><p>A description</p></div>
+<div class="subelement argument">
+<h4>$notes</h4>
+<code>\LONG_TEXT</code><p>Hidden notes pertaining to this download category</p></div>
+<div class="subelement argument">
+<h4>$rep_image</h4>
+<code>\URLPATH</code><p>The representative image for the category (blank: none)</p></div>
+<div class="subelement argument">
+<h4>$meta_keywords</h4>
+<code>\?SHORT_TEXT</code><p>Meta keywords for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$meta_description</h4>
+<code>\?LONG_TEXT</code><p>Meta description for this resource (null: do not edit)</p></div>
+<div class="subelement argument">
+<h4>$add_time</h4>
+<code>\?TIME</code><p>Add time (null: do not change)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_edit_download_licence"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_edit_download_licence " data-toggle="collapse" data-target=".function_edit_download_licence .collapse" title="">
+<h2>Edit a download licence.</h2>
+<pre>edit_download_licence(\AUTO_LINK $id, \SHORT_TEXT $title, \LONG_TEXT $text) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download licence to edit</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\SHORT_TEXT</code><p>The title of the download licence</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\LONG_TEXT</code><p>The text of the download licence</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_generate_dload_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_generate_dload_url " data-toggle="collapse" data-target=".function_generate_dload_url .collapse" title="">
+<h2>Generate a link to a Composr download.</h2>
+<pre>generate_dload_url(\AUTO_LINK $id, boolean $use_gateway) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download to be downloaded</p></div>
+<div class="subelement argument">
+<h4>$use_gateway</h4>
+<code>boolean</code><p>Whether to use the gateway script</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>The URL</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_download_archive_size"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_download_archive_size " data-toggle="collapse" data-target=".function_get_download_archive_size .collapse" title="">
+<h2>Get the total size of all the currently available downloads in a formatted string.</h2>
+<pre>get_download_archive_size() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The total size of all the currently available downloads</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_download_bandwidth"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_download_bandwidth " data-toggle="collapse" data-target=".function_get_download_bandwidth .collapse" title="">
+<h2>Get the currently used download bandwidth.</h2>
+<pre>get_download_bandwidth() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The currently used download bandwidth (forever)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_download_category_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_download_category_tree " data-toggle="collapse" data-target=".function_get_download_category_tree .collapse" title="">
+<h2>Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.</h2>
+<pre>get_download_category_tree(\?AUTO_LINK $category_id<code> = null</code>, \?string $breadcrumbs<code> = null</code>, \?ID_TEXT $category_info<code> = null</code>, boolean $do_stats<code> = false</code>, boolean $use_compound_list<code> = false</code>, \?integer $levels<code> = null</code>, boolean $addable_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The category being at the root of our recursion (null: true root category)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\?string</code><p>The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)</p></div>
+<div class="subelement argument">
+<h4>$category_info</h4>
+<code>\?ID_TEXT</code><p>The category row of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs details</p></div>
+<div class="subelement argument">
+<h4>$do_stats</h4>
+<code>boolean</code><p>Whether to collect download counts with our tree information</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to make a compound list (a pair of a comma-separated list of children, and the child array)</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$addable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be added to by the current member</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all subcategories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title). There is also an additional 'downloadcount' entry if stats were requested</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_downloads_tree"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_downloads_tree " data-toggle="collapse" data-target=".function_get_downloads_tree .collapse" title="">
+<h2>Get a list of maps containing all the downloads, and path information, under the specified category - and those beneath it, recursively.</h2>
+<pre>get_downloads_tree(\?MEMBER $submitter<code> = null</code>, \?AUTO_LINK $category_id<code> = null</code>, \?string $breadcrumbs<code> = null</code>, \?ID_TEXT $title<code> = null</code>, \?integer $shun<code> = null</code>, \?AUTO_LINK $levels<code> = null</code>, boolean $use_compound_list<code> = false</code>, boolean $editable_filter<code> = false</code>, boolean $tar_filter<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>Only show images/videos submitted by this member (null: no filter)</p></div>
+<div class="subelement argument">
+<h4>$category_id</h4>
+<code>\?AUTO_LINK</code><p>The category being at the root of our recursion (null: true root)</p></div>
+<div class="subelement argument">
+<h4>$breadcrumbs</h4>
+<code>\?string</code><p>The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)</p></div>
+<div class="subelement argument">
+<h4>$title</h4>
+<code>\?ID_TEXT</code><p>The name of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title</p></div>
+<div class="subelement argument">
+<h4>$shun</h4>
+<code>\?integer</code><p>The number of recursive levels to search (null: all)</p></div>
+<div class="subelement argument">
+<h4>$levels</h4>
+<code>\?AUTO_LINK</code><p>Download we do not want to show (null: none to not show)</p></div>
+<div class="subelement argument">
+<h4>$use_compound_list</h4>
+<code>boolean</code><p>Whether to get a list of child categories (not just direct ones, recursively), instead of just IDs</p></div>
+<div class="subelement argument">
+<h4>$editable_filter</h4>
+<code>boolean</code><p>Whether to only show for what may be edited by the current member</p></div>
+<div class="subelement argument">
+<h4>$tar_filter</h4>
+<code>boolean</code><p>Whether to only show entries that are tar files (addons)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A list of maps for all categories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (to the category, including the categories own title), and more. Or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_archive_downloads"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_archive_downloads " data-toggle="collapse" data-target=".function_get_num_archive_downloads .collapse" title="">
+<h2>Get the total number of downloads available.</h2>
+<pre>get_num_archive_downloads() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The total number of downloads available</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_num_downloads_downloaded"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_num_downloads_downloaded " data-toggle="collapse" data-target=".function_get_num_downloads_downloaded .collapse" title="">
+<h2>Get the total number of files downloaded since installation.</h2>
+<pre>get_num_downloads_downloaded() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The total number of files downloaded since installation</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_log_download"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_log_download " data-toggle="collapse" data-target=".function_log_download .collapse" title="">
+<h2>Log a file download, update the downloads counter and the download bandwidth counter.</h2>
+<pre>log_download(\AUTO_LINK $id, integer $size, boolean $got_before) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID of the download being downloaded</p></div>
+<div class="subelement argument">
+<h4>$size</h4>
+<code>integer</code><p>The size of the download (if zero, no bandwidth will be done - zero implies either an empty file, or a remote file that doesn't affect our bandwidth)</p></div>
+<div class="subelement argument">
+<h4>$got_before</h4>
+<code>boolean</code><p>Whether the download has been downloaded before</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_download_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_download_box " data-toggle="collapse" data-target=".function_render_download_box .collapse" title="">
+<h2>Get Tempcode for a download 'feature box' for the sgiven row</h2>
+<pre>render_download_box(array $row, boolean $pic<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?ID_TEXT $zone<code> = null</code>, \?string $text_summary<code> = null</code>, boolean $give_context<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of this download</p></div>
+<div class="subelement argument">
+<h4>$pic</h4>
+<code>boolean</code><p>Whether to show a picture</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to show breadcrumbs</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\?ID_TEXT</code><p>The zone the download module we're using is in (null: find it)</p></div>
+<div class="subelement argument">
+<h4>$text_summary</h4>
+<code>\?string</code><p>Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>The virtual root (null: read from environment)</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for this download, linking to the full download page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_download_category_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_download_category_box " data-toggle="collapse" data-target=".function_render_download_category_box .collapse" title="">
+<h2>Get Tempcode for a download category 'feature box' for the given row</h2>
+<pre>render_download_category_box(array $row, \ID_TEXT $zone<code> = '_SEARCH'</code>, boolean $give_context<code> = true</code>, boolean $include_breadcrumbs<code> = true</code>, \?AUTO_LINK $root<code> = null</code>, boolean $attach_to_url_filter<code> = false</code>, \ID_TEXT $guid<code> = ''</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$row</h4>
+<code>array</code><p>The database field row of it</p></div>
+<div class="subelement argument">
+<h4>$zone</h4>
+<code>\ID_TEXT</code><p>The zone to use</p></div>
+<div class="subelement argument">
+<h4>$give_context</h4>
+<code>boolean</code><p>Whether to include context (i.e. say WHAT this is, not just show the actual content)</p></div>
+<div class="subelement argument">
+<h4>$include_breadcrumbs</h4>
+<code>boolean</code><p>Whether to include breadcrumbs (if there are any)</p></div>
+<div class="subelement argument">
+<h4>$root</h4>
+<code>\?AUTO_LINK</code><p>Virtual root to use (null: none)</p></div>
+<div class="subelement argument">
+<h4>$attach_to_url_filter</h4>
+<code>boolean</code><p>Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>\ID_TEXT</code><p>Overridden GUID to send to templates (blank: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>A box for it, linking to the full page</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_set_download_gallery_permissions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_set_download_gallery_permissions " data-toggle="collapse" data-target=".function_set_download_gallery_permissions .collapse" title="">
+<h2>Set the permissions for a download gallery.</h2>
+<pre>set_download_gallery_permissions(\?AUTO_LINK $id, \?MEMBER $submitter<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/downloads.html">downloads</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\?AUTO_LINK</code><p>The ID of the download (null: lookup from download)</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The submitter (null: work out automatically)</p></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:38+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1371 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div xmlns:php="http://php.net/xsl" class="btn-toolbar">
+<div class="btn-group visibility" data-toggle="buttons-checkbox">
+<button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button>
+</div>
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+</div>
+<ul xmlns:php="http://php.net/xsl" class="side-nav nav nav-list">
+<li class="nav-header">
+<i title="Methods" class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method_can_arbitrary_groupby" title="can_arbitrary_groupby() :: Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions"><span class="description">Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions</span><pre>can_arbitrary_groupby()</pre></a></li>
+<li class="method public "><a href="#method_db_change_primary_key" title="db_change_primary_key() :: Change the primary key of a table."><span class="description">Change the primary key of a table.</span><pre>db_change_primary_key()</pre></a></li>
+<li class="method public "><a href="#method_db_close_connections" title="db_close_connections() :: Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them."><span class="description">Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.</span><pre>db_close_connections()</pre></a></li>
+<li class="method public "><a href="#method_db_create_index" title="db_create_index() :: Create a table index."><span class="description">Create a table index.</span><pre>db_create_index()</pre></a></li>
+<li class="method public "><a href="#method_db_create_table" title="db_create_table() :: Create a new table."><span class="description">Create a new table.</span><pre>db_create_table()</pre></a></li>
+<li class="method public "><a href="#method_db_default_password" title="db_default_password() :: Get the default password for making db connections (used by the installer as a default)."><span class="description">Get the default password for making db connections (used by the installer as a default).</span><pre>db_default_password()</pre></a></li>
+<li class="method public "><a href="#method_db_default_user" title="db_default_user() :: Get the default user for making db connections (used by the installer as a default)."><span class="description">Get the default user for making db connections (used by the installer as a default).</span><pre>db_default_user()</pre></a></li>
+<li class="method public "><a href="#method_db_drop_table_if_exists" title="db_drop_table_if_exists() :: Delete a table."><span class="description">Delete a table.</span><pre>db_drop_table_if_exists()</pre></a></li>
+<li class="method public "><a href="#method_db_empty_is_null" title="db_empty_is_null() :: This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings."><span class="description">This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.</span><pre>db_empty_is_null()</pre></a></li>
+<li class="method public "><a href="#method_db_encode_like" title="db_encode_like() :: Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols."><span class="description">Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.</span><pre>db_encode_like()</pre></a></li>
+<li class="method public "><a href="#method_db_escape_string" title="db_escape_string() :: Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation."><span class="description">Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.</span><pre>db_escape_string()</pre></a></li>
+<li class="method public "><a href="#method_db_full_text_assemble" title="db_full_text_assemble() :: Assemble part of a WHERE clause for doing full-text search"><span class="description">Assemble part of a WHERE clause for doing full-text search</span><pre>db_full_text_assemble()</pre></a></li>
+<li class="method public "><a href="#method_db_get_connection" title="db_get_connection() :: Get a database connection. This function shouldn't be used by you, as a connection to the database is established automatically."><span class="description">Get a database connection. This function shouldn't be used by you, as a connection to the database is established automatically.</span><pre>db_get_connection()</pre></a></li>
+<li class="method public "><a href="#method_db_get_first_id" title="db_get_first_id() :: Get the ID of the first row in an auto-increment table (used whenever we need to reference the first)."><span class="description">Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).</span><pre>db_get_first_id()</pre></a></li>
+<li class="method public "><a href="#method_db_get_type_remap" title="db_get_type_remap() :: Get a map of Composr field types, to actual database types."><span class="description">Get a map of Composr field types, to actual database types.</span><pre>db_get_type_remap()</pre></a></li>
+<li class="method public "><a href="#method_db_has_full_text" title="db_has_full_text() :: Find whether full-text-search is present"><span class="description">Find whether full-text-search is present</span><pre>db_has_full_text()</pre></a></li>
+<li class="method public "><a href="#method_db_has_full_text_boolean" title="db_has_full_text_boolean() :: Find whether full-text-boolean-search is present"><span class="description">Find whether full-text-boolean-search is present</span><pre>db_has_full_text_boolean()</pre></a></li>
+<li class="method public "><a href="#method_db_has_subqueries" title="db_has_subqueries() :: Find whether subquery support is present"><span class="description">Find whether subquery support is present</span><pre>db_has_subqueries()</pre></a></li>
+<li class="method public "><a href="#method_db_is_flat_file_simple" title="db_is_flat_file_simple() :: Determine whether the database is a flat file database, and thus not have a meaningful connect username and password."><span class="description">Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.</span><pre>db_is_flat_file_simple()</pre></a></li>
+<li class="method public "><a href="#method_db_query" title="db_query() :: This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available."><span class="description">This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.</span><pre>db_query()</pre></a></li>
+<li class="method public "><a href="#method_db_string_equal_to" title="db_string_equal_to() :: Encode an SQL statement fragment for a conditional to see if two strings are equal."><span class="description">Encode an SQL statement fragment for a conditional to see if two strings are equal.</span><pre>db_string_equal_to()</pre></a></li>
+<li class="method public "><a href="#method_db_string_not_equal_to" title="db_string_not_equal_to() :: Encode an SQL statement fragment for a conditional to see if two strings are not equal."><span class="description">Encode an SQL statement fragment for a conditional to see if two strings are not equal.</span><pre>db_string_not_equal_to()</pre></a></li>
+<li class="method public "><a href="#method_is_start_of_delimiter" title="is_start_of_delimiter() :: See if an item is a prefix to something in the delimiter array."><span class="description">See if an item is a prefix to something in the delimiter array.</span><pre>is_start_of_delimiter()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="method protected "><a href="#method__bad_query" title="_bad_query() :: Give out an error message and die, when a query fails."><span class="description">Give out an error message and die, when a query fails.</span><pre>_bad_query()</pre></a></li>
+<li class="method protected "><a href="#method__delete_record" title="_delete_record() :: Write a record to an XML file."><span class="description">Write a record to an XML file.</span><pre>_delete_record()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_alter" title="_do_query_alter() :: Execute an ALTER query."><span class="description">Execute an ALTER query.</span><pre>_do_query_alter()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_create" title="_do_query_create() :: Execute a CREATE query."><span class="description">Execute a CREATE query.</span><pre>_do_query_create()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_delete" title="_do_query_delete() :: Execute a DELETE query."><span class="description">Execute a DELETE query.</span><pre>_do_query_delete()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_drop" title="_do_query_drop() :: Execute a DROP query."><span class="description">Execute a DROP query.</span><pre>_do_query_drop()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_insert" title="_do_query_insert() :: Wrapper to execute an INSERT query."><span class="description">Wrapper to execute an INSERT query.</span><pre>_do_query_insert()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_insert__execute" title="_do_query_insert__execute() :: Execute an INSERT query."><span class="description">Execute an INSERT query.</span><pre>_do_query_insert__execute()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_insert__parse" title="_do_query_insert__parse() :: Parse an INSERT query."><span class="description">Parse an INSERT query.</span><pre>_do_query_insert__parse()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_select" title="_do_query_select() :: Execute a SELECT query."><span class="description">Execute a SELECT query.</span><pre>_do_query_select()</pre></a></li>
+<li class="method protected "><a href="#method__do_query_update" title="_do_query_update() :: Execute an UPDATE query."><span class="description">Execute an UPDATE query.</span><pre>_do_query_update()</pre></a></li>
+<li class="method protected "><a href="#method__escape_name" title="_escape_name() :: Escape a value for use in a filesystem path."><span class="description">Escape a value for use in a filesystem path.</span><pre>_escape_name()</pre></a></li>
+<li class="method protected "><a href="#method__execute_expression" title="_execute_expression() :: Execute an expression."><span class="description">Execute an expression.</span><pre>_execute_expression()</pre></a></li>
+<li class="method protected "><a href="#method__execute_join" title="_execute_join() :: Get results from a JOIN."><span class="description">Get results from a JOIN.</span><pre>_execute_join()</pre></a></li>
+<li class="method protected "><a href="#method__function_set_scoping" title="_function_set_scoping() :: Run SQL data filter functions over a result set."><span class="description">Run SQL data filter functions over a result set.</span><pre>_function_set_scoping()</pre></a></li>
+<li class="method protected "><a href="#method__guid" title="_guid() :: Generate a GUID for a record, preferably from the key, but doesn't have to be."><span class="description">Generate a GUID for a record, preferably from the key, but doesn't have to be.</span><pre>_guid()</pre></a></li>
+<li class="method protected "><a href="#method__key_conflict_check" title="_key_conflict_check() :: Check to see if there is a key conflict problem."><span class="description">Check to see if there is a key conflict problem.</span><pre>_key_conflict_check()</pre></a></li>
+<li class="method protected "><a href="#method__parsing_check_ended" title="_parsing_check_ended() :: Check we've consumed all our tokens."><span class="description">Check we've consumed all our tokens.</span><pre>_parsing_check_ended()</pre></a></li>
+<li class="method protected "><a href="#method__parsing_expects" title="_parsing_expects() :: Expect a certain token next."><span class="description">Expect a certain token next.</span><pre>_parsing_expects()</pre></a></li>
+<li class="method protected "><a href="#method__parsing_read" title="_parsing_read() :: Reads the next token."><span class="description">Reads the next token.</span><pre>_parsing_read()</pre></a></li>
+<li class="method protected "><a href="#method__parsing_read_expression" title="_parsing_read_expression() :: Parse an SQL expression."><span class="description">Parse an SQL expression.</span><pre>_parsing_read_expression()</pre></a></li>
+<li class="method protected "><a href="#method__read_all_records" title="_read_all_records() :: Read in all the records from a table."><span class="description">Read in all the records from a table.</span><pre>_read_all_records()</pre></a></li>
+<li class="method protected "><a href="#method__read_join" title="_read_join() :: Read in a table specifier clause for a WHERE query."><span class="description">Read in a table specifier clause for a WHERE query.</span><pre>_read_join()</pre></a></li>
+<li class="method protected "><a href="#method__read_record" title="_read_record() :: Read a record from an XML file."><span class="description">Read a record from an XML file.</span><pre>_read_record()</pre></a></li>
+<li class="method protected "><a href="#method__read_schema" title="_read_schema() :: Find the schema for a table."><span class="description">Find the schema for a table.</span><pre>_read_schema()</pre></a></li>
+<li class="method protected "><a href="#method__setify_join_condition_for_optimisation" title="_setify_join_condition_for_optimisation() :: Optimize a join condition into a join scope set, if possible."><span class="description">Optimize a join condition into a join scope set, if possible.</span><pre>_setify_join_condition_for_optimisation()</pre></a></li>
+<li class="method protected "><a href="#method__turn_where_expr_to_map" title="_turn_where_expr_to_map() :: Take an expression and do our best to collapse it into a fixed mapping of stuff we know we are going to AND."><span class="description">Take an expression and do our best to collapse it into a fixed mapping of stuff we know we are going to AND.</span><pre>_turn_where_expr_to_map()</pre></a></li>
+<li class="method protected "><a href="#method__type_check" title="_type_check() :: Type check some data destined to go into a table."><span class="description">Type check some data destined to go into a table.</span><pre>_type_check()</pre></a></li>
+<li class="method protected "><a href="#method__unescape_name" title="_unescape_name() :: Unescape a value from a filesystem path back to the original."><span class="description">Unescape a value from a filesystem path back to the original.</span><pre>_unescape_name()</pre></a></li>
+<li class="method protected "><a href="#method__write_record" title="_write_record() :: Write a record to an XML file."><span class="description">Write a record to an XML file.</span><pre>_write_record()</pre></a></li>
+<li class="method protected "><a href="#method__write_records" title="_write_records() :: Write in all the records to a table."><span class="description">Write in all the records to a table.</span><pre>_write_records()</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a xmlns:php="http://php.net/xsl" id="\Database_Static_xml"></a><ul xmlns:php="http://php.net/xsl" class="breadcrumb">
+<li>
+<a href="../index.html"><i title="Classes" class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Database_Static_xml.html">Database_Static_xml</a>
+</li>
+</ul>
+<div xmlns:php="http://php.net/xsl" class="element class">
+<p class="short_description">Database Driver.</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_database_drivers.html">core_database_drivers</a></td>
+</tr></table>
+<h3>
+<i title="Methods" class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_can_arbitrary_groupby"></a><div class="element clickable method public method_can_arbitrary_groupby " data-toggle="collapse" data-target=".method_can_arbitrary_groupby .collapse" title="public">
+<h2>Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions</h2>
+<pre>can_arbitrary_groupby() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it can</div>
+</div></div>
+</div>
+<a id="method_db_change_primary_key"></a><div class="element clickable method public method_db_change_primary_key " data-toggle="collapse" data-target=".method_db_change_primary_key .collapse" title="public">
+<h2>Change the primary key of a table.</h2>
+<pre>db_change_primary_key(\ID_TEXT $table_name, array $new_key, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The name of the table to create the index on</p></div>
+<div class="subelement argument">
+<h4>$new_key</h4>
+<code>array</code><p>A list of fields to put in the new key</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+</div></div>
+</div>
+<a id="method_db_close_connections"></a><div class="element clickable method public method_db_close_connections " data-toggle="collapse" data-target=".method_db_close_connections .collapse" title="public">
+<h2>Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.</h2>
+<pre>db_close_connections() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_db_create_index"></a><div class="element clickable method public method_db_create_index " data-toggle="collapse" data-target=".method_db_create_index .collapse" title="public">
+<h2>Create a table index.</h2>
+<pre>db_create_index(\ID_TEXT $table_name, \ID_TEXT $index_name, string $_fields, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The name of the table to create the index on</p></div>
+<div class="subelement argument">
+<h4>$index_name</h4>
+<code>\ID_TEXT</code><p>The index name (not really important at all)</p></div>
+<div class="subelement argument">
+<h4>$_fields</h4>
+<code>string</code><p>Part of the SQL query: a comma-separated list of fields to use on the index</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+</div></div>
+</div>
+<a id="method_db_create_table"></a><div class="element clickable method public method_db_create_table " data-toggle="collapse" data-target=".method_db_create_table .collapse" title="public">
+<h2>Create a new table.</h2>
+<pre>db_create_table(\ID_TEXT $table_name, array $fields, array $db, boolean $if_not_exists<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>A map of field names to Composr field types (with *#? encodings)</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to make on</p></div>
+<div class="subelement argument">
+<h4>$if_not_exists</h4>
+<code>boolean</code><p>Whether to only do it if it does not currently exist</p></div>
+</div></div>
+</div>
+<a id="method_db_default_password"></a><div class="element clickable method public method_db_default_password " data-toggle="collapse" data-target=".method_db_default_password .collapse" title="public">
+<h2>Get the default password for making db connections (used by the installer as a default).</h2>
+<pre>db_default_password() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The default password for db connections</div>
+</div></div>
+</div>
+<a id="method_db_default_user"></a><div class="element clickable method public method_db_default_user " data-toggle="collapse" data-target=".method_db_default_user .collapse" title="public">
+<h2>Get the default user for making db connections (used by the installer as a default).</h2>
+<pre>db_default_user() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The default user for db connections</div>
+</div></div>
+</div>
+<a id="method_db_drop_table_if_exists"></a><div class="element clickable method public method_db_drop_table_if_exists " data-toggle="collapse" data-target=".method_db_drop_table_if_exists .collapse" title="public">
+<h2>Delete a table.</h2>
+<pre>db_drop_table_if_exists(\ID_TEXT $table_name, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The DB connection to delete on</p></div>
+</div></div>
+</div>
+<a id="method_db_empty_is_null"></a><div class="element clickable method public method_db_empty_is_null " data-toggle="collapse" data-target=".method_db_empty_is_null .collapse" title="public">
+<h2>This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.</h2>
+<pre>db_empty_is_null() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether a blank string IS NULL</div>
+</div></div>
+</div>
+<a id="method_db_encode_like"></a><div class="element clickable method public method_db_encode_like " data-toggle="collapse" data-target=".method_db_encode_like .collapse" title="public">
+<h2>Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.</h2>
+<pre>db_encode_like(string $pattern) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>string</code><p>The pattern</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The encoded pattern</div>
+</div></div>
+</div>
+<a id="method_db_escape_string"></a><div class="element clickable method public method_db_escape_string " data-toggle="collapse" data-target=".method_db_escape_string .collapse" title="public">
+<h2>Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.</h2>
+<pre>db_escape_string(string $string) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$string</h4>
+<code>string</code><p>The string</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The escaped string</div>
+</div></div>
+</div>
+<a id="method_db_full_text_assemble"></a><div class="element clickable method public method_db_full_text_assemble " data-toggle="collapse" data-target=".method_db_full_text_assemble .collapse" title="public">
+<h2>Assemble part of a WHERE clause for doing full-text search</h2>
+<pre>db_full_text_assemble(string $content, boolean $boolean) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><p>Our match string (assumes "?" has been stripped already)</p></div>
+<div class="subelement argument">
+<h4>$boolean</h4>
+<code>boolean</code><p>Whether to do a boolean full text search</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Part of a WHERE clause for doing full-text search</div>
+</div></div>
+</div>
+<a id="method_db_get_connection"></a><div class="element clickable method public method_db_get_connection " data-toggle="collapse" data-target=".method_db_get_connection .collapse" title="public">
+<h2>Get a database connection. This function shouldn't be used by you, as a connection to the database is established automatically.</h2>
+<pre>db_get_connection(boolean $persistent, string $db_name, string $db_host, string $db_user, string $db_password, boolean $fail_ok<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$persistent</h4>
+<code>boolean</code><p>Whether to create a persistent connection</p></div>
+<div class="subelement argument">
+<h4>$db_name</h4>
+<code>string</code><p>The database name</p></div>
+<div class="subelement argument">
+<h4>$db_host</h4>
+<code>string</code><p>The database host (the server)</p></div>
+<div class="subelement argument">
+<h4>$db_user</h4>
+<code>string</code><p>The database connection username</p></div>
+<div class="subelement argument">
+<h4>$db_password</h4>
+<code>string</code><p>The database connection password</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to on error echo an error and return with a NULL, rather than giving a critical error</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A database connection (null: failed)</div>
+</div></div>
+</div>
+<a id="method_db_get_first_id"></a><div class="element clickable method public method_db_get_first_id " data-toggle="collapse" data-target=".method_db_get_first_id .collapse" title="public">
+<h2>Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).</h2>
+<pre>db_get_first_id() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>First ID used</div>
+</div></div>
+</div>
+<a id="method_db_get_type_remap"></a><div class="element clickable method public method_db_get_type_remap " data-toggle="collapse" data-target=".method_db_get_type_remap .collapse" title="public">
+<h2>Get a map of Composr field types, to actual database types.</h2>
+<pre>db_get_type_remap() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The map</div>
+</div></div>
+</div>
+<a id="method_db_has_full_text"></a><div class="element clickable method public method_db_has_full_text " data-toggle="collapse" data-target=".method_db_has_full_text .collapse" title="public">
+<h2>Find whether full-text-search is present</h2>
+<pre>db_has_full_text(array $db) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>A DB connection</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method_db_has_full_text_boolean"></a><div class="element clickable method public method_db_has_full_text_boolean " data-toggle="collapse" data-target=".method_db_has_full_text_boolean .collapse" title="public">
+<h2>Find whether full-text-boolean-search is present</h2>
+<pre>db_has_full_text_boolean() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method_db_has_subqueries"></a><div class="element clickable method public method_db_has_subqueries " data-toggle="collapse" data-target=".method_db_has_subqueries .collapse" title="public">
+<h2>Find whether subquery support is present</h2>
+<pre>db_has_subqueries(array $db) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>A DB connection</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method_db_is_flat_file_simple"></a><div class="element clickable method public method_db_is_flat_file_simple " data-toggle="collapse" data-target=".method_db_is_flat_file_simple .collapse" title="public">
+<h2>Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.</h2>
+<pre>db_is_flat_file_simple() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the database is a flat file database</div>
+</div></div>
+</div>
+<a id="method_db_query"></a><div class="element clickable method public method_db_query " data-toggle="collapse" data-target=".method_db_query .collapse" title="public">
+<h2>This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.</h2>
+<pre>db_query(string $query, array $db, \?integer $max<code> = null</code>, \?integer $start<code> = null</code>, boolean $fail_ok<code> = false</code>, boolean $get_insert_id<code> = false</code>, boolean $no_syndicate<code> = false</code>, boolean $save_as_volatile<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The complete SQL query</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>A DB connection</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$get_insert_id</h4>
+<code>boolean</code><p>Whether to get the autoincrement ID created for an insert query</p></div>
+<div class="subelement argument">
+<h4>$no_syndicate</h4>
+<code>boolean</code><p>Whether to force the query to execute on the XML database driver (won't optimise by using MySQL). Useful for calls happening for multi-part queries from within this DB driver</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results), or the insert ID</div>
+</div></div>
+</div>
+<a id="method_db_string_equal_to"></a><div class="element clickable method public method_db_string_equal_to " data-toggle="collapse" data-target=".method_db_string_equal_to .collapse" title="public">
+<h2>Encode an SQL statement fragment for a conditional to see if two strings are equal.</h2>
+<pre>db_string_equal_to(\ID_TEXT $attribute, string $compare) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attribute</h4>
+<code>\ID_TEXT</code><p>The attribute</p></div>
+<div class="subelement argument">
+<h4>$compare</h4>
+<code>string</code><p>The comparison</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The SQL</div>
+</div></div>
+</div>
+<a id="method_db_string_not_equal_to"></a><div class="element clickable method public method_db_string_not_equal_to " data-toggle="collapse" data-target=".method_db_string_not_equal_to .collapse" title="public">
+<h2>Encode an SQL statement fragment for a conditional to see if two strings are not equal.</h2>
+<pre>db_string_not_equal_to(\ID_TEXT $attribute, string $compare) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attribute</h4>
+<code>\ID_TEXT</code><p>The attribute</p></div>
+<div class="subelement argument">
+<h4>$compare</h4>
+<code>string</code><p>The comparison</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The SQL</div>
+</div></div>
+</div>
+<a id="method_is_start_of_delimiter"></a><div class="element clickable method public method_is_start_of_delimiter " data-toggle="collapse" data-target=".method_is_start_of_delimiter .collapse" title="public">
+<h2>See if an item is a prefix to something in the delimiter array.</h2>
+<pre>is_start_of_delimiter(string $looking) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$looking</h4>
+<code>string</code><p>The item</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it is</div>
+</div></div>
+</div>
+<a id="method__bad_query"></a><div class="element clickable method protected method__bad_query " data-toggle="collapse" data-target=".method__bad_query .collapse" title="protected">
+<h2>Give out an error message and die, when a query fails.</h2>
+<pre>_bad_query(string $query, boolean $fail_ok<code> = false</code>, \?string $error<code> = null</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>The query that failed</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$error</h4>
+<code>\?string</code><p>Error message (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>Always returns null (null: error)</div>
+</div></div>
+</div>
+<a id="method__delete_record"></a><div class="element clickable method protected method__delete_record " data-toggle="collapse" data-target=".method__delete_record .collapse" title="protected">
+<h2>Write a record to an XML file.</h2>
+<pre>_delete_record(\PATH $path, array $db) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>\PATH</code><p>The file path</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+</div></div>
+</div>
+<a id="method__do_query_alter"></a><div class="element clickable method protected method__do_query_alter " data-toggle="collapse" data-target=".method__do_query_alter .collapse" title="protected">
+<h2>Execute an ALTER query.</h2>
+<pre>_do_query_alter(array $tokens, string $query, array $db, boolean $fail_ok) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__do_query_create"></a><div class="element clickable method protected method__do_query_create " data-toggle="collapse" data-target=".method__do_query_create .collapse" title="protected">
+<h2>Execute a CREATE query.</h2>
+<pre>_do_query_create(array $tokens, string $query, array $db, boolean $fail_ok) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__do_query_delete"></a><div class="element clickable method protected method__do_query_delete " data-toggle="collapse" data-target=".method__do_query_delete .collapse" title="protected">
+<h2>Execute a DELETE query.</h2>
+<pre>_do_query_delete(array $tokens, string $query, array $db, \?integer $max, \?integer $start, boolean $fail_ok) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__do_query_drop"></a><div class="element clickable method protected method__do_query_drop " data-toggle="collapse" data-target=".method__do_query_drop .collapse" title="protected">
+<h2>Execute a DROP query.</h2>
+<pre>_do_query_drop(array $tokens, string $query, array $db, boolean $fail_ok) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__do_query_insert"></a><div class="element clickable method protected method__do_query_insert " data-toggle="collapse" data-target=".method__do_query_insert .collapse" title="protected">
+<h2>Wrapper to execute an INSERT query.</h2>
+<pre>_do_query_insert(array $tokens, string $query, array $db, boolean $fail_ok, boolean $get_insert_id, \?integer $random_key, boolean $save_as_volatile<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$get_insert_id</h4>
+<code>boolean</code><p>Whether to get the autoincrement ID created for an insert query</p></div>
+<div class="subelement argument">
+<h4>$random_key</h4>
+<code>\?integer</code><p>The random key that we would use (null: not generated yet)</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The insert ID (null: not requested / error)</div>
+</div></div>
+</div>
+<a id="method__do_query_insert__execute"></a><div class="element clickable method protected method__do_query_insert__execute " data-toggle="collapse" data-target=".method__do_query_insert__execute .collapse" title="protected">
+<h2>Execute an INSERT query.</h2>
+<pre>_do_query_insert__execute(array $inserts, \ID_TEXT $table_name, string $query, array $db, boolean $fail_ok, boolean $get_insert_id, \?integer $random_key, boolean $save_as_volatile<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$inserts</h4>
+<code>array</code><p>Rows being inserted</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>\ID_TEXT</code><p>Table name we're inserting into</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$get_insert_id</h4>
+<code>boolean</code><p>Whether to get the autoincrement ID created for an insert query</p></div>
+<div class="subelement argument">
+<h4>$random_key</h4>
+<code>\?integer</code><p>The random key that we would use (null: not generated yet)</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The insert ID (null: not requested / error)</div>
+</div></div>
+</div>
+<a id="method__do_query_insert__parse"></a><div class="element clickable method protected method__do_query_insert__parse " data-toggle="collapse" data-target=".method__do_query_insert__parse .collapse" title="protected">
+<h2>Parse an INSERT query.</h2>
+<pre>_do_query_insert__parse(array $tokens, string $query, array $db, boolean $fail_ok) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A pair: the table, and the rows to insert (null: error)</div>
+</div></div>
+</div>
+<a id="method__do_query_select"></a><div class="element clickable method protected method__do_query_select " data-toggle="collapse" data-target=".method__do_query_select .collapse" title="protected">
+<h2>Execute a SELECT query.</h2>
+<pre>_do_query_select(array $tokens, string $query, array $db, \?integer $max, \?integer $start, boolean $fail_ok, integer $at, boolean $do_end_check<code> = true</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$do_end_check</h4>
+<code>boolean</code><p>Whether to not do the check to make sure we've parsed everything</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__do_query_update"></a><div class="element clickable method protected method__do_query_update " data-toggle="collapse" data-target=".method__do_query_update .collapse" title="protected">
+<h2>Execute an UPDATE query.</h2>
+<pre>_do_query_update(array $tokens, string $query, array $db, \?integer $max, \?integer $start, boolean $fail_ok) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$max</h4>
+<code>\?integer</code><p>The maximum number of rows to affect (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>\?integer</code><p>The start row to affect (null: no specification)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The results (null: no results)</div>
+</div></div>
+</div>
+<a id="method__escape_name"></a><div class="element clickable method protected method__escape_name " data-toggle="collapse" data-target=".method__escape_name .collapse" title="protected">
+<h2>Escape a value for use in a filesystem path.</h2>
+<pre>_escape_name(string $in) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$in</h4>
+<code>string</code><p>Value to escape (original value)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Escaped value</div>
+</div></div>
+</div>
+<a id="method__execute_expression"></a><div class="element clickable method protected method__execute_expression " data-toggle="collapse" data-target=".method__execute_expression .collapse" title="protected">
+<h2>Execute an expression.</h2>
+<pre>_execute_expression(array $expr, array $bindings, string $query) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$expr</h4>
+<code>array</code><p>The expression</p></div>
+<div class="subelement argument">
+<h4>$bindings</h4>
+<code>array</code><p>Bindings available in the execution scope</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The result (null: error/NULL)</div>
+</div></div>
+</div>
+<a id="method__execute_join"></a><div class="element clickable method protected method__execute_join " data-toggle="collapse" data-target=".method__execute_join .collapse" title="protected">
+<h2>Get results from a JOIN.</h2>
+<pre>_execute_join(array $db, string $joined_as_prior, array $join, string $query, array $records, array $schema, array $where_expr, boolean $fail_ok<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$joined_as_prior</h4>
+<code>string</code><p>The renaming of our table, so we can recognise it in the join condition</p></div>
+<div class="subelement argument">
+<h4>$join</h4>
+<code>array</code><p>Join op-tree</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$records</h4>
+<code>array</code><p>Records so far</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>array</code><p>Schema so far</p></div>
+<div class="subelement argument">
+<h4>$where_expr</h4>
+<code>array</code><p>Expression filtering results (used for optimisation, seeing if we can get a quick key match)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>A pair: an array of results, an array of the schema for what has been joined (null: error)</div>
+</div></div>
+</div>
+<a id="method__function_set_scoping"></a><div class="element clickable method protected method__function_set_scoping " data-toggle="collapse" data-target=".method__function_set_scoping .collapse" title="protected">
+<h2>Run SQL data filter functions over a result set.</h2>
+<pre>_function_set_scoping(array $set, array $select, array $rep, string $query) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$set</h4>
+<code>array</code><p>The set of results we are operating on</p></div>
+<div class="subelement argument">
+<h4>$select</h4>
+<code>array</code><p>Parse tree of what we are selecting</p></div>
+<div class="subelement argument">
+<h4>$rep</h4>
+<code>array</code><p>Record we are copying the function results into</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The result row based on the set</div>
+</div></div>
+</div>
+<a id="method__guid"></a><div class="element clickable method protected method__guid " data-toggle="collapse" data-target=".method__guid .collapse" title="protected">
+<h2>Generate a GUID for a record, preferably from the key, but doesn't have to be.</h2>
+<pre>_guid(\?array $schema<code> = null</code>, \?array $record<code> = null</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>\?array</code><p>The schema (null: don't have/use)</p></div>
+<div class="subelement argument">
+<h4>$record</h4>
+<code>\?array</code><p>The record (null: don't have/use)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The GUID</div>
+</div></div>
+</div>
+<a id="method__key_conflict_check"></a><div class="element clickable method protected method__key_conflict_check " data-toggle="collapse" data-target=".method__key_conflict_check .collapse" title="protected">
+<h2>Check to see if there is a key conflict problem.</h2>
+<pre>_key_conflict_check(array $db, string $table_name, array $schema, array $record, string $query, boolean $fail_ok, \?string $existing_identity<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>array</code><p>The schema</p></div>
+<div class="subelement argument">
+<h4>$record</h4>
+<code>array</code><p>The record</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$existing_identity</h4>
+<code>\?string</code><p>The GUID representing what we have now (so we don't think we're conflicting with ourself) (null: not yet added)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether there was a conflict</div>
+</div></div>
+</div>
+<a id="method__parsing_check_ended"></a><div class="element clickable method protected method__parsing_check_ended " data-toggle="collapse" data-target=".method__parsing_check_ended .collapse" title="protected">
+<h2>Check we've consumed all our tokens.</h2>
+<pre>_parsing_check_ended(integer $at, array $tokens, string $query, boolean $fail_ok<code> = false</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success status</div>
+</div></div>
+</div>
+<a id="method__parsing_expects"></a><div class="element clickable method protected method__parsing_expects " data-toggle="collapse" data-target=".method__parsing_expects .collapse" title="protected">
+<h2>Expect a certain token next.</h2>
+<pre>_parsing_expects(integer $at, array $tokens, string $token, string $query, boolean $fail_ok<code> = false</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$token</h4>
+<code>string</code><p>Token expected</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Success status</div>
+</div></div>
+</div>
+<a id="method__parsing_read"></a><div class="element clickable method protected method__parsing_read " data-toggle="collapse" data-target=".method__parsing_read .collapse" title="protected">
+<h2>Reads the next token.</h2>
+<pre>_parsing_read(integer $at, array $tokens, string $query, boolean $fail_ok<code> = false</code>) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether it can return NULL if we're out of output (otherwise fails)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>Token read (null: error, read too far)</div>
+</div></div>
+</div>
+<a id="method__parsing_read_expression"></a><div class="element clickable method protected method__parsing_read_expression " data-toggle="collapse" data-target=".method__parsing_read_expression .collapse" title="protected">
+<h2>Parse an SQL expression.</h2>
+<pre>_parsing_read_expression(integer $at, array $tokens, string $query, array $db, boolean $look_for_connectives<code> = true</code>, boolean $look_for_any_connectives<code> = true</code>, boolean $fail_ok<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$look_for_connectives</h4>
+<code>boolean</code><p>Whether to work as a connection point to seek out logic connection expression parts</p></div>
+<div class="subelement argument">
+<h4>$look_for_any_connectives</h4>
+<code>boolean</code><p>Whether to work as a connection point to seek out arithmetic connection expression parts</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The expression (null: error)</div>
+</div></div>
+</div>
+<a id="method__read_all_records"></a><div class="element clickable method protected method__read_all_records " data-toggle="collapse" data-target=".method__read_all_records .collapse" title="protected">
+<h2>Read in all the records from a table.</h2>
+<pre>_read_all_records(array $db, string $table_name, string $table_as, \?array $schema, \?array $where_expr, boolean $fail_ok, string $query, boolean $include_unused_fields<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$table_as</h4>
+<code>string</code><p>What the table will be renamed to (blank: N/A)</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>\?array</code><p>Schema to type-set against (null: do not do type-setting)</p></div>
+<div class="subelement argument">
+<h4>$where_expr</h4>
+<code>\?array</code><p>Expression filtering results (used for optimisation, seeing if we can get a quick key match) (null: no data to filter with)</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$include_unused_fields</h4>
+<code>boolean</code><p>Whether to include fields that are present in the actual records but not in our schema</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The collected records (null: error)</div>
+</div></div>
+</div>
+<a id="method__read_join"></a><div class="element clickable method protected method__read_join " data-toggle="collapse" data-target=".method__read_join .collapse" title="protected">
+<h2>Read in a table specifier clause for a WHERE query.</h2>
+<pre>_read_join(integer $at, array $tokens, string $query, array $db, boolean $fail_ok, integer $closing_brackets_needed) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$at</h4>
+<code>integer</code><p>Our offset counter</p></div>
+<div class="subelement argument">
+<h4>$tokens</h4>
+<code>array</code><p>Tokens</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$closing_brackets_needed</h4>
+<code>integer</code><p>How many closing brackets we expect</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>Join condition (null: no join here)</div>
+</div></div>
+</div>
+<a id="method__read_record"></a><div class="element clickable method protected method__read_record " data-toggle="collapse" data-target=".method__read_record .collapse" title="protected">
+<h2>Read a record from an XML file.</h2>
+<pre>_read_record(\PATH $path, \?array $schema<code> = null</code>, \?array $must_contain_strings<code> = null</code>, boolean $include_unused_fields<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>\PATH</code><p>The file path</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>\?array</code><p>Schema to type-set against (null: do not do type-setting)</p></div>
+<div class="subelement argument">
+<h4>$must_contain_strings</h4>
+<code>\?array</code><p>Substrings to check it is in, used for performance (null: none)</p></div>
+<div class="subelement argument">
+<h4>$include_unused_fields</h4>
+<code>boolean</code><p>Whether to include fields that are present in the actual records but not in our schema</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The record map (null: does not contain requested substrings)</div>
+</div></div>
+</div>
+<a id="method__read_schema"></a><div class="element clickable method protected method__read_schema " data-toggle="collapse" data-target=".method__read_schema .collapse" title="protected">
+<h2>Find the schema for a table.</h2>
+<pre>_read_schema(array $db, string $table_name, boolean $fail_ok<code> = false</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>The database</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The schema map (null: not found)</div>
+</div></div>
+</div>
+<a id="method__setify_join_condition_for_optimisation"></a><div class="element clickable method protected method__setify_join_condition_for_optimisation " data-toggle="collapse" data-target=".method__setify_join_condition_for_optimisation .collapse" title="protected">
+<h2>Optimize a join condition into a join scope set, if possible.</h2>
+<pre>_setify_join_condition_for_optimisation(array $join_condition, array $schema, array $records, string $joined_as) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$join_condition</h4>
+<code>array</code><p>Join condition (parsed WHERE-style clause)</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>array</code><p>Schema so far</p></div>
+<div class="subelement argument">
+<h4>$records</h4>
+<code>array</code><p>Records so far</p></div>
+<div class="subelement argument">
+<h4>$joined_as</h4>
+<code>string</code><p>The renaming of our table, so we can recognise it in the join condition</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Altered join condition</div>
+</div></div>
+</div>
+<a id="method__turn_where_expr_to_map"></a><div class="element clickable method protected method__turn_where_expr_to_map " data-toggle="collapse" data-target=".method__turn_where_expr_to_map .collapse" title="protected">
+<h2>Take an expression and do our best to collapse it into a fixed mapping of stuff we know we are going to AND.</h2>
+<pre>_turn_where_expr_to_map(array $where_expr, string $table_as, \?array $schema<code> = null</code>, boolean $not_full_accuracy<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$where_expr</h4>
+<code>array</code><p>The expression parse tree</p></div>
+<div class="subelement argument">
+<h4>$table_as</h4>
+<code>string</code><p>What the table will be renamed to (blank: N/A)</p></div>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>\?array</code><p>Schema to type-set against (null: do not do type-setting)</p></div>
+<div class="subelement argument">
+<h4>$not_full_accuracy</h4>
+<code>boolean</code><p>Whether to do a not-full-accurate search</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>AND map</div>
+</div></div>
+</div>
+<a id="method__type_check"></a><div class="element clickable method protected method__type_check " data-toggle="collapse" data-target=".method__type_check .collapse" title="protected">
+<h2>Type check some data destined to go into a table.</h2>
+<pre>_type_check(array $schema, array $record, string $query) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$schema</h4>
+<code>array</code><p>The schema</p></div>
+<div class="subelement argument">
+<h4>$record</h4>
+<code>array</code><p>The data</p></div>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>string</code><p>Query that was executed</p></div>
+</div></div>
+</div>
+<a id="method__unescape_name"></a><div class="element clickable method protected method__unescape_name " data-toggle="collapse" data-target=".method__unescape_name .collapse" title="protected">
+<h2>Unescape a value from a filesystem path back to the original.</h2>
+<pre>_unescape_name(string $in) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$in</h4>
+<code>string</code><p>Escaped value</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Original value</div>
+</div></div>
+</div>
+<a id="method__write_record"></a><div class="element clickable method protected method__write_record " data-toggle="collapse" data-target=".method__write_record .collapse" title="protected">
+<h2>Write a record to an XML file.</h2>
+<pre>_write_record(array $db, string $table_name, string $guid, array $record, boolean $fail_ok<code> = false</code>, boolean $save_as_volatile<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$guid</h4>
+<code>string</code><p>The GUID</p></div>
+<div class="subelement argument">
+<h4>$record</h4>
+<code>array</code><p>The record map</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+<div class="subelement argument">
+<h4>$save_as_volatile</h4>
+<code>boolean</code><p>Whether we are saving as a 'volatile' file extension</p></div>
+</div></div>
+</div>
+<a id="method__write_records"></a><div class="element clickable method protected method__write_records " data-toggle="collapse" data-target=".method__write_records .collapse" title="protected">
+<h2>Write in all the records to a table.</h2>
+<pre>_write_records(array $db, string $table_name, array $records, boolean $fail_ok<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$db</h4>
+<code>array</code><p>Database connection</p></div>
+<div class="subelement argument">
+<h4>$table_name</h4>
+<code>string</code><p>The table name</p></div>
+<div class="subelement argument">
+<h4>$records</h4>
+<code>array</code><p>The list of record maps</p></div>
+<div class="subelement argument">
+<h4>$fail_ok</h4>
+<code>boolean</code><p>Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)</p></div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:48+01:00.<br></footer></div>
+</div>
+</body>
+</html>

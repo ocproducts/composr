@@ -1,0 +1,1492 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_webstandards.html" title="core_webstandards"><i class="icon-folder-open"></i>core_webstandards</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_check_css" title="check_css() :: Checks a CSS style sheet (high level)."><span class="description">Checks a CSS style sheet (high level).</span><pre>check_css</pre></a></li>
+<li class="function  "><a href="#function_check_js" title="check_js() :: Check some JS code for conformance."><span class="description">Check some JS code for conformance.</span><pre>check_js</pre></a></li>
+<li class="function  "><a href="#function_check_spelling" title="check_spelling() :: Checks the spelling of some text."><span class="description">Checks the spelling of some text.</span><pre>check_spelling</pre></a></li>
+<li class="function  "><a href="#function_check_xhtml" title="check_xhtml() :: Check the specified XHTML, and return the results."><span class="description">Check the specified XHTML, and return the results.</span><pre>check_xhtml</pre></a></li>
+<li class="function  "><a href="#function_fix_entities" title="fix_entities() :: Fix any invalid entities in the text."><span class="description">Fix any invalid entities in the text.</span><pre>fix_entities</pre></a></li>
+<li class="function  "><a href="#function_is_hex" title="is_hex() :: Checks to see if a string holds a hexadecimal number."><span class="description">Checks to see if a string holds a hexadecimal number.</span><pre>is_hex</pre></a></li>
+<li class="function  "><a href="#function_jlex__strlen_sort" title="jlex__strlen_sort() :: Helper function for usort to sort a list by string length."><span class="description">Helper function for usort to sort a list by string length.</span><pre>jlex__strlen_sort</pre></a></li>
+<li class="function  "><a href="#function_js_add_variable_reference" title="js_add_variable_reference() :: Add a reference to a named variable."><span class="description">Add a reference to a named variable.</span><pre>js_add_variable_reference</pre></a></li>
+<li class="function  "><a href="#function_js_check_assignment" title="js_check_assignment() :: Check an assignment statement."><span class="description">Check an assignment statement.</span><pre>js_check_assignment</pre></a></li>
+<li class="function  "><a href="#function_js_check_call" title="js_check_call() :: Check a function call."><span class="description">Check a function call.</span><pre>js_check_call</pre></a></li>
+<li class="function  "><a href="#function_js_check_command" title="js_check_command() :: Check a parsed command."><span class="description">Check a parsed command.</span><pre>js_check_command</pre></a></li>
+<li class="function  "><a href="#function_js_check_expression" title="js_check_expression() :: Check an expression."><span class="description">Check an expression.</span><pre>js_check_expression</pre></a></li>
+<li class="function  "><a href="#function_js_check_function" title="js_check_function() :: Check a function declaration."><span class="description">Check a function declaration.</span><pre>js_check_function</pre></a></li>
+<li class="function  "><a href="#function_js_check_variable" title="js_check_variable() :: Check a variable."><span class="description">Check a variable.</span><pre>js_check_variable</pre></a></li>
+<li class="function  "><a href="#function_js_check_variable_list" title="js_check_variable_list() :: Check a variable list for consistency."><span class="description">Check a variable list for consistency.</span><pre>js_check_variable_list</pre></a></li>
+<li class="function  "><a href="#function_js_die_error" title="js_die_error() :: Make a JS error (critically)."><span class="description">Make a JS error (critically).</span><pre>js_die_error</pre></a></li>
+<li class="function  "><a href="#function_js_ensure_type" title="js_ensure_type() :: Do type checking for something specific."><span class="description">Do type checking for something specific.</span><pre>js_ensure_type</pre></a></li>
+<li class="function  "><a href="#function_js_get_variable_type" title="js_get_variable_type() :: Get the type of a variable."><span class="description">Get the type of a variable.</span><pre>js_get_variable_type</pre></a></li>
+<li class="function  "><a href="#function_js_infer_expression_type_to_variable_type" title="js_infer_expression_type_to_variable_type() :: If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type inferring on usage as well as on assignment."><span class="description">If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type inferring on usage as well as on assignment.</span><pre>js_infer_expression_type_to_variable_type</pre></a></li>
+<li class="function  "><a href="#function_js_log_warning" title="js_log_warning() :: Log a warning when lexing/parsing/checking."><span class="description">Log a warning when lexing/parsing/checking.</span><pre>js_log_warning</pre></a></li>
+<li class="function  "><a href="#function_js_pos_to_line_details" title="js_pos_to_line_details() :: Convert a position to a triplet of details about the line it is on."><span class="description">Convert a position to a triplet of details about the line it is on.</span><pre>js_pos_to_line_details</pre></a></li>
+<li class="function  "><a href="#function_js_scan_extractive_expressions" title="js_scan_extractive_expressions() :: Scan through a complex variable, checking any expressions embedded in it."><span class="description">Scan through a complex variable, checking any expressions embedded in it.</span><pre>js_scan_extractive_expressions</pre></a></li>
+<li class="function  "><a href="#function_js_set_composr_type" title="js_set_composr_type() :: Add a type to the list of used types for a variable."><span class="description">Add a type to the list of used types for a variable.</span><pre>js_set_composr_type</pre></a></li>
+<li class="function  "><a href="#function_lex__get_next_char" title="lex__get_next_char() :: Get the next character whilst lexing"><span class="description">Get the next character whilst lexing</span><pre>lex__get_next_char</pre></a></li>
+<li class="function  "><a href="#function_lex__get_next_chars" title="lex__get_next_chars() :: Get the next characters whilst lexing"><span class="description">Get the next characters whilst lexing</span><pre>lex__get_next_chars</pre></a></li>
+<li class="function  "><a href="#function_parser_expect" title="parser_expect() :: Expect a token during parsing. Give error if not found. Else give token parameters."><span class="description">Expect a token during parsing. Give error if not found. Else give token parameters.</span><pre>parser_expect</pre></a></li>
+<li class="function  "><a href="#function_parser_next" title="parser_next() :: Find the next token and move on."><span class="description">Find the next token and move on.</span><pre>parser_next</pre></a></li>
+<li class="function  "><a href="#function_parser_peek" title="parser_peek() :: Peek to find the next token."><span class="description">Peek to find the next token.</span><pre>parser_peek</pre></a></li>
+<li class="function  "><a href="#function_parser_peek_dist" title="parser_peek_dist() :: Peek to find the next token after a distance."><span class="description">Peek to find the next token after a distance.</span><pre>parser_peek_dist</pre></a></li>
+<li class="function  "><a href="#function_precedence_sort" title="precedence_sort() :: Sort an unordered structure of operations into a precedence tree."><span class="description">Sort an unordered structure of operations into a precedence tree.</span><pre>precedence_sort</pre></a></li>
+<li class="function  "><a href="#function_reset_js_global_variables" title="reset_js_global_variables() :: Return the global variable array to the defaults."><span class="description">Return the global variable array to the defaults.</span><pre>reset_js_global_variables</pre></a></li>
+<li class="function  "><a href="#function_test_entity" title="test_entity() :: Test the next entity in the output stream."><span class="description">Test the next entity in the output stream.</span><pre>test_entity</pre></a></li>
+<li class="function  "><a href="#function_webstandards_js_lex" title="webstandards_js_lex() :: Lex some JavaScript code."><span class="description">Lex some JavaScript code.</span><pre>webstandards_js_lex</pre></a></li>
+<li class="function  "><a href="#function_webstandards_js_parse" title="webstandards_js_parse() :: Return parse info for parse type."><span class="description">Return parse info for parse type.</span><pre>webstandards_js_parse</pre></a></li>
+<li class="function  "><a href="#function_webstandards_js_parser_error" title="webstandards_js_parser_error() :: Give a parse error."><span class="description">Give a parse error.</span><pre>webstandards_js_parser_error</pre></a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_CSS_AT_RULE" title="CSS_AT_RULE() :: "><span class="description">CSS_AT_RULE</span><pre>CSS_AT_RULE</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_AT_RULE_BLOCK" title="CSS_AT_RULE_BLOCK() :: "><span class="description">CSS_AT_RULE_BLOCK</span><pre>CSS_AT_RULE_BLOCK</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_EXPECTING_IDENTIFIER" title="CSS_EXPECTING_IDENTIFIER() :: "><span class="description">CSS_EXPECTING_IDENTIFIER</span><pre>CSS_EXPECTING_IDENTIFIER</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS" title="CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS() :: "><span class="description">CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS</span><pre>CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_IN_CLASS" title="CSS_IN_CLASS() :: "><span class="description">CSS_IN_CLASS</span><pre>CSS_IN_CLASS</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_IN_COMMENT" title="CSS_IN_COMMENT() :: "><span class="description">CSS_IN_COMMENT</span><pre>CSS_IN_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_IN_IDENTIFIER" title="CSS_IN_IDENTIFIER() :: "><span class="description">CSS_IN_IDENTIFIER</span><pre>CSS_IN_IDENTIFIER</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_IN_PSEUDOCLASS_EXPRESSION" title="CSS_IN_PSEUDOCLASS_EXPRESSION() :: "><span class="description">CSS_IN_PSEUDOCLASS_EXPRESSION</span><pre>CSS_IN_PSEUDOCLASS_EXPRESSION</pre></a></li>
+<li class="constant  "><a href="#constant_CSS_NO_MANS_LAND" title="CSS_NO_MANS_LAND() :: "><span class="description">CSS_NO_MANS_LAND</span><pre>CSS_NO_MANS_LAND</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_HTML" title="DOCTYPE_HTML() :: "><span class="description">DOCTYPE_HTML</span><pre>DOCTYPE_HTML</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_HTML_STRICT" title="DOCTYPE_HTML_STRICT() :: "><span class="description">DOCTYPE_HTML_STRICT</span><pre>DOCTYPE_HTML_STRICT</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_XHTML" title="DOCTYPE_XHTML() :: "><span class="description">DOCTYPE_XHTML</span><pre>DOCTYPE_XHTML</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_XHTML5" title="DOCTYPE_XHTML5() :: "><span class="description">DOCTYPE_XHTML5</span><pre>DOCTYPE_XHTML5</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_XHTML_11" title="DOCTYPE_XHTML_11() :: "><span class="description">DOCTYPE_XHTML_11</span><pre>DOCTYPE_XHTML_11</pre></a></li>
+<li class="constant  "><a href="#constant_DOCTYPE_XHTML_STRICT" title="DOCTYPE_XHTML_STRICT() :: "><span class="description">DOCTYPE_XHTML_STRICT</span><pre>DOCTYPE_XHTML_STRICT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_CDATA" title="IN_CDATA() :: "><span class="description">IN_CDATA</span><pre>IN_CDATA</pre></a></li>
+<li class="constant  "><a href="#constant_IN_COMMENT" title="IN_COMMENT() :: "><span class="description">IN_COMMENT</span><pre>IN_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_DTD_TAG" title="IN_DTD_TAG() :: "><span class="description">IN_DTD_TAG</span><pre>IN_DTD_TAG</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_ATTRIBUTE_NAME" title="IN_TAG_ATTRIBUTE_NAME() :: "><span class="description">IN_TAG_ATTRIBUTE_NAME</span><pre>IN_TAG_ATTRIBUTE_NAME</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES" title="IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES() :: "><span class="description">IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES</span><pre>IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES" title="IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES() :: "><span class="description">IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES</span><pre>IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES" title="IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES() :: "><span class="description">IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES</span><pre>IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_BETWEEN_ATTRIBUTES" title="IN_TAG_BETWEEN_ATTRIBUTES() :: "><span class="description">IN_TAG_BETWEEN_ATTRIBUTES</span><pre>IN_TAG_BETWEEN_ATTRIBUTES</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT" title="IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT() :: "><span class="description">IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</span><pre>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT" title="IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT() :: "><span class="description">IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</span><pre>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_EMBEDDED_COMMENT" title="IN_TAG_EMBEDDED_COMMENT() :: "><span class="description">IN_TAG_EMBEDDED_COMMENT</span><pre>IN_TAG_EMBEDDED_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant_IN_TAG_NAME" title="IN_TAG_NAME() :: "><span class="description">IN_TAG_NAME</span><pre>IN_TAG_NAME</pre></a></li>
+<li class="constant  "><a href="#constant_IN_XML_TAG" title="IN_XML_TAG() :: "><span class="description">IN_XML_TAG</span><pre>IN_XML_TAG</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_COMMENT" title="LEXER_COMMENT() :: "><span class="description">LEXER_COMMENT</span><pre>LEXER_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_DOUBLE_QUOTE_STRING_LITERAL" title="LEXER_DOUBLE_QUOTE_STRING_LITERAL() :: "><span class="description">LEXER_DOUBLE_QUOTE_STRING_LITERAL</span><pre>LEXER_DOUBLE_QUOTE_STRING_LITERAL</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_FREE" title="LEXER_FREE() :: "><span class="description">LEXER_FREE</span><pre>LEXER_FREE</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_ML_COMMENT" title="LEXER_ML_COMMENT() :: "><span class="description">LEXER_ML_COMMENT</span><pre>LEXER_ML_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_NUMERIC_LITERAL" title="LEXER_NUMERIC_LITERAL() :: "><span class="description">LEXER_NUMERIC_LITERAL</span><pre>LEXER_NUMERIC_LITERAL</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_REGEXP" title="LEXER_REGEXP() :: "><span class="description">LEXER_REGEXP</span><pre>LEXER_REGEXP</pre></a></li>
+<li class="constant  "><a href="#constant_LEXER_SINGLE_QUOTE_STRING_LITERAL" title="LEXER_SINGLE_QUOTE_STRING_LITERAL() :: "><span class="description">LEXER_SINGLE_QUOTE_STRING_LITERAL</span><pre>LEXER_SINGLE_QUOTE_STRING_LITERAL</pre></a></li>
+<li class="constant  "><a href="#constant_NO_MANS_LAND" title="NO_MANS_LAND() :: "><span class="description">NO_MANS_LAND</span><pre>NO_MANS_LAND</pre></a></li>
+<li class="constant  "><a href="#constant_STARTING_TAG" title="STARTING_TAG() :: "><span class="description">STARTING_TAG</span><pre>STARTING_TAG</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_EXPECTING_END" title="_CSS_EXPECTING_END() :: "><span class="description">_CSS_EXPECTING_END</span><pre>_CSS_EXPECTING_END</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_IN_COMMENT" title="_CSS_IN_COMMENT() :: "><span class="description">_CSS_IN_COMMENT</span><pre>_CSS_IN_COMMENT</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_IN_PROPERTY_BETWEEN" title="_CSS_IN_PROPERTY_BETWEEN() :: "><span class="description">_CSS_IN_PROPERTY_BETWEEN</span><pre>_CSS_IN_PROPERTY_BETWEEN</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_IN_PROPERTY_KEY" title="_CSS_IN_PROPERTY_KEY() :: "><span class="description">_CSS_IN_PROPERTY_KEY</span><pre>_CSS_IN_PROPERTY_KEY</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_IN_PROPERTY_VALUE" title="_CSS_IN_PROPERTY_VALUE() :: "><span class="description">_CSS_IN_PROPERTY_VALUE</span><pre>_CSS_IN_PROPERTY_VALUE</pre></a></li>
+<li class="constant  "><a href="#constant__CSS_NO_MANS_LAND" title="_CSS_NO_MANS_LAND() :: "><span class="description">_CSS_NO_MANS_LAND</span><pre>_CSS_NO_MANS_LAND</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_webstandards.html">core_webstandards</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_check_css"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_css " data-toggle="collapse" data-target=".function_check_css .collapse" title="">
+<h2>Checks a CSS style sheet (high level).</h2>
+<pre>check_css(string $data) : \?map</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>string</code><p>The data of the style sheet</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?map</code>Error information (null: no error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_js"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_js " data-toggle="collapse" data-target=".function_check_js .collapse" title="">
+<h2>Check some JS code for conformance.</h2>
+<pre>check_js(string $data, boolean $raw_errors<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>string</code><p>Code</p></div>
+<div class="subelement argument">
+<h4>$raw_errors</h4>
+<code>boolean</code><p>Whether to return raw-errors</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Standard checker report output</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_spelling"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_spelling " data-toggle="collapse" data-target=".function_check_spelling .collapse" title="">
+<h2>Checks the spelling of some text.</h2>
+<pre>check_spelling(string $value) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code><p>The text</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>Array of errors</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_xhtml"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_xhtml " data-toggle="collapse" data-target=".function_check_xhtml .collapse" title="">
+<h2>Check the specified XHTML, and return the results.</h2>
+<pre>check_xhtml(string $out, boolean $well_formed_only<code> = false</code>, boolean $is_fragment<code> = false</code>, boolean $webstandards_javascript<code> = true</code>, boolean $webstandards_css<code> = true</code>, boolean $webstandards_wcag<code> = true</code>, boolean $webstandards_compat<code> = true</code>, boolean $webstandards_ext_files<code> = true</code>, boolean $webstandards_manual<code> = false</code>) : \?map</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$out</h4>
+<code>string</code><p>The XHTML to check</p></div>
+<div class="subelement argument">
+<h4>$well_formed_only</h4>
+<code>boolean</code><p>Whether to avoid checking for relational errors (false implies just a quick structural check, aka a 'well formed' check)</p></div>
+<div class="subelement argument">
+<h4>$is_fragment</h4>
+<code>boolean</code><p>Whether what is being checked is an HTML fragment, rather than a whole document</p></div>
+<div class="subelement argument">
+<h4>$webstandards_javascript</h4>
+<code>boolean</code><p>Validate javascript</p></div>
+<div class="subelement argument">
+<h4>$webstandards_css</h4>
+<code>boolean</code><p>Validate CSS</p></div>
+<div class="subelement argument">
+<h4>$webstandards_wcag</h4>
+<code>boolean</code><p>Validate WCAG</p></div>
+<div class="subelement argument">
+<h4>$webstandards_compat</h4>
+<code>boolean</code><p>Validate for compatibility</p></div>
+<div class="subelement argument">
+<h4>$webstandards_ext_files</h4>
+<code>boolean</code><p>Validate external files</p></div>
+<div class="subelement argument">
+<h4>$webstandards_manual</h4>
+<code>boolean</code><p>Bring up messages about manual checks</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?map</code>Error information (null: no error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_fix_entities"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_fix_entities " data-toggle="collapse" data-target=".function_fix_entities .collapse" title="">
+<h2>Fix any invalid entities in the text.</h2>
+<pre>fix_entities(string $in) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$in</h4>
+<code>string</code><p>Text to fix in</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Fixed result</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_is_hex"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_is_hex " data-toggle="collapse" data-target=".function_is_hex .collapse" title="">
+<h2>Checks to see if a string holds a hexadecimal number.</h2>
+<pre>is_hex(string $string) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$string</h4>
+<code>string</code><p>The string to check</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the string holds a hexadecimal number</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_jlex__strlen_sort"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_jlex__strlen_sort " data-toggle="collapse" data-target=".function_jlex__strlen_sort .collapse" title="">
+<h2>Helper function for usort to sort a list by string length.</h2>
+<pre>jlex__strlen_sort(string $a, string $b) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$a</h4>
+<code>string</code><p>The first string to compare</p></div>
+<div class="subelement argument">
+<h4>$b</h4>
+<code>string</code><p>The second string to compare</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The comparison result</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_add_variable_reference"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_add_variable_reference " data-toggle="collapse" data-target=".function_js_add_variable_reference .collapse" title="">
+<h2>Add a reference to a named variable.</h2>
+<pre>js_add_variable_reference(string $identifier, integer $first_mention, boolean $instantiation<code> = true</code>, boolean $reference<code> = false</code>, \?string $function_return<code> = null</code>, boolean $is_call<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$identifier</h4>
+<code>string</code><p>The variable name</p></div>
+<div class="subelement argument">
+<h4>$first_mention</h4>
+<code>integer</code><p>Where the first mention of the variable is</p></div>
+<div class="subelement argument">
+<h4>$instantiation</h4>
+<code>boolean</code><p>Whether this is an instantiation reference</p></div>
+<div class="subelement argument">
+<h4>$reference</h4>
+<code>boolean</code><p>Whether this is a reference (as opposed to instantiation/setting)</p></div>
+<div class="subelement argument">
+<h4>$function_return</h4>
+<code>\?string</code><p>The result-type (null: not a function)</p></div>
+<div class="subelement argument">
+<h4>$is_call</h4>
+<code>boolean</code><p>Whether this is a function call</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_assignment"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_assignment " data-toggle="collapse" data-target=".function_js_check_assignment .collapse" title="">
+<h2>Check an assignment statement.</h2>
+<pre>js_check_assignment(\list $c, integer $c_pos) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$c</h4>
+<code>\list</code><p>The complex assignment details</p></div>
+<div class="subelement argument">
+<h4>$c_pos</h4>
+<code>integer</code><p>The position this is at in the parse</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The assigned type</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_call"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_call " data-toggle="collapse" data-target=".function_js_check_call .collapse" title="">
+<h2>Check a function call.</h2>
+<pre>js_check_call(\list $c, integer $c_pos, \?string $class<code> = null</code>) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$c</h4>
+<code>\list</code><p>The (possibly complex) variable that is the function identifier</p></div>
+<div class="subelement argument">
+<h4>$c_pos</h4>
+<code>integer</code><p>The position this is at in the parse</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>\?string</code><p>The class the given variable is in (null: global/as-specified-internally-in-c)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>The return type (null: nothing returned)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_command"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_command " data-toggle="collapse" data-target=".function_js_check_command .collapse" title="">
+<h2>Check a parsed command.</h2>
+<pre>js_check_command(\list $command, integer $depth) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$command</h4>
+<code>\list</code><p>The command</p></div>
+<div class="subelement argument">
+<h4>$depth</h4>
+<code>integer</code><p>The block depth we are searching at</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_expression"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_expression " data-toggle="collapse" data-target=".function_js_check_expression .collapse" title="">
+<h2>Check an expression.</h2>
+<pre>js_check_expression(\list $e, boolean $secondary<code> = false</code>, boolean $is_guarded<code> = false</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$e</h4>
+<code>\list</code><p>The complex expression</p></div>
+<div class="subelement argument">
+<h4>$secondary</h4>
+<code>boolean</code><p>Whether the expression is being used as a command (i.e. whether the expression is not used for the result, but rather, the secondary consequences of calculating it)</p></div>
+<div class="subelement argument">
+<h4>$is_guarded</h4>
+<code>boolean</code><p>Whether the expression is being guarded and hence is not a proper reference</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The type</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_function"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_function " data-toggle="collapse" data-target=".function_js_check_function .collapse" title="">
+<h2>Check a function declaration.</h2>
+<pre>js_check_function(\map $function) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$function</h4>
+<code>\map</code><p>The function details</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_variable"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_variable " data-toggle="collapse" data-target=".function_js_check_variable .collapse" title="">
+<h2>Check a variable.</h2>
+<pre>js_check_variable(\list $variable, boolean $reference<code> = false</code>, boolean $function_duality<code> = false</code>, \?string $class<code> = null</code>, boolean $allow_static<code> = false</code>, boolean $is_call<code> = false</code>) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variable</h4>
+<code>\list</code><p>The (possibly complex) variable</p></div>
+<div class="subelement argument">
+<h4>$reference</h4>
+<code>boolean</code><p>Whether the variable is being used referentially (i.e. not being set)</p></div>
+<div class="subelement argument">
+<h4>$function_duality</h4>
+<code>boolean</code><p>Whether to return the type and function-return-type pair, rather than just the type</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>\?string</code><p>The class the variable is referencing within (null: global)</p></div>
+<div class="subelement argument">
+<h4>$allow_static</h4>
+<code>boolean</code><p>Whether the given class is being referenced directly in static form</p></div>
+<div class="subelement argument">
+<h4>$is_call</h4>
+<code>boolean</code><p>Whether this is for a function call</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>The return type and possibly function return type (if requested)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_check_variable_list"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_check_variable_list " data-toggle="collapse" data-target=".function_js_check_variable_list .collapse" title="">
+<h2>Check a variable list for consistency.</h2>
+<pre>js_check_variable_list(\list $JS_LOCAL_VARIABLES) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$JS_LOCAL_VARIABLES</h4>
+<code>\list</code><p>The variable list</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_die_error"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_die_error " data-toggle="collapse" data-target=".function_js_die_error .collapse" title="">
+<h2>Make a JS error (critically).</h2>
+<pre>js_die_error(string $system, integer $pos, string $line, string $message, integer $i) : \?boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$system</h4>
+<code>string</code><p>The system causing the error</p></div>
+<div class="subelement argument">
+<h4>$pos</h4>
+<code>integer</code><p>The position</p></div>
+<div class="subelement argument">
+<h4>$line</h4>
+<code>string</code><p>The line</p></div>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The error</p></div>
+<div class="subelement argument">
+<h4>$i</h4>
+<code>integer</code><p>The global position</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?boolean</code>Always NULL (null: exit)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_ensure_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_ensure_type " data-toggle="collapse" data-target=".function_js_ensure_type .collapse" title="">
+<h2>Do type checking for something specific.</h2>
+<pre>js_ensure_type(\list $_allowed_types, string $actual_type, integer $pos, \?string $alt_error<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$_allowed_types</h4>
+<code>\list</code><p>List of allowed types</p></div>
+<div class="subelement argument">
+<h4>$actual_type</h4>
+<code>string</code><p>Actual type involved</p></div>
+<div class="subelement argument">
+<h4>$pos</h4>
+<code>integer</code><p>Current parse position</p></div>
+<div class="subelement argument">
+<h4>$alt_error</h4>
+<code>\?string</code><p>Specific error message to give (null: use default)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether it type-checks</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_get_variable_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_get_variable_type " data-toggle="collapse" data-target=".function_js_get_variable_type .collapse" title="">
+<h2>Get the type of a variable.</h2>
+<pre>js_get_variable_type(\list $variable) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variable</h4>
+<code>\list</code><p>The variable</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The type</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_infer_expression_type_to_variable_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_infer_expression_type_to_variable_type " data-toggle="collapse" data-target=".function_js_infer_expression_type_to_variable_type .collapse" title="">
+<h2>If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type inferring on usage as well as on assignment.</h2>
+<pre>js_infer_expression_type_to_variable_type(string $type, \list $expr) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The type</p></div>
+<div class="subelement argument">
+<h4>$expr</h4>
+<code>\list</code><p>The expression</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_log_warning"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_log_warning " data-toggle="collapse" data-target=".function_js_log_warning .collapse" title="">
+<h2>Log a warning when lexing/parsing/checking.</h2>
+<pre>js_log_warning(string $system, string $warning, integer $i<code> = -1</code>, boolean $absolute<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$system</h4>
+<code>string</code><p>The system causing the error</p></div>
+<div class="subelement argument">
+<h4>$warning</h4>
+<code>string</code><p>The warning</p></div>
+<div class="subelement argument">
+<h4>$i</h4>
+<code>integer</code><p>The global position</p></div>
+<div class="subelement argument">
+<h4>$absolute</h4>
+<code>boolean</code><p>Whether the position is a string offset (as opposed to a token position)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_pos_to_line_details"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_pos_to_line_details " data-toggle="collapse" data-target=".function_js_pos_to_line_details .collapse" title="">
+<h2>Convert a position to a triplet of details about the line it is on.</h2>
+<pre>js_pos_to_line_details(integer $i, boolean $absolute<code> = false</code>) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$i</h4>
+<code>integer</code><p>The position</p></div>
+<div class="subelement argument">
+<h4>$absolute</h4>
+<code>boolean</code><p>Whether the position is a string offset (as opposed to a token position)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>The quartet of details (line offset, line number, the line, the absolute position)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_scan_extractive_expressions"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_scan_extractive_expressions " data-toggle="collapse" data-target=".function_js_scan_extractive_expressions .collapse" title="">
+<h2>Scan through a complex variable, checking any expressions embedded in it.</h2>
+<pre>js_scan_extractive_expressions(\list $variable) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variable</h4>
+<code>\list</code><p>The complex variable</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_js_set_composr_type"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_js_set_composr_type " data-toggle="collapse" data-target=".function_js_set_composr_type .collapse" title="">
+<h2>Add a type to the list of used types for a variable.</h2>
+<pre>js_set_composr_type(string $identifier, string $type) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$identifier</h4>
+<code>string</code><p>The variable name</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The type</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lex__get_next_char"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lex__get_next_char " data-toggle="collapse" data-target=".function_lex__get_next_char .collapse" title="">
+<h2>Get the next character whilst lexing</h2>
+<pre>lex__get_next_char(integer $i) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$i</h4>
+<code>integer</code><p>Get character at this position</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>Get triplet about the next character (whether end reached, new position, character)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_lex__get_next_chars"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_lex__get_next_chars " data-toggle="collapse" data-target=".function_lex__get_next_chars .collapse" title="">
+<h2>Get the next characters whilst lexing</h2>
+<pre>lex__get_next_chars(integer $i, integer $num) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$i</h4>
+<code>integer</code><p>Get character at this position</p></div>
+<div class="subelement argument">
+<h4>$num</h4>
+<code>integer</code><p>How many to get</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>Get triplet about the next character (whether end reached, new position, characters)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parser_expect"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parser_expect " data-toggle="collapse" data-target=".function_parser_expect .collapse" title="">
+<h2>Expect a token during parsing. Give error if not found. Else give token parameters.</h2>
+<pre>parser_expect(string $token) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$token</h4>
+<code>string</code><p>The token we want</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The token parameters (null: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parser_next"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parser_next " data-toggle="collapse" data-target=".function_parser_next .collapse" title="">
+<h2>Find the next token and move on.</h2>
+<pre>parser_next(boolean $all<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$all</h4>
+<code>boolean</code><p>Whether we want all the token parameters (as opposed to just the first)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>All the token parameters, or just the first (null: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parser_peek"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parser_peek " data-toggle="collapse" data-target=".function_parser_peek .collapse" title="">
+<h2>Peek to find the next token.</h2>
+<pre>parser_peek(boolean $all<code> = false</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$all</h4>
+<code>boolean</code><p>Whether we want all the token parameters (as opposed to just the first)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>All the token parameters, or just the first (null: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parser_peek_dist"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parser_peek_dist " data-toggle="collapse" data-target=".function_parser_peek_dist .collapse" title="">
+<h2>Peek to find the next token after a distance.</h2>
+<pre>parser_peek_dist(integer $d, \?integer $p<code> = null</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$d</h4>
+<code>integer</code><p>The distance</p></div>
+<div class="subelement argument">
+<h4>$p</h4>
+<code>\?integer</code><p>Whether to start looking from (null: current position in parse)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>The first token parameter (null: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_precedence_sort"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_precedence_sort " data-toggle="collapse" data-target=".function_precedence_sort .collapse" title="">
+<h2>Sort an unordered structure of operations into a precedence tree.</h2>
+<pre>precedence_sort(\list $op_list) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$op_list</h4>
+<code>\list</code><p>Ops in</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>Ops out</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_reset_js_global_variables"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_reset_js_global_variables " data-toggle="collapse" data-target=".function_reset_js_global_variables .collapse" title="">
+<h2>Return the global variable array to the defaults.</h2>
+<pre>reset_js_global_variables() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_test_entity"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_test_entity " data-toggle="collapse" data-target=".function_test_entity .collapse" title="">
+<h2>Test the next entity in the output stream.</h2>
+<pre>test_entity(integer $offset<code> = 0</code>) : \?mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$offset</h4>
+<code>integer</code><p>Checking offset</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?mixed</code>An array of error details (null: no errors)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_webstandards_js_lex"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_webstandards_js_lex " data-toggle="collapse" data-target=".function_webstandards_js_lex .collapse" title="">
+<h2>Lex some JavaScript code.</h2>
+<pre>webstandards_js_lex(string $text) : \list</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>The code</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\list</code>List of lexed tokens</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_webstandards_js_parse"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_webstandards_js_parse " data-toggle="collapse" data-target=".function_webstandards_js_parse .collapse" title="">
+<h2>Return parse info for parse type.</h2>
+<pre>webstandards_js_parse() : \?map</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?map</code>Parse info (null: error)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_webstandards_js_parser_error"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_webstandards_js_parser_error " data-toggle="collapse" data-target=".function_webstandards_js_parser_error .collapse" title="">
+<h2>Give a parse error.</h2>
+<pre>webstandards_js_parser_error(string $message) : \?boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$message</h4>
+<code>string</code><p>The error</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?boolean</code>Always NULL (null: exit)</div>
+</div></div>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_AT_RULE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_AT_RULE" data-toggle="collapse" data-target=".constant_CSS_AT_RULE .collapse" title="">
+<h2>CSS_AT_RULE</h2>
+<pre>CSS_AT_RULE = -3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_AT_RULE_BLOCK"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_AT_RULE_BLOCK" data-toggle="collapse" data-target=".constant_CSS_AT_RULE_BLOCK .collapse" title="">
+<h2>CSS_AT_RULE_BLOCK</h2>
+<pre>CSS_AT_RULE_BLOCK = -4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_EXPECTING_IDENTIFIER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_EXPECTING_IDENTIFIER" data-toggle="collapse" data-target=".constant_CSS_EXPECTING_IDENTIFIER .collapse" title="">
+<h2>CSS_EXPECTING_IDENTIFIER</h2>
+<pre>CSS_EXPECTING_IDENTIFIER = -1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS" data-toggle="collapse" data-target=".constant_CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS .collapse" title="">
+<h2>CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS</h2>
+<pre>CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_IN_CLASS"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_IN_CLASS" data-toggle="collapse" data-target=".constant_CSS_IN_CLASS .collapse" title="">
+<h2>CSS_IN_CLASS</h2>
+<pre>CSS_IN_CLASS = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_IN_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_IN_COMMENT" data-toggle="collapse" data-target=".constant_CSS_IN_COMMENT .collapse" title="">
+<h2>CSS_IN_COMMENT</h2>
+<pre>CSS_IN_COMMENT = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_IN_IDENTIFIER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_IN_IDENTIFIER" data-toggle="collapse" data-target=".constant_CSS_IN_IDENTIFIER .collapse" title="">
+<h2>CSS_IN_IDENTIFIER</h2>
+<pre>CSS_IN_IDENTIFIER = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_IN_PSEUDOCLASS_EXPRESSION"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_IN_PSEUDOCLASS_EXPRESSION" data-toggle="collapse" data-target=".constant_CSS_IN_PSEUDOCLASS_EXPRESSION .collapse" title="">
+<h2>CSS_IN_PSEUDOCLASS_EXPRESSION</h2>
+<pre>CSS_IN_PSEUDOCLASS_EXPRESSION = 6 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CSS_NO_MANS_LAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CSS_NO_MANS_LAND" data-toggle="collapse" data-target=".constant_CSS_NO_MANS_LAND .collapse" title="">
+<h2>CSS_NO_MANS_LAND</h2>
+<pre>CSS_NO_MANS_LAND = -2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_HTML"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_HTML" data-toggle="collapse" data-target=".constant_DOCTYPE_HTML .collapse" title="">
+<h2>DOCTYPE_HTML</h2>
+<pre>DOCTYPE_HTML = '&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_HTML_STRICT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_HTML_STRICT" data-toggle="collapse" data-target=".constant_DOCTYPE_HTML_STRICT .collapse" title="">
+<h2>DOCTYPE_HTML_STRICT</h2>
+<pre>DOCTYPE_HTML_STRICT = '&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_XHTML"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_XHTML" data-toggle="collapse" data-target=".constant_DOCTYPE_XHTML .collapse" title="">
+<h2>DOCTYPE_XHTML</h2>
+<pre>DOCTYPE_XHTML = '&lt;!DOCTYPE html&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_XHTML5"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_XHTML5" data-toggle="collapse" data-target=".constant_DOCTYPE_XHTML5 .collapse" title="">
+<h2>DOCTYPE_XHTML5</h2>
+<pre>DOCTYPE_XHTML5 = '&lt;!DOCTYPE html&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_XHTML_11"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_XHTML_11" data-toggle="collapse" data-target=".constant_DOCTYPE_XHTML_11 .collapse" title="">
+<h2>DOCTYPE_XHTML_11</h2>
+<pre>DOCTYPE_XHTML_11 = '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_DOCTYPE_XHTML_STRICT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_DOCTYPE_XHTML_STRICT" data-toggle="collapse" data-target=".constant_DOCTYPE_XHTML_STRICT .collapse" title="">
+<h2>DOCTYPE_XHTML_STRICT</h2>
+<pre>DOCTYPE_XHTML_STRICT = '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;' </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_CDATA"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_CDATA" data-toggle="collapse" data-target=".constant_IN_CDATA .collapse" title="">
+<h2>IN_CDATA</h2>
+<pre>IN_CDATA = 11 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_COMMENT" data-toggle="collapse" data-target=".constant_IN_COMMENT .collapse" title="">
+<h2>IN_COMMENT</h2>
+<pre>IN_COMMENT = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_DTD_TAG"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_DTD_TAG" data-toggle="collapse" data-target=".constant_IN_DTD_TAG .collapse" title="">
+<h2>IN_DTD_TAG</h2>
+<pre>IN_DTD_TAG = -2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_ATTRIBUTE_NAME"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_ATTRIBUTE_NAME" data-toggle="collapse" data-target=".constant_IN_TAG_ATTRIBUTE_NAME .collapse" title="">
+<h2>IN_TAG_ATTRIBUTE_NAME</h2>
+<pre>IN_TAG_ATTRIBUTE_NAME = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES" data-toggle="collapse" data-target=".constant_IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES .collapse" title="">
+<h2>IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES</h2>
+<pre>IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES = 10 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES" data-toggle="collapse" data-target=".constant_IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES .collapse" title="">
+<h2>IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES</h2>
+<pre>IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES = 8 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES" data-toggle="collapse" data-target=".constant_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES .collapse" title="">
+<h2>IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES</h2>
+<pre>IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES = 12 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_BETWEEN_ATTRIBUTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_BETWEEN_ATTRIBUTES" data-toggle="collapse" data-target=".constant_IN_TAG_BETWEEN_ATTRIBUTES .collapse" title="">
+<h2>IN_TAG_BETWEEN_ATTRIBUTES</h2>
+<pre>IN_TAG_BETWEEN_ATTRIBUTES = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT" data-toggle="collapse" data-target=".constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT .collapse" title="">
+<h2>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</h2>
+<pre>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT" data-toggle="collapse" data-target=".constant_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT .collapse" title="">
+<h2>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</h2>
+<pre>IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT = 7 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_EMBEDDED_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_EMBEDDED_COMMENT" data-toggle="collapse" data-target=".constant_IN_TAG_EMBEDDED_COMMENT .collapse" title="">
+<h2>IN_TAG_EMBEDDED_COMMENT</h2>
+<pre>IN_TAG_EMBEDDED_COMMENT = 9 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_TAG_NAME"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_TAG_NAME" data-toggle="collapse" data-target=".constant_IN_TAG_NAME .collapse" title="">
+<h2>IN_TAG_NAME</h2>
+<pre>IN_TAG_NAME = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_IN_XML_TAG"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_IN_XML_TAG" data-toggle="collapse" data-target=".constant_IN_XML_TAG .collapse" title="">
+<h2>IN_XML_TAG</h2>
+<pre>IN_XML_TAG = -3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_COMMENT" data-toggle="collapse" data-target=".constant_LEXER_COMMENT .collapse" title="">
+<h2>LEXER_COMMENT</h2>
+<pre>LEXER_COMMENT = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_DOUBLE_QUOTE_STRING_LITERAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_DOUBLE_QUOTE_STRING_LITERAL" data-toggle="collapse" data-target=".constant_LEXER_DOUBLE_QUOTE_STRING_LITERAL .collapse" title="">
+<h2>LEXER_DOUBLE_QUOTE_STRING_LITERAL</h2>
+<pre>LEXER_DOUBLE_QUOTE_STRING_LITERAL = 6 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_FREE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_FREE" data-toggle="collapse" data-target=".constant_LEXER_FREE .collapse" title="">
+<h2>LEXER_FREE</h2>
+<pre>LEXER_FREE = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_ML_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_ML_COMMENT" data-toggle="collapse" data-target=".constant_LEXER_ML_COMMENT .collapse" title="">
+<h2>LEXER_ML_COMMENT</h2>
+<pre>LEXER_ML_COMMENT = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_NUMERIC_LITERAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_NUMERIC_LITERAL" data-toggle="collapse" data-target=".constant_LEXER_NUMERIC_LITERAL .collapse" title="">
+<h2>LEXER_NUMERIC_LITERAL</h2>
+<pre>LEXER_NUMERIC_LITERAL = 8 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_REGEXP"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_REGEXP" data-toggle="collapse" data-target=".constant_LEXER_REGEXP .collapse" title="">
+<h2>LEXER_REGEXP</h2>
+<pre>LEXER_REGEXP = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_LEXER_SINGLE_QUOTE_STRING_LITERAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_LEXER_SINGLE_QUOTE_STRING_LITERAL" data-toggle="collapse" data-target=".constant_LEXER_SINGLE_QUOTE_STRING_LITERAL .collapse" title="">
+<h2>LEXER_SINGLE_QUOTE_STRING_LITERAL</h2>
+<pre>LEXER_SINGLE_QUOTE_STRING_LITERAL = 7 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_NO_MANS_LAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_NO_MANS_LAND" data-toggle="collapse" data-target=".constant_NO_MANS_LAND .collapse" title="">
+<h2>NO_MANS_LAND</h2>
+<pre>NO_MANS_LAND = -1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_STARTING_TAG"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_STARTING_TAG" data-toggle="collapse" data-target=".constant_STARTING_TAG .collapse" title="">
+<h2>STARTING_TAG</h2>
+<pre>STARTING_TAG = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_EXPECTING_END"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_EXPECTING_END" data-toggle="collapse" data-target=".constant__CSS_EXPECTING_END .collapse" title="">
+<h2>_CSS_EXPECTING_END</h2>
+<pre>_CSS_EXPECTING_END = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_IN_COMMENT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_IN_COMMENT" data-toggle="collapse" data-target=".constant__CSS_IN_COMMENT .collapse" title="">
+<h2>_CSS_IN_COMMENT</h2>
+<pre>_CSS_IN_COMMENT = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_IN_PROPERTY_BETWEEN"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_IN_PROPERTY_BETWEEN" data-toggle="collapse" data-target=".constant__CSS_IN_PROPERTY_BETWEEN .collapse" title="">
+<h2>_CSS_IN_PROPERTY_BETWEEN</h2>
+<pre>_CSS_IN_PROPERTY_BETWEEN = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_IN_PROPERTY_KEY"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_IN_PROPERTY_KEY" data-toggle="collapse" data-target=".constant__CSS_IN_PROPERTY_KEY .collapse" title="">
+<h2>_CSS_IN_PROPERTY_KEY</h2>
+<pre>_CSS_IN_PROPERTY_KEY = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_IN_PROPERTY_VALUE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_IN_PROPERTY_VALUE" data-toggle="collapse" data-target=".constant__CSS_IN_PROPERTY_VALUE .collapse" title="">
+<h2>_CSS_IN_PROPERTY_VALUE</h2>
+<pre>_CSS_IN_PROPERTY_VALUE = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant__CSS_NO_MANS_LAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant__CSS_NO_MANS_LAND" data-toggle="collapse" data-target=".constant__CSS_NO_MANS_LAND .collapse" title="">
+<h2>_CSS_NO_MANS_LAND</h2>
+<pre>_CSS_NO_MANS_LAND = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_webstandards.html">core_webstandards</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:38+01:00.<br></footer></div>
+</div>
+</body>
+</html>

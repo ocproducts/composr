@@ -1,0 +1,1820 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>
+            Composr API documentation
+        </title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">
+                        Composr API documentation
+                    </a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/aggregate_types.html"><i class="icon-folder-open"></i> aggregate_types</a></li>
+<li><a href="../packages/authors.html"><i class="icon-folder-open"></i> authors</a></li>
+<li><a href="../packages/awards.html"><i class="icon-folder-open"></i> awards</a></li>
+<li><a href="../packages/backup.html"><i class="icon-folder-open"></i> backup</a></li>
+<li><a href="../packages/banners.html"><i class="icon-folder-open"></i> banners</a></li>
+<li><a href="../packages/bookmarks.html"><i class="icon-folder-open"></i> bookmarks</a></li>
+<li><a href="../packages/breadcrumbs.html"><i class="icon-folder-open"></i> breadcrumbs</a></li>
+<li><a href="../packages/calendar.html"><i class="icon-folder-open"></i> calendar</a></li>
+<li><a href="../packages/captcha.html"><i class="icon-folder-open"></i> captcha</a></li>
+<li><a href="../packages/catalogues.html"><i class="icon-folder-open"></i> catalogues</a></li>
+<li><a href="../packages/chat.html"><i class="icon-folder-open"></i> chat</a></li>
+<li><a href="../packages/cns_forum.html"><i class="icon-folder-open"></i> cns_forum</a></li>
+<li><a href="../packages/commandr.html"><i class="icon-folder-open"></i> commandr</a></li>
+<li><a href="../packages/content_privacy.html"><i class="icon-folder-open"></i> content_privacy</a></li>
+<li><a href="../packages/content_reviews.html"><i class="icon-folder-open"></i> content_reviews</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/core_abstract_interfaces.html"><i class="icon-folder-open"></i> core_abstract_interfaces</a></li>
+<li><a href="../packages/core_addon_management.html"><i class="icon-folder-open"></i> core_addon_management</a></li>
+<li><a href="../packages/core_cns.html"><i class="icon-folder-open"></i> core_cns</a></li>
+<li><a href="../packages/core_database_drivers.html"><i class="icon-folder-open"></i> core_database_drivers</a></li>
+<li><a href="../packages/core_feedback_features.html"><i class="icon-folder-open"></i> core_feedback_features</a></li>
+<li><a href="../packages/core_fields.html"><i class="icon-folder-open"></i> core_fields</a></li>
+<li><a href="../packages/core_form_interfaces.html"><i class="icon-folder-open"></i> core_form_interfaces</a></li>
+<li><a href="../packages/core_forum_drivers.html"><i class="icon-folder-open"></i> core_forum_drivers</a></li>
+<li><a href="../packages/core_language_editing.html"><i class="icon-folder-open"></i> core_language_editing</a></li>
+<li><a href="../packages/core_menus.html"><i class="icon-folder-open"></i> core_menus</a></li>
+<li><a href="../packages/core_notifications.html"><i class="icon-folder-open"></i> core_notifications</a></li>
+<li><a href="../packages/core_rich_media.html"><i class="icon-folder-open"></i> core_rich_media</a></li>
+<li><a href="../packages/core_themeing.html"><i class="icon-folder-open"></i> core_themeing</a></li>
+<li><a href="../packages/core_upgrader.html"><i class="icon-folder-open"></i> core_upgrader</a></li>
+<li><a href="../packages/core_webstandards.html"><i class="icon-folder-open"></i> core_webstandards</a></li>
+<li><a href="../packages/custom_comcode.html"><i class="icon-folder-open"></i> custom_comcode</a></li>
+<li><a href="../packages/downloads.html"><i class="icon-folder-open"></i> downloads</a></li>
+<li><a href="../packages/ecommerce.html"><i class="icon-folder-open"></i> ecommerce</a></li>
+<li><a href="../packages/filedump.html"><i class="icon-folder-open"></i> filedump</a></li>
+<li><a href="../packages/galleries.html"><i class="icon-folder-open"></i> galleries</a></li>
+<li><a href="../packages/google_appengine.html"><i class="icon-folder-open"></i> google_appengine</a></li>
+<li><a href="../packages/import.html"><i class="icon-folder-open"></i> import</a></li>
+<li><a href="../packages/ldap.html"><i class="icon-folder-open"></i> ldap</a></li>
+<li><a href="../packages/msn.html"><i class="icon-folder-open"></i> msn</a></li>
+<li><a href="../packages/news.html"><i class="icon-folder-open"></i> news</a></li>
+<li><a href="../packages/newsletter.html"><i class="icon-folder-open"></i> newsletter</a></li>
+<li><a href="../packages/points.html"><i class="icon-folder-open"></i> points</a></li>
+<li><a href="../packages/pointstore.html"><i class="icon-folder-open"></i> pointstore</a></li>
+<li><a href="../packages/polls.html"><i class="icon-folder-open"></i> polls</a></li>
+<li><a href="../packages/quizzes.html"><i class="icon-folder-open"></i> quizzes</a></li>
+<li><a href="../packages/realtime_rain.html"><i class="icon-folder-open"></i> realtime_rain</a></li>
+<li><a href="../packages/recommend.html"><i class="icon-folder-open"></i> recommend</a></li>
+<li><a href="../packages/search.html"><i class="icon-folder-open"></i> search</a></li>
+<li><a href="../packages/securitylogging.html"><i class="icon-folder-open"></i> securitylogging</a></li>
+<li><a href="../packages/shopping.html"><i class="icon-folder-open"></i> shopping</a></li>
+<li><a href="../packages/sms.html"><i class="icon-folder-open"></i> sms</a></li>
+<li><a href="../packages/stats.html"><i class="icon-folder-open"></i> stats</a></li>
+<li><a href="../packages/syndication.html"><i class="icon-folder-open"></i> syndication</a></li>
+<li><a href="../packages/themewizard.html"><i class="icon-folder-open"></i> themewizard</a></li>
+<li><a href="../packages/tickets.html"><i class="icon-folder-open"></i> tickets</a></li>
+<li><a href="../packages/wiki.html"><i class="icon-folder-open"></i> wiki</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">499</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/core_rich_media.html" title="core_rich_media"><i class="icon-folder-open"></i>core_rich_media</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i title="Functions" class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_absoluteise_and_test_comcode_url" title="absoluteise_and_test_comcode_url() :: Make a given URL parameter an absolute URL; Fix any errors in it; Test it."><span class="description">Make a given URL parameter an absolute URL; Fix any errors in it; Test it.</span><pre>absoluteise_and_test_comcode_url</pre></a></li>
+<li class="function  "><a href="#function_add_wysiwyg_comcode_markup" title="add_wysiwyg_comcode_markup() :: Output a Comcode tag in WYSIWYG-editor format, for tidy editing."><span class="description">Output a Comcode tag in WYSIWYG-editor format, for tidy editing.</span><pre>add_wysiwyg_comcode_markup</pre></a></li>
+<li class="function  "><a href="#function_apply_emoticons" title="apply_emoticons() :: Get the text with all the emoticon codes replaced with the correct XHTML. Emoticons are determined by your forum system."><span class="description">Get the text with all the emoticon codes replaced with the correct XHTML. Emoticons are determined by your forum system.</span><pre>apply_emoticons</pre></a></li>
+<li class="function  "><a href="#function_array_html_preg_replace" title="array_html_preg_replace() :: Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own."><span class="description">Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.</span><pre>array_html_preg_replace</pre></a></li>
+<li class="function  "><a href="#function_attachment_popup_script" title="attachment_popup_script() :: Shows an HTML page of all attachments we can access with selection buttons."><span class="description">Shows an HTML page of all attachments we can access with selection buttons.</span><pre>attachment_popup_script</pre></a></li>
+<li class="function  "><a href="#function_attachments_script" title="attachments_script() :: Show the image of an attachment/thumbnail."><span class="description">Show the image of an attachment/thumbnail.</span><pre>attachments_script</pre></a></li>
+<li class="function  "><a href="#function_check_comcode" title="check_comcode() :: Check the Comcode is valid."><span class="description">Check the Comcode is valid.</span><pre>check_comcode</pre></a></li>
+<li class="function  "><a href="#function_check_naughty_javascript_url" title="check_naughty_javascript_url() :: Check the specified URL for potentially malicious JavaScript/etc. If any is found, the hack attack is logged if in an active post request by the submitting member otherwise filtered out."><span class="description">Check the specified URL for potentially malicious JavaScript/etc. If any is found, the hack attack is logged if in an active post request by the submitting member otherwise filtered out.</span><pre>check_naughty_javascript_url</pre></a></li>
+<li class="function  "><a href="#function_comcode_escape" title="comcode_escape() :: Make text usable inside a string inside Comcode"><span class="description">Make text usable inside a string inside Comcode</span><pre>comcode_escape</pre></a></li>
+<li class="function  "><a href="#function_comcode_helper_script" title="comcode_helper_script() :: Outputs a Comcode tag helper dialog."><span class="description">Outputs a Comcode tag helper dialog.</span><pre>comcode_helper_script</pre></a></li>
+<li class="function  "><a href="#function_comcode_helper_script_step1" title="comcode_helper_script_step1() :: Render a step of the Comcode tag helper dialog."><span class="description">Render a step of the Comcode tag helper dialog.</span><pre>comcode_helper_script_step1</pre></a></li>
+<li class="function  "><a href="#function_comcode_helper_script_step2" title="comcode_helper_script_step2() :: Render a step of the Comcode tag helper dialog."><span class="description">Render a step of the Comcode tag helper dialog.</span><pre>comcode_helper_script_step2</pre></a></li>
+<li class="function  "><a href="#function_comcode_helper_script_step3" title="comcode_helper_script_step3() :: Render a step of the Comcode tag helper dialog."><span class="description">Render a step of the Comcode tag helper dialog.</span><pre>comcode_helper_script_step3</pre></a></li>
+<li class="function  "><a href="#function_comcode_parse_error" title="comcode_parse_error() :: Show a Comcode parser error."><span class="description">Show a Comcode parser error.</span><pre>comcode_parse_error</pre></a></li>
+<li class="function  "><a href="#function_comcode_preg_replace" title="comcode_preg_replace() :: Do a regular expression match, locked correctly to single Comcode elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own."><span class="description">Do a regular expression match, locked correctly to single Comcode elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.</span><pre>comcode_preg_replace</pre></a></li>
+<li class="function  "><a href="#function_comcode_strip_html_tags" title="comcode_strip_html_tags() :: preg_replace callback to strip HTML tags from inside a Comcode tag, except formatting ones that we'll convert to white-space."><span class="description">preg_replace callback to strip HTML tags from inside a Comcode tag, except formatting ones that we'll convert to white-space.</span><pre>comcode_strip_html_tags</pre></a></li>
+<li class="function  "><a href="#function_comcode_to_tempcode" title="comcode_to_tempcode() :: Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string."><span class="description">Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.</span><pre>comcode_to_tempcode</pre></a></li>
+<li class="function  "><a href="#function_convert_html_headers_to_titles" title="convert_html_headers_to_titles() :: Convert HTML headers to Comcode titles"><span class="description">Convert HTML headers to Comcode titles</span><pre>convert_html_headers_to_titles</pre></a></li>
+<li class="function  "><a href="#function_debuttonise" title="debuttonise() :: Extract underlying Comcode from an editor Comcode-management button. preg_replace_callback callback"><span class="description">Extract underlying Comcode from an editor Comcode-management button. preg_replace_callback callback</span><pre>debuttonise</pre></a></li>
+<li class="function  "><a href="#function_delete_comcode_attachments" title="delete_comcode_attachments() :: Deletes all the attachments a given language code holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references."><span class="description">Deletes all the attachments a given language code holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.</span><pre>delete_comcode_attachments</pre></a></li>
+<li class="function  "><a href="#function_delete_lang_comcode_attachments" title="delete_lang_comcode_attachments() :: This function is the same as delete_comcode_attachments, except that it deletes the language code as well."><span class="description">This function is the same as delete_comcode_attachments, except that it deletes the language code as well.</span><pre>delete_lang_comcode_attachments</pre></a></li>
+<li class="function  "><a href="#function_detagonise" title="detagonise() :: Extract underlying Comcode from an editor Comcode XML tag. preg_replace_callback callback"><span class="description">Extract underlying Comcode from an editor Comcode XML tag. preg_replace_callback callback</span><pre>detagonise</pre></a></li>
+<li class="function  "><a href="#function_dispatch_member_mention_notifications" title='dispatch_member_mention_notifications() :: Dispatch any pending member mention notifications ("mentions").'><span class="description">Dispatch any pending member mention notifications ("mentions").</span><pre>dispatch_member_mention_notifications</pre></a></li>
+<li class="function  "><a href="#function_do_code_box" title="do_code_box() :: Render a code box."><span class="description">Render a code box.</span><pre>do_code_box</pre></a></li>
+<li class="function  "><a href="#function_do_comcode_attachments" title="do_comcode_attachments() :: Get an array containing new Comcode, and Tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference."><span class="description">Get an array containing new Comcode, and Tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.</span><pre>do_comcode_attachments</pre></a></li>
+<li class="function  "><a href="#function_do_emoticon" title="do_emoticon() :: Turn a triple of emoticon parameters into some actual Tempcode."><span class="description">Turn a triple of emoticon parameters into some actual Tempcode.</span><pre>do_emoticon</pre></a></li>
+<li class="function  "><a href="#function_filter_html" title="filter_html() :: Filter HTML for safety."><span class="description">Filter HTML for safety.</span><pre>filter_html</pre></a></li>
+<li class="function  "><a href="#function_final_attachments_from_preview" title="final_attachments_from_preview() :: Finalise attachments which were created during a preview, so that they have the proper reference IDs."><span class="description">Finalise attachments which were created during a preview, so that they have the proper reference IDs.</span><pre>final_attachments_from_preview</pre></a></li>
+<li class="function  "><a href="#function_find_media_renderers" title="find_media_renderers() :: Find a media renderer hook for a URL."><span class="description">Find a media renderer hook for a URL.</span><pre>find_media_renderers</pre></a></li>
+<li class="function  "><a href="#function_force_clean_comcode" title="force_clean_comcode() :: Convert HTML-filled Comcode to cleaner Comcode."><span class="description">Convert HTML-filled Comcode to cleaner Comcode.</span><pre>force_clean_comcode</pre></a></li>
+<li class="function  "><a href="#function_get_defaults_multi" title="get_defaults_multi() :: Locate a set of consistently named parameters and generate an array of them for a multi-line input."><span class="description">Locate a set of consistently named parameters and generate an array of them for a multi-line input.</span><pre>get_defaults_multi</pre></a></li>
+<li class="function  "><a href="#function_get_tutorial_link" title="get_tutorial_link() :: Find a specified tutorial link identifier."><span class="description">Find a specified tutorial link identifier.</span><pre>get_tutorial_link</pre></a></li>
+<li class="function  "><a href="#function_has_attachment_access" title="has_attachment_access() :: Find if the specified member has access to view the specified attachment."><span class="description">Find if the specified member has access to view the specified attachment.</span><pre>has_attachment_access</pre></a></li>
+<li class="function  "><a href="#function_html_to_comcode" title="html_to_comcode() :: Convert (X)HTML into Comcode"><span class="description">Convert (X)HTML into Comcode</span><pre>html_to_comcode</pre></a></li>
+<li class="function  "><a href="#function_in_tag_stack" title="in_tag_stack() :: Find if any of some tags are in the stack."><span class="description">Find if any of some tags are in the stack.</span><pre>in_tag_stack</pre></a></li>
+<li class="function  "><a href="#function_insert_lang_comcode_attachments" title="insert_lang_comcode_attachments() :: Insert some Comcode content that may contain attachments, and return the language ID."><span class="description">Insert some Comcode content that may contain attachments, and return the language ID.</span><pre>insert_lang_comcode_attachments</pre></a></li>
+<li class="function  "><a href="#function_parse_single_comcode_tag" title="parse_single_comcode_tag() :: Parse a single tag. For use separately, not used by main parser."><span class="description">Parse a single tag. For use separately, not used by main parser.</span><pre>parse_single_comcode_tag</pre></a></li>
+<li class="function  "><a href="#function_peek_media_mode" title="peek_media_mode() :: Return the current media mode."><span class="description">Return the current media mode.</span><pre>peek_media_mode</pre></a></li>
+<li class="function  "><a href="#function_pop_media_mode" title="pop_media_mode() :: Restore the media mode."><span class="description">Restore the media mode.</span><pre>pop_media_mode</pre></a></li>
+<li class="function  "><a href="#function_push_media_mode" title="push_media_mode() :: Set the media mode."><span class="description">Set the media mode.</span><pre>push_media_mode</pre></a></li>
+<li class="function  "><a href="#function_remove_wysiwyg_comcode_markup" title="remove_wysiwyg_comcode_markup() :: Cleanup HTML coming out of the WYSIWYG editor, converting represented Comcode back to proper Comcode"><span class="description">Cleanup HTML coming out of the WYSIWYG editor, converting represented Comcode back to proper Comcode</span><pre>remove_wysiwyg_comcode_markup</pre></a></li>
+<li class="function  "><a href="#function_render_attachment" title="render_attachment() :: Get Tempcode for a Comcode rich-media attachment."><span class="description">Get Tempcode for a Comcode rich-media attachment.</span><pre>render_attachment</pre></a></li>
+<li class="function  "><a href="#function_render_media_url" title="render_media_url() :: Render a media URL in the best way we can."><span class="description">Render a media URL in the best way we can.</span><pre>render_media_url</pre></a></li>
+<li class="function  "><a href="#function_semihtml_to_comcode" title="semihtml_to_comcode() :: Convert Semi-HTML into comcode. Cleanup where possible"><span class="description">Convert Semi-HTML into comcode. Cleanup where possible</span><pre>semihtml_to_comcode</pre></a></li>
+<li class="function  "><a href="#function_semihtml_to_comcode_wrap" title="semihtml_to_comcode_wrap() :: Convert Semi-HTML into comcode. Cleanup where possible. preg_replace_callback callback"><span class="description">Convert Semi-HTML into comcode. Cleanup where possible. preg_replace_callback callback</span><pre>semihtml_to_comcode_wrap</pre></a></li>
+<li class="function  "><a href="#function_set_tutorial_link" title="set_tutorial_link() :: Set the specified value to the specified tutorial link identifier."><span class="description">Set the specified value to the specified tutorial link identifier.</span><pre>set_tutorial_link</pre></a></li>
+<li class="function  "><a href="#function_strip_comcode" title='strip_comcode() :: Strip out any Comcode from this "plain text". Useful for semantic text is wanted but where Comcode is used as "the next best thing" we have.'><span class="description">Strip out any Comcode from this "plain text". Useful for semantic text is wanted but where Comcode is used as "the next best thing" we have.</span><pre>strip_comcode</pre></a></li>
+<li class="function  "><a href="#function_test_url" title="test_url() :: Test a URL as a broken link."><span class="description">Test a URL as a broken link.</span><pre>test_url</pre></a></li>
+<li class="function  "><a href="#function_update_lang_comcode_attachments" title="update_lang_comcode_attachments() :: Update a language code, in such a way that new attachments are created if they were specified."><span class="description">Update a language code, in such a way that new attachments are created if they were specified.</span><pre>update_lang_comcode_attachments</pre></a></li>
+<li class="function  "><a href="#function_wysiwyg_comcode_markup_style" title="wysiwyg_comcode_markup_style() :: Find how Comcode will be represented in the editor."><span class="description">Find how Comcode will be represented in the editor.</span><pre>wysiwyg_comcode_markup_style</pre></a></li>
+<li class="function  "><a href="#function_wysiwygify_media_set" title="wysiwygify_media_set() :: Strip down the contents of the media_set tag for easier WYSIWYG-editing"><span class="description">Strip down the contents of the media_set tag for easier WYSIWYG-editing</span><pre>wysiwygify_media_set</pre></a></li>
+<li class="nav-header">
+<i title="Classes" class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#Media_renderer_with_fallback" title="A media renderer coded to fall-back to a simple image if we have low-fi mode turned on.">Media_renderer_with_fallback</a></li>
+<li class="nav-header">
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_ATTRIBUTE_NAME" title="CCP_IN_TAG_ATTRIBUTE_NAME() :: "><span class="description">CCP_IN_TAG_ATTRIBUTE_NAME</span><pre>CCP_IN_TAG_ATTRIBUTE_NAME</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_ATTRIBUTE_VALUE" title="CCP_IN_TAG_ATTRIBUTE_VALUE() :: "><span class="description">CCP_IN_TAG_ATTRIBUTE_VALUE</span><pre>CCP_IN_TAG_ATTRIBUTE_VALUE</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE" title="CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE() :: "><span class="description">CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE</span><pre>CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_BETWEEN_ATTRIBUTES" title="CCP_IN_TAG_BETWEEN_ATTRIBUTES() :: "><span class="description">CCP_IN_TAG_BETWEEN_ATTRIBUTES</span><pre>CCP_IN_TAG_BETWEEN_ATTRIBUTES</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT" title="CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT() :: "><span class="description">CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</span><pre>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT" title="CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT() :: "><span class="description">CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</span><pre>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_IN_TAG_NAME" title="CCP_IN_TAG_NAME() :: "><span class="description">CCP_IN_TAG_NAME</span><pre>CCP_IN_TAG_NAME</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_NO_MANS_LAND" title="CCP_NO_MANS_LAND() :: "><span class="description">CCP_NO_MANS_LAND</span><pre>CCP_NO_MANS_LAND</pre></a></li>
+<li class="constant  "><a href="#constant_CCP_STARTING_TAG" title="CCP_STARTING_TAG() :: "><span class="description">CCP_STARTING_TAG</span><pre>CCP_STARTING_TAG</pre></a></li>
+<li class="constant  "><a href="#constant_MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH" title="MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH() :: "><span class="description">MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH</span><pre>MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH</pre></a></li>
+<li class="constant  "><a href="#constant_MAX_URLS_TO_READ" title="MAX_URLS_TO_READ() :: "><span class="description">MAX_URLS_TO_READ</span><pre>MAX_URLS_TO_READ</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_LOWFI" title="MEDIA_LOWFI() :: "><span class="description">MEDIA_LOWFI</span><pre>MEDIA_LOWFI</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_HIGH" title="MEDIA_RECOG_PRECEDENCE_HIGH() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_HIGH</span><pre>MEDIA_RECOG_PRECEDENCE_HIGH</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_LOW" title="MEDIA_RECOG_PRECEDENCE_LOW() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_LOW</span><pre>MEDIA_RECOG_PRECEDENCE_LOW</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_MEDIUM" title="MEDIA_RECOG_PRECEDENCE_MEDIUM() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_MEDIUM</span><pre>MEDIA_RECOG_PRECEDENCE_MEDIUM</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_NONE" title="MEDIA_RECOG_PRECEDENCE_NONE() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_NONE</span><pre>MEDIA_RECOG_PRECEDENCE_NONE</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_SUPER" title="MEDIA_RECOG_PRECEDENCE_SUPER() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_SUPER</span><pre>MEDIA_RECOG_PRECEDENCE_SUPER</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_RECOG_PRECEDENCE_TRIVIAL" title="MEDIA_RECOG_PRECEDENCE_TRIVIAL() :: "><span class="description">MEDIA_RECOG_PRECEDENCE_TRIVIAL</span><pre>MEDIA_RECOG_PRECEDENCE_TRIVIAL</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_TYPE_ALL" title="MEDIA_TYPE_ALL() :: "><span class="description">MEDIA_TYPE_ALL</span><pre>MEDIA_TYPE_ALL</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_TYPE_AUDIO" title="MEDIA_TYPE_AUDIO() :: "><span class="description">MEDIA_TYPE_AUDIO</span><pre>MEDIA_TYPE_AUDIO</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_TYPE_IMAGE" title="MEDIA_TYPE_IMAGE() :: "><span class="description">MEDIA_TYPE_IMAGE</span><pre>MEDIA_TYPE_IMAGE</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_TYPE_OTHER" title="MEDIA_TYPE_OTHER() :: "><span class="description">MEDIA_TYPE_OTHER</span><pre>MEDIA_TYPE_OTHER</pre></a></li>
+<li class="constant  "><a href="#constant_MEDIA_TYPE_VIDEO" title="MEDIA_TYPE_VIDEO() :: "><span class="description">MEDIA_TYPE_VIDEO</span><pre>MEDIA_TYPE_VIDEO</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__BUTTON" title="WYSIWYG_COMCODE__BUTTON() :: "><span class="description">WYSIWYG_COMCODE__BUTTON</span><pre>WYSIWYG_COMCODE__BUTTON</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__HTML" title="WYSIWYG_COMCODE__HTML() :: "><span class="description">WYSIWYG_COMCODE__HTML</span><pre>WYSIWYG_COMCODE__HTML</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__STANDOUT_BLOCK" title="WYSIWYG_COMCODE__STANDOUT_BLOCK() :: "><span class="description">WYSIWYG_COMCODE__STANDOUT_BLOCK</span><pre>WYSIWYG_COMCODE__STANDOUT_BLOCK</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__STANDOUT_INLINE" title="WYSIWYG_COMCODE__STANDOUT_INLINE() :: "><span class="description">WYSIWYG_COMCODE__STANDOUT_INLINE</span><pre>WYSIWYG_COMCODE__STANDOUT_INLINE</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__XML_BLOCK" title="WYSIWYG_COMCODE__XML_BLOCK() :: "><span class="description">WYSIWYG_COMCODE__XML_BLOCK</span><pre>WYSIWYG_COMCODE__XML_BLOCK</pre></a></li>
+<li class="constant  "><a href="#constant_WYSIWYG_COMCODE__XML_INLINE" title="WYSIWYG_COMCODE__XML_INLINE() :: "><span class="description">WYSIWYG_COMCODE__XML_INLINE</span><pre>WYSIWYG_COMCODE__XML_INLINE</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/core_rich_media.html">core_rich_media</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i title="Functions" class="icon-custom icon-function"></i> Functions</h3>
+<a xmlns:php="http://php.net/xsl" id="function_absoluteise_and_test_comcode_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_absoluteise_and_test_comcode_url " data-toggle="collapse" data-target=".function_absoluteise_and_test_comcode_url .collapse" title="">
+<h2>Make a given URL parameter an absolute URL; Fix any errors in it; Test it.</h2>
+<pre>absoluteise_and_test_comcode_url(\URLPATH $given_url, \MEMBER $source_member, boolean $as_admin, \ID_TEXT $tag) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$given_url</h4>
+<code>\URLPATH</code><p>URL to fixup.</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member who is responsible for this Comcode</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to check as arbitrary admin</p></div>
+<div class="subelement argument">
+<h4>$tag</h4>
+<code>\ID_TEXT</code><p>Comcode tag name.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>Fixed URL.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_add_wysiwyg_comcode_markup"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_add_wysiwyg_comcode_markup " data-toggle="collapse" data-target=".function_add_wysiwyg_comcode_markup .collapse" title="">
+<h2>Output a Comcode tag in WYSIWYG-editor format, for tidy editing.</h2>
+<pre>add_wysiwyg_comcode_markup(string $tag, array $attributes, \Tempcode $embed, boolean $semihtml, \?integer $method<code> = null</code>) : \?string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tag</h4>
+<code>string</code><p>The Comcode tag</p></div>
+<div class="subelement argument">
+<h4>$attributes</h4>
+<code>array</code><p>The parameters</p></div>
+<div class="subelement argument">
+<h4>$embed</h4>
+<code>\Tempcode</code><p>The contents of the tag</p></div>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>boolean</code><p>Whether we are in semihtml mode</p></div>
+<div class="subelement argument">
+<h4>$method</h4>
+<code>\?integer</code><p>Display method (null: auto-detect)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?string</code>The HTML (null: render as native HTML)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_apply_emoticons"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_apply_emoticons " data-toggle="collapse" data-target=".function_apply_emoticons .collapse" title="">
+<h2>Get the text with all the emoticon codes replaced with the correct XHTML. Emoticons are determined by your forum system.</h2>
+<pre>apply_emoticons(string $text) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This is not used in the normal Comcode chain - it's for non-Comcode things that require emoticons (actually in reality it is used in the Comcode chain if the optimiser sees that a full parse is not needed)</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>The text to add emoticons to (assumption: that this is XHTML)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The XHTML with the image-substitution of emoticons</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_array_html_preg_replace"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_array_html_preg_replace " data-toggle="collapse" data-target=".function_array_html_preg_replace .collapse" title="">
+<h2>Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.</h2>
+<pre>array_html_preg_replace(string $element, array $array, string $semihtml) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$element</h4>
+<code>string</code><p>The element name to replace over</p></div>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code><p>A list of pairs: Pattern, Replacement</p></div>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>string</code><p>Haystack</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Result</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_attachment_popup_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_attachment_popup_script " data-toggle="collapse" data-target=".function_attachment_popup_script .collapse" title="">
+<h2>Shows an HTML page of all attachments we can access with selection buttons.</h2>
+<pre>attachment_popup_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_attachments_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_attachments_script " data-toggle="collapse" data-target=".function_attachments_script .collapse" title="">
+<h2>Show the image of an attachment/thumbnail.</h2>
+<pre>attachments_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_comcode " data-toggle="collapse" data-target=".function_check_comcode .collapse" title="">
+<h2>Check the Comcode is valid.</h2>
+<pre>check_comcode(\LONG_TEXT $comcode, \?MEMBER $source_member<code> = null</code>, boolean $as_admin<code> = false</code>, \?object $connection<code> = null</code>, boolean $attachment_possibility<code> = false</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The Comcode to convert</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\?MEMBER</code><p>The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one.</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+<div class="subelement argument">
+<h4>$attachment_possibility</h4>
+<code>boolean</code><p>Whether there might be new attachments. If there are, we will check as lax- as attachments are always preserved by forcing lax parsing.</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_check_naughty_javascript_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_check_naughty_javascript_url " data-toggle="collapse" data-target=".function_check_naughty_javascript_url .collapse" title="">
+<h2>Check the specified URL for potentially malicious JavaScript/etc. If any is found, the hack attack is logged if in an active post request by the submitting member otherwise filtered out.</h2>
+<pre>check_naughty_javascript_url(\MEMBER $source_member, \URLPATH $url, boolean $as_admin) : \URLPATH</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member who submitted the URL</p></div>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL to check</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to check as arbitrary admin</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\URLPATH</code>Filtered input URL.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_escape"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_escape " data-toggle="collapse" data-target=".function_comcode_escape .collapse" title="">
+<h2>Make text usable inside a string inside Comcode</h2>
+<pre>comcode_escape(string $in) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$in</h4>
+<code>string</code><p>Raw text</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Escaped text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_helper_script"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_helper_script " data-toggle="collapse" data-target=".function_comcode_helper_script .collapse" title="">
+<h2>Outputs a Comcode tag helper dialog.</h2>
+<pre>comcode_helper_script() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_helper_script_step1"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_helper_script_step1 " data-toggle="collapse" data-target=".function_comcode_helper_script_step1 .collapse" title="">
+<h2>Render a step of the Comcode tag helper dialog.</h2>
+<pre>comcode_helper_script_step1() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The step UI.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_helper_script_step2"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_helper_script_step2 " data-toggle="collapse" data-target=".function_comcode_helper_script_step2 .collapse" title="">
+<h2>Render a step of the Comcode tag helper dialog.</h2>
+<pre>comcode_helper_script_step2() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The step UI.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_helper_script_step3"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_helper_script_step3 " data-toggle="collapse" data-target=".function_comcode_helper_script_step3 .collapse" title="">
+<h2>Render a step of the Comcode tag helper dialog.</h2>
+<pre>comcode_helper_script_step3() : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The step UI.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_parse_error"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_parse_error " data-toggle="collapse" data-target=".function_comcode_parse_error .collapse" title="">
+<h2>Show a Comcode parser error.</h2>
+<pre>comcode_parse_error(boolean $preparse_mode, array $_message, integer $pos, \LONG_TEXT $comcode, boolean $check_only<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$preparse_mode</h4>
+<code>boolean</code><p>Whether this is being pre-parsed, to pick up errors before row insertion.</p></div>
+<div class="subelement argument">
+<h4>$_message</h4>
+<code>array</code><p>Error message details to pass to do_lang, or if the first in the list is NULL, use directly</p></div>
+<div class="subelement argument">
+<h4>$pos</h4>
+<code>integer</code><p>The position during parsing that the error occurred at</p></div>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The Comcode the parser error occurred in</p></div>
+<div class="subelement argument">
+<h4>$check_only</h4>
+<code>boolean</code><p>Whether to only check the Comcode.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_preg_replace"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_preg_replace " data-toggle="collapse" data-target=".function_comcode_preg_replace .collapse" title="">
+<h2>Do a regular expression match, locked correctly to single Comcode elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.</h2>
+<pre>comcode_preg_replace(string $element, string $pattern, mixed $replacement, string $semihtml) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This is a good test case:
+exit(comcode_preg_replace('test','#[test](.*)[/test]#','&gt;${1}&lt;','[test]x[test a]y[/test]z[/test]'));</p></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$element</h4>
+<code>string</code><p>The element name to replace over</p></div>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>string</code><p>Pattern</p></div>
+<div class="subelement argument">
+<h4>$replacement</h4>
+<code>mixed</code><p>Replacement (string or single element array specifying a function name)</p></div>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>string</code><p>Haystack</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Result</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_strip_html_tags"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_strip_html_tags " data-toggle="collapse" data-target=".function_comcode_strip_html_tags .collapse" title="">
+<h2>preg_replace callback to strip HTML tags from inside a Comcode tag, except formatting ones that we'll convert to white-space.</h2>
+<pre>comcode_strip_html_tags(array $matches) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$matches</h4>
+<code>array</code><p>Matches</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Result</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_comcode_to_tempcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_comcode_to_tempcode " data-toggle="collapse" data-target=".function_comcode_to_tempcode .collapse" title="">
+<h2>Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.</h2>
+<pre>comcode_to_tempcode(\LONG_TEXT $comcode, \?MEMBER $source_member<code> = null</code>, boolean $as_admin<code> = false</code>, \?integer $wrap_pos<code> = null</code>, \?string $pass_id<code> = null</code>, \?object $connection<code> = null</code>, boolean $semiparse_mode<code> = false</code>, boolean $preparse_mode<code> = false</code>, boolean $is_all_semihtml<code> = false</code>, boolean $structure_sweep<code> = false</code>, boolean $check_only<code> = false</code>, \?array $highlight_bits<code> = null</code>, \?MEMBER $on_behalf_of_member<code> = null</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The Comcode to convert</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\?MEMBER</code><p>The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one. Note that if this is passed false, and $source_member is an admin, it will be parsed using admin privileges anyway.</p></div>
+<div class="subelement argument">
+<h4>$wrap_pos</h4>
+<code>\?integer</code><p>The position to conduct wordwrapping at (null: do not conduct word-wrapping)</p></div>
+<div class="subelement argument">
+<h4>$pass_id</h4>
+<code>\?string</code><p>A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+<div class="subelement argument">
+<h4>$semiparse_mode</h4>
+<code>boolean</code><p>Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).</p></div>
+<div class="subelement argument">
+<h4>$preparse_mode</h4>
+<code>boolean</code><p>Whether this is being pre-parsed, to pick up errors before row insertion.</p></div>
+<div class="subelement argument">
+<h4>$is_all_semihtml</h4>
+<code>boolean</code><p>Whether to treat this whole thing as being wrapped in semihtml, but apply normal security otherwise.</p></div>
+<div class="subelement argument">
+<h4>$structure_sweep</h4>
+<code>boolean</code><p>Whether we are only doing this parse to find the title structure</p></div>
+<div class="subelement argument">
+<h4>$check_only</h4>
+<code>boolean</code><p>Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.</p></div>
+<div class="subelement argument">
+<h4>$highlight_bits</h4>
+<code>\?array</code><p>A list of words to highlight (null: none)</p></div>
+<div class="subelement argument">
+<h4>$on_behalf_of_member</h4>
+<code>\?MEMBER</code><p>The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode generated</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_convert_html_headers_to_titles"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_convert_html_headers_to_titles " data-toggle="collapse" data-target=".function_convert_html_headers_to_titles .collapse" title="">
+<h2>Convert HTML headers to Comcode titles</h2>
+<pre>convert_html_headers_to_titles(string $semihtml) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>string</code><p>Semi-HTML</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Semi-HTML, with headers converted to titles</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_debuttonise"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_debuttonise " data-toggle="collapse" data-target=".function_debuttonise .collapse" title="">
+<h2>Extract underlying Comcode from an editor Comcode-management button. preg_replace_callback callback</h2>
+<pre>debuttonise(array $matches) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$matches</h4>
+<code>array</code><p>Array of matches</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Substituted text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_comcode_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_comcode_attachments " data-toggle="collapse" data-target=".function_delete_comcode_attachments .collapse" title="">
+<h2>Deletes all the attachments a given language code holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.</h2>
+<pre>delete_comcode_attachments(\ID_TEXT $type, \ID_TEXT $id, \?object $connection<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The arbitrary type that the attached is for (e.g. download)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID in the set of the arbitrary types that the attached is for</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_delete_lang_comcode_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_delete_lang_comcode_attachments " data-toggle="collapse" data-target=".function_delete_lang_comcode_attachments .collapse" title="">
+<h2>This function is the same as delete_comcode_attachments, except that it deletes the language code as well.</h2>
+<pre>delete_lang_comcode_attachments(mixed $lang_id, \ID_TEXT $type, \ID_TEXT $id, \?object $connection<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$lang_id</h4>
+<code>mixed</code><p>The language ID</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The arbitrary type that the attached is for (e.g. download)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID in the set of the arbitrary types that the attached is for</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_detagonise"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_detagonise " data-toggle="collapse" data-target=".function_detagonise .collapse" title="">
+<h2>Extract underlying Comcode from an editor Comcode XML tag. preg_replace_callback callback</h2>
+<pre>detagonise(array $matches) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$matches</h4>
+<code>array</code><p>Array of matches</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Substituted text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_dispatch_member_mention_notifications"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_dispatch_member_mention_notifications " data-toggle="collapse" data-target=".function_dispatch_member_mention_notifications .collapse" title="">
+<h2>Dispatch any pending member mention notifications ("mentions").</h2>
+<pre>dispatch_member_mention_notifications(\ID_TEXT $content_type, \ID_TEXT $content_id, \?MEMBER $submitter<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$content_type</h4>
+<code>\ID_TEXT</code><p>The content type</p></div>
+<div class="subelement argument">
+<h4>$content_id</h4>
+<code>\ID_TEXT</code><p>The content ID</p></div>
+<div class="subelement argument">
+<h4>$submitter</h4>
+<code>\?MEMBER</code><p>The content submitter (null: current user)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_code_box"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_code_box " data-toggle="collapse" data-target=".function_do_code_box .collapse" title="">
+<h2>Render a code box.</h2>
+<pre>do_code_box(string $type, \Tempcode $embed, boolean $numbers<code> = true</code>, boolean $in_semihtml<code> = false</code>, boolean $is_all_semihtml<code> = false</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The data type (e.g. file extension) we are rendering.</p></div>
+<div class="subelement argument">
+<h4>$embed</h4>
+<code>\Tempcode</code><p>Contents (code) to render.</p></div>
+<div class="subelement argument">
+<h4>$numbers</h4>
+<code>boolean</code><p>Whether to show line numbers.</p></div>
+<div class="subelement argument">
+<h4>$in_semihtml</h4>
+<code>boolean</code><p>Whether what we have came from inside a semihtml tag</p></div>
+<div class="subelement argument">
+<h4>$is_all_semihtml</h4>
+<code>boolean</code><p>Whether what we have came from semihtml mode</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A pair: The Tempcode for the code box, and the title of the box</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_comcode_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_comcode_attachments " data-toggle="collapse" data-target=".function_do_comcode_attachments .collapse" title="">
+<h2>Get an array containing new Comcode, and Tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.</h2>
+<pre>do_comcode_attachments(\LONG_TEXT $comcode, \ID_TEXT $type, \ID_TEXT $id, boolean $previewing_only<code> = false</code>, \?object $connection<code> = null</code>, \?boolean $insert_as_admin<code> = null</code>, \?MEMBER $for_member<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The unparsed Comcode that references the attachments</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The type the attachment will be used for (e.g. download)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID the attachment will be used for</p></div>
+<div class="subelement argument">
+<h4>$previewing_only</h4>
+<code>boolean</code><p>Whether we are only previewing the attachments (i.e. don't store them!)</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+<div class="subelement argument">
+<h4>$insert_as_admin</h4>
+<code>\?boolean</code><p>Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges) (null: autodetect)</p></div>
+<div class="subelement argument">
+<h4>$for_member</h4>
+<code>\?MEMBER</code><p>The member to use for ownership permissions (null: current member)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map containing 'Comcode' (after substitution for tying down the new attachments) and 'tempcode'</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_do_emoticon"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_do_emoticon " data-toggle="collapse" data-target=".function_do_emoticon .collapse" title="">
+<h2>Turn a triple of emoticon parameters into some actual Tempcode.</h2>
+<pre>do_emoticon(array $imgcode) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$imgcode</h4>
+<code>array</code><p>Parameter triple(template,src,code)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Either a Tempcode result, or a string result, depending on $evaluate</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_filter_html"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_filter_html " data-toggle="collapse" data-target=".function_filter_html .collapse" title="">
+<h2>Filter HTML for safety.</h2>
+<pre>filter_html(boolean $as_admin, \MEMBER $source_member, integer $pos, integer $len, \LONG_TEXT $comcode, boolean $in_html, boolean $in_semihtml) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one.</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully</p></div>
+<div class="subelement argument">
+<h4>$pos</h4>
+<code>integer</code><p>The offset of the tag in the Comcode</p></div>
+<div class="subelement argument">
+<h4>$len</h4>
+<code>integer</code><p>The length of the Comcode</p></div>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The Comcode being parsed</p></div>
+<div class="subelement argument">
+<h4>$in_html</h4>
+<code>boolean</code><p>Whether the parser is/was in an HTML region</p></div>
+<div class="subelement argument">
+<h4>$in_semihtml</h4>
+<code>boolean</code><p>Whether the parser is/was in a Semi-HTML region</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_final_attachments_from_preview"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_final_attachments_from_preview " data-toggle="collapse" data-target=".function_final_attachments_from_preview .collapse" title="">
+<h2>Finalise attachments which were created during a preview, so that they have the proper reference IDs.</h2>
+<pre>final_attachments_from_preview(\ID_TEXT $id, \?object $connection<code> = null</code>) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID in the set of the arbitrary types that the attached is for</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_find_media_renderers"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_find_media_renderers " data-toggle="collapse" data-target=".function_find_media_renderers .collapse" title="">
+<h2>Find a media renderer hook for a URL.</h2>
+<pre>find_media_renderers(\URLPATH $url, array $attributes, boolean $as_admin, \?MEMBER $source_member, integer $acceptable_media<code> = 15</code>, \?ID_TEXT $limit_to<code> = null</code>) : \?array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>\URLPATH</code><p>The URL</p></div>
+<div class="subelement argument">
+<h4>$attributes</h4>
+<code>array</code><p>Attributes (e.g. width, height, length)</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether there are admin privileges, to render dangerous media types</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\?MEMBER</code><p>Member to run as (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$acceptable_media</h4>
+<code>integer</code><p>Bitmask of media that we will support</p></div>
+<div class="subelement argument">
+<h4>$limit_to</h4>
+<code>\?ID_TEXT</code><p>Limit to a media rendering hook (null: no limit)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?array</code>The hooks (null: cannot find one)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_force_clean_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_force_clean_comcode " data-toggle="collapse" data-target=".function_force_clean_comcode .collapse" title="">
+<h2>Convert HTML-filled Comcode to cleaner Comcode.</h2>
+<pre>force_clean_comcode(\LONG_TEXT $comcode) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$comcode</h4>
+<code>\LONG_TEXT</code><p>The messy Comcode.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>The cleaned Comcode.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_defaults_multi"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_defaults_multi " data-toggle="collapse" data-target=".function_get_defaults_multi .collapse" title="">
+<h2>Locate a set of consistently named parameters and generate an array of them for a multi-line input.</h2>
+<pre>get_defaults_multi(array $defaults, \ID_TEXT $param) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$defaults</h4>
+<code>array</code><p>All default values for the tag.</p></div>
+<div class="subelement argument">
+<h4>$param</h4>
+<code>\ID_TEXT</code><p>Match name for the parameter set.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of values.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_get_tutorial_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_get_tutorial_link " data-toggle="collapse" data-target=".function_get_tutorial_link .collapse" title="">
+<h2>Find a specified tutorial link identifier.</h2>
+<pre>get_tutorial_link(\ID_TEXT $name) : \?SHORT_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the value</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?SHORT_TEXT</code>The value (null: value not found)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_has_attachment_access"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_has_attachment_access " data-toggle="collapse" data-target=".function_has_attachment_access .collapse" title="">
+<h2>Find if the specified member has access to view the specified attachment.</h2>
+<pre>has_attachment_access(\MEMBER $member, \AUTO_LINK $id, \?object $connection<code> = null</code>) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$member</h4>
+<code>\MEMBER</code><p>The member being checked whether to have the access</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\AUTO_LINK</code><p>The ID code for the attachment being checked</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: site DB)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether the member has attachment access</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_html_to_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_html_to_comcode " data-toggle="collapse" data-target=".function_html_to_comcode .collapse" title="">
+<h2>Convert (X)HTML into Comcode</h2>
+<pre>html_to_comcode(\LONG_TEXT $html, boolean $force<code> = true</code>) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$html</h4>
+<code>\LONG_TEXT</code><p>The HTML to be converted</p></div>
+<div class="subelement argument">
+<h4>$force</h4>
+<code>boolean</code><p>Whether to force full conversion regardless of settings</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>The equivalent Comcode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_in_tag_stack"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_in_tag_stack " data-toggle="collapse" data-target=".function_in_tag_stack .collapse" title="">
+<h2>Find if any of some tags are in the stack.</h2>
+<pre>in_tag_stack(array $tag_stack, array $tags) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tag_stack</h4>
+<code>array</code><p>The tag stack</p></div>
+<div class="subelement argument">
+<h4>$tags</h4>
+<code>array</code><p>The tags</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>Whether one is present</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_insert_lang_comcode_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_insert_lang_comcode_attachments " data-toggle="collapse" data-target=".function_insert_lang_comcode_attachments .collapse" title="">
+<h2>Insert some Comcode content that may contain attachments, and return the language ID.</h2>
+<pre>insert_lang_comcode_attachments(\ID_TEXT $field_name, integer $level, \LONG_TEXT $text, \ID_TEXT $type, \ID_TEXT $id, \?object $connection<code> = null</code>, boolean $insert_as_admin<code> = false</code>, \?MEMBER $for_member<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>1 2 3 4</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$level</h4>
+<code>integer</code><p>The level of importance this language string holds</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\LONG_TEXT</code><p>The Comcode content</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The arbitrary type that the attached is for (e.g. download)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID in the set of the arbitrary types that the attached is for</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+<div class="subelement argument">
+<h4>$insert_as_admin</h4>
+<code>boolean</code><p>Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)</p></div>
+<div class="subelement argument">
+<h4>$for_member</h4>
+<code>\?MEMBER</code><p>The member to use for ownership permissions (null: current member)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The language ID save fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_parse_single_comcode_tag"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_parse_single_comcode_tag " data-toggle="collapse" data-target=".function_parse_single_comcode_tag .collapse" title="">
+<h2>Parse a single tag. For use separately, not used by main parser.</h2>
+<pre>parse_single_comcode_tag(string $data, string $tag<code> = '\w+'</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>string</code><p>The data being parsed</p></div>
+<div class="subelement argument">
+<h4>$tag</h4>
+<code>string</code><p>The tag we're expecting to see here / a regexp</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>A map of parsed attributes</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_peek_media_mode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_peek_media_mode " data-toggle="collapse" data-target=".function_peek_media_mode .collapse" title="">
+<h2>Return the current media mode.</h2>
+<pre>peek_media_mode() : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The current media mode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_pop_media_mode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_pop_media_mode " data-toggle="collapse" data-target=".function_pop_media_mode .collapse" title="">
+<h2>Restore the media mode.</h2>
+<pre>pop_media_mode() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_push_media_mode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_push_media_mode " data-toggle="collapse" data-target=".function_push_media_mode .collapse" title="">
+<h2>Set the media mode.</h2>
+<pre>push_media_mode(integer $m) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$m</h4>
+<code>integer</code><p>The current media mode</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_remove_wysiwyg_comcode_markup"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_remove_wysiwyg_comcode_markup " data-toggle="collapse" data-target=".function_remove_wysiwyg_comcode_markup .collapse" title="">
+<h2>Cleanup HTML coming out of the WYSIWYG editor, converting represented Comcode back to proper Comcode</h2>
+<pre>remove_wysiwyg_comcode_markup(string $semihtml) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>string</code><p>Semi-HTML</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_attachment"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_attachment " data-toggle="collapse" data-target=".function_render_attachment .collapse" title="">
+<h2>Get Tempcode for a Comcode rich-media attachment.</h2>
+<pre>render_attachment(\ID_TEXT $tag, array $attributes, array $attachment_row, string $pass_id, \MEMBER $source_member, boolean $as_admin, object $connection, \?array $highlight_bits<code> = null</code>, \?MEMBER $on_behalf_of_member<code> = null</code>, boolean $semiparse_mode<code> = false</code>) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr>
+<tr>
+<th>set</th>
+<td>attachment attachment_safe</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tag</h4>
+<code>\ID_TEXT</code><p>The attachment tag</p></div>
+<div class="subelement argument">
+<h4>$attributes</h4>
+<code>array</code><p>A map of the attributes (name=>val) for the tag</p></div>
+<div class="subelement argument">
+<h4>$attachment_row</h4>
+<code>array</code><p>A map of the attachment properties (name=>val) for the attachment</p></div>
+<div class="subelement argument">
+<h4>$pass_id</h4>
+<code>string</code><p>A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member who is responsible for this Comcode</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether to check as arbitrary admin</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>object</code><p>The database connection to use</p></div>
+<div class="subelement argument">
+<h4>$highlight_bits</h4>
+<code>\?array</code><p>A list of words to highlight (null: none)</p></div>
+<div class="subelement argument">
+<h4>$on_behalf_of_member</h4>
+<code>\?MEMBER</code><p>The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)</p></div>
+<div class="subelement argument">
+<h4>$semiparse_mode</h4>
+<code>boolean</code><p>Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>The Tempcode for the attachment</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_render_media_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_render_media_url " data-toggle="collapse" data-target=".function_render_media_url .collapse" title="">
+<h2>Render a media URL in the best way we can.</h2>
+<pre>render_media_url(mixed $url, mixed $url_safe, array $attributes, boolean $as_admin<code> = false</code>, \?MEMBER $source_member<code> = null</code>, integer $acceptable_media<code> = 15</code>, \?ID_TEXT $limit_to<code> = null</code>, \?URLPATH $url_to_scan_against<code> = null</code>) : \?Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url</h4>
+<code>mixed</code><p>The URL</p></div>
+<div class="subelement argument">
+<h4>$url_safe</h4>
+<code>mixed</code><p>URL to render (no sessions etc)</p></div>
+<div class="subelement argument">
+<h4>$attributes</h4>
+<code>array</code><p>Attributes (e.g. width, height, length). IMPORTANT NOTE: Only pass in 'mime_type' from user data if you have verified privileges to do so, no verification is done within the media API.</p></div>
+<div class="subelement argument">
+<h4>$as_admin</h4>
+<code>boolean</code><p>Whether there are admin privileges, to render dangerous media types</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\?MEMBER</code><p>Member to run as (null: current member)</p></div>
+<div class="subelement argument">
+<h4>$acceptable_media</h4>
+<code>integer</code><p>Bitmask of media that we will support</p></div>
+<div class="subelement argument">
+<h4>$limit_to</h4>
+<code>\?ID_TEXT</code><p>Limit to a media rendering hook (null: no limit)</p></div>
+<div class="subelement argument">
+<h4>$url_to_scan_against</h4>
+<code>\?URLPATH</code><p>The URL to do media detection against (null: use $url)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\?Tempcode</code>The rendered version (null: cannot render)</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_semihtml_to_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_semihtml_to_comcode " data-toggle="collapse" data-target=".function_semihtml_to_comcode .collapse" title="">
+<h2>Convert Semi-HTML into comcode. Cleanup where possible</h2>
+<pre>semihtml_to_comcode(\LONG_TEXT $semihtml, boolean $force<code> = false</code>) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>\LONG_TEXT</code><p>The Semi-HTML to be converted</p></div>
+<div class="subelement argument">
+<h4>$force</h4>
+<code>boolean</code><p>Whether to force full conversion regardless of settings</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>The equivalent Comcode</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_semihtml_to_comcode_wrap"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_semihtml_to_comcode_wrap " data-toggle="collapse" data-target=".function_semihtml_to_comcode_wrap .collapse" title="">
+<h2>Convert Semi-HTML into comcode. Cleanup where possible. preg_replace_callback callback</h2>
+<pre>semihtml_to_comcode_wrap(array $matches) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$matches</h4>
+<code>array</code><p>Array of matches</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Substituted text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_set_tutorial_link"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_set_tutorial_link " data-toggle="collapse" data-target=".function_set_tutorial_link .collapse" title="">
+<h2>Set the specified value to the specified tutorial link identifier.</h2>
+<pre>set_tutorial_link(\ID_TEXT $name, \SHORT_TEXT $value) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>\ID_TEXT</code><p>The name of the value</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>\SHORT_TEXT</code><p>The value</p></div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_strip_comcode"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_strip_comcode " data-toggle="collapse" data-target=".function_strip_comcode .collapse" title="">
+<h2>Strip out any Comcode from this "plain text". Useful for semantic text is wanted but where Comcode is used as "the next best thing" we have.</h2>
+<pre>strip_comcode(string $text, boolean $for_extract<code> = false</code>, \?array $tags_to_preserve<code> = null</code>) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>string</code><p>Plain-text/Comcode</p></div>
+<div class="subelement argument">
+<h4>$for_extract</h4>
+<code>boolean</code><p>Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)</p></div>
+<div class="subelement argument">
+<h4>$tags_to_preserve</h4>
+<code>\?array</code><p>List of tags to preserve (null: none)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>Purified plain-text</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_test_url"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_test_url " data-toggle="collapse" data-target=".function_test_url .collapse" title="">
+<h2>Test a URL as a broken link.</h2>
+<pre>test_url(\URLPATH $url_full, string $tag_type, string $given_url, \MEMBER $source_member) : \Tempcode</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$url_full</h4>
+<code>\URLPATH</code><p>URL to test.</p></div>
+<div class="subelement argument">
+<h4>$tag_type</h4>
+<code>string</code><p>Comcode tag type, to which the URL is associated.</p></div>
+<div class="subelement argument">
+<h4>$given_url</h4>
+<code>string</code><p>URL actually provided.</p></div>
+<div class="subelement argument">
+<h4>$source_member</h4>
+<code>\MEMBER</code><p>The member who is responsible for this Comcode</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Tempcode</code>Error message, or blank if no error.</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_update_lang_comcode_attachments"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_update_lang_comcode_attachments " data-toggle="collapse" data-target=".function_update_lang_comcode_attachments .collapse" title="">
+<h2>Update a language code, in such a way that new attachments are created if they were specified.</h2>
+<pre>update_lang_comcode_attachments(\ID_TEXT $field_name, mixed $lang_id, \LONG_TEXT $text, \ID_TEXT $type, \ID_TEXT $id, \?object $connection<code> = null</code>, boolean $backup_string<code> = false</code>, \?MEMBER $for_member<code> = null</code>) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field_name</h4>
+<code>\ID_TEXT</code><p>The field name</p></div>
+<div class="subelement argument">
+<h4>$lang_id</h4>
+<code>mixed</code><p>The language ID</p></div>
+<div class="subelement argument">
+<h4>$text</h4>
+<code>\LONG_TEXT</code><p>The new text</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>\ID_TEXT</code><p>The arbitrary type that the attached is for (e.g. download)</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\ID_TEXT</code><p>The ID in the set of the arbitrary types that the attached is for</p></div>
+<div class="subelement argument">
+<h4>$connection</h4>
+<code>\?object</code><p>The database connection to use (null: standard site connection)</p></div>
+<div class="subelement argument">
+<h4>$backup_string</h4>
+<code>boolean</code><p>Whether to backup the language string before changing it</p></div>
+<div class="subelement argument">
+<h4>$for_member</h4>
+<code>\?MEMBER</code><p>The member that owns the content this is for (null: current member)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The language ID save fields</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wysiwyg_comcode_markup_style"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wysiwyg_comcode_markup_style " data-toggle="collapse" data-target=".function_wysiwyg_comcode_markup_style .collapse" title="">
+<h2>Find how Comcode will be represented in the editor.</h2>
+<pre>wysiwyg_comcode_markup_style(string $tag, \?array $attributes<code> = null</code>, \?Tempcode $embed<code> = null</code>) : integer</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$tag</h4>
+<code>string</code><p>The Comcode tag</p></div>
+<div class="subelement argument">
+<h4>$attributes</h4>
+<code>\?array</code><p>The parameters (null: don't consider)</p></div>
+<div class="subelement argument">
+<h4>$embed</h4>
+<code>\?Tempcode</code><p>The contents of the tag (null: don't consider)</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>integer</code>The Comcode integration style</div>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="function_wysiwygify_media_set"></a><div xmlns:php="http://php.net/xsl" class="element clickable function  function_wysiwygify_media_set " data-toggle="collapse" data-target=".function_wysiwygify_media_set .collapse" title="">
+<h2>Strip down the contents of the media_set tag for easier WYSIWYG-editing</h2>
+<pre>wysiwygify_media_set(\LONG_TEXT $semihtml) : \LONG_TEXT</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$semihtml</h4>
+<code>\LONG_TEXT</code><p>The Semi-HTML to be converted</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\LONG_TEXT</code>The equivalent Comcode</div>
+</div></div>
+</div>
+<h3>
+<i title="Classes" class="icon-custom icon-class"></i> Classes, interfaces, and traits</h3>
+<div xmlns:php="http://php.net/xsl" id="Media_renderer_with_fallback" class="element ajax clickable class">
+<h1>Media_renderer_with_fallback<a href="../classes/Media_renderer_with_fallback.html">¶</a>
+</h1>
+<p class="short_description">A media renderer coded to fall-back to a simple image if we have low-fi mode turned on.</p>
+<div class="details collapse"></div>
+<a href="../classes/Media_renderer_with_fallback.html" class="more">« More »</a>
+</div>
+<h3>
+<i title="Constants" class="icon-custom icon-constant"></i> Constants</h3>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_ATTRIBUTE_NAME"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_ATTRIBUTE_NAME" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_ATTRIBUTE_NAME .collapse" title="">
+<h2>CCP_IN_TAG_ATTRIBUTE_NAME</h2>
+<pre>CCP_IN_TAG_ATTRIBUTE_NAME = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_ATTRIBUTE_VALUE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_ATTRIBUTE_VALUE" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_ATTRIBUTE_VALUE .collapse" title="">
+<h2>CCP_IN_TAG_ATTRIBUTE_VALUE</h2>
+<pre>CCP_IN_TAG_ATTRIBUTE_VALUE = 7 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE .collapse" title="">
+<h2>CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE</h2>
+<pre>CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE = 8 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_BETWEEN_ATTRIBUTES"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_BETWEEN_ATTRIBUTES" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_BETWEEN_ATTRIBUTES .collapse" title="">
+<h2>CCP_IN_TAG_BETWEEN_ATTRIBUTES</h2>
+<pre>CCP_IN_TAG_BETWEEN_ATTRIBUTES = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT .collapse" title="">
+<h2>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT</h2>
+<pre>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT .collapse" title="">
+<h2>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT</h2>
+<pre>CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT = 6 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_IN_TAG_NAME"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_IN_TAG_NAME" data-toggle="collapse" data-target=".constant_CCP_IN_TAG_NAME .collapse" title="">
+<h2>CCP_IN_TAG_NAME</h2>
+<pre>CCP_IN_TAG_NAME = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_NO_MANS_LAND"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_NO_MANS_LAND" data-toggle="collapse" data-target=".constant_CCP_NO_MANS_LAND .collapse" title="">
+<h2>CCP_NO_MANS_LAND</h2>
+<pre>CCP_NO_MANS_LAND = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_CCP_STARTING_TAG"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_CCP_STARTING_TAG" data-toggle="collapse" data-target=".constant_CCP_STARTING_TAG .collapse" title="">
+<h2>CCP_STARTING_TAG</h2>
+<pre>CCP_STARTING_TAG = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH" data-toggle="collapse" data-target=".constant_MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH .collapse" title="">
+<h2>MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH</h2>
+<pre>MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH = 30 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MAX_URLS_TO_READ"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MAX_URLS_TO_READ" data-toggle="collapse" data-target=".constant_MAX_URLS_TO_READ .collapse" title="">
+<h2>MAX_URLS_TO_READ</h2>
+<pre>MAX_URLS_TO_READ = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_LOWFI"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_LOWFI" data-toggle="collapse" data-target=".constant_MEDIA_LOWFI .collapse" title="">
+<h2>MEDIA_LOWFI</h2>
+<pre>MEDIA_LOWFI = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_HIGH"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_HIGH" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_HIGH .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_HIGH</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_HIGH = 40 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_LOW"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_LOW" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_LOW .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_LOW</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_LOW = 20 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_MEDIUM"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_MEDIUM" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_MEDIUM .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_MEDIUM</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_MEDIUM = 30 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_NONE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_NONE" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_NONE .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_NONE</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_NONE = 0 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_SUPER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_SUPER" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_SUPER .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_SUPER</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_SUPER = 50 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_RECOG_PRECEDENCE_TRIVIAL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_RECOG_PRECEDENCE_TRIVIAL" data-toggle="collapse" data-target=".constant_MEDIA_RECOG_PRECEDENCE_TRIVIAL .collapse" title="">
+<h2>MEDIA_RECOG_PRECEDENCE_TRIVIAL</h2>
+<pre>MEDIA_RECOG_PRECEDENCE_TRIVIAL = 10 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_TYPE_ALL"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_TYPE_ALL" data-toggle="collapse" data-target=".constant_MEDIA_TYPE_ALL .collapse" title="">
+<h2>MEDIA_TYPE_ALL</h2>
+<pre>MEDIA_TYPE_ALL = 15 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_TYPE_AUDIO"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_TYPE_AUDIO" data-toggle="collapse" data-target=".constant_MEDIA_TYPE_AUDIO .collapse" title="">
+<h2>MEDIA_TYPE_AUDIO</h2>
+<pre>MEDIA_TYPE_AUDIO = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_TYPE_IMAGE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_TYPE_IMAGE" data-toggle="collapse" data-target=".constant_MEDIA_TYPE_IMAGE .collapse" title="">
+<h2>MEDIA_TYPE_IMAGE</h2>
+<pre>MEDIA_TYPE_IMAGE = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_TYPE_OTHER"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_TYPE_OTHER" data-toggle="collapse" data-target=".constant_MEDIA_TYPE_OTHER .collapse" title="">
+<h2>MEDIA_TYPE_OTHER</h2>
+<pre>MEDIA_TYPE_OTHER = 8 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_MEDIA_TYPE_VIDEO"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_MEDIA_TYPE_VIDEO" data-toggle="collapse" data-target=".constant_MEDIA_TYPE_VIDEO .collapse" title="">
+<h2>MEDIA_TYPE_VIDEO</h2>
+<pre>MEDIA_TYPE_VIDEO = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__BUTTON"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__BUTTON" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__BUTTON .collapse" title="">
+<h2>WYSIWYG_COMCODE__BUTTON</h2>
+<pre>WYSIWYG_COMCODE__BUTTON = 1 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__HTML"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__HTML" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__HTML .collapse" title="">
+<h2>WYSIWYG_COMCODE__HTML</h2>
+<pre>WYSIWYG_COMCODE__HTML = 6 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__STANDOUT_BLOCK"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__STANDOUT_BLOCK" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__STANDOUT_BLOCK .collapse" title="">
+<h2>WYSIWYG_COMCODE__STANDOUT_BLOCK</h2>
+<pre>WYSIWYG_COMCODE__STANDOUT_BLOCK = 4 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__STANDOUT_INLINE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__STANDOUT_INLINE" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__STANDOUT_INLINE .collapse" title="">
+<h2>WYSIWYG_COMCODE__STANDOUT_INLINE</h2>
+<pre>WYSIWYG_COMCODE__STANDOUT_INLINE = 5 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__XML_BLOCK"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__XML_BLOCK" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__XML_BLOCK .collapse" title="">
+<h2>WYSIWYG_COMCODE__XML_BLOCK</h2>
+<pre>WYSIWYG_COMCODE__XML_BLOCK = 2 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+<a xmlns:php="http://php.net/xsl" id="constant_WYSIWYG_COMCODE__XML_INLINE"> </a><div xmlns:php="http://php.net/xsl" class="element clickable constant  constant_WYSIWYG_COMCODE__XML_INLINE" data-toggle="collapse" data-target=".constant_WYSIWYG_COMCODE__XML_INLINE .collapse" title="">
+<h2>WYSIWYG_COMCODE__XML_INLINE</h2>
+<pre>WYSIWYG_COMCODE__XML_INLINE = 3 </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core_rich_media.html">core_rich_media</a></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.8.5</a> and<br>
+            generated on 2015-09-04T16:29:37+01:00.<br></footer></div>
+</div>
+</body>
+</html>
