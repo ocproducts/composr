@@ -42,7 +42,7 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{BREADCRUMBS}}
-			<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p>{!LOCATED_IN,{BREADCRUMBS}}</p></nav>
+			<nav class="breadcrumbs" itemprop="breadcrumb"><p>{!LOCATED_IN,{BREADCRUMBS}}</p></nav>
 		{+END}
 	</div>
 

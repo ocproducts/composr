@@ -26,7 +26,7 @@ $credits = intval(get_cms_cpf('support_credits'));
 
 $professional_support_url = build_url(array('page' => 'professional_support'), '_SEARCH');
 
-if (get_page_name() != 'professional_support' && $credits == 0) {
+if ($credits == 0) {
     $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', escape_html($professional_support_url->evaluate()));
 } else {
     $whats_this = new Tempcode();

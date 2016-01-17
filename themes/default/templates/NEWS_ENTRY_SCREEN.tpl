@@ -62,7 +62,7 @@
 			</div>
 		{+END}
 
-		<aside role="navigation" class="box box___news_entry_screen"><div class="box_inner">
+		<aside class="box box___news_entry_screen"><nav class="box_inner">
 			<p class="lonely_label">
 				{$?,{BLOG},{!BLOG_NEWS_UNDER_THESE},{!NEWS_UNDER_THESE}}
 			</p>
@@ -77,7 +77,7 @@
 					<a class="buttons__all2 button_screen" rel="archives" href="\{ARCHIVE_URL*\}"><span>\{!VIEW_ARCHIVE\}</span></a>
 				</div>}
 			{+END}
-		</div></aside>
+		</nav></aside>
 	</div>
 
 	{$REVIEW_STATUS,news,{ID}}

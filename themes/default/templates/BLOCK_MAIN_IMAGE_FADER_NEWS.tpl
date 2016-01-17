@@ -70,7 +70,7 @@
 				{$TRUNCATE_LEFT,{$PREG_REPLACE,<img [^>]*>,,{BODY}},600,0,1,1,0.1}
 
 				<div class="pagination">
-					<nav class="float_surrounder" role="navigation">
+					<nav class="float_surrounder">
 						<a onclick="return window.main_image_fader_news_cycle_{$GET,RAND}(-1);" rel="prev" accesskey="j" href="#" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a><a id="pause_button_{$GET,RAND}" onclick="return window.main_image_fader_news_pause_{$GET,RAND}();" href="#" title="{!PAUSE}" class="light">{!PAUSE}</a><a onclick="return window.main_image_fader_news_cycle_{$GET,RAND}( 1);" rel="next" accesskey="k" href="#" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
 					</nav>
 				</div>

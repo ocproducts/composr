@@ -1,4 +1,4 @@
-<aside role="navigation" class="screen_actions_outer box"><div class="screen_actions box_inner">
+<aside class="screen_actions_outer box"><nav class="screen_actions box_inner">
 	<div class="print"><a class="link_exempt" rel="print nofollow" target="_blank" title="{!PRINT_THIS_SCREEN} {!LINK_NEW_WINDOW}" href="{PRINT_URL*}"><span>{!PRINT_THIS_SCREEN}</span></a></div>
 	<div class="recommend"><a onclick="return open_link_as_overlay(this);" class="link_exempt" rel="nofollow" target="_blank" title="{!RECOMMEND_LINK} {!LINK_NEW_WINDOW}" href="{RECOMMEND_URL*}"><span>{!RECOMMEND_LINK}</span></a></div>
 	{+START,IF,{$BROWSER_MATCHES,ie}}
@@ -16,4 +16,4 @@
 		<div class="g-plusone" data-size="medium" data-count="true" data-href="{EASY_SELF_URL*}"></div>
 		{$EXTRA_FOOT,<script src="https://apis.google.com/js/plusone.js"></script>}
 	</div>
-</div></aside>
+</nav></aside>

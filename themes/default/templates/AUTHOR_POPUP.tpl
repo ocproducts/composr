@@ -16,7 +16,9 @@
 {+START,IF_PASSED,NEXT_URL}
 	<hr />
 
-	<ul class="actions_list" role="navigation">
-		<li><a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
-	</ul>
+	<nav>
+		<ul class="actions_list">
+			<li><a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
+		</ul>
+	</div>
 {+END}

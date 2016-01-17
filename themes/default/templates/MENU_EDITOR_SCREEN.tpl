@@ -58,9 +58,11 @@
 					{!CLICK_ENTRY_POINT_TO_USE}
 				</p>
 
-				<ul class="actions_list" role="navigation">
-					<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
-				</ul>
+				<nav>
+					<ul class="actions_list">
+						<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
+					</ul>
+				</nav>
 			</div>
 
 			<div class="menu_editor_lh_side">

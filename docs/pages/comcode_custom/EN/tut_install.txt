@@ -54,7 +54,7 @@ At some point you'll need to decide which method you'd like to use to install Co
 
 We highly recommend choosing the quick installer. This is a simple process, where you upload two files to your web server, then launch our installation utility from there. It works on most servers.
 
-The second option is the manual installer. This option requires you to manually upload all of Composr's files using something like FTP and apply permissions to them -- the typical method for most CMS systems. This method takes much longer -- as there is a pause for "handshaking" between each file. We maintain this version in case the quick installer fails on your host (e.g. if the host does not support PHP-accessible [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
+The second option is the manual installer. This option requires you to manually upload all of Composr's files using something like FTP and apply permissions to them -- the typical method for most CMSs. This method takes much longer -- as there is a pause for "handshaking" between each file. We maintain this version in case the quick installer fails on your host (e.g. if the host does not support PHP-accessible [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
 
 [title="2"]Preparing files[/title]
 

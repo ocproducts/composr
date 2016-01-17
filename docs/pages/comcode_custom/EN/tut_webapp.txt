@@ -104,7 +104,7 @@ Web applications have grown in complexity, as web developers have become increas
 
 There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached 
 
-CMS systems are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMS systems alongside the more traditional articles and pages. One example of this is our own system, Composr.
+CMSs are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMSs alongside the more traditional articles and pages. One example of this is our own system, Composr.
 
 [title="2"]Overview of the advantages/disadvantages of different types of website[/title]
 

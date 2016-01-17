@@ -44,9 +44,11 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{APPLY_URL}}
-	<ul class="force_margin actions_list" role="navigation">
-		<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
-	</ul>
+	<nav>
+		<ul class="force_margin actions_list">
+			<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
+		</ul>
+	</nav>
 {+END}
 
 {$REVIEW_STATUS,group,{ID}}

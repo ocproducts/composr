@@ -165,34 +165,46 @@ function list_tutorials()
     return $tutorials;
 }
 
-function templatify_tutorial_list($tutorials)
+function templatify_tutorial_list($tutorials, $simple = false)
 {
     $_tutorials = array();
 
-    foreach ($tutorials as $tutorial) {
-        $tags = array();
-        foreach ($tutorial['tags'] as $tag) {
-            if (strtolower($tag) != $tag) {
-                $tags[] = $tag;
-            }
-        }
-
-        $_tutorials[] = array(
-            'URL' => $tutorial['url'],
-            'TITLE' => $tutorial['title'],
-            'SUMMARY' => $tutorial['summary'],
-            'ICON' => $tutorial['icon'],
-            'TAGS' => $tags,
-            'MEDIA_TYPE' => $tutorial['media_type'],
-            'DIFFICULTY_LEVEL' => $tutorial['difficulty_level'],
-            'CORE' => $tutorial['core'],
-            'AUTHOR' => $tutorial['author'],
-            'ADD_DATE' => get_timezoned_date($tutorial['add_date'], false),
-            'EDIT_DATE' => get_timezoned_date($tutorial['edit_date'], false),
-        );
+    foreach ($tutorials as $meta_data) {
+        $_tutorials[] = templatify_tutorial($meta_data, $simple);
     }
 
     return $_tutorials;
+}
+
+function templatify_tutorial($meta_data, $simple = false)
+{
+    $tags = array();
+    foreach ($meta_data['tags'] as $tag) {
+        if (strtolower($tag) != $tag) {
+            $tags[] = $tag;
+        }
+    }
+
+    $tutorial = array(
+        'NAME' => $meta_data['name'],
+        'URL' => $meta_data['url'],
+        'TITLE' => $meta_data['title'],
+        'ICON' => $meta_data['icon'],
+    );
+    if (!$simple) {
+        $tutorial += array(
+            'SUMMARY' => $meta_data['summary'],
+            'TAGS' => $tags,
+            'MEDIA_TYPE' => $meta_data['media_type'],
+            'DIFFICULTY_LEVEL' => $meta_data['difficulty_level'],
+            'CORE' => $meta_data['core'],
+            'AUTHOR' => $meta_data['author'],
+            'ADD_DATE' => get_timezoned_date($meta_data['add_date'], false),
+            'EDIT_DATE' => get_timezoned_date($meta_data['edit_date'], false),
+        );
+    }
+
+    return $tutorial;
 }
 
 function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
@@ -209,7 +221,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         if (is_null($tags)) {
-            $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external', array('t_tag'), array('t_id' => intval($tutorial_name)));
+            $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_tag'), array('t_id' => intval($tutorial_name)));
             $tags = collapse_1d_complexity('t_tag', $_tags);
         }
 
@@ -219,6 +231,8 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         return array(
+            'name' => $tutorial_name,
+
             'url' => $db_row['t_url'],
             'title' => $db_row['t_title'],
             'summary' => $db_row['t_summary'],
@@ -319,6 +333,8 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         $difficulty_level = in_array('expert', $raw_tags) ? 'expert' : (in_array('novice', $raw_tags) ? 'novice' : 'regular');
 
         return array(
+            'name' => $tutorial_name,
+
             'url' => static_evaluate_tempcode($url),
             'title' => $title,
             'summary' => $summary,

@@ -536,7 +536,7 @@ $featuretree = array(
             'Performance',
             array(
                 array('Highly optimised code'),
-                array('Support for <acronym title="Content Delivery Networks">CDN</acronym>s'),
+                array('Support for <abbr title="Content Delivery Networks">CDN</abbr>s'),
                 null, // divider
                 array('Multiple levels of caching'),
                 array('Sophisticated template compiler'),
@@ -572,7 +572,7 @@ $featuretree = array(
             ),
         ),
         'seo' => array(
-            '<acronym title="Search Engine Optimisation">SEO</acronym> <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SEO" href="http://shareddemo.composr.info/index.php?page=sitemap"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            '<abbr title="Search Engine Optimisation">SEO</abbr> <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SEO" href="http://shareddemo.composr.info/index.php?page=sitemap"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Support for short URLs'),
                 array('Automatic site-map generation'),

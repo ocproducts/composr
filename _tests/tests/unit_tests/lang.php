@@ -201,6 +201,11 @@ class lang_test_set extends cms_test_case
             $this->assertTrue(false, 'The phrase \'Open source\' was used in ' . $file . '. This should be changed to \'Open Source\'.');
         }
 
+        // Bad use of acronyms
+        if (stripos($string, 'CMS system') !== false) {
+            $this->assertTrue(false, 'The phrase \'CMS system\' was used in ' . $file . '. That would expand to Content Management System System. The plural of CMS is CMSs.');
+        }
+
         // Old-fashioned words
         if (stripos($string, 'amongst') !== false) {
             $this->assertTrue(false, 'The word \'amongst\' was used in ' . $file . '. This should be changed to \'among\'.');
@@ -231,6 +236,7 @@ class lang_test_set extends cms_test_case
             'fulfills' => 'fulfils',
             'progmatically' => 'programatically',
             'persistant' => 'persistent',
+            'recieve'=> 'receive',
         );
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {

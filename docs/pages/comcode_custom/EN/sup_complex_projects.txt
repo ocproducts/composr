@@ -95,7 +95,7 @@ Then, before you start the project, I highly recommend writing a proper set of d
 
 [title="2"]In conclusion[/title]
 
-I hope I haven't stamped on too many people's dreams. I want to re-iterate that [b]Composr is the best[/b] CMS system out there for massively reducing cost. It's just very commonly people use that as rope for hanging themselves because they incorrectly assume that "reduced" means "all but eliminated". I want to save people needless pain for all our users, who we love.
+I hope I haven't stamped on too many people's dreams. I want to re-iterate that [b]Composr is the best[/b] CMS out there for massively reducing cost. It's just very commonly people use that as rope for hanging themselves because they incorrectly assume that "reduced" means "all but eliminated". I want to save people needless pain for all our users, who we love.
 
 [title="2"]See also[/title]
 
