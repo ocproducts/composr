@@ -29,7 +29,7 @@
 					window.sitemap=new tree_list('tree_list','data/sitemap.php?start_links=1&get_perms=0&label_content_types=1&keep_full_structure=1{$KEEP;/}',null,'',false,null,true);
 				});
 
-				var actions_tpl='{!ACTIONS;/}:<ul role="navigation" class="actions_list">[1]<\/ul><br />';
+				var actions_tpl='{!ACTIONS;/}:<nav><ul class="actions_list">[1]<\/ul><\/nav><br />';
 				var actions_tpl_item='<li><a href="[2]">[1]<\/a><\/li>';
 
 				var info_tpl='<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table"><tbody>[1]<\/tbody><\/table><\/div>';

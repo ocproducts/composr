@@ -86,7 +86,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => null), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => db_get_first_id()), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . strval($row['id']);
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);

@@ -2170,7 +2170,7 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         $_arr = $arr;
         $arr = array('global' => true);
         foreach (array('jquery', 'modernizr') as $important_script) {
-            if (isset($arr[$important_script])) {
+            if (isset($_arr[$important_script])) {
                 $arr[$important_script] = true;
             }
         }

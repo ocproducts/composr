@@ -32,12 +32,14 @@
 			<p>
 				{!AUTHOR_FUNCTIONS,{AUTHOR*}}&hellip;
 			</p>
-			<ul role="navigation" class="actions_list_compact" itemprop="significantLinks">
-				{URL_DETAILS}
-				{FORUM_DETAILS}
-				{POINT_DETAILS}
-				{SEARCH_DETAILS}
-			</ul>
+			<nav>
+				<ul class="actions_list_compact" itemprop="significantLinks">
+					{URL_DETAILS}
+					{FORUM_DETAILS}
+					{POINT_DETAILS}
+					{SEARCH_DETAILS}
+				</ul>
+			</div>
 		</div>
 	</div>
 	{+END}

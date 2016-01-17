@@ -83,7 +83,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<article class="global_middle">
 					{$,Breadcrumbs}
 					{+START,IF,{$IN_STR,{$BREADCRUMBS},<a}}{+START,IF,{$SHOW_HEADER}}
-						<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" role="navigation">
+						<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb">
 							<img class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 							{$BREADCRUMBS}
 						</nav>
@@ -177,7 +177,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{+END}
 					</div>
 
-					<nav class="global_minilinks" role="navigation">
+					<nav class="global_minilinks">
 						<ul class="{+START,IF,{$NOT,{$MOBILE,1}}}horizontal_links {+END}footer_links">
 							<li><a href="{$PAGE_LINK*,:}">{!HOME}</a></li>
 							{+START,IF,{$MOBILE}}

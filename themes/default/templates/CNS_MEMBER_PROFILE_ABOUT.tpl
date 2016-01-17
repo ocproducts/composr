@@ -38,7 +38,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: block" role="navigation">
+					<nav class="toggleable_tray" style="display: block">
 						<ul class="nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
@@ -54,7 +54,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -69,7 +69,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -85,7 +85,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>

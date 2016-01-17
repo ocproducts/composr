@@ -28,8 +28,10 @@
 <p class="lonely_label">
 	{!ACTIONS}:
 </p>
-<ul role="navigation" class="actions_list">
-	<li class="actions_list_strong">
-		<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
-	</li>
-</ul>
+<nav>
+	<ul class="actions_list">
+		<li class="actions_list_strong">
+			<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
+		</li>
+	</ul>
+</nav>

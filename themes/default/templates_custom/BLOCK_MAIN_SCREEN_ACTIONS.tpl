@@ -1,4 +1,4 @@
-<aside role="navigation" class="screen_actions_outer box"><div class="screen_actions box_inner">
+<aside class="screen_actions_outer box"><nav class="screen_actions box_inner">
 	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 		<div class="facebook_like"><div class="fb-like" data-send="false" data-layout="button_count" data-width="55" data-show-faces="false"></div></div>
 	{+END}
@@ -21,4 +21,4 @@
 		<div class="g-plusone" data-size="medium" data-count="true" data-href="{EASY_SELF_URL*}"></div>
 		{$EXTRA_FOOT,<script src="https://apis.google.com/js/plusone.js"></script>}
 	</div>
-</div></aside>
+</nav></aside>

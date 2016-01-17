@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_cpf_enable_name
+class Hook_config_cpf_enable_county
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_cpf_enable_name
     public function get_details()
     {
         return array(
-            'human_name' => 'CPF_ENABLE_NAME',
+            'human_name' => 'CPF_ENABLE_COUNTY',
             'type' => 'tick',
             'category' => 'USERS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
-            'explanation' => 'CONFIG_OPTION_cpf_enable_name',
+            'explanation' => 'CONFIG_OPTION_cpf_enable_county',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 

@@ -29,7 +29,7 @@
 				{PAGES}
 
 				{+START,IF_PASSED,BREADCRUMBS}{+START,IF_NON_EMPTY,{BREADCRUMBS}}
-					<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p class="associated_details">{BREADCRUMBS}</p></nav>
+					<nav class="breadcrumbs" itemprop="breadcrumb"><p class="associated_details">{BREADCRUMBS}</p></nav>
 				{+END}{+END}
 			</div>
 			{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{TITLE},{DESCRIPTION}}}
@@ -44,17 +44,19 @@
 				{PAGES}
 
 				{+START,IF_PASSED,BREADCRUMBS}{+START,IF_NON_EMPTY,{BREADCRUMBS}}
-					<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p class="associated_details">{BREADCRUMBS}</p></nav>
+					<nav class="breadcrumbs" itemprop="breadcrumb"><p class="associated_details">{BREADCRUMBS}</p></nav>
 				{+END}{+END}
 			</div>
 			{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{TITLE},{DESCRIPTION}}}
 				<div class="cns_forum_topic_description">{DESCRIPTION*}</div>
 			{+END}{+END}
 
-			<ul class="horizontal_meta_details associated_details" role="note">
-				<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
-				<li><span class="field_name">{!COUNT_VIEWS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}</li>
-			</ul>
+			<div role="note">
+				<ul class="horizontal_meta_details associated_details">
+					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+					<li><span class="field_name">{!COUNT_VIEWS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}</li>
+				</ul>
+			</div>
 
 			<div class="cns_forum_topic_title_bits_left">
 				{TOPIC_ROW_LINKS}

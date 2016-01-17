@@ -3,7 +3,7 @@
 {PER_PAGE}
 
 <div class="pagination">
-	<nav class="float_surrounder" role="navigation">
+	<nav class="float_surrounder">
 		{FIRST}{PREVIOUS}{CONTINUES_LEFT}{PARTS}{CONTINUES_RIGHT}{NEXT}{LAST}
 		{PAGES_LIST}
 	</nav>

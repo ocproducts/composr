@@ -32,9 +32,9 @@
 				</div>
 			{+END}{+END}
 
-			<nav class="cns_guest_column cns_member_column_d" role="navigation">
+			<nav class="cns_guest_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
-				<ul role="navigation" class="actions_list">
+				<ul class="actions_list">
 					<li><a onclick="return open_link_as_overlay(this);" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a onclick="return open_link_as_overlay(this);" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>

@@ -105,13 +105,15 @@
 
 		<div class="chat_room_actions">
 			<p class="lonely_label">{!ACTIONS}:</p>
-			<ul role="navigation" class="actions_list">
-				{+START,LOOP,LINKS}
-					{+START,IF_NON_EMPTY,{_loop_var}}
-						<li class="icon_14_{_loop_key*}">{_loop_var}</li>
+			<nav>
+				<ul class="actions_list">
+					{+START,LOOP,LINKS}
+						{+START,IF_NON_EMPTY,{_loop_var}}
+							<li class="icon_14_{_loop_key*}">{_loop_var}</li>
+						{+END}
 					{+END}
-				{+END}
-			</ul>
+				</ul>
+			</nav>
 		</div>
 	</div></div>
 </form>
