@@ -40,7 +40,7 @@
 						<img id="john_doe" onmouseout="set_opacity(this,0.1);" onmouseover="set_opacity(this,1.0);" title="" alt="John Doe, Purchasing Manager, Naive-Corp" src="{$IMG*,composr_homesite/compare/johndoemagnify}" />
 					</div>
 
-					<img alt="scroll" src="{$IMG*,composr_homesite/compare/scroll-img}" />
+					<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
 				</div>
 			</div>
 
@@ -235,7 +235,7 @@
 
 			<tr class="tbRow tbList">
 				<th class="col1 tbSlCol">
-					<acronym title="What You See Is What You Get">WYSIWYG</acronym> editor (*1)
+					<abbr title="What You See Is What You Get">WYSIWYG</abbr> editor (*1)
 				</th>
 
 				<td class="col2 tbGrCol">

@@ -123,7 +123,7 @@
 	</div>
 
 	<div class="srBtmBlock">
-		<div class="srBtmImg"><img alt="Hour" src="{$IMG*,composr_homesite/support/sr_support}" /></div>
+		<div class="srBtmImg"><img alt="" src="{$IMG*,composr_homesite/support/sr_support}" /></div>
 
 		<div class="srBtmTitle">
 			Professional Support
@@ -148,7 +148,7 @@
 	</div>
 
 	<div class="srBtmBlock srBtmLast">
-		<div class="srBtmImg"><img alt="Agency" src="{$IMG*,composr_homesite/support/sr_agency}" /></div>
+		<div class="srBtmImg"><img alt="" src="{$IMG*,composr_homesite/support/sr_agency}" /></div>
 
 		<div class="srBtmTitle">
 			Web/Mobile Projects

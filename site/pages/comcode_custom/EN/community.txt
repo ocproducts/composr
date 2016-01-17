@@ -22,10 +22,10 @@
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-themes}" /></div>
 
 					<h3 class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Themes</a>
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:{$COMPOSR_HOMESITE_ID_LATEST_THEMES}}">Themes</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						The Theme Wizard can repaint your site in seconds, but themes take you further.
 					</div>
 				</div>
@@ -34,10 +34,10 @@
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-translations}" /></div>
 
 					<h3 class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Translations</a>
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:{$COMPOSR_HOMESITE_ID_LATEST_TRANSLATIONS}}">Translations</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						Sprechen sie Deutsch? Make your website speak your language.
 					</div>
 				</div>
@@ -46,10 +46,10 @@
 					<div class="pic"><img alt="" src="{$IMG*,composr_homesite/community/dwn-addons}" /></div>
 
 					<h3 class="head">
-						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:TODO}">Addons</a>
+						<a href="{$PAGE_LINK*,_SEARCH:downloads:browse:{$COMPOSR_HOMESITE_ID_LATEST_ADDONS}}">Addons</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						Add new features, or modify existing ones. Composr is extendible and modular.
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 						<a href="{$PAGE_LINK*,site:chat}">Chat</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						Get quick answers and socialise with other users, in real-time.
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 						<a href="{$PAGE_LINK*,site:tracker}">Tracker</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						Post and discuss feature requests and bug reports.
 					</div>
 				</div>
@@ -89,7 +89,7 @@
 						<a href="{$PAGE_LINK*,forum:}">Forums</a>
 					</h3>
 
-					<div class="cmntyCnt">
+					<div class="text">
 						Talk with other Composr users &ndash; share ideas, ask questions, and answer them.
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 				</div>
 
 				<div class="quoteCst">
-					<div class="communityWrapper">
+					<div class="quotesWrapper">
 						<div class="swipe" id="slider">
 							<div class="swipe-wrap">
 								<div class="testimonial">&ldquo;I am a forty-eight year old blind male. I have tried literally every CMS out there. Thank you for the most accessible CMS I've ever had the pleasure of working with&rdquo; <span class="ta highlightSpan">Chipster</span></div>

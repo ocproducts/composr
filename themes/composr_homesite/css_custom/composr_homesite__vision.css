@@ -6,17 +6,18 @@
 .vision-list ul li:nth-child({_loop_var}) { background-image:url('{$IMG;,composr_homesite/vision/manifesto_icons/{_loop_var}}'); }
 {+END}
 
-.vision-meta { width:94%; overflow:hidden; background:#f4fafb; border-radius:7px; padding:20px 30px; margin-bottom:20px; }
+.vision-meta { overflow:hidden; background:#f4fafb; border-radius:7px; padding:20px 30px; margin-bottom:20px; }
 .vision-meta-img { width:200px; float:left; }
 .vision-meta-txt { width:700px; float:left; }
 .vision-meta-txt h2 { color:#e69838; font-size:14px; }
 .vision-meta-txt p { padding:7px 0; }
 
-ol.cntHf { list-style:none; float:left; width:630px; height:auto; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
-ol.cntHf li { float:left; width:630px; padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }
+ol.cntHf { list-style:none; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
+ol.cntHf li { padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }
+.page_running_vision .commonBtn { margin-right:20px; }
 
 .vhis-box { width:470px; float:left; }
 .vhis-box-row { width:470px; float:left; margin-bottom:2px; }
-.vhis-box-date { width:100px; float:left; height:44px; background:#667ea4; color:#fff; font-size:17px; text-align:center; padding:3px 0; }
+.vhis-box-date { width:100px; height:44px; float:left; background:#667ea4; color:#fff; font-size:17px; text-align:center; padding:3px 0; }
 .vhis-box-date span { font-size:12px; color:#BDC7D8; }
-.vhis-box-txt { width:349px; float:left; height:18px; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }
+.vhis-box-txt { width:349px; height:18px; float:left; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }

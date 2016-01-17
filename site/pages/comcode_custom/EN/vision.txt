@@ -13,7 +13,7 @@
 		<div class="hSliderHold">
 			<div class="hSliderInner">
 				<div class="hSlider">
-					<div class="con"><img alt="" src="{$IMG*,composr_homesite/vision/slider}" /></div>
+					<div class="con"><img alt="Composr vision: Accessibility, Web standards, Flexibility, Inclusivity, User Experience, Integration, Mature Engineering, Transparency, Community, Open Source, Customisability, Cloud, Mobile, Social Media" src="{$IMG*,composr_homesite/vision/slider}" /></div>
 				</div>
 
 				<div class="hSliderBtm"></div>
@@ -100,7 +100,7 @@
 	<div class="cntRow">
 		<div class="vision-meta">
 			<div class="vision-meta-img">
-				<a href="{$IMG*,composr_homesite/vision/security-model-full}" rel="lightbox"><img alt="" height="121" src="{$IMG*,composr_homesite/vision/security-model}" width="176" /></a>
+				<a href="{$IMG*,composr_homesite/vision/security-model-full}" rel="lightbox"><img alt="Composr security model (click link for larger image)" height="121" src="{$IMG*,composr_homesite/vision/security-model}" width="176" /></a>
 			</div>
 
 			<div class="vision-meta-txt">

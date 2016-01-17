@@ -28,10 +28,12 @@
 		{+END}
 
 		{+START,IF,{$MOBILE}}
-			<ul class="horizontal_meta_details associated_details" role="note">
-				<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
-				<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
-			</ul>
+			<div role="note">
+				<ul class="horizontal_meta_details associated_details">
+					<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
+					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+				</ul>
+			</div>
 		{+END}
 	</td>
 	{+START,IF,{$NOT,{$MOBILE}}}

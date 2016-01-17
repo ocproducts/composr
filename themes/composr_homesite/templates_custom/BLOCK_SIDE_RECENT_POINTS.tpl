@@ -22,7 +22,7 @@
 					<tr>
 						<td>
 							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{TO_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{TO_ID}}},20x20,,,,pad,both,FFFFFF00}}
-							<a href="{TO_URL*}"><img alt="{TO_NAME*}" width="20" height="20" src="{$GET*,image}" /></a>
+							<a href="{TO_URL*}"><img alt="{TO_NAME*} avatar" width="20" height="20" src="{$GET*,image}" /></a>
 							<a href="{TO_URL*}">{TO_NAME*}</a>
 						</td>
 

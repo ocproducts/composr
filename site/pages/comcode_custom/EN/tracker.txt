@@ -78,7 +78,7 @@
 
 		<ul class="horizontal_links associated_links_block_group">
 			<li>[url="{$BASE_URL}/tracker"]View full issue tracker[/url]</li>
-			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]</li>
+			<li>[url="{$BASE_URL}/tracker/bug_report_page.php?project_id=7&category_id=1&simple=1"]Request new tutorial[/url]</li>
 		</ul>
 	[/tab]
 [/tabs]
@@ -132,7 +132,7 @@ Before you make requests, it's a good idea to check they aren't already made, an
 
 <p>38,000 &times; 1.3 &divide; 8 &divide; 220 &divide; 0.8</p>
 
-<p>That comes down to 35 GBP per hour (a small loss), and that's for a company not seeking to make a profit to grow or to re-pay early-stage R&amp;D investments with <acronym title="Return On Investment">ROI</acronym>. Fortunately we're in a cheaper part of the UK, so the salaries are below national averages, we are passionate about our work, and that we don't normally operate on this bare-minimum rate for the majority of our business.</p>
+<p>That comes down to 35 GBP per hour (a small loss), and that's for a company not seeking to make a profit to grow or to re-pay early-stage R&amp;D investments with <abbr title="Return On Investment">ROI</abbr>. Fortunately we're in a cheaper part of the UK, so the salaries are below national averages, we are passionate about our work, and that we don't normally operate on this bare-minimum rate for the majority of our business.</p>
 
 <p><strong>Now a short rant&hellip;</strong></p>
 

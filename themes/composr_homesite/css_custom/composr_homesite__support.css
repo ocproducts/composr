@@ -1,22 +1,23 @@
 .page_running_support .colrBl { margin:0; }
 
-ul.srBoxes { list-style:none; margin:0; padding:0; float:left; width:960px; height:auto; }
+ul.srBoxes { list-style:none; margin:0; padding:0; overflow:hidden; }
 ul.srBoxes li { float:left; width:310px; height:140px; margin:0px 15px 15px 0px; background-color:#F2F4F7; display:block; {$BETA_CSS_PROPERTY,border-radius:3px;} }
 ul.srBoxes li:hover { background-color:#FFF; {$BETA_CSS_PROPERTY,box-shadow:#C8C8C9 0px 0px 7px;} }
 ul.srBoxes li.noMar { margin-right:0px; } 
+
 .srPic { float:left; width:100px; height:100px; margin:20px 20px 20px 0px; }
 
-.srTitle { float:left; width:180px; padding-right:6px; padding-bottom:10px; font-size:15px; font-weight:bold; color:#667EA4; margin-top:20px; }
+.srTitle { padding-right:6px; padding-bottom:10px; font-size:15px; font-weight:bold; color:#667EA4; margin-top:20px; }
 .srTitle a { color:#667EA4; }
 .srTitle a:hover { color:#E5922C; }
-.srPara { float:left; width:180px; display:block; font-size:14px; line-height:22px; color:#666; }
+.srPara { font-size:14px; line-height:22px; color:#666; }
 
 .srBtmBlock { float:left; width:280px; margin-right:30px; min-height:480px; padding:10px; background-color:#F4FAFB; {$BETA_CSS_PROPERTY,border-radius:8px;} }
 .srBtmBlock.srBtmLast { margin-right:0px; }
-.srBtmImg { float:left; width:280px; text-align:center; height:120px; padding:15px 0px; }
-.srBtmTitle { text-transform: uppercase; float:left; width:280px; padding:10px 0px; margin-bottom:25px; text-align:center; font-size:15px; font-weight:bold; color:#667EA4; border-bottom:1px solid #E0E6ED; border-top:1px solid #E0E6ED; display:block; }
-.srBtmBlockInner { min-height:30em; }
+.srBtmImg { text-align:center; padding:15px 0px; }
+.srBtmTitle { text-transform: uppercase; padding:10px 0px; margin-bottom:25px; text-align:center; font-size:15px; font-weight:bold; color:#667EA4; border-bottom:1px solid #E0E6ED; border-top:1px solid #E0E6ED; display:block; }
+.srBtmBlockInner { min-height:15em; }
 .srBtmBlock p { font-size:14px; color:#666; line-height:22px; text-align:left; }
 
-ul.srBtmLi { list-style:none; margin:0; float:left; width:280px; padding:0px 0px 10px 0px; color:#666; }
-ul.srBtmLi li { float:left; width:250px; padding-left:30px; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:4px 5px; padding-bottom:4px; }
+ul.srBtmLi { list-style:none; margin:0; padding:0px 0px 10px 0px; color:#666; }
+ul.srBtmLi li { padding-left:30px; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:4px 5px; padding-bottom:4px; }

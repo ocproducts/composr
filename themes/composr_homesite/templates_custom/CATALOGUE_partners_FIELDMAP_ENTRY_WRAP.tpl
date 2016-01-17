@@ -2,7 +2,7 @@
 	<h3><a title="{FIELD_0_PLAIN*} {!LINK_NEW_WINDOW}" target="_blank" href="{FIELD_3_PLAIN*}">{FIELD_0}</a></h3>
 
 	{+START,IF_NON_EMPTY,{FIELD_2_PLAIN}}
-		<img class="right" src="{$THUMBNAIL*,{FIELD_2_PLAIN},160,,,,width}" alt="" style="padding-left: 10px" />
+		<img class="right" src="{$THUMBNAIL*,{FIELD_2_PLAIN},160,,,,width}" alt="Logo for {FIELD_0_PLAIN*}" style="padding-left: 10px" />
 	{+END}
 
 	<div style="margin-right: 170px">
@@ -31,7 +31,7 @@
 
 		{+START,IF_PASSED,BREADCRUMBS}
 			{+START,IF_NON_EMPTY,{BREADCRUMBS}}
-				<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p>{!LOCATED_IN,{BREADCRUMBS}}</p></nav>
+				<nav class="breadcrumbs" itemprop="breadcrumb"><p>{!LOCATED_IN,{BREADCRUMBS}}</p></nav>
 			{+END}
 		{+END}
 
@@ -44,7 +44,7 @@
 				{+END}
 
 				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
-					<a title="{FIELD_0_PLAIN*} {!LINK_NEW_WINDOW}" target="_blank" class="buttons__more button_screen_item" title="{!VIEW}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}{+END}" href="{FIELD_3_PLAIN*}"><span>{!VIEW}</span></a>
+					<a title="{FIELD_0_PLAIN*} {!LINK_NEW_WINDOW}" target="_blank" class="buttons__more button_screen_item" href="{FIELD_3_PLAIN*}"><span>{!VIEW}</span></a>
 				</p>
 				{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
 					<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">

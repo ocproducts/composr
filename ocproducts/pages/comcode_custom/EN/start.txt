@@ -23,7 +23,7 @@
 					<div class="slidedeck-home-page containerSlider">
 						<dl class="slidedeck cont-slider">
 							<dt class="spine spine_1"></dt>
-							<dd class="active slide slide_1"><img alt="" class="cardImage" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-1}" width="725" /></dd>
+							<dd class="active slide slide_1"><img alt="The Composr web development agency. Bringing the expert web design service you need. ocProducts design dynamic and interactive social websites, delivering sophisticated website solutions around the technology in our Open Source Content Management System (CMS), Composr CMS. Fabulous websites that you are in complete control of! Skilled craftsmanship + First rate agency service + Composr technology = ocProducts. We are a web design/development company based in the UK - but we do work all over the world." class="cardImage" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-1}" width="725" /></dd>
 
 							<dt class="spine spine_2 next">
 								<div class="index"></div>
@@ -34,28 +34,27 @@
 									<li class="nav-3"><a class="nav-3" href="#3">Nav 3</a></li>
 									<li class="nav-4"><a class="nav-4" href="#4">Nav 4</a></li>
 								</ul>
-								<!--<div style="position: absolute; top: 25px; left: 823px; overflow: hidden; z-index: 20000; display: none;" class="activeCorner spine_2"></div>-->
 							</dt>
 
 							<dd class="slide slide_2">
 								<ul class="slidesVertical">
-									<li class="case verticalSlide_1"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2a}" width="725" /></li>
-									<li class="case verticalSlide_2"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2b}" width="725" /></li>
-									<li class="case verticalSlide_3"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2c}" width="725" /></li>
-									<li class="case verticalSlide_4"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2d}" width="725" /></li>
+									<li class="case verticalSlide_1"><img alt="Analysis process: Introductory discussions, Requirement analysis, Proposal &amp; Quote, Agree on schedule, Full specs &amp; Diagrams" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2a}" width="725" /></li>
+									<li class="case verticalSlide_2"><img alt="Design process: Screen designs, Internal sign-off, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2b}" width="725" /></li>
+									<li class="case verticalSlide_3"><img alt="Development process: Development, Internal sign-off, Formal Testing, Prepare Demo, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2c}" width="725" /></li>
+									<li class="case verticalSlide_4"><img alt="Deployment process: Training guides, Deploy live website, Monitor website for effectiveness/performance, Ongoing support" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2d}" width="725" /></li>
 								</ul>
 								<a class="vertical-prev-next previous no-display" href="#previous">Previous</a>
 								<a class="vertical-prev-next next" href="#next">Next</a>
 							</dd>
 
 							<dt class="spine spine_3"></dt>
-							<dd class="slide slide_3"><img alt="jquery accordion" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-3}" /></dd>
+							<dd class="slide slide_3"><img alt="ocProducts: Web development, Creative-artwork, Content Management, Accessibility, Information-architecture, Transparency, Interaction-design, UML, Interface-design, Web-design, Search engine optimisation" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-3}" /></dd>
 
 							<dt class="spine spine_4"></dt>
-							<dd class="slide slide_4"><img alt="jquery accordion" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-4}" /></dd>
+							<dd class="slide slide_4"><img alt="Composr vision: Accessibility, Web standards, Flexibility, Inclusivity, User Experience, Integration, Mature Engineering, Transparency, Community, Open Source, Customisability, Cloud, Mobile, Social Media" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-4}" /></dd>
 
 							<dt class="spine spine_5"></dt>
-							<dd class="slide slide_5"><img alt="jquery accordion" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-5}" /></dd>
+							<dd class="slide slide_5"><img alt="Composr Mobile SDK is our mobile toolkit for iOS and Android that can integrate with Composr" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-5}" /></dd>
 						</dl>
 					</div>
 				</div>
@@ -180,21 +179,21 @@
 
 		<div class="cntLRow">
 			<div class="thumbComp">
-				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img7}" /></div>
+				<div class="thumbImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img7}" /></div>
 
 				<p><strong>Testimony</strong><br />
 				<span><a href="{$PAGE_LINK*,ocproducts:portfolio}">View portfolio &amp; case studies &raquo;</a></span></p>
 			</div>
 
 			<div class="thumbComp">
-				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img8}" /></div>
+				<div class="thumbImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img8}" /></div>
 
 				<p><strong>Blinded by tech?</strong><br />
 				<span><a href="{$PAGE_LINK*,docs:sup_glossary}">Read glossary &raquo;</a></span></p>
 			</div>
 
-			<div class="thumbCompLast">
-				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img9}" /></div>
+			<div class="thumbComp thumbCompLast">
+				<div class="thumbImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img9}" /></div>
 
 				<p><strong>Ready to contact us?</strong><br />
 				<span><a href="{$PAGE_LINK*,:contact:paid}">Project Briefr &raquo;</a></span></p>
@@ -237,7 +236,7 @@
 					</ul>
 
 					<p class="ceo">
-						<img alt="Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />
+						<img alt="Photo of Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />
 						ocProducts is led by Chris Graham, the original lead developer for Composr.
 					</p>
 				</div>
@@ -394,7 +393,7 @@
 
 <div class="cntRow">
 	<div class="compBtmList">
-		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img14}" /></div>
+		<div class="btmListImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img14}" /></div>
 
 		<div class="btmliRht">
 			<h3 class="colrBl">Project management and funding methodology</h3>
@@ -406,7 +405,7 @@
 	</div>
 
 	<div class="compBtmList">
-		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img13}" /></div>
+		<div class="btmListImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img13}" /></div>
 
 		<div class="btmliRht">
 			<h3 class="colrBl">Agency or support ticket?</h3>
@@ -418,7 +417,7 @@
 	</div>
 
 	<div class="compBtmList">
-		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img15}" /></div>
+		<div class="btmListImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img15}" /></div>
 
 		<div class="btmliRht">
 			<h3 class="colrBl">Working in partnership</h3>
@@ -430,7 +429,7 @@
 	</div>
 
 	<div class="compBtmList">
-		<div class="btmListImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
+		<div class="btmListImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
 
 		<div class="btmliRht">
 			<h3 class="colrBl">Comparison to other web designers &ndash; don't get taken advantage of!</h3>

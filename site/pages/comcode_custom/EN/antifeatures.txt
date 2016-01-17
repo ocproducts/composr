@@ -141,7 +141,7 @@
 				<h3><a href="#">A document management system / Enterprise Intranet</a></h3>
 
 				<div>
-					<p>Some CMS have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMS's can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through webapps.</p>
+					<p>Some CMS have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMS's can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through web apps.</p>
 
 					<p>The above all said, Composr does in fact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
 				</div>

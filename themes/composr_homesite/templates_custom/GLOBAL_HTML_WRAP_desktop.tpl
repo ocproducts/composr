@@ -6,7 +6,7 @@
 
 			<div class="row">
 				<figure class="logo">
-					<a href="{$PAGE_LINK*,:}" title="Composr"><img alt="composr logo" src="{$IMG*,composr_homesite/composr_full_logo}" /></a>
+					<a href="{$PAGE_LINK*,:}"><img alt="Composr logo" src="{$IMG*,composr_homesite/composr_full_logo}" /></a>
 				</figure>
 
 				<div class="headRCol">
@@ -37,7 +37,7 @@
 
 					{+START,IF,{$EQ,{$ZONE},docs}}
 						<div id="cse-search-form" class="srhHold">
-							<img class="vertical_alignment" alt="" src="{$IMG*,loading}" />
+							<img aria-busy="true" alt="Loading" class="vertical_alignment" src="{$IMG*,loading}" />
 						</div>
 
 						<script src="http://www.google.com/jsapi" type="text/javascript"></script>
@@ -81,7 +81,7 @@
 							<input class="srhInp" type="text" placeholder="Search" value="" />
 
 							<div class="srhBtn">
-								<input type="submit" title="Search">Submit</a>
+								<input type="submit" title="Search" />
 							</div>
 						</form>
 					{+END}
@@ -93,7 +93,7 @@
 	{+END}
 
 	{+START,IF,{$MATCH_KEY_MATCH,:start}}
-		<section class="bnrHolder">
+		<div class="bnrHolder">
 			<div class="headBnr">
 				<div class="banner">
 					<div class="bnrText">
@@ -101,7 +101,7 @@
 						generation websites
 					</div>
 
-					<div class="bannerImg"><img alt="Composr image" src="{$IMG*,composr_homesite/start/banner-img1}" /></div>
+					<div class="bannerImg"><img alt="Small Composr screenshot" src="{$IMG*,composr_homesite/start/banner-img1}" /></div>
 
 					<div class="textTop">
 						Need a website? Tired of primitive systems that don't meet your requirements?
@@ -116,7 +116,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
 	{+END}
 
 	<div class="cntMainWrapper pdLess">
@@ -127,9 +127,9 @@
 			</div>
 
 			{+START,IF,{$SHOW_HEADER}}{+START,IF_NON_EMPTY,{$BREADCRUMBS}}
-				<div class="brCrumb breadcrumbs" itemprop="breadcrumb" role="navigation">
+				<nav class="brCrumb breadcrumbs" itemprop="breadcrumb">
 					{$BREADCRUMBS}
-				</div>
+				</nav>
 			{+END}{+END}
 
 			{$,Associated with the SKIP_NAVIGATION link defined further up}
@@ -201,11 +201,11 @@
 				<div class="ftrRight">
 					<div class="ftrImg">
 						<div class="one">
-							<a class="ttGeekCred" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geekCred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Open Source" src="{$IMG*,composr_homesite/img-open-source}" title="" /></a>
+							<a class="ttGeekCred" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geekCred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Composr is Open Source" src="{$IMG*,composr_homesite/img-open-source}" title="" /></a>
 						</div>
 
 						<div class="two">
-							<a href="{$PAGE_LINK*,docs:tutorials:Web standards & Accessibility}"><img alt="HTML5" src="{$IMG*,composr_homesite/img-html5}" title="HTML5" /></a>
+							<a href="{$PAGE_LINK*,docs:tutorials:Web standards & Accessibility}"><img alt="Composr uses HTML5" src="{$IMG*,composr_homesite/img-html5}" /></a>
 						</div>
 					</div>
 				</div>

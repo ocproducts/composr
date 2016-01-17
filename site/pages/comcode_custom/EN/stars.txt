@@ -7,7 +7,7 @@
 [title]Community stars[/title]
 
 <div class="cntRow">
-	<p>Each time you are give points in our community, you are asigned a role in relation to the points you recieve:</p>
+	<p>Each time you are give points in our community, you are assigned a role in relation to the points you receive:</p>
 
 	<div class="cmn-strs">
 		<div class="list">
@@ -62,84 +62,88 @@
 	<p>Over a dozen developers have contributed to Composr CMS in an official capacity. However, much of the early development for ocPortal (the precursor to Composr CMS) was done through donated time from the original development team. Key contributors include:</p>
 </div>
 
-<div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/chris}" />
-	</div>
+<div class="mainStar">
+	<table>
+		<tr class="cmn-str-row">
+			<td class="blk1">
+				<img alt="Photo of Chris Graham" width="100" src="{$IMG*,composr_homesite/stars/chris}" />
+			</td>
 
-	<div class="blk2">
-		<strong>Name :</strong> Chris Graham<br />
-		CEO, ocProducts<br /><br />
-		<a class="link_exempt" target="_blank" title="Facebook profile {!LINK_NEW_WINDOW}" href="http://www.facebook.com/ocpchris"><img src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x" alt="" /></a>
-		<a class="link_exempt" target="_blank" title="Twitter profile {!LINK_NEW_WINDOW}" href="http://twitter.com/occhris"><img src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x" alt="" /></a>
-	</div>
+			<td class="blk2">
+				<strong>Name :</strong> Chris Graham<br />
+				CEO, ocProducts<br /><br />
+				<a class="link_exempt" target="_blank" title="Chris Graham's Facebook profile {!LINK_NEW_WINDOW}" href="http://www.facebook.com/ocpchris"><img src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x" alt="" /></a>
+				<a class="link_exempt" target="_blank" title="Chris Graham's Twitter profile {!LINK_NEW_WINDOW}" href="http://twitter.com/occhris"><img src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x" alt="" /></a>
+			</td>
 
-	<div class="blk3">
-		<ul>
-			<li>Original developer of ocPortal, continuing lead developer of Composr CMS</li>
-			<li>Masters degree in Computer Science from The University Of Sheffield</li>
-			<li>Undertaken work for over 15 FTSE-100 companies, as well as many small and mid-sized organisations. Includes a number of banks and major brands.</li>
-		</ul>
-	</div>
-</div>
+			<td class="blk3">
+				<ul>
+					<li>Original developer of ocPortal, continuing lead developer of Composr CMS</li>
+					<li>Masters degree in Computer Science from The University Of Sheffield</li>
+					<li>Undertaken work for over 15 FTSE-100 companies, as well as many small and mid-sized organisations. Includes a number of banks and major brands.</li>
+				</ul>
+			</td>
+		</tr>
 
-<div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/robert}" />
-	</div>
+		<tr class="cmn-str-row">
+			<td class="blk1">
+				<img alt="Photo of Robert Goacher" width="100" src="{$IMG*,composr_homesite/stars/robert}" />
+			</td>
 
-	<div class="blk2">
-		<strong>Name :</strong> Robert Goacher<br />
-		Company secretary
-	</div>
+			<td class="blk2">
+				<strong>Name :</strong> Robert Goacher<br />
+				Company secretary
+			</td>
 
-	<div class="blk3">
-		<ul>
-			<li>Ran some of the early websites where ocPortal came from</li>
-			<li>Technically the original developer of ocPortal, in that he wrote the first few lines of code</li>
-			<li>Heavily involved in the feature design process</li>
-			<li>Hosted some of our early meetups</li>
-		</ul>
-	</div>
-</div>
+			<td class="blk3">
+				<ul>
+					<li>Ran some of the early websites where ocPortal came from</li>
+					<li>Technically the original developer of ocPortal, in that he wrote the first few lines of code</li>
+					<li>Heavily involved in the feature design process</li>
+					<li>Hosted some of our early meet-ups</li>
+				</ul>
+			</td>
+		</tr>
 
-<div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/allen}" />
-	</div>
+		<tr class="cmn-str-row">
+			<td class="blk1">
+				<img alt="Photo of Allen Ellis" width="100" src="{$IMG*,composr_homesite/stars/allen}" />
+			</td>
 
-	<div class="blk2">
-		<strong>Name :</strong> Allen Ellis<br />
-		Design/marketing (former)
-	</div>
+			<td class="blk2">
+				<strong>Name :</strong> Allen Ellis<br />
+				Design/marketing (former)
+			</td>
 
-	<div class="blk3">
-		<ul>
-			<li>Original designer for ocPortal</li>
-			<li>Also conceived and coded the Theme Wizard and Point Store</li>
-			<li>Son of one of the early inventors of Internet protocols (Usenet, aka Internet newsgroups)</li>
-			<li>Token non-brit</li>
-		</ul>
-	</div>
-</div>
+			<td class="blk3">
+				<ul>
+					<li>Original designer for ocPortal</li>
+					<li>Also conceived and coded the Theme Wizard and Point Store</li>
+					<li>Son of one of the early inventors of Internet protocols (Usenet, aka Internet newsgroups)</li>
+					<li>Token non-brit</li>
+				</ul>
+			</td>
+		</tr>
 
-<div class="cmn-str-row">
-	<div class="blk1">
-		<img alt="" width="100" src="{$IMG*,composr_homesite/stars/philip}" />
-	</div>
+		<tr class="cmn-str-row">
+			<td class="blk1">
+				<img alt="Photo of Philip Withnall" width="100" src="{$IMG*,composr_homesite/stars/philip}" />
+			</td>
 
-	<div class="blk2">
-		<strong>Name :</strong> Philip Withnall<br />
-		Development (former)
-	</div>
+			<td class="blk2">
+				<strong>Name :</strong> Philip Withnall<br />
+				Development (former)
+			</td>
 
-	<div class="blk3">
-		<ul>
-			<li>Coded the chatroom, blogging support, the analytics system, and OcCLE (now Commandr)</li>
-			<li>Masters Degree in Computer Science degree from The University Of Cambridge</li>
-			<li>Other work has included helping out with Firefox, and ongoing work on GNOME</li>
-		</ul>
-	</div>
+			<td class="blk3">
+				<ul>
+					<li>Coded the chatroom, blogging support, the analytics system, and OcCLE (now Commandr)</li>
+					<li>Masters Degree in Computer Science degree from The University Of Cambridge</li>
+					<li>Other work has included helping out with Firefox, and ongoing work on GNOME</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
 </div>
 
 <div class="cntRow">

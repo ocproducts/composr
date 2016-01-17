@@ -1,19 +1,18 @@
-.tut-row { width:960px; float:left; }
 .tut-row .leftMenu { width:236px; float:left; }
-.tut-row .leftMenu ul { margin:0; width:236px; float:left; padding:0; background:#e5922c; font-size:13px; }
+.tut-row .leftMenu ul { list-style-type:none; margin:0; padding:0; background:#e5922c; font-size:13px; }
 .tut-row .leftMenu ul li { list-style-image:url('{$IMG;,composr_homesite/tutorials/bult-4}'); list-style-position:inside; border-bottom:#fff solid 1px; }
 .tut-row .leftMenu ul li a { display:block; color:#fff; padding:7px 7px; }
 .tut-row .leftMenu ul li a:hover, .tut-row .leftMenu ul li a.active { text-decoration:none; background:#667ea4; }
 
 .tut-row .right { width:705px; float:right; font-size:14px; color:#666; }
-.tut-row .right .tbox { width:703px; float:left; border:#667ea4 solid 1px; margin-bottom:30px; }
+.tut-row .right .tbox { overflow:hidden; border:#667ea4 solid 1px; margin-bottom:30px; }
 .tut-row .right .tbox h2 { margin:0; background:#667ea4; padding:7px 10px; color:#fff; font-size:14px; position:relative }
 .tut-row .right .tbox h2 img { position:absolute; top:5px; right:7px; }
-.tut-row .right .tbox .content { width:703px; float:left; background:#e4e4e4; position:relative; }
+.tut-row .right .tbox .content { overflow:hidden; background:#e4e4e4; position:relative; }
 .tut-row .right .tbox .content .lf { width:157px; float:left; background:#fff; padding:10px; }
 .tut-row .right .tbox .content .blk { width:526px; float:left; }
-.tut-row .right .tbox .content .blk .txt { width:500px; float:left; padding:10px; }
-.tut-row .right .tbox .content .blk .bottom { width:526px; float:left; position:absolute; bottom:0; }
+.tut-row .right .tbox .content .blk .txt { padding:10px; }
+.tut-row .right .tbox .content .blk .bottom { width:526px; position:absolute; bottom:0; }
 .tut-row .right .tbox .content .blk .bottom .blk1 { min-width:100px; float:left; padding:3px 7px; }
 .tut-row .right .tbox .content .blk .bottom .blk2 { width:270px; float:left; padding:3px 7px; }
 .tut-row .right .tbox .content .blk .bottom .blk2Long { width:390px !important; }
@@ -22,9 +21,8 @@
 .tut-row .right .tbox .content .blk .bottom .blk3 a:hover { padding:7px; }
 
 .tut-row .right h2 { font-size:22px; color:#667ea4; padding-bottom:7px; border-bottom:#d5dee7 solid 1px; } 
-.tut-row .right .list { width:705px; float:left; margin-bottom:20px; } 
-.tut-row .right .list ul { float:left; padding:0; padding-left:18px; }
+.tut-row .right .list {  margin-bottom:20px; } 
+.tut-row .right .list ul { padding:0; padding-left:18px; }
 .tut-row .right .list ul li { list-style-image:url('{$IMG;,composr_homesite/bult-1}'); line-height:20px; }
 .tut-row .right .list ul li a { color:#e5922c; }
-.tut-row .right .button a { background:#667ea4 url('{$IMG;,composr_homesite/tutorials/plus}') no-repeat 7px 7px; float:left; padding:8px 12px 8px 33px; border-radius:6px; display:block; color:#fff }
-.tut-row .right .button a:hover { padding:8px 12px 8px 33px; display:block; }
+.tut-row .right .button a { background:#667ea4 url('{$IMG;,composr_homesite/tutorials/plus}') no-repeat 7px 7px; display:inline-block; padding:8px 12px 8px 33px; border-radius:6px; color:#fff }

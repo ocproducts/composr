@@ -16,7 +16,7 @@ Log in with the username 'admin' and the password 'demo123' (*).
 
 If you ever receive an error about a missing page or file, it is probably because the demo is in the process of automatically being reset. Wait a moment and try again.
 
-[font size="0.8"](*) This password is subject to change outside our control -- if you can't log in, check the [url="main opensourcecms site"]http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr[/url] for the password.[/font]
+[font size="0.8"](*) This password is subject to change outside our control -- if you can't log in, check the [url="Main OpenSourceCMS site"]http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr[/url] for the password.[/font]
 [/box]
 
 [box="Shared demo: our example site"]

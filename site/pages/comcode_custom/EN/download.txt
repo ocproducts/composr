@@ -18,7 +18,7 @@
 
 			[block]composr_homesite_download[/block]
 
-			<h1>Cloud &amp; <acronym title="Software as a Service">SaaS</acronym> hosting</h1>
+			<h1>Cloud &amp; <abbr title="Software as a Service">SaaS</abbr> hosting</h1>
 
 			<h3 class="colrBl">Scalability</h3>
 
@@ -53,10 +53,10 @@
 
 					<ul>
 						<li><a href="https://netenberg.com/fantastico.php" target="_blank"><img alt="Fantastico" src="{$IMG*,composr_homesite/download/logo-fantastico}" /></a></li>
-						<li><a href="http://cpanel.net/" target="_blank" title="cpanel"><img alt="Cpanel" src="{$IMG*,composr_homesite/download/logo-cpanel}" /></a></li>
+						<li><a href="http://cpanel.net/" target="_blank"><img alt="Cpanel" src="{$IMG*,composr_homesite/download/logo-cpanel}" /></a></li>
 						<!--
-						<li><a href="http://www.parallels.com/products/plesk/" target="_blank" title="Plesk"><img alt="plesk" src="{$IMG*,composr_homesite/download/logo-plesk}" /></a></li>
-						<li><a href="http://www.ensim.com/" target="_blank" title="ensim"><img alt="Ensim" src="{$IMG*,composr_homesite/download/logo-ensim}" /></a></li>
+						<li><a href="http://www.parallels.com/products/plesk/" target="_blank"><img alt="Plesk" src="{$IMG*,composr_homesite/download/logo-plesk}" /></a></li>
+						<li><a href="http://www.ensim.com/" target="_blank"><img alt="Ensim" src="{$IMG*,composr_homesite/download/logo-ensim}" /></a></li>
 						-->
 					</ul>
 

@@ -1,7 +1,7 @@
 .headlineRow { margin:1em 0 2em 0; }
 
-ul.cntLiFull { list-style:none; float:left; width:960px; height:auto; overflow:hidden; padding:10px 0px; margin:0 0 20px 0; }
-ul.cntLiFull li { float:left; width:920px; padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
+ul.cntLiFull { list-style:none; overflow:hidden; padding:10px 0px; margin:0 0 20px 0; }
+ul.cntLiFull li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
 
 /*Slider*/
 
@@ -123,20 +123,20 @@ p#vtip #vtipArrow {
 
 /*vTabs*/
 
-.diff { float:left; width:auto; }
+.diff { float:left; }
 
 .ui-tabs-vertical { width:55em; }
-.ui-tabs-vertical .ui-tabs-nav { background-color:#FFFFFF; border-bottom:1px solid #CDD3DA !important; border-left:1px solid #CDD3DA !important; border-top:1px solid #CDD3DA !important; display:block; float:left; height:296px; padding:0 !important; width:98px; }
-.ui-tabs-vertical .ui-tabs-nav li { background-color:#FFFFFF; clear:left; float:left; height:98px; position:relative; width:98px; overflow:hidden; text-indent:-9999px; border-bottom:1px solid #CDD3DA; border-right:1px solid #CDD3DA; }
+.ui-tabs-vertical .ui-tabs-nav { background-color:#FFFFFF; border-bottom:1px solid #CDD3DA !important; border-left:1px solid #CDD3DA !important; border-top:1px solid #CDD3DA !important; display:block; float:left; width:98px; height:296px; padding:0 !important; }
+.ui-tabs-vertical .ui-tabs-nav li { background-color:#FFFFFF; width:98px; height:98px; position:relative; overflow:hidden; text-indent:-9999px; border-bottom:1px solid #CDD3DA; border-right:1px solid #CDD3DA; }
 .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding:0; border-bottom:1px solid #CDD3DA; border-right:none; }
 .ui-tabs-vertical .ui-tabs-panel { padding:20px !important; float:left; width:816px; border-top:1px solid #CDD3DA !important; border-right:1px solid #CDD3DA !important; border-bottom:1px solid #CDD3DA !important; border-left:1px solid #CDD3DA !important; margin-left:-1px; }
 
-#tabs { float:left; width:960px; padding-bottom:20px; }
+#tabs { width:960px; padding-bottom:20px; }
 
-#ui-id-1 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-2 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-3 { width:98px; height:98px;background-image:url('{$IMG;,composr_homesite/compare/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-1 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-2 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-3 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
 
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-1 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-1a}'); background-repeat:no-repeat; background-position:left top; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-2 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-2a}'); background-repeat:no-repeat; background-position:left top; }
@@ -146,16 +146,16 @@ p#vtip #vtipArrow {
 
 #tabs h2 { color:#E5922C; display:block; font-size:24px; font-weight:normal; padding-bottom:10px; border-bottom:1px solid #CDD3DA; margin-top:0; margin-bottom:10px; }
 
-ul.difText { list-style:none; margin:0; padding:0; float:left; width:790px; height:auto; overflow:hidden; display:block; color:#666; font-size:14px; }
+ul.difText { list-style:none; margin:0; padding:0; overflow:hidden; display:block; color:#666; font-size:14px; }
 ul.difText li { padding-left:20px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:0px 5px; padding-bottom:10px; line-height:22px; }
 
 
-/*vTabs closed*/
+/*Direct comparison*/
 
-.tbHold { border-collapse:collapse; width:960px; height:auto; padding-bottom:1px; background-color:#CDD3DA; margin-bottom:20px; }
+.tbHold { border-collapse:collapse; padding-bottom:1px; background-color:#CDD3DA; margin-bottom:20px; }
 .tbHold * { font-weight:normal; }
-.tbRow { width:958px; height:auto; font-size:14px; color:#666; }
-.tbRow .col1 { text-align:left; width:312px; padding:8px 6px; border-right:1px solid #FFF; }
+.tbRow { font-size:14px; color:#666; }
+.tbRow .col1 { width:312px; padding:8px 6px; border-right:1px solid #FFF; text-align:left; }
 .tbRow .col2 { width:145px; padding:8px 6px; border-right:1px solid #FFF; }
 .tbRow .col3 { width:145px; padding:8px 6px; border-right:1px solid #FFF; }
 .tbRow .col4 { width:145px; padding:8px 6px; border-right:1px solid #FFF; }
