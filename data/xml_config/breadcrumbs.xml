@@ -55,6 +55,9 @@
 	<substitution match_key="_WILD:catalogues:index">
 		<link label="{!HOME}">:</link>
 	</substitution>
+	<substitution match_key="_WILD:catalogues:atoz">
+		<link label="{!HOME}">:</link>
+	</substitution>
 
 	<!-- Examples follow... -->
 

@@ -598,26 +598,25 @@ class Module_catalogues
             $is_ecommerce = is_ecommerce_catalogue($catalogue_name, $catalogue);
 
             // Breadcrumbs
+            $breadcrumbs = array();
+            if (is_null($root)) {
+                $breadcrumbs = array_merge($breadcrumbs, array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
+            }
             if ($catalogue['c_is_tree'] == 1) {
-                $breadcrumbs = catalogue_category_breadcrumbs($id, $root, true, true);
+                $breadcrumbs = array_merge($breadcrumbs, catalogue_category_breadcrumbs($id, $root, true, true));
                 if ((has_privilege(get_member(), 'open_virtual_roots')) && ($id != $root)) {
                     $page_link = build_page_link(array('page' => '_SELF', 'type' => 'category', 'id' => $id, 'keep_catalogue_' . $catalogue_name . '_root' => $id), '_SELF');
                     $breadcrumbs[] = array($page_link, $_title, do_lang_tempcode('VIRTUAL_ROOT'));
                 } else {
                     $breadcrumbs[] = array('', $_title);
                 }
-                breadcrumb_set_parents($breadcrumbs);
             } else {
-                $breadcrumbs = array();
                 $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
                 $catalogue_title = get_translated_text($catalogue['c_title']);
                 $breadcrumbs[] = array($page_link, $catalogue_title);
                 $breadcrumbs[] = array('', $_title);
-                breadcrumb_set_parents($breadcrumbs);
             }
-            if (is_null($root)) {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
-            }
+            breadcrumb_set_parents($breadcrumbs);
 
             // Meta data
             set_extra_request_metadata(array(
