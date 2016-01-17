@@ -56,11 +56,11 @@
 			</div>
 
 			<ul>
-				<li><span><acronym title="Many features working together seamlessly out-of-the-box, including photo galleries, events, forums, and news">Huge integrated feature-set</acronym></span></li>
+				<li><span><abbr title="Many features working together seamlessly out-of-the-box, including photo galleries, events, forums, and news">Huge integrated feature-set</abbr></span></li>
 				<li><span>Enthusiastic community</span></li>
 				<li><span>No licensing costs</span></li>
 				<li><span>Cloud-compatible</span></li>
-				<li><span class="last"><acronym title="Powered by HTML5">HTML5</acronym>, <acronym title="Full design flexibility using templating and CSS3">CSS3</acronym>, <acronym title="Acclaimed accessibility, including WCAG and ATAG compliance">WCAG</acronym></span></li>
+				<li><span class="last"><abbr title="Powered by HTML5">HTML5</abbr>, <abbr title="Full design flexibility using templating and CSS3">CSS3</abbr>, <abbr title="Acclaimed accessibility, including WCAG and ATAG compliance">WCAG</abbr></span></li>
 			</ul>
 		</div>
 	</div>
@@ -146,7 +146,7 @@
 
 			<div class="palBtm">
 				<div class="readMoreBtn">
-					<a href="{$PAGE_LINK*,site:features}" title="read more about Composr palette">READ MORE</a>
+					<a href="{$PAGE_LINK*,site:features}" title="Read more about Composr palette">Read more</a>
 				</div>
 			</div>
 		</div>
