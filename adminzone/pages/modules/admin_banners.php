@@ -125,9 +125,9 @@ class Module_admin_banners
         require_code('templates_results_table');
         $field_titles_arr = array(do_lang_tempcode('NAME'), do_lang_tempcode('TYPE'), do_lang_tempcode('BANNER_TYPE'));
         if ($has_banner_network) {
-            $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITSFROM'), do_lang_tempcode('BANNER_VIEWSFROM')));
+            $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_FROM'), do_lang_tempcode('BANNER_VIEWS_FROM')));
         }
-        $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITSTO'), do_lang_tempcode('BANNER_VIEWSTO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
+        $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
         if (addon_installed('unvalidated')) {
             $field_titles_arr[] = do_lang_tempcode('VALIDATED');
         }

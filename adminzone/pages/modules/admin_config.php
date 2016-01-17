@@ -304,7 +304,7 @@ class Module_admin_config
                 '_GUID' => '6ba2b09432d06e7502c71e7aac2d3527',
                 'COUNT' => $count,
                 'NAME' => $category_name,
-                'TITLE' => protect_from_escaping(do_lang('CONFIGURATION') . ': ' . $_category_name),
+                'TITLE' => '',
                 'DESCRIPTION' => $description,
                 'URL' => $url,
             )));
@@ -312,7 +312,7 @@ class Module_admin_config
         $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
             '_GUID' => '6fde99ae81367fb7405e94b6731a7d9a',
             'COUNT' => null,
-            'TITLE' => protect_from_escaping(do_lang('CONFIGURATION') . ': ' . do_lang('BASE_CONFIGURATION')),
+            'TITLE' => '',
             'URL' => get_base_url() . '/config_editor.php',
             'NAME' => do_lang_tempcode('BASE_CONFIGURATION'),
             'DESCRIPTION' => do_lang_tempcode('DOC_BASE_CONFIGURATION'),

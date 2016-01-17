@@ -492,11 +492,11 @@ class Module_banners
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITS_FROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWS_FROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
         }
-        $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
-        $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITS_TO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWS_TO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_CLICKTHROUGH'), $click_through));
 
         $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['submitter']);
@@ -535,7 +535,7 @@ class Module_banners
 
             $hr = array(
                 do_lang_tempcode('DATE'),
-                do_lang_tempcode('BANNER_HITSTO'),
+                do_lang_tempcode('BANNER_HITS_TO'),
             );
             $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -566,7 +566,7 @@ class Module_banners
                 $fields->attach(results_entry($fr, true));
             }
 
-            $results_table = results_table(do_lang('BANNER_HITSTO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
+            $results_table = results_table(do_lang('BANNER_HITS_TO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
         } else {
             $results_table = new Tempcode();
         }
