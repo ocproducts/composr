@@ -36,7 +36,7 @@ We could:
  - write
  - a
  - list
- 
+
 Some actors:
 1) Sean Connery
 2) George Lazenby
@@ -60,7 +60,7 @@ We could:
  - write
  - a
  - list
- 
+
 Some actors:
 1) Sean Connery
 2) George Lazenby
@@ -84,7 +84,7 @@ We could:
 	<li>a</li>
 	<li>list</li>
 </ul>
-<br /> 
+<br />
 Some actors:
 <ol>
 	<li>Sean Connery</li>

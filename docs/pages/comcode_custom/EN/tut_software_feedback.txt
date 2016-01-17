@@ -265,11 +265,11 @@ I neglected to mention that there's something inherently good about referring wo
 [media width="150" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/482033_challenge.jpg[/media]
 Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
 
-The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below. 
+The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below.
 
 Regardless, we have the [url="feature tracker"]http://compo.sr/tracker/[/url] available for full discussions, so your feedback will always be heard, even though we won't necessarily be able to address it. In the spirit of Open Source you can even see ideas direct from the developers (which is our rough equivalent to having a product roadmap). Features can be directly sponsored from the tracker.
 
-[title="3"]If we declare 'yes' to a suggestion immediately[/title] 
+[title="3"]If we declare 'yes' to a suggestion immediately[/title]
 
  - We need to find funding for the majority of Composr development. Composr is developed professionally, i.e. by paid staff, and we need to meet their salaries. We enthusiastically accept contributions, and some things do come through without direct funding (either sponsored internally, or achieved indirectly through client work). However, as a general rule, funding is required. So, regardless of our views, it often comes down to whether our users are willing to sponsor functionality and is out of the developers hands.
  - Our plans might change for a good reason that we hadn't foreseen -- meaning it wouldn't be included after all. This can happen if the design process reveals a big problem with the idea. This is often the case, even for our team's own ideas. This is a big problem if any of our users build their plans around our premature announcement.
@@ -332,7 +332,7 @@ Most features introduce risk in a number of areas, and all features are subject 
  - there is large incompatibility if we add to the CSS, because it means people's customised themes get busted.
 It is best that risk and incompatibility is managed in bulk, in major releases.
 
-[title="3"]Rules of thumb[/title] 
+[title="3"]Rules of thumb[/title]
 
 [b]No free guarantees[/b] -- There is no guarantee that someone will implement what you want. Open Source is not a free lunch, and volunteer Open Source developers makers only tend to implement things that are useful to themselves or fun to do. While Open Source programmers are usually highly ethical, and care about moving the world forward through cooperation, it's important to remember the best web developers are highly skilled and experienced professionals, like solicitors or doctors, and thus are paid as such. There's a lot of expertise in a lot of disciplines that is required to be a good web developer.
 

@@ -509,7 +509,7 @@ N/A is used to mark characters that have a special meaning.
 28     N/A    60    <     92    \     124    |
 29     N/A    61    =     93    ]     125    }
 30     N/A    62    >     94    ^     126    ~
-31     N/A    63    ?     95    _     
+31     N/A    63    ?     95    _
 [/tt]
 
 [concepts

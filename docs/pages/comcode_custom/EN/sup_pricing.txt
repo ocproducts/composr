@@ -48,7 +48,7 @@ There are eight main kinds of web design company, ordered roughly by price:
 [/list][/*]
 [/list]
 
-It can be really tricky to tell these apart though, many of them will call themselves creative agencies (even freelancers do) and sometimes you really need to read between the lines. 
+It can be really tricky to tell these apart though, many of them will call themselves creative agencies (even freelancers do) and sometimes you really need to read between the lines.
 
 Here's the main differentiators:
  - [b]Companies[/b]. Here you get proper project management, a much stronger guarantee of quality work (e.g. a range of standards and quality management), a company with proper insurance, a range of staff who are well trained and work well together as a team, coverage for if staff are sick or on holiday, a proper infrastructure (revision control, backups, legally licensed development software, proper communication tools, etc), and particular expertise and reputation in the area of work.
@@ -170,10 +170,10 @@ The following illustrates prices an agency may charge for different example leve
 | A complete Composr website development, setting up some default pages, implementing a new designer theme, and make a reasonable number of design amends
 |-
 | $15,000
-| As above, but with set up of eCommerce support and development of modest custom functionality (for example, a new property listing system). Alternatively, you could have professional designs for about 2 screens (plus home page), implemented to a high fidelity and interactivity level. 
+| As above, but with set up of eCommerce support and development of modest custom functionality (for example, a new property listing system). Alternatively, you could have professional designs for about 2 screens (plus home page), implemented to a high fidelity and interactivity level.
 |-
 | $25,000
-| As above, but with more than modest custom functionality. You could expect a few fairly complex custom modules to be developed or substantial alterations to standard features. Alternatively, you could have professional designs for about 5 screens (plus home page), implemented to a high fidelity and interactivity level. 
+| As above, but with more than modest custom functionality. You could expect a few fairly complex custom modules to be developed or substantial alterations to standard features. Alternatively, you could have professional designs for about 5 screens (plus home page), implemented to a high fidelity and interactivity level.
 |-
 | $32,000
 | As above, but with a mobile theme developed, good Facebook integration, video transcoding, or import of a lot of existing content from an old website.

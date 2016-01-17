@@ -81,7 +81,7 @@ Select the 'Catalogue category embedding' subheading to bring up the Block const
 
 [media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_12.png[/media]
 
-Fill in the required details and select the 'Use' button. The Comcode for embedding the catalogue similar to the above code will be added to the Comcode editor. 
+Fill in the required details and select the 'Use' button. The Comcode for embedding the catalogue similar to the above code will be added to the Comcode editor.
 
 The changes can be saved if you are done (click the 'Save' button at the bottom of your open Comcode page editing screen).
 
@@ -260,7 +260,7 @@ Generally, editing the [tt]CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl[/tt] template is t
 [b]Step1:[/b]
 To display the image using your own customised <img /> tag, the corresponding template file has to be modified suitably. Open the template file [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] in your text editor.
 
-Replace [tt]{FIELD_3}[/tt] with the following this line of code 
+Replace [tt]{FIELD_3}[/tt] with the following this line of code
 [code="HTML"]
 <img src="{$THUMBNAIL*,{FIELD_3_PLAIN},150}" alt="{$STRIP_TAGS,{FIELD_1}}" />
 [/code]

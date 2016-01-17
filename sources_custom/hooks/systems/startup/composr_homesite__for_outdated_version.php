@@ -98,7 +98,7 @@ class Hook_startup_composr_homesite__for_outdated_version
         require_code('version2');
         $latest_pretty = get_latest_version_pretty();
         if ($latest_pretty === null && $GLOBALS['DEV_MODE']) { // Not uploaded any releases to dev site?
-            $latest_pretty = float_to_raw_string(cms_version_number());
+            $latest_pretty = float_to_raw_string(cms_version_number(), 2, true);
         }
         if ($latest_pretty === null) {
             return null;

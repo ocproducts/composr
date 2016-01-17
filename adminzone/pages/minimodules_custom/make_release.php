@@ -240,7 +240,7 @@ function phase_2()
 
     $version_dotted = post_param_string('version');
     $version_branch = get_version_branch();
-    $version_number = float_to_raw_string(cms_version_number(), 1);
+    $version_number = float_to_raw_string(cms_version_number(), 2, true);
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);
     $is_old_tree = (post_param_integer('old_tree', 0) == 1);
     $is_substantial = is_substantial_release($version_dotted);

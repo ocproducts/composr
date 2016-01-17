@@ -155,14 +155,14 @@ function load_value_options()
 {
     global $VALUE_OPTIONS_CACHE, $VALUES_FULLY_LOADED;
 
-    $VALUES_FULLY_LOADED = true;
-
     $VALUE_OPTIONS_CACHE = persistent_cache_get('VALUES');
     if (!is_array($VALUE_OPTIONS_CACHE)) {
         $_value_options = $GLOBALS['SITE_DB']->query_select('values', array('*'));
         $VALUE_OPTIONS_CACHE = list_to_map('the_name', $_value_options);
         persistent_cache_set('VALUES', $VALUE_OPTIONS_CACHE);
     }
+
+    $VALUES_FULLY_LOADED = true;
 }
 
 /**

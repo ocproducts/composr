@@ -223,7 +223,7 @@ Now consider your plans for world domination while your files upload (or, read a
 [title="3"]Database[/title]
 
 (in the below instructions obviously substitute [tt]<application>[/tt] for the real name of the application)
- 
+
 To copy your initial database to live, you need to follow a rather complex procedure of exporting, copying to live Google Cloud Storage, then importing from live Google Cloud Storage...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions

@@ -27,7 +27,7 @@ This has three ramifications:
 [surround]
 [media width="150" description="The link to see topics with unread posts" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_topics_with_unread_posts_link.png[/media]
 [media width="150" description="A sample of the interface" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_topics_with_unread_posts.png[/media]
-The 'topics with unread posts' virtual forum displays any topics on the forum that have unread posts -- posts that you have not viewed. 
+The 'topics with unread posts' virtual forum displays any topics on the forum that have unread posts -- posts that you have not viewed.
 
 Again, the virtual forum displays the posts as a list of links to the respective topics, with all the normal trimmings, such as topic icon, jump to first unread link, previews, etc.
 

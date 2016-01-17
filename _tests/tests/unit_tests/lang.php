@@ -237,6 +237,7 @@ class lang_test_set extends cms_test_case
             'progmatically' => 'programatically',
             'persistant' => 'persistent',
             'recieve'=> 'receive',
+            'eratic' => 'erratic',
         );
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {

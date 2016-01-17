@@ -3,7 +3,7 @@
 [surround="light_table"]
 {| wide
 
-! 
+!
 ! [semihtml]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/tiers/bronze}" srcset="{$IMG*,icons/48x48/tiers/bronze} 2x" /> <span class="vertical_alignment">Bronze</span>[/semihtml]
 ! [semihtml]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/tiers/silver}" srcset="{$IMG*,icons/48x48/tiers/silver} 2x" /> <span class="vertical_alignment">Silver</span>[/semihtml]
 ! [semihtml]<img alt="" class="vertical_alignment" src="{$IMG*,icons/24x24/tiers/gold}" srcset="{$IMG*,icons/48x48/tiers/gold} 2x" /> <span class="vertical_alignment">Gold</span>[/semihtml]
@@ -43,7 +43,7 @@
 
 |-
 
-! 
+!
 | Free
 | [currency="USD" bracket="1"]12[/currency]
 | [currency="USD" bracket="1"]23[/currency]

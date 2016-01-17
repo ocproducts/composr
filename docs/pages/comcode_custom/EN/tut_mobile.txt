@@ -25,7 +25,7 @@ There is an engineering decision to be made for any site to decide what is best 
 The default theme uses a small amount of responsive design so that pages look good on both tablets and desktops.
 Otherwise, mobile mode is the way mobile pages are served in the default theme. This however is only our default: we do it like that for practical reasons, as most users aren't in a position to put a lot of thought into maintaining quality responsive design CSS (it's a bit too complex for the average webmaster).
 
-Ultimately the control and decision is in your hands. 
+Ultimately the control and decision is in your hands.
 
 Pros of responsive design:
  - Optimise against a wider range of devices, including different sizes of tablet and phone

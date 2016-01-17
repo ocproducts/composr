@@ -102,7 +102,7 @@ Over time small personalised websites have largely disappeared in favour of soci
 
 Web applications have grown in complexity, as web developers have become increasingly aware of methods for interaction that are as quick and easy to use as normal desktop applications (due to the influence of Google). These techniques are popularly named "Ajax techniques". Now instead of filling in forms, applications are being made that incorporate techniques such as "drag & drop".
 
-There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached 
+There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached
 
 CMSs are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMSs alongside the more traditional articles and pages. One example of this is our own system, Composr.
 

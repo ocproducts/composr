@@ -1249,7 +1249,7 @@ function select_tab(id,tab,from_url,automated)
 		}
 	}
 
-	if (typeof window['load_tab__'+tab]!='undefined') window['load_tab__'+tab](automated); // Usually an AJAX loader
+	if (typeof window['load_tab__'+tab]!='undefined') window['load_tab__'+tab](automated,document.getElementById(id+'_'+tab)); // Usually an AJAX loader
 
 	return false;
 }
@@ -1747,19 +1747,19 @@ function get_window_height(win)
 function get_window_scroll_width(win)
 {
 	if (typeof win=='undefined') win=window;
+
 	return win.document.body.scrollWidth;
 }
-function get_window_scroll_height(win,dont_allow_iframe_size)
+function get_window_scroll_height(win)
 {
 	if (typeof win=='undefined') win=window;
-	if (typeof dont_allow_iframe_size=='undefined') dont_allow_iframe_size=false;
 
-	var rect;
-	rect=win.document.body.parentNode.getBoundingClientRect();
-	var a=rect.bottom-rect.top;
-	rect=win.document.body.getBoundingClientRect();
-	var b=rect.bottom-rect.top;
+	var rect_a=win.document.body.parentNode.getBoundingClientRect();
+	var a=rect_a.bottom-rect_a.top;
+	var rect_b=win.document.body.getBoundingClientRect();
+	var b=rect_b.bottom-rect_b.top;
 	if (a>b) return a;
+
 	return b;
 }
 function get_window_scroll_x(win)
@@ -1933,7 +1933,7 @@ function key_pressed(event,key,no_error_if_bad)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
@@ -2022,10 +2022,15 @@ function activate_rich_semantic_tooltip(ob,event,have_links)
 //  lights_off is set to true if the image is to be dimmed
 //  force_width is set to true if you want width to not be a max width
 //  win is the window to open in
-//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip
+//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
 function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,lights_off,force_width,win,have_links)
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
+
+	if (!have_links)
+	{
+		if (document.body.className.indexOf(' touch_enabled') != -1) return; // Too erratic
+	}
 
 	if (typeof width=='undefined' || !width) var width='auto';
 	if (typeof pic=='undefined') pic='';

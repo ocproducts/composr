@@ -273,7 +273,11 @@ class Module_chat
         if ($type == 'browse') {
             set_feed_url('?mode=chat&select=');
 
-            $this->title = get_screen_title($GLOBALS['IS_ACTUALLY_ADMIN'] ? 'SU_CHATTING_AS' : 'CHAT_LOBBY', true, array(escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
+            $this->title = get_screen_title('CHAT_LOBBY', true, array(escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
+
+            if ($GLOBALS['IS_ACTUALLY_ADMIN']) {
+                attach_message(do_lang_tempcode('SU_CHATTING_AS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))), 'notice');
+            }
         }
 
         if ($type == 'room') {

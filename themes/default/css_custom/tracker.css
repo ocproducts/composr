@@ -36,14 +36,17 @@
 	background-image: url('{$IMG;,tracker/tutorials}');
 }
 
-/* Block */
+/* Block frame */
 
 .block_main_mantis_tracker {
 	padding: 0;
 	margin: 0;
 }
 
+/* Block contents */
+
 .tracker_issues {
+	overflow: hidden;
 }
 
 .tracker_issue_a {

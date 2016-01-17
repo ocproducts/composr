@@ -24,6 +24,10 @@ class Hook_upon_query_user_sync
             return; // Installer?
         }
 
+        if (!$GLOBALS['VALUES_FULLY_LOADED']) {
+            return;
+        }
+
         if (get_value('user_sync_enabled') === '1') {
             $prefix = preg_quote(get_table_prefix(), '#');
 

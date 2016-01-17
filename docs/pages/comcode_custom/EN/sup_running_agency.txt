@@ -80,7 +80,7 @@ You will also need to take out various different kinds of insurance policy.
 To run a professional organisation you will need to define a large number of processes to be followed by your staff, this section has some ones that may be important.
 
 For a few I have created further sections in this tutorial, but mostly I haven't gone into any further detail. You'll find examples and discussion online for all of this. The actual final documents you create will need to be tailored to your particular business.
- 
+
 Hiring:
  - Staff induction process (e.g. training, setting up of accounts, introductions, distribution of guides, setting up insurance and payroll, etc)
  - Interview process (including your own standardised testing that interviewees can't cheat against)
@@ -242,7 +242,7 @@ Our values:
  - [b]Quality[/b] in general is extremely important (for example, if we make a website, we try and make it as good as top websites like Amazon).
  - [b]Feedback[/b]. We're also open to genuine feedback on Composr itself that you might have, very small things, or bigger things. We're very proud of it but there's always room for improvement. If you notice something like us not explaining things well in the Code Book, a broken link on our website, or an unneeded performance bottleneck, post it on the tracker!
  - [b]Innovation[/b]. We're always trying to innovate in Composr, to make things better for people in ways other software does not. For example, our Theme Wizard.
- - [b]Ethics[/b]. It goes without saying really, but we try to be very ethical. 
+ - [b]Ethics[/b]. It goes without saying really, but we try to be very ethical.
  - [b]Humour[/b]. Did you know CSS stands for 'CurSeS', that [url="the boss of Microsoft is insane"]https://www.youtube.com/watch?v=I14b-C67EXY[/url], and that we named our company after the evil company OCP (from Robocop)?
 
 [title="2"]Server/hosting-access process[/title]
@@ -518,7 +518,7 @@ When deploying, always ensure that the deployment does not occur when developers
 [title="2"]Hold strong[/title]
 
 [media description="" width="350" float="right" framed="0"]data_custom/images/docs/sup_running_agency/13.jpg[/media]
-Some clients can be very demanding and pushy, so it's important to not be a push-over. For an experienced person there is a demarcation between providing good professional service and letting people walk all over you. 
+Some clients can be very demanding and pushy, so it's important to not be a push-over. For an experienced person there is a demarcation between providing good professional service and letting people walk all over you.
 
 If you are forced to work over a weekend or evening, and it's not your fault that it is happening, you might charge a 50% premium for those hours.
 
