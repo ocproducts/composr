@@ -5,11 +5,12 @@
 {$REQUIRE_CSS,jquery.elastislide}
 {$REQUIRE_JAVASCRIPT,jquery.elastislide}
 {$REQUIRE_JAVASCRIPT,jquerypp.custom}
+{$REQUIRE_JAVASCRIPT,ajax}
 
 {+START,IF,{$MOBILE}}
 	<div class="bannerPart">
 		<div class="bannerIn">
-			<span class="mainTxt"> <span class="txtBlack">The versatile</span> 
+			<span class="mainTxt"> <span class="txtBlack">The versatile</span>
 			<span class="txtOrange">Content Management System</span>
 			<span class="txtWhite">for next generation website</span>
 			<a class="button" href="{$PAGE_LINK*,site:features}">see our features</a>

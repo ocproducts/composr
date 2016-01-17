@@ -21,10 +21,6 @@
 		<link label="{!HOME}">:</link>
 	</substitution>
 
-	<substitution match_key="forum:forumview">
-		<link label="{!HOME}">:</link>
-	</substitution>
-
     <!-- ocProducts -->
 	<substitution match_key="ocproducts:portfolio:_WILD">
 		<link label="ocProducts">ocproducts:</link>
@@ -61,7 +57,7 @@
 		<link label="{!HOME}">:</link>
 		<link label="Community">:community</link>
 	</substitution>
-	<substitution match_key="forum:">
+	<substitution match_key="forum:forumview">
 		<link label="{!HOME}">:</link>
 		<link label="Community">:community</link>
 	</substitution>
@@ -74,6 +70,30 @@
 	<substitution match_key=":antifeatures">
 		<link label="{!HOME}">:</link>
 		<link label="Features">:features</link>
+	</substitution>
+	<substitution match_key=":demo">
+		<link label="{!HOME}">:</link>
+		<link label="Features">:features</link>
+	</substitution>
+	<substitution match_key=":compare">
+		<link label="{!HOME}">:</link>
+		<link label="Features">:features</link>
+	</substitution>
+	<substitution match_key=":vision">
+		<link label="{!HOME}">:</link>
+		<link label="Features">:features</link>
+	</substitution>
+
+    <!-- Contribute pages -->
+	<substitution match_key=":tracker">
+		<link label="{!HOME}">:</link>
+		<link label="Contribute">:contributions</link>
+	</substitution>
+
+    <!-- Downloads pages -->
+	<substitution match_key=":downloads">
+		<link label="{!HOME}">:</link>
+		<link label="Download">:download</link>
 	</substitution>
 
     <!-- Special cases for modules -->

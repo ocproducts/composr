@@ -8,7 +8,7 @@
 
 <div class="cntRow">
 	<div class="hSliderHold">
-		<div class="hSliderInner">
+		<div class="hSliderOuter">
 			<!--custom div scroll bar -->
 			{$REQUIRE_JAVASCRIPT,jquery.scrollbars}
 			{$REQUIRE_CSS,jquery.scrollbars}
@@ -20,6 +20,8 @@
 
 			<div class="hSlider">
 				<div class="con">
+					<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
+
 					<div id="tooltip_container">
 						<div id="tooltip_wordpress" class="slide_tooltip">
 							<div id="wordpress" class="vtip" title="Wordpress is the best choice if you just want an online voice. With a lot of work it can be contorted to do more, but why build on the wrong foundations?"></div>
@@ -39,8 +41,6 @@
 
 						<img id="john_doe" onmouseout="set_opacity(this,0.1);" onmouseover="set_opacity(this,1.0);" title="" alt="John Doe, Purchasing Manager, Naive-Corp" src="{$IMG*,composr_homesite/compare/johndoemagnify}" />
 					</div>
-
-					<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
 				</div>
 			</div>
 
@@ -54,15 +54,15 @@
 <script>// <![CDATA[
 	set_opacity(document.getElementById('john_doe'),0.1);
 
-	this.vtip = function() {	
-		if ($(".vtip")) $(".vtip").unbind().hover(
+	this.vtip = function() {
+		$(".vtip").unbind().hover(
 			function(e) {
 				if (!this.t) this.t = this.title;
 				this.title = '';
-					var xOffset=(e.pageX>650)?-280:-50;
-				var yOffset = -100; // y distance from mouse	   
+				var xOffset = (e.pageX>650)?-280:-50;
+				var yOffset = -100; // y distance from mouse
 				this.top = (e.pageY + yOffset - 10);
-					this.left = (e.pageX + xOffset);
+				this.left = (e.pageX + xOffset);
 
 				$('body').append( '<p style="display: none" id="vtip"><img id="vtipArrow" />' + this.t + '</p>' );
 
@@ -76,15 +76,15 @@
 			}
 		).mousemove(
 			function(e) {
-					var xOffset=(e.pageX>650)?-280:-50;
-				var yOffset = -100; // y distance from mouse	   
+				var xOffset=(e.pageX>650)?-280:-50;
+				var yOffset = -100; // y distance from mouse
 				this.top = (e.pageY + yOffset - 10);
 				this.left = (e.pageX + xOffset);
 
 				$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
 				$("p#vtip").css("top", this.top+"px").css("left", this.left+"px");
 			}
-		);			
+		);
 
 	};
 

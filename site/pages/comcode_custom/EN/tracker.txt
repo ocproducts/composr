@@ -82,6 +82,8 @@
 		</ul>
 	[/tab]
 [/tabs]
+
+{+START,INCLUDE,_TRACKER_TABS}{+END}
 [/semihtml]
 
 [title="2"]How is Composr developed?[/title]

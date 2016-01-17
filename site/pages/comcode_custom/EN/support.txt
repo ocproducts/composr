@@ -167,7 +167,7 @@
 			<p>To learn more, click the link below&hellip;</p>
 		</div>
 
-		<div class="commonBtn cntrLast">
+		<div class="commonBtn cntr">
 			[page=":contact:project"]Hire developer[/page]
 		</div>
 	</div>

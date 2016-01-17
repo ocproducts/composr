@@ -11,20 +11,13 @@
 		[title]Vision[/title]
 
 		<div class="hSliderHold">
-			<div class="hSliderInner">
+			<div class="hSliderOuter">
 				<div class="hSlider">
 					<div class="con"><img alt="Composr vision: Accessibility, Web standards, Flexibility, Inclusivity, User Experience, Integration, Mature Engineering, Transparency, Community, Open Source, Customisability, Cloud, Mobile, Social Media" src="{$IMG*,composr_homesite/vision/slider}" /></div>
 				</div>
 
 				<div class="hSliderBtm"></div>
 			</div>
-
-			<!--custom div scroll bar -->
-			<script>//<![CDATA[
-				$(function() {
-					$('.con').scrollbars();
-				});
-			//]]></script>
 		</div>
 	</div>
 
