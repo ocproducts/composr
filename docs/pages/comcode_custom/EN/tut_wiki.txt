@@ -44,7 +44,7 @@ The full Wiki+ structure and content may be manipulated from the page-view scree
 
 There is an obvious 'Edit tree' button to edit the tree structure visible when you're on a Wiki+ page. You can create child pages just by listing the titles you want. When you've saved the child structure you can then see that reflected.
 
-When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form. 
+When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form.
 
 The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ tree.
 

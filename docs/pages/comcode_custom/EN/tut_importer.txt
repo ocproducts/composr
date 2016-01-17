@@ -90,7 +90,7 @@ To do this you need to:
 1) Lock down the website so only your IP address can access it (outside the scope of Composr -- use [tt].htaccess[/tt] files, for example).
 2) Use the Installation Options editor to set a different forum driver.
 3) Reset all your permissions on the website.
-4) Any Composr systems that reference users will reference different users after switching, as member IDs will have changed: for example, point transactions and admin logs will reference the wrong users. Therefore you'll likely want to do some manually cleaning up of the database (such as deleting point transaction records, to erase the problem). 
+4) Any Composr systems that reference users will reference different users after switching, as member IDs will have changed: for example, point transactions and admin logs will reference the wrong users. Therefore you'll likely want to do some manually cleaning up of the database (such as deleting point transaction records, to erase the problem).
 5) Re-open access.
 
 [title="2"]Specifics of importers[/title]

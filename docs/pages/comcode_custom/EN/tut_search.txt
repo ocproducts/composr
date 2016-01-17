@@ -148,7 +148,7 @@ DO
         BEGIN
         DECLARE done INT DEFAULT 0;
         DECLARE connid INT UNSIGNED;
-        DECLARE cur1 CURSOR FOR SELECT ID FROM information_schema.PROCESSLIST 
+        DECLARE cur1 CURSOR FOR SELECT ID FROM information_schema.PROCESSLIST
             WHERE COMMAND = 'Query' AND INFO LIKE '%text_original) AGAINST%' AND TIME >= 5;
 
         DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;

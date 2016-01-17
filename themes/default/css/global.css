@@ -3239,8 +3239,6 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .button_screen_item {
 	padding: 3px 30px 4px 5px;
-	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;
 	/*{+START,IF,{$MOBILE}}*/
@@ -4337,7 +4335,7 @@ a[rel="lightbox"] {
 	}
 
 	a[href$=".rss"].user_link, body div a.feed_link {
-		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top; 
+		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 

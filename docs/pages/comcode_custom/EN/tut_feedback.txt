@@ -89,7 +89,7 @@ The process for using this block is as follows:
 2) (Don't add any entries or categories to the catalogue, that wouldn't serve any purpose)
 3) Go to add/edit the page where the block should go.
 4) Add the block to it in the normal way. When adding the block you are asked which catalogue to use.
-					
+
 [title="3"]Simple e-mail form[/title]
 
 There is also the [tt]main_contact_simple[/tt] block.

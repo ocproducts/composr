@@ -26,7 +26,7 @@ If a customer asks for work to be stopped part way through it being carried out 
 
 A stated minimum credit cost may apply to work done. This cost is per action, not per ticket. This cost reflects the organisational cost required in operating the support ticket system, and our need to be able to schedule our staff and partner working day into blocks.
 
-ocProducts may provide a number of different service levels, with different hourly unit costs depending on the service level. Service level response times are set based on when work begins, not when it concludes. If ocProducts are not able to start providing a requested service level then ocProducts will discount the credit cost to the closest matching lower service level. 
+ocProducts may provide a number of different service levels, with different hourly unit costs depending on the service level. Service level response times are set based on when work begins, not when it concludes. If ocProducts are not able to start providing a requested service level then ocProducts will discount the credit cost to the closest matching lower service level.
 
 ocProducts provides no guarantees that service levels, operating procedures, staffing, or credit costs, will not change, other than that the back-burner-level time-value of each credit will not decrease for credits already purchased.
 

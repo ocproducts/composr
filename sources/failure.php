@@ -1004,13 +1004,13 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 {
     // Make sure we don't send too many error emails
     if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && (!is_null($GLOBALS['SITE_DB']))) {
-        $num = intval(get_value('num_error_mails_' . date('Y-m-d'))) + 1;
+        $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
-        set_value('num_error_mails_' . date('Y-m-d'), strval($num));
+        set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
 
     if (!function_exists('require_lang')) {

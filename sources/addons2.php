@@ -169,7 +169,7 @@ function find_remote_addons()
         return $addons; // Caching
     }
     $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
-    $v = 'Version ' . float_to_raw_string(cms_version_number(), 1);
+    $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar&full_depth=1';
     $contents = http_download_file($url, null, false);
     $matches = array();
@@ -204,7 +204,7 @@ function find_updated_addons()
         return array();
     }
 
-    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number()));
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number(), 2, true));
     foreach (array_keys($addons) as $i => $addon) {
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }

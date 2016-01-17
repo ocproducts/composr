@@ -31,7 +31,7 @@ require_code('tar');
 $target_cat = get_param_string('cat', null);
 if ($target_cat === null) {
     if ($GLOBALS['DEV_MODE']) {
-        $target_cat = 'Version ' . float_to_raw_string(cms_version_number(), 1);
+        $target_cat = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     } else {
         exit('Please pass the target category name in the URL (?cat=name).');
     }

@@ -228,7 +228,7 @@ Be aware that this is a trade-off: allowing quick log in, but limiting your abil
  - There is only one step, unless there are required Custom Profile Fields configured in Composr (in which case a profile completion step is required)
  - E-mail address confirmation is not required
 
-This functionality is enabled via a configuration option at Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login. 
+This functionality is enabled via a configuration option at Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login.
 
 Enabling the option turns on some template changes that incorporate the Facebook login button into the site design.
 (See the "Special case: Theme integration" section)

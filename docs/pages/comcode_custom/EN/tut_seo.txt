@@ -58,7 +58,7 @@ There are many rogues and companies out there that will promise unachievable thi
 
 If you do want to put in a lot of tuning effort to content, here are some additional techniques:
 
-The key is to understand the goals of the page, yes, you want to get Internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something. 
+The key is to understand the goals of the page, yes, you want to get Internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something.
 Here are a few things to bare in mind
  - Research keywords and select the most appropriate for the topic. This should be used within the Page title, your main title and within the first 25 words of text. Composr automatically makes title you put in for news the article title (Heading1) and the metadata title.
  - Establish useful synonyms. Rather than repeat the same word or phrase over and over again establish a list of useful synonyms so that you don't keep repeating yourself.
@@ -68,11 +68,11 @@ Here are a few things to bare in mind
  - Use the key word/phrase within the alt attributes of Images. For example "a picture of a glass of orange juice" might become "A picture of a glass of orange juice on a table at ocProducts".
  - Try and write at least 250 words, as far as google is concerned the more keyword rich text the better for relevance.
  - [b]Don't[/b] just add lots of meta keywords because you think they might be good to have, if they are not relevant to the page you are working on leave them out. 15 to 20 keywords is more than adequate.
- - The meta description should be no more than 150 Characters as Google will cut this off after this point. It should include your main keyword/phrase. For example if the page was about ocProducts and our love for orange juice, "This is a page written about the ocProducts staffs love for orange juice and their ongoing search for the best tasting orange juice in Sheffield" 
- - Ideally the keyword density should be around 5-7% of the page. (and never above 10%). This means 7% of the words should be related to the keywords and phrases. 
+ - The meta description should be no more than 150 Characters as Google will cut this off after this point. It should include your main keyword/phrase. For example if the page was about ocProducts and our love for orange juice, "This is a page written about the ocProducts staffs love for orange juice and their ongoing search for the best tasting orange juice in Sheffield"
+ - Ideally the keyword density should be around 5-7% of the page. (and never above 10%). This means 7% of the words should be related to the keywords and phrases.
  - Copy should seem natural and not forced. If your website copy is unreadable to site visitors no-one will stick around or link to you.
  - Search engines read top to bottom on the page so make sure you use the keywords & phrases near the top of the page.
- - Be first: if you can be the first to write about something then that counts in your favour. This is difficult to do in a lot of cases; don't decide against writing something because its already been done. 
+ - Be first: if you can be the first to write about something then that counts in your favour. This is difficult to do in a lot of cases; don't decide against writing something because its already been done.
  - Searches look for key phrases more often than singular words, so try and include full phrases too. For example the page may be about "Orange Juice" but a user may search for:
   - Smooth Orange juice
   - Natural Orange juice

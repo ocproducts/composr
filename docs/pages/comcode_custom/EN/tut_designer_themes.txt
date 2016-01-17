@@ -523,7 +523,7 @@ This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
 
 Now I will explain what this means, by cutting it up into pieces...
 [list="1"]
-[*] 
+[*]
 
 [code="Tempcode"]
 {CONTENT}
@@ -536,7 +536,7 @@ This is an important concept to understand because it happens a lot in Composr t
 In this case the 'wrapper' template is [tt]BLOCK_MAIN_NEWS.tpl[/tt] and the template filled in for each individual item of content (the 'instance') is [tt]NEWS_BOX.tpl[/tt]. So [tt]CONTENT[/tt] here is lots of filled-in [tt]NEWS_BOX.tpl[/tt] templates put together.
 Another example: For a 'tree' menu, the 'wrapper' template is [tt]MENU_tree.tpl[/tt] and each menu link is done as an 'instance' of the [tt]MENU_BRANCH_tree.tpl[/tt] template.
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {+START,IF_EMPTY,{CONTENT}}
@@ -547,7 +547,7 @@ Another example: For a 'tree' menu, the 'wrapper' template is [tt]MENU_tree.tpl[
 This puts the "..." in the page only if there are [b]no[/b] news posts passed in. i.e. If there are no news posts (because there is no news), the "..." bit shows.
 This is useful to show a "there is no news yet" message when there is no news.
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {+START,IF_NON_EMPTY,{CONTENT}}
@@ -568,7 +568,7 @@ i.e. this kind of thing...
 
 Often we will use it in templates even when it is not needed if we also have a [tt]IF_EMPTY[/tt], to make the code clearer.
 
-[*] 
+[*]
 
 [code="HTML"]
 <p class="nothing_here">...</p>
@@ -576,7 +576,7 @@ Often we will use it in templates even when it is not needed if we also have a [
 
 This just is some static HTML.
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {!NO_NEWS}
@@ -585,7 +585,7 @@ This just is some static HTML.
 This is calling up a Composr "language string". It is the string we have that says "there is no news yet". We don't hard-code English in our default templates because we don't want to assume Composr sites will be in English.
 For themes it is alright to hard-code English text.
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}
@@ -598,7 +598,7 @@ In English this code is saying...
 
 The purpose of the logic is we don't want to say "there is no news yet" when we are talking about blog posts (we want to say something like "there are no posts yet").
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {$IS_NON_EMPTY,{SUBMIT_URL}}
@@ -610,7 +610,7 @@ This checks to see if the parameter [tt]SUBMIT_URL[/tt] is passed in. If it is t
 
 However, because this code is actually used inside a check (see 11, below) it is not actually output directly, it just is used for that check.
 
-[*] 
+[*]
 
 [code="Tempcode"]
 {$?,...,<a rel="add" href="{SUBMIT_URL*}">{!ADD_NEWS}</a>|}

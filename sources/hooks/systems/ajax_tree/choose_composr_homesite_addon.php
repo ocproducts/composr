@@ -32,7 +32,7 @@ class Hook_choose_composr_homesite_addon
     public function get_file($id)
     {
         $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
-        $v = 'Version ' . float_to_raw_string(cms_version_number(), 1);
+        $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
         if (!is_null($id)) {
             $v = $id;
         }

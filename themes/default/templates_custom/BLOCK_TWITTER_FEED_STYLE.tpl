@@ -115,7 +115,7 @@
                                                         <table width="100%">
                                                             <tr>
                                                                 <td style="text-align: left">
-                                                                    <b>{USER_NAME}</b> (<a href="{USER_PAGE_URL}" target="_blank">@{USER_SCREEN_NAME}</a>) 
+                                                                    <b>{USER_NAME}</b> (<a href="{USER_PAGE_URL}" target="_blank">@{USER_SCREEN_NAME}</a>)
                                                                 </td>
                                                                 <td style="text-align: right">
                                                                     {+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},1}}

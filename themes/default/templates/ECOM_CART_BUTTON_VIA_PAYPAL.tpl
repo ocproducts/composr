@@ -43,7 +43,7 @@
 
 	<p class="purchase_button">
 		<input class="buttons__cart_checkout button_screen" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
-	</p>	
+	</p>
 </form>
 
 {+START,IF_NON_EMPTY,{NOTIFICATION_TEXT}}

@@ -879,7 +879,6 @@ function step_4()
 
     // Database settings for forum (if applicable)
 
-    $hidden = new Tempcode();
     $forum_text = new Tempcode();
     if (($forum_type == 'cns') || ($forum_type == 'none')) {
         $forum_title = do_lang_tempcode('MEMBER_SETTINGS');

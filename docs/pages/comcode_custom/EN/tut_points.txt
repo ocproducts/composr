@@ -78,7 +78,7 @@ The module should be used to cancel purchases, such as an e-mail address bought 
 [title="3"]Banners[/title]
 
 While by default any member may submit a banner, the implication is that a Point Store-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
- 
+
 All banners bought are added to the 'General' banner type.
 
 [title="3"]Topic pinning[/title]

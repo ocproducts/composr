@@ -15,7 +15,7 @@ Microsoft created a technology that allows websites to have their own little ico
  - by the browser's address bar
  - in the history browsing interface
  - as a desktop icon
- 
+
 Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image.
 
 The default icon supplied with Composr actually contains multiple sizes:

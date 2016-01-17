@@ -52,6 +52,11 @@
 	vertical-align: middle;
 }
 
+.cns_guest_column_a .fb-login-button {
+	top: -2px;
+	width: 65px;
+}
+
 .cns_guest_column_a .horizontal_links, .cns_guest_column_a .horizontal_links li {
 	vertical-align: top; /* This rebalances it in the alignment order due to the extra element nesting */
 }

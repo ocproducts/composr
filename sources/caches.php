@@ -91,14 +91,19 @@ function init__caches()
     $SMART_CACHE = new Self_learning_cache($bucket_name);
 
     // Some loading from the smart cache
-    global $JAVASCRIPT, $CSSS;
+    global $CSS_OUTPUT_STARTED_LIST, $JS_OUTPUT_STARTED_LIST;
+    $CSS_OUTPUT_STARTED_LIST = array();
+    $JS_OUTPUT_STARTED_LIST = array();
+    global $JAVASCRIPT, $JS_OUTPUT_STARTED_LIST, $CSSS, $CSS_OUTPUT_STARTED_LIST;
     $test = $SMART_CACHE->get('JAVASCRIPT');
     if ($test !== null) {
         $JAVASCRIPT += $test;
+        $JS_OUTPUT_STARTED_LIST += $test;
     }
     $test = $SMART_CACHE->get('CSSS');
     if ($test !== null) {
         $CSSS += $test;
+        $CSS_OUTPUT_STARTED_LIST += $test;
     }
 }
 
@@ -281,8 +286,19 @@ class Self_learning_cache
                 register_shutdown_function(array($this, '_page_cache_resave'));
             }
             $this->pending_save = true;
+            return;
         }
 
+        $this->_page_cache_resave();
+    }
+
+    /**
+     * Actually save the cache.
+     *
+     * @ignore
+     */
+    function _page_cache_resave()
+    {
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             persistent_cache_set(array('SELF_LEARNING_CACHE', $this->bucket_name), $this->data);
             return;
