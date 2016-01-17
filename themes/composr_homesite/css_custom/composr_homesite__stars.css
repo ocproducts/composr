@@ -6,7 +6,7 @@
 .cmn-strs .list2 ul { list-style:none; margin:0; padding:0; padding-left:20px; }
 .cmn-strs .list2 ul li { list-style-image:url('{$IMG;,composr_homesite/stars/bult-2}'); list-style-position:inside; line-height:25px; }
 
-.mainStar { margin-bottom:3em; }
+.mainStar { margin-bottom:1em; }
 
 .mainStar.cntRow .row-top { margin-top:5px; }
 

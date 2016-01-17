@@ -1,5 +1,3 @@
-{$REQUIRE_JAVASCRIPT,javascript_ajax}
-
 <!-- Elastislide Carousel -->
 <ul class="elastislide-list">
 	{+START,LOOP,TUTORIALS}

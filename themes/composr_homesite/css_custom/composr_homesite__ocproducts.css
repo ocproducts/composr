@@ -44,7 +44,7 @@
 .thumbComp p span, .thumbCompLast p span { color:#E5922C; }
 .thumbHead { font-size:36px; font-weight:bold; color:#E5922C; padding-bottom:0px; display:block; }
 
-.compColLft { float:left; width:290px; min-height:100px; padding:20px 15px; background-color:#F2F7F9; {$BETA_CSS_PROPERTY,border-radius:8px;} } 
+.compColLft { float:left; width:290px; min-height:100px; padding:20px 15px; background-color:#F2F7F9; {$BETA_CSS_PROPERTY,border-radius:8px;} }
 .marRht { margin-right:20px; }
 
 /* Quick-fire awesome */

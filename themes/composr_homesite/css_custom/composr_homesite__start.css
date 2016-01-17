@@ -8,7 +8,7 @@
 .textTop { float:left; width:360px; height:90px; font-size:24px; font-weight:bold; margin-top:74px; line-height:32px; }
 .textBtm { float:left; width:360px; height:100px; font-size:20px; font-weight:bold; color:#FFF; margin-top:36px; text-shadow:1px 1px #D36603; }
 .topBtn { float:left; width:260px; height:74px; background-image:url('{$IMG;,composr_homesite/start/top-btn-bg}'); background-position:left top; background-repeat:no-repeat; margin:10px 0px 0px 0px; }
-.topBtn a { color:#000; text-align:center; font-size:18px; font-weight:bold; margin:38px 0px 0px 40px; display:block; } 
+.topBtn a { color:#000; text-align:center; font-size:18px; font-weight:bold; margin:38px 0px 0px 40px; display:block; }
 .topBtn a:hover { color:#E5922C; text-shadow:1px 1px #FFF; text-decoration:none; }
 
 .cntCol1 { float:left; width:310px; padding-right:10px; }

@@ -1,8 +1,8 @@
 .tut-row .leftMenu { width:236px; float:left; }
 .tut-row .leftMenu ul { list-style-type:none; margin:0; padding:0; background:#e5922c; font-size:13px; }
-.tut-row .leftMenu ul li { list-style-image:url('{$IMG;,composr_homesite/tutorials/bult-4}'); list-style-position:inside; border-bottom:#fff solid 1px; }
-.tut-row .leftMenu ul li a { display:block; color:#fff; padding:7px 7px; }
-.tut-row .leftMenu ul li a:hover, .tut-row .leftMenu ul li a.active { text-decoration:none; background:#667ea4; }
+.tut-row .leftMenu ul li { margin:0; border-bottom:#fff solid 1px; }
+.tut-row .leftMenu ul li a { background:url('{$IMG;,composr_homesite/tutorials/bult-4}') no-repeat 5px 12px; display:block; color:#fff; padding:7px 7px 7px 24px; }
+.tut-row .leftMenu ul li a:hover, .tut-row .leftMenu ul li a.active { text-decoration:none; background-color:#667ea4; }
 
 .tut-row .right { width:705px; float:right; font-size:14px; color:#666; }
 .tut-row .right .tbox { overflow:hidden; border:#667ea4 solid 1px; margin-bottom:30px; }
@@ -20,8 +20,8 @@
 .tut-row .right .tbox .content .blk .bottom .blk3 a { width:100px; float:right; background:#667ea4; padding:7px; text-align:center; display:block; color:#fff; white-space:nowrap; }
 .tut-row .right .tbox .content .blk .bottom .blk3 a:hover { padding:7px; }
 
-.tut-row .right h2 { font-size:22px; color:#667ea4; padding-bottom:7px; border-bottom:#d5dee7 solid 1px; } 
-.tut-row .right .list {  margin-bottom:20px; } 
+.tut-row .right h2 { font-size:22px; color:#667ea4; padding-bottom:7px; border-bottom:#d5dee7 solid 1px; }
+.tut-row .right .list {  margin-bottom:20px; }
 .tut-row .right .list ul { padding:0; padding-left:18px; }
 .tut-row .right .list ul li { list-style-image:url('{$IMG;,composr_homesite/bult-1}'); line-height:20px; }
 .tut-row .right .list ul li a { color:#e5922c; }

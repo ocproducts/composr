@@ -1,4 +1,6 @@
-{$BLOCK,block=main_member_bar}
+{+START,IF,{$NOT,{$_GET,overlay}}}
+	{$BLOCK,block=main_member_bar}
+{+END}
 
 {+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
 	<div class="box box___cns_forum"><div class="box_inner">
@@ -57,28 +59,17 @@
 
 {TOPIC_WRAPPER}
 
-<div class="cntRow">
-	<div class="forum-points-stuff">
-		{$BLOCK,block=side_recent_points}
+{+START,IF_PASSED,ID}{+START,IF,{$EQ,{ID},1}}
+	<div class="cntRow">
+		<div class="forum-points-stuff">
+			{$BLOCK,block=side_recent_points}
 
-		{$BLOCK,block=main_leader_board}
-	</div>
-</div>
-
-{+START,IF,{$NOT,{$WIDE_HIGH}}}
-	<div class="float_surrounder">
-		<div class="buttons_group cns_buttons_screen">
-			{+START,IF_PASSED,ID}
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=cns_topic
-					NOTIFICATIONS_ID=forum:{ID}
-					NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_forum:forum%3A{ID}
-				{+END}
-			{+END}
-			{BUTTONS}
+			{$BLOCK,block=main_leader_board}
 		</div>
 	</div>
+{+END}{+END}
 
+{+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 	{+START,IF_PASSED,ID}
 		{$REVIEW_STATUS,forum,{ID}}

@@ -6,7 +6,7 @@ ul.cntLi li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:
 
 #vertical_nested_container { margin:20px auto 20px auto; }
 
-#vertical_container h1 { overflow:hidden; display:block; padding:10px; font-size:16px; font-weight:bold; text-align:left; color:#FFF; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:6px;} margin-bottom:8px; } 
+#vertical_container h1 { overflow:hidden; display:block; padding:10px; font-size:16px; font-weight:bold; text-align:left; color:#FFF; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:6px;} margin-bottom:8px; }
 #vertical_container h1:hover { cursor:pointer; }
 
 .accordionContent { overflow:hidden; padding:0px 10px !important; margin-bottom:10px !important; background-color:#F3F5F8; {$BETA_CSS_PROPERTY,border-radius:6px;} }

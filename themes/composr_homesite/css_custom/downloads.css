@@ -16,8 +16,8 @@
 .downloads-block-txt>div>p:last-child { margin-bottom:0; }
 .downloads-block-strip { width:98%; float:left; padding:5px; background:#ececed; color:#667ea4; font-size:13px; margin-bottom:10px; }
 
-.downloads-strip-blk1 { width:124px; float:left; }
-.downloads-strip-blk2 { width:150px; float:left; }
+.downloads-strip-blk1 { padding-right: 30px; float:left; }
+.downloads-strip-blk2 { padding-right: 30px; float:left; }
 .downloads-strip-row { width:100%; float:left; padding:5px 0; border-bottom:#ececed solid 1px; }
 
 .downloads-block-more a { width:110px; height:22px; float:left; background:url('{$IMG;,composr_homesite/downloads/arrow-more}') no-repeat left top; color:#f7921e; display:block; font-size:14px; padding-left:35px; margin-top:10px; }

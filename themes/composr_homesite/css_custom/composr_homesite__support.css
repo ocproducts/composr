@@ -3,7 +3,7 @@
 ul.srBoxes { list-style:none; margin:0; padding:0; overflow:hidden; }
 ul.srBoxes li { float:left; width:310px; height:140px; margin:0px 15px 15px 0px; background-color:#F2F4F7; display:block; {$BETA_CSS_PROPERTY,border-radius:3px;} }
 ul.srBoxes li:hover { background-color:#FFF; {$BETA_CSS_PROPERTY,box-shadow:#C8C8C9 0px 0px 7px;} }
-ul.srBoxes li.noMar { margin-right:0px; } 
+ul.srBoxes li.noMar { margin-right:0px; }
 
 .srPic { float:left; width:100px; height:100px; margin:20px 20px 20px 0px; }
 

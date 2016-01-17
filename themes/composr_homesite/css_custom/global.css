@@ -37,7 +37,7 @@
 	.mainMenu li .menuBut { width:95%; margin:0 auto; border:2px solid #dee2e1; background:url('{$IMG;,composr_homesite/but-bg}') repeat-x 0 0; display:block; font-size:1.40em; height:44px; text-transform:capitalize; text-align:center; padding:20px 0 0 0; color:#000; font-weight:bold;}
 
 	/*Footer*/
-	.footer { text-align:center; font-weight:bold; font-size:0.90em; background:url('{$IMG;,composr_homesite/colored-line}') repeat-x 0 0; height:45px; width:100%; float:left; color:#656565; padding:30px 0 0 0;}
+	.footer { text-align:center; font-weight:bold; font-size:0.90em; background:url('{$IMG;,composr_homesite/colored-line}') repeat-x 0 0; height:45px; overflow:hidden; color:#656565; padding:30px 0 0 0;}
 {+END}
 
 #main_website { background-image:url('{$IMG;,composr_homesite/body-bg}'); background-position:left top; background-repeat:repeat-x; }
@@ -126,30 +126,30 @@ table.gsc-search-box td { padding:0 !important; }
 .commonBtn { height:40px; display:inline-block; text-align:center; line-height:40px; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:4px;} /*background-image:url('{$IMG;,composr_homesite/btn-left-bg}'); background-repeat:no-repeat; background-position:10px 0px;*/ border-right:2px solid #445673; border-bottom:2px solid #445673; }
 .commonBtn a { color:#FFF; display:block; height:40px; padding:0px 30px; text-shadow:1px 1px #000; font-size:15px; }
 .commonBtn:hover { opacity:0.8; text-decoration:none; }
-.commonBtn.cntr { width:205px; margin:0px auto; }
-.commonBtn.cntrLast { width:205px; margin:0px auto; }
+.commonBtn.cntr { display:block; width:205px; margin:0px auto; }
 
 
 /*Sliders*/
 
-.hSliderHold { height:336px; background:none; position:relative; }
-.hSliderInner { height:320px; background-image:url('{$IMG;,composr_homesite/slider-bg}'); background-repeat:repeat; background-position:left top; }
-.hSliderBtm { height:16px; background-image:url('{$IMG;,composr_homesite/slider-btm-bg}'); background-repeat:no-repeat; background-position:center top; margin-top:1px; }
-.hSlider { float:left; width:940px; height:300px; margin:10px; background-color:#FFF; }
+/*Border style*/
+.hSliderHold { height:336px; background:none; position:relative; {$BETA_CSS_PROPERTY,user-select:none;} }
+.hSliderOuter { height:320px; overflow:hidden; background-image:url('{$IMG;,composr_homesite/slider-bg}'); background-repeat:repeat; background-position:left top; }
+.hSlider { width:940px; height:300px; margin:10px; background-color:#FFF; }
+.hSliderBtm { clear:both; height:16px; background-image:url('{$IMG;,composr_homesite/slider-btm-bg}'); background-repeat:no-repeat; background-position:center top; margin-top:1px; }
+
+.con { width:100%; height:299px; -webkit-overflow-scrolling: touch; overflow-x:scroll; overflow-y:hidden; }
+.page_running_compare .con { width:950px; }
+.touch_enabled .con { width:100%; }
+.page_running_vision .con img { position:absolute; } /* So it shows over top of bordering */
+.rootWrap { overflow-y:hidden !important; }
+.scrollElement.dragCon { max-width:225px !important; position:absolute; z-index:999; }
+.scrollElement.dragConY { display:none !important; }
 
 
 /*Scroll to top*/
 
 .back-to-top { position:fixed; bottom:100px; right:0px; text-decoration:none; color:#000000; opacity:0.5; background-color:transparent; font-size:12px; padding:5px; display:none; text-indent:-9999px; overflow:hidden; width:100px; height:100px; background-image:url('{$IMG;,composr_homesite/go-to-top}'); background-position:left top; background-repeat:no-repeat; }
 .back-to-top:hover { opacity:1; }
-
-
-/*Scrollable divs*/
-
-.con { width:939px; height:299px; overflow-x:scroll; overflow-y:hidden; }
-.rootWrap { overflow-y:hidden !important; }
-.scrollElement.dragCon { max-width:225px !important; position:absolute; z-index:999; }
-.scrollElement.dragConY { display:none !important; }
 
 
 /*Footer*/
@@ -201,7 +201,7 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 
 /*Right-hand box styles*/
 
-ul.liRcol { list-style:none; margin:0; padding:0; float:left; width:240px; }
+ul.liRcol { list-style:none; margin:0; padding:0; }
 ul.liRcol li { overflow:hidden; color:#666; padding-left:20px; padding-bottom:5px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:0px 5px; }
 ul.liRcol li a { color:#666; }
 ul.liRcol li a:hover { color:#E5922C; }
@@ -255,15 +255,13 @@ input.email { float:left; width:270px; height:40px; padding:0px 4px; border:1px 
 
 .tesBlock { padding:20px 10px; overflow:hidden; background-color:#F8DEBE; {$BETA_CSS_PROPERTY,border-radius:16px;} }
 .tesBlockWt { padding:20px 10px; overflow:hidden; background-color:#F0F7F9; {$BETA_CSS_PROPERTY,border-radius:16px;} }
-.tesHead { margin:0; width:100%; padding:0px 20px 20px 20px; height:56px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-image:url('{$IMG;,composr_homesite/rcol_head_2}'); background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; margin-top:0; margin-left:-15px; position:absolute; }
+.tesHead { width:235px; margin:0; padding:0px 20px 20px 20px; height:56px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-image:url('{$IMG;,composr_homesite/rcol_head_2}'); background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; margin-top:0; margin-left:-15px; position:absolute; }
 .tesHead2 { width:235px; height:56px; padding:0px 20px 20px 20px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-image:url('{$IMG;,composr_homesite/rcol_head_1}'); background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; margin-top:0; margin-left:-15px; position:absolute; }
 
 .quoteCst { overflow:hidden; font-size:14px; color:#333; line-height:22px; margin:65px 10px 20px 10px; text-align:left; }
 .quoteCst p { padding-bottom:10px; display:block; overflow:hidden; font-size:14px; color:#333; line-height:22px; text-align:left !important; }
 
-.break, .break2 { float:left; width:240px; height:1px; margin-bottom:10px; }
-.break { border-bottom:1px solid #DCBB87; }
-.break2 { border-bottom:1px solid #C8D6DD; }
+.quoteBreak { margin:10px 0 !important; border-bottom:1px solid #DCBB87; }
 
 .quoteCst .highlightSpan { padding:10px 0px; font-weight:bold; display:block; }
 .quoteCst p .highlightSpan { color:#E78024; display:inline; font-weight:normal; }
@@ -1214,7 +1212,7 @@ td>.box, .right>.box, .left>.box {
 	{$BETA_CSS_PROPERTY,border-top-left-radius: 3px;}
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 3px;}
 	background-color: {$GET,box_title_background};
-	color: {$GET,box_title_text};
+	color: {$GET,box_title_text} !important;
 	text-align: center;
 	font-weight: bold;
 	text-decoration: none;
@@ -2988,6 +2986,7 @@ input.magic_image_edit_link {
 	-webkit-appearance: none;
 	vertical-align: middle;
 	cursor: pointer;
+	line-height: 1.2em;
 }
 div>.button_micro:first-child, div>.button_screen:first-child, div>.button_screen_item:first-child, .hero_section .hero_button a:first-child {
 	margin-left: 2px; /* enough for the shadow */
@@ -3010,8 +3009,6 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .button_screen_item {
 	padding: 3px 33px 4px 7px;
-	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;
 	/*{+START,IF,{$MOBILE}}*/

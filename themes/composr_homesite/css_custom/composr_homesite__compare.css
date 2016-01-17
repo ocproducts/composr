@@ -5,13 +5,19 @@ ul.cntLiFull li { padding:0px 0px 15px 40px; line-height:22px; display:block; co
 
 /*Slider*/
 
+.page_running_compare .contentWrap {
+	top: 0 !important; /* Fix IE bug */
+}
+
 #tooltip_container {
-	width:3000px;
+	width:1500px;
 	height:300px;
 	margin:0;
 	padding:0;
 	z-index:999;
-	position:absolute;
+	position:relative;
+	top:-300px;
+	background: rgba(0,0,0,0.0001); /* IE fix- needed for hovering to get detected for the .vtip elements */
 }
 
 .slide_tooltip {
@@ -123,7 +129,7 @@ p#vtip #vtipArrow {
 
 /*vTabs*/
 
-.diff { float:left; }
+.diff { float:left; list-style-type:none;margin:0;padding:0; }
 
 .ui-tabs-vertical { width:55em; }
 .ui-tabs-vertical .ui-tabs-nav { background-color:#FFFFFF; border-bottom:1px solid #CDD3DA !important; border-left:1px solid #CDD3DA !important; border-top:1px solid #CDD3DA !important; display:block; float:left; width:98px; height:296px; padding:0 !important; }
@@ -134,9 +140,9 @@ p#vtip #vtipArrow {
 
 #tabs { width:960px; padding-bottom:20px; }
 
-#ui-id-1 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-2 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
-#ui-id-3 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; } 
+#ui-id-1 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-1}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; }
+#ui-id-2 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-2}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; }
+#ui-id-3 { width:98px; height:98px; background-image:url('{$IMG;,composr_homesite/compare/tab_m-3}'); background-repeat:no-repeat; background-position:left top; cursor:pointer; }
 
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-1 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-1a}'); background-repeat:no-repeat; background-position:left top; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active #ui-id-2 { background-image:url('{$IMG;,composr_homesite/compare/tab_m-2a}'); background-repeat:no-repeat; background-position:left top; }
