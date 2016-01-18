@@ -124,6 +124,18 @@
 					</div>
 				</div>
 
+				<script>//<![CDATA[
+					$(document).ready(function() {
+						var slider = $('#slider').Swipe({
+							auto: 3000,
+							continuous: true
+						}).data('Swipe');
+
+						$('.prev').on('click', slider.prev);
+						$('.next').on('click', slider.next);
+					});
+				//]]></script>
+
 				<p class="testimonial_link">Send us more <a href="{$PAGE_LINK*,site:tickets:ticket:ticket_type=Feedback}">testimonials</a>.</p>
 			</div>
 		</div>
@@ -157,34 +169,4 @@
 
 {+START,INCLUDE,_COMMUNITY_BANNERS}{+END}
 
-<!-- Script for Tab menu -->
-<script>//<![CDATA[
-	$(document).ready(function() {
-		$('[placeholder]').focus(function() {
-		  var input = $(this);
-		  if (input.val() == input.attr('placeholder')) {
-			input.val('');
-			input.removeClass('placeholder');
-		  }
-		}).blur(function() {
-		  var input = $(this);
-		  if (input.val() == '' || input.val() == input.attr('placeholder')) {
-			input.addClass('placeholder');
-			input.val(input.attr('placeholder'));
-		  }
-		}).blur();
-	});
-//]]></script>
-
-<script>//<![CDATA[
-	$(document).ready(function() {
-		var slider = $('#slider').Swipe({
-			auto: 3000,
-			continuous: true
-		}).data('Swipe');
-
-		$('.prev').on('click', slider.prev);
-		$('.next').on('click', slider.next);
-	});
-//]]></script>
 [/semihtml]

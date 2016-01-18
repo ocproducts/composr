@@ -66,6 +66,12 @@
 			</div><!--accordion closed-->
 		</div>
 
+		<script>//<![CDATA[
+			$(function() {
+				$('#vertical_container').accordion({ heightStyle: "content" });
+			});
+		//]]></script>
+
 		<div class="cntLRow">
 			<h3>Why do it?</h3>
 
@@ -111,10 +117,4 @@
 		</div>
 	</div>
 </div>
-
-<script>//<![CDATA[
-	$(function() {
-		$('#vertical_container').accordion({ heightStyle: "content" });
-	});
-//]]></script>
 [/semihtml]

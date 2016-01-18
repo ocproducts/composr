@@ -9,15 +9,6 @@
 <div class="cntRow">
 	<div class="hSliderHold">
 		<div class="hSliderOuter">
-			<!--custom div scroll bar -->
-			{$REQUIRE_JAVASCRIPT,jquery.scrollbars}
-			{$REQUIRE_CSS,jquery.scrollbars}
-			<script>//<![CDATA[
-				$(function() {
-					$('.con').scrollbars();
-				});
-			//]]></script>
-
 			<div class="hSlider">
 				<div class="con">
 					<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
@@ -49,6 +40,15 @@
 
 		<div id="slide_header_text">A whimsical comparison of your CMS choice (Composr vs other common systems).</div>
 	</div>
+
+	<!--custom div scroll bar -->
+	{$REQUIRE_JAVASCRIPT,jquery.scrollbars}
+	{$REQUIRE_CSS,jquery.scrollbars}
+	<script>//<![CDATA[
+		$(function() {
+			$('.con').scrollbars();
+		});
+	//]]></script>
 </div>
 
 <script>// <![CDATA[
@@ -181,6 +181,15 @@
 		</div>
 	</div>
 </div>
+
+<!-- Script for Vertical Tab menu -->
+<script>//<![CDATA[
+	$(function() {
+		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	});
+//]]></script>
+[/semihtml]
 
 <div class="cntRow">
 	<h2>Direct comparison</h2>
@@ -764,12 +773,3 @@ We have to be clear that these don't always hold true, every project is differen
 		<li>*2: We could have improved our speed by removing bundled addons (this gets Composr 17.77 trans/sec), but we wanted to be consistent in comparing default installations. Drupal 7's default site did not come with any content or blocks placed, so was naturally very fast. Wordpress is simple without much overhead.<br />These figures are outdated and need updating. We have managed to do some quite sophisticated optimisations in Composr v10.</li>
 	</ul>
 </div>
-
-<!-- Script for Vertical Tab menu -->
-<script>//<![CDATA[
-	$(function() {
-		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	});
-//]]></script>
-[/semihtml]
