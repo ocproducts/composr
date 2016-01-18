@@ -20,10 +20,11 @@
 	/*Middle*/
 	.brCrumb, .screenInner { margin:5px; }
 
-	/*Page Menu*/
-	.pageMenu { list-style-type:none; padding:0; margin:0; }
-	.pageMenu li { overflow:hidden; margin:0 0 8px 0; }
-	.pageMenu li .menuBut { width:95%; margin:0 auto; border:2px solid #dee2e1; background:url('{$IMG;,composr_homesite/mobile/but-bg}') repeat-x 0 0; display:block; font-size:1.40em; height:44px; text-transform:capitalize; text-align:center; padding:20px 0 0 0; color:#000; font-weight:bold; }
+	/*Accordions*/
+	.pageMenu>.pageMenuHeader { overflow:hidden; margin:0 0 8px 0; border-bottom:0; }
+	.pageMenu>.pageMenuHeader>span { display:none; }
+	.pageMenu>.pageMenuHeader>h2 { width:95%; margin:0 auto; border:2px solid #dee2e1; background:url('{$IMG;,composr_homesite/mobile/but-bg}') repeat-x 0 0; display:block; font-size:1.40em; height:44px; text-transform:capitalize; text-align:center; padding:20px 0 0 0; color:#000; font-weight:bold; }
+	.pageMenu>.accordionContent { padding:0px 14px 10px 14px !important; }
 
 	/*Footer*/
 	footer { text-align:center; font-weight:bold; background:url('{$IMG;,composr_homesite/mobile/colored-line}') repeat-x 0 0; overflow:hidden; color:#656565; padding:30px 0 0 0; margin-top:20px; }
@@ -242,7 +243,19 @@ ul.liRcol li ul li { padding-left:10px; padding-bottom:5px; background-image:url
 
 .ltNews { float:left; width:460px; height:auto; background-image:url('{$IMG;,composr_homesite/btm-box-bg}'); background-repeat:no-repeat; background-position:bottom center; margin-top:20px; padding-bottom:25px; }
 .ltNewsHead { margin:0; padding:0px 20px !important; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} font-size:24px; line-height:47px; font-weight:normal; color:#FFF !important; text-shadow:1px 1px #45526D; }
-.ltCnt { padding:15px 0px 0px 0px; border-bottom:1px solid #ECEDF0; border-left:1px solid #ECEDF0; border-right:1px solid #ECEDF0; {$BETA_CSS_PROPERTY,border-radius:0px 0px 13px 13px;} font-size:13px; color:#666; line-height:22px; }
+.ltCnt {
+	padding:15px 0px 0px 0px;
+	{+START,IF,{$MOBILE}}
+		border-top:1px solid #ECEDF0;
+	{+END}
+	border-bottom:1px solid #ECEDF0;
+	border-left:1px solid #ECEDF0;
+	border-right:1px solid #ECEDF0;
+	{$BETA_CSS_PROPERTY,border-radius:0px 0px 13px 13px;}
+	font-size:13px;
+	color:#666;
+	line-height:22px;
+}
 .ltMore { float:left; width:418px; height:36px; background-image:url('{$IMG;,composr_homesite/btm-box-bg-2}'); background-repeat:repeat-x; background-position:bottom left; {$BETA_CSS_PROPERTY,border-radius:0px 0px 13px 13px;} text-align:right; padding:0px 20px; line-height:36px; font-weight:bold; font-size:14px; color:#666; }
 .ltMore a { color:#666; }
 .ltMore a:hover { color:#E5922C; text-decoration:none; }

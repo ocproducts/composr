@@ -15,7 +15,7 @@
 			<span class="txtWhite">for next generation website</span>
 			<a class="button" href="{$PAGE_LINK*,site:features}">see our features</a>
 		</div>
-		</div>
+	</div>
 
 	<ul class="roundButPart">
 		<li><a class="roundBut" href="{$PAGE_LINK*,site:download}"><span class="txtUpper">Download</span> Composr CMS</a></li>
@@ -24,15 +24,64 @@
 		<!--<li><a class="roundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
 	</ul>
 
-	<ul class="pageMenu">
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:compare}">Why we're different</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:vision}">Our vision</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:support}">Support</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:community}">Community</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:contributions}">Contribute</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:news}">Latest news</a></li>
-		<!--<li><a class="menuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>-->
-	</ul>
+
+	{$REQUIRE_JAVASCRIPT,jquery-ui}
+	{$REQUIRE_CSS,jquery.ui.all}
+
+	<div class="pageMenu">
+		<div class="pageMenuHeader"><h2>What is Composr CMS?</h2></div>
+		<div class="accordionContent">
+			<p>Composr is a flexible CMS with advanced social, interactive and dynamic functionality.</p>
+
+			<p>[page="site:features"]Hundreds of features[/page] are available out of the box, as well as building blocks, and further addons (think multi-channel content delivery).</p>
+
+			<p>Composr is embraced by Fortune-100 companies, government agencies, and small startups. We make all the best ideas available to everyone.</p>
+
+			<p class="lonely_label">Highlights:</p>
+			<ul>
+				<li><span><abbr title="Many features working together seamlessly out-of-the-box, including photo galleries, events, forums, and news">Huge integrated feature-set</abbr></span></li>
+				<li><span>Enthusiastic community</span></li>
+				<li><span>No licensing costs</span></li>
+				<li><span>Cloud-compatible</span></li>
+				<li><span class="last"><abbr title="Powered by HTML5">HTML5</abbr>, <abbr title="Full design flexibility using templating and CSS3">CSS3</abbr>, <abbr title="Acclaimed accessibility, including WCAG and ATAG compliance">WCAG</abbr></span></li>
+			</ul>
+
+			<p class="accelerate"><span>Create smarter web properties;</span> accelerate &nbsp; &nbsp; &nbsp;time to market</p>
+		</div>
+
+		<div class="pageMenuHeader"><h2>The Composr palette</h2></div>
+		<div class="accordionContent">
+			<div class="palBox">
+				<ul>
+					<li class="bx1"><a href="{$PAGE_LINK*,docs:tutorials:Mobile}" title="Mobile-friendly">Mobile-friendly</a></li>
+					<li class="bx2"><a href="{$PAGE_LINK*,docs:tutorials:Social}" title="Social networking">Social networking</a></li>
+					<li class="bx3"><a href="{$PAGE_LINK*,docs:tutorials:Administration}" title="Powerful Administration">Powerful Administration</a></li>
+					<li class="bx4"><a href="{$PAGE_LINK*,docs:tutorials:Security}" title="Fights-hackers">Fights-hackers</a></li>
+					<li class="bx5"><a href="{$PAGE_LINK*,docs:tutorials:Performance}" title="High-performance">High-performance</a></li>
+					<li class="bx6"><a href="{$PAGE_LINK*,docs:tutorials:SEO}" title="Automatic SEO">Automatic SEO</a></li>
+					<li class="bx7"><a href="{$PAGE_LINK*,docs:tutorials:Content}" title="Huge feature set">Huge feature set</a></li>
+					<li class="bx8"><a href="{$PAGE_LINK*,docs:tutorials:Development}" title="Extendable">Extendable</a></li>
+					<li class="bx9"><a href="{$PAGE_LINK*,docs:tutorials:Power tools}" title="Highly-customisable">Highly-customisable</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="pageMenuHeader"><h2>News</h2></div>
+		<div class="accordionContent">
+			{$BLOCK,block=main_news,title=Latest News}
+		</div>
+
+		<div class="pageMenuHeader"><h2>Newsletter</h2></div>
+		<div class="accordionContent">
+			{$BLOCK,block=main_newsletter_signup,title=Newsletter Sign up}
+		</div>
+	</div><!--accordion closed-->
+
+	<script>//<![CDATA[
+		$(function() {
+			$('.pageMenu').accordion({ heightStyle: "content" });
+		});
+	//]]></script>
 {+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}

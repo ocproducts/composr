@@ -14,6 +14,10 @@
 	.roundBut { width:118px; height:130px; background:url('{$IMG;,composr_homesite/mobile/round-but}') no-repeat center 0; display:block; text-align:center; padding:60px 32px 0 32px; color:#333; font-weight:bold; font-size:1.20em; margin:0 auto; }
 	.roundBut .txtUpper { text-transform:uppercase; }
 	.roundBut:hover { text-decoration:none; }
+
+	/* Particular content */
+	.accelerate { font-size:21px; background-image:url('{$IMG;,composr_homesite/start/accelerate-blurred-img}'); background-repeat:no-repeat; background-position:12px 29px; }
+	.accelerate span { display:block; }
 {+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}
@@ -63,43 +67,45 @@
 	.plusBtn a { display:block; height:32px; }
 	ul.list li { list-style-type:none; margin-left:20px; }
 	.marginBot { border-top:1px solid #ECEDF0; margin-top:1px; padding:0 0 20px; color:#666666; }
+{+END}
 
 
-	/*Palette section*/
+/*Palette section*/
 
-	.paletteHold { margin-top:15px; overflow:hidden; }
-	.palHead { height:100px; background-image:url('{$IMG;,composr_homesite/start/palette-top-bg}'); background-repeat:no-repeat; background-position:bottom center; }
-	.palBtm { height:60px; padding-top:6px; margin-top:-8px; background-image:url('{$IMG;,composr_homesite/start/palette-btm-bg}'); background-repeat:no-repeat; background-position:top center; }
+.paletteHold { margin-top:15px; overflow:hidden; }
+.palHead { height:100px; background-image:url('{$IMG;,composr_homesite/start/palette-top-bg}'); background-repeat:no-repeat; background-position:bottom center; }
+.palBtm { height:60px; padding-top:6px; margin-top:-8px; background-image:url('{$IMG;,composr_homesite/start/palette-btm-bg}'); background-repeat:no-repeat; background-position:top center; }
 
-	.palBox { overflow:hidden; }
-	.palBox ul { margin:0; padding:0; overflow:hidden; }
-	.palBox ul li { float:left; width:100px; height:150px; margin-right:7px; text-indent:-9999px; overflow:hidden; display:block; }
-	.palBox ul li:last-child { margin-right:0px; }
-	.palBox ul li.bx1 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px 0px; }
-	.palBox ul li.bx2 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px 0px; }
-	.palBox ul li.bx3 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px 0px; }
-	.palBox ul li.bx4 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px 0px; }
-	.palBox ul li.bx5 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px 0px; }
-	.palBox ul li.bx6 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px 0px; }
-	.palBox ul li.bx7 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px 0px; }
-	.palBox ul li.bx8 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px 0px; }
-	.palBox ul li.bx9 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px 0px; margin-right:0px; }
+.palBox { overflow:hidden; }
+.palBox ul { margin:0; padding:0; overflow:hidden; }
+.palBox ul li { float:left; width:100px; height:150px; margin-right:7px; text-indent:-9999px; overflow:hidden; display:block; }
+.palBox ul li:last-child { margin-right:0px; }
+.palBox ul li.bx1 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px 0px; }
+.palBox ul li.bx2 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px 0px; }
+.palBox ul li.bx3 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px 0px; }
+.palBox ul li.bx4 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px 0px; }
+.palBox ul li.bx5 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px 0px; }
+.palBox ul li.bx6 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px 0px; }
+.palBox ul li.bx7 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px 0px; }
+.palBox ul li.bx8 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px 0px; }
+.palBox ul li.bx9 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px 0px; margin-right:0px; }
 
-	.palBox ul li a { display:block; }
+.palBox ul li a { display:block; }
+{+START,IF,{$NOT,{$MOBILE}}}
 	.palBox ul li { {$BETA_CSS_PROPERTY,transition:margin 0.5s ease-out;} }
 	.palBox ul li:hover { cursor:pointer; margin-top:-10px; }
-
-	.palBox ul li.bx1:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px -151px; }
-	.palBox ul li.bx2:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px -151px; }
-	.palBox ul li.bx3:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px -151px; }
-	.palBox ul li.bx4:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px -151px; }
-	.palBox ul li.bx5:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px -151px; }
-	.palBox ul li.bx6:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px -151px; }
-	.palBox ul li.bx7:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px -151px; }
-	.palBox ul li.bx8:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px -151px; }
-	.palBox ul li.bx9:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px -151px; margin-right:0px; }
-
-	.readMoreBtn { width:118px; margin:0 auto; line-height:28px; text-align:center; color:#9B9DA2; text-shadow:1px 1px #FFF; background-image:url('{$IMG;,composr_homesite/start/read-more-btn}'); background-repeat:no-repeat; background-position:left top; font-weight:bold; font-size:14px; text-transform:uppercase; }
-	.readMoreBtn a { text-decoration:none; color:#9B9DA2; display:block; }
-	.readMoreBtn a:hover { color:#E5922C; text-shadow:1px 1px #FFF; }
 {+END}
+
+.palBox ul li.bx1:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px -151px; }
+.palBox ul li.bx2:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px -151px; }
+.palBox ul li.bx3:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px -151px; }
+.palBox ul li.bx4:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px -151px; }
+.palBox ul li.bx5:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px -151px; }
+.palBox ul li.bx6:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px -151px; }
+.palBox ul li.bx7:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px -151px; }
+.palBox ul li.bx8:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px -151px; }
+.palBox ul li.bx9:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px -151px; margin-right:0px; }
+
+.readMoreBtn { width:118px; margin:0 auto; line-height:28px; text-align:center; color:#9B9DA2; text-shadow:1px 1px #FFF; background-image:url('{$IMG;,composr_homesite/start/read-more-btn}'); background-repeat:no-repeat; background-position:left top; font-weight:bold; font-size:14px; text-transform:uppercase; }
+.readMoreBtn a { text-decoration:none; color:#9B9DA2; display:block; }
+.readMoreBtn a:hover { color:#E5922C; text-shadow:1px 1px #FFF; }

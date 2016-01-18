@@ -34,7 +34,6 @@
 		<div class="cntLRow">
 			<div id="vertical_container">
 				<h1 class="accordionToggle">Financial</h1>
-
 				<div class="accordionContent">
 					[block="money" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
