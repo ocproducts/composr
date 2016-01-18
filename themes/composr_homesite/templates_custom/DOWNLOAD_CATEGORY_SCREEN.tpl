@@ -58,29 +58,31 @@
 
 {+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}{+END}
 
-{+START,IF,{$AND,{$PREG_MATCH,^Version [\d\.]+,{$META_DATA,title}},{$IN_STR,{$BREADCRUMBS},Addons}}}
-	<div class="cntRow">
-		<div class="ftHolder headFT">
-			Top Rated Addons:
+{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$AND,{$PREG_MATCH,^Version [\d\.]+,{$META_DATA,title}},{$IN_STR,{$BREADCRUMBS},Addons}}}
+		<div class="cntRow">
+			<div class="ftHolder headFT">
+				Top Rated Addons:
+			</div>
+
+			{$BLOCK,block=main_multi_content,param=download,select={ID}*,efficient=0,zone=_SELF,sort=average_rating DESC,max=20,no_links=1,guid=top_downloads}
+
+			<script>// <![CDATA[
+				$(document).ready(function() {
+					stepcarousel.setup({
+						galleryid: 'downloads_gallery', //id of carousel DIV
+						beltclass: 'belt', //class of inner "belt" DIV containing all the panel DIVs
+						panelclass: 'panel', //class of panel DIVs each holding content
+						autostep: {enable:true, moveby:1, pause:3000},
+						panelbehavior: {speed:500, wraparound:false, wrapbehavior:'slide', persist:true},
+						defaultbuttons: {enable: true, moveby: 1, leftnav: ['{$IMG;,composr_homesite/downloads/left-arrow}', -40, 70], rightnav: ['{$IMG;,composr_homesite/downloads/right-arrow}', 10, 70]},
+						statusvars: ['statusA', 'statusB', 'statusC'], //register 3 variables that contain current panel (start), current panel (last), and total panels
+						contenttype: ['inline'] //content setting ['inline'] or ['ajax', 'path_to_external_file']
+					})
+				});
+			//]]></script>
 		</div>
-
-		{$BLOCK,block=main_multi_content,param=download,select={ID}*,efficient=0,zone=_SELF,sort=average_rating DESC,max=20,no_links=1,guid=top_downloads}
-
-		<script>// <![CDATA[
-			$(document).ready(function() {
-				stepcarousel.setup({
-					galleryid: 'downloads_gallery', //id of carousel DIV
-					beltclass: 'belt', //class of inner "belt" DIV containing all the panel DIVs
-					panelclass: 'panel', //class of panel DIVs each holding content
-					autostep: {enable:true, moveby:1, pause:3000},
-					panelbehavior: {speed:500, wraparound:false, wrapbehavior:'slide', persist:true},
-					defaultbuttons: {enable: true, moveby: 1, leftnav: ['{$IMG;,composr_homesite/downloads/left-arrow}', -40, 70], rightnav: ['{$IMG;,composr_homesite/downloads/right-arrow}', 10, 70]},
-					statusvars: ['statusA', 'statusB', 'statusC'], //register 3 variables that contain current panel (start), current panel (last), and total panels
-					contenttype: ['inline'] //content setting ['inline'] or ['ajax', 'path_to_external_file']
-				})
-			});
-		//]]></script>
-	</div>
+	{+END}
 {+END}
 
 {+START,INCLUDE,_COMMUNITY_BANNERS}{+END}

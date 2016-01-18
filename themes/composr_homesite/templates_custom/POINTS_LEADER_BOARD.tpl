@@ -16,7 +16,9 @@
 	</p>
 
 	<div class="forum-points-stuff-box-button">
-		<a rel="archives" href="{URL*}" title="{!MORE}: {!POINT_LEADER_BOARD}">Archive</a>
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<a rel="archives" href="{URL*}" title="{!MORE}: {!POINT_LEADER_BOARD}">Archive</a>
+		{+END}
 		<a href="{$PAGE_LINK*,site:stars}">Community stars</a>
 		<a href="{$PAGE_LINK*,site:pointstore}">Point Store</a>
 	</div>

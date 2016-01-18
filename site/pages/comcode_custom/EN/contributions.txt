@@ -96,7 +96,7 @@
 
 	<div class="cntRight">
 		<div class="cntRRow">
-			<div class="tesBlock">
+			<div class="niceBox">
 				<h3 class="tesHead2">
 					Things you can do right now
 				</h3>

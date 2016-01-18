@@ -59,9 +59,13 @@
 			</div>
 
 			<div class="cns_forum_topic_title_bits_left">
-				{TOPIC_ROW_LINKS}
+				{+START,LOOP,TOPIC_ROW_LINKS}
+					<a rel="nofollow" href="{URL*}"><img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+				{+END}
 
-				{TOPIC_ROW_MODIFIERS}
+				{+START,LOOP,TOPIC_ROW_MODIFIERS}
+					<img class="vertical_alignment" src="{$IMG*,icons/14x14/cns_topic_modifiers/{IMG}}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/{IMG}} 2x" title="{ALT*}" alt="{ALT*}" />
+				{+END}
 			</div>
 		{+END}
 	</td>

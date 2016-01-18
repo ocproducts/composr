@@ -192,23 +192,47 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 .brCrumb {
 	{+START,IF,{$NOT,{$MOBILE}}}
 		width:960px;
+		font-size:13px;
 	{+END}
 	height:24px;
 	line-height:24px;
 	overflow:hidden;
 	padding-bottom:10px;
 	margin-bottom:25px;
-	font-size:13px;
 	color:#666;
 	border-bottom:1px solid #E2E3E5;
 }
 .brCrumb a { color:#666; }
 .brCrumb a:hover { color:#E5922D; }
 
-.cntLeft { float:left; width:660px; height:auto; overflow:hidden; }
-.cntRight { float:right; width:280px; height:auto; overflow:hidden; }
-.cntLRow { float:left; width:660px; padding-bottom:10px; }
-.cntRRow { float:left; width:280px; padding-bottom:10px; }
+.cntLeft {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		float:left;
+		width:660px;
+	{+END}
+	overflow:hidden;
+}
+.cntRight {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		float:right;
+		width:280px;
+	{+END}
+	overflow:hidden;
+}
+.cntLRow {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		float:left;
+		width:660px;
+	{+END}
+	padding-bottom:10px;
+}
+.cntRRow {
+	float:left;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:280px;
+	{+END}
+	padding-bottom:10px;
+}
 .cntLeft h1 { padding-bottom:10px; display:block; }
 .cntLeft h3 { font-size:22px; font-weight:bold; color:#677EA4; padding:5px 0px 10px 0px; display:block; }
 .cntLeft p { font-size:14px; line-height:22px; color:#666666; text-align:justify; padding-bottom:10px; }
@@ -222,6 +246,45 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 
 .sept { border-bottom:1px solid #E7EAED; margin-bottom:10px; height:1px; }
 .septHead { width:660px; height:30px; margin-bottom:10px; background-image:url('{$IMG;,composr_homesite/heading-bg1}'); background-repeat:no-repeat; background-position:left top; }
+
+
+/*Testimonials and similar styles*/
+
+.niceBox, .niceBoxWt { padding:20px 10px; overflow:hidden; {$BETA_CSS_PROPERTY,border-radius:16px;} }
+.niceBox { background-color:#F8DEBE; }
+.niceBoxWt { background-color:#F0F7F9; }
+.tesHead, .tesHead2 { {$BETA_CSS_PROPERTY,box-sizing: border-box;} width:275px; height:56px; margin-top:0; margin-left:-15px; padding:0px 20px 20px 20px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; position:absolute; }
+.tesHead { background-image:url('{$IMG;,composr_homesite/rcol_head_1}'); }
+.tesHead2 { background-image:url('{$IMG;,composr_homesite/rcol_head_2}'); }
+{+START,IF,{$MOBILE}}
+	.niceBox, .niceBoxWt {
+		margin: 0 10px;
+		width: 270px;
+		min-height: 350px;
+	}
+{+END}
+
+.quoteCst {
+	overflow:hidden;
+	font-size:14px;
+	color:#333;
+	line-height:22px;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		margin:65px 10px 20px 10px;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		margin:65px 10px 0 10px;
+	{+END}
+	text-align:left;
+}
+.quoteCst p { padding-bottom:10px; display:block; overflow:hidden; font-size:14px; color:#333; line-height:22px; text-align:left !important; }
+
+.quoteBreak { margin:10px 0 !important; border-bottom:1px solid #DCBB87; }
+
+.quoteCst .highlightSpan { padding:10px 0px; font-weight:bold; display:block; }
+.quoteCst p .highlightSpan { color:#E78024; display:inline; font-weight:normal; }
+
+.quoteCst:last-child { border-bottom:none; }
 
 
 /*Right-hand box styles*/
@@ -286,24 +349,6 @@ input.email { float:left; width:270px; height:40px; padding:0px 4px; border:1px 
 .row-block .bannerr { margin:5px 0; }
 .row-block h2 { font-size:21px; color:#667ea4; font-weight:bold; padding:15px 0; margin:0; }
 .row-block p span { color:#e5922c; }
-
-
-/*Testimonials and similar styles*/
-
-.tesBlock { padding:20px 10px; overflow:hidden; background-color:#F8DEBE; {$BETA_CSS_PROPERTY,border-radius:16px;} }
-.tesBlockWt { padding:20px 10px; overflow:hidden; background-color:#F0F7F9; {$BETA_CSS_PROPERTY,border-radius:16px;} }
-.tesHead { width:235px; margin:0; padding:0px 20px 20px 20px; height:56px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-image:url('{$IMG;,composr_homesite/rcol_head_2}'); background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; margin-top:0; margin-left:-15px; position:absolute; }
-.tesHead2 { width:235px; height:56px; padding:0px 20px 20px 20px; color:#666 !important; font-size:16px !important; font-weight:normal !important; background-image:url('{$IMG;,composr_homesite/rcol_head_1}'); background-repeat:no-repeat; background-position:left top; line-height:56px; z-index:99; margin-top:0; margin-left:-15px; position:absolute; }
-
-.quoteCst { overflow:hidden; font-size:14px; color:#333; line-height:22px; margin:65px 10px 20px 10px; text-align:left; }
-.quoteCst p { padding-bottom:10px; display:block; overflow:hidden; font-size:14px; color:#333; line-height:22px; text-align:left !important; }
-
-.quoteBreak { margin:10px 0 !important; border-bottom:1px solid #DCBB87; }
-
-.quoteCst .highlightSpan { padding:10px 0px; font-weight:bold; display:block; }
-.quoteCst p .highlightSpan { color:#E78024; display:inline; font-weight:normal; }
-
-.quoteCst:last-child { border-bottom:none; }
 
 
 /*Contact page*/
@@ -1733,7 +1778,7 @@ table.scrollable_inside {
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
 	{+START,IF,{$MOBILE}}
-		overflow-x: scroll;
+		overflow-x: auto;
 	{+END}
 }
 

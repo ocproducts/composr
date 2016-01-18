@@ -9,7 +9,9 @@
 		<a href="{POINTS_URL*}" title="{$TRUNCATE_LEFT*,{POINTS},25,1}: {USERNAME*}">{$TRUNCATE_LEFT*,{POINTS},25,1}</a>
 	</td>
 
-	<td class="width40">
-		{$CNS_RANK_IMAGE,{ID}}
-	</td>
+	{+START,IF,{$NOT,{$MOBILE}}}
+		<td class="width40">
+			{$CNS_RANK_IMAGE,{ID}}
+		</td>
+	{+END}
 </tr>

@@ -221,7 +221,7 @@
 		<div class="cntRRow"></div>
 
 		<div class="cntRRow">
-			<div class="tesBlockWt">
+			<div class="niceBoxWt">
 				<h3 class="tesHead2">
 					Quick-fire awesome
 				</h3>

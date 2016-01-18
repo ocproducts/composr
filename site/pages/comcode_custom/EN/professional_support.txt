@@ -61,7 +61,7 @@ Hourly cost (approx):
 
 		<div class="cntRight">
 			<div class="cntRRow">
-				<div class="tesBlock">
+				<div class="niceBox">
 					<h3 class="tesHead2">
 						Top up
 					</h3>

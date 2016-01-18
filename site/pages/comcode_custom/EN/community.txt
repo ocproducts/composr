@@ -99,7 +99,7 @@
 
 	<div class="cntRight">
 		<div class="cntRRow">
-			<div class="tesBlock">
+			<div class="niceBox">
 				<h3 class="tesHead">
 					Testimonials
 				</h3>

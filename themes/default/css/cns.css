@@ -585,6 +585,11 @@ hr.cns_sig_barrier {
 	text-decoration: none;
 }
 
+.cns_forum_in_category_forum .horizontal_meta_details img {
+	position: relative;
+	top: 2px;
+}
+
 .cns_forum_new_post_indicator {
 	vertical-align: middle;
 }

@@ -97,21 +97,35 @@ Before you make requests, it's a good idea to check they aren't already made, an
 [title="2"]The story so far[/title]
 
 [semihtml]
-<div class="story_so_far">
-	<div class="col1">
-		[img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="story_so_far">
+		<div class="col1">
+			[img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
 
-		<p>
-			(The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)
-		</p>
+			<p>
+				(The figures to the left are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)
+			</p>
+		</div>
+
+		<div class="col2"><div class="box"><div class="box_inner">
+			<div class="ohloh_wrap">
+				<script type='text/javascript' src='https://www.openhub.net/p/composr/widgets/project_cocomo?format=js'></script>
+			</div>
+		</div></div></div>
+	</div>
+{+END}
+
+{+START,IF,{$MOBILE}}
+	<div>
+		<script type='text/javascript' src='https://www.openhub.net/p/composr/widgets/project_cocomo?format=js'></script>
 	</div>
 
-	<div class="col2"><div class="box"><div class="box_inner">
-		<div class="ohloh_wrap">
-			<script type='text/javascript' src='https://www.openhub.net/p/composr/widgets/project_cocomo?format=js'></script>
-		</div>
-	</div></div></div>
-</div>
+	<p style="margin-top: 0" class="associated_details">
+		(The figures above are calculated by Ohloh and represent normal costs from programmers with only average skillz. In most cases we've been smart enough to get things done on more cromulent figures.)
+	</p>
+
+	[img align="middle"]{$IMG,tracker/credit}[/img] See [page="site:stars"]who's getting all the credit[/page]
+{+END}
 [/semihtml]
 
 [title="2"]Where do the cost estimates come from?[/title]

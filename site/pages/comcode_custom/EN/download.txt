@@ -36,7 +36,7 @@
 			<p>Composr is also available on:</p>
 
 			<div class="cntLRow">
-				<div id="div_dlLogo">
+				<div class="dlLogo" id="div_dlLogo">
 					<ul>
 						<li><a href="http://www.microsoft.com/web/gallery/composr.aspx" target="_blank"><img alt="Microsoft Web Platform" src="{$IMG*,composr_homesite/download/logo-microsoft}" /></a></li>
 						<li><a href="http://www.softaculous.com/softwares/cms/composr" target="_blank"><img alt="Softaculous" src="{$IMG*,composr_homesite/download/logo-softaculous}" /></a></li>
@@ -48,7 +48,7 @@
 					</ul>
 				</div>
 
-				<div id="div_dlLogo1" style="display:none">
+				<div class="dlLogo" id="div_dlLogo1" style="display:none">
 					<p>We'd love to be on:</p>
 
 					<ul>
@@ -93,7 +93,7 @@
 
 	<div class="cntRight">
 		<div class="cntRRow">
-			<div class="tesBlock">
+			<div class="niceBox">
 				<h3 class="tesHead">
 					Are you upgrading?
 				</h3>
@@ -106,7 +106,7 @@
 
 		<!--
 		<div class="cntRRow">
-			<div class="tesBlockWt">
+			<div class="niceBoxWt">
 				<h3 class="tesHead2">
 					Looking for addons and themes?
 				</h3>
@@ -119,7 +119,7 @@
 		-->
 
 		<div class="cntRRow">
-			<div class="tesBlockWt">
+			<div class="niceBoxWt">
 				<h3 class="tesHead2">
 					Hosting requirements
 				</h3>
@@ -147,7 +147,7 @@
 		</div>
 
 		<div class="cntRRow">
-			<div class="tesBlockWt">
+			<div class="niceBoxWt">
 				<h3 class="tesHead2">
 					Forum integration
 				</h3>
@@ -168,7 +168,7 @@
 		</div>
 
 		<div class="cntRRow">
-			<div class="tesBlockWt">
+			<div class="niceBoxWt">
 				<h3 class="tesHead2">
 					Other integration
 				</h3>

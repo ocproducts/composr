@@ -31,10 +31,6 @@
 			</div>
 
 			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_c">
-				{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
-					<div class="box nested"><div class="box_inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
-				{+END}{+END}
-
 				<div class="cns_member_column_last_visit">{!LAST_VISIT,{LAST_VISIT_DATE*}}
 					<ul class="meta_details_list">
 						<li>{!NEW_TOPICS,{NEW_TOPICS*}}</li>

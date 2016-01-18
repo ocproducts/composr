@@ -10,7 +10,13 @@
 .downloads-block>h2 { font-size:15px; color:#fff; font-weight:normal; padding:7px; background:#667ea4; border-radius:5px 5px 0 0; margin:0; }
 .downloads-block-content { width:95%; float:left; padding:15px 30px 10px 20px; overflow:hidden; }
 .downloads-block-img { width:200px; height:155px; float:left; margin:7px; }
-.downloads-block-txt { width:680px; float:right; overflow:hidden; }
+.downloads-block-txt {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:680px;
+		float:right;
+	{+END}
+	overflow:hidden;
+}
 .downloads-block-txt h2 { font-size:13px; margin:5px 0; }
 .downloads-block-txt>div:first-child { margin-bottom:20px; }
 .downloads-block-txt>div>p:last-child { margin-bottom:0; }

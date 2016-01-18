@@ -1,6 +1,39 @@
 .forum-points-stuff { margin:20px 0; width:100%; float:left; }
-.forum-points-stuff-box { width:47%; float:left; background:#f0f7f9; margin:5px 0; border-radius:7px; padding:10px; padding-top:70px; position:relative; margin-left:6px; min-height:362px; }
-.forum-points-stuff-box-head { width:436px; height:57px; margin:0; position:absolute; top:10px; left:-5px; background:url('{$IMG;,composr_homesite/forum/head-bg}') no-repeat left top; font-size:18px !important; padding:16px 0 0 15px; color:#333 !important; font-weight:normal !important; }
+.forum-points-stuff-box {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:47%;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		width:45%;
+	{+END}
+	float:left;
+	background:#f0f7f9;
+	margin:5px 0;
+	border-radius:7px;
+	padding:10px;
+	padding-top:70px;
+	position:relative;
+	margin-left:6px;
+	min-height:362px;
+}
+.forum-points-stuff-box-head {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:436px;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		padding-right:20px !important;
+	{+END}
+	height:57px;
+	margin:0;
+	position:absolute;
+	top:10px;
+	left:-5px;
+	background:url('{$IMG;,composr_homesite/forum/head-bg}') no-repeat left top;
+	font-size:18px !important;
+	padding:16px 0 0 15px;
+	color:#333 !important;
+	font-weight:normal !important;
+}
 .forum-points-stuff-box table { border-left:#d5e0e6 solid 1px; border-top:#d5e0e6 solid 1px; margin-bottom:10px; color:#333 }
 .forum-points-stuff-box td { border-right:#d5e0e6 solid 1px; border-bottom:#d5e0e6 solid 1px; padding:3px; font-size:14px; }
 .forum-points-stuff-box td img { height:20px; float:left; margin-right:5px; display:block; }
@@ -600,6 +633,11 @@ hr.cns_sig_barrier {
 
 .cns_forum_in_category_forum .associated_link {
 	text-decoration: none;
+}
+
+.cns_forum_in_category_forum .horizontal_meta_details img {
+	position: relative;
+	top: 2px;
 }
 
 .cns_forum_new_post_indicator {

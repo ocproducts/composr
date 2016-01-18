@@ -1926,7 +1926,7 @@ table.scrollable_inside {
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
 	{+START,IF,{$MOBILE}}
-		overflow-x: scroll;
+		overflow-x: auto;
 	{+END}
 }
 
