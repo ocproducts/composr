@@ -31,7 +31,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	{+END}
 	{+START,IF,{$_GET,overlay}}
-		<meta name="viewport" content="width=280, initial-scale=1, user-scalable=yes" />
+		<meta name="viewport" content="width=640, initial-scale=1, user-scalable=yes" />
 	{+END}
 {+END}
 {+START,IF,{$NOT,{$MOBILE}}}

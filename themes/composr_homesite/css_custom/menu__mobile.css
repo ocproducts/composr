@@ -1,0 +1,79 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.mobile_menu_button {
+	text-decoration: none;
+	color: {$GET,WB} !important;
+	position: absolute;
+	padding: 0.75em;
+}
+.mobile_menu_button:hover span {
+	text-decoration: underline;
+}
+
+.mobile_menu_button * {
+	vertical-align: middle;
+}
+
+.mobile_menu_button:after {
+	padding-left: 0.25em;
+	content: "\25bc"; /* Downward triangle arrow */
+	vertical-align: middle;
+	font-size: 0.85em;
+}
+
+.mobile_search {
+	text-align: center;
+	padding: 1em 0;
+	background-color: {$GET,area_6_background};
+}
+
+.menu_type__mobile {
+	position: absolute;
+	left: 0;
+	top: 4.4em;
+	width: 100%;
+	z-index: 1000;
+}
+
+.menu_type__mobile>ul {
+	border-bottom: 1px solid {$GET,standard_border};
+}
+
+.menu_type__mobile ul {
+	background-color: #C5A47A;
+}
+
+.menu_type__mobile li {
+	border-top: 1px solid {$GET,standard_border};
+	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	.menu_type__mobile li {
+		background-image: url('{$IMG;,icons/48x48/buttons/proceed}');
+		background-size: 24px 24px;
+	}
+}
+
+.menu_type__mobile li.current, .menu_type__mobile li:hover {
+	background-color: {$GET,area_hover_2_background};
+	color: {$GET,BW};
+}
+
+.menu_type__mobile li a {
+	padding: 1em !important;
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+.menu_type__mobile li img {
+	padding-right: 0.5em;
+}
+
+.menu_type__mobile ul ul li {
+	padding-left: 2em;
+	border-left: 1px solid {$GET,standard_border};
+}

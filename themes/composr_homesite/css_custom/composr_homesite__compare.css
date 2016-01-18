@@ -106,7 +106,7 @@ p#vtip #vtipArrow {
 #slide_header_text{
 	height:20px;
 	position:absolute;
-	z-index:1000;
+	z-index:100;
 	left: 0;
 	bottom:29px;
 	color:#FFF;

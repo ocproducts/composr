@@ -10,7 +10,7 @@
 {+START,IF,{$MOBILE}}
 	<div class="bannerPart">
 		<div class="bannerIn">
-			<span class="mainTxt"> <span class="txtBlack">The versatile</span>
+			<span class="mainTxt"> <span>The versatile</span>
 			<span class="txtOrange">Content Management System</span>
 			<span class="txtWhite">for next generation website</span>
 			<a class="button" href="{$PAGE_LINK*,site:features}">see our features</a>
@@ -24,13 +24,13 @@
 		<!--<li><a class="roundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
 	</ul>
 
-	<ul class="mainMenu">
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:compare}">why we're different</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:vision}">our vision</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:support}">support</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:community}">community</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:contributions}">contribute</a></li>
-		<li><a class="menuBut" href="{$PAGE_LINK*,site:news}">latest news</a></li>
+	<ul class="pageMenu">
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:compare}">Why we're different</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:vision}">Our vision</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:support}">Support</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:community}">Community</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:contributions}">Contribute</a></li>
+		<li><a class="menuBut" href="{$PAGE_LINK*,site:news}">Latest news</a></li>
 		<!--<li><a class="menuBut" target="_blank" href="http://www.arvixe.com/5256-223-3-122.html">Hosting</a></li>-->
 	</ul>
 {+END}

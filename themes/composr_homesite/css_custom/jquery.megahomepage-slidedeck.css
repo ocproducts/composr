@@ -56,7 +56,7 @@
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	color: #505050;
 	background: none;
-    margin-bottom: 3px;
+	margin-bottom: 3px;
 }
 .slidedeck-home-page dl.slidedeck dt:hover .index { color: #000000; }
 .slidedeck-home-page dl.slidedeck dt.active .index { color: #ffffff; }
@@ -148,14 +148,14 @@
 .slidedeck-home-page dl.slidedeck dt.active ul.verticalSlideNav { top: 3px; }
 .slidedeck-home-page dl.slidedeck ul.verticalSlideNav li {
 	position: relative;
-   width: 25px;
-   height: 12px;
-   line-height: 12px;
+	width: 25px;
+	height: 12px;
+	line-height: 12px;
 	padding: 0;
 	margin: 0;
-   overflow: hidden;
-   float: left;
-   clear: left;
+	overflow: hidden;
+	float: left;
+	clear: left;
 }
 .slidedeck-home-page dl.slidedeck ul.verticalSlideNav li a {
 	position: relative;
@@ -169,7 +169,7 @@
 	background: url('{$IMG;,composr_homesite/ocproducts/slider/vertical-nav_dots}') 0 0 no-repeat;
 }
 .slidedeck-home-page dl.slidedeck ul.verticalSlideNav li.active a {
-    background-position: 0 -24px;
+	background-position: 0 -24px;
 }
 .slidedeck-home-page dl.slidedeck dt.active ul.verticalSlideNav li.active a,
 .slidedeck-home-page dl.slidedeck dt.active ul.verticalSlideNav li.active a:link,
@@ -199,7 +199,7 @@
 	font-size: 13px;
 	font-style: italic;
 	color: #666;
-    margin-top: -10px;
+	margin-top: -10px;
 }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case div.case_text h5 { margin-top: auto; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case div.case_text ul,
@@ -217,12 +217,12 @@
 .slidedeck-home-page dl.slidedeck dd.slide ul.no-float li {
 	font-weight: bold;
 	margin: 0 0 8px 0;
-    list-style: disc;
+	list-style: disc;
 }
 .slidedeck-home-page dl.slidedeck dd.slide ul.no-float li {
-    float: none;
-    width: 100%;
-    margin: 0 0 0 8px;
+	float: none;
+	width: 100%;
+	margin: 0 0 0 8px;
 }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case p.sub {
 	font-size: 16px;
@@ -238,19 +238,19 @@
 }
 .slidedeck-home-page dl.slidedeck a.vertical-prev-next {
 	position: absolute;
-    display: none;
-    z-index: 20000;
+	display: none;
+	z-index: 20000;
 	width: 27px;
 	height: 0;
 	padding: 27px 0 0;
 	overflow: hidden;
 	line-height: 27px;
 	cursor: pointer;
-    left: 50%;
-    margin: 0 0 0 -13px;
-    background: url('{$IMG;,composr_homesite/ocproducts/slider/vertical_prev-next}');
+	left: 50%;
+	margin: 0 0 0 -13px;
+	background: url('{$IMG;,composr_homesite/ocproducts/slider/vertical_prev-next}');
 }
-.slidedeck-home-page dl.slidedeck dd:hover .vertical-prev-next { display: block;}
+.slidedeck-home-page dl.slidedeck dd:hover .vertical-prev-next { display: block; }
 .slidedeck-home-page dl.slidedeck a.vertical-prev-next.next {
 	bottom: 6px;
 	background-position: -27px 0;
@@ -275,7 +275,7 @@
 }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_1 div.case_text { margin: 20px 60px 0 0; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_2 div.case_image { margin: 8px 20px 0 0; float: right; }
-.slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_2 div.case_text { margin: 30px 0 0 40px; float: left;}
+.slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_2 div.case_text { margin: 30px 0 0 40px; float: left; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_3 div.case_image { margin: 2px 20px 0 0; float: right; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_3 div.case_text { margin: 60px 0 0 40px; float: left; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_4 div.case_image { margin: 0 20px 0 0; float: right; }
@@ -283,7 +283,7 @@
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_5 div.case_image { margin: 16px 20px 0 0; float: right; }
 .slidedeck-home-page dl.slidedeck ul.slidesVertical li.case.verticalSlide_5 div.case_text { margin: 50px 0 0 40px; float: left; }
 .slidedeck-home-page dl.slidedeck dd.slide_3 .copy { top: 80px; }
-.slidedeck-home-page dl.slidedeck dd.slide_3 img { /*float: right;*/ margin: 0 0px 0 0;}
+.slidedeck-home-page dl.slidedeck dd.slide_3 img { /*float: right;*/ margin: 0 0px 0 0; }
 .slidedeck-home-page dl.slidedeck dd.slide_4 div.title {
 	position: relative;
 	overflow: hidden;
