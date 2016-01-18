@@ -16,7 +16,9 @@
 			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_b">
 				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-					<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					{+START,IF,{$NOT,{$MOBILE}}}
+						<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					{+END}
 				{+END}
 
 				<dl class="meta_details_list">

@@ -1,7 +1,16 @@
 /* Tabs */
 
 .page_running_tracker .tab {
-	width: 110px;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width: 110px;
+	{+END}
+
+	{+START,IF,{$MOBILE}}
+		width: auto;
+		text-align: left;
+		min-width: 0;
+	{+END}
+
 	display: inline-block;
 }
 
