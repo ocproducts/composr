@@ -378,6 +378,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/community_billboard.php',
             '_tests/tests/unit_tests/forum.php',
             '_tests/tests/unit_tests/forum_grouping.php',
+            '_tests/tests/unit_tests/theme_images.php',
             '_tests/tests/unit_tests/glossary.php',
             '_tests/tests/unit_tests/galleries.php',
             '_tests/tests/unit_tests/forum_poll.php',

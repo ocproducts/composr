@@ -13,6 +13,8 @@
  * @package    theme_debug
  */
 
+// IDEA: Find if conflicting theme images, e.g. foo.png and foo.jpg in the same directory. We have a unit test for this right now, so share the code.
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $title = get_screen_title('Theme repair tools', false);

@@ -456,7 +456,10 @@ function get_directory_contents($path, $rel_path = '', $special_too = false, $re
 
     require_code('files');
 
-    $d = opendir($path);
+    $d = @opendir($path);
+    if ($d === false) {
+        return array();
+    }
     while (($file = readdir($d)) !== false) {
         if (!$special_too) {
             if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, IGNORE_ACCESS_CONTROLLERS)) {
