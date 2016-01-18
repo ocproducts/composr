@@ -97,20 +97,20 @@
 	<div class="cntRight">
 		<div class="cntRRow">
 			<div class="niceBox">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Things you can do right now
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<div style="display: block; width: 180px; height: 150px; background: transparent url(http://cdn.hotscripts.com/img/widgets/rt_180x150-1.gif) 0 0 no-repeat;"><p style="width: auto; margin: 0 0 12px; padding: 50px 0 0 8px; font: normal 11px/13px Arial, Helvetica, sans-serif; color: #fff; text-align: left;"><strong>Like our script?</strong> Rate it at <a target="_blank" href="http://www.hotscripts.com/category/scripts/php/scripts-programs/portal-systems/?RID=224699" style="color: #fff; text-decoration: none;" >HotScripts</a> > <a target="_blank" href="http://www.hotscripts.com/?RID=224699" style="color: #fff; text-decoration: none;">Hot Scripts</a></p><form action="http://www.hotscripts.com/rate/32832/?RID=224699" method="post" style="margin: 0; padding: 0 0 0 12px; text-align: left; overflow: hidden;"><div style="margin: 0; padding: 0; width: 97px; float: left; clear: none; font: normal 11px/19px Tahoma, Arial, Helvetica, sans-serif;"><input type="radio" name="rate" id="Excellent" value="5" style="margin: 0 4px 0 0;" /><label for="Excellent">Excellent</label><br /><input type="radio" name="rate" id="Very_Good" value="4" style="margin: 0 4px 0 0;" /><label for="Very_Good">Very Good</label><br /><input type="radio" name="rate" id="Good" value="3" style="margin: 0 4px 0 0;" /><label for="Good">Good</label></div><div style="margin: 0; padding: 0; float: left; clear: none; font: normal 11px/19px Tahoma, Arial, Helvetica, sans-serif;"><input type="radio" name="rate" id="Fair" value="2" style="margin: 0 4px 0 0;" /><label for="Fair">Fair</label><br /><input type="radio" name="rate" id="Poor" value="1" style="margin: 0 4px 0 0;" /><label for="Poor">Poor</label><br /><input alt="Vote" type="image" src="http://cdn.hotscripts.com/img/widgets/btn_vote-2.gif" style="width: 50px; height: 17px; overflow: hidden; float: left; margin: 2px 0 0 2px; clear: none; padding: 0; border: 0;" /></div></form></div>
 
-					<p class="quoteBreak"><strong><a href="http://www.hotscripts.com/account/index.html?section=reviews&type=addnew&listing_id=32832">Review us on Hotscripts</a></strong></p>
+					<p class="niceBoxBreak"><strong><a href="http://www.hotscripts.com/account/index.html?section=reviews&type=addnew&listing_id=32832">Review us on Hotscripts</a></strong></p>
 
-					<p class="quoteBreak"><strong><a href="http://php.opensourcecms.com/scripts/details.php?scriptid=210">Rate us on OpenSourceCMS</a></strong></p>
+					<p class="niceBoxBreak"><strong><a href="http://php.opensourcecms.com/scripts/details.php?scriptid=210">Rate us on OpenSourceCMS</a></strong></p>
 
-					<p class="quoteBreak"><strong><a href="http://www.facebook.com/pages/Composr/80430912569">Like us on Facebook</a></strong></p>
+					<p class="niceBoxBreak"><strong><a href="http://www.facebook.com/pages/Composr/80430912569">Like us on Facebook</a></strong></p>
 
-					<p class="quoteBreak"><strong><a href="https://twitter.com/composr_cms">Follow us on Twitter</a></strong></p>
+					<p class="niceBoxBreak"><strong><a href="https://twitter.com/composr_cms">Follow us on Twitter</a></strong></p>
 				</div>
 			</div>
 		</div>

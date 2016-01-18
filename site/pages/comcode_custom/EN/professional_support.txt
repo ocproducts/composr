@@ -1,9 +1,6 @@
 [semihtml]
 {$REQUIRE_CSS,composr_homesite__professional_support}
 
-{$REQUIRE_JAVASCRIPT,jquery.verticaltabs}
-{$REQUIRE_CSS,jquery.verticaltabs}
-
 <div class="cntRow">
 	<div class="float_surrounder">
 		<div class="cntLeft">
@@ -59,20 +56,29 @@ Hourly cost (approx):
 			</div>
 		</div>
 
-		<div class="cntRight">
-			<div class="cntRRow">
-				<div class="niceBox">
-					<h3 class="tesHead2">
-						Top up
-					</h3>
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<div class="cntRight">
+				<div class="cntRRow">
+					<div class="niceBox">
+						<h3 class="niceBoxHead2">
+							Top up
+						</h3>
 
-					[block]credit_exps[/block]
+						<div class="niceBoxInner">
+							[block]credit_exps[/block]
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
+		{+END}
+		{+START,IF,{$MOBILE}}
+			<h3 class="colrBl" style="margin-bottom: 10px;">Top up:</h3>
+
+			[block]credit_exps[/block]
+		{+END}
 	</div>
 
-	<div class="cntRow">
+	<div class="cntRow"{+START,IF,{$MOBILE}} style="margin-top: 30px;"{+END}>
 		<p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
 
 		<p>&dagger; Response times aren't guaranteed, but if we miss a regular response time we will charge it at the back-burner rate. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to arrange a staff secondment with us.</p>
@@ -81,120 +87,107 @@ Hourly cost (approx):
 	</div>
 </div>
 
-<div class="cntRow">
-	<h3 class="colrBl">Choose a support type:</h3>
+{+START,IF,{$NOT,{$MOBILE}}}
+	{$REQUIRE_JAVASCRIPT,jquery.verticaltabs}
+	{$REQUIRE_CSS,jquery.verticaltabs}
 
-	<div class="comSrTab">
-		<div class="verticalslider" id="textExample">
-			<ul class="verticalslider_tabs">
-				<li class="frst"><a href="#">Technical support</a></li>
-				<li class="secd"><a href="#">Installation services</a></li>
-				<li class="thrd"><a href="#">Upgrade service</a></li>
-				<li class="frth"><a href="#">Staff secondment</a></li>
-				<li class="ffth"><a href="#">Feature sponsorship</a></li>
-			</ul>
+	<div class="cntRow">
+		<h3 class="colrBl">Choose a support type:</h3>
 
-			<!-- The text below is intensively short. The main text goes in contact.php (the decision tree). This page is mostly about explaining options/benefits to people and sign-posting, rather than educating on or leading through process. -->
+		<div class="comSrTab">
+			<div class="verticalslider" id="textExample">
+				<ul class="verticalslider_tabs">
+					<li class="frst"><a href="#">Technical support</a></li>
+					<li class="secd"><a href="#">Installation services</a></li>
+					<li class="thrd"><a href="#">Upgrade service</a></li>
+					<li class="frth"><a href="#">Staff secondment</a></li>
+					<li class="ffth"><a href="#">Feature sponsorship</a></li>
+				</ul>
 
-			<ul class="verticalslider_contents">
-				<li>
-					<h2>Technical support</h2>
+				<!-- The text below is intensively short. The main text goes in contact.php (the decision tree). This page is mostly about explaining options/benefits to people and sign-posting, rather than educating on or leading through process. -->
 
-					<p>You can count on our knowledgeable and friendly staff to be the support team you can depend on.</p>
+				<ul class="verticalslider_contents">
+					<li>
+						<h2>Technical support</h2>
 
-					<h3>Here are some examples of ways we can help:</h3>
-					<ul>
-						<li>Answering Composr-related questions (mentoring, and advice).</li>
-						<li>Help configuring complex features, such as LDAP or eCommerce support.</li>
-						<li>Availability to repair errors (e.g. if a database corrupts due to a power outage).</li>
-						<li>Advice and tutoring on web technologies, such as CSS.</li>
-					</ul>
+						{+START,INCLUDE,_SUPPORT_BOX_TECHNICAL_SUPPORT}{+END}
+					</li>
 
-					<p>Please note that moderate to large programming projects are better suited for secondment or our [page="ocproducts:"]agency service[/page].</p>
+					<li>
+						<h2>Installation services</h2>
 
-					<div class="commonBtn margin-l-20">
-						<a href="{$PAGE_LINK*,:contact:support}">Ask your question</a>
-					</div>
-				</li>
+						{+START,INCLUDE,_SUPPORT_BOX_INSTALLATION_SERVICES}{+END}
+					</li>
 
-				<li>
-					<h2>Installation services</h2>
+					<li>
+						<h2>Upgrade service</h2>
 
-					<p>We can install Composr onto your server of choice.</p>
+						{+START,INCLUDE,_SUPPORT_BOX_UPGRADE_SERVICE}{+END}
+					</li>
 
-					<h3>If you would like our installation service please first check:</h3>
-					<ul>
-						<li>Make sure you have at least 8 credits.</li>
-						<li>You agree to our [page="site:server_access" external="1"]server access policy[/page].</li>
-						<li>Your server meets our minimum requirements<br />(if we can't install because it doesn't, or if the server is faulty, we'll still need to charge for the service).</li>
-					</ul>
+					<li>
+						<h2>Staff secondment</h2>
 
-					<div class="commonBtn margin-l-20">
-						<a href="{$PAGE_LINK*,:contact:installation}">Send us your details</a>
-					</div>
-				</li>
+						{+START,INCLUDE,_SUPPORT_BOX_STAFF_SECONDMENT}{+END}
+					</li>
 
-				<li>
-					<h2>Upgrade service</h2>
+					<li>
+						<h2>Feature sponsorship</h2>
 
-					<p>Want an existing Composr website upgraded to a newer version?</p>
-
-					<h3>We can handle:</h3>
-					<ul>
-						<li>Uploading the new files.</li>
-						<li>Upgrading your database.</li>
-						<li>Updating your theme.</li>
-						<li>Updating any custom code.</li>
-					</ul>
-
-					<div class="commonBtn margin-l-20">
-						<a href="{$PAGE_LINK*,:contact:upgrade}">Brief us</a>
-					</div>
-				</li>
-
-				<li>
-					<h2>Staff secondment</h2>
-
-					<p>
-						The best modern websites involve ongoing work to keep them fresh, and optimise the user experience.<br />
-						We can arrange for developer(s) to work regular hours for you.
-					</p>
-
-					<h3>Benefits:</h3>
-					<ul>
-						<li>Achieve excellence</li>
-						<li>Pay only for the regular hours you need rather than a full salary</li>
-						<li>Save the time of having to micro-manage ongoing maintenance, just rely on us</li>
-						<li>Avoid having to interview people for a role you are not yourself expert in</li>
-						<li>Save on office space costs</li>
-					</ul>
-
-					<div class="commonBtn margin-l-20">
-						<a href="{$PAGE_LINK*,:contact:secondment}">Talk to us</a>
-					</div>
-				</li>
-
-				<li>
-					<h2>Feature sponsorship</h2>
-
-					<p>Composr moves forward when people sponsor new functionality.</p>
-					<p>If you want to see something integrated cleanly into Composr's roadmap, feature sponsorship is the way to do it.</p>
-
-					<p>If you just want to support Composr, we can help you pick something to sponsor:<br />Just open up a ticket with us and let us know.</p>
-
-					<div class="commonBtn margin-l-20">
-						<a href="{$PAGE_LINK*,:contact:sponsor}">Be awesome</a>
-					</div>
-				</li>
-			</ul>
+						{+START,INCLUDE,_SUPPORT_BOX_FEATURE_SPONSORSHIP}{+END}
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
 
-<script>//<![CDATA[
-$(document).ready(function() {
-	$("#textExample").verticaltabs({speed: 500,slideShow: false,activeIndex: 0});
-	$("#imageExample").verticaltabs({speed: 1000,slideShow: true,slideShowSpeed: 3000,activeIndex: 0,playPausePos: "topRight"});
-});
-//]]></script>
+	<script>//<![CDATA[
+	$(document).ready(function() {
+		$("#textExample").verticaltabs({speed: 500,slideShow: false,activeIndex: 0});
+		$("#imageExample").verticaltabs({speed: 1000,slideShow: true,slideShowSpeed: 3000,activeIndex: 0,playPausePos: "topRight"});
+	});
+	//]]></script>
+{+END}
+
+{+START,IF,{$MOBILE}}
+	<h3 class="colrBl">Support types:</h3>
+
+	{$REQUIRE_JAVASCRIPT,jquery-ui}
+	{$REQUIRE_CSS,jquery.ui.all}
+
+	<div class="cntLRow">
+		<div id="vertical_container">
+			<h2 class="accordionToggle">Technical support</h2>
+			<div class="accordionContent">
+				{+START,INCLUDE,_SUPPORT_BOX_TECHNICAL_SUPPORT}{+END}
+			</div>
+
+			<h2 class="accordionToggle">Installation services</h2>
+			<div class="accordionContent">
+				{+START,INCLUDE,_SUPPORT_BOX_INSTALLATION_SERVICES}{+END}
+			</div>
+
+			<h2 class="accordionToggle">Upgrade service</h2>
+			<div class="accordionContent">
+				{+START,INCLUDE,_SUPPORT_BOX_UPGRADE_SERVICE}{+END}
+			</div>
+
+			<h2 class="accordionToggle">Staff secondment</h2>
+			<div class="accordionContent">
+				{+START,INCLUDE,_SUPPORT_BOX_STAFF_SECONDMENT}{+END}
+			</div>
+
+			<h2 class="accordionToggle">Feature sponsorship</h2>
+			<div class="accordionContent">
+				{+START,INCLUDE,_SUPPORT_BOX_FEATURE_SPONSORSHIP}{+END}
+			</div>
+		</div><!--accordion closed-->
+	</div>
+
+	<script>//<![CDATA[
+		$(function() {
+			$('#vertical_container').accordion({ heightStyle: "content" });
+		});
+	//]]></script>
+{+END}
 [/semihtml]

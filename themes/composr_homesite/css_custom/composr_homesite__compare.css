@@ -14,7 +14,7 @@ ul.cntLiFull li { padding:0px 0px 15px 40px; line-height:22px; display:block; co
 	height:300px;
 	margin:0;
 	padding:0;
-	z-index:999;
+	z-index:50;
 	position:relative;
 	top:-300px;
 	background: rgba(0,0,0,0.0001); /* IE fix- needed for hovering to get detected for the .vtip elements */

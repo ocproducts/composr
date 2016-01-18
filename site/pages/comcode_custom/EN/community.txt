@@ -100,7 +100,7 @@
 	<div class="cntRight">
 		<div class="cntRRow">
 			<div class="niceBox">
-				<h3 class="tesHead">
+				<h3 class="niceBoxHead">
 					Testimonials
 				</h3>
 
@@ -108,7 +108,7 @@
 					<span class="nav prev">Prev</span> <span class="nav next">Next</span>
 				</div>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<div class="quotesWrapper">
 						<div class="swipe" id="slider">
 							<div class="swipe-wrap">

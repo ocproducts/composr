@@ -6,190 +6,164 @@
 
 [title]Composr compared to other CMSs[/title]
 
-<div class="cntRow">
-	<div class="hSliderHold">
-		<div class="hSliderOuter">
-			<div class="hSlider">
-				<div class="con">
-					<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="cntRow">
+		<div class="hSliderHold">
+			<div class="hSliderOuter">
+				<div class="hSlider">
+					<div class="con">
+						<img alt="Cartoon image representing different CMSs" src="{$IMG*,composr_homesite/compare/scroll-img}" />
 
-					<div id="tooltip_container">
-						<div id="tooltip_wordpress" class="slide_tooltip">
-							<div id="wordpress" class="vtip" title="Wordpress is the best choice if you just want an online voice. With a lot of work it can be contorted to do more, but why build on the wrong foundations?"></div>
-						</div>
-						<div id="tooltip_joomla" class="slide_tooltip">
-							<div id="joomla" class="vtip" title="Joomla is designed for news publishing sites (which it does very well). In the core of Joomla everything is an article, whether you want that or not."></div>
-						</div>
-						<div id="tooltip_drupal" class="slide_tooltip">
-							<div id="drupal" class="vtip" title="For a sophisticated site Drupal is all about DIY &ndash; collect the pieces then spend a lot of time/money to hammer them to make it all fit."></div>
-						</div>
-						<div id="tooltip_snarepoint" class="slide_tooltip">
-							<div id="snarepoint" class="vtip" title="Do you have a budget for consultants and a desire to get locked into closed Microsoft technology? Then Share Point is for you!"></div>
-						</div>
-						<div id="tooltip_composr" class="slide_tooltip">
-							<div id="composr" class="vtip" title="Our professionally designed system, with all the features you need designed to work seamlessly together. No licensing costs either!"></div>
-						</div>
+						<div id="tooltip_container">
+							<div id="tooltip_wordpress" class="slide_tooltip">
+								<div id="wordpress" class="vtip" title="Wordpress is the best choice if you just want an online voice. With a lot of work it can be contorted to do more, but why build on the wrong foundations?"></div>
+							</div>
+							<div id="tooltip_joomla" class="slide_tooltip">
+								<div id="joomla" class="vtip" title="Joomla is designed for news publishing sites (which it does very well). In the core of Joomla everything is an article, whether you want that or not."></div>
+							</div>
+							<div id="tooltip_drupal" class="slide_tooltip">
+								<div id="drupal" class="vtip" title="For a sophisticated site Drupal is all about DIY &ndash; collect the pieces then spend a lot of time/money to hammer them to make it all fit."></div>
+							</div>
+							<div id="tooltip_snarepoint" class="slide_tooltip">
+								<div id="snarepoint" class="vtip" title="Do you have a budget for consultants and a desire to get locked into closed Microsoft technology? Then Share Point is for you!"></div>
+							</div>
+							<div id="tooltip_composr" class="slide_tooltip">
+								<div id="composr" class="vtip" title="Our professionally designed system, with all the features you need designed to work seamlessly together. No licensing costs either!"></div>
+							</div>
 
-						<img id="john_doe" onmouseout="set_opacity(this,0.1);" onmouseover="set_opacity(this,1.0);" title="" alt="John Doe, Purchasing Manager, Naive-Corp" src="{$IMG*,composr_homesite/compare/johndoemagnify}" />
+							<img id="john_doe" onmouseout="set_opacity(this,0.1);" onmouseover="set_opacity(this,1.0);" title="" alt="John Doe, Purchasing Manager, Naive-Corp" src="{$IMG*,composr_homesite/compare/johndoemagnify}" />
+						</div>
 					</div>
 				</div>
+
+				<div class="hSliderBtm"></div>
 			</div>
 
-			<div class="hSliderBtm"></div>
+			<div id="slide_header_text">A whimsical comparison of your CMS choice (Composr vs other common systems).</div>
 		</div>
 
-		<div id="slide_header_text">A whimsical comparison of your CMS choice (Composr vs other common systems).</div>
+		<!--custom div scroll bar -->
+		{$REQUIRE_JAVASCRIPT,jquery.scrollbars}
+		{$REQUIRE_CSS,jquery.scrollbars}
+		<script>//<![CDATA[
+			$(function() {
+				$('.con').scrollbars();
+			});
+		//]]></script>
 	</div>
 
-	<!--custom div scroll bar -->
-	{$REQUIRE_JAVASCRIPT,jquery.scrollbars}
-	{$REQUIRE_CSS,jquery.scrollbars}
-	<script>//<![CDATA[
-		$(function() {
-			$('.con').scrollbars();
-		});
+	<script>// <![CDATA[
+		set_opacity(document.getElementById('john_doe'),0.1);
+
+		this.vtip = function() {
+			$(".vtip").unbind().hover(
+				function(e) {
+					if (!this.t) this.t = this.title;
+					this.title = '';
+					var xOffset = (e.pageX>650)?-280:-50;
+					var yOffset = -100; // y distance from mouse
+					this.top = (e.pageY + yOffset - 10);
+					this.left = (e.pageX + xOffset);
+
+					$('body').append( '<p style="display: none" id="vtip"><img id="vtipArrow" />' + this.t + '</p>' );
+
+					$('p#vtip #vtipArrow').attr("src", '{$IMG;,composr_homesite/compare/vtip_arrow}');
+					$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
+					$('p#vtip').css("display","block").css("top", this.top+"px").css("left", this.left+"px").fadeIn("slow");
+
+				},
+				function() {
+					$("p#vtip").fadeOut("slow").remove();
+				}
+			).mousemove(
+				function(e) {
+					var xOffset=(e.pageX>650)?-280:-50;
+					var yOffset = -100; // y distance from mouse
+					this.top = (e.pageY + yOffset - 10);
+					this.left = (e.pageX + xOffset);
+
+					$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
+					$("p#vtip").css("top", this.top+"px").css("left", this.left+"px");
+				}
+			);
+
+		};
+
+		if (typeof window.jQuery!='undefined')
+		{
+			jQuery(document).ready(function($){vtip();})
+		}
 	//]]></script>
-</div>
-
-<script>// <![CDATA[
-	set_opacity(document.getElementById('john_doe'),0.1);
-
-	this.vtip = function() {
-		$(".vtip").unbind().hover(
-			function(e) {
-				if (!this.t) this.t = this.title;
-				this.title = '';
-				var xOffset = (e.pageX>650)?-280:-50;
-				var yOffset = -100; // y distance from mouse
-				this.top = (e.pageY + yOffset - 10);
-				this.left = (e.pageX + xOffset);
-
-				$('body').append( '<p style="display: none" id="vtip"><img id="vtipArrow" />' + this.t + '</p>' );
-
-				$('p#vtip #vtipArrow').attr("src", '{$IMG;,composr_homesite/compare/vtip_arrow}');
-				$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
-				$('p#vtip').css("display","block").css("top", this.top+"px").css("left", this.left+"px").fadeIn("slow");
-
-			},
-			function() {
-				$("p#vtip").fadeOut("slow").remove();
-			}
-		).mousemove(
-			function(e) {
-				var xOffset=(e.pageX>650)?-280:-50;
-				var yOffset = -100; // y distance from mouse
-				this.top = (e.pageY + yOffset - 10);
-				this.left = (e.pageX + xOffset);
-
-				$('p#vtip #vtipArrow').css("left", (e.pageX>650)?'220px':'15px');
-				$("p#vtip").css("top", this.top+"px").css("left", this.left+"px");
-			}
-		);
-
-	};
-
-	if (typeof window.jQuery!='undefined')
-	{
-		jQuery(document).ready(function($){vtip();})
-	}
-//]]></script>
+{+END}
 
 <div class="headlineRow cntRow">
-	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity). A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}">Web-applications, Composr, and PHP tutorial</a></p>
+	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity).{+START,IF,{$MOBILE}}<br />{+END}A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}" style="white-space:nowrap !important">Web-applications, Composr, and PHP tutorial</a></p>
 </div>
 
-<div class="cntRow">
-	<div id="tabs">
-		<ul class="diff">
-			<li id="ui-id-1"><a href="#tabs-1"></a></li>
-			<li id="ui-id-2"><a href="#tabs-2"></a></li>
-			<li id="ui-id-3"><a href="#tabs-3"></a></li>
-		</ul>
-
-		<div id="tabs-1">
-			<h2><span class="colrBl">Calling all</span> Webmasters&hellip;</h2>
-
-			<ul class="difText">
-				<li>Composr has no licensing costs &ndash; it is free to download, even for commercial use &ndash; re-focus investment where it's needed</li>
-				<li>So many website features are available out of the box: start with just what you need and turn things on as you need them</li>
-				<li>Composr can be thoroughly customised &ndash; you can do a surprising amount without a programmer</li>
-				<li>Use the integrated administration system: everything is neatly organised in harmony. Because Composr is developed by a dedicated team, everything is designed for simplicity and coherence</li>
-				<li>Composr has many 100s of pages of docs freely available, plus video tutorials. Because you don't need 3rd party addons, you can find all support and documentation in one place</li>
-				<li>We've been around since 2004 and has evolved continuously to keep up to date with technological changes</li>
-				<li>Composr has an active community of users.</li>
-				<li>Composr has a proper company behind it, so you can trust that the developers won't vanish. Lack of reliance on addons = no risk of orphaned features</li>
-				<li>The team behind Composr have a professional support service available to you if you need it</li>
-				<li>Because Composr is deployed commercially, it is continually tuned</li>
-				<li>Through Composr's advanced theme technology you can get a unique design up quickly</li>
-				<li>You can integrate Composr with most forum software, so that forum users may login to the site</li>
-				<li>Composr is a real hotbed of innovation, with many features not found anywhere else</li>
-				<li>Composr runs on almost any PHP web server &ndash; there are no special software or hardware requirements</li>
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="cntRow">
+		<div id="tabs">
+			<ul class="diff">
+				<li id="ui-id-1"><a href="#tabs-1"></a></li>
+				<li id="ui-id-2"><a href="#tabs-2"></a></li>
+				<li id="ui-id-3"><a href="#tabs-3"></a></li>
 			</ul>
-		</div>
 
-		<div id="tabs-2">
-			<h2><span class="colrBl">Calling all</span> Developers&hellip;</h2>
+			<div id="tabs-1">
+				<h2><span class="colrBl">Calling all</span> Webmasters&hellip;</h2>
 
-			<ul class="difText">
-				<li>We have over 100 pages of field-tested developer documentation</li>
-				<li>Plug-in your existing code without needing to make substantial changes: 'echo' still works</li>
-				<li>Every single PHP function is documented, however trivial &ndash; make use of a solid API</li>
-				<li>You can remove any features you don't need: we hate bloat too, and believe in simplicity</li>
-				<li>We have a rare transparency, even among Open Source companies&hellip; We don't hide our support prices, and think it is bad spirit for an OSS product to have a paid "pro" version</li>
-				<li>Composr is Open Source, so you can make and distribute your own changes</li>
-				<li>Use our framework to extend and override code without having to compromise upgradability</li>
-				<li>Our CEO is a programmer and our creative director's father co-invented Usenet &ndash; we live tech</li>
-				<li>We have extreme code quality standards; we even made own own stricter PHP version to develop on</li>
-				<li>We design for scalability &ndash; with support for Rackspace Cloud Sites and Facebook's HipHop PHP</li>
-				<li>There's no need for third party plugins to get a decent feature-base (compare our features!)</li>
-				<li>Our high standards span all our features; for example cross-feature proxy-server support</li>
-				<li>Our system architecture allows cross-feature functionality such as points and unified search</li>
-				<li>Technology is used consistently &ndash; e.g. you only need to work with one templating system</li>
-				<li>We find and fix bugs remarkably quickly, usually within just a couple of working days</li>
-				<li>Everything we do is free and online: no need to invest in extra books or commercial addons</li>
-				<li>Composr is secure-by-design, with layers of security and an inbuilt Web Application Firewall</li>
-			</ul>
-		</div>
+				{+START,INCLUDE,_COMPARE_WEBMASTERS}{+END}
+			</div>
 
-		<div id="tabs-3">
-			<h2><span class="colrBl">Calling all</span> Designers&hellip;</h2>
+			<div id="tabs-2">
+				<h2><span class="colrBl">Calling all</span> Developers&hellip;</h2>
 
-			<ul class="difText">
-				<li>We have over 100 pages of field-tested developer documentation</li>
-				<li>Plug-in your existing code without needing to make substantial changes: 'echo' still works</li>
-				<li>Every single PHP function is documented, however trivial &ndash; make use of a solid API</li>
-				<li>You can remove any features you don't need: we hate bloat too, and believe in simplicity</li>
-				<li>We have a rare transparency, even among Open Source companies&hellip; We don't hide our support prices, and think it is bad spirit for an OSS product to have a paid "pro" version</li>
-				<li>Every little bit of HTML and CSS can be customised in Composr without having to ever touch PHP</li>
-				<li>Our powerful templating language allows you to do common things like zebra stripes easily</li>
-				<li>Composr lets you make the system completely White Label with just a few clicks, for free</li>
-				<li>Your clients likely ask for lots of features: compare us on <a href="http://www.cmsmatrix.org/matrix/cms-matrix/ocportal" target="_blank">CMSMatrix</a>, we dare you!</li>
-				<li>We obsess about W3C compliance: see our <a href="vision.html" target="_blank">vision page</a> to see how far we go</li>
-				<li>We care about clean design: see how we cut out the noise on our website compared to other CMSs</li>
-				<li>A single Composr site can have multiple designs &ndash; e.g. different branding on different sections</li>
-				<li>Composr is built for full design flexibility, we hate assumptions; use features like Lego™ blocks</li>
-				<li>With Composr you can focus on design and stop having to hammer bits of technology into shape</li>
-				<li>Get stuff like comprehensive automatic sitemap creation: most CMSs can't even do this via addons</li>
-				<li>Avoid wrestling with the design styles of a dozen addon designers: use our consistent base</li>
-				<li>Composr features are tame and built without ego &ndash; unlike third party addons other CMSs rely on</li>
-				<li>Our CEO used to work at a design agency for high street brands: we live what you need and expect</li>
-				<li>All kind of effects are built into Comcode, such as carousels, tooltips, and tickers</li>
-				<li>As you know, clients now demand a CMS; Composr is designed for use by non-techies</li>
-				<li>With Composr you can create a platform for your client that can grow with their business &ndash; turn on new features as you/they need them</li>
-				<li>Get all that Social Media goodness &ndash; Composr has always had strong community tools at its heart</li>
-			</ul>
+				{+START,INCLUDE,_COMPARE_DEVELOPERS}{+END}
+			</div>
+
+			<div id="tabs-3">
+				<h2><span class="colrBl">Calling all</span> Designers&hellip;</h2>
+
+				{+START,INCLUDE,_COMPARE_DESIGNERS}{+END}
+			</div>
 		</div>
 	</div>
-</div>
 
-<!-- Script for Vertical Tab menu -->
-<script>//<![CDATA[
-	$(function() {
-		$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-		$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	});
-//]]></script>
-[/semihtml]
+	<!-- Script for Vertical Tab menu -->
+	<script>//<![CDATA[
+		$(function() {
+			$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+			$('#tabs li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		});
+	//]]></script>
+{+END}
+
+{+START,IF,{$MOBILE}}
+	<div class="cntLRow">
+		<div id="vertical_container">
+			<h1 class="accordionToggle">Calling all</span> Webmasters</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_COMPARE_WEBMASTERS}{+END}
+			</div>
+
+			<h1 class="accordionToggle">Calling all</span> Developers</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_COMPARE_DEVELOPERS}{+END}
+			</div>
+
+			<h1 class="accordionToggle">Calling all</span> Designers</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_COMPARE_DESIGNERS}{+END}
+			</div>
+		</div><!--accordion closed-->
+	</div>
+
+	<script>//<![CDATA[
+		$(function() {
+			$('#vertical_container').accordion({ heightStyle: "content" });
+		});
+	//]]></script>
+{+END}
 
 <div class="cntRow">
 	<h2>Direct comparison</h2>
@@ -773,3 +747,4 @@ We have to be clear that these don't always hold true, every project is differen
 		<li>*2: We could have improved our speed by removing bundled addons (this gets Composr 17.77 trans/sec), but we wanted to be consistent in comparing default installations. Drupal 7's default site did not come with any content or blocks placed, so was naturally very fast. Wordpress is simple without much overhead.<br />These figures are outdated and need updating. We have managed to do some quite sophisticated optimisations in Composr v10.</li>
 	</ul>
 </div>
+[/semihtml]

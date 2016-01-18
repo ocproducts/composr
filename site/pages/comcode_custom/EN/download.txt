@@ -94,11 +94,11 @@
 	<div class="cntRight">
 		<div class="cntRRow">
 			<div class="niceBox">
-				<h3 class="tesHead">
+				<h3 class="niceBoxHead">
 					Are you upgrading?
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<p>Instead of using this page, you should login to your Admin Zone. You'll see a link to upgrade there.</p>
 				</div>
 			</div>
@@ -107,11 +107,11 @@
 		<!--
 		<div class="cntRRow">
 			<div class="niceBoxWt">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Looking for addons and themes?
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<p>Go to our <a href="{$PAGE_LINK*,site:community}">community section</a>.</p>
 				</div>
 			</div>
@@ -120,11 +120,11 @@
 
 		<div class="cntRRow">
 			<div class="niceBoxWt">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Hosting requirements
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<ul class="liRcol">
 						<li>Apache or IIS or nginx</li>
 						<li>50MB of disk space</li>
@@ -148,11 +148,11 @@
 
 		<div class="cntRRow">
 			<div class="niceBoxWt">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Forum integration
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<p>Composr has its own forum and member system (Conversr), but can also integrate with some third party ones out-of-the-box:</p>
 
 					<ul class="liRcol">
@@ -169,11 +169,11 @@
 
 		<div class="cntRRow">
 			<div class="niceBoxWt">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Other integration
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<p>Conversr can integrate with an [abbr="Lightweight Directory Access Protocol"]LDAP[/abbr] server, facilitating tie in with [tooltip="i.e. tie in with Windows networks"]Active Directory[/tooltip] and [tooltip="i.e. tie in with Linux networks"]OpenLDAP[/tooltip] logins.</p>
 
 					<p>Conversr can also integrate with [tooltip="Systems that use the web browser to perform the login itself, via a standard popup authentication box"]HTTP authentication systems[/tooltip], facilitating integration with any login system that uses this mechanism.</p>

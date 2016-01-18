@@ -49,9 +49,9 @@
 
 /* Quick-fire awesome */
 
-.quoteCst p.ceo { overflow:hidden; float:none; font-size:13px; margin-bottom:0; padding-top:10px; padding-bottom:0; }
+.niceBoxInner p.ceo { overflow:hidden; float:none; font-size:13px; margin-bottom:0; padding-top:10px; padding-bottom:0; }
 
-.cntRight .quoteCst { margin-bottom:0; }
+.cntRight .niceBoxInner { margin-bottom:0; }
 
 .ceoPic { float:left; width:60px; height:82px; background-color:#D2DEE4; padding:5px; margin:0px 10px 0px 0px; }
 

@@ -16,7 +16,14 @@
 .cdt { float:left; width:35px; height:32px; padding-left:10px; font-weight:bold; text-align:left; line-height:32px; color:#666; }
 .cdtSel { float:left; width:180px; background-color:#FCF0E2; border:1px solid #DDBA87; font-weight:normal; padding:5px; text-align:left; margin-top:8px; display:block; {$BETA_CSS_PROPERTY,border-radius:4px;} }
 
-.topTble { width:240px; }
+.topTble {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:240px;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		width:100%;
+	{+END}
+}
 .topTble tr { border-bottom:1px solid #FFF; padding:0px; }
 .topTble tr>* { font-weight:normal; padding:10px 5px; text-align:left; line-height:22px; }
 .topTble thead th { width:109px; background-color:#E5922C; border-right:1px solid #DDBA87; color:#FFF; font-size:13px; }

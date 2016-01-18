@@ -1,20 +1,11 @@
 .page_running_contributions .cntRow h3 { margin:0; }
 
-.lonely_label + ul.cntLi { padding-top: 0; }
-ul.cntLi { list-style:none; margin:0; overflow:hidden; padding:10px 0px; }
-ul.cntLi li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
+{+START,IF,{$MOBILE}}
+	.page_running_contributions .cntRRow {
+		float:none;
+	}
 
-#vertical_nested_container { margin:20px auto 20px auto; }
-
-#vertical_container h1 { overflow:hidden; display:block; padding:10px; font-size:16px; font-weight:bold; text-align:left; color:#FFF; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:6px;} margin-bottom:8px; }
-#vertical_container h1:hover { cursor:pointer; }
-
-.accordionContent { overflow:hidden; padding:0px 10px !important; margin-bottom:10px !important; background-color:#F3F5F8; {$BETA_CSS_PROPERTY,border-radius:6px;} }
-.accordionContent .main { list-style:none; margin:0; padding:0; }
-.accordionContent .itemTitle { padding-left:20px; padding-bottom:10px; overflow:hidden; display:block; font-size:14px; font-weight:bold; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:00px 4px; color:#666; }
-.accordionContent .itemDescription { margin:0 0 1em 0; display:block; }
-
-.accordionToggle { background-image:url('{$IMG;,composr_homesite/contributions/accordion-normal}'); background-repeat:no-repeat; background-position:630px 14px; }
-.accordionToggleActive { background-image:url('{$IMG;,composr_homesite/contributions/accordion-active}'); background-repeat:no-repeat; background-position:630px 14px; }
-
-.ui-accordion .ui-accordion-header .ui-icon { display:none !important; }
+	.page_running_contributions .niceBox {
+		width:auto;
+	}
+{+END}

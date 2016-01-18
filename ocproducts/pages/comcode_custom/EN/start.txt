@@ -222,11 +222,11 @@
 
 		<div class="cntRRow">
 			<div class="niceBoxWt">
-				<h3 class="tesHead2">
+				<h3 class="niceBoxHead2">
 					Quick-fire awesome
 				</h3>
 
-				<div class="quoteCst">
+				<div class="niceBoxInner">
 					<ul class="liRcol">
 						<li>[url="http://www.facebook.com/notes/facebook-engineering/hiphop-for-php-six-months-later/416880943919"]Thanked by Facebook[/url] for helping them improve their tech</li>
 						<!--<li>[page="site:members"]Thousands of registered users[/page] of our technology</li>-->

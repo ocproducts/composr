@@ -1,9 +1,24 @@
 .page_running_support .colrBl { margin:0; }
 
 ul.srBoxes { list-style:none; margin:0; padding:0; overflow:hidden; }
-ul.srBoxes li { float:left; width:310px; height:140px; margin:0px 15px 15px 0px; background-color:#F2F4F7; display:block; {$BETA_CSS_PROPERTY,border-radius:3px;} }
+ul.srBoxes li {
+	float:left;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:310px;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		width:300px;
+	{+END}
+	height:140px;
+	margin:0px 15px 15px 0px;
+	background-color:#F2F4F7;
+	display:block;
+	{$BETA_CSS_PROPERTY,border-radius:3px;}
+}
 ul.srBoxes li:hover { background-color:#FFF; {$BETA_CSS_PROPERTY,box-shadow:#C8C8C9 0px 0px 7px;} }
-ul.srBoxes li.noMar { margin-right:0px; }
+{+START,IF,{$NOT,{$MOBILE}}}
+	ul.srBoxes li.noMar { margin-right:0px; }
+{+END}
 
 .srPic { float:left; width:100px; height:100px; margin:20px 20px 20px 0px; }
 
@@ -12,11 +27,34 @@ ul.srBoxes li.noMar { margin-right:0px; }
 .srTitle a:hover { color:#E5922C; }
 .srPara { font-size:14px; line-height:22px; color:#666; }
 
-.srBtmBlock { float:left; width:280px; margin-right:30px; min-height:480px; padding:10px; background-color:#F4FAFB; {$BETA_CSS_PROPERTY,border-radius:8px;} }
-.srBtmBlock.srBtmLast { margin-right:0px; }
-.srBtmImg { text-align:center; padding:15px 0px; }
+.srBtmBlock {
+	{+START,IF,{$NOT,{$MOBILE}}}
+		float:left;
+		width:280px;
+		margin-right:30px;
+		min-height:480px;
+	{+END}
+	{+START,IF,{$MOBILE}}
+		margin-top:20px;
+	{+END}
+	padding:10px;
+	background-color:#F4FAFB;
+	{$BETA_CSS_PROPERTY,border-radius:8px;}
+}
+{+START,IF,{$NOT,{$MOBILE}}}
+	.srBtmBlock.srBtmLast { margin-right:0px; }
+{+END}
+.srBtmImg {
+	text-align:center;
+	padding:15px 0px;
+	{+START,IF,{$MOBILE}}
+		display:none;
+	{+END}
+}
 .srBtmTitle { text-transform: uppercase; padding:10px 0px; margin-bottom:25px; text-align:center; font-size:15px; font-weight:bold; color:#667EA4; border-bottom:1px solid #E0E6ED; border-top:1px solid #E0E6ED; display:block; }
-.srBtmBlockInner { min-height:15em; }
+{+START,IF,{$NOT,{$MOBILE}}}
+	.srBtmBlockInner { min-height:15em; }
+{+END}
 .srBtmBlock p { font-size:14px; color:#666; line-height:22px; text-align:left; }
 
 ul.srBtmLi { list-style:none; margin:0; padding:0px 0px 10px 0px; color:#666; }
