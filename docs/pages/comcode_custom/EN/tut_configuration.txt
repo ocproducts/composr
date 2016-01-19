@@ -128,12 +128,12 @@ Examples of scheduling tasks:
  - Sending out automatic newsletters
  - Sending newsletters (dripping out e-mails over a period of time, to stop resource spiking)
 
-The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my web host does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
 
 [title="3"]Specific advice for Linux[/title]
 
-[media width="150" description="Setting up CRON in the cPanel web hosting control panel (different control panels vary in their UI)" float="right"]data_custom/images/docs/tut_configuration/cron.png[/media]
-On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many web hosting control panels allow you to do this.
+[media width="150" description="Setting up CRON in the cPanel webhosting control panel (different control panels vary in their UI)" float="right"]data_custom/images/docs/tut_configuration/cron.png[/media]
+On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many webhosting control panels allow you to do this.
 
 The following command might work for a Composr installation in the [tt]/home/examplesite/htdocs[/tt] directory:
 [code="Bash"]
@@ -147,7 +147,7 @@ You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at le
 
 [title="4"]Sandboxes CRON[/title]
 
-Some web hosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
+Some webhosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
 A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:
 [code="Bash"]
 #!/bin/sh
@@ -183,7 +183,7 @@ The following is a Windows Vista scheduler step by step process for scheduling t
 17) Click 'OK'
 This should have now added a schedule within Windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
 
-[title="3"]Help -- my web host does not support CRON![/title]
+[title="3"]Help -- my webhost does not support CRON![/title]
 
 In the event your hosting platform does not allow you access to CRON, there are a number of options available to you. These options work to call the [tt]data/cron_bridge.php[/tt] script by URL, rather than via a direct command on the server.
 
@@ -194,7 +194,7 @@ Simply sign up and  add the URL i.e. [tt]http://yourbaseurl/data/cron_bridge.php
 [staff_note]We have since optimised things so this is commented out
 [title="3"]Caveats[/title]
 
-If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the web host deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the web host, then perhaps deciding to ease CRON back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
+If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the webhost deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the webhost, then perhaps deciding to ease CRON back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
 [/staff_note]
 [title="2"]Closed site, and opening[/title]
 

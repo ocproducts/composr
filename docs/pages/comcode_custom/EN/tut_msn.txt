@@ -87,7 +87,7 @@ The staff filter works by storing 'staff on' lists under all member profiles tha
 
 You can make it so you have a single Composr site that runs across different subdomains. You can also make it so that zones appear to be structured hierarchically.
 
-[i]This is an advanced feature that is not fully supported by the developers. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared web hosts).[/i]
+[i]This is an advanced feature that is not fully supported by the developers. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared webhosts).[/i]
 
 The procedure is as follows:
 [list="a"]

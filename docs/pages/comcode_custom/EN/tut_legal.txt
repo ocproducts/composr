@@ -100,7 +100,7 @@ It is also possible that miscreants will attempt to use your website as a vehicl
 
 [title="2"]Social[/title]
 
-The sub-sections of this section briefly cover the main social issues you are likely to need to consider. By running a website with community features, such as a forum, or chat-rooms, you are in essence making yourself or your team, community leaders, and therefore you hold the responsibilities that come with this.
+The sub-sections of this section briefly cover the main social issues you are likely to need to consider. By running a website with community features, such as a forum, or chatrooms, you are in essence making yourself or your team, community leaders, and therefore you hold the responsibilities that come with this.
 
 [title="3"]Offensive content and moderation[/title]
 

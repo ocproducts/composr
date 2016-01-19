@@ -91,7 +91,7 @@ RSS is more common than Atom, but Atom is a cleaner standardised format; practic
 [media width="150" description="Syndication links are displayed in the news block if the 'Visible RSS/Atom links' option is enabled" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_1.png[/media]
 Links/URLs to view the feeds are made available from:
 1) from the OPML list
-2) the web browsers auto-discovery mechanism (via HTML meta-data)
+2) the web browsers auto-discovery mechanism (via HTML metadata)
 3) the news blocks (disabled by default actually)
 4) [i]or you can work them out yourself[/i]
 

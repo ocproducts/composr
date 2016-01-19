@@ -143,7 +143,7 @@ Remember:
  - you must specify to import from a Composr database, not a forum database.
 
 Other limitations:
- - The importer does not cover Comcode pages fully, only their meta data. However these are just [tt].txt[/tt] files ([tt]<zone>/pages/comcode_custom/<language>/<page>.txt[/tt]) that may be copied from one install to another.
+ - The importer does not cover Comcode pages fully, only their metadata. However these are just [tt].txt[/tt] files ([tt]<zone>/pages/comcode_custom/<language>/<page>.txt[/tt]) that may be copied from one install to another.
  - Shopping orders aren't imported, make sure there are no outstanding orders at the point of importing.
  - Commandr-fs GUIDs and filenames aren't imported, so these will change post-import.
  - Due to a complex cylic-dependency, usergroup custom fields won't import

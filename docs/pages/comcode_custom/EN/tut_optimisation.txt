@@ -21,7 +21,7 @@ Only one opcode cache can be used, and they often need to be manually compiled a
 
 [title="2"]Persistent database connections[/title]
 
-For MySQL you can configure Composr to use persistent database connections. This is not recommended on shared hosting because it may annoy the web host, but if you have a dedicated server it will cut down load times as a new database connection does not need to be established.
+For MySQL you can configure Composr to use persistent database connections. This is not recommended on shared hosting because it may annoy the webhost, but if you have a dedicated server it will cut down load times as a new database connection does not need to be established.
 
 These are enabled through the "Installation Options" ([tt]http://yourbaseurl/config_editor.php[/tt]).
 
@@ -147,13 +147,13 @@ Note that anyone behind a shared proxy server will share an IP address. If this 
 
 [title="3"]CloudLinux[/title]
 
-CloudLinux is popular with web hosts. It is a modified version of Red Hat Linux that can limit the performance of individual accounts, based on the [tt]lve[/tt] tools.
+CloudLinux is popular with webhosts. It is a modified version of Red Hat Linux that can limit the performance of individual accounts, based on the [tt]lve[/tt] tools.
 
 CloudLinux tracks maximum average CPU, calculated for the worst 5 second time period your site performance has in any particular hour (by default). This is calculated across all CPU cores, so it tends to trip on request floods (rather than any single slow request), with the request processing spanning multiple cores.
 
 CloudLinux also tracks average CPU, but this is less of an issue because the average tends to be much less than the maximum, but it is the maximum that hosts will typically look at.
 
-Web hosts may automatically produce warnings based on the CloudLinux maximums getting hit, or even automatic suspensions. At best, sites will automatically have their CPU kept to the configured maximum.
+Webhosts may automatically produce warnings based on the CloudLinux maximums getting hit, or even automatic suspensions. At best, sites will automatically have their CPU kept to the configured maximum.
 
 cPanel users will find a resource usage graph is made available. Note that the 100% line on this graph represents 100% of the configured limit, not 100% of a CPU core or of combined CPU. The average and maximum lines are scaled proportional to this configured limit also. This will confuse you if you aren't aware of it, because everywhere else lve is configured and monitored in terms of percentage of total capacity.
 
@@ -464,7 +464,7 @@ There are also newer PHP alternatives such as HippyVM, or approaches that limit 
 
 Google's mod_pagespeed adds some nice micro optimisations. Composr doesn't do these itself because they would hurt CPU performance and modularity, but applying them in a fast Apache module is useful. To be honest, this will not really result in any particularly noticeable performance gain, but if you've got a good budget for trying lots of small things at once, every little bit helps and we thought it worth mentioning and documenting against.
 
-mod_pagespeed is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the web host to do this for you.
+mod_pagespeed is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the webhost to do this for you.
 
 Interesting optimisations include:
  - https://developers.google.com/speed/docs/mod_pagespeed/filter-trim-urls (this breaks modularity -- but that is fine for primary output streams)

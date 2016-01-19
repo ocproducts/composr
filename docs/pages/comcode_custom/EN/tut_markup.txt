@@ -25,7 +25,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		<tr>
 			<td>[abbr="File Transfer Protocol"][url="http://www.w3.org/Protocols/rfc959/"]FTP[/url][/abbr] and [abbr="Security File Transfer Protocol"][url="https://tools.ietf.org/html/draft-ietf-secsh-filexfer-02"]SFTP[/url][/abbr]</td>
 			<td>This is the standard for uploading files to a server.</td>
-			<td>It is good to set up an SFTP client (FTP is not secure, so best avoided) and use that for uploading/downloading files. It is more convenient and reliable than using a web hosting control panel's file manager.</td>
+			<td>It is good to set up an SFTP client (FTP is not secure, so best avoided) and use that for uploading/downloading files. It is more convenient and reliable than using a webhosting control panel's file manager.</td>
 		</tr>
 		<tr>
 			<td>[abbr="Internet Message Access Protocol"][url="https://tools.ietf.org/html/rfc3501"]IMAP[/url][/abbr] and [abbr="Post Office Protocol 3"][url="https://tools.ietf.org/html/rfc1939"]POP3[/url][/abbr]</td>
@@ -156,12 +156,12 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 
 		<tr>
-			<th colspan="3"><em>Meta-data</em></th>
+			<th colspan="3"><em>Metadata</em></th>
 		</tr>
 
 		<tr>
-			<td>[url="http://developers.facebook.com/docs/opengraph/"]OpenGraph[/url]</td>
-			<td>Facebook-originated meta-data standard, with data being embedded into normal web pages.</td>
+			<td>[url="http://developers.facebook.com/docs/opengraph/"]Open Graph[/url]</td>
+			<td>Facebook-originated metadata standard, with data being embedded into normal web pages.</td>
 			<td>This is automatically included in Composr's templates. Further documentation is in the [page="_SEARCH:tut_facebook"]Facebook Support[/page] tutorial.</td>
 		</tr>
 		<tr>
@@ -171,7 +171,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>[url="http://dublincore.org/"]Dublin Core[/url] and <a href="{$BASE_URL}/cmscore.rdf" title="Composr Core is a simple extension to Dublin Core, extending it to encapsulate social-networking data.">Composr Core</a></td>
-			<td>This is the standard for adding meta-data to web pages; it ties into the XHTML.</td>
+			<td>This is the standard for adding metadata to web pages; it ties into the XHTML.</td>
 			<td>This is automatically included in Composr's templates.</td>
 		</tr>
 		<tr>
@@ -440,7 +440,7 @@ Now, some HTML elements...
 				<p><kbd>&lt;head&gt;</kbd></p>
 			</td>
 			<td>
-				<p>The meta-data section of the document. Contains
+				<p>The metadata section of the document. Contains
 				information about the document which isn&rsquo;t displayed, but
 				used by the browser in other ways. <strong>Required</strong>.</p>
 			</td>

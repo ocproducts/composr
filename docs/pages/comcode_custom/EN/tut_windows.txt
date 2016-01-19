@@ -97,7 +97,7 @@ If you want to install a supported third-party forum on your computer, follow th
 [surround]
 [media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_windows/windows_perm2.png[/media]
 [media width="150" description="Setting permissions (1)" float="right"]data_custom/images/docs/tut_windows/windows_perm1.png[/media]
-Because you are unlikely to have an account based FTP/HTTP setup like web-hosts provide, using the quick installer is probably not the truly quickest option. Fortunately due to the (wonderful!) inheritable Windows permissions system, and the fact you are at your own computer, you can just extract the manual installer files and run through the installation without having to set any file permissions or do any uploading.
+Because you are unlikely to have an account based FTP/HTTP setup like webhosts provide, using the quick installer is probably not the truly quickest option. Fortunately due to the (wonderful!) inheritable Windows permissions system, and the fact you are at your own computer, you can just extract the manual installer files and run through the installation without having to set any file permissions or do any uploading.
 
 Before you extract the files, you must make sure that the web directory, or sub-directory thereof, has been configured to have the right file permissions:
 
@@ -134,4 +134,4 @@ Just run through the installer normally, and by the end you should have a workin
  - [page="_SEARCH:tut_install"]Basic Installation[/page]
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
 
-{$SET,tutorial_tags,windows_helper_scripts,Installation,Web hosting,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to get a Composr installation running on your own Windows computer, if you choose to use that as your server.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,windows_helper_scripts,Installation,Webhosting,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to get a Composr installation running on your own Windows computer, if you choose to use that as your server.}[block]main_tutorial_rating[/block]

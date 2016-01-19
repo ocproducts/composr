@@ -138,12 +138,12 @@ Note that the file may already exist, potentially for either of two reasons:
 To try this, use FTP (or an equivalent tool) to rename the included 'recommended.htaccess' to '.htaccess' (or if the file already existed, manually copy & paste in the extra lines). Our recommended options will tighten up your security where possible, and make sure Composr has certain PHP and Apache features turned on.
 There are three caveats here:
 [list="1"]
-[*] it will only work on an Apache (basically, Linux) server. Windows IIS servers are either managed from the IIS Administrative Tools, or from a web hosting control panel.
+[*] it will only work on an Apache (basically, Linux) server. Windows IIS servers are either managed from the IIS Administrative Tools, or from a webhosting control panel.
 [*] CGI server configurations can not use [tt].htaccess[/tt] files to configure PHP settings. On CGI servers (and note this works on IIS CGI servers), you need to create special [tt]php.ini[/tt] files. For more information, see our [page="_SEARCH:faq"]FAQ[/page] ("How do I set PHP settings on a CGI server?"). This said, you can probably still set the [i]non-PHP[/i] settings in your [tt].htaccess[/tt] (see below).
-[*] some web-hosts do not allow [tt].htaccess[/tt] files to be used to change any options, resulting in an error message. To test for this try [tt]plain.htaccess[/tt] instead of [tt]recommended.htaccess[/tt]:
+[*] some webhosts do not allow [tt].htaccess[/tt] files to be used to change any options, resulting in an error message. To test for this try [tt]plain.htaccess[/tt] instead of [tt]recommended.htaccess[/tt]:
 [list]
 [*] If this succeeds, you are running CGI and you can't set PHP options from your [tt].htaccess[/tt], so read (2) above. Keep your [tt].htaccess[/tt] file though, it's still worth having even without the PHP options.
-[*] If this fails too you will need to rename the file back and consult your web-host.
+[*] If this fails too you will need to rename the file back and consult your webhost.
 [/list]
 [/list]
 [/surround]

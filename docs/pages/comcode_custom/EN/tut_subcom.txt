@@ -111,7 +111,7 @@ You may add new zones, edit zones, delete zones, and move pages between zones fr
 Admin Zone > Structure > Zones.
 You can delete a zone from the bottom of its edit form.
 
-When performing an action that will add, rename or delete a zone, you may need to provide details that tell Composr how it can do this; this is because on the some web hosting configurations, PHP does not have full access to files on the hosting account (lack of suEXEC). These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
+When performing an action that will add, rename or delete a zone, you may need to provide details that tell Composr how it can do this; this is because on the some webhosting configurations, PHP does not have full access to files on the hosting account (lack of suEXEC). These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
 
 [title="3"]Zone logos (advanced)[/title]
 

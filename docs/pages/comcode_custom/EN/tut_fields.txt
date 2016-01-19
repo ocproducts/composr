@@ -413,7 +413,7 @@ The pathname relative to a [tt].csv[/tt] file (relative to base directory), if t
 
 The fields that take "uploaded" files allow you to select files direct from your computer.
 
-The first image-like field will be injected into screen meta-data (i.e. will come up on Facebook shares due to being the OpenGraph image for the entry).
+The first image-like field will be injected into screen metadata (i.e. will come up on Facebook shares due to being the Open Graph image for the entry).
 
 [title="3"]upload[/title]
 

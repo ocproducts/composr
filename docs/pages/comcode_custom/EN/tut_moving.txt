@@ -23,7 +23,7 @@ To copy to another server/hosting-account, you would need to copy both.
 
 Composr has an enormous number of files. The quick installer extracts all of these to the server so that you do not need to be concerned with transferring them individually.
 
-The good news is that most web hosting control panels come with high quality file managers. To transfer files follow the following process:
+The good news is that most webhosting control panels come with high quality file managers. To transfer files follow the following process:
 1) Log in to your control panel in the old server.
 2) Proceed to the file manager.
 3) Zip up the contents of the directory Composr is installed in (it's best to ZIP up everything within the directory via mass-selection, rather than zipping the parent directory).
@@ -48,7 +48,7 @@ chmod +x fixperms.sh
 [/code]
 
 If you do not have such access:
-1) Try asking the web host to do it
+1) Try asking the webhost to do it
 2) You can get Composr to set the permissions for you using a special feature you'll find in the [tt]http://yourbaseurl/upgrader.php[/tt] script.
 3) If all else fails, you need to change any permissions described in the [page="_SEARCH:tut_adv_install"]Advanced installation tutorial[/page] and any files that were created/uploaded during running the site. This could be incredibly time-consuming, so is not recommended.
 
@@ -63,7 +63,7 @@ mysqldump -uusername -ppassword database > filename.sql
 Download the [tt].sql[/tt] file to your machine. This file is called an "SQL dump".
 
 [box="If you can't use the shell"]
-Reasonable web hosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad web hosts pretend to but it ends up timing-out with an error message and/or a truncated file.
+Reasonable webhosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad webhosts pretend to but it ends up timing-out with an error message and/or a truncated file.
 [/box]
 
 Upload the SQL dump to your new server using SFTP/FTP.

@@ -445,7 +445,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The code layer that binds the software to one of various different kinds of database software.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/tut-web-hosting.htm">Web hosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/tut-install.htm">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a></td>
+            <td><a href="http://compo.sr/docs10/tut-webhosting.htm">Webhosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/tut-install.htm">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_database_drivers&amp;status_id=10">Link</a></td>
         </tr>
@@ -855,7 +855,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Access PHP configurational information from inside Composr.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/tut-web-hosting.htm">Web hosting for Composr</a></td>
+            <td><a href="http://compo.sr/docs10/tut-webhosting.htm">Webhosting for Composr</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=phpinfo&amp;status_id=10">Link</a></td>
         </tr>

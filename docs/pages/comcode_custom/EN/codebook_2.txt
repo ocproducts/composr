@@ -385,7 +385,7 @@ Box templates are used on category listings, previews, search results, and when 
 
 [title="4"]Category listings[/title]
 
-As mentioned in the section above, category listings consist of a run of boxes. Composr has a standard block for displaying runs of boxes, the [tt]main_multi_content[/tt] block. Where possible the module category listing screens will simply glue themselves to an appropriate call to that block with minimal other code (code for breadcrumbs, loading up meta-data, checking permissions, providing a wrapper template, etc).
+As mentioned in the section above, category listings consist of a run of boxes. Composr has a standard block for displaying runs of boxes, the [tt]main_multi_content[/tt] block. Where possible the module category listing screens will simply glue themselves to an appropriate call to that block with minimal other code (code for breadcrumbs, loading up metadata, checking permissions, providing a wrapper template, etc).
 
 By gluing listings to a block, pagination can work via AJAX because a block is defined neatly as an autonomous region of a page. It also saves lots of code duplication -- we need the blocks anyway so that webmasters have fluidity in how they can lay content out, so it makes sense to centralise around them. Lastly, it creates important consistency and maintains important building blocks as high quality.
 

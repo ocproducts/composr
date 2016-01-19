@@ -10,7 +10,7 @@ If something goes wrong with Composr/MySQL/the-server that leaves your database 
 
 [surround]
 [media width="150" description="phpMyAdmin as found in the Plesk hosting control panel" float="right"]data_custom/images/docs/tut_sql/sql_plesk.png[/media]
-MySQL is designed as a lightweight database system, not as a full database management system (DBMS). As a result, and as a result of you not being likely to be sitting in front of the server, you will need a tool to perform database management remotely. Most web-hosts provide control panel systems to do account management, and these almost always include the 'phpMyAdmin' tool. It is beyond the scope of this tutorial to explain how to enter it, but it is usually linked to on the configuration page for a MySQL database. On Plesk the link is re-titled as 'DB WebAdmin'.
+MySQL is designed as a lightweight database system, not as a full database management system (DBMS). As a result, and as a result of you not being likely to be sitting in front of the server, you will need a tool to perform database management remotely. Most webhosts provide control panel systems to do account management, and these almost always include the 'phpMyAdmin' tool. It is beyond the scope of this tutorial to explain how to enter it, but it is usually linked to on the configuration page for a MySQL database. On Plesk the link is re-titled as 'DB WebAdmin'.
 
 phpMyAdmin is powerful web application for managing databases and database contents.
 [/surround]

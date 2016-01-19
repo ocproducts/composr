@@ -137,7 +137,7 @@
 <li class="method public "><a href="#method_has_tied_catalogue" title="has_tied_catalogue() :: Find whether this content type has a tied catalogue."><span class="description">Find whether this content type has a tied catalogue.</span><pre>has_tied_catalogue()</pre></a></li>
 <li class="method public "><a href="#method_info" title="info() :: Find details of the module."><span class="description">Find details of the module.</span><pre>info()</pre></a></li>
 <li class="method public "><a href="#method_mass_delete" title="mass_delete() :: Mass delete some entries/categories."><span class="description">Mass delete some entries/categories.</span><pre>mass_delete()</pre></a></li>
-<li class="method public "><a href="#method_pre_run" title="pre_run() :: Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output."><span class="description">Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output.</span><pre>pre_run()</pre></a></li>
+<li class="method public "><a href="#method_pre_run" title="pre_run() :: Module pre-run function. Allows us to know metadata for &lt;head&gt; before we start streaming output."><span class="description">Module pre-run function. Allows us to know metadata for &lt;head&gt; before we start streaming output.</span><pre>pre_run()</pre></a></li>
 <li class="method public "><a href="#method_preview_intercept" title="preview_intercept() :: Standard CRUD-module UI for a separate preview."><span class="description">Standard CRUD-module UI for a separate preview.</span><pre>preview_intercept()</pre></a></li>
 <li class="method public "><a href="#method_run" title="run() :: Execute the module."><span class="description">Execute the module.</span><pre>run()</pre></a></li>
 <li class="method public "><a href="#method_set_permissions" title="set_permissions() :: Set permissions of the news category from POST parameters."><span class="description">Set permissions of the news category from POST parameters.</span><pre>set_permissions()</pre></a></li>
@@ -508,7 +508,7 @@
 </div></div>
 </div>
 <a id="method_pre_run"></a><div class="element clickable method public method_pre_run " data-toggle="collapse" data-target=".method_pre_run .collapse" title="public">
-<h2>Module pre-run function. Allows us to know meta-data for &lt;head&gt; before we start streaming output.</h2>
+<h2>Module pre-run function. Allows us to know metadata for &lt;head&gt; before we start streaming output.</h2>
 <pre>pre_run(boolean $top_level<code> = true</code>, \?ID_TEXT $type<code> = null</code>) : \?Tempcode</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
@@ -519,7 +519,7 @@
 <code>boolean</code><p>Whether this is running at the top level, prior to having sub-objects called.</p></div>
 <div class="subelement argument">
 <h4>$type</h4>
-<code>\?ID_TEXT</code><p>The screen type to consider for meta-data purposes (null: read from environment).</p></div>
+<code>\?ID_TEXT</code><p>The screen type to consider for metadata purposes (null: read from environment).</p></div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>\?Tempcode</code>Tempcode indicating some kind of exceptional output (null: none).</div>

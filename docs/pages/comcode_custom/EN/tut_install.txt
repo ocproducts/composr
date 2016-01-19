@@ -10,11 +10,11 @@ Before we dive into instructions, we should lay out the different options you ha
 
 Your options are:
  - Install on traditional hosting (shared hosting/VPS)
-  - [b]Use a supported integration[/b]. You can install with just a few clicks if your web host has a supported integration such as Softaculous or Installatron installed. If this is the case then you don't need to read this tutorial.
+  - [b]Use a supported integration[/b]. You can install with just a few clicks if your webhost has a supported integration such as Softaculous or Installatron installed. If this is the case then you don't need to read this tutorial.
   - [b]Use the quick installer[/b]. This tutorial covers this case.
   - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
   - [b]Get a professional developer to install for you[/b].
- - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] and [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorials.
+ - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] and [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorials.
  - [b]Install on a PaaS service[/b]. PaaS services are typically managed directly by programmers and specific instructions would vary greatly between service.
  - Install on a Windows machine
   - [b]Use a WAMP system[/b]. Covered in the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial.
@@ -25,10 +25,10 @@ Your options are:
 
 Before you install Composr:
 [list="1"]
-[*] Ensure that your host covers our [page="_SEARCH:tut_web_hosting"]minimum requirements[/page].
+[*] Ensure that your host covers our [page="_SEARCH:tut_webhosting"]minimum requirements[/page].
 [*] Consider getting a general knowledge of [page="_SEARCH:tut_webapp"]web applications[/page]. This is not required but it will give you some overall understanding of what kind of web systems there are and how they work.
-[*] Make yourself familiar with the 'Web hosting control panel' your web host has provided. Common ones include Plesk and cPanel. Your host may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, possibly subdomains, possibly SFTP/FTP accounts, e-mail accounts.
-[*] You also need the following information from your web host:
+[*] Make yourself familiar with the 'Webhosting control panel' your webhost has provided. Common ones include Plesk and cPanel. Your host may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, possibly subdomains, possibly SFTP/FTP accounts, e-mail accounts.
+[*] You also need the following information from your webhost:
  - SFTP/FTP hostname
  - SFTP/FTP username
  - SFTP/FTP password
@@ -69,19 +69,19 @@ After it downloads, you'll need to extract the files. The exact methods for doin
 
 [title="3"]Using SFTP/FTP[/title]
 
-[i]An alternative to uploading via SFTP/FTP is using the File Manager within the web hosting control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
+[i]An alternative to uploading via SFTP/FTP is using the File Manager within the webhosting control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
 
 [media width="150" description="File upload demonstration" float="right" thumb_url="data_custom/images/docs/tut_install/install_upload_ftp_thumb.png"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/media]
 [media width="150" description="Internet Explorer FTP login" float="right"]data_custom/images/docs/tut_install/install_login_ftp.png[/media]
 The next step is to upload the files to your web server. To do this you'll need an SFTP/FTP client (such as [url="FileZilla"]https://filezilla-project.org/[/url], or use the one that comes with Windows). The exact steps to upload the files depend slightly depending on which SFTP/FTP client you choose.
 
-If you'd like to use the one bundled with Windows, open a new Internet Explorer window, and in the address bar, type [tt]ftp://username@servername.com[/tt], replacing [tt]username[/tt] with your username and [tt]servername[/tt] with the servername given to you by your web host. You should be presented with a login screen (if not, you can access it by choosing File > Login As), where you can enter the username and password given to you by your web host ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_login_ftp.png[/url]). Then you'll need to navigate to your webroot (possibly in a folder called [tt]www[/tt] or [tt]httpdocs[/tt]). If you can't find your webroot, e-mail your web-host for help.
+If you'd like to use the one bundled with Windows, open a new Internet Explorer window, and in the address bar, type [tt]ftp://username@servername.com[/tt], replacing [tt]username[/tt] with your username and [tt]servername[/tt] with the servername given to you by your webhost. You should be presented with a login screen (if not, you can access it by choosing File > Login As), where you can enter the username and password given to you by your webhost ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_login_ftp.png[/url]). Then you'll need to navigate to your webroot (possibly in a folder called [tt]www[/tt] or [tt]httpdocs[/tt]). If you can't find your webroot, e-mail your webhost for help.
 
 At this point you need to decide whether you want your website to reside in your root folder or not. If you choose to place it in your root folder (which is the recommended option), people will be able to access your site by going to [tt]http://yourbaseurl[/tt] (unless you don't own your own domain name). If you choose to place it in a subfolder (for example, "subfolder"), people will access your Composr installation by going to [tt]http://yourbaseurl[/tt].
 
 When you successfully connect, find your webroot, and navigate into a subfolder if you chose to. You need to upload the files that were inside the ZIP package you downloaded. If you chose the quick installer, these files are called 'install.php', the other is called 'data.cms'. If you chose the manual installer, there will be many more.
 
-You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your web host in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/url]).
+You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your webhost in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/url]).
 
 [title="2"]Installation[/title]
 
@@ -134,7 +134,7 @@ The Setup Wizard will guide you through some basic setup for your site, to give 
  - [page="_SEARCH:tut_configuration"]Basic Configuration[/page]
  - The user-focused help page within Composr (linked from the menus)
  - [page="_SEARCH:tut_webapp"]Web applications information[/page]
- - [page="_SEARCH:tut_web_hosting"]Web hosting information[/page] (including Composr minimum requirements)
+ - [page="_SEARCH:tut_webhosting"]Webhosting information[/page] (including Composr minimum requirements)
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_uninstall"]Uninstalling Composr[/page]

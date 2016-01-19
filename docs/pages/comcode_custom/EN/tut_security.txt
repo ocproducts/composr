@@ -71,9 +71,9 @@ Other features:
 
 We are always coming up with new ideas for security. If you want us to keep going further then you can consider sponsoring new ideas posted on our [url="development tracker"]http://compo.sr/tracker/tag_view_page.php?tag_id=47[/url].
 
-[title="2"]Advice for web hosting[/title]
+[title="2"]Advice for webhosting[/title]
 
-Your ideal web host should:
+Your ideal webhost should:
  - Have the PHP OpenSSL extension
  - Ensure the server is configured well for SSL (it should not allow degrading of encryption ciphers that are known as insecure). There are [url="tools to help you scan"]https://www.ssllabs.com/ssltest/[/url].
  - Keep the server patched with secure versions of software
@@ -91,13 +91,13 @@ You should forget about:
  - ModSecurity (Composr does have inbuilt features, as described above -- and ModSecurity rules have a tendency to block legitimate administrative requests, such as use of Commandr of theme editing)
  - Suhosin/SuPHP (actually Suhosin/SuPHP is okay if you have control over its settings or know for sure that nobody is going to set anything that is too restrictive)
 
-The best way to ensure your hosting is secure is to choose a web host that you're confident in and/or a server management team who will carry out their system administration tasks diligently. There are a thousand ways a bad host or a bad team could make things insecure, but if they stick to default/careful software configurations and industry-standard practices then usually things will be in decent shape.
+The best way to ensure your hosting is secure is to choose a webhost that you're confident in and/or a server management team who will carry out their system administration tasks diligently. There are a thousand ways a bad host or a bad team could make things insecure, but if they stick to default/careful software configurations and industry-standard practices then usually things will be in decent shape.
 
 [title="3"]Optimum server environment for shared hosting (advanced)[/title]
 
-It is an unfortunate fact that shared web hosting environments are almost always very insecure, as different users with hosting accounts on the web server may interfere with your files on a number of levels. In addition, by extension, if one of the other accounts on the server becomes compromised, your files could also be.
+It is an unfortunate fact that shared webhosting environments are almost always very insecure, as different users with hosting accounts on the web server may interfere with your files on a number of levels. In addition, by extension, if one of the other accounts on the server becomes compromised, your files could also be.
 
-This section is highly complex, the summary to it all is that if you care about security a lot, don't use shared web hosting. The risk of the host, or you, getting it wrong, is very high.
+This section is highly complex, the summary to it all is that if you care about security a lot, don't use shared webhosting. The risk of the host, or you, getting it wrong, is very high.
 
 If you run a website with particularly privileged information, or security is critical for other reasons, we highly advise you operate your web server from a dedicated server(s).
 
@@ -112,9 +112,9 @@ suEXEC means that PHP scripts load up under the user of your own hosting account
 
 If you are fortunate enough to be in situation 2 (suEXEC), but not fortunate enough to be in situation 1 (open_basedir), then Composr needs special configuration to make best use of it. You need to make it so that no files are 'world writable' (which is the case unless you have suddenly switched to this environment) and so that [tt]_config.php[/tt] is not world writable or world readable (to protect your database password). So, preferably you'd have both suEXEC and open_basedir. Composr is clever enough to detect your situation, and hence will not [concept]chmod[/concept] any PHP-created-files to a world-writable state as it normal does (it normally does this so that both the account holder user and the web server user have write access to this file -- and making them world writable is the only way to achieve this in a hosting environment).
 
-Web hosts may use "jail shell" and ensure home directories are not world-readable. These are further mitigations against account-vs-account tampering. So actually ideally you would have suEXEC, open_basedir, jail shell, and well configured home directory security.
+Webhosts may use "jail shell" and ensure home directories are not world-readable. These are further mitigations against account-vs-account tampering. So actually ideally you would have suEXEC, open_basedir, jail shell, and well configured home directory security.
 
-More information about suEXEC is provided in the [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorial.
+More information about suEXEC is provided in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial.
 
 [title="3"]Is suEXEC really safe?[/title]
 
@@ -134,9 +134,9 @@ Regarding point 2, I disagree. Hosting control panels come with a whole configur
 
 Regarding point 3, I agree and disagree. He is correct to say there's a risk, but it's one of these "you can't avoid crossing the street" kind of scenarios. Modern web systems should be able to have deep control over their own files. For example, if you're installing or uninstalling addons in Composr, you don't want to have to manually handle everything, you want Composr to be able to self manage itself. Sometimes we just have to accept that to have good progressive functionality, we need to take certain risks, and then mitigate those risks.
 
-[title="3"]Testing the security of a web host[/title]
+[title="3"]Testing the security of a webhost[/title]
 
-If you don't have a well-configured server, anybody with an account on the server can mess with anybody else with your account. In other words, if someone wants to hack your site, they just need to sign up with the same web host (assuming they only have one server, and many unfortunately do), or they just need to find any one single site on the server that is hackable (it's [url="http://www.yougetsignal.com/tools/web-sites-on-web-server/" target="_blank"]easy[/url] to find sites on the same server, and people are often running stuff that is very easy to hack).
+If you don't have a well-configured server, anybody with an account on the server can mess with anybody else with your account. In other words, if someone wants to hack your site, they just need to sign up with the same webhost (assuming they only have one server, and many unfortunately do), or they just need to find any one single site on the server that is hackable (it's [url="http://www.yougetsignal.com/tools/web-sites-on-web-server/" target="_blank"]easy[/url] to find sites on the same server, and people are often running stuff that is very easy to hack).
 
 There's a simple way you can test the security without needing a full understanding of LAMP (Linux/Apache/MySQL/PHP) configurations. Here's a very simple script that you can upload (just save it as [tt]filesystem_browser.php[/tt]):
 [code="PHP"]
@@ -174,7 +174,7 @@ The script just tests read access. Depending on the server configuration, you mi
 
 It's scary stuff: you probably never imagined security for a website could be so poor. So, please make sure you check your host is competent before putting too much faith in them.
 
-I am not exposing any security holes in LAMP software here, but what I am exposing is how inept many web hosts are. Hosting is cheap, they often cannot afford to hire people who have a good understanding of security for a website, so be wary.
+I am not exposing any security holes in LAMP software here, but what I am exposing is how inept many webhosts are. Hosting is cheap, they often cannot afford to hire people who have a good understanding of security for a website, so be wary.
 
 [title="2"]Advice for website maintenance[/title]
 
@@ -502,7 +502,7 @@ If you have sensitive material that might be in a URL moniker, you should either
 
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
  - [page="_SEARCH:tut_chmod"]Linux file permissions[/page]
- - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]

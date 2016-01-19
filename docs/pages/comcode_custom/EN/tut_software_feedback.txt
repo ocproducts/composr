@@ -80,11 +80,11 @@ If reporting a security hole (or suspected hole), make sure the tracker issue is
 
 [title="2"]Reporting performance problems[/title]
 
-On shared hosting it is always possible that a web host can come along and say you are using too much resource.
+On shared hosting it is always possible that a webhost can come along and say you are using too much resource.
 
-Shared hosts fit many sites onto the same server, and depending on the price and reputability of the web host, you may be allowed to use more or less server resource.
+Shared hosts fit many sites onto the same server, and depending on the price and reputability of the webhost, you may be allowed to use more or less server resource.
 
-Web hosts may work on various metrics, or may respond to issues they have manually identified.
+Webhosts may work on various metrics, or may respond to issues they have manually identified.
 
 [title="3"]Database size[/title]
 
@@ -96,7 +96,7 @@ This could be an issue if you are hosting large files, such as videos or downloa
 
 [title="3"]Request volume[/title]
 
-It may be that you have very large numbers of visitors. If you have many hits each second, the web host may struggle to serve these requests. This is not specific to Composr.
+It may be that you have very large numbers of visitors. If you have many hits each second, the webhost may struggle to serve these requests. This is not specific to Composr.
 
 [title="3"]CPU usage[/title]
 
@@ -105,25 +105,25 @@ On a reasonably decent server, average Composr requests should be well under 1 s
 (Note that when we look at execution time, we're not talking about time between clicking and seeing a page -- that is:
 [tt]browser reaction time + latency + queue time + execution time + latency + render time + probably some other stuff[/tt])
 
-So Composr doesn't use a lot of CPU inherently. However, CPU is probably the biggest limiting factor on a server. If you have 10 reqs/sec (requests per second), with each request averaging 0.5 seconds, then this would use 5 CPU cores constantly. For a normal Composr site that is a lot of visitors to get, but the web host has to think of the server as a whole...
+So Composr doesn't use a lot of CPU inherently. However, CPU is probably the biggest limiting factor on a server. If you have 10 reqs/sec (requests per second), with each request averaging 0.5 seconds, then this would use 5 CPU cores constantly. For a normal Composr site that is a lot of visitors to get, but the webhost has to think of the server as a whole...
 
-Let's imagine the web host has 500 accounts on the server, and 7% of those sites receive a significant ongoing volume of hits to some kind of CMS (Composr, or others), averaging 1 per 10 seconds, each request taking 0.5 seconds to execute...
+Let's imagine the webhost has 500 accounts on the server, and 7% of those sites receive a significant ongoing volume of hits to some kind of CMS (Composr, or others), averaging 1 per 10 seconds, each request taking 0.5 seconds to execute...
 [tt]500*0.07*0.5/10=1.75 seconds of request per second of real time[/tt], probably enough to tax a dual-core server.
 So you can see, depending on what kinds of customers the host has, what software they run, how many accounts are held on the server, and the power of the server, hosts may have to do some push back against what their customers might do.
 
 If you are using the Composr chatroom, and a few people leave it open, the reqs/sec could rise considerably.
 
-If you are going to run a popular CMS site, you will eventually outgrow shared hosting and need a VPS, dedicated server, or cloud instances. Until then, try and see past web host marketing and choose a host that has a good reputation and good hardware -- absolutely don't cheap-out and try and get really cheap hosting, as you'll suffer from it. Cheap hosting is ideal only for simple static sites that get few hits. It's really important to realise how cut-throat and difficult it is for web hosts -- think how much salary a host needs to pay for the support you use from them, for the hardware they provide, for the marketing/advertising/offers they run, and for maintaining their business (their own website, etc) -- you'll see how squeezed it is and how if you go on the cheap end you can't possibly do well from it.
+If you are going to run a popular CMS site, you will eventually outgrow shared hosting and need a VPS, dedicated server, or cloud instances. Until then, try and see past webhost marketing and choose a host that has a good reputation and good hardware -- absolutely don't cheap-out and try and get really cheap hosting, as you'll suffer from it. Cheap hosting is ideal only for simple static sites that get few hits. It's really important to realise how cut-throat and difficult it is for webhosts -- think how much salary a host needs to pay for the support you use from them, for the hardware they provide, for the marketing/advertising/offers they run, and for maintaining their business (their own website, etc) -- you'll see how squeezed it is and how if you go on the cheap end you can't possibly do well from it.
 
 [title="3"]Disk I/O[/title]
 
-No Composr user has ever reported that a web host has reported excessive disk I/O (input/output) to them, but it may be an issue affecting the performance of your site due to factors outside the scope of Composr. I/O can be a real performance bottleneck if the server is not well-configured, such as having a remote disk, a slow disk, a failing disk, or if other users on the server are doing something that is really making the disk 'thrash'. Composr won't thrash the disk, but it would be affected by another user doing so. Composr therefore does have some special options for limiting its need to regularly check the hard disk, discussed in the [page="docs:tut_optimisation"]Optimising performance tutorial[/page].
+No Composr user has ever reported that a webhost has reported excessive disk I/O (input/output) to them, but it may be an issue affecting the performance of your site due to factors outside the scope of Composr. I/O can be a real performance bottleneck if the server is not well-configured, such as having a remote disk, a slow disk, a failing disk, or if other users on the server are doing something that is really making the disk 'thrash'. Composr won't thrash the disk, but it would be affected by another user doing so. Composr therefore does have some special options for limiting its need to regularly check the hard disk, discussed in the [page="docs:tut_optimisation"]Optimising performance tutorial[/page].
 
 [title="3"]Memory usage[/title]
 
 Normally Composr requests are explicitly limited to a [i]maximum[/i] of 64MB, which is very small compared to the amount of RAM a server has (4GB is fairly typical nowadays). There are a very small number of one-off admin tasks where Composr raises or removes the limit, but its very unlikely to be a problem.
 
-If a web host complains about memory usage they are probably looking at an aggregate figure.
+If a webhost complains about memory usage they are probably looking at an aggregate figure.
 
 [title="4"]Example: chatroom[/title]
 
@@ -141,7 +141,7 @@ Assuming only a single server core, this means a server would be using the 8MB 1
 
 If the server has 1GB of RAM dedicated to web requests, it could sustain 500 customers using this volume of RAM.
 
-So, the chatroom is unlikely to be a problem unless the web host is really cheaping out in a big way (e.g. putting thousands of users on a subleased VPS).
+So, the chatroom is unlikely to be a problem unless the webhost is really cheaping out in a big way (e.g. putting thousands of users on a subleased VPS).
 
 [title="4"]Example: general use[/title]
 
@@ -158,13 +158,13 @@ If there are 500 sites on the server and 7% are using this level of resource and
 
 As with the last example, it should not be a problem -- but if the host has a lot of users on the same server, or users are using a lot of resources (maybe there's a trend to move to CMSs universally, and also spiders are heavily hitting all the sites regularly) it could be a problem.
 
-[title="3"]If a web host is complaining[/title]
+[title="3"]If a webhost is complaining[/title]
 
-If a web host says you are using too many resources, find out specifics from them. Ask what URLs are causing problems, what resources are being used, and what is valid on their AUP (Acceptable Use Policy).
+If a webhost says you are using too many resources, find out specifics from them. Ask what URLs are causing problems, what resources are being used, and what is valid on their AUP (Acceptable Use Policy).
 
 If the host has reasonable limits, and you aren't serving a high ongoing or peaking volume or users, pass on those specifics to the developers in a bug report.
 
-If the host has unreasonable limits, change web hosts and give them a poor review.
+If the host has unreasonable limits, change webhosts and give them a poor review.
 
 If you are using too many resources for shared hosting, you'll need something better.
 

@@ -47,7 +47,7 @@ Internal dispatch:
  - Hook searching
  - Block and module calling
  - Block processing
- - Meta-data querying
+ - Metadata querying
  - Addon state detection (fast default case: persistent cache)
 Configuration:
  - Read base config and provide defaults
@@ -314,9 +314,9 @@ The [tt]data/comcode_convert.php[/tt] can help you in these areas. It has option
 
 Have a good understanding of regular expressions and an eagerness to make use of them. You can often find uses for them, especially when searching code or preparing data-sets. They can save a lot of time manually reformatting things.
 
-[title="3"]Web hosting[/title]
+[title="3"]Webhosting[/title]
 
-Never trust web hosts to provide decent hosting. Expect lots of bugs, unexpected limitations, performance bottlenecks, old software, and missing PHP extensions.
+Never trust webhosts to provide decent hosting. Expect lots of bugs, unexpected limitations, performance bottlenecks, old software, and missing PHP extensions.
 That's life, so try and minimise your dependencies and environment assumptions as much as possible -- write simple, compatible, code.
 
 [title="3"]git[/title]
@@ -484,7 +484,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
   - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about its memory limit
-  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
+  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor webhosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
   - [tt]base64_emails[/tt] -- set this to '1' if you want base64 e-mails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 e-mails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
   - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
@@ -519,7 +519,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]comment_forum__catalogues__<catalogue-name>[/tt] -- define a comment forum for a specific catalogue
   - [tt]allow_no_lang_selection[/tt] -- set this to '1' if you want members to be able to leave their language selection as 'Unset' (otherwise normally it'll copy the auto-detected language into their profile or they can change it, but it never stays as unset). This option is useful on multi-site-networks, with each site having a different language
   - [tt]no_base_check[/tt] -- set this to '1' if you do not want Composr to empty caches if the base URL gets changed (this is if the base URL is not defined, and someone accesses from something different)
-  - [tt]pagination_when_not_needed[/tt] -- set this to '1' if you want the pagination wrapper template to load even if there is no pagination (useful for collecting result meta data via Tempcode)
+  - [tt]pagination_when_not_needed[/tt] -- set this to '1' if you want the pagination wrapper template to load even if there is no pagination (useful for collecting result metadata via Tempcode)
   - [tt]catalogue_seo_source_map__<catalogue-name>[/tt] -- a comma-separated list of field IDs to use for SEO keyword generation (if not set, uses all fields). If all keywords in the field should be used, put an exclamation mark after the field ID
   - [tt]disable_password_change_notifications_for_staff[/tt] -- set this to '1' if you want staff password edits to not result in notifications to users
   - [tt]commercial_spellchecker[/tt] -- set this to '1' if you want to enable the WYSIWYG editor's spellcheck.net spellchecker
@@ -531,7 +531,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]resize_rep_images[/tt] -- set this to '0' if you do not want uploaded rep-images to be sized down automatically to the standard thumbnail size
   - [tt]default_event_type[/tt] -- set this to the ID of the default event type to select for new events
   - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should display with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
-  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in meta-data.
+  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in metadata.
   - [tt]google_news_urls[/tt] -- set this to '1' if news URLs should contain a Google-News-friendly entry ID.
   - [tt]enable_delayed_inserts[/tt] -- set this to '1' to enable MySQL delayed inserts. Delayed inserts can cause a very small performance improvement if log calculations happen quite regularly; however they only work on MyISAM tables and are deprecated as of MySQL 5.6
   - [tt]really_want_highlighting[/tt] -- set this to '1' if you want to force HTML to be converted to Comcode when searches happen, so keyword highlighting works better.

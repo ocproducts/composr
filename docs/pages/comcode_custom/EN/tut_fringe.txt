@@ -169,7 +169,7 @@ You may also wish to have a presence on question and answer sites, such as:
 
  - https://www.email-standards.org/
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
- - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+ - [page="_SEARCH:tut_metadata"]Metadata[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 
 {$SET,tutorial_tags,core_graphic_text,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain and detail some of the features of web technologies that are often forgotten.}[block]main_tutorial_rating[/block]

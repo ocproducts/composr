@@ -1,26 +1,26 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Meta Data[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Metadata[/title]
 
-This tutorial provides an explanation of how meta data works within Composr.
+This tutorial provides an explanation of how metadata works within Composr.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Introduction[/title]
 
-Composr contains the following primary meta-data that you have a moderate chance of wanting to edit:
+Composr contains the following primary metadata that you have a moderate chance of wanting to edit:
  - Title
  - Meta Keywords
  - Meta Description
- - OpenGraph Title
- - OpenGraph Image
+ - Open Graph Title
+ - Open Graph Image
  - Favicon
  - Apple Web Clip image
-(there are many other items of published meta-data, such as the Site Name, and modification dates, but you're unlikely to want to change the automatic settings for those)
+(there are many other items of published metadata, such as the Site Name, and modification dates, but you're unlikely to want to change the automatic settings for those)
 
-Other meta-data formats are supported, such as Dublin Core meta-data, but are disabled in the default templates in order to reduce bandwidth overheads.
+Other metadata formats are supported, such as Dublin Core metadata, but are disabled in the default templates in order to reduce bandwidth overheads.
 
-There are many other "behind-the-scenes" features not discussed above, such as print CSS, and RSS. We are only discussing page-embedded meta-data here.
+There are many other "behind-the-scenes" features not discussed above, such as print CSS, and RSS. We are only discussing page-embedded metadata here.
 
-All meta-data may be automatically set by Composr as described below, but ultimately can also be completely customised in a theme.
+All metadata may be automatically set by Composr as described below, but ultimately can also be completely customised in a theme.
 
 [title="2"]Title[/title]
 
@@ -51,25 +51,25 @@ If some content defines its own meta keywords, these will get merged in.
 
 Almost all forms of content in Composr may set their own keywords and description, and by default they get autodetected via automatic content analysis (i.e. finding the most commonly used words in the text, and copying the main descriptive part of the content as the meta description too).
 
-In your HTML this meta-data looks similar to:
+In your HTML this metadata looks similar to:
 [code="HTML"]
 <meta name="description" content="This is an example page." />
 <meta name="keywords" content="example,keywords,go,here" />
 [/code]
 
-If you don't like the presence of the meta-data options then you can disable the "Enable SEO fields" option.
+If you don't like the presence of the metadata options then you can disable the "Enable SEO fields" option.
 
-[title="2"]OpenGraph[/title]
+[title="2"]Open Graph[/title]
 
-OpenGraph is the system devised by Facebook, for automatically supplying details relating to a webpage when a link to it is posted on Facebook. It's an Open Standard that may also be used by others.
+Open Graph is the system devised by Facebook, for automatically supplying details relating to a webpage when a link to it is posted on Facebook. It's an Open Standard that may also be used by others.
 
-The OpenGraph Title is taken as the same as the screen title (it's not combined with the site name, which we pass separately to Facebook).
+The Open Graph Title is taken as the same as the screen title (it's not combined with the site name, which we pass separately to Facebook).
 
-The OpenGraph Image is either contextual (the main image of whatever content is being viewed), or the [tt]logo/standalone_logo[/tt] theme image.
+The Open Graph Image is either contextual (the main image of whatever content is being viewed), or the [tt]logo/standalone_logo[/tt] theme image.
 
 Note that [tt]logo/trimmed_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
 
-In your HTML the OpenGraph tags look similar to:
+In your HTML the Open Graph tags look similar to:
 [code="HTML"]
 <meta property="og:title" content="Example page" />
 <meta property="og:type" content="comcode_page" />
@@ -94,9 +94,9 @@ In your HTML the icon tags look similar to:
 <link rel="apple-touch-icon" href="http://yourbaseurl/themes/default/images/webclipicon.ico" sizes="120x120 144x144 152x152" />
 [/code]
 
-[title="2"]Worked example - The site-wide OpenGraph image[/title]
+[title="2"]Worked example - The site-wide Open Graph image[/title]
 
-The default OpenGraph image definitely isn't appropriate for live sites -- like any logo, it should be changed. Unfortunately as it is meta-data, the need to do it can go unnoticed.
+The default Open Graph image definitely isn't appropriate for live sites -- like any logo, it should be changed. Unfortunately as it is metadata, the need to do it can go unnoticed.
 
 Here are the step by step instructions for selecting an appropriate image:
 1) Log in to Admin Zone, and you should see the dashboard
@@ -108,7 +108,7 @@ Here are the step by step instructions for selecting an appropriate image:
 7) Click on [tt]standalone_logo[/tt] and you'll be taken to a 'edit the image' page where you can simply upload a new file and scroll down towards the bottom of the page and hit 'Save'
 
 [concepts
- 1_key="OpenGraph"                 1_value="Facebook's standard for supplying web-page meta-data"
+ 1_key="Open Graph"                1_value="Facebook's standard for supplying web-page metadata"
  2_key="Favicon"                   2_value="The standardised small icon used for your webpage (typically the same across across the whole website)"
 ]Concepts[/concepts]
 
@@ -118,4 +118,4 @@ Here are the step by step instructions for selecting an appropriate image:
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
 
-{$SET,tutorial_tags,core,Advice & Guidance,Introduction,regular}{$SET,tutorial_add_date,Mar 2015}{$SET,tutorial_summary,An explanation of how meta data works within Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,core,Advice & Guidance,Introduction,regular}{$SET,tutorial_add_date,Mar 2015}{$SET,tutorial_summary,An explanation of how metadata works within Composr.}[block]main_tutorial_rating[/block]

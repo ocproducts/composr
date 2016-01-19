@@ -37,9 +37,9 @@ A nameserver may define records for subdomains of any complexity, underneath dom
 
 However, DNS is based on the idea of delegation. nameservers may also choose to delegate control of names such as the above to separate nameservers, instead of handling themselves. So for example, the nameserver for [tt]example.com[/tt] could delegate [tt]test.example.com[/tt] to a separate nameserver. That nameserver could then set all records for [tt]test.example.com[/tt] or anything underneath it, and it could itself make further delegations.
 
-[title="2"]Web hosting[/title]
+[title="2"]Webhosting[/title]
 
-Knowing all the above, we can deduce that there are a number of ways that we could get a domain name to point to some web hosting. These ways are fundamentally quite different, but from the end-users point of view, have the same result.
+Knowing all the above, we can deduce that there are a number of ways that we could get a domain name to point to some webhosting. These ways are fundamentally quite different, but from the end-users point of view, have the same result.
  - Transfer a domain (in English, this means "change the ownership of the domain name")
  - Change the domain tag (in English, this means "move the domain to a different registrar")
  - Change the reseller (for Tucows-only)
@@ -79,13 +79,13 @@ This only applies in cases such as Tucows, where the real registrar is in fact j
 
 [title="3"]Change the nameserver[/title]
 
-Changing the nameserver is a simple and effective way of moving a domain to different hosting. One just changes the nameserver so as to point to the nameserver provided by the web host. The web hosting control panel then allows direct configuration of all hosting-related aspects of that domain name.
+Changing the nameserver is a simple and effective way of moving a domain to different hosting. One just changes the nameserver so as to point to the nameserver provided by the webhost. The webhosting control panel then allows direct configuration of all hosting-related aspects of that domain name.
 
-The only problem with this method is that it means a commercial relationship has to be maintained with the domain registrar. It's often preferable to do a tag change to a company that provides both web hosting and domain registration -- because then only one business relationship needs to be maintained.
+The only problem with this method is that it means a commercial relationship has to be maintained with the domain registrar. It's often preferable to do a tag change to a company that provides both webhosting and domain registration -- because then only one business relationship needs to be maintained.
 
 [title="3"]Change the DNS records at the existing nameserver[/title]
 
-One can change DNS records so as to manually point web traffic towards a new web host.
+One can change DNS records so as to manually point web traffic towards a new webhost.
 
 Note that this method also has the disadvantages of "changing the nameserver".
 
@@ -98,7 +98,7 @@ We'd use an HTML solution in the case where we can leverage no control over any 
  - the client does not want us to make these kinds of changes
 
 [box]
-Note that for all the methods other than 'Use an HTML solution', it is necessary to set up the web hosting to listen for traffic for the new domain name. Otherwise it has no way of knowing how to associate the files on its web file system with the URL requests it receives.
+Note that for all the methods other than 'Use an HTML solution', it is necessary to set up the webhosting to listen for traffic for the new domain name. Otherwise it has no way of knowing how to associate the files on its web file system with the URL requests it receives.
 [/box]
 
 [title="2"]Finding out domain and DNS settings[/title]

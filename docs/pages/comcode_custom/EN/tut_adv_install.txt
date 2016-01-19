@@ -46,9 +46,9 @@ After this, you must delete the install.php file:
 rm install.php -f
 [/code]
 
-[title="3"]Unzipping from a web hosting control panel[/title]
+[title="3"]Unzipping from a webhosting control panel[/title]
 
-Many web hosting control panels allow you to unzip uploaded files, using their file manager. You can do this on the manual installer archive.
+Many webhosting control panels allow you to unzip uploaded files, using their file manager. You can do this on the manual installer archive.
 
 [title="2"]Permissions[/title]
 
@@ -62,7 +62,7 @@ Permission setting can be complex and is discussed in depth in the [page="_SEARC
 [/box]
 If you chose the manual installer, you now need to set the appropriate permissions for your files and folders (read on). You usually do not need to set any permissions if you chose the quick installer.
 
-If you have "shell access" (ask your web host if you don't know), then you can automatically set these permissions by logging into your server with a program like [url="PuTTY"]http://www.putty.nl[/url], and executing the file [tt]fixperms.sh[/tt].
+If you have "shell access" (ask your webhost if you don't know), then you can automatically set these permissions by logging into your server with a program like [url="PuTTY"]http://www.putty.nl[/url], and executing the file [tt]fixperms.sh[/tt].
 
 If you don't have shell access, then you will need to manually set each folder to the correct permissions.
 
@@ -215,9 +215,9 @@ This section mostly only applies if you are using Microsoft's web server, Intern
 
 See the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop tutorial[/page] if you just want to install on your own computer and you are just using your website locally, behind a firewall -- or if you are installing via the Microsoft Web Application Gallery (which will set permissions for you).
 
-There are two problems relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, web-hosting companies often impose a more rigid permission scheme due to their shared hosting environments.
+There are two problems relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, webhosting companies often impose a more rigid permission scheme due to their shared hosting environments.
 
-The first problem is that there is no real standard on Windows to exactly what file permissions are appropriate. To understand file permissions, you must understand that the web-server (or the PHP CGI client, if in CGI mode) runs PHP scripts under a username that is not just 'Administrator' (which would be a highly foolish thing to do). What that username is depends on how the environment was configured; it may be a generic web user (usually named [tt]IUSR_<computer-name>[/tt]), or it may be the username tied to your own web-hosting account. It is this username that needs to have access to write to certain directories and files inside your installation.
+The first problem is that there is no real standard on Windows to exactly what file permissions are appropriate. To understand file permissions, you must understand that the web-server (or the PHP CGI client, if in CGI mode) runs PHP scripts under a username that is not just 'Administrator' (which would be a highly foolish thing to do). What that username is depends on how the environment was configured; it may be a generic web user (usually named [tt]IUSR_<computer-name>[/tt]), or it may be the username tied to your own webhosting account. It is this username that needs to have access to write to certain directories and files inside your installation.
 A generic trick is to use the username 'Network' as the username to grant permissions to. While this is not the username that the script runs at, it is a virtual username representing any username on the Windows Domain that the computer on; setting permissions to this should do the trick, but at the expensive of it granting more permissions than are required. Ideally, you should find out exactly what username PHP scripts run as, and grant permissions to it.
 
 The second problem is that there is no automated way to set file permissions on a Windows machine from a PHP script. This leaves three possibilities for a Windows machine user:
@@ -225,7 +225,7 @@ The second problem is that there is no automated way to set file permissions on 
 2) Ask the server administrator to execute, or find a way to execute yourself, the [tt]fixperms.bat[/tt] file. This will set the file permissions for you, but this is an advanced option and may be prone to environmental issues. If using the quick installer, the bat file will need running at the point the installer complains about file permissions; otherwise it should be executed before installation.
 3) Manually set the file permissions. See the [page="_SEARCH:tut_install"]Installation tutorial[/page] for a list of file permissions that need to be set. Where Linux would require '666' (for a file) or '777' (for a directory) permissions, you would need to assign write permissions as specified above.
 
-Due to these problems, we would have to recommend that if you have a choice, that you don't use a Windows web-host unless you are experienced with the Windows security model. It is more complex, less standard, and less documented, than the Linux model (although, actually a lot more powerful).
+Due to these problems, we would have to recommend that if you have a choice, that you don't use a Windows webhost unless you are experienced with the Windows security model. It is more complex, less standard, and less documented, than the Linux model (although, actually a lot more powerful).
 
 [title="2"]Installing on Cloud hosting[/title]
 
@@ -259,7 +259,7 @@ Here is some specific advice for people working from our git repository:
 
  - [page="_SEARCH:tut_install"]Installation[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_web_hosting"]Web hosting[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
 

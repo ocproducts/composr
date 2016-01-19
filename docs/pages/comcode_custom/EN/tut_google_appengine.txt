@@ -367,4 +367,4 @@ Be advised that Google cannot provide automated "sharding" of data. This means t
  - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
  - [page="_SEARCH:tut_repository"]The Repository[/page]
 
-{$SET,tutorial_tags,google_appengine,Installation,Web hosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,google_appengine,Installation,Webhosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]

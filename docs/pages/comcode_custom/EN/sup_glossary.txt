@@ -17,16 +17,16 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' (e.g. JAWS) or represented on a braille-reader. We also use the term 'semantics' to refer to the defined meaningfulness of the structure of a page (regardless of its visual appearance).</td>
 		</tr>
 		<tr>
-			<td>Adsense</td>
-			<td>Adsense is Google's business program for getting paid money for the placement of relevant Adword ads on your web page (contextual advertising).</td>
+			<td>AdSense</td>
+			<td>AdSense is Google's business program for getting paid money for the placement of relevant Adword ads on your web page (contextual advertising).</td>
 		</tr>
 		<tr>
-			<td>Adwords</td>
-			<td>Adwords is Google's business program for paying money for the placement of adverts on Google searches and the websites of relevant Adsense customers.</td>
+			<td>AdWords</td>
+			<td>AdWords is Google's business program for paying money for the placement of adverts on Google searches and the websites of relevant AdSense customers.</td>
 		</tr>
 		<tr>
 			<td>AJAX</td>
-			<td>A technique for web pages to send background messages to the server (and receive responses/data) without the whole page having to be reloaded.</td>
+			<td>A technique for web pages to send background messages to the server (and receive responses/data) without the whole page having to be reloaded. An abbreviation of Asynchronous JavaScript and XML.</td>
 		</tr>
 		<tr>
 			<td>Analytics</td>
@@ -34,14 +34,14 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Apache</td>
-			<td>The most common web server software.</td>
+			<td>Apache is the most widespread web server software.</td>
 		</tr>
 		<tr>
 			<td>API</td>
 			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API. An API is often made available via an SDK (Software Development Kit).</td>
 		</tr>
 		<tr>
-			<td>ASP.net</td>
+			<td>ASP.NET</td>
 			<td>A programming language, similar to PHP.</td>
 		</tr>
 		<tr>
@@ -135,7 +135,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Dublin Core</td>
-			<td>A meta data standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
+			<td>A metadata standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
 		</tr>
 		<tr>
 			<td>Facebook App</td>
@@ -151,7 +151,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Favicon</td>
-			<td>A small icon that shows in the toolbar when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
+			<td>A small icon that shows in the browser tab when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
 		</tr>
 		<tr>
 			<td>Fixed width vs Fluid width</td>
@@ -167,7 +167,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>FTP</td>
-			<td>File Transfer Protocol, a way of putting files onto a web server.</td>
+			<td>File Transfer Protocol, a way of uploading files to a server, or downloading them from a server.</td>
 		</tr>
 		<tr>
 			<td>GIF</td>
@@ -238,8 +238,8 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>A markup language is a way to add structure and meaning to content, in addition to the actual text. It binds things together and defines relationships, by adding special 'markup tags' around parts of the content</td>
 		</tr>
 		<tr>
-			<td>Meta data</td>
-			<td>Data about data. For example, keywords and summaries are examples of meta data.</td>
+			<td>Metadata</td>
+			<td>Data about data. For example, keywords and summaries are examples of metadata.</td>
 		</tr>
 		<tr>
 			<td>Microsite</td>
@@ -319,7 +319,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Schema.org</td>
-			<td>A meta data/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
+			<td>A metadata/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
 		</tr>
 		<tr>
 			<td>Search Engine</td>
@@ -347,7 +347,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>SSL Certificate</td>
-			<td>An SSL certificate is needed for when you need to encrypt traffic between the web server and visitor web browsers, such as when taking credit card details. SSL certificates need to be purchased for your domain name, and need to be installed on your web server. Many web hosting services will not work with an SSL certificate as you need a dedicated IP address for your particular website.</td>
+			<td>An SSL certificate is needed for when you need to encrypt traffic between the web server and visitor web browsers, such as when taking credit card details. SSL certificates need to be purchased for your domain name, and need to be installed on your web server. Many webhosting services will not work with an SSL certificate as you need a dedicated IP address for your particular website.</td>
 		</tr>
 		<tr>
 			<td>Staging server</td>
@@ -394,8 +394,8 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>The process of implementing a web design. The terms 'web design' and 'web development' overlap, but things like PHP-programming would normally be done by a specialist web developer rather than someone with a design background.</td>
 		</tr>
 		<tr>
-			<td>Web hosting</td>
-			<td>Websites are hosted on a server, but often the server is only accessed via a specific 'web hosting account' on it. These web hosting accounts are sold and configured separately, as a web server will often have many web hosting accounts.</td>
+			<td>Webhosting</td>
+			<td>Websites are hosted on a server, but often the server is only accessed via a specific 'webhosting account' on it. These webhosting accounts are sold and configured separately, as a web server will often have many webhosting accounts.</td>
 		</tr>
 		<tr>
 			<td>Web server</td>

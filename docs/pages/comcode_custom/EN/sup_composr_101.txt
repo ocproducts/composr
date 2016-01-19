@@ -10,7 +10,7 @@ It's a fantastic CMS that allows you easily build the infrastructure for a vibra
 
 [title="2"]Free Trial[/title]
 
-It costs you nothing to try out Composr. You can set up a 30 day demo account with Arvixe web hosting. Why? Well you have 30 days completely free Composr optimised hosting to get used to working with Composr. Any work you do is saved and should you wish to purchase hosting its one click away.
+It costs you nothing to try out Composr. You can set up a 30 day demo account with Arvixe webhosting. Why? Well you have 30 days completely free Composr optimised hosting to get used to working with Composr. Any work you do is saved and should you wish to purchase hosting its one click away.
 
 [title="3"]Try out Composr with Arvixe[/title]
 
