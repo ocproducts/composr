@@ -11,7 +11,19 @@
 .ft-rw { overflow:hidden; margin:20px 0; font-size:14px; color:#666; }
 .ft-rw h2 { overflow:hidden; padding-bottom:0; border-left:#e5922d solid 3px; border-top:#c7c7c7 solid 3px; border-right:#c7c7c7 solid 1px; border-bottom:#c7c7c7 solid 1px; margin:0 0 5px 0; }
 .ft-rw h2 a { float:left; padding-top: 5px; }
-.ft-rw .column { width:220px; float:left; padding:7px; font-size:14px; color:#666; margin-bottom:20px; }
+.ft-rw .column {
+	{+START,IF,{$MOBILE}}
+		width:290px;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:220px;
+	{+END}
+	float:left;
+	padding:7px;
+	font-size:14px;
+	color:#666;
+	margin-bottom:20px;
+}
 .ft-rw .column p { text-align:center; margin:0 }
 .ft-rw .column .image { text-align:center; margin-bottom:5px; min-height:90px; padding-top:30px; }
 .ft-rw .column .iconAndTitle { text-align:center; }

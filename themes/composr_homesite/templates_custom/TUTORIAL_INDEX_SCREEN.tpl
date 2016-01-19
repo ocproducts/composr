@@ -4,7 +4,7 @@
 	{TITLE}
 	{$METADATA,breadcrumb_self,Tutorials}
 
-	<div class="tut-row">
+	{+START,SET,TAGS}
 		<div class="leftMenu">
 			<ul>
 				{+START,LOOP,TAGS}
@@ -14,6 +14,12 @@
 				{+END}
 			</ul>
 		</div>
+	{+END}
+
+	<div class="tut-row">
+		{+START,IF,{$NOT,{$MOBILE}}}
+			{$GET,TAGS}
+		{+END}
 
 		<div class="right">
 			{+START,IF_NON_EMPTY,{$_POST,search}}
@@ -87,6 +93,12 @@
 						</div>
 					</div>
 				{+END}
+			{+END}
+
+			{+START,IF,{$MOBILE}}
+				<h2>Tags</h2>
+
+				{$GET,TAGS}
 			{+END}
 
 			<h2>Need better information{+START,IF_NON_EMPTY,{TAG_SELECTED}} on {TAG_SELECTED*}{+END}?</h2>

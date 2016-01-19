@@ -1,6 +1,6 @@
 <p>Want an existing Composr website upgraded to a newer version?</p>
 
-<h3>We can handle:</h3>
+<h4>We can handle:</h4>
 <ul>
 	<li>Uploading the new files.</li>
 	<li>Upgrading your database.</li>

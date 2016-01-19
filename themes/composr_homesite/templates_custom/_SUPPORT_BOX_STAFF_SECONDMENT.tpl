@@ -3,7 +3,7 @@
 	We can arrange for developer(s) to work regular hours for you.
 </p>
 
-<h3>Benefits:</h3>
+<h4>Benefits:</h4>
 <ul>
 	<li>Achieve excellence</li>
 	<li>Pay only for the regular hours you need rather than a full salary</li>

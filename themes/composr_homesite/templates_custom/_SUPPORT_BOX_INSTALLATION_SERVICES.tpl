@@ -1,6 +1,6 @@
 <p>We can install Composr onto your server of choice.</p>
 
-<h3>If you would like our installation service please first check:</h3>
+<h4>If you would like our installation service please first check:</h4>
 <ul>
 	<li>Make sure you have at least 8 credits.</li>
 	<li>You agree to our <a href="{$PAGE_LINK*,site:server_access}" target="_blank" title="Server access policy {!LINK_NEW_WINDOW}">server access policy</a>.</li>

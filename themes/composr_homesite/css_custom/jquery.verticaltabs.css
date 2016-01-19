@@ -19,8 +19,8 @@
 .verticalslider_contents{float: left; width: 710px; height:25em; display: block; overflow:hidden; margin: 0px; padding: 10px 0px 20px 0px; border-left:1px solid #CCC; border-bottom:1px solid #CCC; background-color:#FFF;}
 .verticalslider_contents>li{margin: 0px; padding: 0px; width: 715px; position: absolute; height: auto !important; overflow: hidden; padding: 0px; display: none; list-style-type: none; }
 
-.verticalslider_contents>li h2{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #E5922C; font-size:22px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px;}
-.verticalslider_contents>li h3{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #667EA4; font-size:15px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px; font-weight:normal;}
+.verticalslider_contents>li h3{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #E5922C; font-size:22px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px;}
+.verticalslider_contents>li h4{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #667EA4; font-size:15px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px; font-weight:normal;}
 .verticalslider_contents>li p{ margin: 5px 20px; padding-bottom: 10px; color: #666; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 13px; }
 
 .verticalslider_contents .activeContent{display: inline;}

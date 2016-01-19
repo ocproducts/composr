@@ -18,7 +18,7 @@
 
 			[block]composr_homesite_download[/block]
 
-			<h1>Cloud &amp; <abbr title="Software as a Service">SaaS</abbr> hosting</h1>
+			<h2 style="margin:30px 0 0 0">Cloud &amp; <abbr title="Software as a Service">SaaS</abbr> hosting</h2>
 
 			<h3 class="colrBl">Scalability</h3>
 
@@ -68,7 +68,7 @@
 				</div>
 			</div>
 
-			<h1>For Developers</h1>
+			<h2 style="margin-bottom:0">For Developers</h2>
 
 			<h3 class="colrBl">Git read access</h3>
 

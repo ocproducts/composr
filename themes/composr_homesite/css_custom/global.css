@@ -129,13 +129,11 @@ img, img a { border:none; outline:none; }
 /*Border style*/
 .hSliderHold { height:336px; background:none; position:relative; {$BETA_CSS_PROPERTY,user-select:none;} }
 .hSliderOuter { height:320px; overflow:hidden; background-image:url('{$IMG;,composr_homesite/slider-bg}'); background-repeat:repeat; background-position:left top; }
-.hSlider { width:940px; height:300px; margin:10px; background-color:#FFF; }
+.hSlider { height:300px; margin:10px; background-color:#FFF; }
 .hSliderBtm { clear:both; height:16px; background-image:url('{$IMG;,composr_homesite/slider-btm-bg}'); background-repeat:no-repeat; background-position:center top; margin-top:1px; }
 /*Inner style*/
 .con { width:100%; height:299px; -webkit-overflow-scrolling: touch; overflow-x:scroll; overflow-y:hidden; }
-.page_running_compare .con { width:950px; }
 .touch_enabled .con { width:100%; }
-.page_running_vision .con img { position:absolute; } /* So it shows over top of bordering */
 .rootWrap { overflow-y:hidden !important; }
 .scrollElement.dragCon { max-width:225px !important; position:absolute; z-index:999; }
 .scrollElement.dragConY { display:none !important; }
@@ -235,7 +233,7 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 	padding-bottom:10px;
 }
 .cntLeft h1 { padding-bottom:10px; display:block; }
-.cntLeft h3 { font-size:22px; font-weight:bold; color:#677EA4; padding:5px 0px 10px 0px; display:block; }
+h2.leftH3Like, .cntLeft h2.h3Like, .cntLeft h3 { font-size:20px !important; font-weight:bold; color:#677EA4; padding:5px 0px 10px 0px; display:block; }
 .cntLeft p { font-size:14px; line-height:22px; color:#666666; text-align:justify; padding-bottom:10px; }
 .cntLeft p.noJustify { text-align:left; }
 
@@ -264,6 +262,10 @@ h2, h3 { color:#E5922C; }
 		margin: 0 10px;
 		width: 270px;
 		min-height: 350px;
+	}
+
+	.zone_running_ocproducts .niceBox, .zone_running_ocproducts .niceBoxWt {
+		width: 100%;
 	}
 {+END}
 
@@ -311,7 +313,16 @@ ul.cntLi li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:
 #vertical_container>h1, #vertical_container>h2, #vertical_container>h3 { overflow:hidden; display:block; padding:10px; font-size:16px; font-weight:bold; text-align:left; color:#FFF; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:6px;} margin-bottom:8px; }
 #vertical_container>h1:hover, #vertical_container>h2:hover, #vertical_container>h3:hover { cursor:pointer; }
 
-.accordionContent { font-size:13px !important; overflow:hidden !important; padding:0px 10px !important; margin-bottom:10px !important; background-color:#F3F5F8; {$BETA_CSS_PROPERTY,border-radius:6px;} }
+.accordionContent {
+	font-size:13px !important;
+	overflow:hidden !important;
+	padding:0px 10px !important;
+	margin-bottom:10px !important;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		background-color:#F3F5F8;
+	{+END}
+	{$BETA_CSS_PROPERTY,border-radius:6px;}
+}
 .accordionContent .main { list-style:none; margin:0; padding:0; }
 .accordionContent .itemTitle { padding-left:20px; padding-bottom:10px; overflow:hidden; display:block; font-size:14px; font-weight:bold; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:00px 4px; color:#666; }
 .accordionContent .itemDescription { margin:0 0 1em 0; display:block; }
@@ -325,7 +336,7 @@ ul.cntLi li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:
 /*News/newsletter-style sections (reused for other things too)*/
 
 .ltNews { float:left; width:460px; height:auto; background-image:url('{$IMG;,composr_homesite/btm-box-bg}'); background-repeat:no-repeat; background-position:bottom center; margin-top:20px; padding-bottom:25px; }
-.ltNewsHead { margin:0; padding:0px 20px !important; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} font-size:24px; line-height:47px; font-weight:normal; color:#FFF !important; text-shadow:1px 1px #45526D; }
+.ltNewsHead { margin:0; padding:0px 20px !important; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:left top; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} font-size:24px !important; line-height:47px; font-weight:normal; color:#FFF !important; text-shadow:1px 1px #45526D; }
 .ltCnt {
 	padding:15px 0px 0px 0px;
 	{+START,IF,{$MOBILE}}

@@ -14,7 +14,7 @@
 			<p>The top contributing users are shown on our <a href="{$PAGE_LINK*,site:stars}">community stars</a> page.</p>
 		</div>
 
-		<div class="cntLRow">
+		<div class="cntLRow" style="overflow:hidden">
 			<div class="cmnty">
 				<h2 class="head">Downloads</h2>
 
@@ -100,9 +100,9 @@
 	<div class="cntRight">
 		<div class="cntRRow">
 			<div class="niceBox">
-				<h3 class="niceBoxHead">
+				<h2 class="niceBoxHead">
 					Testimonials
-				</h3>
+				</h2>
 
 				<div class="testimonialsNav">
 					<span class="nav prev">Prev</span> <span class="nav next">Next</span>
@@ -146,19 +146,19 @@
 
 <div class="cntRow">
 	<div class="ltNews">
-		<h3 class="ltNewsHead">
+		<h2 class="ltNewsHead">
 			Facebook Page
-		</h3>
+		</h2>
 
 		<div class="ltCnt"><div style="padding:0 1em 1em 1em; min-height: 400px">
-			[block width="430" height="400" show_posts="1" show_fans="1" param="80430912569" page_name="Composr friends"]main_facebook_page[/block]
+			{$BLOCK,block=main_facebook_page,width={$?,{$MOBILE},700,430},height=400,show_posts=1,show_fans=1,param=80430912569,page_name=Composr friends}
 		</div></div>
 	</div>
 
 	<div class="ltNewsRht">
-		<h3 class="ltNewsHead">
+		<h2 class="ltNewsHead">
 			Tweets
-		</h3>
+		</h2>
 
 		<div class="ltCnt"><div style="padding:0 1em 1em 1em; min-height: 400px">
 			<a class="twitter-timeline" href="https://twitter.com/hashtag/composr" data-widget-id="558676915687804929">#composr Tweets</a>

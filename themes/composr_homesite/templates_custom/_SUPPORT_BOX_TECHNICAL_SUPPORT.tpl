@@ -1,6 +1,6 @@
 <p>You can count on our knowledgeable and friendly staff to be the support team you can depend on.</p>
 
-<h3>Here are some examples of ways we can help:</h3>
+<h4>Here are some examples of ways we can help:</h4>
 <ul>
 	<li>Answering Composr-related questions (mentoring, and advice).</li>
 	<li>Help configuring complex features, such as LDAP or eCommerce support.</li>

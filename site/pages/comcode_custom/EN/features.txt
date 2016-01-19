@@ -29,49 +29,83 @@
 	</div>
 
 	<div class="ft-rw accordion">
-		<h2><a href="#">Content types</a></h2>
+		{+START,IF,{$MOBILE}}
+			<h2><a href="#">Content types</a></h2>
+			<div>
+				[block="catalogues|quizzes|galleries|wiki,calendar|downloads|news|pages"]composr_homesite_featuretray[/block]
+			</div>
 
-		<div>
-			[block="catalogues|quizzes,galleries|wiki,calendar|downloads,news|pages"]composr_homesite_featuretray[/block]
-		</div>
+			<h2><a href="#">General features</a></h2>
+			<div>
+				[block="installation|featured|banners|ecommerce,search|support|newsletters"]composr_homesite_featuretray[/block]
+			</div>
 
-		<h2><a href="#">General features</a></h2>
+			<h2><a href="#">Forums and members</a></h2>
+			<div>
+				<p class="intro">Enjoy <strong>seamless integration</strong> with our cutting-edge forum, Conversr &mdash; [i]or[/i] integrate with your current product.</p>
 
-		<div>
-			[block="installation|featured,banners|ecommerce,search|support,newsletters"]composr_homesite_featuretray[/block]
-		</div>
+				[block="cnsmembers|cnsforum,tracking|forumcontentsharing|forumdrivers"]composr_homesite_featuretray[/block]
+			</div>
 
-		<h2><a href="#">Forums and members</a></h2>
+			<h2><a href="#">More social networking</a></h2>
+			<div>
+				[block="polls|msn|points,chat|community"]composr_homesite_featuretray[/block]
+			</div>
 
-		<div>
-			<p class="intro">Enjoy <strong>seamless integration</strong> with our cutting-edge forum, Conversr &mdash; [i]or[/i] integrate with your current product.</p>
+			<h2><a href="#">Design and management</a></h2>
+			<div>
+				[block="adminzone|tools|rad,barriers|tempcode|richmedia"]composr_homesite_featuretray[/block]
+			</div>
 
-			[block="cnsmembers,cnsforum,tracking|forumcontentsharing,forumdrivers"]composr_homesite_featuretray[/block]
-		</div>
+			<h2><a href="#">Standards</a></h2>
+			<div>
+				[block="webstandards|performance|seo|itln,security|easeofuse"]composr_homesite_featuretray[/block]
+			</div>
 
-		<h2><a href="#">More social networking</a></h2>
+			<h2><a href="#">Architecture</a></h2>
+			<div>
+				[block="debranding|permissions|nav,integration|extendable"]composr_homesite_featuretray[/block]
+			</div>
+		{+END}
 
-		<div>
-			[block="polls|msn,points,chat,community"]composr_homesite_featuretray[/block]
-		</div>
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<h2><a href="#">Content types</a></h2>
+			<div>
+				[block="catalogues|quizzes,galleries|wiki,calendar|downloads,news|pages"]composr_homesite_featuretray[/block]
+			</div>
 
-		<h2><a href="#">Design and management</a></h2>
+			<h2><a href="#">General features</a></h2>
+			<div>
+				[block="installation|featured,banners|ecommerce,search|support,newsletters"]composr_homesite_featuretray[/block]
+			</div>
 
-		<div>
-			[block="adminzone,tools|rad,barriers|tempcode,richmedia"]composr_homesite_featuretray[/block]
-		</div>
+			<h2><a href="#">Forums and members</a></h2>
+			<div>
+				<p class="intro">Enjoy <strong>seamless integration</strong> with our cutting-edge forum, Conversr &mdash; [i]or[/i] integrate with your current product.</p>
 
-		<h2><a href="#">Standards</a></h2>
+				[block="cnsmembers,cnsforum,tracking|forumcontentsharing,forumdrivers"]composr_homesite_featuretray[/block]
+			</div>
 
-		<div>
-			[block="webstandards|performance,seo|itln,security,easeofuse"]composr_homesite_featuretray[/block]
-		</div>
+			<h2><a href="#">More social networking</a></h2>
+			<div>
+				[block="polls|msn,points,chat,community"]composr_homesite_featuretray[/block]
+			</div>
 
-		<h2><a href="#">Architecture</a></h2>
+			<h2><a href="#">Design and management</a></h2>
+			<div>
+				[block="adminzone,tools|rad,barriers|tempcode,richmedia"]composr_homesite_featuretray[/block]
+			</div>
 
-		<div>
-			[block="debranding|permissions,nav,integration,extendable"]composr_homesite_featuretray[/block]
-		</div>
+			<h2><a href="#">Standards</a></h2>
+			<div>
+				[block="webstandards|performance,seo|itln,security,easeofuse"]composr_homesite_featuretray[/block]
+			</div>
+
+			<h2><a href="#">Architecture</a></h2>
+			<div>
+				[block="debranding|permissions,nav,integration,extendable"]composr_homesite_featuretray[/block]
+			</div>
+		{+END}
 	</div>
 
 	<div class="ft-rw2 no_print">

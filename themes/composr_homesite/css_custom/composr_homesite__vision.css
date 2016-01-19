@@ -1,6 +1,53 @@
-.partnersFtrImg { margin-top: 40px; float:left; width:320px; height:280px; margin-right:10px; padding-bottom:20px; }
+.page_running_vision .con img { position:absolute; } /* So it shows over top of bordering */
 
-.vision-list ul { list-style:none; padding-left:20px; }
+{+START,IF,{$MOBILE}}
+	.page_running_vision .hSliderOuter, .page_running_vision .hSliderHold {
+		height: 338px;
+	}
+
+	.page_running_vision .hSlider {
+		width: 605px;
+		height: 318px;
+	}
+
+	.page_running_vision .con {
+		height: 318px;
+	}
+
+	.page_running_vision .con img {
+		width: 605px;
+		height: auto;
+	}
+{+END}
+
+.partnersFtrImg {
+	margin-top: 40px;
+	float:left;
+	{+START,IF,{$MOBILE}}
+		width:345px;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:320px;
+	{+END}
+	height:280px;
+	margin-right:10px;
+	padding-bottom:20px;
+}
+{+START,IF,{$MOBILE}}
+	.partnersFtrImg img {
+		margin-bottom: 20px;
+	}
+{+END}
+
+.vision-list ul {
+	list-style:none;
+	{+START,IF,{$MOBILE}}
+		padding-left:0;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		padding-left:20px;
+	{+END}
+}
 .vision-list ul li { line-height:21px; font-size:14px; padding-left:70px; padding-top:7px; min-height:51px; color:#000; margin:12px 0; overflow:hidden; background-repeat:no-repeat; }
 {+START,LOOP,1\,2\,3\,4\,5\,6\,7\,8\,9\,10}
 .vision-list ul li:nth-child({_loop_var}) { background-image:url('{$IMG;,composr_homesite/vision/manifesto_icons/{_loop_var}}'); }
@@ -8,16 +55,55 @@
 
 .vision-meta { overflow:hidden; background:#f4fafb; border-radius:7px; padding:20px 30px; margin-bottom:20px; }
 .vision-meta-img { width:200px; float:left; }
-.vision-meta-txt { width:700px; float:left; }
-.vision-meta-txt h2 { color:#e69838; font-size:14px; }
+.vision-meta-txt {
+	{+START,IF,{$MOBILE}}
+		width:370px;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:700px;
+	{+END}
+	float:left;
+}
+.vision-meta-txt h3 { color:#e69838; font-size:14px; }
 .vision-meta-txt p { padding:7px 0; }
 
-ol.cntHf { list-style:none; margin:0 0 20px 0; overflow:hidden; padding:10px 0px; list-style:decimal !important; }
-ol.cntHf li { padding:0px 0px 5px 0px; line-height:22px; display:block; color:#666; font-size:14px; }
+.cntHf { overflow:hidden; }
+.cntHf h2 { font-size: 20px; }
+.cntHf li { line-height:22px; color:#666; font-size:14px; }
 .page_running_vision .commonBtn { margin-right:20px; }
 
-.vhis-box { width:470px; float:left; }
-.vhis-box-row { width:470px; float:left; margin-bottom:2px; }
+.vhis-box {
+	{+START,IF,{$MOBILE}}
+		width:100%;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:470px;
+	{+END}
+	float:left;
+}
+.vhis-box-row {
+	{+START,IF,{$MOBILE}}
+		width:100%;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:470px;
+	{+END}
+	float:left;
+	margin-bottom:2px;
+}
 .vhis-box-date { width:100px; height:44px; float:left; background:#667ea4; color:#fff; font-size:17px; text-align:center; padding:3px 0; }
 .vhis-box-date span { font-size:12px; color:#BDC7D8; }
-.vhis-box-txt { width:349px; height:18px; float:left; background:#f2f4f7; font-size:14px; color:#666; padding:16px 10px; }
+.vhis-box-txt {
+	{+START,IF,{$MOBILE}}
+		width:510px;
+	{+END}
+	{+START,IF,{$NOT,{$MOBILE}}}
+		width:350px;
+	{+END}
+	height:18px;
+	float:left;
+	background:#f2f4f7;
+	font-size:14px;
+	color:#666;
+	padding:16px 10px;
+}

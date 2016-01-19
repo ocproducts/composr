@@ -18,8 +18,10 @@
 
 .project_image {
 	float: right;
-	border-left: 1px solid #e6ebf1;
-	padding-left: 1em;
+	{+START,IF,{$NOT,{$MOBILE}}}
+		border-left: 1px solid #e6ebf1;
+		padding-left: 1em;
+	{+END}
 	margin-left: 1em;
 	margin-top: -2.5em; /* To put it flush with title */
 }
@@ -30,6 +32,9 @@
 
 .project_image img {
 	display: block;
+	{+START,IF,{$MOBILE}}
+		width: 220px;
+	{+END}
 	border: 1px solid #c7d2de;
 }
 

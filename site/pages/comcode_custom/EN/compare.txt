@@ -141,17 +141,17 @@
 {+START,IF,{$MOBILE}}
 	<div class="cntLRow">
 		<div id="vertical_container">
-			<h1 class="accordionToggle">Calling all</span> Webmasters</h1>
+			<h2 class="accordionToggle">Calling all Webmasters</h2>
 			<div class="accordionContent">
 				{+START,INCLUDE,_COMPARE_WEBMASTERS}{+END}
 			</div>
 
-			<h1 class="accordionToggle">Calling all</span> Developers</h1>
+			<h2 class="accordionToggle">Calling all Developers</h2>
 			<div class="accordionContent">
 				{+START,INCLUDE,_COMPARE_DEVELOPERS}{+END}
 			</div>
 
-			<h1 class="accordionToggle">Calling all</span> Designers</h1>
+			<h2 class="accordionToggle">Calling all Designers</h2>
 			<div class="accordionContent">
 				{+START,INCLUDE,_COMPARE_DESIGNERS}{+END}
 			</div>

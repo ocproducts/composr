@@ -4,7 +4,7 @@
 [title]Support[/title]
 
 <div class="cntRow">
-	<h3 class="colrBl">Free resources:</h3>
+	<h2 class="colrBl leftH3Like">Free resources:</h2>
 
 	<p>Use these free resources if you're on a budget or just like to customise things on your own.</p>
 </div>
@@ -98,16 +98,16 @@
 </div>
 
 <div class="cntRow">
-	<h3 class="colrBl">Get in touch:</h3>
+	<h2 class="colrBl leftH3Like">Get in touch:</h2>
 </div>
 
 <div class="cntRow">
 	<div class="srBtmBlock">
 		<div class="srBtmImg"><img alt="Contact" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
 
-		<div class="srBtmTitle">
+		<h3 class="srBtmTitle">
 			Contact Us
-		</div>
+		</h3>
 
 		<div class="srBtmBlockInner">
 			<p>If you need to [b]report a bug[/b] or have a [b]business enquiry[/b], please reach out.</p>
@@ -125,9 +125,9 @@
 	<div class="srBtmBlock">
 		<div class="srBtmImg"><img alt="" src="{$IMG*,composr_homesite/support/sr_support}" /></div>
 
-		<div class="srBtmTitle">
+		<h3 class="srBtmTitle">
 			Professional Support
-		</div>
+		</h3>
 
 		<div class="srBtmBlockInner">
 			<p>Receive support via pre-paid support credits:</p>
@@ -150,9 +150,9 @@
 	<div class="srBtmBlock srBtmLast">
 		<div class="srBtmImg"><img alt="" src="{$IMG*,composr_homesite/support/sr_agency}" /></div>
 
-		<div class="srBtmTitle">
+		<h3 class="srBtmTitle">
 			Web/Mobile Projects
-		</div>
+		</h3>
 
 		<div class="srBtmBlockInner">
 			<p>We'll help you find a developer and fill out a good introductory briefing:</p>

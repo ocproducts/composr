@@ -51,7 +51,7 @@ ul.srBoxes li:hover { background-color:#FFF; {$BETA_CSS_PROPERTY,box-shadow:#C8C
 		display:none;
 	{+END}
 }
-.srBtmTitle { text-transform: uppercase; padding:10px 0px; margin-bottom:25px; text-align:center; font-size:15px; font-weight:bold; color:#667EA4; border-bottom:1px solid #E0E6ED; border-top:1px solid #E0E6ED; display:block; }
+.srBtmTitle { text-transform: uppercase; padding:10px 0px; margin-bottom:25px; text-align:center; font-size:15px !important; font-weight:bold; color:#667EA4; border-bottom:1px solid #E0E6ED; border-top:1px solid #E0E6ED; display:block; }
 {+START,IF,{$NOT,{$MOBILE}}}
 	.srBtmBlockInner { min-height:15em; }
 {+END}

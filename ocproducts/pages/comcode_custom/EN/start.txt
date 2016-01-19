@@ -6,131 +6,137 @@
 {$REQUIRE_JAVASCRIPT,jquery.easing}
 {$REQUIRE_JAVASCRIPT,jquery.slidedeck}
 {$REQUIRE_JAVASCRIPT,jquery.tytabs}
+{$REQUIRE_JAVASCRIPT,jquery-ui}
+{$REQUIRE_CSS,jquery.ui.all}
 
 <div class="cntRow">
 	[title sub="Stewards of Composr CMS. Experts in website technology &amp; marketing."]ocProducts[/title]
 
 	<span class="comTopTxt">
-		The client benefits from the combinative power of our CMS and app technology, our expertise, and our high standards
+		The client benefits from the combinative power of our CMS and app technology, our expertise, and our high standards{+START,IF,{$MOBILE}}.{+END}
 	</span>
 </div>
 
-<div class="cntRow">
-	<div class="hSliderHold">
-		<div class="hSliderInner">
-			<div class="hSlider">
-				<div class="con">
-					<div class="slidedeck-home-page containerSlider">
-						<dl class="slidedeck cont-slider">
-							<dt class="spine spine_1"></dt>
-							<dd class="active slide slide_1"><img alt="The Composr web development agency. Bringing the expert web design service you need. ocProducts design dynamic and interactive social websites, delivering sophisticated website solutions around the technology in our Open Source Content Management System (CMS), Composr CMS. Fabulous websites that you are in complete control of! Skilled craftsmanship + First rate agency service + Composr technology = ocProducts. We are a web design/development company based in the UK - but we do work all over the world." class="cardImage" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-1}" width="725" /></dd>
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="cntRow">
+		<div class="hSliderHold">
+			<div class="hSliderInner">
+				<div class="hSlider">
+					<div class="con">
+						<div class="slidedeck-home-page containerSlider">
+							<dl class="slidedeck cont-slider">
+								<dt class="spine spine_1"></dt>
+								<dd class="active slide slide_1"><img alt="The Composr web development agency. Bringing the expert web design service you need. ocProducts design dynamic and interactive social websites, delivering sophisticated website solutions around the technology in our Open Source Content Management System (CMS), Composr CMS. Fabulous websites that you are in complete control of! Skilled craftsmanship + First rate agency service + Composr technology = ocProducts. We are a web design/development company based in the UK - but we do work all over the world." class="cardImage" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-1}" width="725" /></dd>
 
-							<dt class="spine spine_2 next">
-								<div class="index"></div>
+								<dt class="spine spine_2 next">
+									<div class="index"></div>
 
-								<ul class="verticalSlideNav slide-Nav">
-									<li class="nav-1 active"><a class="nav-1" href="#1">Nav 1</a></li>
-									<li class="nav-2"><a class="nav-2" href="#2">Nav 2</a></li>
-									<li class="nav-3"><a class="nav-3" href="#3">Nav 3</a></li>
-									<li class="nav-4"><a class="nav-4" href="#4">Nav 4</a></li>
-								</ul>
-							</dt>
+									<ul class="verticalSlideNav slide-Nav">
+										<li class="nav-1 active"><a class="nav-1" href="#1">Nav 1</a></li>
+										<li class="nav-2"><a class="nav-2" href="#2">Nav 2</a></li>
+										<li class="nav-3"><a class="nav-3" href="#3">Nav 3</a></li>
+										<li class="nav-4"><a class="nav-4" href="#4">Nav 4</a></li>
+									</ul>
+								</dt>
 
-							<dd class="slide slide_2">
-								<ul class="slidesVertical">
-									<li class="case verticalSlide_1"><img alt="Analysis process: Introductory discussions, Requirement analysis, Proposal &amp; Quote, Agree on schedule, Full specs &amp; Diagrams" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2a}" width="725" /></li>
-									<li class="case verticalSlide_2"><img alt="Design process: Screen designs, Internal sign-off, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2b}" width="725" /></li>
-									<li class="case verticalSlide_3"><img alt="Development process: Development, Internal sign-off, Formal Testing, Prepare Demo, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2c}" width="725" /></li>
-									<li class="case verticalSlide_4"><img alt="Deployment process: Training guides, Deploy live website, Monitor website for effectiveness/performance, Ongoing support" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2d}" width="725" /></li>
-								</ul>
-								<a class="vertical-prev-next previous no-display" href="#previous">Previous</a>
-								<a class="vertical-prev-next next" href="#next">Next</a>
-							</dd>
+								<dd class="slide slide_2">
+									<ul class="slidesVertical">
+										<li class="case verticalSlide_1"><img alt="Analysis process: Introductory discussions, Requirement analysis, Proposal &amp; Quote, Agree on schedule, Full specs &amp; Diagrams" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2a}" width="725" /></li>
+										<li class="case verticalSlide_2"><img alt="Design process: Screen designs, Internal sign-off, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2b}" width="725" /></li>
+										<li class="case verticalSlide_3"><img alt="Development process: Development, Internal sign-off, Formal Testing, Prepare Demo, Client sign-off" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2c}" width="725" /></li>
+										<li class="case verticalSlide_4"><img alt="Deployment process: Training guides, Deploy live website, Monitor website for effectiveness/performance, Ongoing support" height="300" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-2d}" width="725" /></li>
+									</ul>
+									<a class="vertical-prev-next previous no-display" href="#previous">Previous</a>
+									<a class="vertical-prev-next next" href="#next">Next</a>
+								</dd>
 
-							<dt class="spine spine_3"></dt>
-							<dd class="slide slide_3"><img alt="ocProducts: Web development, Creative-artwork, Content Management, Accessibility, Information-architecture, Transparency, Interaction-design, UML, Interface-design, Web-design, Search engine optimisation" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-3}" /></dd>
+								<dt class="spine spine_3"></dt>
+								<dd class="slide slide_3"><img alt="ocProducts: Web development, Creative-artwork, Content Management, Accessibility, Information-architecture, Transparency, Interaction-design, UML, Interface-design, Web-design, Search engine optimisation" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-3}" /></dd>
 
-							<dt class="spine spine_4"></dt>
-							<dd class="slide slide_4"><img alt="Composr vision: Accessibility, Web standards, Flexibility, Inclusivity, User Experience, Integration, Mature Engineering, Transparency, Community, Open Source, Customisability, Cloud, Mobile, Social Media" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-4}" /></dd>
+								<dt class="spine spine_4"></dt>
+								<dd class="slide slide_4"><img alt="Composr vision: Accessibility, Web standards, Flexibility, Inclusivity, User Experience, Integration, Mature Engineering, Transparency, Community, Open Source, Customisability, Cloud, Mobile, Social Media" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-4}" /></dd>
 
-							<dt class="spine spine_5"></dt>
-							<dd class="slide slide_5"><img alt="Composr Mobile SDK is our mobile toolkit for iOS and Android that can integrate with Composr" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-5}" /></dd>
-						</dl>
+								<dt class="spine spine_5"></dt>
+								<dd class="slide slide_5"><img alt="Composr Mobile SDK is our mobile toolkit for iOS and Android that can integrate with Composr" src="{$IMG*,composr_homesite/ocproducts/sliders/slider-5}" /></dd>
+							</dl>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="hSliderBtm"></div>
+				<div class="hSliderBtm"></div>
+			</div>
 		</div>
 	</div>
-</div>
 
-<script>//<![CDATA[
-	$(document).ready(function() {
-		TheSlideDeck = $('.slidedeck-home-page .slidedeck').slidedeck({
-			scroll: 'stop',
-			cufonRefresh: ".slidedeck-home-page dt"
-		}).loaded(function() {
-			$('.slidedeck-home-page .slide .verticalSlideNav').each(function() {
-				$(this).parents('dd.slide').prevAll('dt.spine:first').append(this);
+	<script>//<![CDATA[
+		$(document).ready(function() {
+			var TheSlideDeck = $('.slidedeck-home-page .slidedeck').slidedeck({
+				scroll: 'stop',
+				cufonRefresh: ".slidedeck-home-page dt"
+			}).loaded(function() {
+				$('.slidedeck-home-page .slide .verticalSlideNav').each(function() {
+					$(this).parents('dd.slide').prevAll('dt.spine:first').append(this);
+				});
+			}).vertical({
+				before: function(deck) {
+					if(deck.current == 0) {
+						$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
+					} else {
+						$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
+					}
+					if(deck.current == (deck.slides.length - 1)) {
+						$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
+					} else {
+						$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
+					}
+				},
+				complete: function(deck) {
+					if(deck.current == 0) {
+						$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
+					} else {
+						$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
+					}
+					if(deck.current == (deck.slides.length - 1)) {
+						$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
+					} else {
+						$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
+					}
+				}
 			});
-		}).vertical({
-			before: function(deck) {
-				if(deck.current == 0) {
-					$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
-				} else {
-					$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
-				}
-				if(deck.current == (deck.slides.length - 1)) {
-					$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
-				} else {
-					$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
-				}
-			},
-			complete: function(deck) {
-				if(deck.current == 0) {
-					$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
-				} else {
-					$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
-				}
-				if(deck.current == (deck.slides.length - 1)) {
-					$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
-				} else {
-					$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
-				}
-			}
-		});
 
-		$('.slidedeck-home-page a.vertical-prev-next').bind('click', function(event) {
-			event.preventDefault();
-			switch(this.href.split('#')[1]) {
-				case "previous":
-					$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
-					break;
-				case "next":
-					$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
-					break;
-			}
-		});
+			$('.slidedeck-home-page a.vertical-prev-next').bind('click', function(event) {
+				event.preventDefault();
+				switch(this.href.split('#')[1]) {
+					case "previous":
+						$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
+						break;
+					case "next":
+						$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
+						break;
+				}
+			});
 
-		$('.slidedeck-home-page a.vertical-prev-next.previous').hide();
+			$('.slidedeck-home-page a.vertical-prev-next.previous').hide();
 
-		$('.slidedeck-home-page dl.slidedeck a.vertical-nav.next').click(function() {
-			$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
+			$('.slidedeck-home-page dl.slidedeck a.vertical-nav.next').click(function() {
+				$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
+			});
+			$('.slidedeck-home-page dl.slidedeck a.vertical-nav.prev').click(function() {
+				$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
+			});
 		});
-		$('.slidedeck-home-page dl.slidedeck a.vertical-nav.prev').click(function() {
-			$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
-		});
-	});
-//]]></script>
+	//]]></script>
+{+END}
 
-<div class="cntRow">
-	<div class="rowHead text-center">
-		Why not a regular web design company?
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="cntRow">
+		<h2 class="rowHead text-center">
+			Why not a regular web design company?
+		</h2>
+
+		<p class="colrBl fWt text-center">Through our unique relationship with Composr you'll receive <sup>*1</sup>:</p>
 	</div>
-
-	<h4 class="colrBl fWt text-center">Through our unique relationship with Composr you'll receive <sup>*1</sup>:</h4><br />
-</div>
+{+END}
 
 <div class="cntRow">
 	<div class="compBoxHold">
@@ -170,9 +176,9 @@
 <div class="cntRow">
 	<div class="cntLeft">
 		<div class="cntLRow">
-			<div class="thumbHead">
+			<h2 class="thumbHead">
 				Going deeper:
-			</div>
+			</h2>
 
 			<p>We can deliver solutions bridging IT, web, mobile, cloud, and social media.</p>
 		</div>
@@ -200,196 +206,177 @@
 			</div>
 		</div>
 
-		<div class="cntLRow">
-			<h3 class="colrBl text-center">The world-class development team is waiting to hear from you</h3><br />
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<div class="cntLRow">
+				<h3 class="colrBl text-center">The world-class development team is waiting to hear from you</h3><br />
 
-			<div class="compColLft marRht">
-				<p class="noJustify">
-					Composr CMS is our main product, but we aren't restricted to the web. For example, we can also do app development via <a href="{$PAGE_LINK*,docs:tut_mobile_sdk}">Composr Mobile SDK</a> (our iOS/Android toolkit).
-				</p>
-			</div>
+				<div class="compColLft marRht">
+					<p class="noJustify">
+						{+START,INCLUDE,_AGENCY_MORE}{+END}
+					</p>
+				</div>
 
-			<div class="compColLft">
-				<p class="noJustify">
-					We can be your outsourced IT department. We'll great interdisciplinary expertise to you, without you needing to keep a range of people employed full-time.
-				</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="cntRight">
-		<div class="cntRRow"></div>
-
-		<div class="cntRRow">
-			<div class="niceBoxWt">
-				<h3 class="niceBoxHead2">
-					Quick-fire awesome
-				</h3>
-
-				<div class="niceBoxInner">
-					<ul class="liRcol">
-						<li>[url="http://www.facebook.com/notes/facebook-engineering/hiphop-for-php-six-months-later/416880943919"]Thanked by Facebook[/url] for helping them improve their tech</li>
-						<!--<li>[page="site:members"]Thousands of registered users[/page] of our technology</li>-->
-						<li>Sent free goodies by Google for helping debug Google AppEngine</li>
-						<li>We are rated highest by users for &lsquo;Built-in Applications&rsquo; on the [url="biggest CMS comparison website"]http://www.cmsmatrix.org/[/url]</li>
-						<li>A high percentage of webhosts supply our technology as a service to their users; including Amazon, and Microsoft</li>
-					</ul>
-
-					<p class="ceo">
-						<img alt="Photo of Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />
-						ocProducts is led by Chris Graham, the original lead developer for Composr.
+				<div class="compColLft">
+					<p class="noJustify">
+						{+START,INCLUDE,_AGENCY_DEPARTMENT}{+END}
 					</p>
 				</div>
 			</div>
-		</div>
+		{+END}
 	</div>
+
+	{+START,IF,{$NOT,{$MOBILE}}}
+		<div class="cntRight">
+			<div class="cntRRow"></div>
+
+			<div class="cntRRow">
+				<div class="niceBoxWt">
+					<h3 class="niceBoxHead2">
+						Quick-fire awesome
+					</h3>
+
+					<div class="niceBoxInner">
+						<ul class="liRcol">
+							{+START,INCLUDE,_AGENCY_AWESOME}{+END}
+						</ul>
+
+						<p class="ceo">
+							<img alt="Photo of Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />
+							ocProducts is led by Chris Graham, the original lead developer for Composr.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	{+END}
 </div>
 
 <div class="compSepr"></div>
 
-<div class="cntRow compCnt1">
-	<div class="compCol">
-		<div class="compColHead">
-			We're not only about technology
+{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="cntRow compCnt1">
+		<div class="compCol">
+			<h2 class="compColHead">We're not only about technology</h2>
+
+			{+START,INCLUDE,_AGENCY_DESIGN}{+END}
 		</div>
 
-		<p>It's vital that you get a beautiful design that carries your brand and gives your users confidence:</p>
+		<div class="compCol">
+			<h2 class="compColHead">We make our projects partnerships</h2>
 
-		<ul>
-			<li>
-				We won't just use template, you'll have a real designer working for you, someone with experience.<br />
-				<span>(if you're a design agency, we can build your design instead)</span>
-			</li>
-
-			<li>
-				We can include logo design, and design of any other auxillary materials such as business cards and leaflets.
-			</li>
-
-			<li>
-				We have expertise and resources covering many design disciplines, including user experience (UX) testing.
-			</li>
-		</ul>
-
-		<p>
-			A great and charming user experience is key to your success.<br />
-			Just focusing on technology, or even content, is not enough.<br />
-			We want your users to keep coming back to you, not a competitor.
-		</p>
-	</div>
-
-	<div class="compCol">
-		<div class="compColHead">
-			We make our projects partnerships
+			{+START,INCLUDE,_AGENCY_BUSINESS}{+END}
 		</div>
-
-		<p>We work toward your long-term success, so we'll provide <sup>*2</sup>&hellip;</p>
-
-		<ul>
-			<li>a project manager to liase with directly</li>
-			<li>inbuilt <abbr title="Search Engine Optimisation">SEO</abbr> tools and automatic search engine submission</li>
-			<li>powerful web analytics</li>
-			<li>a website that is compatible with all the major web browsers (Internet Explorer, Edge, Firefox, Chrome, Safari, Android)</li>
-			<li>comprehensive support to make your site as successful as it can be (under our support account or secondment services)</li>
-		</ul>
-
-		<p>We also have the skills and resources to provide all kinds of other design/development services as-required, such as split testing and mobile-app development.</p>
 	</div>
-</div>
 
-<div class="cntRow compCnt2">
-	<div id="tabsHolder2">
-		<br />
+	<div class="cntRow compCnt2">
+		<div id="tabsHolder2">
+			<br />
 
-		<h1 class="text-center">The production process</h1>
+			<h2 class="text-center">The production process</h2>
 
-		<ul class="tabs comp">
-			<li id="tabz1">How do we do it?</li>
+			<ul class="tabs comp">
+				<li id="tabz1">How do we do it?</li>
+				<li id="tabz2">What do we charge?</li>
+				<li id="tabz3">What to provide us</li>
+			</ul>
 
-			<li id="tabz2">What do we charge?</li>
-
-			<li id="tabz3">What to provide us</li>
-		</ul>
-
-		<div>
-			<div class="tabscontent" id="contentz1">
-				<div class="lColTab">
-					<div class="picDia">
-						<a href="{$BASE_URL*}/uploads/website_specific/compo.sr/process.png" rel="lightbox"><img alt="ocProducts process diagram" src="{$IMG*,composr_homesite/ocproducts/img-diagram}" /></a>
+			<div>
+				<div class="tabscontent" id="contentz1">
+					<div class="lColTab">
+						<div class="picDia">
+							<a href="{$BASE_URL*}/uploads/website_specific/compo.sr/process.png" rel="lightbox"><img alt="ocProducts process diagram" src="{$IMG*,composr_homesite/ocproducts/img-diagram}" /></a>
+						</div>
+						<span>(click the diagram for a larger version)</span>
 					</div>
-					<span>(click the diagram for a larger version)</span>
+
+					<div class="rColTab">
+						<h3>How do we do it?</h3>
+
+						{+START,INCLUDE,_AGENCY_PROCESS}{+END}
+					</div>
 				</div>
 
-				<div class="rColTab">
-					<h3>How do we do it?</h3>
+				<div class="tabscontent" id="contentz2">
+					<h3 style="margin-top:30px;">What do we charge?</h3>
 
-					<p>Take a look inside our usual agency website design process <sup>*3</sup>:</p>
-
-					<p>The process begins with you submitting your requirements. There is no "one size fits all": every web solution we do is written to the needs of that customer. We work to agree on a website development plan with either a fixed-price quote or a secondment agreement, then submit diagrams and screen designs for approval.</p>
-
-					<p>After you sign-off, our website development begins. This phase includes regular progress updates plus thorough testing where we critically review our work against a wide range of quality and standards compliance criteria. Then we prepare a live demo for you to evaluate.</p>
-
-					<p>When everyone is happy, we deploy the new website, and remain on-call for further support needs with our professional support or secondment services.</p>
+					{+START,INCLUDE,_AGENCY_COST}{+END}
 				</div>
-			</div>
 
-			<div class="tabscontent" id="contentz2">
-				<p>&nbsp;</p>
+				<div class="tabscontent" id="contentz3">
+					<h3 style="margin-top:30px;">What to provide us</h3>
 
-				<h3>What do we charge?</h3>
-
-				<p>For all agency developments, we charge our standard hourly rates which incorporate all our development costs. Currently:</p>
-
-				<p>
-					<strong>Web designer:</strong> [currency="GBP" bracket="1"]40[/currency] per hour &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-					<strong>Web developer:</strong> [currency="GBP" bracket="1"]60[/currency] per hour &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-					<strong>Project manager:</strong> [currency="GBP" bracket="1"]40[/currency] per hour<br />
-					(<a title="ocProducts rate card {!LINK_NEW_WINDOW}" target="_blank" href="{$BASE_URL*}/uploads/website_specific/compo.sr/ocproducts_rate_card.pdf">full rate card</a>)
-				</p>
-
-				<p>Prices typically start from about [currency="GBP" bracket="1"]3000[/currency] for a professionally designed website.</p>
-				<p>Web pricing can seem like a dark art. As an Open Source company, we also believe in open pricing:<br />For a discussion about typical pricing in the web design industry, see our <a href="{$PAGE_LINK*,docs:sup_pricing}">pricing tutorial</a>.</p>
-				<p>We charge around the same as other established UK/US agencies, but for this you get a company with extraordinary authority and expertise.</p>
-
-				<p>After containing us we have discuss your particular needs, before coming to a free no-obligation quote.</p>
-			</div>
-
-			<div class="tabscontent" id="contentz3">
-				<p>&nbsp;</p>
-
-				<h3>What to provide us</h3>
-
-				<p>It is best if you can provide detailed specifications to design for; it reduces the risk of misunderstanding and things go much more quickly.</p>
-
-				<p class="lonely_label">Examples:</p>
-				<ul>
-					<li>Website objectives</li>
-					<li>Feature lists for development</li>
-					<li>Sketches of how screens should look (if you have strong ideas in this area)</li>
-					<li>Descriptions of behaviour</li>
-				</ul>
-
-				<p>Our <a href="{$PAGE_LINK*,:contact:project}">Briefr</a> system will step through most of the things you need to think about.</p>
-
-				<p>Alternatively, we can prepare it all through an in-person consultation process <sup>*4</sup>.</p>
-
-				<p>Ideally, start simple. See our "Project management and funding methodology" section below.</p>
+					{+START,INCLUDE,_AGENCY_BRIEF}{+END}
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<script>//<![CDATA[
-	$(document).ready(function() {
-		$("#tabsHolder2").tytabs({
-			prefixtabs:"tabz",
-			prefixcontent:"contentz",
-			classcontent:"tabscontent",
-			tabinit:"1",
-			catchget:"tab2",
-			fadespeed:"normal"
+	<script>//<![CDATA[
+		$(document).ready(function() {
+			$("#tabsHolder2").tytabs({
+				prefixtabs:"tabz",
+				prefixcontent:"contentz",
+				classcontent:"tabscontent",
+				tabinit:"1",
+				catchget:"tab2",
+				fadespeed:"normal"
+			});
 		});
-	});
-//]]></script>
+	//]]></script>
+{+END}
+
+{+START,IF,{$MOBILE}}
+	<div class="cntLRow" style="margin-bottom:20px;">
+		<div id="vertical_container">
+			{+START,COMMENT}
+				<h1 class="accordionToggle">Our services</h1>
+				<div class="accordionContent">
+					<p>{+START,INCLUDE,_AGENCY_DEPARTMENT}{+END}</p>
+					<p>{+START,INCLUDE,_AGENCY_MORE}{+END}</p>
+				</div>
+
+				<h1 class="accordionToggle">Miscellaneous achievements</h1>
+				<div class="accordionContent">
+					<ul class="liRcol">
+						{+START,INCLUDE,_AGENCY_AWESOME}{+END}
+						<li>ocProducts is led by Chris Graham, the original lead developer for Composr.</li>
+					</ul>
+				</div>
+			{+END}
+
+			<h1 class="accordionToggle">How do we do it?</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_AGENCY_PROCESS}LINK=1{+END}
+			</div>
+
+			<h1 class="accordionToggle">What do we charge?</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_AGENCY_COST}{+END}
+			</div>
+
+			<h1 class="accordionToggle">What to provide us</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_AGENCY_BRIEF}{+END}
+			</div>
+
+			<h1 class="accordionToggle">We're not only about technology</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_AGENCY_DESIGN}{+END}
+			</div>
+
+			<h1 class="accordionToggle">We make our projects partnerships</h1>
+			<div class="accordionContent">
+				{+START,INCLUDE,_AGENCY_BUSINESS}{+END}
+			</div>
+		</div><!--accordion closed-->
+	</div>
+
+	<script>//<![CDATA[
+		$(function() {
+			$('#vertical_container').accordion({ heightStyle: "content" });
+		});
+	//]]></script>
+{+END}
 
 <div class="cntRow">
 	<div class="compBtmList">
@@ -432,7 +419,7 @@
 		<div class="btmListImg"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
 
 		<div class="btmliRht">
-			<h3 class="colrBl">Comparison to other web designers &ndash; don't get taken advantage of!</h3>
+			<h3 class="colrBl">Comparison to other web designers{+START,IF,{$NOT,{$MOBILE}}} &ndash; don't get taken advantage of!{+END}</h3>
 
 			<div class="sept"></div>
 

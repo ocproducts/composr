@@ -5,6 +5,8 @@ ul.cntLiFull li { padding:0px 0px 15px 40px; line-height:22px; display:block; co
 
 /*Slider*/
 
+.page_running_compare .con { width:950px; }
+
 .page_running_compare .contentWrap {
 	top: 0 !important; /* Fix IE bug */
 }

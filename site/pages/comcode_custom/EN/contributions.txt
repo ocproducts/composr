@@ -13,7 +13,7 @@
 
 			<p>It's a lofty goal, and we'd love your help!</p>
 
-			<h3>Why do you want <em>my</em> help?</h3>
+			<h2 class="h3Like" style="margin-bottom:0">Why do you want <em>my</em> help?</h2>
 
 			<div class="sept"></div>
 
@@ -26,39 +26,39 @@
 
 			<p>Whether you're a developer, a good writer, have some cash to help drive the project, or just have some darned-good ideas, you can support Composr.</p>
 
-			<h3 class="text-center">Here are a few ideas of ways to help</h3>
+			<h2 class="text-center h3Like" style="margin-bottom:0">Here are a few ideas of ways to help</h2>
 
 			<div class="septHead"></div>
 		</div>
 
 		<div class="cntLRow">
 			<div id="vertical_container">
-				<h1 class="accordionToggle">Financial</h1>
+				<h3 class="accordionToggle">Financial</h3>
 				<div class="accordionContent">
 					[block="money" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
 
-				<h1 class="accordionToggle">Skill-based</h1>
+				<h3 class="accordionToggle">Skill-based</h3>
 				<div class="accordionContent">
 					[block="skill_based" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
 
-				<h1 class="accordionToggle">Evangelism (outreach)</h1>
+				<h3 class="accordionToggle">Evangelism (outreach)</h3>
 				<div class="accordionContent">
 					[block="evangelism" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
 
-				<h1 class="accordionToggle">On compo.sr</h1>
+				<h3 class="accordionToggle">On compo.sr</h3>
 				<div class="accordionContent">
 					[block="our_site" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
 
-				<h1 class="accordionToggle">User Experience</h1>
+				<h3 class="accordionToggle">User Experience</h3>
 				<div class="accordionContent">
 					[block="usability" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>
 
-				<h1 class="accordionToggle">Other</h1>
+				<h3 class="accordionToggle">Other</h3>
 				<div class="accordionContent">
 					[block="other" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
 				</div>

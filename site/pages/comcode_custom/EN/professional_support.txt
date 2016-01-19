@@ -92,7 +92,7 @@ Hourly cost (approx):
 	{$REQUIRE_CSS,jquery.verticaltabs}
 
 	<div class="cntRow">
-		<h3 class="colrBl">Choose a support type:</h3>
+		<h2 class="colrBl leftH3Like" style="margin:0">Choose a support type:</h2>
 
 		<div class="comSrTab">
 			<div class="verticalslider" id="textExample">
@@ -108,31 +108,31 @@ Hourly cost (approx):
 
 				<ul class="verticalslider_contents">
 					<li>
-						<h2>Technical support</h2>
+						<h3>Technical support</h3>
 
 						{+START,INCLUDE,_SUPPORT_BOX_TECHNICAL_SUPPORT}{+END}
 					</li>
 
 					<li>
-						<h2>Installation services</h2>
+						<h3>Installation services</h3>
 
 						{+START,INCLUDE,_SUPPORT_BOX_INSTALLATION_SERVICES}{+END}
 					</li>
 
 					<li>
-						<h2>Upgrade service</h2>
+						<h3>Upgrade service</h3>
 
 						{+START,INCLUDE,_SUPPORT_BOX_UPGRADE_SERVICE}{+END}
 					</li>
 
 					<li>
-						<h2>Staff secondment</h2>
+						<h3>Staff secondment</h3>
 
 						{+START,INCLUDE,_SUPPORT_BOX_STAFF_SECONDMENT}{+END}
 					</li>
 
 					<li>
-						<h2>Feature sponsorship</h2>
+						<h3>Feature sponsorship</h3>
 
 						{+START,INCLUDE,_SUPPORT_BOX_FEATURE_SPONSORSHIP}{+END}
 					</li>
@@ -150,34 +150,34 @@ Hourly cost (approx):
 {+END}
 
 {+START,IF,{$MOBILE}}
-	<h3 class="colrBl">Support types:</h3>
+	<h2 class="colrBl">Support types:</h2>
 
 	{$REQUIRE_JAVASCRIPT,jquery-ui}
 	{$REQUIRE_CSS,jquery.ui.all}
 
 	<div class="cntLRow">
 		<div id="vertical_container">
-			<h2 class="accordionToggle">Technical support</h2>
+			<h3 class="accordionToggle">Technical support</h3>
 			<div class="accordionContent">
 				{+START,INCLUDE,_SUPPORT_BOX_TECHNICAL_SUPPORT}{+END}
 			</div>
 
-			<h2 class="accordionToggle">Installation services</h2>
+			<h3 class="accordionToggle">Installation services</h3>
 			<div class="accordionContent">
 				{+START,INCLUDE,_SUPPORT_BOX_INSTALLATION_SERVICES}{+END}
 			</div>
 
-			<h2 class="accordionToggle">Upgrade service</h2>
+			<h3 class="accordionToggle">Upgrade service</h3>
 			<div class="accordionContent">
 				{+START,INCLUDE,_SUPPORT_BOX_UPGRADE_SERVICE}{+END}
 			</div>
 
-			<h2 class="accordionToggle">Staff secondment</h2>
+			<h3 class="accordionToggle">Staff secondment</h3>
 			<div class="accordionContent">
 				{+START,INCLUDE,_SUPPORT_BOX_STAFF_SECONDMENT}{+END}
 			</div>
 
-			<h2 class="accordionToggle">Feature sponsorship</h2>
+			<h3 class="accordionToggle">Feature sponsorship</h3>
 			<div class="accordionContent">
 				{+START,INCLUDE,_SUPPORT_BOX_FEATURE_SPONSORSHIP}{+END}
 			</div>
