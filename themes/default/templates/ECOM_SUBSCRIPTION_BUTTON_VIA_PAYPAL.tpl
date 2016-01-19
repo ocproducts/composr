@@ -16,6 +16,7 @@
 	<input type="hidden" value="1" name="no_note" />
 	<input type="hidden" value="{!SUBSCRIPTION_FOR,{$USERNAME}} ({ITEM_NAME*})" name="item_name" />
 	<input type="hidden" name="rm" value="2" />
+	<input type="hidden" name="bn" value="ocproducts_SP" />
 
 	<div class="purchase_button">
 		<input style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
