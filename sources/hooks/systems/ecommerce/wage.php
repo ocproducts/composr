@@ -46,7 +46,14 @@ class Hook_ecommerce_wage
     public function get_products($site_lang = false)
     {
         $products = array(
-            'WAGE' => array(PRODUCT_OTHER, '?', '', array(), do_lang('ecommerce:CUSTOM_PRODUCT_WAGE', null, null, null, $site_lang ? get_site_default_lang() : user_lang())),
+            'WAGE' => array(
+                PRODUCT_OTHER,
+                '?',
+                '',
+                array(),
+                do_lang('ecommerce:CUSTOM_PRODUCT_WAGE', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                get_option('currency'),
+            ),
         );
         return $products;
     }
