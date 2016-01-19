@@ -256,7 +256,7 @@ class Module_calendar
     public $back_url;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -311,7 +311,7 @@ class Module_calendar
 
             $just_event_row = db_map_restrict($event, array('id', 'e_content'));
 
-            // Title and meta data
+            // Title and metadata
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('event', strval($id));

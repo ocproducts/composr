@@ -165,7 +165,7 @@ class Workbook
      *
      * @param array $dataRow Array containing data to be written.
      *          Example $dataRow = ['data1', 1234, null, '', 'data5'];
-     * @param array $metaData Array containing meta-data maps for individual cells, such as 'url'
+     * @param array $metaData Array containing metadata maps for individual cells, such as 'url'
      * @return void
      * @throws \Box\Spout\Common\Exception\IOException If trying to create a new sheet and unable to open the sheet for writing
      * @throws \Box\Spout\Writer\Exception\WriterException If unable to write data

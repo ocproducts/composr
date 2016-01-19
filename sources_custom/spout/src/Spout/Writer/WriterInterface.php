@@ -34,7 +34,7 @@ interface WriterInterface
      *
      * @param  array $dataRow Array containing data to be streamed.
      *          Example $dataRow = ['data1', 1234, null, '', 'data5'];
-     * @param  array $metaData Array containing meta-data maps for individual cells, such as 'url'
+     * @param  array $metaData Array containing metadata maps for individual cells, such as 'url'
      * @return \Box\Spout\Writer\WriterInterface
      * @throws \Box\Spout\Writer\Exception\WriterNotOpenedException If the writer has not been opened yetthe writer
      * @throws \Box\Spout\Common\Exception\IOException If unable to write data

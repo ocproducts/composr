@@ -67,7 +67,7 @@ class Hook_config_oembed_manual_patterns
 
         $default .= "(https?://twitpic\.com/.*) = http://noembed.com/embed\n";
         /*
-        These are not very good - we may as well just do OpenGraph on them ourselves rather than relying on noembed
+        These are not very good - we may as well just do Open Graph on them ourselves rather than relying on noembed
         $default .= "(https?://www\.amazon\.com/.*) = http://noembed.com/embed\n";
         */
 

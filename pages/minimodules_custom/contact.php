@@ -351,7 +351,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                     'Business plan consulting',
                     'Market surveying',
                     'Domain name research and purchase',
-                    'Review of your chosen web host (compatibility testing)',
+                    'Review of your chosen webhost (compatibility testing)',
                     'We write a detailed specification for/with you',
                     'Engineering diagrams ([acronym title="Unified Modelling Language"]UML[/acronym] use case diagrams, class diagrams, etc)',
                 ),
@@ -905,7 +905,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
 
     'installation' => array(
         'title' => 'Request an installation',
-        'text' => 'We will install Composr for you by setting up the databases, uploading the files, and so on. We will not charge credits for more than an hours time if your server is not faulty, meets our [page="docs:tut_web_hosting" external="1"]minimum requirements[/page], and the given access details work.' . "\n\n" . 'Please be aware that this isn\'t a full site build service, just a Composr CMS installation service.',
+        'text' => 'We will install Composr for you by setting up the databases, uploading the files, and so on. We will not charge credits for more than an hours time if your server is not faulty, meets our [page="docs:tut_webhosting" external="1"]minimum requirements[/page], and the given access details work.' . "\n\n" . 'Please be aware that this isn\'t a full site build service, just a Composr CMS installation service.',
         'inform' => array(
             'Did you know that some webhosts can install Composr CMS for you, automatically and free? Composr is published via Installatron, Softaculous, Bitnami, Microsoft Web Platform, and APS. Many hosts have one of these installation systems.',
         ),

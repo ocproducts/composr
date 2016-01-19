@@ -169,9 +169,9 @@ class CMS_Topic
                 }
             }
 
-            // Environment meta data
+            // Environment metadata
             $this->inject_rss_url($forum_name, $content_type, $content_id);
-            $this->inject_meta_data();
+            $this->inject_metadata();
 
             // Make-a-comment form
             if ($may_reply) {
@@ -940,15 +940,15 @@ class CMS_Topic
                 decache('_get_pts', null, get_member());
             }
 
-            // Make sure that pre-processing happens to pick up meta data 'image' for post attachment -- but only for the first post
+            // Make sure that pre-processing happens to pick up metadata 'image' for post attachment -- but only for the first post
             if (($depth == 0) && ($sequence->is_empty_shell())) {
                 $message_eval = $post['message']->evaluate();
 
                 // Also scan for <img> tag, in case it was put in manually
-                if ((!isset($GLOBALS['META_DATA']['image'])) || ($GLOBALS['META_DATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
+                if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                     $matches = array();
                     if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $message_eval, $matches) != 0) {
-                        $GLOBALS['META_DATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                        $GLOBALS['METADATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
                     }
                 }
             }
@@ -1088,7 +1088,7 @@ class CMS_Topic
     /**
      * Put posts count into environment.
      */
-    public function inject_meta_data()
+    public function inject_metadata()
     {
         set_extra_request_metadata(array(
             'numcomments' => strval(count($this->all_posts_ordered)),

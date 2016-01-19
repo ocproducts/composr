@@ -30,7 +30,7 @@ class Hook_check_mysql_version
      */
     public function run()
     {
-        $minimum_version = '5.5.3'; // also maintain in tut_web_hosting.txt
+        $minimum_version = '5.5.3'; // also maintain in tut_webhosting.txt
         // ^ Why? We need this for proper Unicode support: https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
 
         // If you really need to fiddle it and don't care about emoji, add this to _config.php while installing (before step 5 runs):   $SITE_INFO['database_charset'] = 'utf8';

@@ -161,7 +161,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         $rep_image = do_image_thumb($row['rep_image'], $_title, false);
     }
 
-    // Meta data
+    // Metadata
     $child_counts = count_catalogue_category_children($row['id']);
     $num_children = $child_counts['num_children_children'];
     $num_entries = $child_counts['num_entries_children'];
@@ -987,7 +987,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         $map['EDIT_URL'] = '';
     }
 
-    // Various bits of meta data
+    // Various bits of metadata
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
     $map['VIEWS'] = strval($entry['ce_views']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);

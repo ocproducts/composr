@@ -64,10 +64,10 @@ class Module_cms_polls extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -271,10 +271,10 @@ class Module_cms_polls extends Standard_crud_module
             $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($question == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
-        // Meta data
+        // Metadata
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(meta_data_get_fields('poll', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('poll', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {
@@ -367,9 +367,9 @@ class Module_cms_polls extends Standard_crud_module
             $num_options = 1;
         }
 
-        $meta_data = actual_meta_data_get_fields('poll', null);
+        $metadata = actual_metadata_get_fields('poll', null);
 
-        $id = add_poll($question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, post_param_integer('validated', 0), $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $meta_data['views'], $meta_data['edit_time']);
+        $id = add_poll($question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, post_param_integer('validated', 0), $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['add_time'], $metadata['submitter'], null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $metadata['views'], $metadata['edit_time']);
 
         set_url_moniker('poll', strval($id));
 
@@ -470,9 +470,9 @@ class Module_cms_polls extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('poll', $id);
+        $metadata = actual_metadata_get_fields('poll', $id);
 
-        edit_poll(intval($id), $question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        edit_poll(intval($id), $question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], true);
 
         if (!fractional_edit()) {
             if ($current == 1) {

@@ -471,7 +471,7 @@ class Module_catalogues
     public $is_ecommerce;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -521,7 +521,7 @@ class Module_catalogues
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . (($catalogue['c_ecommerce'] == 1) ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
             breadcrumb_set_self(get_translated_text($catalogue['c_title']));
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $catalogue['c_add_date']),
                 'creator' => '',
@@ -588,7 +588,7 @@ class Module_catalogues
             }
             $this->title = get_screen_title($title_to_use, false, null, null, $awards);
 
-            // Meta data
+            // Metadata
             if (is_object($title_to_use_2)) {
                 $title_to_use_2 = $title_to_use_2->evaluate();
             }
@@ -618,7 +618,7 @@ class Module_catalogues
             }
             breadcrumb_set_parents($breadcrumbs);
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $category['cc_add_date']),
                 'creator' => '',

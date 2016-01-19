@@ -109,10 +109,10 @@ class Module_cms_catalogues extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -560,12 +560,12 @@ class Module_cms_catalogues extends Standard_crud_module
             }
         }
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(meta_data_get_fields('catalogue_entry', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('catalogue_entry', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -723,9 +723,9 @@ class Module_cms_catalogues extends Standard_crud_module
             system_gift_transfer(do_lang('ADD_CATALOGUE_ENTRY'), intval($points), get_member());
         }
 
-        $meta_data = actual_meta_data_get_fields('catalogue_entry', null);
+        $metadata = actual_metadata_get_fields('catalogue_entry', null);
 
-        $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_data['add_time'], $meta_data['submitter'], null, $meta_data['views']);
+        $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $metadata['add_time'], $metadata['submitter'], null, $metadata['views']);
 
         set_url_moniker('catalogue_entry', strval($id));
 
@@ -826,9 +826,9 @@ class Module_cms_catalogues extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('catalogue_entry', strval($id));
+        $metadata = actual_metadata_get_fields('catalogue_entry', strval($id));
 
-        actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('catalogue_entry', strval($id));
@@ -1292,7 +1292,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $fields->attach(form_input_integer(do_lang_tempcode('EXPIRY_MOVE_DAYS_HIGHER'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_DAYS_HIGHER'), 'move_days_higher', $move_days_higher, true));
         }
 
-        $fields->attach(meta_data_get_fields('catalogue_category', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('catalogue_category', is_null($id) ? null : strval($id)));
         require_code('seo2');
         $fields->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false));
 
@@ -1392,9 +1392,9 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('catalogue_category', null);
+        $metadata = actual_metadata_get_fields('catalogue_category', null);
 
-        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, post_param_order_field(), $meta_data['add_time']);
+        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, post_param_order_field(), $metadata['add_time']);
 
         set_url_moniker('catalogue_category', strval($category_id));
 
@@ -1452,9 +1452,9 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $rep_image = STRING_MAGIC_NULL;
         }
 
-        $meta_data = actual_meta_data_get_fields('catalogue_category', strval($category_id));
+        $metadata = actual_metadata_get_fields('catalogue_category', strval($category_id));
 
-        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(), $meta_data['add_time']);
+        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(), $metadata['add_time']);
         if (!fractional_edit()) {
             if (get_value('disable_cat_cat_perms') !== '1') {
                 $this->set_permissions(strval($category_id));
@@ -1687,7 +1687,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $view_report_types->attach(form_input_list_entry('quarterly', $send_view_reports == 'quarterly', do_lang_tempcode('VR_QUARTERLY')));
             $fields->attach(form_input_list(do_lang_tempcode('VIEW_REPORTS'), do_lang_tempcode('DESCRIPTION_VIEW_REPORTS'), 'send_view_reports', $view_report_types));
 
-            $fields->attach(meta_data_get_fields('catalogue', ($name == '') ? null : $name));
+            $fields->attach(metadata_get_fields('catalogue', ($name == '') ? null : $name));
 
             if (addon_installed('content_reviews')) {
                 $fields->attach(content_review_get_fields('catalogue', ($name == '') ? null : $name));
@@ -1841,9 +1841,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             warn_exit(do_lang_tempcode('NO_FIELDS'));
         }
 
-        $meta_data = actual_meta_data_get_fields('catalogue', null);
+        $metadata = actual_metadata_get_fields('catalogue', null);
 
-        actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $meta_data['add_time']);
+        actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
         set_url_moniker('catalogue', $name);
 
@@ -2029,9 +2029,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         }
         $this->is_tree_catalogue = ($is_tree == 1);
 
-        $meta_data = actual_meta_data_get_fields('catalogue', $old_name, null, $name);
+        $metadata = actual_metadata_get_fields('catalogue', $old_name, null, $name);
 
-        actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $meta_data['add_time']);
+        actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
         if (addon_installed('content_reviews')) {
             content_review_set('catalogue', $name, $old_name);

@@ -57,17 +57,17 @@
 /* Floated Right */
 
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
-	.download_meta_data {
+	.download_metadata {
 		float: {!en_right};
 		width: 17em;
 	}
 /*{+END}*/
 
-.download_meta_data .ratings, .download_meta_data .trackbacks {
+.download_metadata .ratings, .download_metadata .trackbacks {
 	width: 100%;
 }
 
-.download_meta_data .ratings br {
+.download_metadata .ratings br {
 	display: none;
 }
 

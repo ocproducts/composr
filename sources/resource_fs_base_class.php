@@ -2006,7 +2006,7 @@ abstract class Resource_fs_base
                 require_code('attachments3');
                 delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $connection, true);
 
-                // Meta-data
+                // Metadata
                 $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => 'attachments')));
                 $relation_map = get_relation_map_for_table('attachments');
 

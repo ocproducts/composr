@@ -348,7 +348,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_threaded' => $is_threaded,
             'is_really_threaded' => is_null($topic_info['f_is_threaded']) ? 0 : $topic_info['f_is_threaded'],
             'last_time' => $topic_info['t_cache_last_time'],
-            'meta_data' => array(
+            'metadata' => array(
                 'created' => date('Y-m-d', $topic_info['t_cache_first_time']),
                 'creator' => $topic_info['t_cache_first_username'],
                 'publisher' => '', // blank means same as creator
@@ -398,7 +398,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_open' => 1,
             'is_threaded' => 0,
             'last_time' => time(),
-            'meta_data' => array(),
+            'metadata' => array(),
         );
 
         // Post query

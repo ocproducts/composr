@@ -22,6 +22,6 @@ class glossary_test_set extends cms_test_case
     {
         $c = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/sup_glossary.txt');
         $cnt = substr_count($c, '<tr');
-        $this->assertTrue($cnt == 100 + 1, 'Should be 100 terms, has ' . integer_format($cnt) . 'terms');
+        $this->assertTrue($cnt == 100 + 1, 'Glossary should be restricted to 100 terms, but has ' . integer_format($cnt) . '. Merge some terms if you have had to add new ones (e.g. put less important associated terms under a major term) and/or remove some.');
     }
 }

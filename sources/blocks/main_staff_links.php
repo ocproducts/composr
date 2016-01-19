@@ -103,7 +103,7 @@ class Block_main_staff_links
                 'SiteRay (site quality auditing)' => 'http://www.silktide.com/siteray',
                 'Smashing Magazine (web design articles)' => 'http://www.smashingmagazine.com/',
                 'w3schools (learn web technologies)' => 'http://www.w3schools.com/',
-                // NB: Not including a web host, as the user will likely already have one
+                // NB: Not including a webhost, as the user will likely already have one
                 //'GoDaddy (Domains and SSL certificates)' => 'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
             );
             foreach ($default_links as $link_title => $url) {

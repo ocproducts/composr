@@ -85,7 +85,7 @@ class Module_cms_wiki
     public $page_title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -264,7 +264,7 @@ class Module_cms_wiki
         }
 
         require_code('content2');
-        $fields2->attach(meta_data_get_fields('wiki_page', is_null($id) ? null : strval($id)));
+        $fields2->attach(metadata_get_fields('wiki_page', is_null($id) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -322,9 +322,9 @@ class Module_cms_wiki
         check_submit_permission('cat_low');
 
         require_code('content2');
-        $meta_data = actual_meta_data_get_fields('wiki_page', null);
+        $metadata = actual_metadata_get_fields('wiki_page', null);
 
-        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $meta_data['submitter'], $meta_data['add_time'], $meta_data['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
+        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $metadata['submitter'], $metadata['add_time'], $metadata['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
 
         set_url_moniker('wiki_page', strval($id));
 
@@ -480,11 +480,11 @@ class Module_cms_wiki
             check_edit_permission('cat_low', null, array('wiki_page', $id));
 
             require_code('content2');
-            $meta_data = actual_meta_data_get_fields('wiki_page', strval($id));
+            $metadata = actual_metadata_get_fields('wiki_page', strval($id));
 
             require_code('permissions2');
             set_category_permissions_from_environment('wiki_page', strval($id), 'cms_wiki');
-            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['submitter'], $meta_data['add_time'], $meta_data['views']);
+            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['submitter'], $metadata['add_time'], $metadata['views']);
 
             require_code('fields');
             if (has_tied_catalogue('wiki_page')) {

@@ -190,7 +190,7 @@ function _push_to_transifex($f, $project_slug, $custom, $addon_files, $descripti
         $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'INI', 'content' => $c)));
     }
 
-    // Set meta-data
+    // Set metadata
     foreach ($map as $key => $val) {
         if (isset($descriptions[$key])) {
             $descrip = $descriptions[$key];

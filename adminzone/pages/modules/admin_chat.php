@@ -58,10 +58,10 @@ class Module_admin_chat extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -216,7 +216,7 @@ class Module_admin_chat extends Standard_crud_module
     {
         list($allow2, $allow2_groups, $disallow2, $disallow2_groups) = read_in_chat_perm_fields();
 
-        $meta_data = actual_meta_data_get_fields('chat', null);
+        $metadata = actual_metadata_get_fields('chat', null);
 
         $id = add_chatroom(post_param_string('c_welcome'), post_param_string('room_name'), $GLOBALS['FORUM_DRIVER']->get_member_from_username(post_param_string('room_owner')), $allow2, $allow2_groups, $disallow2, $disallow2_groups, post_param_string('room_lang', user_lang()));
 
@@ -249,7 +249,7 @@ class Module_admin_chat extends Standard_crud_module
             $disallow2_groups = STRING_MAGIC_NULL;
         }
 
-        $meta_data = actual_meta_data_get_fields('chat', $id);
+        $metadata = actual_metadata_get_fields('chat', $id);
 
         edit_chatroom(intval($id), post_param_string('c_welcome', STRING_MAGIC_NULL), post_param_string('room_name'), $room_owner, $allow2, $allow2_groups, $disallow2, $disallow2_groups, post_param_string('room_lang', STRING_MAGIC_NULL));
 

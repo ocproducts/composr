@@ -69,10 +69,10 @@ class Module_admin_cns_groups extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -305,7 +305,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('FLOOD_CONTROL_ACCESS_SECS'), do_lang_tempcode('DESCRIPTION_FLOOD_CONTROL_ACCESS_SECS'), 'flood_control_access_secs', $flood_control_access_secs, true));
         $fields->attach(form_input_integer(do_lang_tempcode('FLOOD_CONTROL_SUBMIT_SECS'), do_lang_tempcode('DESCRIPTION_FLOOD_CONTROL_SUBMIT_SECS'), 'flood_control_submit_secs', $flood_control_submit_secs, true));
 
-        $fields->attach(meta_data_get_fields('group', is_null($id) ? null : strval($id), false, array('submitter')));
+        $fields->attach(metadata_get_fields('group', is_null($id) ? null : strval($id), false, array('submitter')));
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('group', is_null($id) ? null : strval($id)));
@@ -637,7 +637,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         list($group_leader, $promotion_target, $promotion_threshold) = $this->read_in_data();
         $rank_img = post_param_theme_img_code('cns_rank_images', false, 'file', 'theme_img_code', $GLOBALS['FORUM_DB']);
 
-        $meta_data = actual_meta_data_get_fields('group', null, array('submitter'));
+        $metadata = actual_metadata_get_fields('group', null, array('submitter'));
 
         $id = cns_make_group(post_param_string('name'), post_param_integer('is_default', 0), post_param_integer('is_super_admin', 0), post_param_integer('is_super_moderator', 0), post_param_string('title', ''), $rank_img, $promotion_target, $promotion_threshold, $group_leader, post_param_integer('flood_control_submit_secs'), post_param_integer('flood_control_access_secs'), post_param_integer('max_daily_upload_mb'), post_param_integer('max_attachments_per_post'), post_param_integer('max_avatar_width', 100), post_param_integer('max_avatar_height', 100), post_param_integer('max_post_length_comcode'), post_param_integer('max_sig_length_comcode', 10000), post_param_integer('gift_points_base', 0), post_param_integer('gift_points_per_day', 0), post_param_integer('enquire_on_new_ips', 0), post_param_integer('is_presented_at_install', 0), post_param_integer('hidden', 0), post_param_order_field(), post_param_integer('rank_image_pri_only', 0), post_param_integer('open_membership', 0), post_param_integer('is_private_club', 0));
 
@@ -696,7 +696,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $rank_img = fractional_edit() ? STRING_MAGIC_NULL : post_param_theme_img_code('cns_rank_images', false, 'file', 'theme_img_code', $GLOBALS['FORUM_DB']);
 
-        $meta_data = actual_meta_data_get_fields('group', $id, array('submitter'));
+        $metadata = actual_metadata_get_fields('group', $id, array('submitter'));
 
         $is_super_admin = post_param_integer('is_super_admin', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         if (($is_super_admin == 0) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_super_admin', array('id' => intval($id))) == 1) && ($GLOBALS['SITE_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_super_admin' => 1)) == 1)) {

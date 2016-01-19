@@ -1,6 +1,6 @@
 <div id="comments_wrapper" class="comments_wrapper" role="complementary">
 	{+START,SET,REVIEWS_TITLE}
-		<span class="field_title">{!_REVIEWS,{$META_DATA*,numcomments}}:</span>
+		<span class="field_title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 
 		{$SET,rating_loop,0}
 		{+START,LOOP,REVIEW_RATING_CRITERIA}
@@ -74,7 +74,7 @@
 			{+END}
 
 			<div class="comment_wrapper">
-				<meta itemprop="interactionCount" content="UserComments:{$META_DATA*,numcomments}" />
+				<meta itemprop="interactionCount" content="UserComments:{$METADATA*,numcomments}" />
 
 				{COMMENTS}
 

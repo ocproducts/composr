@@ -182,7 +182,7 @@ class Module_polls
     public $_title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -212,7 +212,7 @@ class Module_polls
             $myrow = $rows[0];
             $_title = get_translated_text($myrow['question']);
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['add_time']),
                 'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),

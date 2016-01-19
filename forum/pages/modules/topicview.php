@@ -77,7 +77,7 @@ class Module_topicview
     }
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -135,7 +135,7 @@ class Module_topicview
             }
         }
 
-        set_extra_request_metadata($topic_info['meta_data']);
+        set_extra_request_metadata($topic_info['metadata']);
 
         global $SEO_TITLE;
         $SEO_TITLE = do_lang('_VIEW_TOPIC', $topic_info['title']);
@@ -197,18 +197,18 @@ class Module_topicview
         if (!$threaded) {
             $jump_post_id = get_param_integer('post_id', null);
 
-            $GLOBALS['META_DATA']['description'] = $topic_info['description'];
+            $GLOBALS['METADATA']['description'] = $topic_info['description'];
             foreach ($topic_info['posts'] as $array_id => $_postdetails) {
-                if (($GLOBALS['META_DATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
-                    // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' meta-data for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
+                if (($GLOBALS['METADATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
+                    // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' metadata for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
                     $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Should we hard-code this?
-                    $GLOBALS['META_DATA']['description'] = strip_html($truncated);
+                    $GLOBALS['METADATA']['description'] = strip_html($truncated);
 
                     // Also scan for <img> tag, in case it was put in manually
-                    if ((!isset($GLOBALS['META_DATA']['image'])) || ($GLOBALS['META_DATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
+                    if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                         $matches = array();
                         if (preg_match('#<img\s[^<>]*src="([^"]*)"#', is_object($_postdetails['post']) ? $_postdetails['post']->evaluate() : $_postdetails['post'], $matches) != 0) {
-                            $GLOBALS['META_DATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                            $GLOBALS['METADATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
                         }
                     }
                 }
@@ -235,7 +235,7 @@ class Module_topicview
             // Render posts
             list($posts, $serialized_options, $hash) = $threaded_topic_ob->render_posts($num_to_show_limit, $max_thread_depth, $may_reply, $topic_info['first_poster'], array(), $topic_info['forum_id'], $topic_info['row'], null, false);
 
-            $GLOBALS['META_DATA']['description'] = $threaded_topic_ob->topic_description;
+            $GLOBALS['METADATA']['description'] = $threaded_topic_ob->topic_description;
 
             $this->posts = $posts;
             $this->serialized_options = $serialized_options;
@@ -457,8 +457,8 @@ class Module_topicview
                     $rating = new Tempcode();
                 }
 
-                if ((isset($GLOBALS['META_DATA']['description'])) && ($GLOBALS['META_DATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
-                    $GLOBALS['META_DATA']['description'] = strip_html(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'));
+                if ((isset($GLOBALS['METADATA']['description'])) && ($GLOBALS['METADATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
+                    $GLOBALS['METADATA']['description'] = strip_html(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'));
                 }
 
                 $rendered_post = do_template('CNS_TOPIC_POST', array(

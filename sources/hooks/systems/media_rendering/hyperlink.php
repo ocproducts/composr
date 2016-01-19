@@ -136,7 +136,7 @@ class Hook_media_rendering_hyperlink
                                                                    'HEIGHT' => ((array_key_exists('height', $attributes)) && ($attributes['height'] != '')) ? $attributes['height'] : get_option('thumb_width'),
                 ));
             }
-            // Hmm, okay we'll proceed towards a plain link if it's not a download and has no meta data to box
+            // Hmm, okay we'll proceed towards a plain link if it's not a download and has no metadata to box
         } // Hmm, we explicitly said we want a plain link
 
         $link_captions_title = $meta_details['t_title'];

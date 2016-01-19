@@ -404,7 +404,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         'no_parse',
         'code',
 
-        // Intentional meta data in these actually, so just leave them in
+        // Intentional metadata in these actually, so just leave them in
         //'reference',
         //'cite',
         //'quote',

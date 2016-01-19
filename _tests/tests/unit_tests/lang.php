@@ -121,36 +121,34 @@ class lang_test_set extends cms_test_case
         }
 
         // No hyphen wanted (we want our canonical way)
-        if (stripos($string, 'add-on') !== false) {
-            $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
+        if (stripos($string, 'set-up') !== false) {
+            $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
         }
         if (stripos($string, 'point-store') !== false) {
             $this->assertTrue(false, 'The word \'point-store\' was used in ' . $file . '. This should be changed to \'Point Store\'.');
         }
-        if (stripos($string, 'user-group') !== false) {
+        if (stripos($string, 'add-on') !== false) {
+            $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
+        }
+
+        // No space or hyphen wanted (we want our canonical way)
+        if (stripos($string, 'user[ -]group') !== false) {
             $this->assertTrue(false, 'The term \'user-group\' was used in ' . $file . '. This should be changed to \'usergroup\'.');
         }
-        if (stripos($string, 'set-up') !== false) {
-            $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
+        if (preg_match('#chat[ -]room#i', $string) != 0) {
+            $this->assertTrue(false, 'The phrase \'chat room\' or \'chat-room\' was used in ' . $file . '. This should be changed to \'chatroom\'.');
         }
-        if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {
-            $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
-        }
-
-        // No space wanted (we want our canonical way)
-        if (stripos($string, 'chat room') !== false) {
-            $this->assertTrue(false, 'The phrase \'chat room\' was used in ' . $file . '. This should be changed to \'chatroom\'.');
-        }
-        if ((stripos($string, 'user name') !== false) && (stripos($string, 'user named') === false)) {
+        if (preg_match('#user[ -]name[^d]#i', $string) != 0) {
             $this->assertTrue(false, 'The term \'user name\' was used in ' . $file . '. This should be changed to \'username\'.');
         }
-        if (stripos($string, 'web site') !== false) {
-            $this->assertTrue(false, 'The phrase \'web site\' was used in ' . $file . '. This should be changed to \'website\'.');
+        if (preg_match('#web[ -]site#i', $string) != 0) {
+            $this->assertTrue(false, 'The phrase \'web site\' or \'web-site\' was used in ' . $file . '. This should be changed to \'website\'.');
         }
-
-        // Space wanted
-        if (stripos($string, 'webhost') !== false) {
-            $this->assertTrue(false, 'The phrase \'webhost\' was used in ' . $file . '. This should be changed to \'web host\'.');
+        if (preg_match('#web[ -]host#i', $string) != 0) {
+            $this->assertTrue(false, 'The phrase \'web host\' or \'web-host\' was used in ' . $file . '. This should be changed to \'webhost\'.');
+        }
+        if (preg_match('#meta[ -]data([^A-Za-z"]+)#i', $string) != 0) {
+            $this->assertTrue(false, 'The phrase \'meta data\' or \'meta-data\' was used in ' . $file . '. This should be changed to \'metadata\'.');
         }
 
         // Wrong way of writing proper noun (we want our canonical way)
@@ -177,6 +175,9 @@ class lang_test_set extends cms_test_case
         if (preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'zip\' was used in ' . $file . '. This should be changed to \'ZIP\'.');
         }
+        if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {
+            $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
+        }
         if (stripos($string, 'CommandrFS') !== false) {
             $this->assertTrue(false, 'The phrase \'CommandrFS\' was used in ' . $file . '. This should be changed to \'Commandr-fs\'.');
         }
@@ -188,6 +189,9 @@ class lang_test_set extends cms_test_case
         }
         if (strpos($string, 'Resource-FS') !== false) {
             $this->assertTrue(false, 'The phrase \'Resource-FS\' was used in ' . $file . '. This should be changed to \'Resource-fs\'.');
+        }
+        if (strpos($string, 'OpenGraph') !== false) {
+            $this->assertTrue(false, 'The phrase \'OpenGraph\' was used in ' . $file . '. This should be changed to \'Open Graph\'.');
         }
 
         // Our canonical way of writing "Open Source"

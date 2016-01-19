@@ -348,9 +348,9 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
                 $all_rating_criteria[$i] = array('NUM_RATINGS' => integer_format($num_ratings), 'RATING' => strval($calculated_rating)) + $all_rating_criteria[$i];
 
-                $extra_meta_data = array();
-                $extra_meta_data['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
-                set_extra_request_metadata($extra_meta_data);
+                $extra_metadata = array();
+                $extra_metadata['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
+                set_extra_request_metadata($extra_metadata);
 
                 $has_ratings = true;
             }

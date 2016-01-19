@@ -630,7 +630,7 @@ class Hook_addon_registry_core
             'sources/firephp.php',
             'sources/content.php',
             'sources/content2.php',
-            'lang/EN/meta_data.ini',
+            'lang/EN/metadata.ini',
             'adminzone/find_permissions.php',
             'themes/default/javascript/sound.js',
             'data/sounds/message_background.mp3',

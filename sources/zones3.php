@@ -506,7 +506,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         ), array('the_zone' => $zone, 'p_parent_page' => $file));
     }
 
-    // Set meta-data
+    // Set metadata
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('comcode_page', $zone . ':' . $new_file, array($text), $text);

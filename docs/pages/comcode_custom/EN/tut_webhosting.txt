@@ -1,9 +1,9 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Web hosting for Composr[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Webhosting for Composr[/title]
 
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
-To put a website on-to the Internet, you need to arrange for 'web hosting'. This is usually done by paying for the services of a [concept]web host[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
+To put a website on-to the Internet, you need to arrange for 'webhosting'. This is usually done by paying for the services of a [concept]webhost[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
 
-This tutorial covers requirements for hosting Composr and some general information about web hosting and security.
+This tutorial covers requirements for hosting Composr and some general information about webhosting and security.
 
 This tutorial goes into great detail of all the low-level requirements (much of which you may not understand), and different environments to install on. Practically speaking almost any "PHP hosting" will run Composr, so long as it's not free ad-supported hosting. The verbosity of this tutorial is so that we can be really comprehensive. A simpler list is shown on the Composr download page.
 
@@ -12,9 +12,9 @@ This tutorial goes into great detail of all the low-level requirements (much of 
 [title="2"]Different hosting options[/title]
 
 You have the following options for hosting Composr (roughly):
- - Traditional shared web hosting (with a control panel)
- - Traditional VPS web hosting (with a control panel)
- - Traditional VPS web hosting (without a control panel)
+ - Traditional shared webhosting (with a control panel)
+ - Traditional VPS webhosting (with a control panel)
+ - Traditional VPS webhosting (without a control panel)
  - Dedicated Linux server (with a control panel)
  - Dedicated Linux server (without a control panel)
  - Hosting on your own Windows desktop (for development purposes)
@@ -24,7 +24,7 @@ You have the following options for hosting Composr (roughly):
  - [concept]PaaS[/concept] cloud hosting (e.g. AppFog, Heroku, Rackspace Cloud, Engine Yard, OpenShift)
  - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in [page="_SEARCH:tut_google_appengine"]its own tutorial[/page].
 
-The vast majority of users will choose traditional shared web hosting, or traditional VPS web hosting with a control panel.
+The vast majority of users will choose traditional shared webhosting, or traditional VPS webhosting with a control panel.
 
 Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive, and usually requires additional maintenance by the user, but for some users, is highly advisable.
 
@@ -33,40 +33,40 @@ Programmers will often prefer IaaS and PaaS hosting in order to get scalability.
 Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
 We have various different installation tutorials that go into details on how to install on the different hosting options.
 
-[staff_note][title="2"]Recommended web host[/title]
+[staff_note][title="2"]Recommended webhost[/title]
 
 We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
 
 You can even buy hosting with Arvixe and have Composr automatically installed for you from the get go: [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].
 
 A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
-Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap web hosts are only suitable for those with very basic needs.
+Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap webhosts are only suitable for those with very basic needs.
 
 [semihtml]<a class="link_exempt" href="http://www.arvixe.com/5256-223-3-122.html" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
 [/staff_note]
 [title="2"]Requirements and recommendations[/title]
 
-When choosing a web-host, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
-If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting web-host was chosen, it is very likely that they would support these requirements: however the developers cannot be held accountable for incompatibilities with systems that do not.
+When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
+If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting webhost was chosen, it is very likely that they would support these requirements: however the developers cannot be held accountable for incompatibilities with systems that do not.
 
-The remainder of this section details Composr's requirements. If you have trouble ascertaining a web-hosts compliance, you may wish to contact them with this information.
+The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information.
 
 Composr requires:
- - A web server that runs PHP. PHP is software which provides the environment that Composr is written for. Composr requires PHP version 5.1 or higher. If a web-host has a PHP version older than this, it is not just out-dated, but also insecure: no competent web-hosts still do (at the time of writing, anything less than PHP 5.4 is unsupported by the PHP developers)
+ - A web server that runs PHP. PHP is software which provides the environment that Composr is written for. Composr requires PHP version 5.1 or higher. If a webhost has a PHP version older than this, it is not just out-dated, but also insecure: no competent webhosts still do (at the time of writing, anything less than PHP 5.4 is unsupported by the PHP developers)
   - If you intend to use WebDAV, PHP 5.3 or higher is required
   - Other non-bundled addons may have different dependencies
   - If you install with PHP5.5 or newer, you may not then down-grade to anything older than PHP5.5 (as Composr will have already made use of PHP5.5's password security features for saved passwords)
- - A PHP environment with the following (a competent web-host geared towards running PHP web applications should be able to provide this):
+ - A PHP environment with the following (a competent webhost geared towards running PHP web applications should be able to provide this):
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your daily needs)
   - MySQL extension
   - a maximum execution time of at least 30 seconds
-  - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable web hosts) -- the installer will warn if any critical functions have been
-  - no other explicit disabling of standard functionality that we require. Commonly web hosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
+  - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
+  - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on). A higher limit, e.g. 40MB, may be required if running PHP4.
- - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free web hosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A web server that runs MySQL (*), version 5.5.3 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often web hosts will quote a number of databases that web-hosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable web-host
- - A web server running IIS (the Microsoft web server), Apache (the common Linux web server), or LiteSpeed. It is very unlikely you will find a web-host that provides something else. Other servers might work but are not supported
+ - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
+ - A web server that runs MySQL (*), version 5.5.3 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
+ - A web server running IIS (the Microsoft web server), Apache (the common Linux web server), or LiteSpeed. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
  - That the web server is not overloaded with too many users, or has very poor performance
@@ -99,7 +99,7 @@ If you do not have the PHP FTP extension, then you will need either:
 If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for [tt]shell_exec[/tt] to run from PHP (both thumbnails and transcoding).
 It is best, however, to transcode manually off-line/off-server to avoid resource over-use.
 
-Do not try and install Composr on an ad-sponsored free web host. The banners and tracking they inject will interfere with the mechanisms of Composr.
+Do not try and install Composr on an ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
 
@@ -175,13 +175,13 @@ It is important to note that domain names are licensed on a temporary basis, and
 
 [title="2"]Ongoing maintenance responsibilities[/title]
 
-Usually the web host will take responsibility for the daily maintenance of the server. For example, keeping the server software, usually [concept]Linux[/concept] and common Linux software, up to date with security and stability [concept]patches[/concept]. However few web hosts will take serious responsibility for the maintenance (including backups) of your space on the server. If you are not using a traditional web host then you probably are responsible for absolutely everything, so make sure you are comfortable with that.
+Usually the webhost will take responsibility for the daily maintenance of the server. For example, keeping the server software, usually [concept]Linux[/concept] and common Linux software, up to date with security and stability [concept]patches[/concept]. However few webhosts will take serious responsibility for the maintenance (including backups) of your space on the server. If you are not using a traditional webhost then you probably are responsible for absolutely everything, so make sure you are comfortable with that.
 
 It is important to understand the responsibilities for the various aspects of creating, maintaining and operating your website, before you launch your endeavour.
 
 [title="2"]Basic server and site infrastructure[/title]
 
-When you are provided web-hosting, you are usually allocated a 'hosting control panel' that runs software such as:
+When you are provided webhosting, you are usually allocated a 'hosting control panel' that runs software such as:
  - Plesk
  - cPanel
  - Ensim
@@ -219,11 +219,11 @@ As previously mentioned, this file system is merely illustrative. Different serv
 
 (Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security tutorial[/page] -- we just cover some practical implications of configuration here)
 
-There are two ways that web hosts may use to manage web application on the server:
+There are two ways that webhosts may use to manage web application on the server:
 1) Shared user
 2) suEXEC-style
 
-With a shared user, all sites run code as a user such as [tt]apache[/tt] or [tt]nobody[/tt]. This is simpler for the host to configure, but it is not a good idea for security. It also is the reason so much 'chmodding' may be needed (so the shared user has write access to files specifically on your account). In this scenario they will typically then lock other things down, such as denying shell access and setting an [tt]open_basedir[/tt] to sandbox PHP -- but rarely are these restrictions enough and it's an inherently incorrect approach for a shared web-host to take. Different server users are likely to be able to access and interfere with (erase and edit) each others files. We strongly advise any web-hosts to use a suEXEC-style environment.
+With a shared user, all sites run code as a user such as [tt]apache[/tt] or [tt]nobody[/tt]. This is simpler for the host to configure, but it is not a good idea for security. It also is the reason so much 'chmodding' may be needed (so the shared user has write access to files specifically on your account). In this scenario they will typically then lock other things down, such as denying shell access and setting an [tt]open_basedir[/tt] to sandbox PHP -- but rarely are these restrictions enough and it's an inherently incorrect approach for a shared webhost to take. Different server users are likely to be able to access and interfere with (erase and edit) each others files. We strongly advise any webhosts to use a suEXEC-style environment.
 
 With a suEXEC-style hosting environment, sites run code under the same account that the site is held in. This is simpler, easier to configure, and more secure. "suEXEC" refers specifically to how the Apache server manages this, other server software will refer to it in different ways.
 
@@ -257,7 +257,7 @@ PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
 [concepts
- 1_key="Web host"           1_value="A provider of Internet server facilities"
+ 1_key="Webhost"            1_value="A provider of Internet server facilities"
  2_key="Dedicated server"   2_value="A server that is not shared with others"
  3_key="VPS"                3_value="A virtual private server. This works via allowing multiple virtual machines to run on a real host machine. Typically this is what cloud hosting is using behind-the-scenes"
  4_key="Linux"              4_value="The Linux operating system, very well suited to servers"
@@ -265,7 +265,7 @@ Admin Zone > Tools > PHP-Info / Server Checks
  6_key="IaaS"               6_value="Infrastructure as a service. This is cloud hosting based on direct provision of VPSs."
  7_key="PaaS"               7_value="Platform as a service. This is cloud hosting based on providing direct support and configurability for particular programming language(s). It typically will hide the complexities of VPS management from you."
  8_key="SaaS"               8_value="Software as a service. This is what you are using when you create something like a Facebook page or a hosted blog, where you don't ever need to directly install/configure the software. This has advantages but severely limits configurability. Composr could be delivered as SaaS but the majority of users want a high degree of control over their sites."
- 9_key="Traditional hosting"  9_value="Hosting managed via a web host. Support is provided, servers are kept up-to-date, and control panels are provided for relatively easy system management."
+ 9_key="Traditional hosting"  9_value="Hosting managed via a webhost. Support is provided, servers are kept up-to-date, and control panels are provided for relatively easy system management."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
@@ -275,4 +275,4 @@ Admin Zone > Tools > PHP-Info / Server Checks
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 
-{$SET,tutorial_tags,Web hosting,phpinfo,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the web hosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Webhosting,phpinfo,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]
