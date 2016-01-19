@@ -62,7 +62,7 @@ class Hook_addon_registry_phpinfo
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_web_hosting',
+            'tut_webhosting',
         );
     }
 

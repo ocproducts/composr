@@ -21,12 +21,12 @@
  */
 
 /**
- * Get meta data from an image, using EXIF primarily, but also XMP and IPTC to get image descriptions.
+ * Get metadata from an image, using EXIF primarily, but also XMP and IPTC to get image descriptions.
  * Also gets GPS data and canonicalises in decimal as Latitude and Longitude.
  *
  * @param  PATH $path This is the path of the photo which may contain metadata
  * @param  ?string $filename This is the original filename of the photo which may contain metadata (null: derive from path)
- * @return array Map of meta data, using standard EXIF naming
+ * @return array Map of metadata, using standard EXIF naming
  */
 function get_exif_data($path, $filename = null)
 {
@@ -40,10 +40,10 @@ function get_exif_data($path, $filename = null)
         return array(); // EXIF extension not installed
     }
 
-    $meta_data = @exif_read_data($path, 'ANY_TAG');
+    $metadata = @exif_read_data($path, 'ANY_TAG');
 
-    if ($meta_data !== false) {
-        $out += cleanup_exif($meta_data);
+    if ($metadata !== false) {
+        $out += cleanup_exif($metadata);
     }
 
     $caption = get_exif_image_caption($path, $filename);
@@ -174,42 +174,42 @@ function get_exif_image_caption($path, $filename)
         fclose($file_pointer);
     }
     if ($comments == '') { // If XMP fails, attempt EXIF
-        $meta_data = @exif_read_data($path);
+        $metadata = @exif_read_data($path);
 
-        if ($meta_data !== false) {
-            $meta_data = cleanup_exif($meta_data);
+        if ($metadata !== false) {
+            $metadata = cleanup_exif($metadata);
 
-            $comments = isset($meta_data['ImageDescription']) ? $meta_data['ImageDescription'] : '';
+            $comments = isset($metadata['ImageDescription']) ? $metadata['ImageDescription'] : '';
             if ($comments == '') {
-                $comments = isset($meta_data['Comments']) ? $meta_data['Comments'] : '';
+                $comments = isset($metadata['Comments']) ? $metadata['Comments'] : '';
             }
             if ($comments == '') {
-                $comments = isset($meta_data['Title']) ? $meta_data['Title'] : '';
+                $comments = isset($metadata['Title']) ? $metadata['Title'] : '';
             }
             if ($comments == '') {
-                $comments = isset($meta_data['COMPUTED']['UserComment']) ? $meta_data['COMPUTED']['UserComment'] : '';
+                $comments = isset($metadata['COMPUTED']['UserComment']) ? $metadata['COMPUTED']['UserComment'] : '';
             }
         }
     }
     if ($comments == '') { // IF XMP and EXIF fail, attempt IPTC binary
         if ((function_exists('iptcparse')) && (function_exists('getimagesize'))) {
-            $meta_data2 = array();
-            @getimagesize($path, $meta_data2);
-            if (isset($meta_data2['APP13'])) {
-                $meta_data2 = iptcparse($meta_data2['APP13']);
+            $metadata2 = array();
+            @getimagesize($path, $metadata2);
+            if (isset($metadata2['APP13'])) {
+                $metadata2 = iptcparse($metadata2['APP13']);
 
-                if (is_array($meta_data2)) {
-                    if (array_key_exists('2#105', $meta_data2)) { // Headline 256 bytes
-                        if (array_key_exists(0, $meta_data2['2#105'])) {
-                            $comments = $meta_data2['2#105'][0];
+                if (is_array($metadata2)) {
+                    if (array_key_exists('2#105', $metadata2)) { // Headline 256 bytes
+                        if (array_key_exists(0, $metadata2['2#105'])) {
+                            $comments = $metadata2['2#105'][0];
                         }
-                    } elseif (array_key_exists('2#121', $meta_data2)) { // Local-Caption 256 bytes
-                        if (array_key_exists(0, $meta_data2['2#121'])) {
-                            $comments = $meta_data2['2#121'][0];
+                    } elseif (array_key_exists('2#121', $metadata2)) { // Local-Caption 256 bytes
+                        if (array_key_exists(0, $metadata2['2#121'])) {
+                            $comments = $metadata2['2#121'][0];
                         }
-                    } elseif (array_key_exists('2#120', $meta_data2)) { // Caption-Abstract (AKA description) 2000 bytes
-                        if (array_key_exists(0, $meta_data2['2#120'])) {
-                            $comments = $meta_data2['2#120'][0];
+                    } elseif (array_key_exists('2#120', $metadata2)) { // Caption-Abstract (AKA description) 2000 bytes
+                        if (array_key_exists(0, $metadata2['2#120'])) {
+                            $comments = $metadata2['2#120'][0];
                         }
                     }
                 }
@@ -235,14 +235,14 @@ function get_exif_image_caption($path, $filename)
 }
 
 /**
- * Save meta data into content type's custom fields, by looking for fields named after the EXIF/EXIF-emulated meta data (specifically in English).
+ * Save metadata into content type's custom fields, by looking for fields named after the EXIF/EXIF-emulated metadata (specifically in English).
  * Spaces may be added to the names to make them prettier, but otherwise they must be the same.
  * Designed to be used by headless-importers, e.g. bulk importing of media files, to make the process a bit smarter.
  *
  * @param  ID_TEXT $content_type The content type
  * @param  ID_TEXT $content_id The content ID
  * @param  array $exif The EXIF data
- * @param  ?array $map Extra meta data to store, against explicit field IDs (null: none)
+ * @param  ?array $map Extra metadata to store, against explicit field IDs (null: none)
  */
 function store_exif($content_type, $content_id, $exif, $map = null)
 {
@@ -310,14 +310,14 @@ function store_exif($content_type, $content_id, $exif, $map = null)
 /**
  * Cleanup some EXIF, to the correct character set.
  *
- * @param  array $meta_data The EXIF data
+ * @param  array $metadata The EXIF data
  * @return array Cleaned up EXIF data
  */
-function cleanup_exif($meta_data)
+function cleanup_exif($metadata)
 {
     require_code('character_sets');
     $val = mixed();
-    foreach ($meta_data as $key => $val) {
+    foreach ($metadata as $key => $val) {
         // Cleanup fractions
         if (is_string($val)) {
             if (preg_match('#^[\d.]+/[\d.]+$#', $val) != 0) {
@@ -343,7 +343,7 @@ function cleanup_exif($meta_data)
             $val = cleanup_exif($val);
         }
 
-        $meta_data[$key] = $val;
+        $metadata[$key] = $val;
     }
-    return $meta_data;
+    return $metadata;
 }

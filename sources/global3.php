@@ -87,7 +87,7 @@ function init__global3()
     global $OUTPUT_STATE_VARS;
     $OUTPUT_STATE_VARS = array(
         'HTTP_STATUS_CODE',
-        'META_DATA',
+        'METADATA',
         'ATTACHED_MESSAGES',
         'ATTACHED_MESSAGES_RAW',
         'LATE_ATTACHED_MESSAGES',
@@ -262,8 +262,8 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
         global $HTTP_STATUS_CODE;
         $HTTP_STATUS_CODE = '200';
 
-        global $META_DATA;
-        $META_DATA = array();
+        global $METADATA;
+        $METADATA = array();
 
         global $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW, $LATE_ATTACHED_MESSAGES;
         $ATTACHED_MESSAGES = null;
@@ -377,7 +377,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
         $keep = array();
     }
 
-    $mergeable_arrays = array('META_DATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
+    $mergeable_arrays = array('METADATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
     $mergeable_tempcode = array('EXTRA_HEAD' => true, 'EXTRA_FOOT' => true, 'JAVASCRIPT' => true);
 
     $old_state = array_pop($OUTPUT_STATE_STACK);
@@ -502,16 +502,16 @@ function attach_to_screen_footer($data)
 }
 
 /**
- * Add some meta-data for the request.
+ * Add some metadata for the request.
  *
  * @sets_output_state
  *
- * @param  array $meta_data Extra meta-data
+ * @param  array $metadata Extra metadata
  */
-function set_extra_request_metadata($meta_data)
+function set_extra_request_metadata($metadata)
 {
-    global $META_DATA;
-    $META_DATA += $meta_data;
+    global $METADATA;
+    $METADATA += $metadata;
 }
 
 /**

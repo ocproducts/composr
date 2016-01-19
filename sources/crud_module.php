@@ -165,10 +165,10 @@ abstract class Standard_crud_module
     public $success_message_str;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -419,7 +419,7 @@ abstract class Standard_crud_module
         }
         $type = get_param_string('type', $this->default_type);
 
-        // Meta data etc
+        // Metadata etc
         require_code('content2');
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');

@@ -218,7 +218,7 @@ class Module_wiki
     public $num_posts;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -971,7 +971,7 @@ class Module_wiki
             $parsed = get_translated_tempcode('wiki_posts', $myrow, 'the_message');
 
             require_code('content2');
-            $specialisation->attach(meta_data_get_fields('wiki_post', strval($post_id)));
+            $specialisation->attach(metadata_get_fields('wiki_post', strval($post_id)));
 
             if (has_delete_permission('low', get_member(), $original_poster, 'cms_wiki', array('wiki_page', $myrow['page_id']))) {
                 $specialisation->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '569be0b840914473a0928606a045f838', 'TITLE' => do_lang_tempcode('ACTIONS'))));
@@ -1006,7 +1006,7 @@ class Module_wiki
             list($warning_details, $ping_url) = array(null, null);
 
             require_code('content2');
-            $specialisation->attach(meta_data_get_fields('wiki_post', null));
+            $specialisation->attach(metadata_get_fields('wiki_post', null));
 
             if (has_privilege(get_member(), 'bypass_validation_lowrange_content', 'cms_wiki')) {
                 $specialisation->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'wiki_post'), 'validated', $validated == 1));
@@ -1132,10 +1132,10 @@ class Module_wiki
             check_submit_permission('low', null, 'cms_wiki');
 
             require_code('content2');
-            $meta_data = actual_meta_data_get_fields('wiki_post', null);
+            $metadata = actual_metadata_get_fields('wiki_post', null);
 
             require_code('content2');
-            $post_id = wiki_add_post($id, $message, $validated, $meta_data['submitter'], true, $meta_data['add_time'], $meta_data['views']);
+            $post_id = wiki_add_post($id, $message, $validated, $metadata['submitter'], true, $metadata['add_time'], $metadata['views']);
 
             set_url_moniker('wiki_post', strval($post_id));
 
@@ -1175,9 +1175,9 @@ class Module_wiki
                 check_edit_permission('low', $original_poster, array('wiki_page', $myrow['page_id']), 'cms_wiki');
 
                 require_code('content2');
-                $meta_data = actual_meta_data_get_fields('wiki_post', strval($post_id));
+                $metadata = actual_metadata_get_fields('wiki_post', strval($post_id));
 
-                wiki_edit_post($post_id, $message, $validated, $meta_data['submitter'], null, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], true);
+                wiki_edit_post($post_id, $message, $validated, $metadata['submitter'], null, $metadata['edit_time'], $metadata['add_time'], $metadata['views'], true);
             }
         }
 

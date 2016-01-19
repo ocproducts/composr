@@ -34,8 +34,8 @@ class Hook_snippet_tutorial_box
 
         $tutorial_name = get_param_string('tutorial_name');
 
-        $meta_data = get_tutorial_metadata($tutorial_name);
-        $_tutorial = templatify_tutorial($meta_data, false);
+        $metadata = get_tutorial_metadata($tutorial_name);
+        $_tutorial = templatify_tutorial($metadata, false);
 
         return do_template('TUTORIAL_BOX', $_tutorial);
     }

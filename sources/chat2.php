@@ -219,7 +219,7 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
     }
 
     require_code('content2');
-    $fields->attach(meta_data_get_fields('chat', is_null($id) ? null : strval($id)));
+    $fields->attach(metadata_get_fields('chat', is_null($id) ? null : strval($id)));
 
     if (addon_installed('content_reviews')) {
         require_code('content_reviews2');

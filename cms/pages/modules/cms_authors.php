@@ -80,7 +80,7 @@ class Module_cms_authors
     public $author;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -336,7 +336,7 @@ class Module_cms_authors
             }
             $url = (strpos($_url, 'mailto:') === false) ? fixup_protocolless_urls($_url) : $_url;
 
-            $meta_data = actual_meta_data_get_fields('author', null);
+            $metadata = actual_metadata_get_fields('author', null);
 
             add_author($author, $url, $member_id, post_param_string('post'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
 

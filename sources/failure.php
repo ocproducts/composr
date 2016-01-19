@@ -1034,7 +1034,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '_custom\\') === false) &&
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
-        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free web hosts
+        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free webhosts
         (strpos($text, 'failed with: Connection refused') === false) && // Memcache error
         (strpos($text, 'data/commandr.php') === false) &&
         (strpos($text, '.less problem') === false) &&

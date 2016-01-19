@@ -260,7 +260,7 @@ class Module_chat
     public $room_row;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -753,7 +753,7 @@ class Module_chat
         list($allow2, $allow2_groups, $disallow2, $disallow2_groups) = read_in_chat_perm_fields();
         $allow = explode(',', $allow2);
 
-        $meta_data = actual_meta_data_get_fields('chat', null);
+        $metadata = actual_metadata_get_fields('chat', null);
 
         $new_room_id = add_chatroom(post_param_string('c_welcome'), $room_name, get_member(), $allow2, $allow2_groups, $disallow2, $disallow2_groups, $room_lang);
 

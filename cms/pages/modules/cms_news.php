@@ -108,10 +108,10 @@ class Module_cms_news extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -404,12 +404,12 @@ class Module_cms_news extends Standard_crud_module
         require_code('activities');
         $fields2->attach(get_syndication_option_fields());
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2, false, true, false);
-        $fields2->attach(meta_data_get_fields('news', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields2->attach(metadata_get_fields('news', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
 
@@ -561,11 +561,11 @@ class Module_cms_news extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('news', null);
+        $metadata = actual_metadata_get_fields('news', null);
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $image, '', '', $regions);
+        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $metadata['add_time'], $metadata['submitter'], $metadata['views'], null, null, $image, '', '', $regions);
 
         set_url_moniker('news', strval($id));
 
@@ -714,11 +714,11 @@ class Module_cms_news extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('news', strval($id));
+        $metadata = actual_metadata_get_fields('news', strval($id));
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $image, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
+        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $image, $metadata['add_time'], $metadata['edit_time'], $metadata['views'], $metadata['submitter'], $regions, true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('news', strval($id));
@@ -932,7 +932,7 @@ class Module_cms_news_cat extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(meta_data_get_fields('news_category', is_null($id) ? null : strval($id)), true);
+        $fields->attach(metadata_get_fields('news_category', is_null($id) ? null : strval($id)), true);
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('news_category', is_null($id) ? null : strval($id)));
@@ -978,7 +978,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $notes = post_param_string('notes', '');
 
-        $meta_data = actual_meta_data_get_fields('news_category', null);
+        $metadata = actual_metadata_get_fields('news_category', null);
 
         $id = add_news_category($title, $img, $notes);
 
@@ -1013,13 +1013,13 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
 
-        $meta_data = actual_meta_data_get_fields('news_category', $id);
+        $metadata = actual_metadata_get_fields('news_category', $id);
 
-        if (is_null($meta_data['submitter'])) { // We need to interpret this - if we didn't have specification permission, we need to copy through existing setting, as a null would imply a de-set
-            $meta_data['submitter'] = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => intval($id)));
+        if (is_null($metadata['submitter'])) { // We need to interpret this - if we didn't have specification permission, we need to copy through existing setting, as a null would imply a de-set
+            $metadata['submitter'] = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => intval($id)));
         }
 
-        edit_news_category(intval($id), $title, $img, $notes, $meta_data['submitter']);
+        edit_news_category(intval($id), $title, $img, $notes, $metadata['submitter']);
 
         $this->set_permissions(intval($id));
 

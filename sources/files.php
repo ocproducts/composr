@@ -342,7 +342,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
-                                                    array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image meta data file, e.g. ".example.png"
+                                                    array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
                                                     array('\_vti\_.*', '.*'), // Frontpage
                                                     array('google.*\.html', ''), // Google authorisation files
                                                     array('\.\_.*', '.*'), // MacOS extended attributes

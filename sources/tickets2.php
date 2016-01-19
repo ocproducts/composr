@@ -384,7 +384,7 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
         $time_post
     );
 
-    // Save meta-data
+    // Save metadata
     $topic_id = $GLOBALS['LAST_TOPIC_ID'];
     $is_new = $GLOBALS['LAST_TOPIC_IS_NEW'];
     if (($is_new) && ($ticket_type_id !== null)) {

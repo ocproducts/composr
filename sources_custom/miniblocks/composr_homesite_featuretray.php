@@ -576,7 +576,7 @@ $featuretree = array(
             array(
                 array('Support for short URLs'),
                 array('Automatic site-map generation'),
-                array('META data', 'Meta descriptions and keywords for all content. Auto-summarisation.'),
+                array('Metadata', 'Meta descriptions and keywords for all content. Auto-summarisation.'),
                 array('XML Sitemaps'),
                 null, // divider
                 array('Keyword density analysis for your content'),

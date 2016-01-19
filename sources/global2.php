@@ -165,7 +165,7 @@ function init__global2()
     $DYING_BADLY = false; // If Composr is bailing out uncontrollably, setting this will make sure the error hander does not try and suppress
 
     // Dev mode stuff
-    /** Whether the ocProducts version of PHP is running, and hence whether XSS-detection is enabled, and hence whether we may need to carry through additional meta-data to make sure it operates correctly. Stored in a global for quick check (good performance).
+    /** Whether the ocProducts version of PHP is running, and hence whether XSS-detection is enabled, and hence whether we may need to carry through additional metadata to make sure it operates correctly. Stored in a global for quick check (good performance).
      *
      * @global boolean $XSS_DETECT
      */

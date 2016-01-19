@@ -220,7 +220,7 @@ class Module_downloads
     public $num_images;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -276,7 +276,7 @@ class Module_downloads
             }
             breadcrumb_set_parents($breadcrumbs);
 
-            // Meta data
+            // Metadata
             seo_meta_load_for('downloads_category', strval($category_id), $title_to_use);
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $category['add_date']),
@@ -397,7 +397,7 @@ class Module_downloads
                 $images_details = $_out;
             }
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['add_date']),
                 'creator' => $myrow['author'],

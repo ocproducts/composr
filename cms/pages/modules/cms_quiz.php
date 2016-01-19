@@ -81,10 +81,10 @@ class Module_cms_quiz extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -331,7 +331,7 @@ class Module_cms_quiz extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(meta_data_get_fields('quiz', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('quiz', is_null($id) ? null : strval($id)));
         require_code('seo2');
         $fields->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false));
 
@@ -418,7 +418,7 @@ class Module_cms_quiz extends Standard_crud_module
         $tied_newsletter = ($_tied_newsletter == '') ? null : intval($_tied_newsletter);
         $name = post_param_string('name');
 
-        $meta_data = actual_meta_data_get_fields('quiz', null);
+        $metadata = actual_metadata_get_fields('quiz', null);
 
         $id = add_quiz(
             $name,
@@ -441,7 +441,7 @@ class Module_cms_quiz extends Standard_crud_module
             post_param_integer('reveal_answers', 0),
             post_param_integer('shuffle_questions', 0),
             post_param_integer('shuffle_answers', 0),
-            $meta_data['add_time']
+            $metadata['add_time']
         );
 
         set_url_moniker('quiz', strval($id));
@@ -492,7 +492,7 @@ class Module_cms_quiz extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('quiz', strval($id));
+        $metadata = actual_metadata_get_fields('quiz', strval($id));
 
         edit_quiz(
             $id,
@@ -517,8 +517,8 @@ class Module_cms_quiz extends Standard_crud_module
             post_param_integer('reveal_answers', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('shuffle_questions', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('shuffle_answers', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
-            $meta_data['add_time'],
-            $meta_data['submitter'],
+            $metadata['add_time'],
+            $metadata['submitter'],
             true
         );
 

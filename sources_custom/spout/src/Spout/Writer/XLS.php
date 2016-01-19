@@ -153,7 +153,7 @@ class XLS extends AbstractWriter
      *
      * @param  array $dataRow Array containing data to be written.
      *          Example $dataRow = ['data1', 1234, null, '', 'data5'];
-     * @param  array $metaData Array containing meta-data maps for individual cells, such as 'url'
+     * @param  array $metaData Array containing metadata maps for individual cells, such as 'url'
      * @return void
      * @throws \Box\Spout\Common\Exception\IOException If unable to write data
      */

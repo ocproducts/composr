@@ -233,7 +233,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         $member_info = new Tempcode();
     }
 
-    // Meta data
+    // Metadata
     list($num_children, $num_images, $num_videos) = get_recursive_gallery_details($myrow['name']);
     if ($num_children == 0) {
         if ($myrow['accept_videos'] == 0) {

@@ -263,7 +263,7 @@ class Module_galleries
     public $category_name;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -345,7 +345,7 @@ class Module_galleries
             $title_to_use_2 = do_lang('_GALLERY', $fullname);
             $this->title = get_screen_title($title_to_use, false, null, null, $awards);
 
-            // Meta data
+            // Metadata
             seo_meta_load_for('gallery', $cat, $title_to_use_2);
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['add_date']),

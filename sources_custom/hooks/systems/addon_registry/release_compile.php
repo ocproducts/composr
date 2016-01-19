@@ -86,7 +86,7 @@ class Hook_addon_registry_release_compile
      */
     public function get_description()
     {
-        return 'Compile meta data for a release required for the installer and upgrader intelli-sense functionality.';
+        return 'Compile metadata for a release required for the installer and upgrader intelli-sense functionality.';
     }
 
     /**

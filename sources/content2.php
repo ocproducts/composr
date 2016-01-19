@@ -25,9 +25,9 @@
  */
 function init__content2()
 {
-    define('META_DATA_HEADER_NO', 0);
-    define('META_DATA_HEADER_YES', 1);
-    define('META_DATA_HEADER_FORCE', 2);
+    define('METADATA_HEADER_NO', 0);
+    define('METADATA_HEADER_YES', 1);
+    define('METADATA_HEADER_FORCE', 2);
 
     define('ORDER_AUTOMATED_CRITERIA', 2147483647); // lowest order, shared for all who care not about order, so other SQL ordering criterias take precedence
 }
@@ -38,8 +38,8 @@ function init__content2()
  * @param  ID_TEXT $entry_type The type of resource being ordered
  * @param  ?ID_TEXT $category_type The type of resource being ordered within (null: no categories involved)
  * @param  ?integer $current_order The current order (null: new, so add to end)
- * @param  ?integer $max Maximum order field (null: work out from content type meta-data)
- * @param  ?integer $total Number of entries, alternative to supplying $max (null: work out from content type meta-data)
+ * @param  ?integer $max Maximum order field (null: work out from content type metadata)
+ * @param  ?integer $total Number of entries, alternative to supplying $max (null: work out from content type metadata)
  * @param  ID_TEXT $order_field The POST field to save under
  * @param  ?Tempcode $description Description for field input (null: {!ORDER})
  * @return Tempcode Ordering field
@@ -122,18 +122,18 @@ function post_param_order_field($order_field = 'order')
 }
 
 /**
- * Get template fields to insert into a form page, for manipulation of meta data.
+ * Get template fields to insert into a form page, for manipulation of metadata.
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ?ID_TEXT $content_id The ID of the resource (null: adding)
  * @param  boolean $allow_no_owner Whether to allow owner to be left blank (meaning no owner)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
- * @param  integer $show_header Whether to show a header (a META_DATA_HEADER_* constant)
+ * @param  integer $show_header Whether to show a header (a METADATA_HEADER_* constant)
  * @return Tempcode Form page Tempcode fragment
  */
-function meta_data_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = null, $show_header = 1)
+function metadata_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = null, $show_header = 1)
 {
-    require_lang('meta_data');
+    require_lang('metadata');
 
     $fields = new Tempcode();
 
@@ -213,16 +213,16 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
             $fields->attach(form_input_codename(do_lang_tempcode('URL_MONIKER'), do_lang_tempcode('DESCRIPTION_META_URL_MONIKER', escape_html($url_moniker)), 'meta_url_moniker', $manually_chosen ? $url_moniker : '', false, null, null, array('/')));
         }
     } else {
-        if ($show_header != META_DATA_HEADER_FORCE) {
+        if ($show_header != METADATA_HEADER_FORCE) {
             return new Tempcode();
         }
     }
 
-    if ((!$fields->is_empty()) && ($show_header != META_DATA_HEADER_NO)) {
+    if ((!$fields->is_empty()) && ($show_header != METADATA_HEADER_NO)) {
         $_fields = new Tempcode();
         $_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'adf2a2cda231619243763ddbd0cc9d4e', 'SECTION_HIDDEN' => true,
-                                                                       'TITLE' => do_lang_tempcode('META_DATA'),
-                                                                       'HELP' => do_lang_tempcode('DESCRIPTION_META_DATA', is_null($content_id) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
+                                                                       'TITLE' => do_lang_tempcode('METADATA'),
+                                                                       'HELP' => do_lang_tempcode('DESCRIPTION_METADATA', is_null($content_id) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
         )));
         $_fields->attach($fields);
         return $_fields;
@@ -232,17 +232,17 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
 }
 
 /**
- * Get field values for meta data.
+ * Get field values for metadata.
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ?ID_TEXT $content_id The old ID of the resource (null: adding)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
  * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
- * @return array A map of standard meta data fields (name to value). If adding, this map is accurate for adding. If editing, nulls mean do-not-edit or non-editable.
+ * @return array A map of standard metadata fields (name to value). If adding, this map is accurate for adding. If editing, nulls mean do-not-edit or non-editable.
  */
-function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
+function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
 {
-    require_lang('meta_data');
+    require_lang('metadata');
 
     if (is_null($fields_to_skip)) {
         $fields_to_skip = array();
@@ -354,7 +354,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
  */
 function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
 {
-    require_lang('meta_data');
+    require_lang('metadata');
 
     if (is_null($fields_to_skip)) {
         $fields_to_skip = array();
@@ -545,35 +545,35 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
 }
 
 /**
- * Read in an additional meta data field, specific to a resource type.
+ * Read in an additional metadata field, specific to a resource type.
  *
- * @param  array $meta_data Meta data already collected
+ * @param  array $metadata metadata already collected
  * @param  ID_TEXT $key The parameter name
  * @param  mixed $default The default if it was not set
  */
-function actual_meta_data_get_fields__special(&$meta_data, $key, $default)
+function actual_metadata_get_fields__special(&$metadata, $key, $default)
 {
-    $meta_data[$key] = $default;
+    $metadata[$key] = $default;
     if (has_privilege(get_member(), 'edit_meta_fields')) {
         if (is_integer($default)) {
             switch ($default) {
                 case 0:
                 case INTEGER_MAGIC_NULL:
-                    $meta_data[$key] = post_param_integer('meta_' . $key, $default);
+                    $metadata[$key] = post_param_integer('meta_' . $key, $default);
                     break;
             }
         } else {
             switch ($default) {
                 case '':
                 case STRING_MAGIC_NULL:
-                    $meta_data[$key] = post_param_string('meta_' . $key, $default);
-                    if ($meta_data[$key] == '') {
-                        $meta_data[$key] = $default;
+                    $metadata[$key] = post_param_string('meta_' . $key, $default);
+                    if ($metadata[$key] == '') {
+                        $metadata[$key] = $default;
                     }
                     break;
 
                 case null:
-                    $meta_data[$key] = post_param_integer('meta_' . $key, null);
+                    $metadata[$key] = post_param_integer('meta_' . $key, null);
                     break;
             }
         }

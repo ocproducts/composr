@@ -169,38 +169,38 @@ function templatify_tutorial_list($tutorials, $simple = false)
 {
     $_tutorials = array();
 
-    foreach ($tutorials as $meta_data) {
-        $_tutorials[] = templatify_tutorial($meta_data, $simple);
+    foreach ($tutorials as $metadata) {
+        $_tutorials[] = templatify_tutorial($metadata, $simple);
     }
 
     return $_tutorials;
 }
 
-function templatify_tutorial($meta_data, $simple = false)
+function templatify_tutorial($metadata, $simple = false)
 {
     $tags = array();
-    foreach ($meta_data['tags'] as $tag) {
+    foreach ($metadata['tags'] as $tag) {
         if (strtolower($tag) != $tag) {
             $tags[] = $tag;
         }
     }
 
     $tutorial = array(
-        'NAME' => $meta_data['name'],
-        'URL' => $meta_data['url'],
-        'TITLE' => $meta_data['title'],
-        'ICON' => $meta_data['icon'],
+        'NAME' => $metadata['name'],
+        'URL' => $metadata['url'],
+        'TITLE' => $metadata['title'],
+        'ICON' => $metadata['icon'],
     );
     if (!$simple) {
         $tutorial += array(
-            'SUMMARY' => $meta_data['summary'],
+            'SUMMARY' => $metadata['summary'],
             'TAGS' => $tags,
-            'MEDIA_TYPE' => $meta_data['media_type'],
-            'DIFFICULTY_LEVEL' => $meta_data['difficulty_level'],
-            'CORE' => $meta_data['core'],
-            'AUTHOR' => $meta_data['author'],
-            'ADD_DATE' => get_timezoned_date($meta_data['add_date'], false),
-            'EDIT_DATE' => get_timezoned_date($meta_data['edit_date'], false),
+            'MEDIA_TYPE' => $metadata['media_type'],
+            'DIFFICULTY_LEVEL' => $metadata['difficulty_level'],
+            'CORE' => $metadata['core'],
+            'AUTHOR' => $metadata['author'],
+            'ADD_DATE' => get_timezoned_date($metadata['add_date'], false),
+            'EDIT_DATE' => get_timezoned_date($metadata['edit_date'], false),
         );
     }
 
