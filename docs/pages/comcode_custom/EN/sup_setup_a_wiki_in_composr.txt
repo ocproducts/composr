@@ -26,4 +26,4 @@ To add a new post simply click the Post button at the bottom of the page which t
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
 
-{$SET,tutorial_tags,Content,Wiki+,wiki,novice}{$SET,tutorial_add_date,Sep 2013}{$SET,tutorial_summary, Wikis are great for large community driven websites for sharing information. This tutorial provides some basic information on Composr's Wiki+ system.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Content,Wiki,wiki,novice}{$SET,tutorial_add_date,Sep 2013}{$SET,tutorial_summary, Wikis are great for large community driven websites for sharing information. This tutorial provides some basic information on Composr's Wiki+ system.}[block]main_tutorial_rating[/block]

@@ -182,7 +182,7 @@ If you do not want Comcode conversion, you can disable the Composr "Convert XHTM
 
 [title="2"]Problem areas, and turning the editor off[/title]
 
-Sometimes WYSIWYG editing is more trouble than it's worth. When particularly complex layouts are produced, or code pasted from documents, it can still result messy and slow code; especially when content is long. This is particularly bad for web-sites that favour very high web standards (such as perfect WCAG accessibility), which will always need to have a degree of hand-coding in them, to maintain those high standards.
+Sometimes WYSIWYG editing is more trouble than it's worth. When particularly complex layouts are produced, or code pasted from documents, it can still result messy and slow code; especially when content is long. This is particularly bad for websites that favour very high web standards (such as perfect WCAG accessibility), which will always need to have a degree of hand-coding in them, to maintain those high standards.
 
 Generally it's also not a good idea to have anything that is not directly WYSIWYG in the WYSIWYG editor, including careful use of tags to apply custom CSS styles, or JavaScript. Various things can relate to it getting stripped or corrupted.
 

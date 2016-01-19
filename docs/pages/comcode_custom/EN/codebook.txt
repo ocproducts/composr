@@ -134,7 +134,7 @@ There are many other terms in Composr that belong to certain addons (such as 'Do
 
 Composr contains many "cross-cutting" features that are often present in different areas of the system. These need to be individually implemented/referenced all throughout the code. These features are:
  - [b]CRUD/CMS functionality[/b] (this will be provided to you when you write your CMS module to inherit from the standard CRUD module code. Most Composr CMS modules are CRUD module)
- - [b]SEO meta-data keywords/description[/b] (instructions for implementation provided in this book)
+ - [b]SEO metadata keywords/description[/b] (instructions for implementation provided in this book)
  - [b]Feedback[/b]: rating, commenting, trackbacks (instructions for implementation provided in this book)
  - [b]Permissions[/b] (instructions for implementation provided in this book)
  - [b]Virtual roots[/b] (see how breadcrumb code for the news addon handles virtual roots -- it provides the capability to define them, and also applies them in the way it decides the root of a breadcrumb trail)

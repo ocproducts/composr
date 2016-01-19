@@ -153,9 +153,9 @@ Additionally, there are support features for content...
 | The author of News / Downloads, manageable as an independent record that is not necessarily tied to a Member.
 |
 |-
-! Meta-data
+! Metadata
 |
-| Content types allow specification of meta data, such as keywords (tags) and descriptions. This gets integrated with third-party web services, such as Facebook Open Graph.
+| Content types allow specification of metadata, such as keywords (tags) and descriptions. This gets integrated with third-party web services, such as Facebook Open Graph.
 |
 |-
 ! Awards

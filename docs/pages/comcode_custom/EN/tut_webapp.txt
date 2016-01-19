@@ -160,7 +160,7 @@ CMSs are becoming more sophisticated and all-encompassing, with support for wide
 			<p><em>OR</em></p>
 			<p>Employ a web-designer.</p>
 			<p><em>OR</em></p>
-			<p>Use a 'site builder' tool, like those that are often provided with web-hosting.</p>
+			<p>Use a 'site builder' tool, like those that are often provided with webhosting.</p>
 		</td>
 	</tr>
 	<tr>

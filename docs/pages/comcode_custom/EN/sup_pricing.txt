@@ -14,7 +14,7 @@ I'll be as frank and blunt as possible, because this stuff is not talked about n
 [*] there are a lot of DIY tools and open discussions between experienced people using them.[/*]
 [*] a lot of people purchasing websites don't have business experience and know how much things cost when done individually to order (the gap between these kinds of things, and the other things you normally purchase in life, is absolutely huge).[/*]
 [*] some really high quality tools (such as Composr) are free, and they do a lot, so therefore making new functionality to a similar level of sophistication must be very cheap. The reality is that these tools have had huge amounts of time and money invested in them but are put out for free due to the developer's desire to share their creations as broadly as possible.[/*]
-[*] web hosting is cheap.[/*]
+[*] webhosting is cheap.[/*]
 [*] technology is always changing very quickly, and prices change to reflect expectations &ndash; costs have risen a lot over time.[/*]
 [*] people who do have experience with website commissioning are usually too busy, so what they do know has not disseminated. You couldn't go and buy a book on website pricing like you could do on the pricing within other engineering disciplines.[/*]
 [/list]
@@ -88,7 +88,7 @@ All the seven kinds of web design company will operate across different pricing 
 
 So how much do websites cost? "The same as a house", i.e. it depends on the tier!
 
-The really low end website is like a garden shed, and the really high end website is like a palace. The shed is cheap because it is mass-produced, small, simple, and has cheap materials. The palace is individually architected, vast, has exquisite detailing, and is made to the finest standards. That's exactly how web-sites are: once you have something a bit bigger, that does a bit more, has a much higher design fidelity, and is tuned for a particular business, it gets a lot more costly.
+The really low end website is like a garden shed, and the really high end website is like a palace. The shed is cheap because it is mass-produced, small, simple, and has cheap materials. The palace is individually architected, vast, has exquisite detailing, and is made to the finest standards. That's exactly how websites are: once you have something a bit bigger, that does a bit more, has a much higher design fidelity, and is tuned for a particular business, it gets a lot more costly.
 
 Most people go for a happy balance of quality that puts the price around the average: a good competitive quality that reflects a strong modern brand image. To go back to the construction analogy: a clean well-furnished modern store for their business.
 

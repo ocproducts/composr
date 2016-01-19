@@ -1,12 +1,12 @@
 [title sub="Written by ocProducts"]Composr Tutorial: Mobile apps via Composr Mobile SDK[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
 Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experienced iOS and Android developers.
 
 As well as containing Composr integrations, there are also a large collection of standalone utilities for building apps. These create a common base between iOS and Android that is reminiscent of the PHP and Composr APIs, allowing easier code porting while also remaining 100% native.
 
 [contents]decimal,lower-alpha[/contents]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
 [title="2"]Getting Composr Mobile SDK[/title]
 
 [title="3"]SDK[/title]
@@ -1859,6 +1859,7 @@ PhotoUpload *photoView = [[PhotoUpload alloc] initWithFrame:<frame>];[photoView 
 
 [title="2"]Notifications[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/android.png[/media]
 Composr can support sending native iOS/Android push notifications.
 
 There are many configuration options located in Admin Zone > Setup > Configuration > Composr APIs.
@@ -1867,7 +1868,6 @@ For iOS notifications to work, put your Apple-provided server certificate over [
 
 [title="2"]Toolkit[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 The toolkit will help you mirror some Composr website resources into a mobile app. It is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 
 [title="3"]Language files[/title]
@@ -1910,6 +1910,7 @@ php data_custom/composr_mobile_sdk_build.php images example
 
 [title="2"]Server-side API[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 You may access the server-side API by making HTTP calls to [tt]http://yourbaseurl/data/endpoint.php[/tt]. Results are returned as JSON.
 
 The API is split into a number of endpoints, which are given a 'hook' name, and categorised by 'hook type'.

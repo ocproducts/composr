@@ -23,7 +23,7 @@ When we release new versions we bundle all current translation on Transifex into
 If you need more up-to-date translations, you can get them directly from Transifex.
 
 To download and install the Transifex translations you can follow the following step by step process:
-1) Make a [tt]lang_custom/<langcode>[/tt] folder on your web hosting. The [tt]<langcode>[/tt] is the upper-case version of the ISO code for the language. For example, Spanish is [tt]ES[/tt] and German is [tt]DE[/tt].
+1) Make a [tt]lang_custom/<langcode>[/tt] folder on your webhosting. The [tt]<langcode>[/tt] is the upper-case version of the ISO code for the language. For example, Spanish is [tt]ES[/tt] and German is [tt]DE[/tt].
 2) Go to the [url="ocProducts organisation on Transifex"]https://www.transifex.com/organization/ocproducts[/url].
 3) Register as a Transifex user if you do not already have an account, or log in.
 4) Choose the version of Composr you have installed (if you're not sure, it will say on the front page of the Admin Zone). Transifex calls this the 'project'.
@@ -75,4 +75,4 @@ I realise this isn't a translation solution, but it may be enough to cover the s
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
 
-{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,novice}{$SET,tutorial_add_date,Mar 2011}{$SET,tutorial_summary,How to translate your (Composr-powered) website into a different language.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,Contributing,novice}{$SET,tutorial_add_date,Mar 2011}{$SET,tutorial_summary,How to translate your (Composr-powered) website into a different language.}[block]main_tutorial_rating[/block]

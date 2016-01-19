@@ -95,4 +95,4 @@ You can see the edits a page has gone through via the revision history on the ed
 
  - [page="_SEARCH:tut_catalogues"]Creating structured information (via catalogues)[/page]
 
-{$SET,tutorial_tags,Wiki+,wiki,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The Wiki+ system is Composr's equivalent to a wiki, but extended with additional features.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Wiki,wiki,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The Wiki+ system is Composr's equivalent to a wiki, but extended with additional features.}[block]main_tutorial_rating[/block]

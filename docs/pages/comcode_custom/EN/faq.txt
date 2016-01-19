@@ -152,13 +152,13 @@ And, if the company turns evil or otherwise fails to manage the project effectiv
 
 [title="3"]Why won't Composr work on my server, even though it meets the minimum requirements?[/title]
 
-Composr is extremely compatible with different server configurations, tuned to work with many different problematic servers over a decade, and developed with automatic compatibility detection software. Unfortunately some web hosts provide crippled versions of PHP, that are either rewritten to limit functionality, or configured to disable basic functionality (unfortunately PHP allows any piece of hundreds of items of basic functionality to be arbitrarily disabled). In addition, cheap web hosts often fit large numbers of users onto a single shared server, which can result in a rationing of server resources that is not in any way workable.
+Composr is extremely compatible with different server configurations, tuned to work with many different problematic servers over a decade, and developed with automatic compatibility detection software. Unfortunately some webhosts provide crippled versions of PHP, that are either rewritten to limit functionality, or configured to disable basic functionality (unfortunately PHP allows any piece of hundreds of items of basic functionality to be arbitrarily disabled). In addition, cheap webhosts often fit large numbers of users onto a single shared server, which can result in a rationing of server resources that is not in any way workable.
 
 [title="2"]Compatibility[/title]
 
 [title="3"]What are the host requirements for Composr?[/title]
 
-Read about Composr's minimum requirements in our [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page]. Composr is designed to run well on almost all web hosts.
+Read about Composr's minimum requirements in our [page="_SEARCH:tut_webhosting"]Webhosting requirements tutorial[/page]. Composr is designed to run well on almost all webhosts.
 
 We don't have a recommended host at this time.
 
@@ -168,7 +168,7 @@ We feel Linux is more suited for PHP purposes than Windows. Composr will work fi
 
 [title="3"]Does Composr support (some forum vendor and version)?[/title]
 
-Compatible forum software is listed in the [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page], and any issues are listed in the [page="_SEARCH:tut_nuances"]Nuances of forum integration tutorial[/page].
+Compatible forum software is listed in the [page="_SEARCH:tut_webhosting"]Webhosting requirements tutorial[/page], and any issues are listed in the [page="_SEARCH:tut_nuances"]Nuances of forum integration tutorial[/page].
 
 [title="3"]Can you import this particular product?[/title]
 
@@ -209,11 +209,11 @@ There are a number of likely possible causes.
 
 [title="4"]Memory[/title]
 
-Composr is designed to run on a PHP memory limit of 32MB or higher; very old PHP configurations come with an 16MB limit, but the majority of web-hosts have it raised to a more reasonable level: take into account that every Composr interface, even the installer which unpacks a large archive, is being asked to run within a tiny 16MB, which includes the space taken up by the PHP source code being run. If you encounter these problems, please submit a bug report, and we will optimise the area where they are occurring for you.
+Composr is designed to run on a PHP memory limit of 32MB or higher; very old PHP configurations come with an 16MB limit, but the majority of webhosts have it raised to a more reasonable level: take into account that every Composr interface, even the installer which unpacks a large archive, is being asked to run within a tiny 16MB, which includes the space taken up by the PHP source code being run. If you encounter these problems, please submit a bug report, and we will optimise the area where they are occurring for you.
 
 Note that the 'blank page' problem is likely to be due to memory running out, as some PHP installations do not give errors in this event, even if the PHP [tt]display_errors[/tt] option is enabled.
 
-Also note that some web hosts have PHP installations that report memory limits that are higher than they actually are. If you see an error like:
+Also note that some webhosts have PHP installations that report memory limits that are higher than they actually are. If you see an error like:
 [quote]
 PHP[1] Out of memory (allocated 6815744) (tried to allocate 311296 bytes)
 [/quote]
@@ -221,7 +221,7 @@ then this is telling you PHP [i]actually[/i] has a memory limit of approximately
 
 It may be possible to get Composr to raise the memory limit for you. Our default [tt]recommended.htaccess[/tt] file does this -- try renaming it to [tt].htaccess[/tt] to activate it. If you get the problem during the quick installer and thus don't have this file yet, you can find it in the manual installer package.
 If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore" answer below.
-If you are not successful in raising the memory limit you will need to contact the web host to ask them to do it, as on some hosts the limit is locked down at a server level.
+If you are not successful in raising the memory limit you will need to contact the webhost to ask them to do it, as on some hosts the limit is locked down at a server level.
 
 [title="4"]Corrupt PHP files[/title]
 
@@ -232,7 +232,7 @@ Once you have identified which files are corrupt you need to re-upload them. Dow
 
 [title="4"]Other causes[/title]
 
-Check your web server's raw logs, or contact your web host.
+Check your web server's raw logs, or contact your webhost.
 
 [title="3"]Why do I get an Internal Server Error or '500' error?[/title]
 
@@ -248,7 +248,7 @@ If in doubt, look at the permissions of a working PHP script, and copy them.
 
 If you have being using root access to add files on the server, you may need to change the file ownership and file group to that of the account user.
 
-Also see the answer to "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?" if this has just start after editing the [tt].htaccess[/tt] file or switching web hosts.
+Also see the answer to "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?" if this has just start after editing the [tt].htaccess[/tt] file or switching webhosts.
 
 [title="4"].htaccess problems[/title]
 
@@ -256,7 +256,7 @@ Please keep reading on for this specific case.
 
 [title="4"]Other causes[/title]
 
-Otherwise, you may need to look at your raw web server logs, or contact your web host. Often the true cause of internal errors are written into the web server error log.
+Otherwise, you may need to look at your raw web server logs, or contact your webhost. Often the true cause of internal errors are written into the web server error log.
 
 [title="3"]I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?[/title]
 
@@ -268,10 +268,10 @@ Read the next question's answer also.
 If you are getting "Internal Server Error"'s or '500' errors first read the answer above, to narrow down to the problem.
 If you're not getting actual errors but things just aren't applying, it's probably because either:
 [list="a"]
-[*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your web-host)
+[*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your webhost)
 [*] The PHP options you're trying to override with php_value or php_flag have been locked down in the main Apache configuration (via php_admin_value or php_admin_flag)
 [*] or, you're using Windows IIS which does not have this feature. You'll need to:[list]
-[*] change settings through the IIS Administrative Tools or your web hosting control panel)
+[*] change settings through the IIS Administrative Tools or your webhosting control panel)
 [*] or, if the settings you want to change are for PHP, and PHP is configured as CGI, see "How do I set PHP settings on a CGI server?").[/list]
 [/list]
 
@@ -281,7 +281,7 @@ If you are getting actual errors you have probably narrowed it down and found th
 
 You need to create [tt]php.ini[/tt] files that override your web-server's default [tt]php.ini[/tt] file. This can be tricky for two reasons:
 1) You need to place duplicates of the file in a number of different directories.
-2) You may need to replicate settings from the original [tt]php.ini[/tt] file into your own one. Usually your web-host will provide some kind of documentation that you can copy&paste from.
+2) You may need to replicate settings from the original [tt]php.ini[/tt] file into your own one. Usually your webhost will provide some kind of documentation that you can copy&paste from.
 
 This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
 [codebox="INI"]
@@ -349,7 +349,7 @@ The [tt]from[/tt] address (different to the 'reply address' you see when you cli
 
 [title="3"]Why is e-mail not getting sent from the server?[/title]
 
-This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the web host) is not working.
+This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the webhost) is not working.
 
 [title="2"]Common usage queries[/title]
 

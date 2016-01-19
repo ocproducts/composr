@@ -108,7 +108,7 @@ Admin Zone > Setup > Point Store inventory management
 
 If e-mail accounts are sold through the Point Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point Store configuration defines 3 URLs that can be set according to your server.
 
-Example URLs follow for different web hosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
+Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
 
 [title="4"]For Plesk users[/title]
 

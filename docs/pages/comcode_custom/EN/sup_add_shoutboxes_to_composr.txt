@@ -3,10 +3,10 @@
 [media width="150" description="Shoutbox block options" float="right"]data_custom/images/docs/sup_add_shoutboxes_to_composr/b26649fcbe9c9b88151e0ec84e3812f5.png[/media]
 A shoutbox is a popular addition to many community websites and is very easy to add as long as you have the chatroom addon installed in your Composr website. The shoutbox addon is primarily designed to be a side block which means it was originally designed to work best in one of your website side panels.
 
-Of course this doesn't mean you cannot use it in on a normal page as all of Composr's Comcode/information blocks can be used anywhere on your site where you choose to display them. When you add your shoutbox it will default to using the general chat chat-room. If you have multiple different chat-rooms on different subjects and different zones on varied subjects you could have a different shoutbox for each subject. To be able to do this you will need to create a new chatroom for each subject and also create a new zone for each subject. There are two tutorials for this:
+Of course this doesn't mean you cannot use it in on a normal page as all of Composr's Comcode/information blocks can be used anywhere on your site where you choose to display them. When you add your shoutbox it will default to using the general chat chatroom. If you have multiple different chatrooms on different subjects and different zones on varied subjects you could have a different shoutbox for each subject. To be able to do this you will need to create a new chatroom for each subject and also create a new zone for each subject. There are two tutorials for this:
 [list]
-[*] [page="_SEARCH:add_a_new_zone_in_composr"]How to add a new Zone[/page]
-[*] [page="_SEARCH:add_a_chatroom_to_composr"]How to add a new Chat-room[/page]
+[*] [page="_SEARCH:add_a_new_zone_in_composr"]How to add a new zone[/page]
+[*] [page="_SEARCH:add_a_chatroom_to_composr"]How to add a new chatroom[/page]
 [/list]
 Once you have the chatroom which you want to add the shout box to. You can now follow this very simple process to add a shoutbox to your website.
 
