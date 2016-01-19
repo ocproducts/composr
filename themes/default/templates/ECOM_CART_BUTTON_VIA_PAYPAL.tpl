@@ -10,6 +10,7 @@
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
 	<input type="hidden" name="custom" value="{ORDER_ID*}" />
 	<input type="hidden" name="rm" value="2" />
+	<input type="hidden" name="bn" value="ocproducts_SP" />
 
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
 		<!-- <input type="hidden" name="address_override" value="1" /> -->

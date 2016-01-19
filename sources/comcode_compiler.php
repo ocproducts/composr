@@ -289,6 +289,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         $preparse_ob->preparse($comcode);
     }
 
+    // Fix smart quote problems (may be added unintentionally by other software)
+    if (strtolower(get_charset())=='utf-8') {
+        $comcode = preg_replace('#=\xE2\x80\x9C(.*)\xE2\x80\x9D#U', '="$1"', $comcode);
+    }
+
     $len = strlen($comcode);
 
     if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {

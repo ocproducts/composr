@@ -1341,6 +1341,10 @@ function fix_id($param)
  */
 function match_key_match($match_keys, $support_post = false, $current_params = null, $current_zone_name = null, $current_page_name = null)
 {
+    if (!running_script('index') && !running_script('iframe')) {
+        return false;
+    }
+
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
