@@ -43,12 +43,12 @@
 	{+END}
 {+END}
 
-{$,Meta data for the page: standard meta data, Dublin Core meta data, Facebook Open Graph, and Composr meta data extensions [CMSCORE]}
+{$,Metadata for the page: standard metadata, Dublin Core metadata, Facebook Open Graph, and Composr metadata extensions [CMSCORE]}
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
 <link rel="baseurl" href="{$BASE_URL*}" />
 <link rel="sitemap" href="{$BASE_URL*}/cms_sitemap.xml" />
-<meta name="description" content="{+START,IF,{$NEQ,{$META_DATA,meta_description},{!NA},???}}{$META_DATA*,meta_description}{+END}" />
-<meta name="keywords" content="{$META_DATA*,keywords}" />
+<meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
+<meta name="keywords" content="{$METADATA*,keywords}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<meta name="GENERATOR" content="{$BRAND_NAME*}" />
 	<meta name="publisher" content="{$COPYRIGHT`}" />
@@ -56,43 +56,43 @@
 {+END}
 {+START,COMMENT,Commented out by default to save bandwidth - schema.org and HTML5 semantics is probably the best default approach for most sites}
 	<link rel="schema.CMSCORE" href="http://compo.sr/cmscore.rdf" />
-	{+START,IF_NON_EMPTY,{$META_DATA,rating}}<meta name="CMSCORE.Rating" content="{$META_DATA*,rating}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,numcomments}}<meta name="CMSCORE.NumComments" content="{$META_DATA*,numcomments}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,site_newestmember}}<meta name="CMSCORE.Site_NewestMember" content="{$META_DATA*,site_newestmember}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,site_nummembers}}<meta name="CMSCORE.Site_NumMembers" content="{$META_DATA*,site_nummembers}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,site_bestmember}}<meta name="CMSCORE.Site_BestMember" content="{$META_DATA*,site_bestmember}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,forum_numtopics}}<meta name="CMSCORE.Forum_NumTopics" content="{$META_DATA*,forum_numtopics}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,forum_numposts}}<meta name="CMSCORE.Forum_NumPosts" content="{$META_DATA*,forum_numposts}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,rating}}<meta name="CMSCORE.Rating" content="{$METADATA*,rating}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,numcomments}}<meta name="CMSCORE.NumComments" content="{$METADATA*,numcomments}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,site_newestmember}}<meta name="CMSCORE.Site_NewestMember" content="{$METADATA*,site_newestmember}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,site_nummembers}}<meta name="CMSCORE.Site_NumMembers" content="{$METADATA*,site_nummembers}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,site_bestmember}}<meta name="CMSCORE.Site_BestMember" content="{$METADATA*,site_bestmember}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,forum_numtopics}}<meta name="CMSCORE.Forum_NumTopics" content="{$METADATA*,forum_numtopics}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,forum_numposts}}<meta name="CMSCORE.Forum_NumPosts" content="{$METADATA*,forum_numposts}" />{+END}
 	<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" /><link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" />
-	<meta name="DC.Language" content="{$LANG*}" />{+START,IF_NON_EMPTY,{$META_DATA,created}}<meta name="DCTERMS.Created" content="{$META_DATA*,created}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,publisher}}<meta name="DC.Publisher" content="{$META_DATA*,publisher}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,created}}<meta name="DC.Creator" content="{$META_DATA*,creator}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,modified}}<meta name="DCTERMS.Modified" content="{$META_DATA*,modified}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,type}}<meta name="DC.Type" content="{$META_DATA*,type}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,title}}<meta name="DC.Title" content="{$META_DATA*,title}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,identifier}}<meta name="DC.Identifier" content="{$FIND_SCRIPT*,page_link_redirect}?id={$META_DATA&*,identifier}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,description}}<meta name="DC.Description" content="{$TRIM,{$META_DATA*,description}}" />{+END}
+	<meta name="DC.Language" content="{$LANG*}" />{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="DCTERMS.Created" content="{$METADATA*,created}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,publisher}}<meta name="DC.Publisher" content="{$METADATA*,publisher}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="DC.Creator" content="{$METADATA*,creator}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="DCTERMS.Modified" content="{$METADATA*,modified}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,type}}<meta name="DC.Type" content="{$METADATA*,type}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,title}}<meta name="DC.Title" content="{$METADATA*,title}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,identifier}}<meta name="DC.Identifier" content="{$FIND_SCRIPT*,page_link_redirect}?id={$METADATA&*,identifier}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,description}}<meta name="DC.Description" content="{$TRIM,{$METADATA*,description}}" />{+END}
 {+END}
-{+START,IF_NON_EMPTY,{$META_DATA,title}}<meta property="og:title" content="{$META_DATA*,title}" />{+END}
-{+START,IF_NON_EMPTY,{$META_DATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$META_DATA,type}}}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,title}}<meta property="og:title" content="{$METADATA*,title}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$METADATA,type}}}" />{+END}
 <meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
 	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />{+END}
 {+END}
-{+START,IF_NON_EMPTY,{$META_DATA,description}}<meta property="og:description" content="{$TRIM,{$META_DATA*,description}}" />{+END}
-{+START,IF_NON_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$META_DATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
-{+START,IF_NON_EMPTY,{$META_DATA,video}}<meta property="og:video" content="{$META_DATA*,video}" /><meta property="og:video:width" content="{$META_DATA*,video:width}" /><meta property="og:video:height" content="{$META_DATA*,video:height}" /><meta property="og:video:type" content="{$META_DATA*,video:type}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,description}}<meta property="og:description" content="{$TRIM,{$METADATA*,description}}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
 <meta property="og:locale" content="{$REPLACE,-,_,{!locale}}" />
-{+START,IF,{$EQ,{$META_DATA,type},Article}}
-	{+START,IF_NON_EMPTY,{$META_DATA,created}}<meta name="article:published_time" content="{$META_DATA*,created}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,modified}}<meta name="article:modified_time" content="{$META_DATA*,modified}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,category}}<meta name="article:section" content="{$META_DATA*,category}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,raw_keywords}}<meta name="article:tag" content="{$META_DATA*,raw_keywords}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,creator}}<meta name="article:author" content="{$META_DATA*,creator}" />{+END}
+{+START,IF,{$EQ,{$METADATA,type},Article}}
+	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="article:published_time" content="{$METADATA*,created}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="article:modified_time" content="{$METADATA*,modified}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,category}}<meta name="article:section" content="{$METADATA*,category}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,raw_keywords}}<meta name="article:tag" content="{$METADATA*,raw_keywords}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,creator}}<meta name="article:author" content="{$METADATA*,creator}" />{+END}
 {+END}
-{+START,IF,{$EQ,{$META_DATA,type},Profile}}
-	{+START,IF_NON_EMPTY,{$META_DATA,creator}}<meta name="profile:username" content="{$META_DATA*,creator}" />{+END}
+{+START,IF,{$EQ,{$METADATA,type},Profile}}
+	{+START,IF_NON_EMPTY,{$METADATA,creator}}<meta name="profile:username" content="{$METADATA*,creator}" />{+END}
 {+END}
 
 {$,Define the Microformats we support}
@@ -118,9 +118,9 @@
 	{+START,IF,{$NEQ,{$ZONE},docs}}
 		<link rel="search" type="application/opensearchdescription+xml" title="{$SITE_NAME*} {$ZONE*}" href="{$FIND_SCRIPT*,opensearch}?filter=" />
 	{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,opensearch_totalresults}}<meta name="totalResults" content="{$META_DATA*,opensearch_totalresults}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,opensearch_startindex}}<meta name="startIndex" content="{$META_DATA*,opensearch_startindex}" />{+END}
-	{+START,IF_NON_EMPTY,{$META_DATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$META_DATA*,opensearch_itemsperpage}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,opensearch_totalresults}}<meta name="totalResults" content="{$METADATA*,opensearch_totalresults}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,opensearch_startindex}}<meta name="startIndex" content="{$METADATA*,opensearch_startindex}" />{+END}
+	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
 {$,Google Analytics account, if one set up}

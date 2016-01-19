@@ -85,8 +85,6 @@
 	</div>
 </div>
 
-<div class="cntRow"></div>
-
 <!--accordion -->
 <script>//<![CDATA[
 	$(function() {

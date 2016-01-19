@@ -56,10 +56,10 @@
 	3_ICON=menu/_generic_admin/edit_this_category
 {+END}
 
-{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}{+END}
+{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}{+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}
-	{+START,IF,{$AND,{$PREG_MATCH,^Version [\d\.]+,{$META_DATA,title}},{$IN_STR,{$BREADCRUMBS},Addons}}}
+	{+START,IF,{$AND,{$PREG_MATCH,^Version [\d\.]+,{$METADATA,title}},{$IN_STR,{$BREADCRUMBS},Addons}}}
 		<div class="cntRow">
 			<div class="ftHolder headFT">
 				Top Rated Addons:

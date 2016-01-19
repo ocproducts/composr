@@ -1,7 +1,7 @@
 [title]Server access policy[/title]
 
 [surround="spaced_list"]
-If we need to fix a bug that we can't reproduce, provide our installation service, or if we are asked to provide professional services that involves code modification, we may ask permission to access your server. We cannot do this without the relevant passwords, as we don't place any 'back-doors' in the software itself.
+If we need to fix a bug that we can't reproduce, provide our [page=":contact:installation"]installation service[/page], or if we are asked to provide [page=":contact:support"]professional services[/page] that involves code modification, we may ask permission to access your server. We cannot do this without the relevant passwords, as we don't place any 'back-doors' in the software itself.
 
 If you don't want us to go near your server, that's fine and we quite understand -- but sometimes if something is wanted from us, such access is required. We only offer in situations where for us to provide a service, or fix a problem, we need direct access in order to 'get the job done' in a reasonable time.
 

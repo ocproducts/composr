@@ -2,7 +2,7 @@
 
 <div class="cntRow">
 	{TITLE}
-	{$META_DATA,breadcrumb_self,Tutorials}
+	{$METADATA,breadcrumb_self,Tutorials}
 
 	<div class="tut-row">
 		<div class="leftMenu">

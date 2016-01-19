@@ -241,9 +241,11 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 
 .cntRow p + h1 { margin-top:10px; }
 .cntRow h1 { margin:0; padding-bottom:20px; display:block; }
-.cntRow h2 { font-size:24px; font-weight:bold; color:#E5922C; padding-bottom:10px; display:block; }
-.cntRow h3 { font-size:18px; font-weight:bold; color:#E5922C; padding-bottom:5px; display:block; }
+.cntRow h2 { font-size:24px; font-weight:bold; padding-bottom:10px; display:block; }
+.cntRow h3 { font-size:18px; font-weight:bold; padding-bottom:5px; display:block; }
 .cntRow>h3>a { color:white !important; }
+
+h2, h3 { color:#E5922C; }
 
 .sept { border-bottom:1px solid #E7EAED; margin-bottom:10px; height:1px; }
 .septHead { width:660px; height:30px; margin-bottom:10px; background-image:url('{$IMG;,composr_homesite/heading-bg1}'); background-repeat:no-repeat; background-position:left top; }
@@ -1219,7 +1221,7 @@ div.red_alert, p.red_alert {
 	border-left: 0;
 }
 
-th.meta_data_title {
+th.metadata_title {
 	font-weight: bold !important;
 }
 
@@ -2679,12 +2681,12 @@ li.actions_list_strong {
 }
 
 /*
-A note about display of meta data...
+A note about display of metadata...
 
 It may be displayed using:
  - meta_details_list (usually used on full screen views of content)
  - horizontal_meta_details (usually used on blocks where the meta details are important to encourage a click through)
- - a table (usually used where the content defines its own meta data beyond what all Composr content has, such as a length or resolution)
+ - a table (usually used where the content defines its own metadata beyond what all Composr content has, such as a length or resolution)
  - a tooltip (good for tucking it away, although it's not touch friendly so should only be used if non-important)
 But it should always have role="note" on it (ARIA)
 */

@@ -1,24 +1,32 @@
 [title]Composr demo[/title]
 
+[semihtml]
+<img src="{$IMG*,composr_homesite/demo/hands}" alt="" width="250" class="right" />
+The Composr demos allow you to try out Composr before installing on your own hosting.
+[/semihtml]
+
+[title="2"]Personal demo[/title]
+
 To set up your personal demo we just need a few details from you:
  - A name for the demo which we'll use in your temporary URL.
  - Your e-mail address (so e-mails on the demo go to you, and so we can keep in contact).
  - A password for you to log in to the demo with.
 
-Please note that this is a demo system, your demo will only last a few days. Composr is free, but you will need to find a web host.
+&raquo; [page="site:sites:demonstratr"]Proceed with instant set up of your personal demo[/page].
 
-[font size="1.1"]&raquo; [page="site:sites:demonstratr"]Proceed with instant set up of your personal demo[/page].[/font]
+Please note that because this is a demo system, your demo will only last a few days. Composr is free, but you will need to find a webhost.
 
+[title="2"]Instant (shared) demos[/title]
 
-[box="Shared demo: OpenSourceCMS"]
+[title="3"]OpenSourceCMS[/title]
+
 If you'd prefer to avoid entering the details required to set up your own demo you can also use the [url="OpenSourceCMS demo"]http://www.opensourcecms.com/demo/1/194/Composr[/url].
-Log in with the username 'admin' and the password 'demo123' (*).
+Log in with the username [tt]admin[/tt] and the password [tt]demo123[/tt] &dagger;.
 
 If you ever receive an error about a missing page or file, it is probably because the demo is in the process of automatically being reset. Wait a moment and try again.
 
-[font size="0.8"](*) This password is subject to change outside our control -- if you can't log in, check the [url="Main OpenSourceCMS site"]http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr[/url] for the password.[/font]
-[/box]
+[font size="0.85"]&dagger; This password is subject to change outside our control -- if you can't log in, check the [url="Main OpenSourceCMS site"]http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr[/url] for the password.[/font]
 
-[box="Shared demo: our example site"]
+[title="3"]Official shared demo[/title]
+
 We have a [url="http://shareddemo.composr.info/"]second shared demo[/url], populated with example content.
-[/box]

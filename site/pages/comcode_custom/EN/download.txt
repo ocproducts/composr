@@ -141,7 +141,7 @@
 					<p>We recommended [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url]. It's great quality hosting and they'll even install Composr for you.</p>
 					-->
 
-					<p>For more information and recommendations, see our [page="docs:tut_web_hosting"]web hosting tutorial[/page].</p>
+					<p>For more information and recommendations, see our [page="docs:tut_webhosting"]webhosting tutorial[/page].</p>
 				</div>
 			</div>
 		</div>

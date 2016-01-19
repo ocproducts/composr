@@ -6,10 +6,10 @@
 {$REQUIRE_JAVASCRIPT,jquery.scrollbars}
 {$REQUIRE_CSS,jquery.scrollbars}
 
+[title]Vision[/title]
+
 <div class="float_surrounder">
 	<div class="cntRow">
-		[title]Vision[/title]
-
 		<div class="hSliderHold">
 			<div class="hSliderOuter">
 				<div class="hSlider">

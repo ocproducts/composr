@@ -285,8 +285,6 @@
 	<p>We include more information on where Composr sits in our [page="tut_webapp"]Web-applications, Composr, and PHP tutorial[/page].</p>
 </div>
 
-<div class="cntRow"></div>
-
 <script>//<![CDATA[
 	$(function() {
 		$('.accordion').accordion({ heightStyle: "content" });
