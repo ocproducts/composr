@@ -31,6 +31,7 @@ function list_tutorial_tags($skip_addons_and_specials = false)
 {
     $tags = array();
     $tutorials = list_tutorials();
+
     foreach ($tutorials as $tutorial) {
         foreach ($tutorial['tags'] as $tag) {
             if ($skip_addons_and_specials) {

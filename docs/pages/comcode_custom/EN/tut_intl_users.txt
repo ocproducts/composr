@@ -75,4 +75,4 @@ I realise this isn't a translation solution, but it may be enough to cover the s
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
 
-{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,novice}{$SET,tutorial_add_date,Mar 2011}{$SET,tutorial_summary,How to translate your (Composr-powered) website into a different language.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,Contributing,novice}{$SET,tutorial_add_date,Mar 2011}{$SET,tutorial_summary,How to translate your (Composr-powered) website into a different language.}[block]main_tutorial_rating[/block]
