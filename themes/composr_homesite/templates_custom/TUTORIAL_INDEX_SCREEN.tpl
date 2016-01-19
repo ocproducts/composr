@@ -109,12 +109,12 @@
 				<ul>
 				<li>If you have found documentation problems that you'd like someone else to solve log an <a target="_blank" href="http://compo.sr/tracker/set_project.php?project_id=7">issue to the tracker</a>.</li>
 				<li>If you'd like to contribute a chunk of documentation to go into a tutorial, also log an <a target="_blank" href="http://compo.sr/tracker/set_project.php?project_id=7">issue to the tracker</a>. As&nbsp;a&nbsp;user, it is possible you may find some useful extra tidbits of information there.</li>
-				<li>If you want to contribute a new tutorial you can submit a link.</li>
+				<li>If you want to contribute a new tutorial hosted off-site you can submit a link via the button below.</li>
 				</ul>
 			</div>
 
 			<div class="button">
-				<a href="{$PAGE_LINK*,_SEARCH:cms_tutorials}">Submit a link</a>
+				<a href="{$PAGE_LINK*,_SEARCH:cms_tutorials}">Submit an off-site link</a>
 			</div>
 		</div>
 	</div>
