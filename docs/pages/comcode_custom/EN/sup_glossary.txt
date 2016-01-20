@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Web design glossary[/title]
 
-We don't blame you if you get a little bit baffled by all the terminology involved in modern web design. Here are the top 100 buzzwords that will help you understand what web designers are talking about.
+We don't blame you if you get a little bit baffled by all the terminology involved in modern web design.
+
+Here are the top 100 buzzwords that will help you understand what web designers are talking about.
 
 [html]
 <table class="columned_table results_table very_spaced_table">
