@@ -344,20 +344,20 @@ function clever_find_value(form,element)
 			value='';
 			if (element.selectedIndex>=0)
 			{
-				if (theElement.multiple)
+				if (element.multiple)
 				{
-					for (var i=0;i<theElement.options.length;i++)
+					for (var i=0;i<element.options.length;i++)
 					{
-						if (theElement.options[i].selected)
+						if (element.options[i].selected)
 						{
 							if (value!='') value+=',';
-							value+=theElement.options[i].value;
+							value+=element.options[i].value;
 						}
 					}
-				} else if (theElement.selectedIndex>=0)
+				} else if (element.selectedIndex>=0)
 				{
-					value=theElement.options[theElement.selectedIndex].value;
-					if ((value=='') && (theElement.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+					value=element.options[element.selectedIndex].value;
+					if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
 				}
 			}
 			break;

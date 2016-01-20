@@ -605,7 +605,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
         $maxlength = strval($_maxlength);
     }
     $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', $pattern_error);
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (is_null($pattern_error) && !is_null($pattern)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
 /**

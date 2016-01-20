@@ -58,6 +58,7 @@ div.comcode_supported {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	margin-top: 0.5em;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.input_error_here {
