@@ -344,8 +344,21 @@ function clever_find_value(form,element)
 			value='';
 			if (element.selectedIndex>=0)
 			{
-				value=element.options[element.selectedIndex].value;
-				if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				if (element.multiple)
+				{
+					for (var i=0;i<element.options.length;i++)
+					{
+						if (element.options[i].selected)
+						{
+							if (value!='') value+=',';
+							value+=element.options[i].value;
+						}
+					}
+				} else if (element.selectedIndex>=0)
+				{
+					value=element.options[element.selectedIndex].value;
+					if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				}
 			}
 			break;
 		case 'input':

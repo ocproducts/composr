@@ -91,7 +91,14 @@ class Hook_ecommerce_catalogue_items
                 $price = float_to_raw_string($this->calculate_product_price(floatval($item_price), $tax, $product_weight));
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
-                $products[strval($ecomm_item['id'])] = array(PRODUCT_CATALOGUE, $price, 'handle_catalogue_items', array('tax' => $tax), $product_title);
+                $products[strval($ecomm_item['id'])] = array(
+                    PRODUCT_CATALOGUE,
+                    $price,
+                    'handle_catalogue_items',
+                    array('tax' => $tax),
+                    $product_title,
+                    get_option('currency'),
+                );
             }
             $start += 500;
         } while (count($items) == 500);

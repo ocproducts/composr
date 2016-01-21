@@ -213,6 +213,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/codebook_3/3.jpg',
             'data_custom/images/docs/codebook_3/4.jpg',
             'data_custom/images/docs/disadvantage.png',
+            'data_custom/images/docs/faq/balanced_approach.png',
             'data_custom/images/docs/dont.png',
             'data_custom/images/docs/remember.png',
             'data_custom/images/docs/sup_forum_separation/1.jpg',

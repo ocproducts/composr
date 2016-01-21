@@ -66,7 +66,14 @@ class Hook_ecommerce_work
     public function get_products($site_lang = false)
     {
         $products = array(
-            'WORK' => array(PRODUCT_INVOICE, '?', '', array(), do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang())),
+            'WORK' => array(
+                PRODUCT_INVOICE,
+                '?',
+                '',
+                array(),
+                do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                get_option('currency'),
+            ),
         );
         return $products;
     }

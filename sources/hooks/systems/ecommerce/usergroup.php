@@ -212,7 +212,8 @@ class Hook_ecommerce_usergroup
                 $sub['s_cost'],
                 'handle_usergroup_subscription',
                 array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
-                $item_name
+                $item_name,
+                get_option('currency'),
             );
         }
 

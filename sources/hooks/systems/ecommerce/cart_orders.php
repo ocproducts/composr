@@ -111,7 +111,14 @@ class Hook_ecommerce_cart_orders
             $orders = $GLOBALS['SITE_DB']->query('SELECT id,tot_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, null, false, true);
 
             foreach ($orders as $order) {
-                $products[do_lang('shopping:CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang())] = array(PRODUCT_ORDERS, $order['tot_price'], 'handle_product_orders', array(), do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()));
+                $products[do_lang('shopping:CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang())] = array(
+                    PRODUCT_ORDERS,
+                    $order['tot_price'],
+                    'handle_product_orders',
+                    array(),
+                    do_lang('CART_ORDER',strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                    get_option('currency'),
+                );
             }
 
             $start += 500;

@@ -502,7 +502,7 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
         if (is_null($what_we_will_allow)) {
             $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
 
-            $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 3; // 3 is for 3MB extra space needed to finish off
+            $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 8; // 8 is for 8MB extra space needed to finish off
         }
 
         $details = @getimagesize($file_path);

@@ -92,7 +92,7 @@ The title fields, and meta keyword fields, get precedence when search results ar
 
 If you are using MySQL, also considering turning the [url="MySQL minimum word length"]http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_ft_min_word_len[/url] down to 3 (the default 4).
 
-Ultimately, full-text search effectiveness resides in MySQL (or whatever database you use), not Composr. For example, indexing does not work on very small words, very common words, and may split things up you did not expect to be (e.g. [tt]an-example[/tt] would split to two words).
+Ultimately, full-text search effectiveness resides in MySQL (or whatever database you use), not Composr. For example, indexing does not work on very small words, very common words, and may split things up you did not expect to be (e.g. [tt]an-example[/tt] would split to two words). Also, if there is only one entry in the table, nothing will be returned, because MySQL will only return words that match fewer than 50% of the rows in a table.
 
 True boolean search is much more accurate, but also much slower due to a lack of indexing. Composr will only use true boolean search if boolean search is selected and it thinks MySQL's fulltext-based boolean search won't be able to handle the query itself (e.g. due to using short words). Programmers can alter this logic based on editing the [tt]is_under_radar[/tt] function.
 

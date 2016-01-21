@@ -117,7 +117,11 @@ function handle_active_login($username)
         // Create invisibility cookie
         if ((array_key_exists(get_member_cookie() . '_invisible', $_COOKIE)/*i.e. already has cookie set, so adjust*/) || ($remember == 1)) {
             $invisible = post_param_integer('login_invisible', 0);
-            cms_setcookie(get_member_cookie() . '_invisible', strval($invisible));
+            if ($invisible == 1) {
+                cms_setcookie(get_member_cookie() . '_invisible', '1');
+            } else {
+                cms_eatcookie(get_member_cookie() . '_invisible');
+            }
             $_COOKIE[get_member_cookie() . '_invisible'] = strval($invisible);
         }
 
@@ -303,28 +307,6 @@ function delete_session($session)
 }
 
 /**
- * Deletes a cookie (if it exists), from within Composr's cookie environment.
- *
- * @param  string $name The name of the cookie
- * @return boolean The result of the PHP setcookie command
- */
-function cms_eatcookie($name)
-{
-    $expire = time() - 100000; // Note the negative number must be greater than 13*60*60 to account for maximum timezone difference
-
-    // Try and remove other potentials
-    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '', '');
-    @setcookie($name, '', $expire, '/', '');
-
-    // Delete standard potential
-    return @setcookie($name, '', $expire, get_cookie_path(), get_cookie_domain());
-}
-
-/**
  * Set invisibility on the current user.
  *
  * @param  boolean $make_invisible Whether to make the current user invisible (true=make invisible, false=make visible)
@@ -346,7 +328,11 @@ function set_invisibility($make_invisible = true)
     // Store in cookie, if we have login cookies around
     if (array_key_exists(get_member_cookie(), $_COOKIE)) {
         require_code('users_active_actions');
-        cms_setcookie(get_member_cookie() . '_invisible', strval($make_invisible ? 1 : 0));
+        if ($make_invisible) {
+            cms_setcookie(get_member_cookie() . '_invisible', '1');
+        } else {
+            cms_eatcookie(get_member_cookie() . '_invisible');
+        }
         $_COOKIE[get_member_cookie() . '_invisible'] = strval($make_invisible ? 1 : 0);
     }
 }
@@ -399,4 +385,26 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
     }
 
     return $output;
+}
+
+/**
+ * Deletes a cookie (if it exists), from within Composr's cookie environment.
+ *
+ * @param  string $name The name of the cookie
+ * @return boolean The result of the PHP setcookie command
+ */
+function cms_eatcookie($name)
+{
+    $expire = time() - 100000; // Note the negative number must be greater than 13*60*60 to account for maximum timezone difference
+
+    // Try and remove other potentials
+    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '', '');
+    @setcookie($name, '', $expire, '/', '');
+
+    // Delete standard potential
+    return @setcookie($name, '', $expire, get_cookie_path(), get_cookie_domain());
 }
