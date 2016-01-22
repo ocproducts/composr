@@ -389,7 +389,6 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
  *
  * @param  PATH $in_path Path to the CSV file
  * @param  string $column_name Column name
- * @return PATH Path to PHP
  */
 function delete_csv_column($in_path, $column_name)
 {

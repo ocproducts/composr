@@ -346,6 +346,29 @@ function do_input_block(field_name)
 
 function do_input_comcode(field_name,tag)
 {
+	var element=document.getElementById(field_name);
+	if (is_wysiwyg_field(element))
+	{
+		var selection=wysiwyg_editors[field_name].getSelection();
+		var ranges=selection.getRanges();
+		if (typeof ranges[0]!='undefined')
+		{
+			var comcode_element=ranges[0].startContainer.$;
+			do
+			{
+				var matches=comcode_element.nodeName.toLowerCase().match(/comcode-(\w+)/);
+				if (matches!==null)
+				{
+					tag=matches[1];
+					break;
+				}
+
+				comcode_element=comcode_element.parentNode
+			}
+			while (comcode_element!==null);
+		}
+	}
+
 	if ((typeof window.event!='undefined') && (window.event)) window.event.returnValue=false;
 	var url='{$FIND_SCRIPT;,comcode_helper}?field_name='+field_name;
 	if (tag) url+='&type=step2&tag='+tag;

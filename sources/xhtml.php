@@ -325,7 +325,8 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                         }
                         if (($current_tag != 'br') && ($current_tag != 'img') && ($current_tag != 'hr')) { // A little sanity checking, for HTML used as XHTML
                             $tag_stack[] = $current_tag;
-                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml_substr_no_break[^"<>]*"[^<>]*$#', substr($html, 0, $i)) != 0));
+                            $matches = array();
+                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml_substr_no_break[^"<>]*"[^<>]*$#', $html, $matches, 0, $i) != 0));
                         }
                     }
                 } elseif ($in_tag_type == 'CLOSE') {
@@ -389,7 +390,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
 
                 // The regexp just checks for img tag match and grabs the src into $matches[1]
                 $matches = array();
-                if (isset($html[$i + 1]) && strtolower($html[$i + 1]) == 'i'/*Optimisation before we bother looking harder*/ && preg_match('#^<img[^<>]+src="([^"]+)"#i', substr($html, $i, 1000), $matches) != 0) {
+                if (isset($html[$i + 1]) && strtolower($html[$i + 1]) == 'i'/*Optimisation before we bother looking harder*/ && preg_match('#<img[^<>]+src="([^"]+)"#iA', $html, $matches, 0, $i) != 0) {
                     require_code('images');
                     list($width, $height) = _symbol_image_dims(array(html_entity_decode($matches[1], ENT_QUOTES, get_charset()))); // Safe way to grab image dimensions
                     if ($width == '') {
