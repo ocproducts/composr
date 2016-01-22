@@ -155,7 +155,7 @@ class Module_admin_phpinfo
                 $out .= '<p>Running as user: ' . escape_html($test) . (is_null($suexec) ? '' : (' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')')) . '</p>';
             }
         } else {
-            $tmp = cms_tempnam('');
+            $tmp = cms_tempnam();
             $user = @fileowner($tmp);
             @unlink($tmp);
             $suexec = ($user == fileowner(get_file_base() . '/index.php'));

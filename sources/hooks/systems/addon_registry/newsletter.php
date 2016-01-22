@@ -112,6 +112,7 @@ class Hook_addon_registry_newsletter
             'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/index.html',
             'sources/hooks/systems/block_ui_renderers/newsletters.php',
             'sources/hooks/modules/admin_setupwizard/newsletter.php',
+            'sources/hooks/systems/tasks/import_newsletter_subscribers.php',
             'sources/hooks/systems/config/interest_levels.php',
             'sources/hooks/systems/config/newsletter_text.php',
             'sources/hooks/systems/config/newsletter_title.php',

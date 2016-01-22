@@ -629,7 +629,7 @@ function themewizard_script()
 
         header('Content-type: image/png');
         require_code('images_png');
-        $saveat = cms_tempnam('themegen');
+        $saveat = cms_tempnam();
         @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
         imagedestroy($image);
         fix_permissions($saveat);
@@ -1382,7 +1382,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                             if (!imageistruecolor($_image)) {
                                 $imagemagick = find_imagemagick();
                                 if (!is_null($imagemagick)) {
-                                    $tempnam = cms_tempnam('png32bit');
+                                    $tempnam = cms_tempnam();
                                     shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
                                     if (is_file($tempnam)) {
                                         $_image = @imagecreatefrompng($tempnam);

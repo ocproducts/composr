@@ -29,6 +29,7 @@ So please bear this in mind and structure your own processes accordingly.
 
 [title="3"]Rules to follow[/title]
 
+[media width="350" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/report_bug.png[/media]
 We don't want people to have to labour over bug reports. However there are some basic rules you will need to follow...
 
 Before starting your report:

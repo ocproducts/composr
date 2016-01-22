@@ -504,15 +504,17 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
  * @param  ?TIME $_mtime The modification time we wish for our file (null: now)
  * @param  boolean $data_is_path Whether the $data variable is actually a full file path
  * @param  boolean $return_on_errors Whether to return on errors
+ * @param  boolean $efficient_mode Don't do duplicate checks
  * @return integer Offset of the file in the TAR
  */
-function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = null, $data_is_path = false, $return_on_errors = false)
+function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = null, $data_is_path = false, $return_on_errors = false, $efficient_mode = false)
 {
     if (is_null($_mtime)) {
         $_mtime = time();
     }
 
-    if (!array_key_exists('directory', $resource)) {
+    $get_directory = !isset($resource['directory']);
+    if ($get_directory) {
         tar_get_directory($resource);
     }
 
@@ -526,7 +528,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
 
     $directory = $resource['directory'];
 
-    if ($target_path != '././@LongLink') {
+    if ($target_path != '././@LongLink' && !$efficient_mode) {
         foreach ($directory as $offset => $entry) { // Make sure it does not exist
             if ($entry['path'] == $target_path) {
                 if ($return_on_errors) {

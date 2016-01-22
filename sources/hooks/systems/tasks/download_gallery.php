@@ -107,7 +107,7 @@ class Hook_task_download_gallery
             $array[] = array('name' => preg_replace('#^uploads/(galleries|repimages)/#', '', $name), 'time' => $time, 'data' => $data);
         }
 
-        $outfile_path = cms_tempnam('csv');
+        $outfile_path = cms_tempnam();
 
         create_zip_file($array, false, false, $outfile_path);
 

@@ -1022,6 +1022,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_short_urls/iis.png',
             'data_custom/images/docs/tut_software_feedback/482033_challenge.jpg',
             'data_custom/images/docs/tut_software_feedback/feature_workflow.png',
+            'data_custom/images/docs/tut_software_feedback/report_bug.png',
             'data_custom/images/docs/tut_sql/sql_1.png',
             'data_custom/images/docs/tut_sql/sql_2.png',
             'data_custom/images/docs/tut_sql/sql_edit_1.png',

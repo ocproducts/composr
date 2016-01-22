@@ -703,7 +703,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
 
         // Overlay it
         foreach ($feed_urls_todo as $feed_url => $event_type) {
-            $temp_file_path = cms_tempnam('feed');
+            $temp_file_path = cms_tempnam();
             require_code('files');
             $write_to_file = fopen($temp_file_path, 'wb');
             http_download_file($feed_url, 1024 * 512, false, false, 'Composr', null, null, null, null, null, $write_to_file);

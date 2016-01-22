@@ -1219,6 +1219,7 @@ class Hook_addon_registry_core
             'sources/symbols.php',
             'sources/symbols2.php',
             'sources/tar.php',
+            'sources/tar2.php',
             'sources/tempcode.php',
             'sources/tempcode_compiler.php',
             'sources/tempcode_optimiser.php',

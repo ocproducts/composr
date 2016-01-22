@@ -43,7 +43,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 @chdir($FILE_BASE);
 
 if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('register_globals'))) == '1') {
-
     foreach ($_GET as $key => $_) {
         if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_GET[$key])) {
             $GLOBALS[$key] = null;
@@ -111,16 +110,16 @@ $todo = $data['todo'];
 foreach ($todo as $i => $_target_file) {
     list($target_file, , $offset, $length,) = $_target_file;
 
+    if ($i < $file_offset) {
+        continue;
+    }
+    if ($i > $file_offset + 20) {
+        break;
+    }
+
     if ($_target_file == 'data/upgrader2.php') {
         if ($file_offset + 20 < count($todo)) {
             continue; // Only extract on last step, to avoid possible transitionary bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
-        }
-    } else {
-        if ($i < $file_offset) {
-            continue;
-        }
-        if ($i > $file_offset + 20) {
-            break;
         }
     }
 

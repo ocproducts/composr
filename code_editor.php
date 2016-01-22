@@ -569,7 +569,7 @@ END;
                         fclose($myfile);
                     }
                 } else { // Via FTP
-                    $path2 = ce_cms_tempnam('cmsce');
+                    $path2 = ce_cms_tempnam();
 
                     $h = fopen($path2, 'wt');
                     fwrite($h, $hash);

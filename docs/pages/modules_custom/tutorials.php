@@ -155,7 +155,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'SU and the if_in_group tag',
-                'url' => 'https://www.youtube.com/watch?v=J6OGys3s6v8',
+                'url' => 'https://www.youtube.com/watch?v=VKlWTgKbQ0w',
                 'author' => 'Allen Ellis (ocProducts)',
                 'difficulty_level' => 'novice',
                 'summary' => 'How to switch users under your admin login, and how to customise page contents based on usergroup membership.',

@@ -147,8 +147,8 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     }
     $_install_php_file = file_get_contents($template);
     $place = strpos($_install_php_file, '{!!DB!!}');
-    $__install_php_file = cms_tempnam('cmsbak');
-    $__install_data_php_file = cms_tempnam('cmsbak_data');
+    $__install_php_file = cms_tempnam();
+    $__install_data_php_file = cms_tempnam();
     $install_php_file = fopen($__install_php_file, 'wb');
     $install_data_php_file = fopen($__install_data_php_file, 'wb');
     fwrite($install_php_file, substr($_install_php_file, 0, $place));

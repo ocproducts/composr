@@ -376,7 +376,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             return array('', '', '', '');
         }
         if (($copy_to_server) && (!url_is_local($url[0]))) {
-            $path2 = cms_tempnam('cmsfc');
+            $path2 = cms_tempnam();
             $tmpfile = fopen($path2, 'wb');
 
             $file = http_download_file($url[0], $max_size, true, false, 'Composr', null, null, null, null, null, $tmpfile);

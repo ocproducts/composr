@@ -231,6 +231,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '.ftpquota' => '',
                                              'cgi-bin' => '',
 
+                                             // Stuff from composr_homesite deployment
+                                             'upgrades' => '',
+
                                              // Specially-recognised naming conventions
                                              '_old' => '.*',
                                              '_old_backups' => '.*',
@@ -360,6 +363,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'functions.dat' => 'data_custom',
             'errorlog.php' => 'data_custom',
             'execute_temp.php' => 'data_custom',
+            'upgrader.cms.tmp' => 'data_custom',
+            'unit_test_positive_ignore_sampler.cms' => 'data_custom', // To help us test this function. This file won't ever exist.
         );
     }
 

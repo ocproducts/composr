@@ -517,7 +517,7 @@ function do_backup_script()
     // Create data
     require_code('zip');
     $file_array = zip_scan_folder(special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($id));
-    $tmp_path = cms_tempnam('demonstratr_backup');
+    $tmp_path = cms_tempnam();
     $user = substr(md5('demonstratr_site_' . $id), 0, 16);
     shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
     $file_array[] = array('full_path' => $tmp_path, 'name' => 'database.sql', 'time' => time());

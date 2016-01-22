@@ -892,17 +892,6 @@ class Module_cms_calendar extends Standard_crud_module
         $conflicts = detect_conflicts(get_member(), null, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $start_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
         $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUBMIT_THANKYOU')) : $conflicts;
 
-        /*
-        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-            if (!is_null($conflicts)) {
-                $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
-                $tpl->evaluate_echo();
-                $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-                exit();
-            }
-        }
-        */
-
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
         $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['submitter'], $metadata['views'], $metadata['add_time'], $metadata['edit_time'], null, '', '', $regions);
@@ -1191,16 +1180,6 @@ class Module_cms_calendar extends Standard_crud_module
         if (!fractional_edit()) {
             $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
             $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
-            /*
-            if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-                if (!is_null($conflicts)) {
-                    $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
-                    $tpl->evaluate_echo();
-                    $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-                    exit();
-                }
-            }
-            */
         } else {
             $_description = do_lang_tempcode('SUCCESS');
         }

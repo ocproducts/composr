@@ -279,6 +279,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_post_history');
 
         rename_config_option('post_history_days', 'post_read_history_days');
+
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'';
     }
 
     // If we have the forum installed to this db already, leave

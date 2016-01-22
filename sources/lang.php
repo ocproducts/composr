@@ -1077,7 +1077,8 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $entry = $row[$field_name];
 
         if ($entry == 0) {
-            return paragraph(do_lang_tempcode('FAILED_ENTRY'), 'rtgtedgrgd');
+            attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+            return new Tempcode();
         }
 
         global $RECORD_LANG_STRINGS_CONTENT;
@@ -1190,7 +1191,8 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
     }
 
     if ($entry == 0) {
-        return do_lang('FAILED_ENTRY');
+        attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+        return '';
     }
 
     if ($entry === null) {
