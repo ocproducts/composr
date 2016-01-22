@@ -117,7 +117,7 @@ function composr_homesite_install()
     set_option('site_closed', '0');
     set_option('site_name', 'Composr CMS');
     set_option('copyright', 'Copyright &copy; ocProducts Ltd 2015');
-    set_option('google_analytics', 'UA-449688-1');
+    set_option('google_analytics', 'UA-72654755-1');
     set_option('staff_address', 'info@compo.sr');
     set_option('website_email', 'info@compo.sr');
     set_option('pd_email', 'info@compo.sr');
@@ -328,7 +328,6 @@ function composr_homesite_install()
 
     require_code('cns_groups_action');
     cns_make_group('Composr supporters', 0, 0, 0, 'I supposr Composr', '', null, null, null, null, null, null, null, null, null, null, null, null, 3/*gift points per day*/, 0, 0, 0, null, 1, 1/*open membership*/);
-    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_name' => 'Composr supporters'), array('id' => 5), '', 1);
 
     // Remove unneeded CPFs
     // --------------------
