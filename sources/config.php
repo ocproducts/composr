@@ -39,7 +39,7 @@ function init__config()
                 $_cache = $SMART_CACHE->get('CONFIG_OPTIONS');
                 if ($_cache !== null) {
                     foreach ($_cache as $c_key => $c_value) {
-                        $CONFIG_OPTIONS_CACHE[$c_key] = array('c_value_translated' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => false);
+                        $CONFIG_OPTIONS_CACHE[$c_key] = array('c_value_translated' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => 0);
                     }
                 }
             }
