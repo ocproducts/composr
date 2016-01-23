@@ -67,7 +67,7 @@ class Block_main_staff_checklist
         if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_table('staff_checklist_cus_tasks', array(
                 'id' => '*AUTO',
-                'task_title' => 'SHORT_TEXT',
+                'task_title' => 'LONG_TEXT',
                 'add_date' => 'TIME',
                 'recur_interval' => 'INTEGER',
                 'recur_every' => 'ID_TEXT',

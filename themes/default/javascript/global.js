@@ -2226,7 +2226,7 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 			if (width<200) width=200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
 		}
 		var height=find_height(tooltip_element);
-		var x_excess=x-get_window_width(win)-get_window_scroll_x(win)+width;
+		var x_excess=x-get_window_width(win)-get_window_scroll_x(win)+width+10/*magic tolerance factor*/;
 		if (x_excess>0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
 		{
 			var x_before=x;

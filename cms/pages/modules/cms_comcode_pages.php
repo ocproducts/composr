@@ -112,7 +112,7 @@ class Module_cms_comcode_pages
             }
             $page_link_parts = explode(':', $page_link);
             if (count($page_link_parts) != 2) {
-                warn_exit(do_lang_tempcode('ZONE_COLON_FILE'));
+                warn_exit(do_lang_tempcode('ZONE_COLON_PAGE'));
             }
             $zone = $page_link_parts[0];
             $file = $page_link_parts[1];
