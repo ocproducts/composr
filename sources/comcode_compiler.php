@@ -915,7 +915,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $ret = new Tempcode();
 
                                                 require_code('xhtml');
-                                                if (preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) == preg_replace('#\s#', '', $p_portion)) {
+                                                if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) == preg_replace('#\s#', '', $p_portion)) {
                                                     $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
                                                     $ret->attach($p_portion);
                                                     $ret->attach('</tempcode>');
@@ -924,6 +924,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 } else {
                                                     // Not aligning with HTML, so cannot do it
                                                     $continuation .= '{';
+
+                                                    $html_errors = true;
                                                 }
                                             } else {
                                                 require_code('tempcode_compiler');
