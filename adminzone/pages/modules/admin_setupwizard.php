@@ -1006,7 +1006,7 @@ class Module_admin_setupwizard
                 if (post_param_integer('addon_' . $addon_info['name'], 0) == 1) {
                     // Check dependencies
                     $dependencies = explode(',', $addon_info['dependencies']);
-                    foreach ($uninstalling as $d) {
+                    foreach (array_keys($uninstalling) as $d) {
                         if ((addon_installed($d, true)) || (in_array($d, $installing))) {
                             unset($dependencies[array_search($d, $dependencies)]);
                         }
