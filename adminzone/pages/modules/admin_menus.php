@@ -219,6 +219,7 @@ class Module_admin_menus
             require_code('menus2');
             delete_menu($id);
             copy_from_sitemap_to_new_menu($id, $copy_from);
+
             if (post_param_integer('switch_over', 0) == 1) {
                 require_code('config2');
                 set_option('header_menu_call_string', $id);

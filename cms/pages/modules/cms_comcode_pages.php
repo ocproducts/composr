@@ -1071,7 +1071,7 @@ class Module_cms_comcode_pages
                     }
                 }
 
-                $edit_url = build_url(array('page' => '_SELF', 'type' => '_ed', 'page_link' => $page_link), '_SELF');
+                $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $page_link), '_SELF');
 
                 $page_structure[] = array(
                     'EDIT_URL' => $edit_url,
