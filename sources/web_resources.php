@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__web_resources()
+{
+    global $EARLY_SCRIPT_ORDER;
+    $EARLY_SCRIPT_ORDER = array('jquery', 'modernizr');
+}
+
+/**
  * Force a JavaScript file to be cached (ordinarily we can rely on this to be automated by require_javascript/javascript_tempcode).
  *
  * @param  string $j The javascript file required
@@ -106,7 +117,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
  */
 function javascript_tempcode($position = null)
 {
-    global $JAVASCRIPTS, $JAVASCRIPT, $JAVASCRIPT_BOTTOM, $JS_OUTPUT_STARTED;
+    global $JAVASCRIPTS, $JAVASCRIPT, $JAVASCRIPT_BOTTOM, $JS_OUTPUT_STARTED, $EARLY_SCRIPT_ORDER;
 
     $JS_OUTPUT_STARTED = true;
 
@@ -121,7 +132,7 @@ function javascript_tempcode($position = null)
         $arr_backup = $JAVASCRIPTS;
         $JAVASCRIPTS = array();
         if ($grouping_codename == '') {
-            foreach (array('jquery', 'modernizr') as $important_script) {
+            foreach ($EARLY_SCRIPT_ORDER as $important_script) {
                 if (isset($arr_backup[$important_script])) {
                     $JAVASCRIPTS[$important_script] = true;
                 }
@@ -216,7 +227,7 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
  */
 function require_javascript($javascript)
 {
-    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST;
+    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
 
     if (array_key_exists($javascript, $JS_OUTPUT_STARTED_LIST)) {
         return;
@@ -229,11 +240,8 @@ function require_javascript($javascript)
         $SMART_CACHE->append('JAVASCRIPTS', $javascript);
     }
 
-    // Has to do this inline, as you're not allowed to reference sheets outside head
     if ($GLOBALS['JS_OUTPUT_STARTED']) {
-        $value = new Tempcode();
-        _javascript_tempcode($javascript, $value);
-        attach_to_screen_footer($value);
+        $JAVASCRIPT_BOTTOM[$javascript] = true;
     }
 }
 
@@ -563,7 +571,8 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         // Fix order, so our main JavaScript, and jQuery, goes first in the merge order
         $_arr = $arr;
         $arr = array('global' => true);
-        foreach (array('jquery', 'modernizr') as $important_script) {
+        global $EARLY_SCRIPT_ORDER;
+        foreach ($EARLY_SCRIPT_ORDER as $important_script) {
             if (isset($_arr[$important_script])) {
                 $arr[$important_script] = true;
             }

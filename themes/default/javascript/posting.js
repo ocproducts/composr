@@ -346,34 +346,87 @@ function do_input_block(field_name)
 
 function do_input_comcode(field_name,tag)
 {
-	var element=document.getElementById(field_name);
-	if (is_wysiwyg_field(element))
-	{
-		var selection=wysiwyg_editors[field_name].getSelection();
-		var ranges=selection.getRanges();
-		if (typeof ranges[0]!='undefined')
-		{
-			var comcode_element=ranges[0].startContainer.$;
-			do
-			{
-				var matches=comcode_element.nodeName.toLowerCase().match(/comcode-(\w+)/);
-				if (matches!==null)
-				{
-					tag=matches[1];
-					break;
-				}
+	var attributes={};
+	var default_embed=null;
+	var save_to_id=null;
 
-				comcode_element=comcode_element.parentNode
+	if (tag==null)
+	{
+		var element=document.getElementById(field_name);
+		if (is_wysiwyg_field(element))
+		{
+			var selection=wysiwyg_editors[field_name].getSelection();
+			var ranges=selection.getRanges();
+			if (typeof ranges[0]!='undefined')
+			{
+				var comcode_element=ranges[0].startContainer.$;
+				do
+				{
+					var matches=comcode_element.nodeName.toLowerCase().match(/^comcode-(\w+)/);
+					if (matches!==null)
+					{
+						tag=matches[1];
+
+						for (var i=0;i<comcode_element.attributes.length;i++)
+						{
+							if (comcode_element.attributes[i].name!='id')
+							{
+								attributes[comcode_element.attributes[i].name]=comcode_element.attributes[i].value;
+							}
+						}
+
+						default_embed=get_inner_html(comcode_element);
+
+						if (comcode_element.id=='')
+						{
+							comcode_element.id='comcode_'+Date.now();
+						}
+						save_to_id=comcode_element.id;
+
+						break;
+					}
+
+					comcode_element=comcode_element.parentNode;
+				}
+				while (comcode_element!==null);
 			}
-			while (comcode_element!==null);
 		}
 	}
 
 	if ((typeof window.event!='undefined') && (window.event)) window.event.returnValue=false;
-	var url='{$FIND_SCRIPT;,comcode_helper}?field_name='+field_name;
-	if (tag) url+='&type=step2&tag='+tag;
+
+	var url='{$FIND_SCRIPT;,comcode_helper}?field_name='+window.encodeURIComponent(field_name);
+	if (tag)
+	{
+		url+='&tag='+window.encodeURIComponent(tag);
+	}
+	if (default_embed!==null)
+	{
+		url+='&type=replace';
+	} else
+	{
+		if (tag==null)
+		{
+			url+='&type=step1';
+		} else {
+			url+='&type=step2';
+		}
+	}
 	if (is_wysiwyg_field(document.getElementById(field_name))) url+='&in_wysiwyg=1';
+	for (var key in attributes)
+	{
+		url+='&default_'+key+'='+window.encodeURIComponent(attributes[key]);
+	}
+	if (default_embed!==null)
+	{
+		url+='&default='+window.encodeURIComponent(default_embed);
+	}
+	if (save_to_id!==null)
+	{
+		url+='&save_to_id='+window.encodeURIComponent(save_to_id);
+	}
 	url+=keep_stub();
+
 	window.faux_open(maintain_theme_in_link(url),'','width=750,height=auto,status=no,resizable=yes,scrollbars=yes',null,'{!INPUTSYSTEM_CANCEL;}');
 }
 

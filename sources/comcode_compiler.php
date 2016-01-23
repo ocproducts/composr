@@ -146,7 +146,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
         return WYSIWYG_COMCODE__BUTTON;
     }
 
-    if (isset($CODE_TAGS[$tag])) {
+    if (isset($CODE_TAGS[$tag]) && $tag != 'staff_note') {
         if (!$html_errors) {
             return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
         }
@@ -1463,13 +1463,17 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                     // Find a media renderer for this link
                                     $embed_output = mixed();
-                                    if (!$check_only) {
-                                        $link_handlers = find_all_hooks('systems', 'comcode_link_handlers');
-                                        foreach (array_keys($link_handlers) as $link_handler) {
-                                            require_code('hooks/systems/comcode_link_handlers/' . $link_handler);
-                                            $link_handler_ob = object_factory('Hook_comcode_link_handler_' . $link_handler, true);
-                                            if (!is_null($link_handler_ob)) {
-                                                $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
+                                    if ($list_indent > 0) {
+                                        $embed_output = _do_tags_comcode('url', array(), make_string_tempcode($auto_link), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
+                                    } else {
+                                        if (!$check_only) {
+                                            $link_handlers = find_all_hooks('systems', 'comcode_link_handlers');
+                                            foreach (array_keys($link_handlers) as $link_handler) {
+                                                require_code('hooks/systems/comcode_link_handlers/' . $link_handler);
+                                                $link_handler_ob = object_factory('Hook_comcode_link_handler_' . $link_handler, true);
+                                                if (!is_null($link_handler_ob)) {
+                                                    $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
+                                                }
                                             }
                                         }
                                     }

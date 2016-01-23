@@ -298,6 +298,7 @@ function detagonise($matches)
 {
     $tag = $matches[1];
     $attributes = html_entity_decode(str_replace('&quot;', '\"', isset($matches[2]) ? $matches[2] : ''), ENT_QUOTES, get_charset());
+    $attributes = preg_replace('# id="[^"]*"#', '', $attributes); // IDs aren't a real Comcode attribute
     return '[' . $tag . $attributes . ']';
 }
 

@@ -296,20 +296,111 @@ function comcode_helper_script()
 
     require_code('comcode_compiler');
 
-    if ($type == 'step1') {
-        $content = comcode_helper_script_step1();
-    } elseif ($type == 'step2') {
-        $content = comcode_helper_script_step2();
-    } elseif ($type == 'step3') {
-        $content = comcode_helper_script_step3();
-    } else {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    switch ($type) {
+        case 'replace':
+            $content = comcode_helper_script_replace();
+            break;
+
+        case 'step1':
+            $content = comcode_helper_script_step1();
+            break;
+
+        case 'step2':
+            $content = comcode_helper_script_step2();
+            break;
+
+        case 'step3':
+            $content = comcode_helper_script_step3();
+            break;
+
+        default:
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'c1f229be68a1137c5b418b0d5d8a7ccf', 'TITLE' => do_lang_tempcode('COMCODE_HELPER'), 'POPUP' => true, 'CONTENT' => $content));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
     exit();
+}
+
+/**
+ * Render a step of the Comcode tag helper dialog.
+ *
+ * @return Tempcode The step UI.
+ */
+function comcode_helper_script_replace()
+{
+    $title = get_screen_title('COMCODE_HELPER');
+
+    $tag = get_param_string('tag');
+
+    $keep = symbol_tempcode('KEEP');
+
+    $action = post_param_string('action', '');
+    if ($action != '') {
+        switch ($action) {
+            case 'add':
+                $url = find_script('comcode_helper') . '?type=step1&field_name=' . get_param_string('field_name') . $keep->evaluate();
+                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                exit();
+
+            case 'edit':
+                $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
+                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                exit();
+
+            case 'delete':
+                require_javascript('posting');
+                require_javascript('editing');
+
+                $field_name = filter_naughty_harsh(get_param_string('field_name'));
+                $title = get_screen_title('_COMCODE_HELPER', true, array(escape_html($tag)));
+
+                require_css('widget_plupload');
+
+                return do_template('BLOCK_HELPER_DONE', array(
+                    '_GUID' => 'd5d5888d89b764f81769823ac71d0828',
+                    'TITLE' => $title,
+                    'FIELD_NAME' => $field_name,
+                    'TAG_CONTENTS' => post_param_string('tag_contents', ''),
+                    'SAVE_TO_ID' => get_param_string('save_to_id', ''),
+                    'DELETE' => true,
+                    'BLOCK' => $tag,
+                    'COMCODE' => '',
+                    'COMCODE_SEMIHTML' => '',
+                ));
+        }
+    }
+
+    require_code('form_templates');
+
+    $fields = new Tempcode();
+    $radios = new Tempcode();
+    $radios->attach(form_input_radio_entry('action', 'add', false, do_lang_tempcode('COMCODE_TAG_MODIFIER_ADD', escape_html($tag))));
+    $radios->attach(form_input_radio_entry('action', 'edit', true, do_lang_tempcode('COMCODE_TAG_MODIFIER_EDIT', escape_html($tag))));
+    $radios->attach(form_input_radio_entry('action', 'delete', false, do_lang_tempcode('COMCODE_TAG_MODIFIER_DELETE', escape_html($tag))));
+    $fields->attach(form_input_radio(do_lang_tempcode('ACTION'), '', 'action', $radios, true));
+
+    $post_url = get_self_url();
+
+    $text = do_lang_tempcode('COMCODE_TAG_MODIFIER_CHOICE_TEXT');
+
+    $submit_name = do_lang_tempcode('PROCEED');
+
+    return do_template('FORM_SCREEN', array(
+        '_GUID' => '370058349d048a8be6570bba97c81fa2',
+        'TITLE' => $title,
+        'JAVASCRIPT' => '',
+        'TARGET' => '_self',
+        'SKIP_WEBSTANDARDS' => true,
+        'FIELDS' => $fields,
+        'URL' => $post_url,
+        'TEXT' => $text,
+        'SUBMIT_ICON' => 'buttons__proceed',
+        'SUBMIT_NAME' => $submit_name,
+        'HIDDEN' => '',
+        'THEME' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+    ));
 }
 
 /**
@@ -435,7 +526,7 @@ function comcode_helper_script_step2()
                     $is_advanced = (strpos($descriptiont, do_lang('BLOCK_IND_ADVANCED')) !== false);
                     $descriptiont = trim(str_replace(do_lang('BLOCK_IND_ADVANCED'), '', $descriptiont));
 
-                    $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '');
+                    $default = get_param_string('default_' . $param, array_key_exists($param, $defaults) ? $defaults[$param] : '');
                     if ((!array_key_exists($param, $defaults)) && ($default == '')) {
                         $matches = array();
                         if (preg_match('#' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\']#Ui', $descriptiont, $matches) != 0) {
