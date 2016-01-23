@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_idolisr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -143,6 +144,7 @@ and
             'sources_custom/miniblocks/side_recent_points.php',
             'themes/default/templates_custom/POINTS_GIVE.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_STARS.tpl',
+            'themes/default/templates_custom/BLOCK_SIDE_RECENT_POINTS.tpl',
         );
     }
 }

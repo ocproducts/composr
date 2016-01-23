@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -437,7 +437,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false)
  * @param  boolean $as_admin Whether to generate Comcode with admin privilege
  * @param  array $all_branches Array of all other branches
  * @param  integer $the_level The level
- * @return array A pair: array of parameters of the menu branch (or NULL if unrenderable, or Tempcode of something to attach), and whether it is expanded
+ * @return array A pair: array of parameters of the menu branch (or null if unrenderable, or Tempcode of something to attach), and whether it is expanded
  *
  * @ignore
  */

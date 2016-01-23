@@ -1,8 +1,8 @@
 <div class="cns_forum_grouping">
 	<h3 class="toggleable_tray_title_heading">
-		<div class="cns_forum_grouping_toggleable_tray_button">
+		<span class="cns_forum_grouping_toggleable_tray_button">
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('c_{GROUPING_ID;*}');"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE*}2} 2x" /></a>
-		</div>
+		</span>
 		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('c_{GROUPING_ID;*}');">{+START,FRACTIONAL_EDITABLE,{GROUPING_TITLE},title,_SEARCH:admin_cns_forum_groupings:__edit:{GROUPING_ID}}{GROUPING_TITLE*}{+END}</a>
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_cns_forum_groupings}}<span class="associated_details">(<a href="{$PAGE_LINK*,_SEARCH:admin_cns_forum_groupings:_edit:{GROUPING_ID}}">{!EDIT}</a>)</span>{+END}
 
@@ -26,8 +26,10 @@
 
 				<thead>
 					<tr>
-						<th class="ocf_forum_box_left"></th>
-						<th>
+						{+START,IF,{$NOT,{$MOBILE}}}
+							<th class="ocf_forum_box_left"></th>
+						{+END}
+						<th{+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
 							{!FORUM_NAME}
 						</th>
 						{+START,IF,{$NOT,{$MOBILE}}}

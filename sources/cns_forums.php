@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -92,6 +92,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
         'BREADCRUMBS' => $breadcrumbs,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_forums:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'forum',
     ));
 }
 
@@ -297,7 +298,7 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
 /**
  * Get breadcrumbs for a forum.
  *
- * @param  mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be NULL).
+ * @param  mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be null).
  * @param  ?mixed $this_name The name of the given forum as string or Tempcode (null: find it from the DB).
  * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB).
  * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call).

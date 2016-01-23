@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -51,8 +51,7 @@ class Hook_preview_comcode_page
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];
 
-        $output = do_template('COMCODE_PAGE_SCREEN', array(
-            'IS_PANEL' => (substr($codename, 0, 6) == 'panel_'),
+        $output = do_template('COMCODE_PAGE_SCREEN', array('_GUID' => '08595d86788f09cc77f8f88098ff6fcd', 'IS_PANEL' => (substr($codename, 0, 6) == 'panel_'),
             'BEING_INCLUDED' => false,
             'SUBMITTER' => strval(get_member()),
             'TAGS' => '',

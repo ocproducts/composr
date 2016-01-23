@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -71,10 +71,8 @@ class Block_main_tutorials_carousel
 
         require_code('tutorials');
         $tutorials = list_tutorials_by($criteria);
-        $_tutorials = templatify_tutorial_list($tutorials);
+        $_tutorials = templatify_tutorial_list($tutorials, true);
 
-        return do_template('BLOCK_MAIN_TUTORIALS_CAROUSEL', array(
-            'TUTORIALS' => $_tutorials,
-        ));
+        return do_template('BLOCK_MAIN_TUTORIALS_CAROUSEL', array('_GUID' => '07b265b808abd02cc8abae7e3fe6992d', 'TUTORIALS' => $_tutorials));
     }
 }

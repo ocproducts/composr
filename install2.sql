@@ -1387,11 +1387,11 @@ INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('adminlogs', 't
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('adminlogs', 'ip', 'IP');
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('adminlogs', 'date_and_time', 'TIME');
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'id', '*AUTO');
-INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'tasktitle', 'SHORT_TEXT');
-INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'datetimeadded', 'TIME');
-INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'recurinterval', 'INTEGER');
-INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'recurevery', 'ID_TEXT');
-INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'taskisdone', '?TIME');
+INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'task_title', 'SHORT_TEXT');
+INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'add_date', 'TIME');
+INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'recur_interval', 'INTEGER');
+INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'recur_every', 'ID_TEXT');
+INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('customtasks', 'task_is_done', '?TIME');
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('stafflinks', 'id', '*AUTO');
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('stafflinks', 'link', 'URLPATH');
 INSERT INTO `cms_db_meta` (`m_table`, `m_name`, `m_type`) VALUES('stafflinks', 'link_title', 'SHORT_TEXT');

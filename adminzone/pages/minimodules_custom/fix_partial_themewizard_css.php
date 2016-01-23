@@ -7,6 +7,9 @@ It could fix CSS upgraded via diff, or just poor copy-and-pasting of code back f
 Take BACKUPs before running this.
 */
 
+$title = get_screen_title('Themewizard theme repair', false);
+$title->evaluate_echo();
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 require_code('themewizard');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -71,6 +71,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_groups:__edit:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'group',
     ));
 }
 

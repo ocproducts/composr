@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ class Hook_commandr_command_phpinfo
             return array('', do_command_help('phpinfo', array('h'), array()), '', '');
         } else {
             ob_start();
-            if ((function_exists('phpinfo')) && (strpos(@ini_get('disable_functions'), 'phpinfo') === false)) {
+            if (php_function_allowed('phpinfo')) {
                 phpinfo();
             } else {
                 var_dump(PHP_VERSION);

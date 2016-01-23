@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,8 +35,8 @@ class html_safe_lang_test_set extends cms_test_case
     {
         require_code('files');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         global $LANGUAGE_STRINGS, $LANGUAGE_HTML, $LANGUAGE_LITERAL, $LANGUAGE_CURRENT, $FILE, $FIND_NO_GO_HTML_SPOTS;
@@ -107,10 +107,10 @@ class html_safe_lang_test_set extends cms_test_case
                             'WRITE_ERROR_CREATE',
                             'WRITE_ERROR',
                             'DESCRIPTION_I_AGREE_RULES',
-                            'BANNER_VIEWSFROM',
-                            'BANNER_VIEWSTO',
-                            'BANNER_HITSFROM',
-                            'BANNER_HITSTO',
+                            'BANNER_VIEWS_FROM',
+                            'BANNER_VIEWS_TO',
+                            'BANNER_HITS_FROM',
+                            'BANNER_HITS_TO',
                             'CANT_TRACK',
                             'BANNER_CLICKTHROUGH',
         );

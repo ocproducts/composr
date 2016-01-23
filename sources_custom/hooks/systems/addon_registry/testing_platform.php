@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_testing_platform
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -377,11 +378,14 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/community_billboard.php',
             '_tests/tests/unit_tests/forum.php',
             '_tests/tests/unit_tests/forum_grouping.php',
+            '_tests/tests/unit_tests/theme_images.php',
+            '_tests/tests/unit_tests/glossary.php',
             '_tests/tests/unit_tests/galleries.php',
             '_tests/tests/unit_tests/forum_poll.php',
             '_tests/tests/unit_tests/git_conflicts.php',
             '_tests/tests/unit_tests/html_safe_lang.php',
             '_tests/tests/unit_tests/lang_duplication.php',
+            '_tests/tests/unit_tests/phpstub_accuracy.php',
             '_tests/tests/unit_tests/index.html',
             '_tests/tests/unit_tests/iotd.php',
             '_tests/tests/unit_tests/lang.php',
@@ -397,6 +401,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/news_category.php',
             '_tests/tests/unit_tests/newsletter.php',
             '_tests/tests/unit_tests/cms_merge.php',
+            '_tests/tests/unit_tests/should_ignore_file.php',
             '_tests/tests/unit_tests/points.php',
             '_tests/tests/unit_tests/poll.php',
             '_tests/tests/unit_tests/post_template.php',
@@ -429,8 +434,10 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/image_compression.php',
             '_tests/tests/unit_tests/xss.php',
             '_tests/tests/unit_tests/core_fields.php',
-            '_tests/tests/regression_tests/input_filter_post_block.php',
+            '_tests/tests/unit_tests/chmod_consistency.php',
+            '_tests/tests/unit_tests/external_code_considerations.php',
             '_tests/tests/unit_tests/tutorials_codebox.php',
+            '_tests/tests/regression_tests/input_filter_post_block.php',
         );
     }
 }

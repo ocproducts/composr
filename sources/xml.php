@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,8 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/*EXTRA FUNCTIONS: xml_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -154,7 +156,7 @@ class CMS_simple_xml_reader
         if (function_exists('libxml_disable_entity_loader')) {
             libxml_disable_entity_loader();
         }
-        $xml_parser = function_exists('xml_parser_create_ns') ? @xml_parser_create_ns($parser_charset) : @xml_parser_create($parser_charset);
+        $xml_parser = @xml_parser_create_ns($parser_charset);
         if ($xml_parser === false) {
             $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
             return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error

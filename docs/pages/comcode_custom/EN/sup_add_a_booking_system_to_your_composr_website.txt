@@ -3,7 +3,7 @@
 [media width="150" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/7715a43ddb7bd1c95b077716d974f0df.jpg[/media]
 The versatility of the Composr system and its core features mean it can and will be used in a wide range of cases. Its unrivalled set of core features aimed at communities makes it the perfect system to underpin a community based site around a venue for example. To help build on top of the core features there is also a Bookings addon which allows you to add booking functionality to your website.
 
-The addon is suitable for some cases, but not all, as there is still some functionality to be added. As with all open source software, addons and features develop over time as users need specific elements which are then added to the software for everyone to use. If the booking addon doesn't do a specific task you require, it's an opportunity to help contribute to the project for the good of everyone.
+The addon is suitable for some cases, but not all, as there is still some functionality to be added. As with all Open Source software, addons and features develop over time as users need specific elements which are then added to the software for everyone to use. If the booking addon doesn't do a specific task you require, it's an opportunity to help contribute to the project for the good of everyone.
 
 [title="2"]Installing the booking addon[/title]
 

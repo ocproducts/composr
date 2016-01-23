@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -49,7 +49,7 @@ class Block_side_calendar
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(((array_key_exists(\'private\',$map)) && ($map[\'private\']!=\'\'))?intval($map[\'private\']):mixed(),array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'title\',$map)?$map[\'title\']:NULL,array_key_exists(\'filter\',$map)?explode(",",$map[\'filter\']):NULL,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'calendar\'),date(\'d\',utctime_to_usertime()),array_key_exists(\'days\',$map)?$map[\'days\']:\'30\',array_key_exists(\'param\',$map)?$map[\'param\']:\'year\',date(\'Y-m\',utctime_to_usertime()))';
+        $info['cache_on'] = 'array(((array_key_exists(\'private\',$map)) && ($map[\'private\']!=\'\'))?intval($map[\'private\']):mixed(),array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'title\',$map)?$map[\'title\']:null,array_key_exists(\'filter\',$map)?explode(",",$map[\'filter\']):null,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'calendar\'),date(\'d\',utctime_to_usertime()),array_key_exists(\'days\',$map)?$map[\'days\']:\'30\',array_key_exists(\'param\',$map)?$map[\'param\']:\'year\',date(\'Y-m\',utctime_to_usertime()))';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;

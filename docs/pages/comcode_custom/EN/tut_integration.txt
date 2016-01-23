@@ -2,7 +2,7 @@
 
 This tutorial will provide details on how to integrate Composr with another web system (known henceforth as the 'other system') installed for your website.
 
-Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire a company for commercial assistance. Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
+Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire a company for professional assistance. Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -48,7 +48,8 @@ To integrate this page as [tt]site:mypage[/tt], the following steps would need t
 
 [title="3"]The magical way[/title]
 
-Composr can actually handle most things for you if you want to defer control to it:[list="1"]
+Composr can actually handle most things for you if you want to defer control to it:
+[list="1"]
 [*] Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)[list]
  [*][i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:[list]
   [*] For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named [tt]example[/tt]. Put the file in [tt]example/pages/html_custom/EN/[/tt]
@@ -84,7 +85,6 @@ An iframe is an HTML construct that allows you to place one site inside a region
  - the title-bar titles would not be reflected in the browser title-bar
 
 To place an iframed system into Composr, the easiest way is to make a new Comcode page which will contain the frame, link that onto your menu, and place the following Comcode into the page:
-
 [code="Comcode"]
 [html]
 <iframe frameBorder="0" scrolling="no" title="whatever the embedded system is" src="whatever the system URL is" style="width: 100%; height: whatever height you want px;">whatever the embedded system is</iframe>
@@ -383,7 +383,7 @@ New endpoint hooks can be created by a PHP programmer easily, providing whatever
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_mobile_sdk"]Writing mobile apps -- the Composr Mobile SDK[/page]
+ - [page="_SEARCH:tut_mobile_sdk"]Mobile apps via Composr Mobile SDK[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of the forum driver system[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]

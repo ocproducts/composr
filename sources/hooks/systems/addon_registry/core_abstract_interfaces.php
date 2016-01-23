@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_abstract_interfaces
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -123,9 +124,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/INDEX_SCREEN_FANCIER_ENTRY.tpl',
             'themes/default/templates/MAP_TABLE.tpl',
             'themes/default/templates/MAP_TABLE_FIELD.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_ABBR.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_RAW.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_RAW_ABBR.tpl',
             'themes/default/templates/MAP_TABLE_SCREEN.tpl',
             'themes/default/templates/COLUMNED_TABLE.tpl',
             'themes/default/templates/COLUMNED_TABLE_SCREEN.tpl',
@@ -245,9 +243,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/PAGINATION_LIST_PAGES.tpl' => 'result_table_screen',
             'templates/PAGINATION_WRAP.tpl' => 'result_table_screen',
             'templates/MAP_TABLE_FIELD.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_ABBR.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_RAW.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_RAW_ABBR.tpl' => 'map_table',
             'templates/INTERNALISED_AJAX_SCREEN.tpl' => 'internalised_ajax_screen',
             'templates/WARN_SCREEN.tpl' => 'warn_screen',
             'templates/DO_NEXT_SCREEN.tpl' => 'administrative__do_next_screen',
@@ -431,20 +426,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'NAME' => lorem_word(),
             'VALUE' => lorem_phrase(),
         )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_ABBR', array(
-            'ABBR' => lorem_phrase(),
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW_ABBR', array(
-            'ABBR' => lorem_phrase(),
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW', array(
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
 
         return array(
             lorem_globalise(do_lorem_template('MAP_TABLE', array(
@@ -523,6 +504,7 @@ class Hook_addon_registry_core_abstract_interfaces
             lorem_globalise(do_lorem_template('SIMPLE_PREVIEW_BOX', array(
                 'SUMMARY' => lorem_paragraph_html(),
                 'URL' => placeholder_url(),
+                'RESOURCE_TYPE' => '',
             )), null, '', true)
         );
     }

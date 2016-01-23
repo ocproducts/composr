@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 3[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 3 (Miscellany)[/title]
 
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
@@ -47,7 +47,7 @@ Internal dispatch:
  - Hook searching
  - Block and module calling
  - Block processing
- - Meta-data querying
+ - Metadata querying
  - Addon state detection (fast default case: persistent cache)
 Configuration:
  - Read base config and provide defaults
@@ -110,7 +110,33 @@ Note that while we have a lot of user-specific and security features in the abov
 
 Various hidden optimisation flags are described later in the Code Book, and also in the [page="_SEARCH:tut_optimisation"]Optimising Performance[/page].
 
-[title="2"]Why not more object-orientation?[/title]
+[title="2"]Philosophy[/title]
+
+[title="3"]Engineering standards and trade-off[/title]
+
+When coding for Composr, you should be careful to make sure all our design goals are maintained. Sometimes [tooltip="Trade-off: a balance achieved between two desirable but incompatible features; a compromise. A popular term used by engineers"]trade-off[/tooltip]s have to be made between design goals, sometimes an option can remove the need for a trade-off, and sometimes an option would just bloat and confuse the product. Good balance and thoughtfulness is required before rushing to add the latest cool ideas.
+
+We have established the following design goals (in no particular order):
+ - [b]Security[/b] -- Composr should be completely secure and un-hackable, but also be able to track offenders and be easily restorable if the worst happens
+ - [b]Performance[/b] -- Composr should be as efficient as possible, with both CPU and memory usage; things like caches and optimised code, and sensible feature design, can achieve this. Tip: use xdebug for profiling, along with WinCacheGrind.
+ - [b]Great design[/b] -- Composr should look excellent on every page
+ - [b]General quality[/b] -- Composr should not contain things such as spelling errors
+ - [b]Flexibility[/b] / [b]generality[/b] -- Composr should be able to work in many different kinds of website. Features should be usable in different ways for different people. It should not have a restricted layout (hence Comcode, modules, blocks, and templates)
+ - [b]International[/b] -- Composr should work well across the world, across language and culture (as long as someone puts the effort in to do a translation)
+ - [b]Compatibility[/b] -- Composr should work well with common versions of required technologies
+ - [b]Modability[/b] -- Composr should be modular, and overridable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
+ - [b]Usability[/b] -- Composr should be very easy to use. The best user-experience and interaction-design methods should be used.
+ - [b]Power[/b] / [b]features[/b] -- Composr should be as powerful as any competing product, but that should not be an excuse for implementing crap that bloats and over-complicates the product; we all want loads of features, but we don't want to confuse the users or tie ourselves up so tight that future development is very difficult
+ - [b]Standards compliance[/b] -- An accessible web, based on open standards, which is stable and not tied to any specific vendor, is desirable for all; by sticking to standards, you are ensuring Composr works on a wide range of technologies, and for a wide audience
+ - [b]Documentation[/b] -- Remember that the best documentation is when the interface describes itself, but the written documentation must be excellent.
+ - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
+ - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
+ - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
+ - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
+ - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
+ - [b]Simplicity[/b] -- Features only needed by a minority should be "off-by-default"
+
+[title="3"]Why not more object-orientation?[/title]
 
 Most PHP CMSs have gone in the direction of having very sophisticated object systems, with dependency injection, design patterns and namespaces.
 
@@ -138,6 +164,7 @@ Regarding '3', OOP-heavy architectures try to abstract away details to make thin
 
 '6' is something OOP-heavy systems do very well, but read on.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_3/4.jpg[/media]
 As you can see, simpler designs solve the most important concerns best, and then remaining concerns are well served by OOP-heavy designs. However, our Composr design is not actually a naive simple design at all -- it's actually very carefully structured, and has a high degree of strictness/discipline in many areas. Composr is definitely not anti-OOP by any means, it is only anti-over-engineering -- we actually rely on the strengths of OOP in many key areas of the system. Here's how our approach works to achieve the commonly-cited OOP-heavy advantages (flexibility, maintainability, clarity, and stability) without slowing development, complicating code, or hurting performance:
  - We can achieve the equivalence to dependency injection as our output and execution context states support a stack-based switching mechanism, allowing us to create sandboxes very effectively for those few cases where it is useful. The critical difference is we achieve it in far less code, with better performance, in a way that is easier to understand, and where the burden for it is only felt when you actually need this advanced functionality, rather every time you use any component of the system.
  - We can achieve inheritance via our code overrides system, which also provides the ability for users to override components without having to get down and dirty with coding. Different versions of code can be placed and tested as overrides, and new functionality can be placed using overrides. This does not suffer from the same problems as copy and paste coding, as overrides are designed to work on the function level, via some clever code we have in place, and we can even make line-by-line changes should we need to, or extend individual functions.
@@ -151,24 +178,6 @@ So... hopefully you can now see past the anal arguments some people make that ev
 
 Rant over ;).
 
-[title="2"]Using git to deploy[/title]
-
-Deploying to a live server using git is a great idea. However, be aware some caveats...
-[list="1"]
-[*]Disable dev-mode in the config file using:
-[code="PHP"]
-$SITE_INFO['dev_mode'] = '0';
-[/code]
-git automatically enables dev mode, which intentionally interferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
-[*]Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
-[*]Either keep the config file out of git, or put code in there to differentiate between machines via checking [tt]$_SERVER['SERVER_ADDR'][/tt] ([tt]$_SERVER['LOCAL_ADDR'][/tt] on a Windows server).
-[*]Make heavy use of git branches so that you don't get stuck having to perfect all code before you can update anything onto the server.
-[/list]
-
-You can consider a half-way house, by having a full checkout on the server, then separately symlinking specific directories into the main public_html. This is useful if you only want certain directories in git, such as a docs zone (docs in this example being managed offline, and pushed live using git).
-
-You can also consider multiple checkouts on the server, such as a testing site, and a live site. This allows you to test things with greater care.
-
 [title="2"]Troubleshooting[/title]
 
 There are a number of issues developers face when programming for Composr. Our high standards and development mode means issues are raised to the surface that less skilled programmers may not easily notice when working with other systems.
@@ -180,6 +189,7 @@ Composr is coded against XHTML5, which is the XHTML version of HTML5. In other w
 The extra strictness of XHTML is now largely historic, as no websites (including Composr) truly force the browser to enable the full XHTML-strictness, while browser XHTML modes aren't cut-down like they once were.
 Never-the-less, it encourages good coding discipline -- clean, intuitive code.
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/disadvantage.png[/media]
 Composr notes:
  - Ideally do not use the [tt].innerHTML[/tt] JavaScript property. Instead you will should use the Composr  [tt]set_inner_html[/tt] and [tt]get_inner_html[/tt] functions that Composr supplies. Our functions have been carefully tuned over the years to work on all browsers to handle things like embedded JavaScript code in a consistent way.
 
@@ -188,12 +198,8 @@ Composr notes:
 Composr is not just built for MySQL. It is designed to work with any kind of database software. It is all to common for developers to assume specifics of the MySQL platform are standard SQL and can be used freely. MySQL in fact is very non-standard in certain ways. Composr enables "MySQL strict mode" to force MySQL to (correctly) complain when mistakes (such as non-specified field values) are made.
 
 If is advisable for you to:
- - code SQL conservatively and not try use things Composr does not already use
+ - write SQL conservatively: avoid SQL syntax/functionality that Composr does not already use somewhere because that syntax/functionality probably is vendor-specific
  - avoid being sloppy and getting MySQL to perform automatic type conversions and to automatically guess missing values during insert queries.
-
-[title="3"]Tempcode[/title]
-
-A common mistake is to use Tempcode objects as strings. These are not strings, and can't be used as strings unless you do something like [tt]$string=$tempcode->evaluate();[/tt] to get the string equivalent first. We can't rely on PHP 5's [tt]__toString[/tt] functionality in Composr unfortunately (and we don't want to actually, because that makes the code a bit harder to analyse).
 
 [title="3"]Blank pages[/title]
 
@@ -209,17 +215,41 @@ If you get errors about query limits consider optimising your code to use less q
 [code="PHP"]
 $GLOBALS['NO_QUERY_LIMIT'] = true;
 [/code]
-in your code.
+...in your code.
 
 You can also put [tt]&keep_no_query_limit=1[/tt] into the URL to have query limits temporarily disabled. Often when caching is disabled or empty the query limit can be exceeded.
 
-[title="3"]Debugging[/title]
+[title="3"]Debugging, and stack traces[/title]
+
+[title="4"]IDEs[/title]
+
+Some developers like to use [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym]s with breakpoint support, watches, code-stepping, etc. [url="PhpStorm"]https://www.jetbrains.com/phpstorm/[/url] is generally considered the best IDE, and is our official IDE; [url="NetBeans"]https://netbeans.org/[/url] is good too. The core Composr staff generally work with simpler editors most of the time.
+
+[title="4"]Simple but effective[/title]
+
+When not regularly using IDEs, the core Composr staff usually debug via just putting temporary bits of code in, like:
+[code="PHP"]
+@ob_end_flush(); @print(gettype($var)."\n"); @var_dump($var); exit();
+[/code]
+
+You don't need all that code all the time, but if you don't use "[tt]exit[/tt]" then you do need "[tt]ob_end_flush[/tt]". This is because Composr uses an "output buffer" for its Tempcode system, and by default any output you do will get written into an arbitrary point in the Tempcode tree -- often never to be seen at all!
+
+In fact, rather than the ugly code above that just dumps information into the output stream, you can do something a lot fancier:
+[code="PHP"]
+attach_message(gettype($var) . var_export($var, true), 'warn');
+[/code]
+
+This should show the message in a nice position in the Composr output.
+
+Of course, make sure you don't leave any temporary debugging code around when you finish!
+
+[title="4"]Dev-mode[/title]
 
 If development mode is running then the [tt]inspect[/tt] function will be available in PHP. You can run commands like:
 [code="PHP"]
 inspect($a, $b, $c);
 [/code]
-and Composr will output the contents of these variables very neatly for you, and give a stack trace.
+...and Composr will output the contents of these variables very neatly for you, and give a stack trace.
 
 If output has already started then Composr will give you your details in an info box at the bottom of the displayed screen; otherwise you'll get a text dump.
 
@@ -227,10 +257,33 @@ This is very useful when stepping through code. Often bugs are because you are u
 
 If you have an IDE with a debugger then this is better, but we find most developers do not have one, and also PHP debuggers tend to be quite unreliable. This old fashioned manual technique of manually tracing through code works well if you are quick at making changes and refreshing the browser window.
 
+[title="4"]Stack traces[/title]
+
+Composr will show a "stack trace" if it receives an error it treats fatally (a fatal error is one that terminates normal execution -- because execution cannot finish). These stack traces are amazingly good at helping you find bugs, so if you get one have a close look at it.
+
+A stack trace indicates the function call chain from the call of the script handling your current URL (at the bottom) to where Composr failed (near the top). In other words, as you look through the trace you are looking back through each function call all the way back to the top level script that the URL is calling. It doesn't show what the code has finished doing, only what it was doing when it failed and the function call chain that led to that action. At any level you can see the file the call was on, the line number, the function called from that line, and the arguments passed to that function (although large arguments like big arrays and Tempcode are omitted).
+
+Lateral reasoning usually allows spotting of the source of a bug in a few seconds, although sometimes it can be more difficult. Often the bug is caused by unexpected parameters, and you can see them reflected in the stack trace and laterally work out why those parameters were passed and thus work out how to solve the problem.
+
+One confusing thing about stack traces is that the error chain is included within the trace. With time you'll learn to read past this and see where the error was actually triggered. Typically anything above the [tt]fatal_exit[/tt] or [tt]composr_error_handler[/tt] function calls relates to the error handling process itself.
+
+[box="Tip"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+If you are getting a 'The requested resource does not exist.' error then you can find a stack trace for when the error is generated by adding "[tt]&keep_fatalistic=1[/tt]" to the URL. This is useful because there is otherwise no way to find where these errors come from (it would have required too many new language strings to be specific about them all).
+[/box]
+
 [title="2"]Tips[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 This section contains a number of general programming tips. Much of this applies to all programming, not just Composr programming. However there are also a number of tips for Composr that will help you on a day-to-day basis.
+
+[title="3"]Setting default parameters[/title]
+
+Sometimes on a complex project you will want a module to have a default Filtercode string, or a default virtual root, or some other default parameter different to what Composr hard-codes.
+
+The best way to achieve this is to code up a startup hook. Using PHP code you can detect non-presence of a URL variable, and then set your own default directly into [tt]$_GET[/tt] according to your own context.
+
+For example, if you wanted a module as seen in one zone to have one virtual root, and the same module as seen in another zone, to have another -- you could code up a startup hook that sets the default root accordingly.
 
 [title="3"]Deployment[/title]
 
@@ -261,9 +314,9 @@ The [tt]data/comcode_convert.php[/tt] can help you in these areas. It has option
 
 Have a good understanding of regular expressions and an eagerness to make use of them. You can often find uses for them, especially when searching code or preparing data-sets. They can save a lot of time manually reformatting things.
 
-[title="3"]Web hosting[/title]
+[title="3"]Webhosting[/title]
 
-Never trust web hosts to provide decent hosting. Expect lots of bugs, unexpected limitations, performance bottlenecks, old software, and missing PHP extensions.
+Never trust webhosts to provide decent hosting. Expect lots of bugs, unexpected limitations, performance bottlenecks, old software, and missing PHP extensions.
 That's life, so try and minimise your dependencies and environment assumptions as much as possible -- write simple, compatible, code.
 
 [title="3"]git[/title]
@@ -322,6 +375,7 @@ Never install the testing platform on a live site, or at least if you do block p
 
 [title="3"]Debugging[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/3.jpg[/media]
 When programming bear in mind that it is human to make lots of mistakes. Don't blame yourself for errors. The key is having a rigorous practices to identify and deal with them.
 
 If you are stuck with a problem you haven't been able to quickly resolve, consider these logical steps for resolving it:
@@ -334,7 +388,6 @@ Here are some general tips:
  - Always think of quick ways to prove/disprove theories, and check facts, like variables match the values you expect them to. If you narrow in on facts, you make solving a problem much easier.
  - Get fully comfortable with the powerful debug tools in a browser such as Google Chrome, such as: the DOM inspector, setting JavaScript breakpoints, setting to pause on JavaScript exceptions, typing into the console, watching the console for errors, and analysing network requests and responses.
  - Get comfortable with unified diff files. They are very useful for many purposes.
- - Have a good visual diff tool on-hand, such as DiffMerge, WinMerge, or Kompare. You can use it for all kinds of purposes such as comparing data outputs or different code versions.
  - Have a mind-set of automatic tasks to increase your own efficiency. Write temporary scripts to get things done faster or to reveal data to prove/disprove hypotheses about the nature of a problem, or to build confidence that you've properly fixed things.
  - Whenever something confuses you, try and understand your way through it, even if you've already found another solution. Confusion is an opportunity for learning, a revelation of a gap in your knowledge -- make the best of it so that you get a strong understanding of all technologies. With time, things will get easier and easier, but only if you constantly work at expanding your understanding. Work to build up a unified mental model of how everything works and fits together across all of computer technology.
  - If you want to see how a function is operating in random different calls (i.e. not always just the first call), add some temporary code like [tt]if (rand(0,10)==1) exit($some_variable);[/tt] and refresh the page a few times. This is a useful technique for many cases where you need to sample data.
@@ -380,21 +433,39 @@ To save time and auto-populate form fields during testing, if you have the Web d
 
 [title="2"]Advanced deployment and customisation[/title]
 
+[title="3"]Using git to deploy[/title]
+
+Deploying to a live server using git is a great idea. However, be aware some caveats...
+[list="1"]
+[*] Disable dev-mode in the config file using:
+[code="PHP"]
+$SITE_INFO['dev_mode'] = '0';
+[/code]
+git automatically enables dev mode, which intentionally interferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
+[*] Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
+[*] Either keep the config file out of git, or put code in there to differentiate between machines via checking [tt]$_SERVER['SERVER_ADDR'][/tt] ([tt]$_SERVER['LOCAL_ADDR'][/tt] on a Windows server).
+[*] Make heavy use of git branches so that you don't get stuck having to perfect all code before you can update anything onto the server.
+[/list]
+
+You can consider a half-way house, by having a full checkout on the server, then separately symlinking specific directories into the main public_html. This is useful if you only want certain directories in git, such as a docs zone (docs in this example being managed offline, and pushed live using git).
+
+You can also consider multiple checkouts on the server, such as a testing site, and a live site. This allows you to test things with greater care.
+
 [title="3"]Hidden features inside Composr[/title]
 
 Composr contains a number of hidden 'values', 'keep' parameters, and empty file flags. These allow activation of special functionality that isn't considered important/mainstream enough to warrant user-interface space within Composr.
 
-[title="3"]Empty files[/title]
+[title="4"]Empty files[/title]
 
 The presence of the following empty files in the root directory have a special meaning to Composr:
  - [tt]install_ok[/tt] -- don't complain if [tt]install.php[/tt] is left present (DO NOT use this unless your install is not connected to the Internet or if you definitely have an install_locked file)
  - [tt]install_locked[/tt] -- whether to lock the installer (prevent it running)
 
-[title="3"]Other special files[/title]
+[title="4"]Other special files[/title]
 
 If you put a file called [tt]closed.html[/tt] then this will be shown to people rather than the normal closed-site screen, regardless of whether the site is currently closed or not.
 
-[title="3"]Hidden 'values'[/title]
+[title="4"]Hidden 'values'[/title]
 
 Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (Admin Zone > Tools > Commandr -- or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
 
@@ -413,8 +484,8 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
   - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about its memory limit
-  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
-  - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
+  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor webhosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
+  - [tt]base64_emails[/tt] -- set this to '1' if you want base64 e-mails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 e-mails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
   - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
   - [tt]disable_ssl_for__<domain>[/tt] -- set this to '1' to disable SSL certificate checking for the given domain name. This is not a great idea, but may be necessary if a required service has a broken certificate yet it only supports HTTPS.
@@ -426,7 +497,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)
  - Developer testing
-  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get misdirected/over-sent
+  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome e-mails don't get misdirected/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to enable the Composr profiler, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to '1' to log any requests taking at least 5 seconds to [tt]data_custom/time_log.txt[/tt]
@@ -448,7 +519,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]comment_forum__catalogues__<catalogue-name>[/tt] -- define a comment forum for a specific catalogue
   - [tt]allow_no_lang_selection[/tt] -- set this to '1' if you want members to be able to leave their language selection as 'Unset' (otherwise normally it'll copy the auto-detected language into their profile or they can change it, but it never stays as unset). This option is useful on multi-site-networks, with each site having a different language
   - [tt]no_base_check[/tt] -- set this to '1' if you do not want Composr to empty caches if the base URL gets changed (this is if the base URL is not defined, and someone accesses from something different)
-  - [tt]pagination_when_not_needed[/tt] -- set this to '1' if you want the pagination wrapper template to load even if there is no pagination (useful for collecting result meta data via Tempcode)
+  - [tt]pagination_when_not_needed[/tt] -- set this to '1' if you want the pagination wrapper template to load even if there is no pagination (useful for collecting result metadata via Tempcode)
   - [tt]catalogue_seo_source_map__<catalogue-name>[/tt] -- a comma-separated list of field IDs to use for SEO keyword generation (if not set, uses all fields). If all keywords in the field should be used, put an exclamation mark after the field ID
   - [tt]disable_password_change_notifications_for_staff[/tt] -- set this to '1' if you want staff password edits to not result in notifications to users
   - [tt]commercial_spellchecker[/tt] -- set this to '1' if you want to enable the WYSIWYG editor's spellcheck.net spellchecker
@@ -460,7 +531,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]resize_rep_images[/tt] -- set this to '0' if you do not want uploaded rep-images to be sized down automatically to the standard thumbnail size
   - [tt]default_event_type[/tt] -- set this to the ID of the default event type to select for new events
   - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should display with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
-  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in meta-data.
+  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in metadata.
   - [tt]google_news_urls[/tt] -- set this to '1' if news URLs should contain a Google-News-friendly entry ID.
   - [tt]enable_delayed_inserts[/tt] -- set this to '1' to enable MySQL delayed inserts. Delayed inserts can cause a very small performance improvement if log calculations happen quite regularly; however they only work on MyISAM tables and are deprecated as of MySQL 5.6
   - [tt]really_want_highlighting[/tt] -- set this to '1' if you want to force HTML to be converted to Comcode when searches happen, so keyword highlighting works better.
@@ -498,7 +569,7 @@ We have the following which are either unlikely to be useful, or potentially uns
  - Easter eggs
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
 
-[title="3"]Hidden 'keep' parameters[/title]
+[title="4"]Hidden 'keep' parameters[/title]
 
 'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and short-URLs are not enabled, use a '?' instead of a '&'.
 
@@ -590,44 +661,15 @@ The following aren't 'keep' parameters, but are still useful and otherwise behav
  - [tt]page/type/id[/tt] -- standard URL routing parameters
  - [tt]kfsXX[/tt] -- this isn't useful for manual editing but people ask what it's for; it's to preserve the browse positions in forumviews, such that when returning, the browse positions are remembered
 
-[title="3"]Extra _config.php settings[/title]
+[title="4"]Extra _config.php settings[/title]
 
 Setting,
 [code="PHP"]
 $SITE_INFO['no_email_output'] = '1';
 [/code]
-in [tt]_config.php[/tt] will disable emails. This is useful on a development server running with live user accounts.
+in [tt]_config.php[/tt] will disable e-mails. This is useful on a development server running with live user accounts.
 
-[title="3"]Hints for making websites for other people[/title]
-
-Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seemingly-bespoke sites such as property directories.
-
-However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
-
-Here are some hints:
- - You might want to use the debranding feature, Admin Zone > Style > Debranding
- - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
- - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
- - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
- - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
- - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
- - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
- - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
- - In particular, do not make theme image changes using Composr's theme editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
- - Remember when uploading to a live site that you do not want to overwrite customised Comcode pages, or other files that may have since been changed. Be careful what you upload, and keep backups.
- - If you are adding new functionality and write new templates, it is best to save these into the default theme's [tt]templates_custom[/tt]/[tt]javascript_custom[/tt]/[tt]xml_custom[/tt]/[tt]text_custom[/tt]/[tt]css_custom[/tt] directories, so that your functionality works on all themes. If you are overriding default theme templates/CSS, it is then that you save them into your site's theme. A similar rule applies for custom images.
-
-It's overkill to apply the full range of Composr coding standards if you're writing PHP code for use on just one website. You shouldn't get into bad habits by skipping any of the conventions but some of our standards are particularly time consuming to meet, and in particular the following time savers can be applied:
- - It is better to have "hackerish" overrides (using the code rewrite facility) than to override whole files. This is because it makes upgrades easy, which is far more important than code maintenance for a one-off Composr project.
- - You can almost always assume the site runs one theme and thus save your new templates into the new theme. One caveat is the 'CMS' zone will need to run your theme, and also bear in mind that any files used in outgoing emails must be available from the default theme.
- - You don't need to write everything using language strings.
- - You don't need full MVC. For example, you could code in add/edit functionality straight into modules rather than via a sources file (model).
- - You can make more assumptions than you ordinarily would be able to. For example, you might be able to assume cURL is installed. It is sensible to document your assumptions though, to make sure they continue to be met, or so someone breaking them has an idea that they need to act to change your code.
- - For simple dynamic functionality you can use mini-modules and mini-blocks instead of full blown object-orientated modules and blocks.
- - You do not need to write PHPdoc comments unless you think other developer's would benefit from them.
- - On some sites you may be able to assume JavaScript is enabled, or that accessibility isn't an issue (e.g. on a video site it's unlikely to need to cater for blind users -- unless you plan to support audio description). Generally we would advise to be very cautious here, it usually does not take much longer to support full accessibility, and is worth doing routinely. But it is worth us pointing this out because some sites may require particular complex JavaScript interfaces and it might be unviable to support JavaScript being disabled.
-
-Bear in mind that some sites need maintenance or have multiple people working on them, so you should bear this in mind when you decide the level of engineered design and code documentation to implement for your custom functionality. It is a trade-off between initial development cost, and long-term time savings.
+If you use the [tt]config_editor.php[/tt] script to edit the base configuration then you'll find lots of other settings to play with.
 
 [title="3"]Providing default parameters to forms[/title]
 
@@ -728,8 +770,45 @@ This is explained in the [page="docs:tut_framework"]The Composr programming fram
 
 If you are considering overriding a file just so that you can add some new functions to it used by one of your new modules (for example, adding a new [tt]form_input_something[/tt] function), consider adding to a new file (or existing file in your module's addon) instead. There is no rule that says similar functions have to go together, and it makes no sense unless they are all core functions -- in fact it increases average memory usage to have excess functions defined in core files (each required-up function uses quite a lot of memory).
 
-[title="3"]Composr version naming[/title]
+[title="2"]Hints for developing websites for other people[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/2.jpg[/media]
+Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seemingly-bespoke sites such as property directories.
+
+However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
+
+Here are some assorted hints:
+ - You might want to use the debranding feature, Admin Zone > Style > Debranding
+ - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
+ - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (https://css-tricks.com/snippets/htaccess/www-no-www/) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
+ - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
+ - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
+
+Considerations for design and themeing:
+ - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
+ - In particular, do not make theme image changes using Composr's theme editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
+ - If you are adding new functionality and write new templates, it is best to save these into the default theme's [tt]templates_custom[/tt]/[tt]javascript_custom[/tt]/[tt]xml_custom[/tt]/[tt]text_custom[/tt]/[tt]css_custom[/tt] directories, so that your functionality works on all themes. If you are overriding default theme templates/CSS, it is then that you save them into your site's theme. A similar rule applies for custom images.
+
+Take particular care with Comcode pages:
+ - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
+ - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
+ - Remember when uploading to a live site that you do not want to overwrite customised Comcode pages, or other files that may have since been changed. Be careful what you upload, and keep backups.
+
+It's overkill to apply the full range of Composr coding standards if you're writing PHP code for use on just one website. You shouldn't get into bad habits by skipping any of the conventions but some of our standards are particularly time consuming to meet, and in particular the following time savers can be applied:
+ - It is better to have "hackerish" overrides (using the code rewrite facility) than to override whole files. This is because it makes upgrades easy, which is far more important than code maintenance for a one-off Composr project.
+ - You can almost always assume the site runs one theme and thus save your new templates into the new theme. One caveat is the 'CMS' zone will need to run your theme, and also bear in mind that any files used in outgoing e-mails must be available from the default theme.
+ - You don't need to write everything using language strings.
+ - You don't need full MVC. For example, you could code in add/edit functionality straight into modules rather than via a sources file (model).
+ - You can make more assumptions than you ordinarily would be able to. For example, you might be able to assume cURL is installed. It is sensible to document your assumptions though, to make sure they continue to be met, or so someone breaking them has an idea that they need to act to change your code.
+ - For simple dynamic functionality you can use mini-modules and mini-blocks instead of full blown object-orientated modules and blocks.
+ - You do not need to write PHPdoc comments unless you think other developer's would benefit from them.
+ - On some sites you may be able to assume JavaScript is enabled, or that accessibility isn't an issue (e.g. on a video site it's unlikely to need to cater for blind users -- unless you plan to support audio description). Generally we would advise to be very cautious here, it usually does not take much longer to support full accessibility, and is worth doing routinely. But it is worth us pointing this out because some sites may require particular complex JavaScript interfaces and it might be unviable to support JavaScript being disabled.
+
+Bear in mind that some sites need maintenance or have multiple people working on them, so you should bear this in mind when you decide the level of engineered design and code documentation to implement for your custom functionality. It is a trade-off between initial development cost, and long-term time savings.
+
+[title="2"]Composr version naming[/title]
+
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/1.jpg[/media]
 In order to have a consistent upgrade system, Composr versions are named according to a rigid scheme. This is best shown by example...
 
 The following are examples of valid names:

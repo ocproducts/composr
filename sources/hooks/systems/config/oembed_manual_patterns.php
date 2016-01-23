@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -60,15 +60,15 @@ class Hook_config_oembed_manual_patterns
         $default .= "(https?://.*\.flickr\.com/photos/.*|https?://flic\.kr/p/.*) = http://www.flickr.com/services/oembed\n";
         $default .= "(https?://instagram\.com/p/.*) = http://api.instagram.com/oembed\n";
         $default .= "(http?://i.*\.photobucket\.com/albums/.*|https?://gi.*\.photobucket\.com/groups/.*) = http://photobucket.com/oembed\n"; // NB: With this one you need to be really careful to get the *image* URL. Page URLs do not work, it's confusing!
-        //$default.="(https?://twitter\.yfrog\.com/.*) = http://www.yfrog.com/api/oembed\n"; Does not work
+        //$default .= "(https?://twitter\.yfrog\.com/.*) = http://www.yfrog.com/api/oembed\n"; Does not work
         $default .= "(https?://soundcloud\.com/.*/.*) = http://soundcloud.com/oembed\n";
         $default .= "(https?://twitter\.com/.*/status/\d+) = https://api.twitter.com/1/statuses/oembed.{format}\n";
         $default .= "(https?://(www\.)?ustream\.tv/.*) = http://www.ustream.tv/oembed\n";
 
         $default .= "(https?://twitpic\.com/.*) = http://noembed.com/embed\n";
         /*
-        These are not very good - we may as well just do OpenGraph on them ourselves rather than relying on noembed
-        default.="(https?://www\.amazon\.com/.*) = http://noembed.com/embed\n";
+        These are not very good - we may as well just do Open Graph on them ourselves rather than relying on noembed
+        $default .= "(https?://www\.amazon\.com/.*) = http://noembed.com/embed\n";
         */
 
         $default .= "(https?://www\.imdb\.com/title/.*|http://twitpic\.com/.*) = http://api.embed.ly/1/oembed\n";
@@ -82,14 +82,17 @@ class Hook_config_oembed_manual_patterns
         $default .= "(https?://www\.justin\.tv/.*) = http://api.embed.ly/1/oembed\n";
         /*
         Embedly requires an API key for high usage. It's pretty good though. To use an API key, do e.g.:
-        $_oembed_manual_patterns.="(http://www\.imdb\.com/title/.*|http://twitpic\.com/.*) = http://api.embed.ly/1/oembed?key=xxxxxx\n";
+        $default .= "(http://www\.imdb\.com/title/.*|http://twitpic\.com/.*) = http://api.embed.ly/1/oembed?key=xxxxxx\n";
         */
+
+        // Facebook may give "Security Check Required" when trying to auto-detect, so hard-code
+        $default .= "(https?://(www\.)?facebook\.com/.*) = https://www.facebook.com/plugins/page/oembed.json/\n";
 
         return $default;
 
         // NB: To put everything through...
-        //  embed.ly, you would do ".*=http://api.embed.ly/1/oembed"
-        //  Noembed, you would do ".*=http://noembed.com/embed"
+        //  embed.ly, you would do ".* = http://api.embed.ly/1/oembed"
+        //  Noembed, you would do ".* = http://noembed.com/embed"
         // iframely is interesting. It is self-hosted.
         // Largely though, Composr contains equivalent features to these products.
     }

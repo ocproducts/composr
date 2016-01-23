@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -413,12 +413,12 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
         $topic['first_post'] = new Tempcode();
     }
 
-    // Pre-load it, so meta-data isn't altered later
-    $bak = $GLOBALS['META_DATA'];
+    // Pre-load it, so metadata isn't altered later
+    $bak = $GLOBALS['METADATA'];
     $topic_row_tedit = array('id' => $topic_row['id'], 't_cache_first_post' => $topic_row['t_cache_first_post'], 't_cache_first_post__text_parsed' => multi_lang_content() ? null : $topic_row['t_cache_first_post__text_parsed'], 't_cache_first_post__source_user' => multi_lang_content() ? null : $topic_row['t_cache_first_post__source_user']);
     $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row_tedit, 't_cache_first_post', $GLOBALS['FORUM_DB']);
     $topic['first_post']->evaluate();
-    $GLOBALS['META_DATA'] = $bak;
+    $GLOBALS['METADATA'] = $bak;
 
     $topic['id'] = $topic_row['id'];
     $topic['num_views'] = $topic_row['t_num_views'];
@@ -550,25 +550,18 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     $url = build_url($map, get_module_zone('topicview'));
 
     // Modifiers
-    $topic_row_links = new Tempcode();
+    $topic_row_links = array();
     $modifiers = $topic['modifiers'];
     if (in_array('unread', $modifiers)) {
         $first_unread_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'first_unread'), get_module_zone('topicview'));
         $first_unread_url->attach('#first_unread');
-        $topic_row_links->attach(do_template('CNS_FORUM_TOPIC_ROW_LINK', array('_GUID' => '6f52881ed999f4c543c9d8573b37fa48', 'URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'))));
+        $topic_row_links[] = array('URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'));
     }
-    $topic_row_modifiers = new Tempcode();
+    $topic_row_modifiers = array();
     foreach ($modifiers as $modifier) {
         if ($modifier != 'unread') {
-            $topic_row_modifiers->attach(do_template('CNS_FORUM_TOPIC_ROW_MODIFIER', array('_GUID' => 'fbcb8791b571187fd699aa6796c3f401', 'IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier))));
+            $topic_row_modifiers[] = array('IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier));
         }
-    }
-
-    // Emoticon
-    if ($topic['emoticon'] != '') {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON', array('_GUID' => 'dfbe0e4a11b3caa4d2da298ff23ca221', 'EMOTICON' => $topic['emoticon']));
-    } else {
-        $emoticon = new Tempcode();
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {
@@ -639,7 +632,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         'TOPIC_ROW_MODIFIERS' => $topic_row_modifiers,
         '_TOPIC_ROW_MODIFIERS' => $modifiers,
         'POST' => $post,
-        'EMOTICON' => $emoticon,
+        'EMOTICON' => $topic['emoticon'],
         'DESCRIPTION' => $topic['description'],
         'URL' => $url,
         'TITLE' => $title,

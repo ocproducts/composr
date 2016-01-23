@@ -30,8 +30,8 @@ You may wish to prevent members viewing the member directory, but let them view 
 This cannot be done directly using page permissions because both actions go through the same module. Match-key permissions can be used effectively here though.
 
 [list="1"]
-[*]Make sure the [tt]match_key_permissions[/tt] addon is installed.
-[*]If the "Single public zone" option is on then:
+[*] Make sure the [tt]match_key_permissions[/tt] addon is installed.
+[*] If the "Single public zone" option is on then:
  - Set to block all groups on [tt]:members:browse[/tt]
 If the "Single public zone" option is [i]not[/i] on then:
  - Set to block all groups on [tt]site:members:browse[/tt]
@@ -51,7 +51,8 @@ A good example of match-key error messages is in the [page="_SEARCH:sup_join_dis
 [title="2"]Controlling page display in detail[/title]
 
 You may wish to only show certain parts of screens to particular usergroups. For example, you may want to 'tease' content to non-paying users.
-To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:[list="a"]
+To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:
+[list="a"]
 [*] by using the [tt]IS_IN_GROUP[/tt] symbol
 [*] working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
 [/list]

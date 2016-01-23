@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -94,6 +94,7 @@ function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'calendar_type',
     ));
 }
 
@@ -531,8 +532,8 @@ function regenerate_event_reminder_jobs($id, $force = false)
                 'j_event_id' => $id
             ));
         } else {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $start = 0;
@@ -702,7 +703,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
 
         // Overlay it
         foreach ($feed_urls_todo as $feed_url => $event_type) {
-            $temp_file_path = cms_tempnam('feed');
+            $temp_file_path = cms_tempnam();
             require_code('files');
             $write_to_file = fopen($temp_file_path, 'wb');
             http_download_file($feed_url, 1024 * 512, false, false, 'Composr', null, null, null, null, null, $write_to_file);
@@ -951,11 +952,11 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER:
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL:
                     if ($member_calendar !== $event['e_member_calendar']) {
-                        continue 2; // we know one is not global, so we can do a direct compare, knowing NULL will not equal any member value
+                        continue 2; // we know one is not global, so we can do a direct compare, knowing null will not equal any member value
                     }
                     break;
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE:
-                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/*we know we don't need to consider a NULL to NULL match separately as it can't happen in this branch*/)) {
+                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/*we know we don't need to consider a null to null match separately as it can't happen in this branch*/)) {
                         continue 2;
                     }
                     break;
@@ -1069,7 +1070,7 @@ function find_timezone_end_minute_in_utc($timezone, $year, $month, $day, $monthl
 /**
  * Get the UTC start time for a specified UTC time event.
  *
- * @param  ID_TEXT $timezone The timezone it is in; used to derive $hour and $minute if those are NULL, such that they start the day correctly for this timezone
+ * @param  ID_TEXT $timezone The timezone it is in; used to derive $hour and $minute if those are null, such that they start the day correctly for this timezone
  * @param  integer $year Year
  * @param  integer $month Month
  * @param  integer $day Day
@@ -1356,17 +1357,9 @@ function find_concrete_day_of_month($year, $month, $day, $monthly_spec_type, $ho
             if (strtotime('+0 Tuesday', mktime(0, 0, 0, 1, 1, 2013)) != mktime(0, 0, 0, 1, 1, 2013)) {
                 $month_start -= 1; // This "-1" is needed on SOME PHP versions, to set the window 1 second before where we're looking to make it find something right at the start of the actual window
             }
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set($timezone);
-            } else {
-                safe_ini_set('date.timezone', $timezone);
-            }
+            date_default_timezone_set($timezone);
             $timestamp = strtotime('+' . strval($nth) . ' ' . ($days[$day % 7]), $month_start);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set('UTC');
-            } else {
-                safe_ini_set('date.timezone', 'UTC');
-            }
+            date_default_timezone_set('UTC');
             // Load these up in UTC (where we want them, where $hour and $minute already are)
             $day_of_month = intval(date('d', $timestamp));
             $month = intval(date('m', $timestamp));
@@ -1380,17 +1373,9 @@ function find_concrete_day_of_month($year, $month, $day, $monthly_spec_type, $ho
             $nth = intval(1.0 + floatval($day) / 7.0);
 
             $month_end = mktime(0, 0, 0, $month + 1, 0, $year);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set($timezone);
-            } else {
-                safe_ini_set('date.timezone', $timezone);
-            }
+            date_default_timezone_set($timezone);
             $timestamp = strtotime('-' . strval($nth) . ' ' . ($days[$day % 7]), $month_end + 1);
-            if (function_exists('date_default_timezone_set')) {
-                date_default_timezone_set('UTC');
-            } else {
-                safe_ini_set('date.timezone', 'UTC');
-            }
+            date_default_timezone_set('UTC');
             // Load these up in UTC (where we want them, where $hour and $minute already are)
             $day_of_month = intval(date('d', $timestamp));
             $month = intval(date('m', $timestamp));

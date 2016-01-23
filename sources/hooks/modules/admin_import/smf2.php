@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -390,7 +390,7 @@ class Hook_smf2
                 }
 
                 $custom_fields = array(
-                    cns_make_boiler_custom_field('cms_fullname') => $row['real_name'],
+                    cns_make_boiler_custom_field('cms_firstname') => $row['real_name'],
                 );
                 if ($row['website_url'] != '') {
                     $custom_fields[cns_make_boiler_custom_field('website')] = $row['website_url'];
@@ -1743,8 +1743,6 @@ class Hook_smf2
     {
         require_code('news');
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
         $rows = $db->query_select('tp_variables', array('value1 AS title', 'id'), array('type' => 'category'), '', null, null, true);
         if (is_null($rows)) {
             return; // Not TinyPortal
@@ -1755,9 +1753,8 @@ class Hook_smf2
             }
 
             $id_new = add_news_category($row['title'], '', '');
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($id_new), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('news', $id_new);
 
             import_id_remap_put('news_category', strval($row['id']), $id_new);
         }

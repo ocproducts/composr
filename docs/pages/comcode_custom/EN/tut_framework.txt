@@ -13,7 +13,7 @@ This tutorial covers day-to-day aspects of making and installing addons, especia
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Open source[/title]
+[title="2"]Open Source[/title]
 
 Composr is Free Software and Open Source, meaning it's completely open and customisable.
 
@@ -68,7 +68,7 @@ The process of writing the module went along this basic route:
 9) The module was tested, and then deployed
 
 [media width="150" description="Composr module for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_module.png[/media]
-The new module, approximately 1,000 lines of code (PHP and XHTML) was completed within one long day, and in active use soon after. It is a moderately advanced module, and was of great help to our organisation. Naturally, it would take a lot longer for an inexperienced Composr programmer to create this module, but the point is that it was made a lot faster due to our API and extension infrastructure: without these, a custom application from scratch might have taken a full week to develop. The alternative to a custom module would have been a third party application, but this would not have provided us with the level of integration we demand for our systems (not to mention compatibility with things as they are currently, and how they might change in the future). Commercial developers are available for implementing systems built around on Composr (as third party developers may be also).
+The new module, approximately 1,000 lines of code (PHP and XHTML) was completed within one long day, and in active use soon after. It is a moderately advanced module, and was of great help to our organisation. Naturally, it would take a lot longer for an inexperienced Composr programmer to create this module, but the point is that it was made a lot faster due to our API and extension infrastructure: without these, a custom application from scratch might have taken a full week to develop. The alternative to a custom module would have been a third party application, but this would not have provided us with the level of integration we demand for our systems (not to mention compatibility with things as they are currently, and how they might change in the future). Professional developers are available for implementing systems built around on Composr (as third party developers may be also).
 
 Some of the API functions used in the module include:
  - [tt]create_table[/tt]
@@ -196,7 +196,8 @@ The Composr API guide does actually include a PHP reference that defines a subse
 [title="2"]Other advantages to our framework[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
-If you still are not convinced that Composr is the right choice for you, consider some of these:[list]
+If you still are not convinced that Composr is the right choice for you, consider some of these:
+[list]
  [*] There are many frameworks for creating web applications available (such as Typo3 or Ruby-On-Rails), but few true frameworks like Composr are also 'out of the box' systems.
  [*] In addition to the above, few pure frameworks provide the dimensions of functionality that Composr can provide.
  [*] Composr's framework has excellent security. For example,[list]
@@ -211,7 +212,7 @@ If you still are not convinced that Composr is the right choice for you, conside
   [*] a large number of agents to contact for different kinds of problem;
   [*] no central authority for you to agree licensing with, should you need to do so (and this is not unlikely, as many projects flower to unexpected ends);
   [*] orphaned projects that die
-[/list]
+ [/list]
 [/list]
 
 [concepts

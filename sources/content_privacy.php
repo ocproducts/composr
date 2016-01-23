@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -25,7 +25,7 @@
  * @param  ID_TEXT $table_alias The table alias in the main query
  * @param  ?MEMBER $viewing_member_id Viewing member to check privacy against (null: current member)
  * @param  string $additional_or Additional OR clause for letting the user through
- * @param  ?MEMBER $submitter Member owning the content (null: do dynamically in query via content hook). Usually pass as NULL
+ * @param  ?MEMBER $submitter Member owning the content (null: do dynamically in query via content hook). Usually pass as null
  * @return array A tuple: extra JOIN clause, extra WHERE clause, table clause (rarely used), direct table WHERE clause (rarely used)
  */
 function get_privacy_where_clause($content_type, $table_alias, $viewing_member_id = null, $additional_or = '', $submitter = null)

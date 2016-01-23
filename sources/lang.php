@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -470,7 +470,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
 
     $REQUIRE_LANG_LOOP++;
 
-    if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
         print('<!-- require_lang: ' . htmlentities($codename) . ' (' . integer_format(memory_get_usage()) . ' before) -->' . "\n");
         flush();
     }
@@ -1077,7 +1077,8 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $entry = $row[$field_name];
 
         if ($entry == 0) {
-            return paragraph(do_lang_tempcode('FAILED_ENTRY'), 'rtgtedgrgd');
+            attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+            return new Tempcode();
         }
 
         global $RECORD_LANG_STRINGS_CONTENT;
@@ -1190,7 +1191,8 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
     }
 
     if ($entry == 0) {
-        return do_lang('FAILED_ENTRY');
+        attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+        return '';
     }
 
     if ($entry === null) {

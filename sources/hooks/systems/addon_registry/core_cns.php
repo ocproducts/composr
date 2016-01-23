@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_cns
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -152,7 +153,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/notifications/cns_password_changed.php',
             'sources/hooks/systems/snippets/member_tooltip.php',
             'sources/hooks/systems/notifications/cns_rank_promoted.php',
-            'sources/hooks/systems/snippets/email_exists.php',
+            'sources/hooks/systems/snippets/exists_email.php',
             'sources/hooks/systems/snippets/profile_tab.php',
             'sources/hooks/systems/snippets/invite_missing.php',
             'sources/hooks/systems/snippets/exists_usergroup.php',
@@ -217,15 +218,11 @@ class Hook_addon_registry_core_cns
             'adminzone/pages/modules/admin_cns_merge_members.php',
             'adminzone/pages/modules/admin_cns_members.php',
             'sources/hooks/modules/admin_import/csv_members.php',
-            'themes/default/templates/CNS_BIRTHDAYS.tpl',
-            'themes/default/templates/CNS_EMOTICON_CELL.tpl',
-            'themes/default/templates/CNS_EMOTICON_ROW.tpl',
             'themes/default/templates/CNS_EMOTICON_TABLE.tpl',
             'themes/default/templates/CNS_JOIN_STEP1_SCREEN.tpl',
             'themes/default/templates/CNS_USERS_ONLINE_SCREEN.tpl',
             'themes/default/templates/CNS_MEMBER_ACTION.tpl',
             'themes/default/templates/CNS_MEMBER_DIRECTORY_SCREEN.tpl',
-            'themes/default/templates/CNS_USERS_ONLINE_ROW.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_SCREEN.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_ABOUT.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_EDIT.tpl',
@@ -410,7 +407,6 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/primary_members_per_page.php',
             'sources/hooks/systems/config/secondary_members_per_page.php',
             'sources/hooks/systems/config/show_empty_cpfs.php',
-            'sources/hooks/systems/config/signup_fullname.php',
             'sources/hooks/systems/config/use_joindate.php',
             'sources/hooks/systems/config/use_lastondate.php',
             'sources/hooks/systems/config/username_profile_links.php',
@@ -457,14 +453,11 @@ class Hook_addon_registry_core_cns
             'templates/CNS_AUTO_TIME_ZONE_ENTRY.tpl' => 'cns_auto_time_zone_entry',
             'templates/CNS_USER_MEMBER.tpl' => 'cns_user_member',
             'templates/CNS_MEMBER_ACTION.tpl' => 'cns_member_profile_screen',
-            'templates/CNS_EMOTICON_ROW.tpl' => 'cns_emoticon_table',
-            'templates/CNS_EMOTICON_CELL.tpl' => 'cns_emoticon_table',
             'templates/CNS_EMOTICON_TABLE.tpl' => 'cns_emoticon_table',
             'templates/CNS_MEMBER_DIRECTORY_SCREEN.tpl' => 'cns_member_directory_screen',
             'templates/CNS_MEMBER_PROFILE_SCREEN.tpl' => 'cns_member_profile_screen',
             'templates/CNS_MEMBER_PROFILE_ABOUT.tpl' => 'cns_member_profile_screen',
             'templates/CNS_MEMBER_PROFILE_EDIT.tpl' => 'cns_member_profile_screen',
-            'templates/CNS_USERS_ONLINE_ROW.tpl' => 'cns_users_online_screen',
             'templates/CNS_USERS_ONLINE_SCREEN.tpl' => 'cns_users_online_screen',
             'templates/CNS_GROUP_DIRECTORY_SCREEN.tpl' => 'cns_group_directory_screen',
             'templates/CNS_VIEW_GROUP_MEMBER.tpl' => 'cns_view_group_screen',
@@ -727,32 +720,32 @@ class Hook_addon_registry_core_cns
      */
     public function tpl_preview__cns_emoticon_table()
     {
-        $content = new Tempcode();
+        $rows = array();
         $cols = 4;
-        $current_row = new Tempcode();
+        $cells = array();
         for ($i = 0; $i < 10; $i++) {
             if (($i % $cols == 0) && ($i != 0)) {
-                $content->attach(do_lorem_template('CNS_EMOTICON_ROW', array(
-                    'CELLS' => $current_row,
-                )));
-                $current_row = new Tempcode();
+                $rows[] = array(
+                    'CELLS' => $cells,
+                );
+                $cells = array();
             }
-            $current_row->attach(do_lorem_template('CNS_EMOTICON_CELL', array(
+            $cells[] = array(
                 'FIELD_NAME' => lorem_word(),
                 'COLS' => strval($cols),
                 'CODE_ESC' => '',
                 'THEME_IMG_CODE' => 'cns_emoticons/smile',
                 'CODE' => ':)',
-            )));
+            );
         }
-        if (!$current_row->is_empty()) {
-            $content->attach(do_lorem_template('CNS_EMOTICON_ROW', array(
-                'CELLS' => $current_row,
-            )));
+        if ($cells !== array()) {
+            $rows[] = array(
+                'CELLS' => $cells,
+            );
         }
 
         $content = do_lorem_template('CNS_EMOTICON_TABLE', array(
-            'ROWS' => $content,
+            'ROWS' => $rows,
         ));
 
         return array(
@@ -1058,15 +1051,15 @@ class Hook_addon_registry_core_cns
      */
     public function tpl_preview__cns_users_online_screen()
     {
-        $rows = new Tempcode();
+        $rows = array();
         foreach (placeholder_array() as $key => $value) {
-            $rows->attach(do_lorem_template('CNS_USERS_ONLINE_ROW', array(
+            $rows[] = array(
                 'IP' => placeholder_ip(),
                 'AT_URL' => placeholder_url(),
                 'LOCATION' => lorem_word(),
                 'MEMBER' => placeholder_link(),
                 'TIME' => placeholder_date(),
-            )));
+            );
         }
 
         return array(

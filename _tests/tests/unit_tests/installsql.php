@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,15 +33,12 @@ class installsql_test_set extends cms_test_case
         // Old way of specifying table types
         $this->assertTrue(strpos($contents, ' TYPE=') === false, 'Change TYPE= to ENGINE=');
 
-        // New way of specifying HEAP table (MEMORY only works on newer versions)
-        $this->assertTrue(strpos($contents, ' ENGINE=MEMORY') === false, ' ENGINE=HEAP');
-
         // Not with bundled addons
         $this->assertTrue(strpos($contents, 'CREATE TABLE `cms_workflow_') === false, 'Contains non-bundled addons');
 
         // Not with wrong table prefixes / multiple installs
-        $this->assertTrue(preg_match('#\`cms\d+\_#', $contents) == 0, 'Contains a prefixed install');
-        $this->assertTrue(preg_match('#\`cms\_#', $contents) != 0, 'Does not contain a non-prefixed install');
+        $this->assertTrue(preg_match('#\`cms\d+\_#', $contents) == 0, 'Contains a version-prefixed install');
+        $this->assertTrue(preg_match('#\`cms\_#', $contents) == 1, 'Does not contain a standard-prefixed install');
 
         // Not having been run
         $this->assertTrue(preg_match('#INSERT INTO \`cms\_cache\`#i', $contents) == 0, 'Contains cache data');

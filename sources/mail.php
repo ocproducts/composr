@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -404,7 +404,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         'no_parse',
         'code',
 
-        // Intentional meta data in these actually, so just leave them in
+        // Intentional metadata in these actually, so just leave them in
         //'reference',
         //'cite',
         //'quote',
@@ -1009,7 +1009,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Support for SMTP sockets rather than PHP mail()
     $error = null;
-    if ((get_option('smtp_sockets_use') == '1') && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+    if ((get_option('smtp_sockets_use') == '1') && (php_function_allowed('fsockopen'))) {
         $worked = false;
 
         $host = get_option('smtp_sockets_host');
@@ -1350,12 +1350,46 @@ function form_to_email_entry_script()
  */
 function form_to_email($subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
+    $details = _form_to_email(null, $subject, $intro, $fields, $to_email, $outro, $is_via_post);
+    list($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments) = $details;
+
+    if (addon_installed('captcha')) {
+        if (post_param_integer('_security', 0) == 1) {
+            require_code('captcha');
+            enforce_captcha();
+        }
+    }
+
+    mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+
+    if ($from_email != '') {
+        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
+    }
+}
+
+/**
+ * Worker funtion for form_to_email.
+ *
+ * @param  ?array $extra_boring_fields Fields to skip in addition to the normal skipped ones (null: just the normal skipped ones)
+ * @param  ?string $subject The subject of the email (null: from posted subject parameter).
+ * @param  string $intro The intro text to the mail (blank: none).
+ * @param  ?array $fields A map of fields to field titles to transmit. (null: all posted fields, except subject and email)
+ * @param  ?string $to_email Email address to send to (null: look from post environment / staff address).
+ * @param  string $outro The outro text to the mail (blank: none).
+ * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
+ * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments
+ *
+ * @ignore
+ */
+function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
+{
     if (is_null($subject)) {
         $subject = post_param_string('subject', get_site_name());
     }
+
     if (is_null($fields)) {
         $fields = array();
-        $boring_fields = array(
+        $boring_fields = array( // NB: Keep in sync with static_export.php
             'MAX_FILE_SIZE',
             'perform_webstandards_check',
             '_validated',
@@ -1372,16 +1406,45 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
             'to_written_name',
             'redirect',
             'http_referer',
+            'session_id',
             md5(get_site_name() . ': antispam'),
         );
+        if (!is_null($extra_boring_fields)) {
+            $boring_fields = array_merge($boring_fields, $extra_boring_fields);
+        }
         foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
-            $is_hidden = (strpos($key, 'hour') !== false) || (strpos($key, 'access_') !== false) || (strpos($key, 'minute') !== false) || (strpos($key, 'confirm') !== false) || (strpos($key, 'pre_f_') !== false) || (strpos($key, 'label_for__') !== false) || (strpos($key, 'wysiwyg_version_of_') !== false) || (strpos($key, 'is_wysiwyg') !== false) || (strpos($key, 'require__') !== false) || (strpos($key, 'tempcodecss__') !== false) || (strpos($key, 'comcode__') !== false) || (strpos($key, '_parsed') !== false) || (substr($key, 0, 1) == '_') || (substr($key, 0, 9) == 'hidFileID') || (substr($key, 0, 11) == 'hidFileName');
+            $is_hidden =  // NB: Keep in sync with static_export.php
+                (strpos($key, 'hour') !== false) || 
+                (strpos($key, 'access_') !== false) || 
+                (strpos($key, 'minute') !== false) || 
+                (strpos($key, 'confirm') !== false) || 
+                (strpos($key, 'pre_f_') !== false) || 
+                (strpos($key, 'tick_on_form__') !== false) || 
+                (strpos($key, 'label_for__') !== false) || 
+                (strpos($key, 'description_for__') !== false) || 
+                (strpos($key, 'wysiwyg_version_of_') !== false) || 
+                (strpos($key, 'is_wysiwyg') !== false) || 
+                (strpos($key, 'require__') !== false) || 
+                (strpos($key, 'tempcodecss__') !== false) || 
+                (strpos($key, 'comcode__') !== false) || 
+                (strpos($key, '_parsed') !== false) || 
+                (substr($key, 0, 1) == '_') || 
+                (substr($key, 0, 9) == 'hidFileID') || 
+                (substr($key, 0, 11) == 'hidFileName');
             if ($is_hidden) {
                 continue;
             }
 
             if (substr($key, 0, 1) != '_') {
-                $fields[$key] = post_param_string('label_for__' . $key, titleify($key));
+                $label = post_param_string('label_for__' . $key, titleify($key));
+                $description = post_param_string('description_for__' . $key, '');
+                $_label = $label . (($description == '') ? '' : (' (' . $description . ')'));
+
+                if ($is_via_post) {
+                    $fields[$key] = $_label;
+                } else {
+                    $fields[$label] = post_param_string($key, null);
+                }
             }
         }
     }
@@ -1394,12 +1457,12 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     }
 
     if ($is_via_post) {
-        foreach ($fields as $field => $field_title) {
-            $field_val = post_param_string($field, null);
+        foreach ($fields as $field_name => $field_title) {
+            $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ' . $field_val . "\n\n";
+                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
 
-                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field, '') == 'email')) {
+                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
                 }
             }
@@ -1407,7 +1470,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ' . $field_val . "\n\n";
+                _append_form_to_email($message_raw, false, $field_title, $field_val);
             }
         }
     }
@@ -1437,16 +1500,44 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         $attachments[$file['tmp_name']] = $file['name'];
     }
 
-    if (addon_installed('captcha')) {
-        if (post_param_integer('_security', 0) == 1) {
-            require_code('captcha');
-            enforce_captcha();
+    return array($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments);
+}
+
+/**
+ * Append a value to a text e-mail.
+ *
+ * @param  string $message_raw Text-email (altered by reference).
+ * @param  string $is_tick Whether it is a tick field.
+ * @param  string $field_title Field title.
+ * @param  string $field_val Field value.
+ *
+ * @ignore
+ */
+function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val)
+{
+    $prefix = '';
+    $prefix .= '[b]' . $field_title . '[/b]:';
+    if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
+        $prefix .= "\n";
+    } else {
+        $prefix .= " ";
+    }
+
+    if ($is_tick && in_array($field_val, array('', '0', '1'))) {
+        $message_raw .= $prefix;
+        $message_raw .= ($field_val == '1') ? do_lang('YES') : do_lang('NO');
+    } else {
+        if ($field_val == '') {
+            return; // We won't show blank values, gets long
+        }
+
+        $message_raw .= $prefix;
+        if ($field_val == '') {
+            $message_raw .= '(' . do_lang('EMPTY') . ')';
+        } else {
+            $message_raw .= $field_val;
         }
     }
 
-    mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
-
-    if ($from_email != '') {
-        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
-    }
+    $message_raw .= "\n\n";
 }

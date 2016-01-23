@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -115,7 +115,7 @@ function check_rbls($page_level = false, $user_ip = null)
  * @param  IP $user_ip The IP address to lookup
  * @param  boolean $we_have_a_result_already If true, then no RBL check will happen if the RBL has no scoring, because it can't provide a superior result to what is already known (performance)
  * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
- * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else NULL)
+ * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else null)
  */
 function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_level = false)
 {
@@ -414,7 +414,7 @@ function check_stopforumspam($username = null, $email = null)
  * @param  string $user_ip Check this IP address
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
  * @param  ?string $email Check this particular email address that has just been supplied (null: none)
- * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else NULL)
+ * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else null)
  * @ignore
  */
 function _check_stopforumspam($user_ip, $username = null, $email = null)

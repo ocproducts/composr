@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 /*
@@ -715,6 +715,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
 }
+.zone_running_docs .comcode_page img {
+	max-width: 100%;
+}
 
 /*{+START,IF,{$MOBILE}}*/
 	.global_middle, .panel_solo {
@@ -1063,7 +1066,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
-	font-size: 0.95em;
+	font-size: 13px !important; /* px not em due to careful background positioning */
 	padding-{!en_left}: 15px;
 	margin: 1.5em;
 	margin-{!en_left}: 10px;
@@ -1096,6 +1099,11 @@ div.edited {
 /* Used to align inline images to the top of the rendering context */
 .top_vertical_alignment, .top_vertical_alignment * {
 	vertical-align: top;
+}
+
+/* Used to align a back to top image beside screen item buttons */
+.back_to_top_by_buttons {
+	padding-top: 4px;
 }
 
 /* Used to align next to a floated button(s) */
@@ -1289,9 +1297,9 @@ div.red_alert, p.red_alert {
 
 /* Used when a label is the only thing in front of a textarea/list */
 .lonely_label  {
-	margin-bottom: 0.2em;
-	display: block;
-	font-size: 1.1em;
+	margin-bottom: 0.2em !important;
+	display: block !important;
+	font-size: 1.1em !important;
 }
 .lonely_label+ul, .lonely_label+ol, .lonely_label+p {
 	margin-top: 0.2em;
@@ -1339,7 +1347,7 @@ div.red_alert, p.red_alert {
 	border-left: 0;
 }
 
-th.meta_data_title {
+th.metadata_title {
 	font-weight: bold !important;
 }
 
@@ -1418,14 +1426,14 @@ td>.box, .right>.box, .left>.box {
 }
 
 .box>.box_inner, .box>.toggleable_tray {
-	margin: 0.5em;
+	margin: 5px; /* not em so that header may be positioned properly */
 }
 .boxless_space .box>.box_inner, .boxless_space .box>.toggleable_tray {
 	margin: 0;
 }
 .email_body .box .box_inner { /* Outlook.com does not support margins or complex use of the sibling selector */
 	margin: 0;
-	padding: 0.5em;
+	padding: 5px; /* not em so that header may be positioned properly */
 }
 
 .box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
@@ -1443,7 +1451,7 @@ td>.box, .right>.box, .left>.box {
 	letter-spacing: 0;
 
 	/* .box_inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -0.506em 0 0.506em -0.506em; /* Would be -0.5 but Opera does not seem to like */
+	margin: -5px 0 5px -5px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: 100%;
 }
@@ -1918,7 +1926,7 @@ table.scrollable_inside {
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
 	{+START,IF,{$MOBILE}}
-		overflow-x: scroll;
+		overflow-x: auto;
 	{+END}
 }
 
@@ -2640,6 +2648,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .comments_posting_form_inner textarea {
 	color: {$GET,comfortable_input_field_text};
+	width: 100%;
 }
 
 .comments_posting_form_inner table {
@@ -2747,11 +2756,11 @@ ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul {
+ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul {
 	list-style-type: square;
 }
 .spaced_list li, .zone_running_docs .comcode_page li {
-	margin: 0.5em 0 0.5em 25px !important;
+	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
 
@@ -2801,12 +2810,12 @@ li.actions_list_strong {
 }
 
 /*
-A note about display of meta data...
+A note about display of metadata...
 
 It may be displayed using:
  - meta_details_list (usually used on full screen views of content)
  - horizontal_meta_details (usually used on blocks where the meta details are important to encourage a click through)
- - a table (usually used where the content defines its own meta data beyond what all Composr content has, such as a length or resolution)
+ - a table (usually used where the content defines its own metadata beyond what all Composr content has, such as a length or resolution)
  - a tooltip (good for tucking it away, although it's not touch friendly so should only be used if non-important)
 But it should always have role="note" on it (ARIA)
 */
@@ -3230,8 +3239,6 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .button_screen_item {
 	padding: 3px 30px 4px 5px;
-	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;
 	/*{+START,IF,{$MOBILE}}*/
@@ -3367,9 +3374,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 }
 .buttons__calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
-}
-.buttons__revisions {
-	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 }
 .buttons__choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
@@ -4331,7 +4335,7 @@ a[rel="lightbox"] {
 	}
 
 	a[href$=".rss"].user_link, body div a.feed_link {
-		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top; 
+		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 

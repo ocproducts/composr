@@ -7,7 +7,6 @@ An example of this is you might want to display a gallery on the homepage to pre
 [title="2"]Using the [tt]if_in_group[/tt] tag on a page[/title]
 
 There are two types of places you might want to use the [tt]if_in_group tag[/tt]. One of them is on a normal page which you edit in the normal way. The second is as part of the website template which I will cover further down. To add the code to a normal page you will need to use the example below:
-
 [code="Comcode"]
 [if_in_group="1,2,6,7"]Here would be a custom welcome message which only members of groups 1, 2 6 & 7 would see[/if_in_group]
 

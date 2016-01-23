@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -16,7 +16,7 @@
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 
-function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $meta_data)
+function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $metadata)
 {
     require_code('spout/vendor/autoload');
 
@@ -84,8 +84,8 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
 
             $single_row[] = $val;
         }
-        if (isset($meta_data[$_i])) {
-            $writer->addRow($single_row, $meta_data[$_i]);
+        if (isset($metadata[$_i])) {
+            $writer->addRow($single_row, $metadata[$_i]);
         } else {
             $writer->addRow($single_row);
         }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_config_support_credit_value
             'human_name' => 'SUPPORT_CREDIT_VALUE',
             'type' => 'float',
             'category' => 'FEATURE',
-            'group' => 'SECTION_CUSTOMERS',
+            'group' => 'CUSTOMERS',
             'explanation' => 'CONFIG_OPTION_support_credit_value',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

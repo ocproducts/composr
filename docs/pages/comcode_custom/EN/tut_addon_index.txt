@@ -25,8 +25,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Audit-trail functionality.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_censor">Dealing with annoying users</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a></td>
+            <td>audit</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=actionlog&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -35,7 +35,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Define complex aggregate types in XML, and spawn them.</td>
             <!--<td>No</td>-->
             <td><kbd>commandr<br /><br />import</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_aggregate_types">Aggregate Content Types</a></td>
+            <td><a href="http://compo.sr/docs10/tut-aggregate-types.htm">Aggregate Content Types</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=aggregate_types&amp;status_id=10">Link</a></td>
         </tr>
@@ -45,7 +45,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Sample .htaccess files to help achieve optimal configuration on the Apache web server.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_configuration">Advanced configuration</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-configuration.htm">Advanced configuration</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=apache_config_files&amp;status_id=10">Link</a></td>
         </tr>
@@ -55,8 +55,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Certain kinds of content can have authors instead of submitters (e.g. &#039;ocProducts&#039;). The authors may be independently described and searched under.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_authors">Authors</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_users">People in their roles</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-authors.htm">Authors</a><br /><br /><a href="http://compo.sr/docs10/tut-users.htm">People in their roles</a></td>
+            <td>bio<br /><br />biography</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=authors&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -65,8 +65,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Pick out content for featuring.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_featured">Providing featured content</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-featured.htm">Providing featured content</a></td>
+            <td>highlight<br /><br />feature</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=awards&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -75,7 +75,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Perform incremental or full backups of files and the database. Supports scheduling.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_backup">Backing up your site</a></td>
+            <td><a href="http://compo.sr/docs10/tut-backup.htm">Backing up your site</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=backup&amp;status_id=10">Link</a></td>
         </tr>
@@ -85,8 +85,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_banners">Running advertisements (via the banner system)</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-banners.htm">Running advertisements (via the banner system)</a></td>
+            <td>advert<br /><br />advertising<br /><br />advertise</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=banners&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -95,8 +95,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Allow members to bookmark screens of the website. As the bookmarks are tied to their member profile they can access them from any computer they can log in on.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
+            <td>favorite</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=bookmarks&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -105,7 +105,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Advanced breadcrumb editing.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_structure">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_structure">Advanced site structure and flow</a></td>
+            <td><a href="http://compo.sr/docs10/tut-structure.htm">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-structure.htm">Advanced site structure and flow</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=breadcrumbs&amp;status_id=10">Link</a></td>
         </tr>
@@ -115,8 +115,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>An advanced community calendar.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_calendar">Running a calendar/diary</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-calendar.htm">Running a calendar/diary</a></td>
+            <td>event<br /><br />diary<br /><br />schedule</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=calendar&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -125,7 +125,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Stop spam-bots from performing actions on the website.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=captcha&amp;status_id=10">Link</a></td>
         </tr>
@@ -135,8 +135,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Describe your own custom data record types (by choosing and configuring fields) and populate with records. Supports tree structures, and most standard Composr features (e.g. ratings).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_catalogues">Custom structured content (via catalogues)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_fields">Custom fields</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-catalogues.htm">Custom structured content (via catalogues)</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a><br /><br /><a href="http://compo.sr/docs10/tut-fields.htm">Custom fields</a></td>
+            <td>catalogue<br /><br />database<br /><br />classified<br /><br />catalog<br /><br />directory<br /><br />schema<br /><br />field</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=catalogues&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -145,7 +145,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Chatrooms and instant messaging.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_chat">Running chatrooms (features and advice)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-chat.htm">Running chatrooms (features and advice)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=chat&amp;status_id=10">Link</a></td>
         </tr>
@@ -155,7 +155,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A selection of avatars for Conversr</td>
             <!--<td>No</td>-->
             <td><kbd>cns_member_avatars</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_avatars&amp;status_id=10">Link</a></td>
         </tr>
@@ -165,7 +165,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A selection of avatars for Conversr (sketched characters)</td>
             <!--<td>No</td>-->
             <td><kbd>cns_member_avatars</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_cartoon_avatars&amp;status_id=10">Link</a></td>
         </tr>
@@ -175,7 +175,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Clubs for members, each of which comes with a forum.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Tools for subsites and subcommunities</a></td>
+            <td><a href="http://compo.sr/docs10/tut-subcom.htm">Tools for subsites and subcommunities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_clubs&amp;status_id=10">Link</a></td>
         </tr>
@@ -185,7 +185,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Off-site e-mailing of members (more private, and may be used by guests).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_correspondance">Correspondence between members</a></td>
+            <td><a href="http://compo.sr/docs10/tut-correspondance.htm">Correspondence between members</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_contact_member&amp;status_id=10">Link</a></td>
         </tr>
@@ -195,7 +195,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_members">Advanced Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-members.htm">Advanced Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_cpfs&amp;status_id=10">Link</a></td>
         </tr>
@@ -205,7 +205,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The Conversr forum- a modern advanced forum for members to interact on.</td>
             <!--<td>No</td>-->
             <td><kbd>polls</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_forums">Discussion forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_helpdesk">Running a discussion-forum-based helpdesk</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_tracking">Keeping on track of busy forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moderation">Basic forum moderation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
+            <td><a href="http://compo.sr/docs10/tut-forums.htm">Discussion forums</a><br /><br /><a href="http://compo.sr/docs10/tut-forum-tracking.htm">Keeping on track of busy forums</a><br /><br /><a href="http://compo.sr/docs10/tut-moderation.htm">Basic forum moderation</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_forum&amp;status_id=10">Link</a></td>
         </tr>
@@ -215,7 +215,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Member avatars.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_member_avatars&amp;status_id=10">Link</a></td>
         </tr>
@@ -225,7 +225,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Member photos.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_member_photos&amp;status_id=10">Link</a></td>
         </tr>
@@ -235,7 +235,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Member titles.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_member_titles&amp;status_id=10">Link</a></td>
         </tr>
@@ -245,7 +245,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Multi-moderations for the Conversr forum.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_forum_helpdesk">Running a discussion-forum-based helpdesk</a></td>
+            <td><a href="http://compo.sr/docs10/tut-moderation.htm">Basic forum moderation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_multi_moderations&amp;status_id=10">Link</a></td>
         </tr>
@@ -255,7 +255,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Post templates for the Conversr forum.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_forum_helpdesk">Running a discussion-forum-based helpdesk</a></td>
+            <td><a href="http://compo.sr/docs10/tut-support-desk.htm">Running a virtual support desk</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_post_templates&amp;status_id=10">Link</a></td>
         </tr>
@@ -265,7 +265,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Post reporting with the Conversr forum.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_staff">Coordination between staff and staff/members</a></td>
+            <td><a href="http://compo.sr/docs10/tut-staff.htm">Coordination between staff and staff/members</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_reported_posts&amp;status_id=10">Link</a></td>
         </tr>
@@ -275,7 +275,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Member signatures.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_signatures&amp;status_id=10">Link</a></td>
         </tr>
@@ -285,7 +285,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A selection of avatars for Conversr</td>
             <!--<td>No</td>-->
             <td><kbd>cns_member_avatars</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_thematic_avatars&amp;status_id=10">Link</a></td>
         </tr>
@@ -295,7 +295,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Member warnings and punishment.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_censor">Dealing with annoying users</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_staff">Coordination between staff and staff/members</a></td>
+            <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a><br /><br /><a href="http://compo.sr/docs10/tut-staff.htm">Coordination between staff and staff/members</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_warnings&amp;status_id=10">Link</a></td>
         </tr>
@@ -305,7 +305,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>For programmers- A simple editor for editing Composr code files, with support for override support and saving via FTP.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_framework">The Composr programming framework</a></td>
+            <td><a href="http://compo.sr/docs10/tut-framework.htm">The Composr programming framework</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=code_editor&amp;status_id=10">Link</a></td>
         </tr>
@@ -315,7 +315,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Collaboration Zone.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_collaboration">Running a collaboration hub: the Collaboration Zone</a></td>
+            <td><a href="http://compo.sr/docs10/tut-collaboration.htm">Running a collaboration hub: the Collaboration Zone</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=collaboration_zone&amp;status_id=10">Link</a></td>
         </tr>
@@ -325,8 +325,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A command-line environment for managing your website, designed for Linux/Unix lovers.</td>
             <!--<td>No</td>-->
             <td><kbd>import</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_commandr">Commandr</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_repository">The Composr repository</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-commandr.htm">Commandr</a><br /><br /><a href="http://compo.sr/docs10/tut-repository.htm">The Composr Enterprise Repository</a></td>
+            <td>console<br /><br />command prompt<br /><br />command line<br /><br />cle</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=commandr&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -335,7 +335,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Allows users to specify privacy level for their content.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_censor">Dealing with annoying users</a></td>
+            <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=content_privacy&amp;status_id=10">Link</a></td>
         </tr>
@@ -345,8 +345,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Regularly review content for accuracy.</td>
             <!--<td>No</td>-->
             <td><kbd>unvalidated<br /><br />commandr</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adminzone">Admin Zone overview</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-adminzone.htm">Admin Zone overview</a></td>
+            <td>content reviews<br /><br />audit</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=content_reviews&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -355,7 +355,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>(Core Composr code)</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_webapp">Web-applications, Composr, and PHP</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_do">Dos and Do-nots of an (Composr) website</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_drinking">Drinking from the feature pool</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_metadata">Meta Data</a></td>
+            <td><a href="http://compo.sr/docs10/tut-do.htm">Dos and Do-nots of an (Composr) website</a><br /><br /><a href="http://compo.sr/docs10/tut-drinking.htm">Drinking from the feature pool</a><br /><br /><a href="http://compo.sr/docs10/tut-metadata.htm">Meta Data</a><br /><br /><a href="http://compo.sr/docs10/tut-sql.htm">Manually editing your database with phpMyAdmin</a><br /><br /><a href="http://compo.sr/docs10/tut-short-urls.htm">URL Schemes in Composr</a><br /><br /><a href="http://compo.sr/docs10/tut-seo.htm">Improving your search engine ranking</a><br /><br /><a href="http://compo.sr/docs10/tut-selectcode.htm">Filtering using Selectcode syntax</a><br /><br /><a href="http://compo.sr/docs10/tut-filtercode.htm">Filtering using Filtercode syntax</a><br /><br /><a href="http://compo.sr/docs10/tut-keymap.htm">Composr keyboard shortcuts</a><br /><br /><a href="http://compo.sr/docs10/tut-email.htm">Understanding and configuring e-mail</a><br /><br /><a href="http://compo.sr/docs10/tut-disaster.htm">Disaster recovery</a><br /><br /><a href="http://compo.sr/docs10/tut-antispam.htm">Anti-spam settings</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core&amp;status_id=10">Link</a></td>
         </tr>
@@ -365,7 +365,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_abstract_components&amp;status_id=10">Link</a></td>
         </tr>
@@ -375,7 +375,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_abstract_interfaces&amp;status_id=10">Link</a></td>
         </tr>
@@ -385,7 +385,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Install or uninstall addons.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_framework">The Composr programming framework</a></td>
+            <td><a href="http://compo.sr/docs10/tut-framework.htm">The Composr programming framework</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_addon_management&amp;status_id=10">Link</a></td>
         </tr>
@@ -395,7 +395,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The dashboard tools shown in the Admin Zone.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adminzone">Admin Zone overview</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adminzone.htm">Admin Zone overview</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_adminzone_dashboard&amp;status_id=10">Link</a></td>
         </tr>
@@ -405,7 +405,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Behind-the-scenes maintenance tasks.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_cleanup">Cleanup tools</a></td>
+            <td><a href="http://compo.sr/docs10/tut-cleanup.htm">Cleanup tools</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_cleanup_tools&amp;status_id=10">Link</a></td>
         </tr>
@@ -415,7 +415,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The Composr member/usergroup system.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_members">Advanced Composr member system</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_users">People in their roles</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_httpauth">Integrating Composr into a network via HTTP authentication</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_emoticons">The Composr emoticon system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-members.htm">Advanced Composr member system</a><br /><br /><a href="http://compo.sr/docs10/tut-users.htm">People in their roles</a><br /><br /><a href="http://compo.sr/docs10/tut-httpauth.htm">Integrating Composr into a network via HTTP authentication</a><br /><br /><a href="http://compo.sr/docs10/tut-emoticons.htm">The Composr emoticon system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_cns&amp;status_id=10">Link</a></td>
         </tr>
@@ -425,7 +425,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage new pages on the website, known as Comcode pages.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_comcode_pages">Adding standalone pages of content (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_comcode_pages">Using blocks</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
+            <td><a href="http://compo.sr/docs10/tut-comcode-pages.htm">Adding standalone pages of content (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-comcode-pages.htm">Using blocks</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_comcode_pages&amp;status_id=10">Link</a></td>
         </tr>
@@ -435,7 +435,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Set configuration options.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_configuration">Advanced configuration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moving">Moving sites</a></td>
+            <td><a href="http://compo.sr/docs10/tut-configuration.htm">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-configuration.htm">Advanced configuration</a><br /><br /><a href="http://compo.sr/docs10/tut-moving.htm">Moving sites</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_configuration&amp;status_id=10">Link</a></td>
         </tr>
@@ -445,7 +445,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The code layer that binds the software to one of various different kinds of database software.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_web_hosting">Web hosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a></td>
+            <td><a href="http://compo.sr/docs10/tut-webhosting.htm">Webhosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/tut-install.htm">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_database_drivers&amp;status_id=10">Link</a></td>
         </tr>
@@ -455,7 +455,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Features for user interaction with content.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_feedback">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_news">Advanced news</a></td>
+            <td><a href="http://compo.sr/docs10/tut-feedback.htm">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_feedback_features&amp;status_id=10">Link</a></td>
         </tr>
@@ -465,7 +465,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>(Core fields API)</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_catalogues">Custom structured content (via catalogues)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_fields">Custom fields</a></td>
+            <td><a href="http://compo.sr/docs10/tut-catalogues.htm">Custom structured content (via catalogues)</a><br /><br /><a href="http://compo.sr/docs10/tut-fields.htm">Custom fields</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_fields&amp;status_id=10">Link</a></td>
         </tr>
@@ -475,7 +475,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality for forms.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_form_interfaces&amp;status_id=10">Link</a></td>
         </tr>
@@ -485,7 +485,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The code layer that binds the software to one of various different forum/member systems.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_nuances">Nuances of forum integration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=codebook_1b">Code Book, part 1b</a></td>
+            <td><a href="http://compo.sr/docs10/tut-nuances.htm">Nuances of forum integration</a><br /><br /><a href="http://compo.sr/docs10/codebook-1b.htm">Code Book, part 1b (Further back-end concepts)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_forum_drivers&amp;status_id=10">Link</a></td>
         </tr>
@@ -495,7 +495,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality for imagery.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_fringe">Supplementary web technologies (media, social networking, etc)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-fringe.htm">Supplementary web technologies (media, social networking, etc)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_graphic_text&amp;status_id=10">Link</a></td>
         </tr>
@@ -505,7 +505,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_html_abstractions&amp;status_id=10">Link</a></td>
         </tr>
@@ -515,7 +515,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Translate the software, or just change what it says for stylistic reasons.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_intl">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_intl_users">Changing the site language</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-content.htm">Translating Composr content</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-code-philosophy.htm">Translations code philosophy</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_language_editing&amp;status_id=10">Link</a></td>
         </tr>
@@ -525,7 +525,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Edit menus.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_menus">Customising what&#039;s on the menus</a></td>
+            <td><a href="http://compo.sr/docs10/tut-menus.htm">Customising what&#039;s on the menus</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_menus&amp;status_id=10">Link</a></td>
         </tr>
@@ -535,7 +535,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Sends out action-triggered notifications to members listening to them.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_notifications">Notifications</a></td>
+            <td><a href="http://compo.sr/docs10/tut-notifications.htm">Notifications</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_notifications&amp;status_id=10">Link</a></td>
         </tr>
@@ -545,7 +545,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage permissions.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_permissions">Access control and privileges</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_permissions">Advanced access control</a></td>
+            <td><a href="http://compo.sr/docs10/tut-permissions.htm">Access control and privileges</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-permissions.htm">Advanced access control</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_permission_management&amp;status_id=10">Link</a></td>
         </tr>
@@ -555,7 +555,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_designer_themes">Designer themes, implementing a clean-room design</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/tut-designer-themes.htm">Designer themes, implementing a clean-room design</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_primary_layout&amp;status_id=10">Link</a></td>
         </tr>
@@ -565,7 +565,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Comcode and attachments.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_comcode">Comcode and the attachment system</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_comcode">Advanced Comcode</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_wysiwyg">WYSIWYG editing</a></td>
+            <td><a href="http://compo.sr/docs10/tut-comcode.htm">Comcode and the attachment system</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-comcode.htm">Advanced Comcode</a><br /><br /><a href="http://compo.sr/docs10/tut-wysiwyg.htm">WYSIWYG editing</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_rich_media&amp;status_id=10">Link</a></td>
         </tr>
@@ -575,7 +575,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Themeing the website, via CSS, HTML, and images.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_releasing_themes">Releasing a theme</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_theme_lifecycle">Theme Lifecycle</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_tempcode">Tempcode programming</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_fixed_width">Fixed-width layouts</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_design">Introduction to web design</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_designer_themes">Designer themes, implementing a clean-room design</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/tut-releasing-themes.htm">Releasing a theme</a><br /><br /><a href="http://compo.sr/docs10/tut-theme-lifecycle.htm">Theme Lifecycle</a><br /><br /><a href="http://compo.sr/docs10/tut-tempcode.htm">Tempcode programming</a><br /><br /><a href="http://compo.sr/docs10/tut-fixed-width.htm">Fixed-width layouts</a><br /><br /><a href="http://compo.sr/docs10/tut-design.htm">Introduction to web design</a><br /><br /><a href="http://compo.sr/docs10/tut-designer-themes.htm">Designer themes, implementing a clean-room design</a><br /><br /><a href="http://compo.sr/docs10/tut-mobile.htm">Mobile design</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_themeing&amp;status_id=10">Link</a></td>
         </tr>
@@ -585,7 +585,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The upgrader code.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_upgrade">Performing an upgrade</a></td>
+            <td><a href="http://compo.sr/docs10/tut-upgrade.htm">Performing an upgrade</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_upgrader&amp;status_id=10">Link</a></td>
         </tr>
@@ -595,7 +595,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Web Standards checking tools.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_accessibility">Helping improve site accessibility for disabled users</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_markup">Guide to web technologies (including HTML, CSS, and JavaScript)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-accessibility.htm">Helping improve site accessibility for disabled users</a><br /><br /><a href="http://compo.sr/docs10/tut-markup.htm">Guide to web technologies (including HTML, CSS, and JavaScript)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_webstandards&amp;status_id=10">Link</a></td>
         </tr>
@@ -605,7 +605,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage zones (sub-sites).</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_structure">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_structure">Advanced site structure and flow</a></td>
+            <td><a href="http://compo.sr/docs10/tut-structure.htm">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-structure.htm">Advanced site structure and flow</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_zone_editor&amp;status_id=10">Link</a></td>
         </tr>
@@ -615,7 +615,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Blocks for hit counters, and count-downs.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_featured">Providing featured content</a></td>
+            <td><a href="http://compo.sr/docs10/tut-featured.htm">Providing featured content</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=counting_blocks&amp;status_id=10">Link</a></td>
         </tr>
@@ -625,7 +625,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Create new Comcode tags.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_comcode">Advanced Comcode</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-comcode.htm">Advanced Comcode</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=custom_comcode&amp;status_id=10">Link</a></td>
         </tr>
@@ -635,7 +635,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Allow easy debranding of the website software.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=codebook_3">Code Book, part 3</a></td>
+            <td><a href="http://compo.sr/docs10/codebook-3.htm">Code Book, part 3 (Miscellany)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=debrand&amp;status_id=10">Link</a></td>
         </tr>
@@ -645,8 +645,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Host a downloads directory.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_downloads">Providing downloads</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_downloads">Advanced provision of downloads</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-downloads.htm">Providing downloads</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-downloads.htm">Advanced provision of downloads</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
+            <td>file<br /><br />document<br /><br />publication<br /><br />library</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=downloads&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -655,8 +655,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>eCommerce infrastructure, with support for digital purchase and usergroup subscriptions. Accounting functionality.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_ecommerce">eCommerce</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-ecommerce.htm">eCommerce</a></td>
+            <td>shopping<br /><br />payment<br /><br />purchase<br /><br />products</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=ecommerce&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -665,7 +665,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Log of errors that have happened on the website.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adminzone">Admin Zone overview</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adminzone.htm">Admin Zone overview</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=errorlog&amp;status_id=10">Link</a></td>
         </tr>
@@ -675,7 +675,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Advanced system to detect if the site goes down, and provide an automatic fallback.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_optimisation">Optimising Performance</a></td>
+            <td><a href="http://compo.sr/docs10/tut-optimisation.htm">Optimising Performance</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=failover&amp;status_id=10">Link</a></td>
         </tr>
@@ -685,8 +685,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>File/media library, for use in attachments or for general ad-hoc sharing.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_collaboration">Running a collaboration hub: the Collaboration Zone</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-collaboration.htm">Running a collaboration hub: the Collaboration Zone</a></td>
+            <td>library<br /><br />file manager</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=filedump&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -695,7 +695,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Blocks to draw forum posts and topics into the main website.</td>
             <!--<td>No</td>-->
             <td><kbd>news_shared</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_featured">Providing featured content</a></td>
+            <td><a href="http://compo.sr/docs10/tut-featured.htm">Providing featured content</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=forum_blocks&amp;status_id=10">Link</a></td>
         </tr>
@@ -705,8 +705,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Galleries, including support for video galleries, and member personal galleries.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_galleries">Providing galleries</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_galleries">Advanced galleries</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-galleries.htm">Providing galleries</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-galleries.htm">Advanced galleries</a></td>
+            <td>gallery<br /><br />album<br /><br />podcast<br /><br />multimedia</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=galleries&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -715,7 +715,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Support for deploying to Google App Engine (for developers).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_google_appengine">Installing on Google App Engine</a></td>
+            <td><a href="http://compo.sr/docs10/tut-google-appengine.htm">Installing on Google App Engine</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=google_appengine&amp;status_id=10">Link</a></td>
         </tr>
@@ -725,7 +725,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A simple website help page. Note that removing this will not remove the menu link automatically.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a></td>
+            <td><a href="http://compo.sr/docs10/tut-configuration.htm">Basic configuration and getting started</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=help_page&amp;status_id=10">Link</a></td>
         </tr>
@@ -735,7 +735,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Scripts for supporting Facebook&#039;s HHVM.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_optimisation">Optimising Performance</a></td>
+            <td><a href="http://compo.sr/docs10/tut-optimisation.htm">Optimising Performance</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=hphp_buildkit&amp;status_id=10">Link</a></td>
         </tr>
@@ -745,8 +745,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_importer">Importing data into Composr</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-importer.htm">Importing data into Composr</a></td>
+            <td>convert<br /><br />migrate<br /><br />interchange</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=import&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -755,7 +755,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_chmod">Linux file permissions</a></td>
+            <td><a href="http://compo.sr/docs10/tut-install.htm">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/tut-chmod.htm">Linux file permissions</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=installer&amp;status_id=10">Link</a></td>
         </tr>
@@ -765,7 +765,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A block to allow visitors to choose their language.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_intl">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_intl_users">Changing the site language</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=language_block&amp;status_id=10">Link</a></td>
         </tr>
@@ -775,8 +775,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Support for integrating Conversr with an LDAP server, so usergroup and members can be the same as those already on the network</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_ldap">Integrating Composr into a corporate network via LDAP</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-ldap.htm">Integrating Composr into a corporate network via LDAP</a></td>
+            <td>active directory</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=ldap&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -785,7 +785,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Bash shell scripts to help configure permissions on Linux/Unix servers.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=linux_helper_scripts&amp;status_id=10">Link</a></td>
         </tr>
@@ -795,7 +795,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Match-key-permissions allow advanced setting of permissions on a screen-by-screen basis.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_permissions">Advanced access control</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-permissions.htm">Advanced access control</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=match_key_permissions&amp;status_id=10">Link</a></td>
         </tr>
@@ -805,7 +805,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Features to support multi-site-networks (networks of linked sites that usually share a common member system).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_msn">Advanced techniques for multi-site-networks</a></td>
+            <td><a href="http://compo.sr/docs10/tut-msn.htm">Advanced techniques for multi-site-networks</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=msn&amp;status_id=10">Link</a></td>
         </tr>
@@ -815,8 +815,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>News and blogging.</td>
             <!--<td>No</td>-->
             <td><kbd>news_shared</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_news">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_news">Advanced news</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-news.htm">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
+            <td>blogs<br /><br />press release<br /><br />story<br /><br />stories<br /><br />article</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=news&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -825,7 +825,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>(Common files needed for RSS and News addons)</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_news">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_news">Advanced news</a></td>
+            <td><a href="http://compo.sr/docs10/tut-news.htm">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=news_shared&amp;status_id=10">Link</a></td>
         </tr>
@@ -835,8 +835,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Support for users to join newsletters, and for the staff to send out newsletters to subscribers, and to specific usergroups.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_newsletter">Running a newsletter</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-newsletter.htm">Running a newsletter</a></td>
+            <td>mass-mail<br /><br />mass-mailing<br /><br />bulletin<br /><br />mail-merge<br /><br />announcement</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=newsletter&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -845,7 +845,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage pages on the website.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_structure">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_structure">Advanced site structure and flow</a></td>
+            <td><a href="http://compo.sr/docs10/tut-structure.htm">Composr site structure</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-structure.htm">Advanced site structure and flow</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=page_management&amp;status_id=10">Link</a></td>
         </tr>
@@ -855,7 +855,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Access PHP configurational information from inside Composr.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_web_hosting">Web hosting for Composr</a></td>
+            <td><a href="http://compo.sr/docs10/tut-webhosting.htm">Webhosting for Composr</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=phpinfo&amp;status_id=10">Link</a></td>
         </tr>
@@ -865,8 +865,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Allow members to accumulate points via a number of configurable activities, as well as exchange points with each other. Points act as a ranking system as well as a virtual currency.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_points">Creating an economy/reward-system for members via points</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-points.htm">Creating an economy/reward-system for members via points</a></td>
+            <td>karma</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=points&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -875,7 +875,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Provide a number of virtual products to your members in exchange for the points they have accumulated by their activity</td>
             <!--<td>No</td>-->
             <td><kbd>points</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_points">Creating an economy/reward-system for members via points</a></td>
+            <td><a href="http://compo.sr/docs10/tut-points.htm">Creating an economy/reward-system for members via points</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=pointstore&amp;status_id=10">Link</a></td>
         </tr>
@@ -885,7 +885,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A poll (voting) system.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_featured">Providing featured content</a></td>
+            <td><a href="http://compo.sr/docs10/tut-feedback.htm">Feedback and user interaction</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=polls&amp;status_id=10">Link</a></td>
         </tr>
@@ -895,7 +895,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A block to provide a link for the current screen to be turned into it&#039;s printer-friendly equivalent.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_browsers">Browser version requirements</a></td>
+            <td><a href="http://compo.sr/docs10/tut-browsers.htm">Browser version requirements</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=printer_friendly_block&amp;status_id=10">Link</a></td>
         </tr>
@@ -905,8 +905,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Construct competitions, surveys, and tests, for members to perform. Highly configurable, and comes with administrative tools to handle the results.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_quizzes">Quizzes</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-quizzes.htm">Quizzes</a></td>
+            <td>surveys<br /><br />tests<br /><br />competitions<br /><br />questionnaires<br /><br />prize-draw<br /><br />exam<br /><br />assessment</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=quizzes&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -915,7 +915,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A block to display random quotes on your website, and an administrative tool to choose them.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_featured">Providing featured content</a></td>
+            <td><a href="http://compo.sr/docs10/tut-featured.htm">Providing featured content</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=random_quotes&amp;status_id=10">Link</a></td>
         </tr>
@@ -925,7 +925,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Real-time/historic display of website activity.</td>
             <!--<td>No</td>-->
             <td><kbd>stats</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_statistics">Activity statistics for your site (analytics)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-statistics.htm">Activity statistics for your site (analytics)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=realtime_rain&amp;status_id=10">Link</a></td>
         </tr>
@@ -935,8 +935,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Allow members to easily recommend the website to others.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
+            <td>refer</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=recommend&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -945,7 +945,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage redirects between pages.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Tools for subsites and subcommunities</a></td>
+            <td><a href="http://compo.sr/docs10/tut-subcom.htm">Tools for subsites and subcommunities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=redirects_editor&amp;status_id=10">Link</a></td>
         </tr>
@@ -955,7 +955,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A tool to help power-user webmasters identify if a &quot;rootkit&quot; has been placed on the server.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_security">Security</a></td>
+            <td><a href="http://compo.sr/docs10/tut-security.htm">Security</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=rootkit_detector&amp;status_id=10">Link</a></td>
         </tr>
@@ -965,8 +965,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Multi-content search engine.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_search">Searching your website</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-search.htm">Searching your website</a></td>
+            <td>find<br /><br />filter</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=search&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -975,8 +975,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Log/display security alerts.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_security">Security</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_trace">Using IP addresses to trace users</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-security.htm">Security</a><br /><br /><a href="http://compo.sr/docs10/tut-trace.htm">Using IP addresses to trace users</a></td>
+            <td>audit</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=securitylogging&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -985,7 +985,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Quick-start setup wizard.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_drinking">Drinking from the feature pool</a></td>
+            <td><a href="http://compo.sr/docs10/tut-configuration.htm">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/tut-drinking.htm">Drinking from the feature pool</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=setupwizard&amp;status_id=10">Link</a></td>
         </tr>
@@ -995,8 +995,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Online store functionality.</td>
             <!--<td>No</td>-->
             <td><kbd>ecommerce<br /><br />catalogues</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_ecommerce">eCommerce</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-ecommerce.htm">eCommerce</a></td>
+            <td>ecommerce<br /><br />payment<br /><br />purchase<br /><br />products</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=shopping&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1005,7 +1005,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Provides an option for the software to send SMS messages, via the commercial Clickatell web service.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_notifications">Notifications</a></td>
+            <td><a href="http://compo.sr/docs10/tut-notifications.htm">Notifications</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=sms&amp;status_id=10">Link</a></td>
         </tr>
@@ -1015,8 +1015,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Choose which pages of your website run over HTTPS (SSL). Requires an SSL certificate to be installed on the webserver, and a dedicated IP address.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_security">Security</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-security.htm">Security</a></td>
+            <td>https</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=ssl&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1025,17 +1025,17 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Choose and display a selection of staff from the super-administator/super-moderator usergroups. This is useful for multi-site networks, where members with privileges may not be considered staff on all websites on the network.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_staff">Coordination between staff and staff/members</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_staff_advice">Advice for choosing and managing staff</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_users">People in their roles</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-staff.htm">Coordination between staff and staff/members</a><br /><br /><a href="http://compo.sr/docs10/tut-staff-advice.htm">Advice for choosing and managing staff</a><br /><br /><a href="http://compo.sr/docs10/tut-users.htm">People in their roles</a></td>
+            <td>moderator<br /><br />admin<br /><br />administrator<br /><br />operator<br /><br />webmaster</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=staff&amp;status_id=10">Link</a></td>
         </tr>
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png" />Staff Messaging<br />(<kbd>staff_messaging</kbd>)</td>
-            <td>Blocks to allow visitors to contact the staff, either via email, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
+            <td>Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.</td>
             <!--<td>No</td>-->
             <td><kbd>cns_forum</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_feedback">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_support_desk">Running a virtual support desk</a></td>
+            <td><a href="http://compo.sr/docs10/tut-feedback.htm">Feedback and user interaction</a><br /><br /><a href="http://compo.sr/docs10/tut-support-desk.htm">Running a virtual support desk</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=staff_messaging&amp;status_id=10">Link</a></td>
         </tr>
@@ -1045,8 +1045,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Show advanced graphs (analytics) and dumps of raw data relating to your website activity.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_statistics">Activity statistics for your site (analytics)</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-statistics.htm">Activity statistics for your site (analytics)</a></td>
+            <td>analytics<br /><br />statistics<br /><br />hits</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=stats&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1055,7 +1055,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A block to show a selection of your website statistics to your visitors.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_statistics">Activity statistics for your site (analytics)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-statistics.htm">Activity statistics for your site (analytics)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=stats_block&amp;status_id=10">Link</a></td>
         </tr>
@@ -1065,7 +1065,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Show a list of all members in the configured &quot;Super member&quot; usergroup. Useful for communities that need to provide a list of VIPs.</td>
             <!--<td>No</td>-->
             <td><kbd>collaboration_zone</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_collaboration">Running a collaboration hub: the Collaboration Zone</a></td>
+            <td><a href="http://compo.sr/docs10/tut-collaboration.htm">Running a collaboration hub: the Collaboration Zone</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=supermember_directory&amp;status_id=10">Link</a></td>
         </tr>
@@ -1075,8 +1075,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Syndicate RSS/Atom feeds of your content.</td>
             <!--<td>No</td>-->
             <td><kbd>syndication_blocks</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_integration">Integration of Composr and other installed scripts/applications</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_news">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_news">Advanced news</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-integration.htm">Integration of Composr and other installed scripts/applications</a><br /><br /><a href="http://compo.sr/docs10/tut-news.htm">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a></td>
+            <td>atom<br /><br />rss<br /><br />feed</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=syndication&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1085,7 +1085,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Show RSS and Atom feeds from other websites.</td>
             <!--<td>No</td>-->
             <td><kbd>news</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_news">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_news">Advanced news</a></td>
+            <td><a href="http://compo.sr/docs10/tut-news.htm">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=syndication_blocks&amp;status_id=10">Link</a></td>
         </tr>
@@ -1095,7 +1095,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A persistent data cache, using disk files for data storage.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_optimisation">Optimising Performance</a></td>
+            <td><a href="http://compo.sr/docs10/tut-optimisation.htm">Optimising Performance</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=textbased_persistent_caching&amp;status_id=10">Link</a></td>
         </tr>
@@ -1105,7 +1105,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromographic equations built into Composr.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_themes">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_designer_themes">Designer themes, implementing a clean-room design</a></td>
+            <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/tut-designer-themes.htm">Designer themes, implementing a clean-room design</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=themewizard&amp;status_id=10">Link</a></td>
         </tr>
@@ -1115,8 +1115,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A support ticket system.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_support_desk">Running a virtual support desk</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-support-desk.htm">Running a virtual support desk</a></td>
+            <td>contact<br /><br />feedback<br /><br />message<br /><br />issue<br /><br />email<br /><br />e-mail<br /><br />support<br /><br />desk</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=tickets&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1125,8 +1125,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The uninstaller.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_uninstall">Uninstalling Composr from a server</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-uninstall.htm">Uninstalling Composr from a server</a></td>
+            <td>uninstall<br /><br />disable<br /><br />remove</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=uninstaller&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1135,8 +1135,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Subject member&#039;s to validation (approval) of their content submissions, and enable/disable content.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_censor">Dealing with annoying users</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a></td>
+            <td>check-in<br /><br />workflow<br /><br />validation<br /><br />valid<br /><br />approve<br /><br />approval<br /><br />approved<br /><br />live<br /><br />accept<br /><br />posted<br /><br />online<br /><br />active<br /><br />activate<br /><br />activation<br /><br />visible<br /><br />verify<br /><br />publish</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=unvalidated&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1145,27 +1145,27 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A block to show which users who are currently visiting the website, and birthdays.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_members">Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-members.htm">Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=users_online_block&amp;status_id=10">Link</a></td>
         </tr>
     
         <tr>
-            <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png" />Welcome Emails<br />(<kbd>welcome_emails</kbd>)</td>
+            <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png" />Welcome E-mails<br />(<kbd>welcome_emails</kbd>)</td>
             <td>Welcome e-mails for new members.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_members">Advanced Composr member system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-members.htm">Advanced Composr member system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=welcome_emails&amp;status_id=10">Link</a></td>
         </tr>
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/rich_content/wiki.png" />Wiki<br />(<kbd>wiki</kbd>)</td>
-            <td>Collaborative/encyclopaedic database interface. A WIKI-like community database with rich media capabilities.</td>
+            <td>Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_wiki">Custom structured content (via Wiki+)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
+            <td><a href="http://compo.sr/docs10/tut-wiki.htm">Custom structured content (via Wiki+)</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=wiki&amp;status_id=10">Link</a></td>
         </tr>
@@ -1175,7 +1175,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A .bat script to help configure permissions on Windows servers.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_windows">Installing Composr on a Windows desktop</a></td>
+            <td><a href="http://compo.sr/docs10/tut-adv-install.htm">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/tut-windows.htm">Installing Composr on a Windows desktop</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=windows_helper_scripts&amp;status_id=10">Link</a></td>
         </tr>
@@ -1185,8 +1185,8 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Block rude/offensive/inappropriate words.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_censor">Dealing with annoying users</a></td>
-            <td></td>
+            <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a></td>
+            <td>word-filter<br /><br />swear<br /><br />curse</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=wordfilter&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1195,7 +1195,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Advanced form field filtering.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_fields_filter">The form field filter system</a></td>
+            <td><a href="http://compo.sr/docs10/tut-fields-filter.htm">The form field filter system</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=xml_fields&amp;status_id=10">Link</a></td>
         </tr>
@@ -1205,12 +1205,12 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Different logos for individual zones.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a></td>
+            <td><a href="http://compo.sr/docs10/tut-configuration.htm">Basic configuration and getting started</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=zone_logos&amp;status_id=10">Link</a></td>
         </tr>
     
 </table></div>
-[title="2"]Other tutorials[/title]<p>The following tutorials do not link into any specific addon:</p><ul><li><a href="http://compo.sr/docs10/index.php?page=tut_antispam">Anti-spam settings</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_cookies">Introduction to Cookies and sessions (and JavaScript)</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_disaster">Disaster recovery</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_domain_names">How domain names work</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_email">Understanding and configuring e-mail</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_facebook">Facebook Support</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_filtercode">Filtering using Filtercode syntax</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_google_analytics">Analytics and A/B testing - using Google Analytics</a></li><li><a href="http://compo.sr/docs10/index.php?page=sup_hardcore_1">Making an addon (part 1)</a></li><li><a href="http://compo.sr/docs10/index.php?page=sup_hardcore_2">Making an addon (part 2)</a></li><li><a href="http://compo.sr/docs10/index.php?page=sup_hardcore_3">Making an addon (part 3)</a></li><li><a href="http://compo.sr/docs10/index.php?page=sup_hardcore_minimodules">Writing mini-modules</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_how_internet_works">How the Internet actually works</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_intl_content">Translating Composr content</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_keymap">Composr keyboard shortcuts</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_legal">Legal and social responsibilities</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_mobile">Mobile design</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_mobile_sdk">Writing mobile apps - the Composr Mobile SDK</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_programming">Introduction to programming</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_selectcode">Filtering using Selectcode syntax</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_seo">Improving your search engine ranking</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_short_urls">URL Schemes in Composr</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_software_feedback">Reporting problems and providing feedback</a></li><li><a href="http://compo.sr/docs10/index.php?page=tut_sql">Manually editing your database with phpMyAdmin</a></li></ul>[/semihtml]
+[title="2"]Other tutorials[/title]<p>The following tutorials do not link into any specific addon:</p><ul><li><a href="http://compo.sr/docs10/tut-cookies.htm">Introduction to Cookies and sessions (and JavaScript)</a></li><li><a href="http://compo.sr/docs10/tut-domain-names.htm">How domain names work</a></li><li><a href="http://compo.sr/docs10/tut-facebook.htm">Facebook Support</a></li><li><a href="http://compo.sr/docs10/tut-google-analytics.htm">Analytics and A/B testing - using Google Analytics</a></li><li><a href="http://compo.sr/docs10/tut-hardcore-minimodules.htm">Writing mini-modules</a></li><li><a href="http://compo.sr/docs10/tut-how-internet-works.htm">How the Internet actually works</a></li><li><a href="http://compo.sr/docs10/tut-legal.htm">Legal and social responsibilities</a></li><li><a href="http://compo.sr/docs10/tut-mobile-sdk.htm">Mobile apps via Composr Mobile SDK</a></li><li><a href="http://compo.sr/docs10/tut-programming.htm">Introduction to programming</a></li><li><a href="http://compo.sr/docs10/tut-software-feedback.htm">Problem and feedback reports, and development policies</a></li><li><a href="http://compo.sr/docs10/tut-webapp.htm">Web-applications, Composr, and PHP</a></li></ul>[/semihtml]
 
 {$SET,tutorial_tags,Addon,Introduction,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,An index showing what addons are available, and linking to relevant tutorials.}[block]main_tutorial_rating[/block]

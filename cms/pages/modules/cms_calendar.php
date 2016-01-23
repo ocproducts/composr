@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -54,7 +54,7 @@ class Module_cms_calendar extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -108,10 +108,10 @@ class Module_cms_calendar extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -637,12 +637,12 @@ class Module_cms_calendar extends Standard_crud_module
         require_code('activities');
         $fields2->attach(get_syndication_option_fields());
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields2->attach(meta_data_get_fields('event', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields2->attach(metadata_get_fields('event', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
 
@@ -887,32 +887,21 @@ class Module_cms_calendar extends Standard_crud_module
         $validated = post_param_integer('validated', 0);
         $seg_recurrences = post_param_integer('seg_recurrences', 0);
 
-        $meta_data = actual_meta_data_get_fields('event', null);
+        $metadata = actual_metadata_get_fields('event', null);
 
         $conflicts = detect_conflicts(get_member(), null, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $start_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
         $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUBMIT_THANKYOU')) : $conflicts;
 
-        /*
-        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-            if (!is_null($conflicts)) {
-                $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
-                $tpl->evaluate_echo();
-                $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-                exit();
-            }
-        }
-        */
-
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['views'], $meta_data['add_time'], $meta_data['edit_time'], null, '', '', $regions);
+        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['submitter'], $metadata['views'], $metadata['add_time'], $metadata['edit_time'], null, '', '', $regions);
 
         set_url_moniker('event', strval($id));
 
         // Reminders
         if (has_privilege(get_member(), 'set_reminders')) {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $rem_groups = array();
             if ((has_privilege(get_member(), 'add_public_events')) && (array_key_exists('sign_up_reminder_groups', $_POST))) {
@@ -1186,28 +1175,18 @@ class Module_cms_calendar extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('event', strval($id));
+        $metadata = actual_metadata_get_fields('event', strval($id));
 
         if (!fractional_edit()) {
             $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
             $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
-            /*
-            if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-                if (!is_null($conflicts)) {
-                    $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
-                    $tpl->evaluate_echo();
-                    $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-                    exit();
-                }
-            }
-            */
         } else {
             $_description = do_lang_tempcode('SUCCESS');
         }
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
+        edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], $regions, true);
 
         if (!fractional_edit()) {
             regenerate_event_reminder_jobs($id);
@@ -1395,7 +1374,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('external_feed', $external_feed));
         }
 
-        $fields->attach(meta_data_get_fields('calendar_type', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('calendar_type', is_null($id) ? null : strval($id)));
         require_code('seo2');
 
         // Permissions
@@ -1482,7 +1461,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     {
         require_code('themes2');
 
-        $meta_data = actual_meta_data_get_fields('calendar_type', null);
+        $metadata = actual_metadata_get_fields('calendar_type', null);
 
         require_code('themes2');
         $logo = post_param_image('image', null, 'calendar', false);
@@ -1509,7 +1488,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     {
         require_code('themes2');
 
-        $meta_data = actual_meta_data_get_fields('calendar_type', $id);
+        $metadata = actual_metadata_get_fields('calendar_type', $id);
 
         if (fractional_edit()) {
             $logo = STRING_MAGIC_NULL;

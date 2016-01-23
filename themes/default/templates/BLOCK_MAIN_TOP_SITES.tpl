@@ -10,10 +10,10 @@
 					{!SITE}
 				</th>
 				<th>
-					{!BANNER_HITSFROM}
+					{!BANNER_HITS_FROM}
 				</th>
 				<th>
-					{!BANNER_HITSTO}
+					{!BANNER_HITS_TO}
 				</th>
 			</tr>
 		</thead>
@@ -35,11 +35,11 @@
 					</td>
 
 					<td>
-						{$NUMBER_FORMAT*,{HITSFROM}}
+						{$NUMBER_FORMAT*,{HITS_FROM}}
 					</td>
 
 					<td>
-						{$NUMBER_FORMAT*,{HITSTO}}
+						{$NUMBER_FORMAT*,{HITS_TO}}
 					</td>
 				</tr>
 			{+END}

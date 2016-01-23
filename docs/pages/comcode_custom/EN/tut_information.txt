@@ -310,6 +310,10 @@ So...
 
 A content type (e.g. galleries, banners, downloads, an individual catalogue) usually contains categories, which sometimes are hierarchical -- and categories contain entries.
 
+[title="2"]Modular CMS vs mixed content-trees[/title]
+
+For a discussion on how our CMS approach works, see the [page="site:antifeatures"]What Composr is not[/page] page.
+
 [title="2"]The narrow-in option[/title]
 
 Normally when browsing through categories you're opening up a category and seeing what's in it. If the "Narrow-in when browsing" config option is enabled then going deeper into categories works as a filter.

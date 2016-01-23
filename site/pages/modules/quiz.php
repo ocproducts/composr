@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,19 +80,11 @@ class Module_quiz
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_answers', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_marked', 'BINARY', 1);
 
-            $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
             // Save in permissions for event type
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('id'));
             foreach ($quizzes as $quiz) {
-                foreach (array_keys($groups) as $group_id) {
-                    if (in_array($group_id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'quiz', 'category_name' => strval($quiz['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('quiz', $quiz['id']);
             }
 
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_type', 'ID_TEXT', 'MULTIPLECHOICE');
@@ -124,7 +116,7 @@ class Module_quiz
                 'q_open_time' => 'TIME',
                 'q_close_time' => '?TIME',
                 'q_num_winners' => 'INTEGER',
-                'q_redo_time' => '?INTEGER', // Number of hours between attempts. NULL implies it may never be re-attempted
+                'q_redo_time' => '?INTEGER', // Number of hours between attempts. null implies it may never be re-attempted
                 'q_type' => 'ID_TEXT', // COMPETITION, TEST, SURVEY
                 'q_add_date' => 'TIME',
                 'q_validated' => 'BINARY',
@@ -199,7 +191,7 @@ class Module_quiz
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -217,7 +209,7 @@ class Module_quiz
     public $title_to_use_2;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */

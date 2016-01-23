@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -270,11 +270,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
             $main_news_category_id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
             $already_created_personal_category = true;
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($main_news_category_id), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('news', $main_news_category_id);
         }
     } else {
         $main_news_category_id = $main_news_category;
@@ -323,11 +320,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
                 $map += insert_lang('nc_title', do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($submitter, true)), 2);
                 $news_category_id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
 
-                $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-                foreach (array_keys($groups) as $group_id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($news_category_id), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('news', $news_category_id);
             } else {
                 $news_category_id = $value;
             }
@@ -356,9 +350,9 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         generate_resource_fs_moniker('news', strval($id), null, null, true);
     }
 
-    if ((function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+    if (php_function_allowed('fsockopen')) {
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Send out on RSS cloud
@@ -467,11 +461,11 @@ function send_rss_ping($show_errors = true)
  * @param  LONG_TEXT $meta_description Meta description
  * @param  ?URLPATH $image URL to the image for the news entry (blank: use cat image) (null: don't delete existing)
  * @param  ?TIME $add_time Add time (null: do not change)
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
 function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {

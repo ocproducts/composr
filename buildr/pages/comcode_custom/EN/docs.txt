@@ -18,7 +18,7 @@ Buildr is a 'Multi-User Dungeon' (MUD), open to all joined members. It's a RPG w
 
 The concept of a MUD is basically the same as any MMORPG game, you explore the different realms, solving quests, you spend 'skill points' (refereed as 'Points' in Buildr), to build rooms, realms, portals and items. These have the property of expanding a realm.
 
-Buildr Game is online, so you will need to be connected to the internet to play, its free and easy to use. The only thing you 'pay' for is when you add your own rooms, realms portals and items using points, or when you buy items off of other players.
+Buildr Game is online, so you will need to be connected to the Internet to play, its free and easy to use. The only thing you 'pay' for is when you add your own rooms, realms portals and items using points, or when you buy items off of other players.
 
 [title="3"]What are points?[/title]
 
@@ -210,7 +210,6 @@ You can also make point-form lists by putting " - " at the start of each list it
 [title="4"]Making Links[/title]
 
 Follow the following example to create links:
-
 [code="Comcode"]
 [url="link text"]http://www.something.com/something[/url]
 [/code]

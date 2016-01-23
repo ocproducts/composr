@@ -44,9 +44,11 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{APPLY_URL}}
-	<ul class="force_margin actions_list" role="navigation">
-		<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
-	</ul>
+	<nav>
+		<ul class="force_margin actions_list">
+			<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
+		</ul>
+	</nav>
 {+END}
 
 {$REVIEW_STATUS,group,{ID}}
@@ -63,7 +65,7 @@
 
 	{$BLOCK,block=main_forum_topics,param={FORUM}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 {+END}{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

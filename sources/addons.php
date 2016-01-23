@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -61,7 +61,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
     }
 
     if (file_exists($path)) {
-        $_hook_bits = extract_module_functions($path, array('get_dependencies', 'get_version', 'get_category', 'copyright_attribution', 'get_licence', 'get_description', 'get_author', 'get_organisation', 'get_file_list', 'get_default_icon'));
+        $_hook_bits = extract_module_functions($path, array('get_dependencies', 'get_version', 'get_category', 'get_copyright_attribution', 'get_licence', 'get_description', 'get_author', 'get_organisation', 'get_file_list', 'get_default_icon'));
         if (is_null($_hook_bits[0])) {
             $dep = array();
         } else {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -70,5 +70,5 @@ function current_share_user()
     if (array_key_exists('no_website_redirect', $SITE_INFO)) {
         header('Location: ' . $SITE_INFO['no_website_redirect']);
     }
-    exit('No such web-site on the server, ' . $domain);
+    exit('No such website on the server, ' . $domain);
 }

@@ -80,9 +80,9 @@ Scrolling further down the screen, we will come across the Search Engine Optimis
 
 [title="2"]SEO[/title]
 
-SEO is so very important for each and every one of your web pages. Search engines are complex beasts, they search the internet for content to index; how they index your site is influenced by meta information and two types of meta information are Keywords and Descriptions. By filling these sections in correctly, you help search engines to index your site correctly and give precise text for the search engines to show in their results.
+SEO is so very important for each and every one of your web pages. Search engines are complex beasts, they search the Internet for content to index; how they index your site is influenced by meta information and two types of meta information are Keywords and Descriptions. By filling these sections in correctly, you help search engines to index your site correctly and give precise text for the search engines to show in their results.
 
-(Editors note: this isn't necessarily true nowadays, as the big search engines like Google use body text rather than meta data. However, meta data still helps many other kinds of automated system index your site.)
+(Editors note: this isn't necessarily true nowadays, as the big search engines like Google use body text rather than metadata. However, metadata still helps many other kinds of automated system index your site.)
 
 [title="2"]Keywords[/title]
 

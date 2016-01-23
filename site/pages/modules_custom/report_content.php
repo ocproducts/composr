@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -70,7 +70,7 @@ class Module_report_content
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -280,7 +280,7 @@ class Module_report_content
 }
 
 
-/*HACKHACK...
+/*FUDGE...
 
 Before this can be an official Composr feature new content_meta_aware hooks are needed. Currently for instance there's no 'post' one.
 */

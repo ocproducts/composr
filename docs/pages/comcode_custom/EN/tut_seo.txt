@@ -50,8 +50,37 @@ There are a number of techniques that will improve your site's search engine sta
  - Make a lot of good written content, so search engines have more to index against. Of course, this will also add to the quality of your site
  - Use the URL Schemes feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
+ - Set aside time for regular testing; test the right pages show up when doing searches, and the wrong ones don't
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
+
+[title="3"]Content techniques[/title]
+
+If you do want to put in a lot of tuning effort to content, here are some additional techniques:
+
+The key is to understand the goals of the page, yes, you want to get Internet users to come and look at your page, otherwise its just an exercise in personal writing. What do you want them to do when they get there, is it just an information page or are you trying to get the visitor to buy/do something.
+Here are a few things to bare in mind
+ - Research keywords and select the most appropriate for the topic. This should be used within the Page title, your main title and within the first 25 words of text. Composr automatically makes title you put in for news the article title (Heading1) and the metadata title.
+ - Establish useful synonyms. Rather than repeat the same word or phrase over and over again establish a list of useful synonyms so that you don't keep repeating yourself.
+ - Use Heading 1 (H1) and Heading 2 (H2) tags, these should both relate to the topic of the document and should work together. Composr will automatically add the H1 tag for you when you fill in the page title. There should only ever be one H1 tag on a page.
+ - Use contextual links. When you link to one of your pages make the text which is linking the same as the page title or related to the topic of the page. For example if you page is about orange juice make the link be orange juice. This helps build an authority within your site, Google understands that you are saying that page is about orange juice.
+ - Link to the new page from a first level page. A first level page is anything that is linked directly from home page and the homepage itself. A second level page is everything that is linked form a first level page. Usually a good drop-down menu will achieve this for you.
+ - Use the key word/phrase within the alt attributes of Images. For example "a picture of a glass of orange juice" might become "A picture of a glass of orange juice on a table at ocProducts".
+ - Try and write at least 250 words, as far as google is concerned the more keyword rich text the better for relevance.
+ - [b]Don't[/b] just add lots of meta keywords because you think they might be good to have, if they are not relevant to the page you are working on leave them out. 15 to 20 keywords is more than adequate.
+ - The meta description should be no more than 150 Characters as Google will cut this off after this point. It should include your main keyword/phrase. For example if the page was about ocProducts and our love for orange juice, "This is a page written about the ocProducts staffs love for orange juice and their ongoing search for the best tasting orange juice in Sheffield"
+ - Ideally the keyword density should be around 5-7% of the page. (and never above 10%). This means 7% of the words should be related to the keywords and phrases.
+ - Copy should seem natural and not forced. If your website copy is unreadable to site visitors no-one will stick around or link to you.
+ - Search engines read top to bottom on the page so make sure you use the keywords & phrases near the top of the page.
+ - Be first: if you can be the first to write about something then that counts in your favour. This is difficult to do in a lot of cases; don't decide against writing something because its already been done.
+ - Searches look for key phrases more often than singular words, so try and include full phrases too. For example the page may be about "Orange Juice" but a user may search for:
+  - Smooth Orange juice
+  - Natural Orange juice
+  - Orange juice with bits
+  - Orange juice cartons
+  - Fresh Orange juice
+  - [i]And many other possibilities[/i]
+ - Use cross links on your site. If you have a page about Apples on your site where you mention apples make it link to the apples page. You don't need to do it more than once on a page so if you refer to apples three times only one needs to be made a link.
 
 [title="2"]XML Sitemap[/title]
 
@@ -112,12 +141,6 @@ An anally-retentive attitude isn't wholly bad to SEO, especially if you are tuni
 
 Of course, if you are seeing an error on a particular URL and you want that URL to be crawled, you should look into it.
 
-[concepts
- 1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"
- 2_key="Crawler"       2_value="The 'work horse' of search engines that moves between links on the world-wide-web, finding and analysing web-pages"
- 3_key="XML Sitemap"   3_value="A standard format for listing the pages of your website, recognised by all the major search engines"
-]Concepts[/concepts]
-
 [title="2"]A note of caution regarding agencies / Can you really get a google top result?[/title]
 
 A lot of web design companies make a very bold claim: that they can get you a Google top result.
@@ -130,25 +153,28 @@ There's just one catch: it won't be for the term you want.
 
 [b]Anybody can get a Google top result for something particularly obscure.[/b]
 
-For example, we are top on Google for the following terms:[list]
-[*]web design sheffield "world class" functionality[/*]
-[*]composr web development[/*]
-[*]tired of partial solutions[/*]
-[*]cms web development "projects partnerships"[/*]
+For example, we are top on Google for the following terms:
+[list]
+[*] web design sheffield "world class" functionality[/*]
+[*] composr web development[/*]
+[*] tired of partial solutions[/*]
+[*] cms web development "projects partnerships"[/*]
 [/list]
-Unfortunately nobody will actually search these terms. The kinds of terms we want are far more competitive, like:[list]
-[*]best CMS[/*]
-[*]web design sheffield[/*]
-[*]reliable web developer[/*]
+Unfortunately nobody will actually search these terms. The kinds of terms we want are far more competitive, like:
+[list]
+[*] best CMS[/*]
+[*] web design sheffield[/*]
+[*] reliable web developer[/*]
 [/list]
 It takes huge popular appeal, and often forms of incentivisation campaign, to get high on these results.
 
 So, if you are shopping for web design and someone is telling you that you'll get a top Google result, don't expect it for "London carpenter" or "best chauffeur, expect it will be something far more obscure. It may well still be a term that does get a modest stream of searches though (Google's [url="https://adwords.google.com/select/KeywordToolExternal" target="_blank"]keyword suggestion tool[/url] is great for finding 'long tail' searches that people actually do but aren't particularly competitive).
 
-Some companies do actually say they can get you a top Google result for any search term of your choice. Thinking logically, the only ways they could do this are:[list]
-[*]Doing it only if you have an infinite budget (with infinite resources, you could incentise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
-[*]Bribing or Hacking Google (seems very unlikely)[/*]
-[*]Calling a paid Google ad a top Google result (likely very common)[/*]
+Some companies do actually say they can get you a top Google result for any search term of your choice. Thinking logically, the only ways they could do this are:
+[list]
+[*] Doing it only if you have an infinite budget (with infinite resources, you could incentise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
+[*] Bribing or Hacking Google (seems very unlikely)[/*]
+[*] Calling a paid Google ad a top Google result (likely very common)[/*]
 [/list]
 One final wheeze I imagine is that the companies are just hiding behind the law. They probably guide you in your choice of keywords before you sign up, and for the small percentage of customers who still insist on something, they won't agree to sign them up, so nobody can sue them for false advertising (only a customer can really sue someone for that).
 
@@ -156,22 +182,29 @@ So to summarise, do not take the stupid claims many web companies make on face v
 
 [title="2"]A little closing advice[/title]
 
-SEO is certainly a strong possible marketing route for many websites. Two scenarios are particularly strong:[list]
-[*]for small businesses that serve a local community. These businesses can actually work off their local-nature to great advantage (imagine a query involving the name of their trade, with the town they operate in appended on the end).[/*]
-[*]for websites with a lot of community-generated or database-generated content. These sites will naturally end up targeting a large volume (a 'long tail') of less common terms that people do search for but aren't so competitive. A bit of work exposing the appropriate terms automatically and you can have a very effective strategy.[/*]
+SEO is certainly a strong possible marketing route for many websites. Two scenarios are particularly strong:
+[list]
+[*] for small businesses that serve a local community. These businesses can actually work off their local-nature to great advantage (imagine a query involving the name of their trade, with the town they operate in appended on the end).[/*]
+[*] for websites with a lot of community-generated or database-generated content. These sites will naturally end up targeting a large volume (a 'long tail') of less common terms that people do search for but aren't so competitive. A bit of work exposing the appropriate terms automatically and you can have a very effective strategy.[/*]
 [/list]
 If you are going to go down the SEO route, make sure that you have someone who will do 'white-hat' techniques rather than 'black-hat' ones. If you hire the wrong company you might find that they are trying to make your website rank highly by exchanging or buying a lot of links, and Google will likely find out very soon and get you banned.
+
+[concepts
+ 1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"
+ 2_key="Crawler"       2_value="The 'work horse' of search engines that moves between links on the world-wide-web, finding and analysing web-pages"
+ 3_key="XML Sitemap"   3_value="A standard format for listing the pages of your website, recognised by all the major search engines"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
- - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+ - [page="_SEARCH:tut_metadata"]Metadata[/page]
  - [url="Submit to Google"]http://www.google.com/addurl.html[/url]
  - [url="Submit to Bing"]http://www.bing.com/toolbox/submit-site-url[/url]
  - [url="Submit to OpenDMOZ"]http://www.dmoz.org/add.html[/url]
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
  - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
 
-{$SET,tutorial_tags,SEO,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

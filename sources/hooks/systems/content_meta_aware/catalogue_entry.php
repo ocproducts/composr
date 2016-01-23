@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -79,7 +79,7 @@ class Hook_content_meta_aware_catalogue_entry
 
             'feedback_type_code' => 'catalogues',
 
-            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // NULL if has no permissions
+            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // null if has no permissions
 
             'search_hook' => 'catalogue_entries',
             'rss_hook' => 'catalogues',

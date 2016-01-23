@@ -90,7 +90,7 @@ It is quite simple to write more as hooks if you know how to program.
 
 To use the repository, simply navigate around using the standard UNIX filesystem commands ([tt]cd[/tt], [tt]pwd[/tt], [tt]ls[/tt], etc.), and modify files in a similar fashion to change the appropriate behind-the-scenes value.
 
-To learn more about the filesystem, which is also used by other parts of Composr, see the [page="_SEARCH:tut_repository"]The Composr repository tutorial[/page].
+To learn more about the filesystem, which is also used by other parts of Composr, see the [page="_SEARCH:tut_repository"]The Composr Enterprise Repository tutorial[/page].
 
 [title="2"]Running from a normal operating system command prompt[/title]
 
@@ -245,7 +245,7 @@ Please note that the leading [tt]:[/tt] is needed for Commandr to identify that 
 
 [title="2"]Commandrchat (advanced)[/title]
 
-The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
+The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the Internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
 
 Commandrchat is designed to allow website administrators to communicate with each other and share tips, tricks and experiences with Composr.
 
@@ -256,7 +256,6 @@ Commands can be put together in scripts and saved for later use in the [tt]bin[/
 [title="2"]Bulk actions using Composr[/title]
 
 Commandr is a very effective way to automate tedious maintenance tasks. For example, if you want to delete a set of images and you have their IDs, you could execute this Commandr code:
-
 [code="Commandr"]
 :require_code('galleries2');
 $ids=array(1,2,3,4,5);
@@ -269,6 +268,6 @@ The code simply interfaces with the standard Composr APIs.
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
- - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
 
 {$SET,tutorial_tags,Power tools,Administration,commandr,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Did you know you can reconfigure half your site's systems in a few easy keystrokes? We explore this and more...}[block]main_tutorial_rating[/block]

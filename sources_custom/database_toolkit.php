@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,8 +35,8 @@ function xml_dump_script()
         _general_db_init();
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     $GLOBALS['DEV_MODE'] = false;
     $GLOBALS['SEMI_DEV_MODE'] = false;
@@ -152,7 +152,7 @@ function xml_dump_script()
 }
 
 /**
- * Get a list of the defines tables.
+ * Get a list of the defined tables.
  *
  * @param  object $db Database connection to look in
  * @return array The tables
@@ -214,14 +214,14 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         }
 
         if ($include_drops) {
-            $out[] = 'DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name . ';';
+            $out[] = 'DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name . ";\n\n";
             if ($echo) {
                 echo $out[0];
                 $out = array();
             }
         }
 
-        $out[] = db_create_table_sql($table_name, $fields);
+        $out[] = db_create_table_sql($table_name, $fields) . "\n";
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -270,7 +270,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
                     }
                 }
 
-                $out[] = 'INSERT INTO ' . get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')' . ";";
+                $out[] = 'INSERT INTO ' . get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')' . ";\n";
                 if ($echo) {
                     echo $out[0];
                     $out = array();
@@ -291,7 +291,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         } else {
             $type = 'INDEX';
         }
-        $out[] = 'ALTER TABLE ' . get_table_prefix() . $index['i_table'] . ' ADD ' . $type . ' ' . $index_name . ' (' . $index['i_fields'] . ')' . ";";
+        $out[] = 'ALTER TABLE ' . get_table_prefix() . $index['i_table'] . ' ADD ' . $type . ' ' . $index_name . ' (' . $index['i_fields'] . ')' . ";\n";
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -377,7 +377,7 @@ function db_create_table_sql($table_name, $fields)
 
     $query = 'CREATE TABLE ' . get_table_prefix() . $table_name . ' (
 ' . $_fields . '
-      PRIMARY KEY (' . $keys . ')
-    ) type=' . ('MyISAM') . ';';
+    PRIMARY KEY (' . $keys . ')
+) engine=' . ('MyISAM') . ';';
     return $query;
 }

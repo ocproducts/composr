@@ -239,7 +239,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
                 foreach ($rewrite_rule_set as $y => $rewrite_rule) {
                     list($rule, $to, $flags, $enabled) = $rewrite_rule;
 
-                    $rules_txt .= "\n" . ($enabled ? '' : '//') . "if (preg_match('#{$rule}#',\$uri,\$matches)!=0)\n" . ($enabled ? '' : '//') . "\t{\n\t_roll_gae_redirect(\$matches,'{$to}');\n\treturn NULL;\n\t}";
+                    $rules_txt .= "\n" . ($enabled ? '' : '//') . "if (preg_match('#{$rule}#',\$uri,\$matches)!=0)\n" . ($enabled ? '' : '//') . "\t{\n\t_roll_gae_redirect(\$matches,'{$to}');\n\treturn null;\n\t}";
                 }
             }
             $rules_txt = preg_replace('#^#m', str_repeat("\t", $indent_level), $rules_txt) . "\n";

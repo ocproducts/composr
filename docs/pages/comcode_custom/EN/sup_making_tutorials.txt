@@ -45,7 +45,7 @@ You can please as many images as you like (or none), wherever you like. Often yo
 
 You can have as many headings as you like. If you use no headings, don't include the table of contents.
 
-The tutorial tags is a bit complex. We use a standard set of tag names matching our icon set. Look in [tt]themes/default/images_custom/tutorial_icons[/tt] to find the icons. The tag names are capitalised, while the icon filenames are lower case using underscores. It's quite intuitive: [tt]web_hosting.png[/tt] is for tag [tt]Web Hosting[/tt]. Ampersands have special handling: [tt]advice_and_guidance[/tt] is for tag [tt]Advice & Guidance[/tt].
+The tutorial tags is a bit complex. We use a standard set of tag names matching our icon set. Look in [tt]themes/default/images_custom/tutorial_icons[/tt] to find the icons. The tag names are capitalised, while the icon filenames are lower case using underscores. It's quite intuitive: [tt]feedback_features.png[/tt] is for tag [tt]Feedback Features[/tt]. Ampersands have special handling: [tt]advice_and_guidance[/tt] is for tag [tt]Advice & Guidance[/tt].
 The first tag determines the icon used. You must use at least one tag.
 
 The addon is optional, but if your tutorial relates to a specific addon you should reference it here. For example, if it relates to the [tt]downloads[/tt] addon, reference that.
@@ -65,4 +65,4 @@ The difficulty level can be either [tt]novice[/tt], [tt]regular[/tt], or [tt]exp
 [*] It would be good to then post on the forum to let people know of your commit (with a link to see it on github), so people can appreciate and discuss your work, and collaborate.
 [/list]
 
-{$SET,tutorial_tags,Advice & Guidance,expert}{$SET,tutorial_add_date,Nov 2015}{$SET,tutorial_summary,This tutorial will show you how to add a new supplementary tutorial to Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Advice & Guidance,expert,Contributing}{$SET,tutorial_add_date,Nov 2015}{$SET,tutorial_summary,This tutorial will show you how to add a new supplementary tutorial to Composr.}[block]main_tutorial_rating[/block]

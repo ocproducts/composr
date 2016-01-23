@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -60,8 +60,8 @@ VARIABLE KEY:
 version: complete minimal version string intended for humans
 long_version: maximal dotted version number
 intended: minimal dotted version number
-qualifier: NULL or alpha or beta or RC
-qualifier_number: NULL or integer
+qualifier: null or alpha or beta or RC
+qualifier_number: null or integer
 */
 
 // Find our version

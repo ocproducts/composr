@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,6 +80,7 @@ class Hook_fields_list
         if ($required !== null) {
             if (($required) && ($default == '')) {
                 $default = preg_replace('#\|.*#', '', $default);
+                $default = preg_replace('#=.*#', '', $default);
             }
         }
         return array('long_unescaped', $default, 'long');
@@ -205,17 +206,16 @@ class Hook_fields_list
         switch ($widget) {
             case 'radio':
                 $list_tpl = new Tempcode();
-                if (($field['cf_required'] == 0) || (!$selected) && (!array_key_exists('', $list))) {
+                if (($field['cf_required'] == 0) && (!array_key_exists('', $list))) {
                     $list_tpl->attach(form_input_radio_entry($input_name, '', !$selected, do_lang_tempcode('NA_EM')));
                 }
 
                 foreach ($list as $l => $l_nice) {
-                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, escape_html($l_nice)));
+                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                 }
 
                 if ($custom_values == 'on') {
-                    $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array(
-                        'TABINDEX' => strval(get_form_field_tabindex()),
+                    $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array('_GUID' => '4eb01c365b63d4ef09fd99b5c05ca3d5', 'TABINDEX' => strval(get_form_field_tabindex()),
                         'NAME' => $input_name,
                         'VALUE' => $custom_value ? $actual_value : '',
                     )));
@@ -236,7 +236,7 @@ class Hook_fields_list
                     }
 
                     foreach ($list as $l => $l_nice) {
-                        $list_tpl->attach(form_input_list_entry($l, false, $l_nice));
+                        $list_tpl->attach(form_input_list_entry($l, false, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     $required = $field['cf_required'] == 1;
@@ -251,7 +251,7 @@ class Hook_fields_list
 
                     foreach ($list as $l => $l_nice) {
                         $selected = ($l === $actual_value || is_null($actual_value) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
-                        $list_tpl->attach(form_input_list_entry($l, $selected, $l_nice));
+                        $list_tpl->attach(form_input_list_entry($l, $selected, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
                     if ($widget == 'dropdown_huge' || $widget == 'inline_huge') {
@@ -268,7 +268,7 @@ class Hook_fields_list
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

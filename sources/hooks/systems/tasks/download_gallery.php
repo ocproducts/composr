@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -107,7 +107,7 @@ class Hook_task_download_gallery
             $array[] = array('name' => preg_replace('#^uploads/(galleries|repimages)/#', '', $name), 'time' => $time, 'data' => $data);
         }
 
-        $outfile_path = cms_tempnam('csv');
+        $outfile_path = cms_tempnam();
 
         create_zip_file($array, false, false, $outfile_path);
 

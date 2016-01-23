@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ function init__chat()
 }
 
 /**
- * Get Tempcode for a chat room 'feature box' for the given row
+ * Get Tempcode for a chatroom 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -64,6 +64,7 @@ function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'room_name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_chat:__edit:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'chat',
     ));
 }
 
@@ -96,18 +97,18 @@ function messages_script()
         _chat_messages_script_ajax(either_param_integer('room_id'), true);
     } elseif ($action == 'post') {
         // Posting a message
-        $message = either_param_string('message');
+        $message = post_param_string('message');
         _chat_post_message_ajax(either_param_integer('room_id'), $message, post_param_string('font', ''), preg_replace('#^\##', '', post_param_string('colour', '')), post_param_integer('first_message', 0));
     } elseif ($action == 'start_im') {
         require_lang('chat');
 
-        $people = get_param_string('people');
+        $people = post_param_string('people');
         if ($people == '') {
             exit();
         }
 
         $room = array();
-        $may_recycle = (get_param_integer('may_recycle', 0) == 1);
+        $may_recycle = (either_param_integer('may_recycle', 0) == 1);
         if ($may_recycle) {
             if (strpos($people, ',') === false) {
                 // See if we can find a room to recycle
@@ -135,7 +136,7 @@ function messages_script()
         // Send response of new messages, so we get instant result
         _chat_messages_script_ajax(-2, false, either_param_integer('message_id'), either_param_integer('event_id'), $extra_xml);
     } elseif ($action == 'join_im') {
-        $room_id = get_param_integer('room_id');
+        $room_id = post_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
@@ -176,7 +177,7 @@ function messages_script()
 
         _chat_messages_script_ajax(-1, false, -1, either_param_integer('event_id'), $events_output);
     } elseif ($action == 'deinvolve_im') {
-        $room_id = get_param_integer('room_id');
+        $room_id = post_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (array_key_exists(0, $room_check)) {
             $room_row = $room_check[0];
@@ -207,8 +208,8 @@ function messages_script()
             }
         }
     } elseif ($action == 'invite_im') {
-        $room_id = get_param_integer('room_id');
-        $people = get_param_string('people');
+        $room_id = post_param_integer('room_id');
+        $people = post_param_string('people');
         if ($people == '') {
             exit();
         }
@@ -294,7 +295,7 @@ function filter_invites_for_blocking($people)
 }
 
 /**
- * Prune membership of chat room.
+ * Prune membership of chatroom.
  *
  * @param  AUTO_LINK $room_id Room ID (or -1 if all rooms)
  */
@@ -640,12 +641,12 @@ function chatter_active($member_id, $room_id = null)
 }
 
 /**
- * Find whether a member is a moderator of a chat room.
+ * Find whether a member is a moderator of a chatroom.
  *
  * @param  MEMBER $member_id Member ID
  * @param  AUTO_LINK $room_id Room ID
  * @param  ?MEMBER $room_owner Room owner (null: none)
- * @return boolean Whether the member is a moderator of the chat room
+ * @return boolean Whether the member is a moderator of the chatroom
  */
 function is_chat_moderator($member_id, $room_id, $room_owner)
 {
@@ -1069,7 +1070,7 @@ function get_chatroom_name($room_id, $allow_null = false)
  *
  * @param  SHORT_TEXT $room_name The name of the chatroom
  * @param  boolean $must_not_be_im Make sure the room is not an IM room. If it is an IM room, pretend it does not exist.
- * @return ?AUTO_LINK The ID of the chatroom (null: no such chat room)
+ * @return ?AUTO_LINK The ID of the chatroom (null: no such chatroom)
  */
 function get_chatroom_id($room_name, $must_not_be_im = false)
 {
@@ -1520,7 +1521,7 @@ function parse_allow_list_input($_allow)
 /**
  * Check whether a member has access to the chatroom.
  *
- * @param  mixed $room The row of the chat room to check for access OR its ID (AUTO_LINK)
+ * @param  mixed $room The row of the chatroom to check for access OR its ID (AUTO_LINK)
  * @param  boolean $ret Whether to return false if there is no access (as opposed to bombing out)
  * @param  ?MEMBER $member_id The member to check as (null: current member)
  * @param  boolean $must_be_explicit Whether to also ensure for $member_id having explicit access

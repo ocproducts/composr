@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -282,7 +282,9 @@ function ecv2_MOBILE($lang, $escaped, $param)
  */
 function ecv2_COPYRIGHT($lang, $escaped, $param)
 {
-    $value = str_replace('$CURRENT_YEAR', date('Y'), get_option('copyright'));
+    $value = get_option('copyright');
+    $value = str_replace('$CURRENT_YEAR=', '', $value); // Update-on-posting, does nothing dynamically
+    $value = str_replace('$CURRENT_YEAR', date('Y'), $value); // Always updated
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -2303,6 +2305,10 @@ function ecv2_STRIP_HTML($lang, $escaped, $param)
 {
     $value = strip_html($param[0]);
 
+    if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($param[0])) {
+        ocp_mark_as_escaped($value);
+    }
+
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);
     }
@@ -3575,12 +3581,17 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
     if (array_key_exists(0, $param)) {
         $key = $param[0];
         require_code('comcode_renderer');
-        $page_link = get_tutorial_link('concept___' . preg_replace('#[^\w_]#', '_', $key));
+        $_key = 'concept__' . preg_replace('#[^\w_]#', '_', $key);
+        $page_link = get_tutorial_link($_key);
         if (is_null($page_link)) {
             $temp_tpl = make_string_tempcode($key);
         } else {
             list($zone, $attributes, $hash) = page_link_decode($page_link);
-            $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+            if ($zone == get_zone_name() && $attributes['page'] == get_page_name()) {
+                $_url = make_string_tempcode('#' . $hash);
+            } else {
+                $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+            }
             $temp_tpl = do_template('COMCODE_CONCEPT', array('_GUID' => 'ee0cd05f87329923f05145180004d8a8', 'TEXT' => $key, 'URL' => $_url));
         }
         $value = $temp_tpl->evaluate();

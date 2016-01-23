@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,8 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/*EXTRA FUNCTIONS: xml_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -113,7 +115,7 @@ class CMS_RSS
             if (function_exists('libxml_disable_entity_loader')) {
                 libxml_disable_entity_loader();
             }
-            $xml_parser = function_exists('xml_parser_create_ns') ? @xml_parser_create_ns($GLOBALS['HTTP_CHARSET']) : @xml_parser_create($GLOBALS['HTTP_CHARSET']);
+            $xml_parser =  @xml_parser_create_ns($GLOBALS['HTTP_CHARSET']);
             if ($xml_parser === false) {
                 $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
                 return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
@@ -123,12 +125,8 @@ class CMS_RSS
             xml_set_element_handler($xml_parser, 'startElement', 'endElement');
             xml_set_character_data_handler($xml_parser, 'startText');
             //xml_set_external_entity_ref_handler($xml_parser, 'extEntity');
-            if (function_exists('xml_set_start_namespace_decl_handler')) {
-                xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
-            }
-            if (function_exists('xml_set_end_namespace_decl_handler')) {
-                xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
-            }
+            xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
+            xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
 
             //$data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
 
@@ -235,10 +233,6 @@ class CMS_RSS
 
             $name = str_replace('HTTP://PURL.ORG/RSS/1.0/:', '', $name);
             // Unfortunately we can't find the version using PHP XML functions
-        }
-
-        if (($name == 'FEED') && (!function_exists('xml_set_start_namespace_decl_handler'))) {
-            $this->type = 'ATOM';
         }
 
         if ($name == 'RSS') {
@@ -532,11 +526,7 @@ class CMS_RSS
                 if ($mode == 'BASE64') {
                     $data = base64_decode($data);
                 }
-                if (function_exists('xml_set_start_namespace_decl_handler')) {
-                    $prefix = 'HTTP://PURL.ORG/ATOM/NS#:';
-                } else {
-                    $prefix = '';
-                }
+                $prefix = 'HTTP://PURL.ORG/ATOM/NS#:';
                 if (!is_null($prelast_tag)) {
                     $prelast_tag = str_replace('HTTP://WWW.W3.ORG/2005/ATOM:', $prefix, $prelast_tag);
                 }

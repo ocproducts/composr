@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -463,18 +463,14 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
     $fields = new Tempcode();
 
-    // Human name / Username
+    // Username
     if (cns_field_editable('username', $special_type)) {
         if ((is_null($member_id)) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self'))) {
-            if (get_option('signup_fullname') == '1') {
-                $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('_DESCRIPTION_NAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
+            $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
+            if ($prohibit_username_whitespace == '1') {
+                $fields->attach(form_input_codename(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
             } else {
-                $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-                if ($prohibit_username_whitespace == '1') {
-                    $fields->attach(form_input_codename(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
-                } else {
-                    $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
-                }
+                $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), is_null($member_id) ? 'username' : 'edit_username', $username, true));
             }
         }
     }
@@ -810,8 +806,6 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         } else {
             $field_groups[$field_cat]->attach($result);
         }
-
-        $hidden->attach(form_input_hidden('label_for__field_' . strval($custom_field['id']), $custom_field['trans_name']));
     }
     if (array_key_exists('', $field_groups)) { // Blank prefix must go first
         $field_groups_blank = $field_groups[''];
@@ -1575,14 +1569,10 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username));
         }
         if ((!is_null($test)) && ($test !== $member_id)) {
-            if (get_option('signup_fullname') == '0') {
-                if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
-                }
-                warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
-            } else { // Adjust username as required
-                $username = get_username_from_human_name($username);
+            if ($return_errors) {
+                return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
             }
+            warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
         }
         $username_changed = is_null($test);
     } else {
@@ -1639,14 +1629,12 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
 
     // Check for whitespace
     if (!is_null($username)) {
-        if (get_option('signup_fullname') == '0') {
-            $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-            if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
-                if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
-                }
-                warn_exit(do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE'));
+        $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
+        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
+            if ($return_errors) {
+                return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
+            warn_exit(do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE'));
         }
     }
     if (!is_null($password)) {
@@ -1994,5 +1982,21 @@ function update_member_username_caching($member_id, $username)
         list($table, $field, $updating_field) = explode('/', $fix, 3);
         $con = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $con->query_update($table, array($field => $username), array($updating_field => $member_id));
+    }
+}
+
+/**
+ * Delete a custom profile field from one of the predefined templates (this is often used by importers).
+ *
+ * @param  ID_TEXT $field The identifier of the boiler custom profile field.
+ */
+function cns_delete_boiler_custom_field($field)
+{
+	require_lang('cns_special_cpf');
+
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+    if (!is_null($test)) {
+        require_code('cns_members_action');
+        cns_delete_custom_field($test);
     }
 }

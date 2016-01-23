@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -134,12 +134,10 @@ class Module_news
             ));
             $GLOBALS['SITE_DB']->create_index('news_category_entries', 'news_entry_category', array('news_entry_category'));
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('id'));
             foreach ($categories as $_id) {
-                foreach (array_keys($groups) as $group_id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($_id['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('news', $_id['id']);
             }
 
             $GLOBALS['SITE_DB']->create_index('news', 'ftjoin_ititle', array('title'));
@@ -161,7 +159,7 @@ class Module_news
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -193,7 +191,7 @@ class Module_news
     public $category;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -352,7 +350,7 @@ class Module_news
                 }
             }
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['date_and_time']),
                 'creator' => $myrow['author'],

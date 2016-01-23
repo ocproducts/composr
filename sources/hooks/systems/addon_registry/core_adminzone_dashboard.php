@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_adminzone_dashboard
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -182,10 +183,10 @@ class Hook_addon_registry_core_adminzone_dashboard
         $data = array();
         foreach (placeholder_array() as $v) {
             $data[] = array(
-                'SITETITLE' => lorem_phrase(),
-                'GRANK' => placeholder_number(),
-                'ALEXAR' => placeholder_number(),
-                'ALEXAT' => placeholder_number(),
+                'SITE_NAME' => lorem_phrase(),
+                'GOOGLE_RANKING' => placeholder_number(),
+                'ALEXA_RANKING' => placeholder_number(),
+                'ALEXA_TRAFFIC' => placeholder_number(),
                 'URL' => placeholder_url(),
             );
         }
@@ -200,9 +201,9 @@ class Hook_addon_registry_core_adminzone_dashboard
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array(
-                'GRIDDATA' => $data,
+                'GRID_DATA' => $data,
                 'URL' => placeholder_url(),
-                'SITEURLS' => $urls,
+                'SITE_URLS' => $urls,
                 'BLOCK_NAME' => '',
                 'MAP' => '',
                 'BLOCK_PARAMS' => '',

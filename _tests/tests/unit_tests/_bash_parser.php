@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,8 +22,8 @@ class _bash_parser_test_set extends cms_test_case
 {
     public function testValidCode()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         require_code('files2');
         $php_path = find_php_path();

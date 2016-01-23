@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -63,7 +63,14 @@ class Hook_ecommerce_classifieds
         $products = array();
         foreach ($prices as $price) {
             if ($price['c_price'] != 0.0) {
-                $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = array(PRODUCT_PURCHASE_WIZARD, float_to_raw_string($price['c_price']), 'handle_classifieds_advert', array(), do_lang('CLASSIFIED_ADVERT_BUY', get_translated_text($price['c_label'])));
+                $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = array(
+                    PRODUCT_PURCHASE_WIZARD,
+                    float_to_raw_string($price['c_price']),
+                    'handle_classifieds_advert',
+                    array(),
+                    do_lang('CLASSIFIED_ADVERT_BUY', get_translated_text($price['c_label'])),
+                    get_option('currency'),
+                );
             }
         }
 

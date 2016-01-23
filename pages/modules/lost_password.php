@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -43,7 +43,7 @@ class Module_lost_password
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -108,7 +108,7 @@ class Module_lost_password
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -261,7 +261,7 @@ class Module_lost_password
 
         if (!$temporary_passwords) {
             // Send password in mail
-            $_login_url = build_url(array('page' => 'login', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
             $message = do_lang('MAIL_NEW_PASSWORD', comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate()));

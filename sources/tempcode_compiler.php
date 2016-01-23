@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -464,7 +464,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if ($escaped == array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
-                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':NULL';
+                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';
                             if ((!function_exists('get_value')) || (get_value('shortened_tempcode') !== '1')) {
                                 $temp .= ',"' . php_addslashes($parameter . '/' . $template_name) . '"';
                             }
@@ -867,8 +867,8 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     // LESS support
     if ((addon_installed('less')) && ($suffix == '.less')) {
         // Up our resources
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
         disable_php_memory_limit();
 

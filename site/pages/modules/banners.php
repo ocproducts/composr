@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -73,13 +73,14 @@ class Module_banners
     {
         if (is_null($upgrade_from)) {
             require_lang('banners');
+            require_code('banners');
 
             $GLOBALS['SITE_DB']->create_table('banners', array(
                 'name' => '*ID_TEXT',
                 'expiry_date' => '?TIME',
                 'submitter' => 'MEMBER',
                 'img_url' => 'URLPATH',
-                'the_type' => 'SHORT_INTEGER', // 0=permanent|1=campaign|2=default
+                'the_type' => 'SHORT_INTEGER', // a BANNER_* constant
                 'b_title_text' => 'SHORT_TEXT',
                 'caption' => 'SHORT_TRANS__COMCODE',
                 'b_direct_code' => 'LONG_TEXT',
@@ -109,7 +110,7 @@ class Module_banners
                 'name' => 'advertise_here',
                 'b_title_text' => '',
                 'b_direct_code' => '',
-                'the_type' => 2,
+                'the_type' => BANNER_FALLBACK,
                 'img_url' => 'data/images/advertise_here.png',
                 'campaign_remaining' => 0,
                 'site_url' => get_base_url() . '/index.php?page=advertise',
@@ -118,7 +119,7 @@ class Module_banners
                 'hits_to' => 0,
                 'views_to' => 0,
                 'importance_modulus' => 10,
-                'notes' => 'Provided as default. This is a default banner (it shows when others are not available).',
+                'notes' => 'Provided as a default. This is a fallback banner (it shows when others are not available).',
                 'validated' => 1,
                 'add_date' => time(),
                 'submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
@@ -134,7 +135,7 @@ class Module_banners
                 'name' => 'donate',
                 'b_title_text' => '',
                 'b_direct_code' => '',
-                'the_type' => 0,
+                'the_type' => BANNER_PERMANENT,
                 'img_url' => 'data/images/donate.png',
                 'campaign_remaining' => 0,
                 'site_url' => get_base_url() . '/index.php?page=donate',
@@ -143,7 +144,7 @@ class Module_banners
                 'hits_to' => 0,
                 'views_to' => 0,
                 'importance_modulus' => 30,
-                'notes' => 'Provided as default.',
+                'notes' => 'Provided as a default.',
                 'validated' => 1,
                 'add_date' => time(),
                 'submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
@@ -153,13 +154,11 @@ class Module_banners
             );
             $map += lang_code_to_default_content('caption', 'DONATION', true, 1);
             $GLOBALS['SITE_DB']->query_insert('banners', $map);
-            $banner_c = 'donate';
+            $banner_b = 'donate';
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'banners', 'category_name' => $banner_a, 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'banners', 'category_name' => $banner_c, 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('banners', $banner_a);
+            set_global_category_access('banners', $banner_b);
 
             add_privilege('BANNERS', 'full_banner_setup', false);
             add_privilege('BANNERS', 'view_anyones_banner_stats', false);
@@ -224,7 +223,7 @@ class Module_banners
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -255,7 +254,7 @@ class Module_banners
     public $myrow;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -288,7 +287,7 @@ class Module_banners
                 'identifier' => '_SEARCH:banners:view:' . $source,
                 'description' => '',
                 'image' => $myrow['img_url'],
-                //'category'=>$type,
+                //'category' => $type,
             ));
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('BANNERS'))));
@@ -349,7 +348,7 @@ class Module_banners
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
-            //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
+            //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
@@ -400,14 +399,14 @@ class Module_banners
                 case BANNER_CAMPAIGN:
                     $deployment_agreement = do_lang_tempcode('BANNER_CAMPAIGN');
                     break;
-                case BANNER_DEFAULT:
-                    $deployment_agreement = do_lang_tempcode('BANNER_DEFAULT');
+                case BANNER_FALLBACK:
+                    $deployment_agreement = do_lang_tempcode('BANNER_FALLBACK');
                     break;
             }
 
             $fr = array(
-                do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))),
-                ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'],
+                do_template('COMCODE_TELETYPE', array('_GUID' => '4ac291a8c2eabc304cd26f7d6b4bf8a2', 'CONTENT' => escape_html($row['name']))),
+                ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail
                 strval($row['importance_modulus']),
@@ -456,8 +455,8 @@ class Module_banners
             case BANNER_CAMPAIGN:
                 $type = do_lang_tempcode('BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
                 break;
-            case BANNER_DEFAULT:
-                $type = do_lang_tempcode('BANNER_DEFAULT');
+            case BANNER_FALLBACK:
+                $type = do_lang_tempcode('BANNER_FALLBACK');
                 break;
         }
 
@@ -477,7 +476,7 @@ class Module_banners
         require_code('templates_map_table');
         $fields->attach(map_table_field(do_lang_tempcode('TYPE'), $type));
 
-        $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), ($myrow['b_type'] == '') ? do_lang('GENERAL') : $myrow['b_type']));
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), ($myrow['b_type'] == '') ? do_lang('_DEFAULT') : $myrow['b_type']));
 
         $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $myrow['name']))));
         $fields->attach(map_table_field(do_lang_tempcode('SECONDARY_CATEGORIES'), ($banner_types == '') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($banner_types))));
@@ -493,11 +492,11 @@ class Module_banners
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITS_FROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWS_FROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
         }
-        $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
-        $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITS_TO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWS_TO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_CLICKTHROUGH'), $click_through));
 
         $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['submitter']);
@@ -536,7 +535,7 @@ class Module_banners
 
             $hr = array(
                 do_lang_tempcode('DATE'),
-                do_lang_tempcode('BANNER_HITSTO'),
+                do_lang_tempcode('BANNER_HITS_TO'),
             );
             $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -567,7 +566,7 @@ class Module_banners
                 $fields->attach(results_entry($fr, true));
             }
 
-            $results_table = results_table(do_lang('BANNER_HITSTO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
+            $results_table = results_table(do_lang('BANNER_HITS_TO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
         } else {
             $results_table = new Tempcode();
         }

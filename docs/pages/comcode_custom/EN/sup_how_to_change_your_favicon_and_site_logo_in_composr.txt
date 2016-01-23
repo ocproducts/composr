@@ -57,7 +57,7 @@ The simplest way to edit your main website logo is to:
 [/list]
 
 There is also the [tt]logo/standalone_logo[/tt] theme image that you should also change as it is used for e-mails etc.
- 
+
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
 
 {$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,There are two styling elements you will probably want to change when you begin working on your new Composr website. You will need to change the site logo and you will also need to change your website's favicon.}[block]main_tutorial_rating[/block]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -101,7 +101,7 @@ class Module_admin_themes
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -127,7 +127,7 @@ class Module_admin_themes
     public $file;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -456,7 +456,7 @@ class Module_admin_themes
 
         // Show all themes
         $site_default_theme = $GLOBALS['FORUM_DRIVER']->_get_theme(true);
-        $themes = new Tempcode();
+        $themes = array();
         $theme_default_reason = do_lang_tempcode('DEFAULT_THEME_BY_DEFAULT', escape_html(get_default_theme_name()));
         foreach ($_themes as $theme => $details) {
             if (is_integer($theme)) {
@@ -516,7 +516,7 @@ class Module_admin_themes
                 require_code('themewizard');
                 $seed = find_theme_seed($theme);
             }
-            $themes->attach(do_template('THEME_MANAGE', array(
+            $themes[] = array(
                 '_GUID' => 'c65c7f3f87d62ad425c7a104a6018840',
                 'SEED' => $seed,
                 'THEME_USAGE' => $theme_usage,
@@ -533,7 +533,7 @@ class Module_admin_themes
                 'EDIT_URL' => $edit_url,
                 'DELETE_URL' => $delete_url,
                 'SCREEN_PREVIEW_URL' => $screen_preview_url,
-            )));
+            );
         }
 
         $zones = find_all_zones(false, true);
@@ -574,7 +574,7 @@ class Module_admin_themes
             $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode(file_exists(get_custom_file_base() . '/themes/' . $site_default_theme) ? 'DESCRIPTION_CODENAME_THEME' : 'DESCRIPTION_CODENAME_THEME_HELPER', escape_html($site_default_theme)), 'theme', $name, true));
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6fc4708641814ddf5e99d0771abaa8f8', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME', do_lang_tempcode('THEME')), 'author', $author, true));
@@ -1997,8 +1997,8 @@ class Module_admin_themes
      */
     public function manage_images()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
         send_http_output_ping();
 
@@ -2192,8 +2192,8 @@ class Module_admin_themes
      */
     public function list_screen_previews()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(120);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(120);
         }
         send_http_output_ping();
 

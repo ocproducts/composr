@@ -43,7 +43,9 @@
 				<script>// <![CDATA[
 					{$REQUIRE_JAVASCRIPT,ajax}
 					{$REQUIRE_JAVASCRIPT,tree_list}
-					new tree_list('mtp_tree','data/ajax_tree.php?hook=choose_wiki_page{$KEEP;/}','','');
+					add_event_listener_abstract(window,'load',function() {
+						new tree_list('mtp_tree','data/ajax_tree.php?hook=choose_wiki_page{$KEEP;/}','','');
+					});
 				//]]></script>
 			{+END}
 

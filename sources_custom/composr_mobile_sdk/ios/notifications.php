@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,7 @@ class IOSPushNotifications
 
         // TODO: Implement 'priority' if apnsPHP implements the new binary protocol
 
-        // Some extra meta-data that may be useful...
+        // Some extra metadata that may be useful...
 
         $message_ob->setCustomIdentifier($notification_code . '_' . (is_null($code_category) ? '' : $code_category) . '_' . strval(get_member()) . '_' . strval(time()));
 

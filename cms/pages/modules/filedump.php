@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -93,7 +93,7 @@ class Module_filedump
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -113,7 +113,7 @@ class Module_filedump
     public $place;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -445,8 +445,7 @@ class Module_filedump
 
                 $choose_action = new Tempcode();
                 if ($file['choosable']) {
-                    $choose_action->attach(do_template('COLUMNED_TABLE_ROW_CELL_TICK', array(
-                        'LABEL' => do_lang_tempcode('CHOOSE'),
+                    $choose_action->attach(do_template('COLUMNED_TABLE_ROW_CELL_TICK', array('_GUID' => 'd5085d4d602d24f7df25bcaf24db0d79', 'LABEL' => do_lang_tempcode('CHOOSE'),
                         'NAME' => 'select_' . strval($i),
                         'VALUE' => rtrim($filename, '/'),
                         'HIDDEN' => form_input_hidden('place_file_' . strval($i), $_place),
@@ -475,8 +474,7 @@ class Module_filedump
                 );
 
                 // Editable filename
-                $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    'LABEL' => do_lang_tempcode('FILENAME'),
+                $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array('_GUID' => 'bce082b134f751615785189bf1cedbe2', 'LABEL' => do_lang_tempcode('FILENAME'),
                     'NAME' => 'filename_value_' . strval($i),
                     'VALUE' => rtrim($filename, '/'),
                     'HIDDEN_NAME' => 'filename_file_' . strval($i),
@@ -484,8 +482,7 @@ class Module_filedump
                 ));
 
                 // Editable description
-                $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    'LABEL' => do_lang_tempcode('DESCRIPTION'),
+                $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array('_GUID' => '22ef464010277ceedb72f8f38f897af6', 'LABEL' => do_lang_tempcode('DESCRIPTION'),
                     'NAME' => 'description_value_' . strval($i),
                     'VALUE' => $file['description'],
                     'HIDDEN_NAME' => 'description_file_' . strval($i),
@@ -578,8 +575,7 @@ class Module_filedump
             $hidden = new Tempcode();
             handle_max_file_size($hidden);
 
-            $upload_form = do_template('FORM', array(
-                'TABINDEX' => strval(get_form_field_tabindex()),
+            $upload_form = do_template('FORM', array('_GUID' => '70279f3714ec90a5b3defec04a357b11', 'TABINDEX' => strval(get_form_field_tabindex()),
                 'SKIP_REQUIRED' => true,
                 'HIDDEN' => $hidden,
                 'TEXT' => $text,
@@ -900,8 +896,7 @@ class Module_filedump
         }
         $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
 
-        $form = do_template('FORM', array(
-            'FIELDS' => $fields,
+        $form = do_template('FORM', array('_GUID' => 'b1502bd870aded49d27d7478806d53ed', 'FIELDS' => $fields,
             'HIDDEN' => '',
             'TEXT' => '',
             'URL' => get_self_url(),
@@ -950,8 +945,7 @@ class Module_filedump
             $existing_count = 0;
         }
 
-        return do_template('FILEDUMP_EMBED_SCREEN', array(
-            'TITLE' => $this->title,
+        return do_template('FILEDUMP_EMBED_SCREEN', array('_GUID' => 'f82e0225f9b94fd96c5f61eac9c56e3d', 'TITLE' => $this->title,
             'FORM' => $form,
             'GENERATED' => $generated,
             'RENDERED' => $rendered,
@@ -1242,8 +1236,8 @@ class Module_filedump
             access_denied('I_ERROR');
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
         }
 
         $place = filter_naughty(post_param_string('place'));
@@ -1377,8 +1371,7 @@ class Module_filedump
 
         $url = build_url(array('page' => '_SELF', 'type' => '_broken'), '_SELF');
 
-        return do_template('FORM_SCREEN', array(
-            'TITLE' => $this->title,
+        return do_template('FORM_SCREEN', array('_GUID' => '1b13a7aaf187f10a077df5b2b79098c7', 'TITLE' => $this->title,
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
             'URL' => $url,

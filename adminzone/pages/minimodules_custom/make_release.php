@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -133,6 +133,7 @@ function phase_1_pre()
     echo '
     <p>As this is a substantial new release make sure you have done the following:</p>
     <ul>
+        <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
         <li>Build <kbd>install.sql</kbd>. If you think you\'ve done it then the <a href="' . get_base_url() . '/_tests/?id=unit_tests/installsql" target="_blank">installsql unit test</a> will confirm.</li>
         <li>Run the <a href="' . escape_html(get_base_url() . '/_test') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
@@ -240,12 +241,12 @@ function phase_2()
 
     $version_dotted = post_param_string('version');
     $version_branch = get_version_branch();
-    $version_pretty = get_version_pretty__from_dotted($version_dotted);
+    $version_number = float_to_raw_string(cms_version_number(), 2, true);
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);
     $is_old_tree = (post_param_integer('old_tree', 0) == 1);
     $is_substantial = is_substantial_release($version_dotted);
 
-    $push_url = get_brand_base_url() . '/adminzone/index.php?page=_make_release&version=' . urlencode($version_dotted) . '&is_bleeding_edge=' . ($is_bleeding_edge ? '1' : '0') . '&is_old_tree=' . ($is_old_tree ? '1' : '0') . '&descrip=' . urlencode($descrip) . '&needed=' . urlencode($needed) . '&justification=' . urlencode($justification);
+    $push_url = get_brand_base_url() . '/adminzone/index.php?page=-make-release&version=' . urlencode($version_dotted) . '&is_bleeding_edge=' . ($is_bleeding_edge ? '1' : '0') . '&is_old_tree=' . ($is_old_tree ? '1' : '0') . '&descrip=' . urlencode($descrip) . '&needed=' . urlencode($needed) . '&justification=' . urlencode($justification);
 
     echo '
     <p>Here\'s a list of things for you to do. Get to it!</p>
@@ -305,21 +306,33 @@ function phase_2()
     if ($is_substantial && !$is_bleeding_edge) {
         echo '
             <li><strong>Tracker</strong>: <a target="_blank" href="http://compo.sr/tracker/manage_proj_edit_page.php?project_id=1">Add to tracker configuration</a> (under "Versions") and also define any new addons in tracker (although a unit test should have told you already if they are missing)</li>
-            <li><strong>Addons</strong>:<ul>
-                <li>Generate the new addon set (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=build_addons&amp;keep_devtest=1">build_addons minimodule</a>)</li>
-                <li>Upload the generated <kbd>exports/addons/*.tar</kbd> files to the same directory on the server</li>
-                <li>Upload <kbd>data_custom/images/addon_screenshots/*.png</kbd> (do not delete old files, as these files are directly referenced by old addons still in the database)</li>
-                <li>Add them (<a target="_blank" href="http://compo.sr/adminzone/index.php?page=publish_addons_as_downloads&amp;cat=Version%20&amp;' . escape_html(urlencode($version_pretty)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule on compo.sr server)</li>
-                <li>Update the <kbd>community</kbd> page to point to the new addon locations</li>
-                <li>Update the secondary level navigation to link to the new addon locations</li>
+
+            <li><strong>Documentation</strong>:<ul>
+                <li>Build new addon tutorial index (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=doc-index-build&amp;keep_devtest=1">doc_index_build minimodule</a>)</li>
+                <li>Git: Commit/push</li>
+                <li>Create <a target="_blank" href="http://compo.sr/adminzone/admin-zones.htm?type=add">docs' . strval(intval(cms_version_number())) . ' zone</a> (Codename "docs' . strval(intval(cms_version_number())) . '", Title "Documentation (version ' . strval(intval(cms_version_number())) . ')", Theme "ocProducts", Default page "tutorials")</li>
+                <li>Do these commands in a Linux shell on the compo.sr server (before updating compo.sr for the new version!):<ul>
+                    <li>Previous version docs no longer symlinked to latest docs: <kbd>rm docs' . strval(intval(cms_version_number()) - 1) . '</kbd></li>
+                    <li>Archive current latest docs as the docs folder of previous version: <kbd>cp -r docs docs' . strval(intval(cms_version_number()) - 1) . '</kbd></li>
+                    <li>Symlink latest docs for new version: <kbd>ln -s docs' . strval(intval(cms_version_number())) . ' docs</kbd></li>
+                </ul></li>
             </ul></li>
-            <li><strong>Documentation</strong>: Upload the latest new documentation&hellip;<ul>
-                <li>Build new addon tutorial index (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=doc_index_build&amp;keep_devtest=1">doc_index_build minimodule</a>)</li>
-                <li>Create <a target="_blank" href="http://compo.sr/adminzone/index.php?page=admin_zones&amp;type=add">docs' . strval(intval(cms_version_number())) . ' zone</a> (Codename "docs' . strval(intval(cms_version_number())) . '", Title "Documentation (version ' . strval(intval(cms_version_number())) . ')", Theme "ocProducts", Default page "tutorials")</li>
-                <li>Do this in a Linux shell on the compo.sr server: <kbd>rm docs' . strval(intval(cms_version_number()) - 1) . ' ; mv docs docs' . strval(intval(cms_version_number()) - 1) . ' ; rm -f docs' . strval(intval(cms_version_number())) . '/pages/comcode_custom/EN/*.txt; ln -s docs' . strval(intval(cms_version_number())) . ' docs; cd docs' . strval(intval(cms_version_number() - 1)) . '; mv api *.doc *.pdf *.zip *.xls ../docs/ ; cd ..</kbd></li>
-                <li>Upload the latest <kbd>.txt</kbd> files from git for <kbd>docs/pages/comcode_custom/EN/</kbd> to the compo.sr server</li>
-                <li>Upload <kbd>data_custom/images/docs</kbd> files from git to the compo.sr server</li>
+
+            <li>ERD (<em>Optional</em>): Compile new ERD diagrams&hellip;<ul>
+                <li>Install <a target="_blank" href="https://www.mysql.com/products/workbench/">MySQL Workbench</a></li>
+                <li>Get <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql-schema-generate-by-addon&amp;keep_devtest=1">exported SQL</a></li>
+                <li>Extract to a directory</li>
+                <li>Import into separate databases; to convert a directory listing into commands use something like <kbd>/s/(.*).sql/mysql -e "CREATE DATABASE $1" ; mysql $1 < $1.sql</kbd></li>
+                <li>For each:<ul>
+                    <li>"Database &rarr; Reverse Engineer" from inside MySQL Workbench</li>
+                    <li>Tweak the spatial arrangement</li>
+                    <li>Save as a graphic file, "File &rarr; Export &rarr; Export as PNG"</li>
+                </ul></li>
+                <li>Zip the graphics into <kbd>erd_rendered__by_addon.zip</kbd></li>
+                <li>Put <kbd>erd_rendered__by_addon.zip</kbd> and <kbd>erd_sql__by_addon.zip</kbd> into <kbd>docs</kbd>)</li>
+                <li>Git: Commit/push</li>
             </ul></li>
+
             <li>API docs (<em>Optional</em>): Recompile the API docs&hellip;<ul>
                 <li><a href="http://graphviz.org/Download..php">Install Graphviz</a></li>
                 <li>Make sure you have a very high PHP memory limit in php.ini; 1024M is good</li>
@@ -327,11 +340,29 @@ function phase_2()
                 <li>Install phpdocumentor if you don\'t have it already, with something like: <kbd>sudo pear channel-discover pear.phpdoc.org ; sudo pear install phpdoc/phpDocumentor</kbd></li>
                 <li>In your phpdocumentor\'s <kbd>data/templates</kbd> directory, create a symbolic link to your Composr <kbd>docs/composr-api-template</kbd> directory (e.g. <kbd>sudo ln -s `pwd`/docs/composr-api-template /usr/share/pear/phpDocumentor/data/templates</kbd>)</li>
                 <li>Build documentation with <kbd><!--rm -rf docs/api 2&lt; /dev/null ; -->phpdoc --sourcecode --force --template composr-api-template</kbd></li>
-                <li>Upload <kbd>docs/api</kbd></li>
+                <li>Git: Add/commit/push</li>
             </ul></li>
-            <li>ERD (<em>Optional</em>): Compile new ERD diagrams using <a target="_blank" href="http://www.malcolmhardie.com/sqleditor/">SQLEditor</a> (mac) (you need to create a new MySQL database by importing the output of <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql_schema_generate&amp;keep_devtest=1">the exported SQL</a>)</li>
+
+            <li><strong>Update compo.sr</strong>:<ul>
+                <li>Do a git pull/checkout to get to the <kbd>composr_homesite</kbd> branch</li> branch</li>
+                <li>Do a git merge of the <kbd>master</kbd> branch to update the branch</li>
+                <li>Make sure the site still works, as you may have just upgraded compo.sr to a new Composr CMS version; common sense needed</li>
+                <li>Git commit/push the updated branch
+                <li>Close the site on the server</li>
+                <li>Do a git pull of the latest branch onto the server</li>
+                <li>Make sure things are working on the server</li>
+                <li>Re-open the site on the server</li>
+            </ul>
+
+            <li><strong>Addons</strong>:<ul>
+                <li>Generate the new addon set (<a target="_blank" href="http://compo.sr/adminzone/build-addons">build_addons minimodule</a>)</li>
+                <li>Add them (<a target="_blank" href="http://compo.sr/adminzone/publish-addons-as-downloads.htm?cat=Version%20&amp;' . escape_html(urlencode($version_number)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule)</li>
+            </ul></li>
+
             <li><strong>History</strong>: Update release history details on the compo.sr <kbd>vision</kbd> page</li>
+
             <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="http://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><input class="hyperlink_button" type="submit" value="Get someone to update our release history on Wikipedia" /></form></li>
+
             <li><strong>Syndication</strong>: Syndicate news to these sites (<a href="http://ocportal.com/tracker/view.php?id=2085" target="_blank">Passwords</a>):<ul>
                 <li>Add <a target="_blank" href="http://cmsreport.com/submit-story">news on CMS Report</a></li>
                 <li>Add <a target="_blank" href="http://cmscritic.com/">news on CMS Critic</a> (may mean emailing the story in)</li>
@@ -339,7 +370,8 @@ function phase_2()
                 <li>Update <a target="_blank" href="http://www.hotscripts.com/listing/composr/">listing on Hotscripts</a></li>
                 <li>Add news on the <a target="_blank" href="http://members.opensourcecms.com/login.php">Open Source CMS site</a></li>
             </ul></li>
-            <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="http://compo.sr/adminzone/index.php?page=admin_newsletter">newsletter</a></li>
+
+            <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="http://compo.sr/adminzone/admin-newsletter.htm">newsletter</a></li>
         ';
     }
 

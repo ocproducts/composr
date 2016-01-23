@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -49,7 +49,7 @@ class Module_admin
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -69,7 +69,7 @@ class Module_admin
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -183,7 +183,7 @@ class Module_admin
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
             array('news', 'blogs', 'press release'),
-            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'publish'/*, 'screened'*/), // i.e. Composr validation
+            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approve', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'verify', 'publish'/*, 'screened'*/), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
             // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
             //  sanitisation or check or well-formed (for input data, or transactions)
@@ -194,7 +194,7 @@ class Module_admin
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
             array('pm', 'pt', 'dm', 'private message', 'private topic', 'whisper'),
-            array('filedump', 'library', 'file manager'),
+            array('filedump', 'library', 'file manager', 'asset'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),
             array('colour', 'color', 'css', 'font', 'background'),
             array('dob', 'date of birth', 'age', 'birthday'),
@@ -208,7 +208,7 @@ class Module_admin
             array('required', 'optional'),
             array('export', 'download'),
             array('attachment', 'upload'),
-            array('tree', 'nest', 'hierarchy', 'node', 'child', 'recursive'),
+            array('tree', 'nest', 'hierarchy', 'node', 'child', 'recursive', 'branch'),
             array('pinned', 'sticky'),
             array('interstitial', 'gateway'),
             array('cpfs', 'cpf', 'fields'),
@@ -245,7 +245,7 @@ class Module_admin
             array('member', 'user', 'contact', 'person'),
             array('profile', 'account', 'memberaccount'),
             array('accessibility', 'a11y'),
-            array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation'),
+            array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation', 'translation'),
             array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite', 'credentials'),
             array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
@@ -264,9 +264,10 @@ class Module_admin
             array('name', 'title', 'label', ''/*May be a stop word*/),
             array('analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
+            array('announcement', 'cascading'),
             array('description', 'caption', 'summary'),
             array('choose', 'set', 'specify', 'pick'),
-            array('add', 'submit', 'create', 'make', 'publish', 'upload'),
+            array('add', 'submit', 'create', 'make', 'publish', 'upload', 'build'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
             array('changes', 'revisions', 'diff', 'history', 'undelete', 'version'),
             array('delete', 'erase', 'remove', 'discard', 'prune', 'trash'),
@@ -404,8 +405,8 @@ class Module_admin
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(100);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
         }
         send_http_output_ping();
 
@@ -526,7 +527,7 @@ class Module_admin
             );
             foreach ($tips as $n => $tip_string) {
                 if ($this->_keyword_match($n)) {
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => do_lang_tempcode($tip_string, escape_html(get_brand_base_url()), escape_html(brand_name())), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'de0b2510ac9640ec36805fe39025afdf', 'NAME' => do_lang_tempcode($tip_string, escape_html(get_brand_base_url()), escape_html(brand_name())), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                 }
             }
         }
@@ -660,7 +661,7 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitetree', 'type' => 'site_tree', 'id' => $zone . ':' . $page), 'adminzone');
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }
@@ -918,7 +919,7 @@ class Module_admin
                                 $description = isset($info['description']) ? $info['description'] : '';
                                 $_url = build_url(array('page' => 'admin_addons'), 'adminzone');
                                 $url = $_url->evaluate();
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
+                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e9cd6b45e33abf4a2136dc6b1ff5b8ee', 'NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
                             }
                         }
                     }

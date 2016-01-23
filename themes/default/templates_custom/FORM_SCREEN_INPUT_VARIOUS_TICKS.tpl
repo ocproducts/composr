@@ -1,3 +1,5 @@
+{$SET,early_description,1}
+
 <div>
 	{+START,IF_PASSED,EXPANDED}
 		<h4 class="comcode_quote_h4">
@@ -17,7 +19,7 @@
 					{+START,LOOP,OUT}
 						<div class="input_individual_tick">
 							<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1"{+START,IF,{DISABLED}} disabled="disabled"{+END} /> {PRETTY_NAME*}</label>
-							<input type="hidden" name="label_for__{NAME*}" value="{PRETTY_NAME*}" />
+							<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 							<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 						</div>
 					{+END}
@@ -27,7 +29,7 @@
 				{+START,LOOP,OUT}
 					<p>
 						<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" /> {PRETTY_NAME*}</label>
-						<input type="hidden" name="label_for__{NAME*}" value="{PRETTY_NAME*}" />
+						<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 						<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 					</p>
 				{+END}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -212,7 +212,8 @@ class Hook_ecommerce_usergroup
                 $sub['s_cost'],
                 'handle_usergroup_subscription',
                 array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
-                $item_name
+                $item_name,
+                get_option('currency'),
             );
         }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,8 +40,8 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     require_lang('comcode');
     require_code('comcode_compiler');
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(600); // Thumbnail generation etc can take some time
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(600); // Thumbnail generation etc can take some time
     }
 
     global $COMCODE_ATTACHMENTS;

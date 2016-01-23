@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,7 +50,7 @@ class Module_cms_blogs extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -68,10 +68,10 @@ class Module_cms_blogs extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -461,9 +461,9 @@ class Module_cms_blogs extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('news', null);
+        $metadata = actual_metadata_get_fields('news', null);
 
-        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $url);
+        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $metadata['add_time'], $metadata['submitter'], $metadata['views'], null, null, $url);
 
         set_url_moniker('news', strval($id));
 
@@ -578,9 +578,9 @@ class Module_cms_blogs extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('news', strval($id));
+        $metadata = actual_metadata_get_fields('news', strval($id));
 
-        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], null, true);
+        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $metadata['add_time'], $metadata['edit_time'], $metadata['views'], $metadata['submitter'], null, true);
     }
 
     /**

@@ -1,7 +1,7 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Creating a Hidden Members Zone in Composr[/title]
 
 [media width="150" description="Setting permissions" float="right"]data_custom/images/docs/sup_creating_a_hidden_members_zone_in_composr/34192953fcca3188147739c0cd7c800d.jpg[/media]
-It's quite common for community sites to have a hidden member's area of the site where you can post private updates or information relating to things you don't want guests to see. 
+It's quite common for community sites to have a hidden member's area of the site where you can post private updates or information relating to things you don't want guests to see.
 
 There are effectively 3 tasks you need to have completed to achieve this. There will be an extra task if you have set up Short URLs. These tasks are:
  - Creating a usergroup which you can add members to who will then be able to see the new zone.

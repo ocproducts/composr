@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -63,8 +63,8 @@ function execute_task_background($task_row)
     create_session($requester, 1);
 
     disable_php_memory_limit();
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $hook = $task_row['t_hook'];
@@ -172,8 +172,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
 
         // Disable limits, as tasks can be resource-intensive
         disable_php_memory_limit();
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Run task
@@ -236,7 +236,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
             sync_file($content_result[1]);
         }/* elseif (is_object($content_result))
         {
-            $content_result->evaluate_echo(NULL);
+            $content_result->evaluate_echo(null);
         } else
         {
             echo $content_result;

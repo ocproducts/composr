@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -137,8 +137,8 @@ function catalogue_file_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -456,8 +456,6 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
             $field_groups[$field_cat]->attach($result);
         }
 
-        $hidden->attach(form_input_hidden('label_for__field_' . strval($field['id']), $_cf_name));
-
         unset($result);
         unset($ob);
     }
@@ -469,7 +467,7 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
     }
 
     if ($add_separate_header) {
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('MORE'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '9ebf9c2c66923907b561364c37224728', 'TITLE' => do_lang_tempcode('MORE'))));
     }
     foreach ($field_groups as $field_group_title => $extra_fields) {
         if (is_integer($field_group_title)) {

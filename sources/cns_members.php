@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -337,7 +337,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         if ($display_cpf) {
             $rendered_value = $ob->render_field_value($field_to_show, $member_value, $i, null, 'f_members', $member_id, 'mf_member_id', null, 'field_' . strval($field_to_show['id']), $member_id);
 
-            $editability = mixed(); // If stays as NULL, not editable
+            $editability = mixed(); // If stays as null, not editable
             if (isset($editable_with_comcode[$field_to_show['cf_type']])) {
                 $editability = true; // Editable: Supports Comcode
             } elseif (isset($editable_without_comcode[$field_to_show['cf_type']])) {

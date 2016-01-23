@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -65,8 +65,8 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 {
     global $RECORDED_TEMPLATES_USED;
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(280);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(280);
     }
 
     $middle_spt = new Tempcode();
@@ -668,8 +668,8 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
     global $XHTML_SPIT_OUT;
     $XHTML_SPIT_OUT = true;
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(280);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(280);
     }
 
     require_css('webstandards');
@@ -815,7 +815,8 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
                 $escaped_code = do_template('WEBSTANDARDS_LINE_END');
                 $escaped_code->evaluate_echo();
             }
-            if (preg_match('#^\s*\n#', substr($out, $i + 1)) != 0) {
+            $matches = array();
+            if (preg_match('#\s*\n#A', $out, $matches, 0, $i + 1) != 0) {
                 // Do not show blank lines
                 ++$number;
                 continue;
@@ -948,16 +949,14 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
  */
 function attach_message_memory_usage(&$messages_bottom)
 {
-    if (function_exists('memory_get_usage')) {
-        if (function_exists('memory_get_peak_usage')) {
-            $memory_usage = memory_get_peak_usage();
-        } else {
-            $memory_usage = memory_get_usage();
-        }
-        $messages_bottom->attach(do_template('MESSAGE', array(
-            '_GUID' => 'd605c0d111742a8cd2d4ef270a1e5fe1',
-            'TYPE' => 'inform',
-            'MESSAGE' => do_lang_tempcode('MEMORY_USAGE', escape_html(float_format(floatval($memory_usage) / 1024.0 / 1024.0, 2))),
-        )));
+    if (function_exists('memory_get_peak_usage')) {
+        $memory_usage = memory_get_peak_usage();
+    } else {
+        $memory_usage = memory_get_usage();
     }
+    $messages_bottom->attach(do_template('MESSAGE', array(
+        '_GUID' => 'd605c0d111742a8cd2d4ef270a1e5fe1',
+        'TYPE' => 'inform',
+        'MESSAGE' => do_lang_tempcode('MEMORY_USAGE', escape_html(float_format(floatval($memory_usage) / 1024.0 / 1024.0, 2))),
+    )));
 }

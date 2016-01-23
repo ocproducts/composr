@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -65,7 +65,7 @@ function tar_open($path, $mode)
  * Return the root directory from the specified TAR file. Note that there are folders in here, and they will end '/'.
  *
  * @param  array $resource The TAR file handle
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @return ?array A list of maps that stores 'path', 'mode', 'size' and 'mtime', for each file in the archive (null: error)
  */
 function tar_get_directory(&$resource, $tolerate_errors = false)
@@ -227,10 +227,10 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         /* We don't store all this stuff, it's not in Composr's remit
                         $owner = fileowner($full);
                         $group = filegroup($full);
-                        if (function_exists('posix_getpwuid')) {
-                            $owner = posix_getpwuid($owner);
+                        if (php_function_allowed('posix_getuid')) {
+                            $owner = posix_getuid($owner);
                         }
-                        if (function_exists('posix_getgrgid')) {
+                        if (php_function_allowed('posix_getgrgid')) {
                             $group = posix_getgrgid($group);
                         }
                         */
@@ -435,7 +435,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
  *
  * @param  array $resource The TAR file handle
  * @param  PATH $path The full path to the file we want to get
- * @param  boolean $tolerate_errors Whether to tolerate errors (returns NULL if error)
+ * @param  boolean $tolerate_errors Whether to tolerate errors (returns null if error)
  * @param  ?PATH $write_data_to Write data to here (null: return within array)
  * @return ?array A map, containing 'data' (the file), 'size' (the filesize), 'mtime' (the modification timestamp), and 'mode' (the permissions) (null: not found / TAR possibly corrupt if we turned tolerate errors on)
  */
@@ -504,15 +504,17 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
  * @param  ?TIME $_mtime The modification time we wish for our file (null: now)
  * @param  boolean $data_is_path Whether the $data variable is actually a full file path
  * @param  boolean $return_on_errors Whether to return on errors
+ * @param  boolean $efficient_mode Don't do duplicate checks
  * @return integer Offset of the file in the TAR
  */
-function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = null, $data_is_path = false, $return_on_errors = false)
+function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = null, $data_is_path = false, $return_on_errors = false, $efficient_mode = false)
 {
     if (is_null($_mtime)) {
         $_mtime = time();
     }
 
-    if (!array_key_exists('directory', $resource)) {
+    $get_directory = !isset($resource['directory']);
+    if ($get_directory) {
         tar_get_directory($resource);
     }
 
@@ -526,7 +528,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
 
     $directory = $resource['directory'];
 
-    if ($target_path != '././@LongLink') {
+    if ($target_path != '././@LongLink' && !$efficient_mode) {
         foreach ($directory as $offset => $entry) { // Make sure it does not exist
             if ($entry['path'] == $target_path) {
                 if ($return_on_errors) {

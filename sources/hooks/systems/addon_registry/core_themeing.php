@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_themeing
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -68,6 +69,7 @@ class Hook_addon_registry_core_themeing
             'tut_fixed_width',
             'tut_design',
             'tut_designer_themes',
+            'tut_mobile',
         );
     }
 
@@ -120,7 +122,6 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/THEME_IMAGE_MANAGE_SCREEN.tpl',
             'themes/default/templates/THEME_IMAGE_PREVIEW.tpl',
             'themes/default/templates/THEME_MANAGE_SCREEN.tpl',
-            'themes/default/templates/THEME_MANAGE.tpl',
             'themes/default/templates/THEME_COLOUR_CHOOSER.tpl',
             'themes/default/templates/THEME_EDIT_CSS_SCREEN.tpl',
             'adminzone/pages/modules/admin_themes.php',
@@ -155,7 +156,6 @@ class Hook_addon_registry_core_themeing
     public function tpl_previews()
     {
         return array(
-            'templates/THEME_MANAGE.tpl' => 'administrative__theme_manage_screen',
             'templates/THEME_MANAGE_SCREEN.tpl' => 'administrative__theme_manage_screen',
             'templates/THEME_COLOUR_CHOOSER.tpl' => 'administrative__theme_edit_css_screen',
             'templates/THEME_EDIT_CSS_SCREEN.tpl' => 'administrative__theme_edit_css_screen',
@@ -188,9 +188,9 @@ class Hook_addon_registry_core_themeing
     public function tpl_preview__administrative__theme_manage_screen()
     {
         require_lang('zones');
-        $themes = new Tempcode();
+        $themes = array();
         foreach (placeholder_array() as $value) {
-            $themes->attach(do_lorem_template('THEME_MANAGE', array(
+            $themes[] = array(
                 'THEME_USAGE' => lorem_phrase(),
                 'SEED' => '123456',
                 'DATE' => placeholder_date(),
@@ -206,7 +206,7 @@ class Hook_addon_registry_core_themeing
                 'EDIT_URL' => placeholder_url(),
                 'DELETE_URL' => placeholder_url(),
                 'SCREEN_PREVIEW_URL' => placeholder_url(),
-            )));
+            );
         }
 
         $zones = array();

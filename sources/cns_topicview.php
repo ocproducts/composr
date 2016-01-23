@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -348,7 +348,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_threaded' => $is_threaded,
             'is_really_threaded' => is_null($topic_info['f_is_threaded']) ? 0 : $topic_info['f_is_threaded'],
             'last_time' => $topic_info['t_cache_last_time'],
-            'meta_data' => array(
+            'metadata' => array(
                 'created' => date('Y-m-d', $topic_info['t_cache_first_time']),
                 'creator' => $topic_info['t_cache_first_username'],
                 'publisher' => '', // blank means same as creator
@@ -358,7 +358,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
                 'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category'=>???,
+                //'category' => ???,
             ),
             'row' => $topic_info,
         );
@@ -398,7 +398,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_open' => 1,
             'is_threaded' => 0,
             'last_time' => time(),
-            'meta_data' => array(),
+            'metadata' => array(),
         );
 
         // Post query
@@ -454,7 +454,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
             // Fake a quoted post? (kind of a nice 'tidy up' feature if a forum's threading has been turned off, leaving things for flat display)
             if ((!is_null($_postdetails['p_parent_id'])) && (strpos($_postdetails['message_comcode'], '[quote') === false)) {
-                $p = mixed(); // NULL
+                $p = mixed(); // null
                 if (array_key_exists($_postdetails['p_parent_id'], $_postdetailss)) { // Ah, we're already loading it on this page
                     $p = $_postdetailss[$_postdetails['p_parent_id']];
 
@@ -499,7 +499,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     if (!is_null($ticket_type_id)) {
                         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_id));
                     }
-                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_id)));
+                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_name)));
                     $_postdetails['p_title'] = '';
                 } else {
                     $out['title'] = do_lang_tempcode('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']));
@@ -759,7 +759,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
                     $quote_to_new_post = do_lang('POSTING_TICKET_AS', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $ticket_url->evaluate(), $_postdetails['message_comcode']);
                     $hidden = form_input_hidden('post', $quote_to_new_post);
 
-                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
+                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '927d758415a3358d6b69e1587cab1e8d', 'IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
                 }
             }
         }

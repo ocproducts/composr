@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -100,7 +100,7 @@ function get_all_workflows()
 /**
  * Get the system's default workflow. If there is only one workflow this
  * will return it, otherwise (multiple with no default specified, or no
- * workflows at all) it will give NULL.
+ * workflows at all) it will give null.
  *
  * @return ?AUTO_LINK The ID of the default workflow. (null: if none set)
  */
@@ -426,7 +426,7 @@ function get_workflow_form($workflow_content_id)
     }
 
     // Attach the title to the form first, along with usage info
-    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
+    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f0a8a4aabdd2f42bf7612f88b52b32b6', 'TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
 
     // Show the current status next
     $workflow_fields->attach(form_input_various_ticks($existing_status, '', null, do_lang_tempcode('CURRENT_APPROVAL_STATUS'), false));
@@ -792,7 +792,7 @@ function get_all_approval_points($workflow_id)
 function get_usergroups_for_approval_point($approval_id)
 {
     if (is_null($approval_id)) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'NULL approval'));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'null approval'));
     }
     $groups = $GLOBALS['SITE_DB']->query_select('workflow_permissions', array('usergroup'), array('workflow_approval_point_id' => $approval_id));
     $raw_names = array();

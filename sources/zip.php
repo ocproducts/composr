@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -70,7 +70,7 @@ function crc32_file($filename)
 
         // Detect PHP bug http://bugs.php.net/bug.php?id=45028
         $reverse = false;
-        $tempnam = cms_tempnam('crctest');
+        $tempnam = cms_tempnam();
         $myfile = fopen($tempnam, 'wb');
         fwrite($myfile, 'test');
         fclose($myfile);
@@ -96,7 +96,7 @@ function crc32_file($filename)
  * @param  boolean $stream Whether to stream the output direct to the browser
  * @param  boolean $get_offsets Whether to return the tuple
  * @param  ?PATH $outfile_path File to spool into (null: none). $stream will be forced to false
- * @return mixed The data for the zip file OR a tuple: data, offsets, sizes; will be blank if $stream is true or $outfile_path is not NULL
+ * @return mixed The data for the zip file OR a tuple: data, offsets, sizes; will be blank if $stream is true or $outfile_path is not null
  */
 function create_zip_file($file_array, $stream = false, $get_offsets = false, $outfile_path = null)
 {

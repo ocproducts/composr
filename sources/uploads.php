@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -25,8 +25,8 @@
  */
 function init__uploads()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
     }
 
     if (!defined('CMS_UPLOAD_ANYTHING')) {
@@ -376,7 +376,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             return array('', '', '', '');
         }
         if (($copy_to_server) && (!url_is_local($url[0]))) {
-            $path2 = cms_tempnam('cmsfc');
+            $path2 = cms_tempnam();
             $tmpfile = fopen($path2, 'wb');
 
             $file = http_download_file($url[0], $max_size, true, false, 'Composr', null, null, null, null, null, $tmpfile);

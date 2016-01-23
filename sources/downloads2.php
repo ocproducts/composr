@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -67,7 +67,7 @@ function download_gateway_script()
     if ($url != '') {
         require_lang('downloads');
         $title = get_screen_title('DOWNLOAD_GATEWAY', true, array(escape_html($name)));
-        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
+        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('_GUID' => 'ed996e64c34d2c26e43712ffd62c5236', 'TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
@@ -256,8 +256,8 @@ function dload_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -314,7 +314,7 @@ function dload_script()
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
  * @return AUTO_LINK The ID of the newly added download category
  */
-function add_download_category($category, $parent_id, $description, $notes, $rep_image = '', $id = null, $add_time = null, $meta_keywords = '', $meta_description = '')
+function add_download_category($category, $parent_id, $description, $notes = '', $rep_image = '', $id = null, $add_time = null, $meta_keywords = '', $meta_description = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_DOWNLOAD_CATEGORY', null, $category);
@@ -500,7 +500,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         return '';
     }
 
-    if ((function_exists('memory_get_usage')) && (ini_get('memory_usage') == '8M')) {
+    if (ini_get('memory_usage') == '8M') {
         return ''; // Some cowardice... don't want to tempt fate
     }
 
@@ -575,7 +575,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'odp':
         case 'docx':
             require_code('m_zip');
-            $tmp_file = cms_tempnam('dcdm');
+            $tmp_file = cms_tempnam();
             $myfile2 = fopen($tmp_file, 'wb');
             fwrite($myfile2, $data);
             fclose($myfile2);
@@ -612,7 +612,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             break;
         case 'tar':
             require_code('tar');
-            $tmp_file = cms_tempnam('dcdm');
+            $tmp_file = cms_tempnam();
             $myfile = fopen($tmp_file, 'wb');
             fwrite($myfile, $data);
             fclose($myfile);
@@ -641,7 +641,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             if (function_exists('gzopen')) {
                 if (function_exists('gzeof')) {
                     if (function_exists('gzread')) {
-                        $tmp_file = cms_tempnam('dcdm');
+                        $tmp_file = cms_tempnam();
                         $myfile = fopen($tmp_file, 'wb');
                         fwrite($myfile, $data);
                         fclose($myfile);
@@ -729,7 +729,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
             break;
         case 'pdf':
-            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false) && (!is_null($tmp_file))) {
+            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (php_function_allowed('shell_exec')) && (!is_null($tmp_file))) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
                 if (stripos(PHP_OS, 'win') !== false) {
@@ -737,7 +737,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                         $path = '"' . get_file_base() . DIRECTORY_SEPARATOR . 'data_custom' . DIRECTORY_SEPARATOR . '"' . $path;
                     }
                 }
-                $tmp_file_2 = cms_tempnam('pdfxml');
+                $tmp_file_2 = cms_tempnam();
                 @shell_exec($path . ' > ' . $tmp_file_2);
                 $mash = create_data_mash($tmp_file_2, null, 'xml', true);
                 @unlink($tmp_file_2);
@@ -1046,12 +1046,12 @@ function set_download_gallery_permissions($id, $submitter = null)
  * @param  ?AUTO_LINK $licence The licence to use (null: none)
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  ?integer $num_downloads The number of downloads that this download has had (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  URLPATH $url_redirect The URL to redirect
  */
 function edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $num_downloads = null, $null_is_literal = false, $url_redirect = '')

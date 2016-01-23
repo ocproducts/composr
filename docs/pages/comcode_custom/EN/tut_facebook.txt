@@ -13,6 +13,7 @@ Before you can use any of the Facebook Support addon features you need to config
 
 [title="3"]Step 1) Configuration on Facebook[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/facebook.png[/media]
 Integration is done via configuring an app on Facebook; no actual app code needs writing, but this is how you get an API key.
 
 1) Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
@@ -78,7 +79,7 @@ Installing the addon to Composr will override some key templates to [tt]themes/d
 [media width="150" description="Composr configuration options" float="right"]data_custom/images/docs/tut_facebook/facebook_config.png[/media]
 1) Go to Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login.
 2) Configure the "Facebook app ID" and "Facebook app secret" options. You noted down the values earlier.
-3) Also configure the "Facebook page ID" option. This is a useful helper tool: http://findmyfacebookid.com/.
+3) Also configure the "Facebook page ID" option. This is a useful helper tool: http://findmyfbid.com/.
 
 Make sure your site is not closed (you can change the settings in Admin Zone > Setup > Configuration > Site Options > Closed site). Facebook integration cannot work if Facebook is denied from connecting back to your website.
 [/surround]
@@ -118,7 +119,7 @@ This block is useful if you want people to be able to comment on your site direc
 Most webmasters will not want to use this, as usually encouraging users to create a native account is strongly preferable.
 You can consider having both Facebook comments, and native Composr comments, but this would be messy.
 
-The Facebook comments block will only work if placed somewhere where Guest access is allowed, as it relies on OpenGraph to gather details of the page it is placed on (OpenGraph is described later in this tutorial).
+The Facebook comments block will only work if placed somewhere where Guest access is allowed, as it relies on Open Graph to gather details of the page it is placed on (Open Graph is described later in this tutorial).
 
 You can either place this block manually within Comcode, similar to the standard Composr [tt]main_comments[/tt] block -- or, you can modify Composr templates to place this block instead of the default comments. For example, in [tt]DOWNLOAD_SCREEN.tpl[/tt] you can change [tt]{COMMENT_DETAILS}[/tt] to [tt]{$BLOCK,block=main_facebook_comments}[/tt], so that Facebook comments are used for downloads, rather than native Composr comments.
 
@@ -128,17 +129,17 @@ You can either place this block manually within Comcode, similar to the standard
 
 The [tt]main_screen_actions[/tt] block contains a Facebook share link if the Facebook Support addon is not installed. If the Facebook Support addon is installed it becomes a Like Button instead.
 
-It is important to understand how the Facebook share button works. The button does not transfer the shared page's image/title to Facebook. Instead, Facebook comes back at the shared URL, and looks at the OpenGraph meta tags. OpenGraph is described in the next section.
+It is important to understand how the Facebook share button works. The button does not transfer the shared page's image/title to Facebook. Instead, Facebook comes back at the shared URL, and looks at the Open Graph meta tags. Open Graph is described in the next section.
 
-[title="2"]Meta-data when people link to you from Facebook (OpenGraph)[/title]
+[title="2"]Metadata when people link to you from Facebook (Open Graph)[/title]
 
 [i]This section is relevant even if you are not using the Facebook Support addon.[/i]
 
-[url="OpenGraph"]http://ogp.me/[/url] is a Facebook-sponsored standard for web-page meta-data.
+[url="Open Graph"]http://ogp.me/[/url] is a Facebook-sponsored standard for web-page metadata.
 
-Composr automatically includes OpenGraph data in your pages, so that Facebook can automatically discern information about URLs on your website. This is handled in the [tt]HTML_HEAD.tpl[/tt] template. It is built on top of Composr's standard meta-data system. Note that we also can support other meta-data formats such as Dublin Core, but that is outside the scope of this tutorial (we're focusing only on Facebook meta-data here, even though in some cases Facebook may itself support other meta-data standards).
+Composr automatically includes Open Graph data in your pages, so that Facebook can automatically discern information about URLs on your website. This is handled in the [tt]HTML_HEAD.tpl[/tt] template. It is built on top of Composr's standard metadata system. Note that we also can support other metadata formats such as Dublin Core, but that is outside the scope of this tutorial (we're focusing only on Facebook metadata here, even though in some cases Facebook may itself support other metadata standards).
 
-The following OpenGraph data (or extensions to OpenGraph) is provided, where possible:
+The following Open Graph data (or extensions to Open Graph) is provided, where possible:
  - [tt]og:title[/tt] -- Content title
  - [tt]og:type[/tt] -- Content type (e.g. News)
  - [tt]og:url[/tt] -- Canonical URL to the content (i.e. stripped down/standardised URL)
@@ -161,17 +162,17 @@ The following OpenGraph data (or extensions to OpenGraph) is provided, where pos
  - [tt]fb:admins[/tt] -- Facebook user ID of page admin ([i]disabled by default as auto-detected data is probably wrong, can be filled manually via a template edit to [tt]HTML_HEAD.tpl[/tt][/i])
  - [tt]fb:app_id[/tt] -- ID of Facebook app used on the site ([i]disabled by default to save bandwidth, it's not usually useful[/i])
 
-Facebook provides a [url="tool for testing OpenGraph data"]https://developers.facebook.com/tools/debug/[/url].
+Facebook provides a [url="tool for testing Open Graph data"]https://developers.facebook.com/tools/debug/[/url].
 
-For OpenGraph to work, the content must have public access. If you deny Guests access to the content then OpenGraph tags cannot be accessed by Facebook and Facebook would then have to refer to the page as a login screen. That's not awful (you probably don't want content titles and images to leak to unauthorised users anyway), but bear it in mind. Similarly, if the site is closed, Facebook won't be able to access OpenGraph.
+For Open Graph to work, the content must have public access. If you deny Guests access to the content then Open Graph tags cannot be accessed by Facebook and Facebook would then have to refer to the page as a login screen. That's not awful (you probably don't want content titles and images to leak to unauthorised users anyway), but bear it in mind. Similarly, if the site is closed, Facebook won't be able to access Open Graph.
 
 [title="3"]Images ([tt]og:image[/tt])[/title]
 
-The Composr code hints what image to use for OpenGraph. There are 3 possibilities:
-1) Where possible, a natural image is used. For example, when viewing a gallery image, the thumbnail will be the OpenGraph image.
+The Composr code hints what image to use for Open Graph. There are 3 possibilities:
+1) Where possible, a natural image is used. For example, when viewing a gallery image, the thumbnail will be the Open Graph image.
 2) For content types with no natural image, often a theme image icon is used.
 3) Otherwise the [tt]logo/standalone_logo[/tt] theme image is used (as it is coded as the fallback in the [tt]HTML_HEAD.tpl[/tt] template). i.e. Composr will fall-back to using your site logo if it can't find some other appropriate image.
-4) (If the OpenGraph image code was removed from [tt]HTML_HEAD.tpl[/tt], Facebook would choose its own image)
+4) (If the Open Graph image code was removed from [tt]HTML_HEAD.tpl[/tt], Facebook would choose its own image)
 
 For catalogues you'll need to delete [tt]uploads/catalogues/.htaccess[/tt] for the image sharing to work. Deleting this file is safe so long as you don't have any files in there protected by catalogue permissions that you do not want to be directly accessible.
 
@@ -186,7 +187,7 @@ This example shows how to change the topic syndication to use a custom theme ima
 [list="1"]
 [*] Theme image...
 
-Add a theme image called [tt]opengraph_defaults/forums[/tt] to the default theme.
+Add a theme image called [tt]Open Graph_defaults/forums[/tt] to the default theme.
 
 Either do this via Composr's interface, or simpler just create a [tt]themes/default/images_custom/opengraph_defaults/[/tt] directory and upload a [tt]forums.png[/tt] file to it.
 [*] Template...
@@ -195,26 +196,26 @@ Edit the [tt]HTML_HEAD.tpl[/tt] template...
 
 Change:
 [code="HTML"]
-{+START,IF_NON_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$META_DATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
 [/code]
 To:
 [code="HTML"]
-{+START,IF_NON_EMPTY,{$META_DATA,image}}
-	{$SET,generic_forum_image,{$EQ,{$META_DATA,image},{$IMG,icons/48x48/menu/social/forum/forums}}}
+{+START,IF_NON_EMPTY,{$METADATA,image}}
+	{$SET,generic_forum_image,{$EQ,{$METADATA,image},{$IMG,icons/48x48/menu/social/forum/forums}}}
 
 	{+START,IF,{$GET,generic_forum_image}}
 		<meta property="og:image" content="{$IMG*,opengraph_defaults/forums}" />
 	{+END}
 
 	{+START,IF,{$NOT,{$GET,generic_forum_image}}}
-		<meta property="og:image" content="{$META_DATA*,image}" />
+		<meta property="og:image" content="{$METADATA*,image}" />
 	{+END}
 {+END}
-{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/trimmed_logo}" />{+END}
+{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/trimmed_logo}" />{+END}
 [/code]
 [/list]
 
-Our new code detects if the OpenGraph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
+Our new code detects if the Open Graph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
 
 Our change won't reflect on Facebook for existing syndications until Facebook refreshes its caching. But eventually it will, i.e. it will work retroactively.
 
@@ -228,7 +229,7 @@ Be aware that this is a trade-off: allowing quick log in, but limiting your abil
  - There is only one step, unless there are required Custom Profile Fields configured in Composr (in which case a profile completion step is required)
  - E-mail address confirmation is not required
 
-This functionality is enabled via a configuration option at Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login. 
+This functionality is enabled via a configuration option at Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login.
 
 Enabling the option turns on some template changes that incorporate the Facebook login button into the site design.
 (See the "Special case: Theme integration" section)
@@ -312,6 +313,7 @@ The Facebook login process does [b]not[/b] populate this field. You may delete t
 
 [title="2"]Activity syndication[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/twitter.png[/media]
 [i]Most of this advice applies to the Composr non-bundled Twitter Support addon too[/i]
 
 You can (in theory) have content automatically syndicate to Facebook in 2 ways:
@@ -364,6 +366,6 @@ We may add additional functionality to the addon in the future, again mainly if 
 
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
- - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+ - [page="_SEARCH:tut_metadata"]Metadata[/page]
 
 {$SET,tutorial_tags,facebook_support,activity_feed,Addon,Social,regular}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Details of Composr Facebook support, particularly capabilities of the non-bundled Facebook Support addon.}[block]main_tutorial_rating[/block]

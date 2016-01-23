@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,26 +23,35 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 
 require_code('database_relations');
 
-$all_tables = get_all_tables();
+$all_tables_detailed = get_all_innodb_tables();
 
-$tables_by = get_tables_by_addon();
+$tables_by_addon = get_innodb_tables_by_addon();
 
-foreach ($tables_by as $t => $ts) {
-    $path = get_custom_file_base() . '/uploads/website_specific/composr_erd__' . $t . '.sql';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-    $tables = array();
-    foreach ($ts as $table) {
-        if (!array_key_exists($table, $all_tables)) {
-            continue; // Not installed
-        }
+$file_array = array();
 
-        $tables[$table] = $all_tables[$table];
+foreach ($tables_by_addon as $addon => $tables_in_addon) {
+    $tables_in_addon_detailed = array();
+    foreach ($tables_in_addon as $table_in_addon) {
+        if (array_key_exists($table_in_addon, $all_tables_detailed)) {
+            $tables_in_addon_detailed[$table_in_addon] = $all_tables_detailed[$table_in_addon];
+        } // else not installed
     }
-    fwrite($myfile, get_innodb_table_sql($tables, $all_tables));
-    fclose($myfile);
-    fix_permissions($path);
-    sync_file($path);
+
+    $data = get_innodb_table_sql($tables_in_addon_detailed, $all_tables_detailed);
+
+    $file_array[] = array(
+        'time' => time(),
+        'data' => $data,
+        'name' => 'composr_erd__' . $addon . '.sql',
+    );
 }
 
+$filename = 'erd_sql__by_addon.zip';
+header('Content-Type: application/octet-stream' . '; authoritative=true;');
+header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
+
+require_code('zip');
+create_zip_file($file_array, true);
+
 $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
-echo 'Done, files generated in <kbd>uploads/website_specific</kbd>.';
+exit();

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -911,7 +911,7 @@ function ecv_FEEDS($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv_META_DATA($lang, $escaped, $param)
+function ecv_METADATA($lang, $escaped, $param)
 {
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
@@ -919,7 +919,7 @@ function ecv_META_DATA($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        global $META_DATA, $BREADCRUMB_SET_SELF;
+        global $METADATA, $BREADCRUMB_SET_SELF;
 
         switch ($param[0]) {
             case 'site_newestmember':
@@ -956,8 +956,8 @@ function ecv_META_DATA($lang, $escaped, $param)
                 } else {
                     global $SEO_DESCRIPTION;
                     if (($SEO_DESCRIPTION === null) || ($SEO_DESCRIPTION == '')) {
-                        if (!empty($GLOBALS['META_DATA']['description'])) {
-                            $value = strip_comcode($GLOBALS['META_DATA']['description']);
+                        if (!empty($GLOBALS['METADATA']['description'])) {
+                            $value = strip_comcode($GLOBALS['METADATA']['description']);
                         } else {
                             $value = get_option('description');
                         }
@@ -1009,14 +1009,14 @@ function ecv_META_DATA($lang, $escaped, $param)
                                 }
                             }
 
-                            $META_DATA[$param[0]] = $param[1];
+                            $METADATA[$param[0]] = $param[1];
                             break;
                     }
                 } else {
-                    if (isset($META_DATA[$param[0]])) {
-                        $value = $META_DATA[$param[0]];
+                    if (isset($METADATA[$param[0]])) {
+                        $value = $METADATA[$param[0]];
                         if ($param[0] != 'image') {
-                            $value = $META_DATA[$param[0]];
+                            $value = $METADATA[$param[0]];
                             if ($param[0] == 'title' || $param[0] == 'description') {
                                 $value = strip_comcode($value);
                             }
@@ -4199,20 +4199,22 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
 
     $value = '';
 
-    if (get_option('spam_blackhole_detection') == '1' && !$done_once && !$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
-        $field_name = 'y' . md5(get_site_name() . ': antispam');
-        $value .= '<div id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></div>';
-        if (!$GLOBALS['SEMI_DEV_MODE']) {
-            $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
+    if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
+        if (get_option('spam_blackhole_detection') == '1' && !$done_once) {
+            $field_name = 'y' . md5(get_site_name() . ': antispam');
+            $value .= '<div id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></div>';
+            if (!$GLOBALS['SEMI_DEV_MODE']) {
+                $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
+            }
+
+            $done_once = true;
         }
 
-        $done_once = true;
-    }
-
-    $security_token_exceptions = get_option('security_token_exceptions');
-    $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
-    if (!in_array(get_page_name(), $_security_token_exceptions)) {
-        $value .= '<input type="hidden" name="session_id" value="' . get_session_id() . '" />';
+        $security_token_exceptions = get_option('security_token_exceptions');
+        $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
+        if (!in_array(get_page_name(), $_security_token_exceptions)) {
+            $value .= '<input type="hidden" name="session_id" value="' . get_session_id() . '" />';
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {

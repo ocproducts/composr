@@ -29,7 +29,7 @@ If you are using [concept]Conversr[/concept] on a M.S.N. and upgrading to a new 
 
 [title="3"]Special note: upgrading third-party forums[/title]
 
-If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, commercial developers are available for such work.
+If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, professional developers are available for such work.
 
 [title="3"]Things to check in feature/major releases[/title]
 
@@ -47,30 +47,32 @@ At the same time, bear in mind that fixes to security holes are not always back-
 [media width="150" description="Logging into the upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade_login.png[/media]
 The upgrade process involves a number of stages (the upgrader will step you through this)...
 
-Pre-steps:[list="1"]
+Pre-steps:
+[list="1"]
 [*] get to the upgrader, either via the upgrade link from the top-right of the Admin Zone dashboard, or going to [tt]http://yourbaseurl/upgrader.php[/tt]
-[*] log in to the upgrader using your master password (the one you set when you installed, different to your admin login) 
+[*] log in to the upgrader using your master password (the one you set when you installed, different to your admin login)
 [/list]
 
-Steps:[list="1"]
-[*]taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
-[*]closing your website
+Steps:
+[list="1"]
+[*] taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
+[*] closing your website
  - the upgrader will make it easy for you to close your site using the Composr closed-site feature
  - however, for non-patch upgrades your website may return errors until the full upgrade process is complete, so you may wish to place your own [tt]closed.html[/tt] file on the server that shows a standalone closed-site screen. Composr will redirect to that file for all page requests for as long as it exists on your server (so it does not need to load its database or templating system)
-[*]transferring new/updated files (this will copy your customised upgrade file between {$BRAND_BASE_URL} and your server, and then extract it)
+[*] transferring new/updated files (this will copy your customised upgrade file between {$BRAND_BASE_URL} and your server, and then extract it)
  - if your server's connection to the {$BRAND_BASE_URL} server is slow, you could download the [tt]TAR[/tt] file yourself, upload it to your own server, and then use that copy's URL in step 3
  - on modern server environments the extraction happens in a separated framed process, so that if timeouts occur it can't leave your website in an inconsistent state
  - if in the unlikely event that you do end up with an inconsistent state then you can download the TAR file yourself, extract it manually, and then continue; this is not ideal but the file integrity check should help remove files from uninstalled bundled addons that don't belong
-[*]resolve file integrity issues
+[*] resolve file integrity issues
  - if you have made any Composr overrides in place you may need to change these overrides to be consistent with Composr's latest structure; or if the overrides came from addons, you may need to overwrite the addon(s) with a newer version
  - the above guidance applies to totally new code also, such as new modules from non-bundled addons
  - resolving any conflicts with templates, as necessary (for example, if there was a change in the verbatim version of a template, and the upgraded website had also changed that template, then changes might [depending on importance] need to be incorporated manually
  - removing any files from previous versions of Composr that are no longer required
  - removing any files relating to bundled addons that you have previously uninstalled
-[*]upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening
-[*]performing an automatic theme upgrade (if available for the version jump you're doing)
-[*]clearing caches
-[*]re-opening your website
+[*] upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening
+[*] performing an automatic theme upgrade (if available for the version jump you're doing)
+[*] clearing caches
+[*] re-opening your website
 [/list]
 
 [title="2"]Browser cache[/title]
@@ -81,7 +83,7 @@ Often browsers will cache CSS and JavaScript files, even when changed on the ser
 
 Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]http://yourbaseurl/upgrader.php[/tt]) already does.
 
-If you require assistance for an upgrade, commercial developers may be able to help.
+If you require assistance for an upgrade, professional developers may be able to help.
 
 [title="2"]The integrity checker[/title]
 
@@ -110,7 +112,7 @@ Obviously you should be careful deleting files, as there may be legitimate reaso
 
 [concepts
  1_key="upgrader.php"        1_value="The script that manages the upgrading process"
- 2_key="integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
+ 2_key="Integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

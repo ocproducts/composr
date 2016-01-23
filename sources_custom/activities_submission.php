@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -121,12 +121,12 @@ function activities_ajax_submit_handler()
     $guest_id = intval($GLOBALS['FORUM_DRIVER']->get_guest_id());
 
     if (!is_guest(get_member())) {
-        $map['STATUS'] = trim(either_param_string('status', ''));
+        $map['STATUS'] = trim(post_param_string('status', ''));
 
         if ((post_param_string('zone', '') != '') && ($map['STATUS'] != '') && ($map['STATUS'] != do_lang('activities:TYPE_HERE'))) {
             comcode_to_tempcode($map['STATUS'], $guest_id, false, null);
 
-            $map['PRIVACY'] = either_param_string('privacy', 'private');
+            $map['PRIVACY'] = post_param_string('privacy', 'private');
 
             if (strlen(strip_tags($map['STATUS'])) < strlen($map['STATUS'])) {
                 $help_zone = get_comcode_zone('userguide_comcode', false);

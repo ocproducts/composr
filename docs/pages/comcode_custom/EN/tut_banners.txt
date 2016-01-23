@@ -131,7 +131,7 @@ Each of these sets may be called up as a separate rotation, displayed in a diffe
 To set up a new rotation, displayed in the layout in a space of your choosing, use the following instructions.
 
 [list="1"]
-[*]Create a new banner type from Content Management > Banners.
+[*] Create a new banner type from Content Management > Banners.
 You will be able to edit the banner type from under here later if you need to.
 You can delete a banner from the bottom of its edit form.
 
@@ -174,7 +174,7 @@ If banners won't show check:
 3) Your banner is validated.
 4) Your banner has not expired.
 5) Your banner has hits assigned, is a permanent banner, or is a default banner and there aren't non-default banners obscuring it.
-6) That the banner type your banner is in is displayed (by default only the default 'General' banners are displayed, in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template). See "Having multiple banner sets".
+6) That the banner type your banner is in is displayed (by default only the default 'Default' banners are displayed, in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template). See "Having multiple banner sets".
 7) The banner type has permissions for the viewer's usergroup.
 8) The "Community advert chance" configuration option is not set to zero.
 
@@ -192,10 +192,12 @@ The first step is to define a new banner type...
 
 [surround]
 [media width="150" description="Adding the banner type" float="right"]data_custom/images/docs/tut_banners/example_banner_type.png[/media]
-Creating a new banner type:[list="1"]
+Creating a new banner type:
+[list="1"]
 [*] Log in, go to the "Admin Zone" and select "Banners" in the "Content" section dropdown list. In the "Banners" page you should see the icon "Add banner type": select this, which will take you to banner type form.
 [*] The form will ask for some details. It is highly recommended that you always provide the dimensions as per [url="IAB guidelines"]http://www.iab.net/guidelines/508676/508767/displayguidelines[/url].
-Enter the following in the fields:[list="a"]
+Enter the following in the fields:
+[list="a"]
 [*] Name of the Banner type: [tt]square[/tt]
 [*] Tick (check) "Holds textual banners"
 [*] Set the dimensions to [tt]250[/tt]&times;[tt]250[/tt]

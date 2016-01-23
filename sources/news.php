@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -167,7 +167,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
     $_title = get_translated_text($row['nc_title']);
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('NEWS_CATEGORY'), $_title) : $_title;
 
-    // Meta-data
+    // Metadata
     $num_entries = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('validated' => 1));
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
 
@@ -201,6 +201,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_news:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'news_category',
     ));
 }
 

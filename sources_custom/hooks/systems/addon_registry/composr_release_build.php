@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_composr_release_build
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -85,7 +86,7 @@ class Hook_addon_registry_composr_release_build
      */
     public function get_description()
     {
-        return 'The Composr release build platform.';
+        return 'The Composr release build platform. Should be run from a developers machine, not the server.';
     }
 
     /**
@@ -107,7 +108,11 @@ class Hook_addon_registry_composr_release_build
     {
         return array(
             'requires' => array(),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_homesite_support_credits',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }

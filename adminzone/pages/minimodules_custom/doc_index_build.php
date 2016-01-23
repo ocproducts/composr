@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_tutorials
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -30,7 +43,7 @@ foreach ($_addons as $addon => $place) {
 
         $pretty = titleify($addon);
 
-        $stemmed_addon = $stemmer->stem($pretty);
+        $stemmed_addon = strtolower($stemmer->stem($pretty));
         $_synonyms = array();
         foreach ($synonyms as $ss) {
             if (in_array($ss[0], array('export', 'permission'))) {
@@ -38,7 +51,6 @@ foreach ($_addons as $addon => $place) {
             }
 
             $_ss = array_map(array($stemmer, 'stem'), $ss);
-
             if (in_array($stemmed_addon, $_ss)) {
                 $_synonyms = array_merge($_synonyms, $ss);
                 $test = array_search($stemmed_addon, $_synonyms);

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -163,7 +163,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  * @param  mixed $name The name of the field (either language string map or string)
  * @param  mixed $description A description (either language string map or string)
  * @param  ID_TEXT $type The type of the field
- * @param  integer $order The field order (the field order determines what order the fields are displayed within an entry)
+ * @param  ?integer $order The field order (the field order determines what order the fields are displayed within an entry) (null: next)
  * @param  BINARY $defines_order Whether this field defines the catalogue order
  * @param  BINARY $visible Whether this is a visible field
  * @param  BINARY $searchable Whether the field is usable as a search key
@@ -175,8 +175,17 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  * @param  ?AUTO_LINK $id Force this ID (null: auto-increment as normal)
  * @return AUTO_LINK Field ID
  */
-function actual_add_catalogue_field($c_name, $name, $description, $type, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
+function actual_add_catalogue_field($c_name, $name, $description = '', $type = 'short_text', $order = null, $defines_order = 0, $visible = 1, $searchable = 0, $default = '', $required = 0, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
 {
+    if (is_null($order)) {
+        $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'MAX(cf_order)', array('c_name' => $c_name));
+        if (is_null($order)) {
+            $order = 0;
+        } else {
+            $order++;
+        }
+    }
+
     $map = array(
         'c_name' => $c_name,
         'cf_type' => $type,
@@ -212,8 +221,8 @@ function actual_add_catalogue_field($c_name, $name, $description, $type, $order,
 
     $ob = get_fields_hook($type);
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     // Now add field values for all pre-existing entries (in the ideal world, there would be none yet)
@@ -362,8 +371,8 @@ function actual_delete_catalogue($name)
     $myrow = $rows[0];
 
     // Delete anything involved (ha ha destruction!)
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $entries = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('id'), array('c_name' => $name), '', 500));
@@ -593,8 +602,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
  */
 function rebuild_catalogue_cat_treecache()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_cat_treecache');
@@ -826,8 +835,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     delete_upload('uploads/repimages', 'catalogue_categories', 'rep_image', 'id', $id);
 
     if (!$deleting_all) { // If not deleting the whole catalogue
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // If we're in a tree
@@ -835,8 +844,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
             $GLOBALS['SITE_DB']->query_update('catalogue_categories', array('cc_parent_id' => $myrow['cc_parent_id']), array('cc_parent_id' => $id));
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('cc_id' => $myrow['cc_parent_id']), array('cc_id' => $id));
         } else { // If we're not in a tree catalogue we can't move them, we have to delete
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('cc_parent_id' => $id)); // Does nothing, in theory
@@ -1075,11 +1084,11 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
  * @param  array $map A map of field IDs, to values, that defines the entries settings
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit)
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null
  */
 function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords = '', $meta_description = '', $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {

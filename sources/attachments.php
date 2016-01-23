@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -292,8 +292,8 @@ function attachments_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -365,7 +365,7 @@ function attachment_popup_script()
     $post_url = get_self_url();
 
     $rows = $connection->query_select('attachments', array('*'), array('a_member_id' => $member_now));
-    $content = new Tempcode();
+    $attachments = array();
     foreach ($rows as $myrow) {
         $may_delete = (get_member() == $myrow['a_member_id']) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
 
@@ -377,18 +377,17 @@ function attachment_popup_script()
 
         $myrow['description'] = $myrow['a_description'];
         $tpl = render_attachment('attachment', array(), $myrow, uniqid('', true), get_member(), false, $connection, null, get_member());
-        $content->attach(do_template('ATTACHMENTS_BROWSER_ATTACHMENT', array(
-            '_GUID' => '64356d30905c99325231d3bbee92128c',
+        $attachments[] = array(
             'FIELD_NAME' => $field_name,
             'TPL' => $tpl,
             'DESCRIPTION' => $myrow['a_description'],
             'ID' => strval($myrow['id']),
             'MAY_DELETE' => $may_delete,
             'DELETE_URL' => $post_url,
-        )));
+        );
     }
 
-    $content = do_template('ATTACHMENTS_BROWSER', array('_GUID' => '7773aad46fb0bfe563a142030beb1a36', 'LIST' => $list, 'CONTENT' => $content, 'URL' => $post_url));
+    $content = do_template('ATTACHMENTS_BROWSER', array('_GUID' => '7773aad46fb0bfe563a142030beb1a36', 'LIST' => $list, 'ATTACHMENTS' => $attachments, 'URL' => $post_url));
 
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

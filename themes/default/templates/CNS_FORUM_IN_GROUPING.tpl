@@ -1,7 +1,9 @@
 <tr>
-	<td class="cns_forum_new_post_indicator cns_column1">
-		<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
-	</td>
+	{+START,IF,{$NOT,{$MOBILE}}}
+		<td class="cns_forum_new_post_indicator cns_column1">
+			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
+		</td>
+	{+END}
 	<td class="cns_forum_in_category_forum cns_column2">
 		<a class="field_name" href="{FORUM_URL*}">{+START,FRACTIONAL_EDITABLE,{FORUM_NAME},name,_SEARCH:admin_cns_forums:__edit:{ID}}{FORUM_NAME*}{+END}</a>
 
@@ -28,10 +30,12 @@
 		{+END}
 
 		{+START,IF,{$MOBILE}}
-			<ul class="horizontal_meta_details associated_details" role="note">
-				<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
-				<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
-			</ul>
+			<div role="note">
+				<ul class="horizontal_meta_details associated_details">
+					<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
+					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+				</ul>
+			</div>
 		{+END}
 	</td>
 	{+START,IF,{$NOT,{$MOBILE}}}
@@ -46,5 +50,3 @@
 		{LATEST}
 	</td>
 </tr>
-
-

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -141,7 +141,7 @@ function actual_send_newsletter($message, $subject, $language, $send_details, $h
 }
 
 /**
- * Find a group of members the newsletter will go to.
+ * Find a group of people the newsletter will go to.
  *
  * @param  array $send_details A map describing what newsletters and newsletter levels the newsletter is being sent to
  * @param  LANGUAGE_NAME $language The language
@@ -149,9 +149,10 @@ function actual_send_newsletter($message, $subject, $language, $send_details, $h
  * @param  integer $max Maximum records to return from each category
  * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondance lists
  * @param  string $csv_data Serialized CSV data to also consider
+ * @param  boolean $strict_level Whether to do exact level matching, rather than "at least" matching
  * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for levels (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
  */
-function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw_rows = false, $csv_data = '')
+function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw_rows = false, $csv_data = '', $strict_level = false)
 {
     // Find who to send to
     $level = 0;
@@ -170,11 +171,23 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         $this_level = array_key_exists(strval($newsletter['id']), $send_details) ? $send_details[strval($newsletter['id'])] : 0;
         if ($this_level != 0) {
             $where_lang = multi_lang() ? (db_string_equal_to('language', $language) . ' AND ') : '';
-            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']) . ' AND the_level>=' . strval($this_level) . ' ORDER BY n.id';
+            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']);
+            if ($strict_level) {
+                $query .= ' AND the_level=' . strval($this_level);
+            } else {
+                $query .= ' AND the_level>=' . strval($this_level);
+            }
+            $query .= ' ORDER BY n.id';
             $sql = 'SELECT n.id,n.email,the_password,n_forename,n_surname' . $query;
             $temp = $GLOBALS['SITE_DB']->query($sql, $max, $start);
             if ($start == 0) {
-                $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE newsletter_id=' . strval($newsletter['id']) . ' AND the_level>=' . strval($this_level));
+                $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE newsletter_id=' . strval($newsletter['id']);
+                if ($strict_level) {
+                    $query .= ' AND the_level=' . strval($this_level);
+                } else {
+                    $query .= ' AND the_level>=' . strval($this_level);
+                }
+                $test = $GLOBALS['SITE_DB']->query_value_if_there($sql);
                 if ($test > 10000) { // Inaccurace, for performance reasons
                     $total[strval($newsletter['id'])] = $test;
                 } else {
@@ -360,7 +373,11 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
     }
 
-    $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($name);
+    $member_id = mixed();
+    if (substr($sendid, 0, 1) == 'm') {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($name);
+        $name = $GLOBALS['FORUM_DRIVER']->get_displayname($name);
+    }
 
     $vars = array(
         'title' => $subject,

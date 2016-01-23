@@ -90,7 +90,7 @@ To do this you need to:
 1) Lock down the website so only your IP address can access it (outside the scope of Composr -- use [tt].htaccess[/tt] files, for example).
 2) Use the Installation Options editor to set a different forum driver.
 3) Reset all your permissions on the website.
-4) Any Composr systems that reference users will reference different users after switching, as member IDs will have changed: for example, point transactions and admin logs will reference the wrong users. Therefore you'll likely want to do some manually cleaning up of the database (such as deleting point transaction records, to erase the problem). 
+4) Any Composr systems that reference users will reference different users after switching, as member IDs will have changed: for example, point transactions and admin logs will reference the wrong users. Therefore you'll likely want to do some manually cleaning up of the database (such as deleting point transaction records, to erase the problem).
 5) Re-open access.
 
 [title="2"]Specifics of importers[/title]
@@ -125,7 +125,8 @@ Compatibility notes:
 
 When merging with another copy of Composr, you should make sure the other copy must be running the same major version. While other versions may merge successfully, Composr does not support this officially.
 
-The 'cms merge' importer can merge multiple Composr websites together that either:[list="a"]
+The 'cms merge' importer can merge multiple Composr websites together that either:
+[list="a"]
 [*] each run on Conversr (and thus, Conversr data gets merged)
 [*] or, each share a forum database (what we call a "multi-site-network" situation)
 [/list]
@@ -142,7 +143,7 @@ Remember:
  - you must specify to import from a Composr database, not a forum database.
 
 Other limitations:
- - The importer does not cover Comcode pages fully, only their meta data. However these are just [tt].txt[/tt] files ([tt]<zone>/pages/comcode_custom/<language>/<page>.txt[/tt]) that may be copied from one install to another.
+ - The importer does not cover Comcode pages fully, only their metadata. However these are just [tt].txt[/tt] files ([tt]<zone>/pages/comcode_custom/<language>/<page>.txt[/tt]) that may be copied from one install to another.
  - Shopping orders aren't imported, make sure there are no outstanding orders at the point of importing.
  - Commandr-fs GUIDs and filenames aren't imported, so these will change post-import.
  - Due to a complex cylic-dependency, usergroup custom fields won't import
@@ -186,7 +187,7 @@ However, it is advisable to keep the directory, database, and import session, ar
 
 [title="2"]Additional help[/title]
 
-As importing may not always go smoothly, you may want to arrange to have a commercial developer help with the process. If you run a website that you are able to justify temporarily hiring us, you may wish to contact a developer before import, so that someone can be prepared to assist, or perform the whole process themselves.
+As importing may not always go smoothly, you may want to arrange to have a professional developer help with the process. If you run a website that you are able to justify temporarily hiring us, you may wish to contact a developer before import, so that someone can be prepared to assist, or perform the whole process themselves.
 
 [title="2"]See also[/title]
 

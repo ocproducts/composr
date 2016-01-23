@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -168,8 +168,8 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
     }
 
     if (!$force) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         disable_php_memory_limit();
 
@@ -506,7 +506,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         ), array('the_zone' => $zone, 'p_parent_page' => $file));
     }
 
-    // Set meta-data
+    // Set metadata
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('comcode_page', $zone . ':' . $new_file, array($text), $text);
@@ -685,7 +685,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
         }
     }
 
-    $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => $page), '', 1);
+    $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => $zone . ':' . $page), '', 1);
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('comcode_page', $page, '');

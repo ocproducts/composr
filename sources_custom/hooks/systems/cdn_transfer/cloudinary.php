@@ -42,7 +42,7 @@ class Hook_cdn_transfer_cloudinary
      * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
      * @set    0 1 2
      * @param  boolean $accept_errors Whether to accept upload errors
-     * @return ?array A pair: the URL and the filename (NULL: did nothing)
+     * @return ?array A pair: the URL and the filename (null: did nothing)
      */
     public function transfer_upload($attach_name, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
     {

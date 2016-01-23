@@ -76,8 +76,8 @@ function init__m_zip()
         {
             global $M_ZIP_DIR_HANDLES, $M_ZIP_DIR_OPEN_PATHS;
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(200);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(200);
             }
 
             list($usec, $sec) = explode(' ', microtime(false));
@@ -107,7 +107,7 @@ function init__m_zip()
 
             $res = -1; // any nonzero value
             $unused_array_result = array();
-            if (strpos(@ini_get('disable_functions'), 'shell_exec') !== false) {
+            if (!php_function_allowed('shell_exec')) {
                 attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE'), 'warn');
 
                 return constant('ZIPARCHIVE::ER_INTERNAL');
@@ -401,7 +401,9 @@ function init__m_zip()
                 // uncomment this if you want to delete files (use m_deldir on anything)
                 // unlink($a_dir);
                 // comment this if you want to skip warning
-                error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                if (php_function_allowed('error_log')) {
+                    error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                }
             }
         }
     }

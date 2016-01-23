@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -103,7 +103,7 @@ function reinstall_addon_soft($addon, $ini_info = null)
         'addon_organisation' => $addon_info['organisation'],
         'addon_version' => $addon_info['version'],
         'addon_category' => $addon_info['category'],
-        'addon_copyright_attribution' => implode(chr(10), $addon_info['copyright_attribution']),
+        'addon_copyright_attribution' => implode("\n", $addon_info['copyright_attribution']),
         'addon_licence' => $addon_info['licence'],
         'addon_description' => $addon_info['description'],
         'addon_install_time' => time()
@@ -169,7 +169,7 @@ function find_remote_addons()
         return $addons; // Caching
     }
     $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
-    $v = 'Version ' . float_to_raw_string(cms_version_number(), 1);
+    $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar&full_depth=1';
     $contents = http_download_file($url, null, false);
     $matches = array();
@@ -204,7 +204,7 @@ function find_updated_addons()
         return array();
     }
 
-    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number()));
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number(), 2, true));
     foreach (array_keys($addons) as $i => $addon) {
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }

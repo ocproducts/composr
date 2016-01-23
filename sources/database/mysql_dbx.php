@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: error)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
@@ -256,7 +256,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
                 $type = $types[$j];
 
                 if (($type == 'int') || ($type == 'integer') || ($type == 'real')) {
-                    if ((is_null($v)) || ($v === '')) { // Roadsend returns empty string instead of NULL
+                    if ((is_null($v)) || ($v === '')) { // Roadsend returns empty string instead of null
                         $newrow[$name] = null;
                     } else {
                         $_v = intval($v);

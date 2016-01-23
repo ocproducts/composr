@@ -619,7 +619,7 @@ function ModalWindow()
 				{
 					if (!init)
 					{
-						detected_box_height=get_window_scroll_height(iframe[0].contentWindow,true);
+						detected_box_height=get_window_scroll_height(iframe[0].contentWindow);
 						iframe[0].style.height=detected_box_height+'px';
 					}
 				} else

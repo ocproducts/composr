@@ -1,6 +1,22 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    lang_tools
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$title = get_screen_title('Categorise language strings', false);
+$title->evaluate_echo();
 
 require_code('lorem');
 require_code('lang_compile');
@@ -312,7 +328,7 @@ DESCRIPTION_LANGUAGE_CACHE
 DESCRIPTION_MAIL_COST
 DESCRIPTION_MENU_TITLE
 DESCRIPTION_META_ADD_TIME
-DESCRIPTION_META_DATA
+DESCRIPTION_METADATA
 DESCRIPTION_META_EDIT_TIME
 DESCRIPTION_META_URL_MONIKER
 DESCRIPTION_META_VIEWS

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -151,8 +151,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 'description' => null,
                 'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
                 'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime($path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime($path) : null,
+                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
+                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,

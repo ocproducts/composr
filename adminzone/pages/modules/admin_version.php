@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -762,6 +762,17 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
+
+            $GLOBALS['SITE_DB']->rename_table('sitewatchlist', 'staff_website_monitoring');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_website_monitoring', 'siteurl', 'URLPATH', 'site_url');
+            $GLOBALS['SITE_DB']->rename_table('stafflinks', 'staff_links');
+            $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
+            $GLOBALS['SITE_DB']->rename_table('customtasks', 'staff_checklist_cus_tasks');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'tasktitle', 'SHORT_TEXT', 'task_title');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'datetimeadded', 'TIME', 'add_date');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurinterval', 'INTEGER', 'recur_interval');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurevery', 'ID_TEXT', 'recur_every');
+            $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'taskisdone', '?TIME', 'task_is_done');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
@@ -889,7 +900,7 @@ class Module_admin_version
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */

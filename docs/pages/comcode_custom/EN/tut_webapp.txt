@@ -2,6 +2,8 @@
 
 This tutorial will provide some background into the different kinds of solutions that are out there for creating websites. It is not only specific to Composr -- we hope to explain the inherent advantages of using a CMS such as our own -- as well as what makes Composr special.
 
+To read more about Composr's extensive features, see the [page="site:features"]Features page[/page]. To read more about the USPs see the [page="site:compare"]Why we're different[/page] page .
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]What a website is[/title]
@@ -100,9 +102,9 @@ Over time small personalised websites have largely disappeared in favour of soci
 
 Web applications have grown in complexity, as web developers have become increasingly aware of methods for interaction that are as quick and easy to use as normal desktop applications (due to the influence of Google). These techniques are popularly named "Ajax techniques". Now instead of filling in forms, applications are being made that incorporate techniques such as "drag & drop".
 
-There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached 
+There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached
 
-CMS systems are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMS systems alongside the more traditional articles and pages. One example of this is our own system, Composr.
+CMSs are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMSs alongside the more traditional articles and pages. One example of this is our own system, Composr.
 
 [title="2"]Overview of the advantages/disadvantages of different types of website[/title]
 
@@ -158,7 +160,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>OR</em></p>
 			<p>Employ a web-designer.</p>
 			<p><em>OR</em></p>
-			<p>Use a 'site builder' tool, like those that are often provided with web-hosting.</p>
+			<p>Use a 'site builder' tool, like those that are often provided with webhosting.</p>
 		</td>
 	</tr>
 	<tr>
@@ -496,7 +498,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 [surround]
 [media width="150" description="A screen-shot from a default Composr site" float="right"]data_custom/images/docs/tut_webapp/intro_1.png[/media]
 [media width="150" description="Logging in to Composr" float="right"]data_custom/images/docs/tut_webapp/webapp_login.png[/media]
-Composr is a website engine that drives powerful interactive and dynamic websites, by providing a wide range of features that are useful on many different kinds and themes of website. For example, Composr can easily power any of the following:
+Composr is a CMS that drives powerful interactive and dynamic websites, by providing a wide range of features that are useful on many different kinds and themes of website. For example, Composr can easily power any of the following:
  - a community forum
  - a corporate intranet
  - a corporate website
@@ -516,18 +518,18 @@ The Composr philosophy is that almost all cutting-edge websites, from hobbyist c
 
 At the time of writing, we do not know any other products that have such a large built-in feature set as Composr. However, Composr also excels in customisability: the features in Composr can be fully customised on a number of levels, so that even though different websites share the same engine, they can have their own individuality.
 
-In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available). Commercial developers are available for such work.
+In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available). Professional developers are available for such work.
 
 There are some situations where Composr is not the most appropriate product. You'll find these are documented on the main Composr website ("What Composr is not"). You should always choose the most appropriate product for any particular situation.
 [/surround]
 
 [title="2"]Why not product-X?[/title]
 
-Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially backed. There are many reasons to avoid (most) Open Source software that is not commercially backed, especially:
- - the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
- - the developers think that 'you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings'
+Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially-backed. There are many reasons to avoid (most) Open Source software that is not commercially-backed, especially:
+ - the developers expect you to "fix it yourself", or quite possibly, the developers have disappeared leaving the project stagnant
+ - the developers think that "you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings"
  - the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
- - the product reflects far from a stream-lined vision
+ - the product does not reflect any kind of streamlined vision
  - while the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces
  - there is great infighting and rivalry between developers
  - many features are only available within non-bundled addons. You'd spend half your time trying to smooth over the cracks between the various addons, or you'd need to tolerate the lack of full integration. Being able to search the various kinds of content on a website at once is a pretty basic thing, right? We don't know of any of our competitors that provide this kind of thing.
@@ -550,6 +552,36 @@ Composr provides the best of all the main competing kinds of system, seamlessly 
  - interfaces are consistent; for example, the same user data input system is used throughout
  - the system supports your roles in multiple different disciplines, from design, to programming, to marketing, and tries to make them all as accessible as possible
 
+[title="2"]Composr vs third party services[/title]
+
+[media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
+ocProducts takes pride in developing integrated systems that provide as much functionality as possible without relying upon external services. Many of our competitors provide a content management framework, however their users often have to rely upon external services or third-party developers to produce embedded code or "plug-in" packages that provide advanced or interactive functions.
+
+While Composr fully supports embedded code and provides a plug-in architecture, ocProducts believes that users should be able to construct (and extend) fully featured sites without relying upon external service providers or searching through an archive of unreliable/unsupported plug-ins. Thus, Composr comes with the most comprehensive feature set in its class, maximising site functionality straight "out of the box". This holistic design philosophy aims to ensure that all features on a site work harmoniously, while maintaining maximum design fidelity and providing a unified administration interface. This ensures that you retain full control over your data and guarantees room for your site to grow as and when your needs change.
+
+If your CMS has a limited range of features, utilising external services to provide added functionality may seem like an attractive option for extending your website. Unfortunately, there are a number of risks inherent with third-party dependencies, which can be avoided by hosting your required features directly.
+
+Firstly, every external service provider may have outages that can affect their ability to serve customers. As each third-party service can fail independently, this will naturally increase the amount of time that your site is unable to operate at full functionality. Hosting these features directly through your chosen CMS will ensure that your site will be fully operational for as long as your site remains online.
+
+Secondly, third-party services may go out of business, change their terms and conditions or be targeted for a buyout, any of which can cause a permanent disruption to the service you had previously been able to utilise. When you do not control the means for providing site functions, there can be no guarantee that your chosen service provider will continue to operate under the same conditions of business or even continue trading as a viable concern (either of which could impact upon functionality that you may wish to provide). Any features hosted directly through Composr will be available for use whenever your site is active, ensuring that you are always free to make full use of your site.
+
+Thirdly, there are frequently service limitations that aim to encourage subscription-based upgrades to premium services. This appears on the surface to be a relatively cheap option, however ongoing service charges will quickly add up to a significant cost. Without subscribing to a premium service, you may find that your features are subject to the following restrictions:
+1)	Embedded advertising (e.g. YouTube adverts)
+2)	Limited user-access (e.g. Free surveys on SurveyMonkey only accept the first 100 answers)
+3)	Limited bandwidth (e.g. PhotoBucket accounts limit daily bandwidth for viewing images/videos)
+4)	Limited customisation options (if any)
+5)	Existing integration code may break if the service provider upgrades/changes their service
+
+For example, many sites utilise the popular service "SurveyMonkey" to incorporate survey forms into their sites. Although this is a useful feature, it is extremely limited unless you are willing to pay to use the premium service. Utilising this service also means that a third party organisation has access to the data that you are gathering and you have become dependent upon a third party for a potentially sensitive business operation.
+
+As an alternative, Composr provides a fully featured Survey system that can be integrated into any page you see fit, including forum posts and comment threads. As this system is a core part of your website, it can be used without any restriction or additional charge, the styling & fonts will always match that of your site, there is no requirement for you to display another company's branding on your site and there is no need to log in to a separate web-service to view and analyse your data.
+
+When building an interactive site, it is vitally important to ensure a consistent interface that is free of third-party branding. This provides a more professional appearance, which improves the user experience and increases the user's perception of value and quality. Rather than building your site and picking from a range of service providers à la carte, combining multiple brands and user interfaces (which can appear cheap), Composr provides all of the tools required to provide a professional quality web presence.
+
+Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding Youtube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
+
+In terms of both risk and cost, there are significant advantages to hosting all of your features directly; Composr makes it easy to add new functions over time, often without any complex coding.
+
 [title="2"]PHP[/title]
 
 PHP is a very widely deployed scripting language to power dynamic websites. Because of its wide deployment, and because web applications for it are relatively easy to install from a remote connection, we chose to write Composr in it.
@@ -569,15 +601,17 @@ Enterprise: Connect various big-iron systems together using web services. Each i
 Open Source: Systems tend to be more light-weight, focused on the core behaviours needed. E.g. Direct SQL queries to MySQL, rather than stored procedures (although you can do them if you want to). However, as the code is all open, and no special licenses required, everything has been tuned in a meritocratic kind of way, so things tend to be simple but effective. Particularly for the case of PHP, creating new functionality is extremely time-efficient, because you don't need to compile the code, and you can just plug stuff directly into Composr and essentially have access to all our APIs without needing any web services, or limited public interface, or cut-down scripting system. Things are simple by default, and only get complex when you need to scale things out across multiple tiers etc. You can create tables directly in MySQL using any MySQL frontend you prefer (phpMyAdmin, MySQL workbench, etc).
 
 [concepts
- 1_key="website"                    1_value="A collection of web pages that have something in common (such as being on the same domain name, or controlled by the same company)"
- 2_key="content management system"   2_value="Software for managing content; usually a system designed around the collaboration via a work flow on documents that make up a website, rather than truly dynamic content"
- 3_key="web-application"             3_value="An application used via a web browser and running over the world-wide-web"
- 4_key="framework"                   4_value="A programming framework is a foundation and guide that speeds the development of tailored software solutions"
+ 1_key="Website"                     1_value="A collection of web pages that have something in common (such as being on the same domain name, or controlled by the same company)"
+ 2_key="Content management system"   2_value="Software for managing content; usually a system designed around the collaboration via a work flow on documents that make up a website, rather than truly dynamic content"
+ 3_key="Web-application"             3_value="An application used via a web browser and running over the world-wide-web"
+ 4_key="Framework"                   4_value="A programming framework is a foundation and guide that speeds the development of tailored software solutions"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
+ - [page="site:features"]Features page[/page]
+ - [page="site:compare"]Why we're different[/page]
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
  - [page="_SEARCH:sup_glossary"]Web design glossary[/page]
 
-{$SET,tutorial_tags,core,Introduction,Internet Technology,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Background into the different kinds of solutions that are out there for creating websites - and where Composr fits in.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Introduction,Internet Technology,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Background into the different kinds of solutions that are out there for creating websites - and where Composr fits in.}[block]main_tutorial_rating[/block]

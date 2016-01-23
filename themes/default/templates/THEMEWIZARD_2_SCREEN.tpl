@@ -26,8 +26,10 @@
 	</div>
 {+END}
 
-<ul class="actions_list" role="navigation">
-	<li class="actions_list_strong"><a href="{STAGE3_URL*}">{!THEMEWIZARD_2_USE}</a></li>
+<nav>
+	<ul class="actions_list">
+		<li class="actions_list_strong"><a href="{STAGE3_URL*}">{!THEMEWIZARD_2_USE}</a></li>
 
-	<li><a target="_blank" title="{!PREVIEW} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}}">{!PREVIEW}</a></li>
-</ul>
+		<li><a target="_blank" title="{!PREVIEW} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}}">{!PREVIEW}</a></li>
+	</ul>
+</nav>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_cns_members
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -95,7 +95,7 @@ class Module_admin_cns_members
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -533,8 +533,8 @@ class Module_admin_cns_members
      */
     public function _delurk()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(100);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
         }
         send_http_output_ping();
 
@@ -606,7 +606,7 @@ class Module_admin_cns_members
 
         // Contents (preset / detailed specification)...
 
-        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('CONTENTS'))));
+        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '64766722d13457f593b60d0c9ca9aab5', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('CONTENTS'))));
 
         $presets = method_exists($this, '_get_export_presets') ? $this->_get_export_presets() : array();
         if ($presets != array()) {
@@ -668,7 +668,7 @@ class Module_admin_cns_members
 
         // Filename...
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('FILENAME'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '16d396d2357684d2dbfebefbd20776a3', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('FILENAME'))));
 
         // File name
         $filename = strtolower(do_lang('MEMBERS')) . '-' . date('Y-m-d');
@@ -697,7 +697,7 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
+        return do_template('FORM_SCREEN', array('_GUID' => '24cae29bc329a307a94c8b3f1e087708', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
     }
 
     /**

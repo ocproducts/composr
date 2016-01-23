@@ -47,7 +47,10 @@
 						<li>{!NEWEST_MEMBER,<a href="{NEWEST_MEMBER_PROFILE_URL*}">{$DISPLAYED_USERNAME*,{NEWEST_MEMBER_USERNAME}}</a>}</li>
 					</ul>
 
-					{BIRTHDAYS}
+					{+START,IF_NON_EMPTY,{BIRTHDAYS}}
+						<span class="field_name">{!BIRTHDAYS}:</span>
+						<ul class="horizontal_links_comma">{+START,LOOP,BIRTHDAYS}<li><span class="birthday"><a{+START,IF_PASSED,COLOUR} class="{COLOUR}"{+END} href="{BIRTHDAY_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>{+START,IF_PASSED,AGE} ({AGE*}){+END}</span></li>{+END}</ul>
+					{+END}
 				</td>
 			</tr>
 		</tbody>

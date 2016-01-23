@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -16,6 +16,7 @@
 /*
 Simple script to track advertising purchase successes.
 Requires super_logging enabled.
+Probably better to configure tracking codes in Google Analytics TBH.
 
 Assumes 'from' GET parameter used to track what campaign hits came from.
 
@@ -23,6 +24,9 @@ May be very slow to run.
 */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$title = get_screen_title('Simple referral tracker', false);
+$title->evaluate_echo();
 
 $success = array();
 $joining = array();

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1b[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1b (Further back-end concepts)[/title]
 
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
@@ -6,14 +6,62 @@
 
 [title="2"]Back-end (continued)[/title]
 
+[title="3"]Do-next-manager interfaces[/title]
+
+A 'do-next-manager' is a special navigation interface in Composr that is used in two roles:
+1) What the user wants to do next. These are often shown after an administrative/content-management action is performed.
+2) Where to go. These are used for browsing through the Admin and CMS zone interfaces.
+
+The do-next-manager provides a full-screen choice of options, laying out those options with icons.
+
+The do-next-browser is called up by passing in an array of lines. Here is an example of a simplified call to one (the [tt]do_lang[/tt] lookups have been removed -- this is hard-coded as English for simplicity):
+[code="PHP"]
+return do_next_manager(
+	get_page_title('Page Title'),
+	make_string_tempcode('Text to show on the page'),
+	array(
+		...
+		array(
+			'blog_icon',
+			array('cms_news',array('type' => 'add'), 'cms'),
+			'Add a blog entry',
+			'Blah blah this text is hovered'
+		),
+		...
+	)
+);
+[/code]
+
+Going from top to bottom:
+ - the icon theme image name
+ - the page name ([tt]cms_news[/tt])
+ - the list of URL parameters (in this case, one: [tt]type[/tt] as [tt]add[/tt])
+ - the zone ([tt]cms[/tt])
+ - the link caption
+ - the hover text
+
+To place a new item into the Admin Zone or CMS "Where to go" menus, create a new hook file in [tt]sources/hooks/systems/page_groupings[/tt]. The syntax is essentially as above, and there are plenty of existing files to use as examples.
+
+[title="3"]The translation table[/title]
+
+If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submittable text) are stored in the [tt]translate[/tt] table. There are two reasons for this:
+1) It can be used to store parsed Comcode as Tempcode format, effectively a cache
+2) Composr's API supports multi-language websites in the truest sense. Meaning that potentially, translated versions of virtually any content can be supplied for visitors. As of version 4.2 this is fully supported.
+
+All translatable attributes in Composr are given priorities. The priority numbers are defined as follows...
+1) absolutely crucial and permanent/featured
+2) pretty noticeable: titles, descriptions of very-important
+3) full body descriptions
+4) for individual members, or very low level
+These priorities are intended to be reflected in the content translation interface, with "yet untranslated" text strings being ordered by priority.
+
 [title="3"]The persistent cache[/title]
 
-Only read this section if you feel you need an explanation for this.
-
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/2.jpg[/media]
 Composr supports a "persistent cache" that can store any arbitrary PHP data (e.g. query results) between page views. This is faster than the database: although one would think databases are made very fast, they do not know how to directly access the actual data structures used, and have an overhead in their interprocess connection system, so will never be as fast as a persistent cache.
 The persistent cache is implemented in 3 ways, and one of them is used, or none if it is not enabled (by default it isn't):
-1) via the eAccelerator/mmcache/APC/xcache PHP extensions (requires PHP extension)
-2) via the memcached server daemon (requires PHP extension to access it)
+1) via the eAccelerator/mmcache/APC/xcache/wincache PHP extensions (requires PHP extension)
+2) via the memcached server daemon (requires either memcache or memcached PHP extension to access it)
 3) via file writing (for testing only -- not 'concurrent' safe for use on live sites)
 
 The usage of the cache is very simple. You can:
@@ -25,20 +73,29 @@ As you can see, each entry is given a name. The name identifies the data being c
 
 There is a 'server' level cache, and a 'site' level cache. The programmer only needs to distinguish these on writes. The server level allows storage for access by all Composr installations of the same version (more efficient due to memory sharing). It is very rare that a server level cache may actually be done, due to the high configurability of individual sites.
 
-Some tips/guidelines for usage:
+[title="4"]Tips/guidelines for usage[/title]
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
+Do:
  - delete the entry on writes that affect it, and attempt to load the entry on reads, and put it when it was not in the cache on a read and we had to do a full calculation; do not bother caching when new data is written, as its code that will give a tiny performance increase due to the relatively rare situation
- - remember to cache against theme where appropriate (i.e. do not assume all users will use the same theme by caching theme-tainted data without using the theme name as part of the cache identifier)
- - use the server server cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
- - where possible put user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
- - where appropriate store [tt]false[/tt] rather than [tt]null[/tt], to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
- - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; while it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
+ - use the server-level cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
+ - put (where possible) user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
  - make use of cache layers: e.g. we didn't optimise some functions in Composr because higher level block caching would often make my optimisation almost pointless
  - cache what is used most: we want to support lots of users, so we need regular website access use cases to be most efficient -- making admin actions more efficient is almost pointless
- - don't cache non-featured stuff that could stay in the cache forever but relatively rarely get used (even if a gallery is viewed on every page view, this is not justification to cache all 100 of them: but we could cache the current IOTD block): memory is finite, do not waste it
- - remember that it is not just one site per server, usually -- we want to increase the number of users the server can take on average, not individual sites: memory is finite
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
+Don't:
+ - forget to to cache against theme where appropriate (i.e. do not assume all users will use the same theme by caching theme-tainted data without using the theme name as part of the cache identifier)
+ - cache non-featured stuff that could stay in the cache forever but relatively rarely get used (even if a gallery is viewed on every page view, this is not justification to cache 100s of them: but we could cache the current IOTD block): memory is finite, do not waste it
+ - assume the persistent cache exists (due to its non-reliability for long term storage): if something is really important to be cached, Composr should have a dependable cache to do it
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+Take note:
+ - where appropriate store [tt]false[/tt] rather than [tt]null[/tt], to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
+ - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; while it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
+ - that it is not just one site per server, usually -- we want to increase the number of users the server can take on average, not individual sites: memory is finite
  - you must assume the cache might never remember a thing even if it is on -- things get chucked out to make space, don't assume anything
- - don't assume the persistent cache exists (due to its non-reliability for long term storage): if something is really important to be cached, Composr should have a dependable cache to do it
- - remember that it is okay if things keep getting lost from the cache -- if something is re-made every 5 minutes (the default TTL), then that means it persists for potentially hundreds/thousands of requests: a regeneration rate of 0.3% is hardly bad is it? Of course, if we are on a server with many sites, so things get re-generated after hardly being used, this is non-optimal: but we would not have had the memory to store it all anyway!
+ - that it is okay if things keep getting lost from the cache -- if something is re-made every 5 minutes (the default TTL), then that means it persists for potentially hundreds/thousands of requests: a regeneration rate of 0.3% is hardly bad is it? Of course, if we are on a server with many sites, so things get re-generated after hardly being used, this is non-optimal: but we would not have had the memory to store it all anyway!
 
 [title="3"]Core APIs[/title]
 
@@ -308,7 +365,9 @@ return do_template('RESULTS_TABLE_SCREEN', array(
 ));
 [/code]
 
-[title="3"]Generating URLs[/title]
+[title="3"]URLs[/title]
+
+[title="4"]Generating URLs[/title]
 
 In Composr we usually avoid ever hard-coding URLs to things. There are a number of reasons for this:
 1) We may have different URL Schemes that link to pages in very different ways
@@ -325,10 +384,69 @@ For entry-point scripts we use [tt]find_script[/tt] to locate the script.
 
 For other URLs we typically will prepend [tt]get_base_url() . '/'[/tt] to turn a relative URL into an absolute URL. Or in templates, prepend [tt]{$BASE_URL*}/[/tt].
 
-[title="3"]Attaching messages[/title]
+[title="4"]URL monikers[/title]
 
-If you have a message to attach to regular screen output, use the [tt]attach_message[/tt] function.
-You can generate [tt]inform[/tt]/[tt]notice[/tt]/[tt]warn[/tt] messages.
+URL monikers (use of title-derived phrases in URLs, rather than numeric IDs), work transparently behind the scenes.
+Within Composr you generate URLs to the IDs, but Composr then converts those into the monikers, and back from the monikers, within the system architecture.
+
+To support URL monikers you need to define a new content type, via defining a new [tt]content_meta_aware[/tt] hook for it.
+You need to define all the details in the hook, which is frankly a complex task. Some of these will be defined as [tt]null[/tt], as you probably won't (for example) have a search hook to tie it into.
+
+The specific ones relating to URL monikers are...
+[code="PHP"]
+'support_url_monikers' => true, // Set to true
+'connection' => $GLOBALS['SITE_DB'], // Database the resource table is in
+'table' => 'example', // The resource table
+'id_field' => 'id', // The field containing the ID number (what is used in URLs conventionally)
+'title_field' => 'title', // The field containing the resource title (what the moniker will generate from)
+'title_field_dereference' => true, // Whether the title_field is a language string field; if you are not using content translation it doesn't really matter
+'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD', // The URL pattern we support the monikers on
+[/code]
+
+[title="3"]Breadcrumbs[/title]
+
+If you are making a new module you are likely to want to implement breadcrumbs.
+
+Let's say you have a front page to the module, and you have something in a category with a parent category "Bar" and that has a parent category "Foo" and that has a parent category "Root".
+
+This would create: [tt]Module index > Root > Foo > Bar[/tt]
+
+[code="PHP"]
+breadcrumb_set_parents(array(
+    array('_SELF:_SELF:browse', 'Module index'), // type=misc
+    array('_SELF:_SELF:category:1', 'Root'), // type=category&id=1
+    array('_SELF:_SELF:category:3', 'Foo'), // type=category&id=3
+    array('_SELF:_SELF:category:6', 'Bar'), // type=category&id=6
+));
+[/code]
+
+[tt]_SELF:_SELF[/tt] means "current zone, current page". It stops you having to hard-code zone and page names.
+
+Composr automatically puts stuff in front, and puts the title of the current page on the end (as a non-link), so it would show something like: [tt]Home > Module index > Root > Foo > Bar > Something[/tt]
+
+Of course, in real code you are more likely to put this together in a loop, so your code will be more like:
+[code="PHP"]
+$breadcrumbs = array();
+$_category_id = $category_id;
+do // Recursively find parents and put each as a breadcrumb
+{
+    list($_category_id, $_category_name) = find_parent($_category_id);
+    if ($_category_id !== null)
+    {
+        $breadcrumbs[] = array('_SELF:_SELF:category:' . strval($_category_id), $_category_name);
+    }
+}
+while ($_category_id !== null);
+$breadcrumbs[] = array('_SELF:_SELF:browse', 'Module index');
+breadcrumb_set_parents(array_reverse($breadcrumbs));
+[/code]
+
+The above code is just illustrative. The [tt]find_parent[/tt] function is not real, nor is [tt]$category_id[/tt] -- substitute as appropriate for whatever you write/use yourself.
+
+If the title of the current page is too long or looks weird in the breadcrumbs, you can override it
+[code="PHP"]
+breadcrumb_set_self('Thing');
+[/code]
 
 [title="3"]Redirects[/title]
 
@@ -360,86 +478,25 @@ Of course you can also just do raw PHP, for the simplest cases:
 header('Location:' . $url);
 [/code]
 
-[title="3"]Breadcrumbs[/title]
-
-If you are making a new module you are likely to want to implement breadcrumbs.
-
-Let's say you have a front page to the module, and you have something in a category with a parent category "Bar" and that has a parent category "Foo" and that has a parent category "Root".
-
-This would create: [tt]Module index > Root > Foo > Bar[/tt]
-
-[code="PHP"]
-breadcrumb_set_parents(array(
-    array('_SELF:_SELF:misc', 'Module index'), // type=misc
-    array('_SELF:_SELF:category:1', 'Root'), // type=category&id=1
-    array('_SELF:_SELF:category:3', 'Foo'), // type=category&id=3
-    array('_SELF:_SELF:category:6', 'Bar'), // type=category&id=6
-));
-[/code]
-
-[tt]_SELF:_SELF[/tt] means "current zone, current page". It stops you having to hard-code zone and page names.
-
-Composr automatically puts stuff in front, and puts the title of the current page on the end (as a non-link), so it would show something like: [tt]Home > Module index > Root > Foo > Bar > Something[/tt]
-
-Of course, in real code you are more likely to put this together in a loop, so your code will be more like:
-[code="PHP"]
-$breadcrumbs = array();
-$_category_id = $category_id;
-do // Recursively find parents and put each as a breadcrumb
-{
-    list($_category_id, $_category_name) = find_parent($_category_id);
-    if ($_category_id !== null)
-    {
-        $breadcrumbs[] = array('_SELF:_SELF:category:' . strval($_category_id), $_category_name);
-    }
-}
-while ($_category_id !== null);
-$breadcrumbs[] = array('_SELF:_SELF:misc', 'Module index');
-breadcrumb_set_parents(array_reverse($breadcrumbs));
-[/code]
-
-The above code is just illustrative. The [tt]find_parent[/tt] function is not real, nor is [tt]$category_id[/tt] -- substitute as appropriate for whatever you write/use yourself.
-
-If the title of the current page is too long or looks weird in the breadcrumbs, you can override it
-[code="PHP"]
-breadcrumb_set_self('Thing');
-[/code]
-
-[title="3"]URL monikers[/title]
-
-URL monikers (use of title-derived phrases in URLs, rather than numeric IDs), work transparently behind the scenes.
-Within Composr you generate URLs to the IDs, but Composr then converts those into the monikers, and back from the monikers, within the system architecture.
-
-To support URL monikers you need to define a new content type, via defining a new [tt]content_meta_aware[/tt] hook for it.
-You need to define all the details in the hook, which is frankly a complex task. Some of these will be defined as [tt]null[/tt], as you probably won't (for example) have a search hook to tie it into.
-
-The specific ones relating to URL monikers are...
-[code="PHP"]
-'support_url_monikers' => true, // Set to true
-'connection' => $GLOBALS['SITE_DB'], // Database the resource table is in
-'table' => 'example', // The resource table
-'id_field' => 'id', // The field containing the ID number (what is used in URLs conventionally)
-'title_field' => 'title', // The field containing the resource title (what the moniker will generate from)
-'title_field_dereference' => true, // Whether the title_field is a language string field; if you are not using content translation it doesn't really matter
-'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD', // The URL pattern we support the monikers on
-[/code]
-
 [title="3"]Database structure[/title]
 
-We describe Composr's database structure in a [url="separate document"]{$BRAND_BASE_URL}/docs/codebook_data_dictionary.doc[/url].
+We describe Composr's database structure in a [url="separate document"]{$BRAND_BASE_URL}/docs/codebook_data_dictionary.docx[/url].
 This document includes a data-dictionary, and links to ERD diagrams for different parts of Composr.
 
 [title="3"]Diff tools[/title]
 
-This is not specific to Composr, but you will find a good 'diff' tool is essential when programming. It should be a key part of any programmers toolkit, and can be used for:
+[media width="150" description="WinMerge" float="right"]data_custom/images/docs/codebook_1b/winmerge.png[/media]
+This is not specific to Composr, but you will find a good 'diff' tool is essential when programming. It should be a key part of any programmers toolkit, and could be used for:
  - Seeing what code you might have changed (e.g. if you made a quick bug fix and need to send through a bug report saying what to change).
  - Seeing what code someone else might have changed (e.g. between Composr versions, if you've found there's a new bug and want to see what caused it).
  - If multiple developers conflict, you can sync changes.
  - Updating overridden lang files with typo-fixes from the main Composr.
  - A whole lot more!
-On Windows 'WinMerge' is a good too, on Mac 'DiffMerge', and on Linux, 'Kompare'.
+On Windows [url="WinMerge"]http://winmerge.org/?lang=en[/url] is a good tool, on Mac [url="DiffMerge"]https://sourcegear.com/diffmerge/[/url], and on Linux, Kompare. [url="Beyond Compare"]http://www.scootersoftware.com/[/url] is a better tool, and is cross platform -- but that requires a paid licence.
 
-[title="3"]Storing extra member fields[/title]
+[title="3"]Member profile customisation[/title]
+
+[title="4"]Storing extra member fields[/title]
 
 Custom profile fields allow webmasters to add new fields to member records, extending the system. This ability is often needed by programmers too, if their functionality requires extra data to be stored for individual members. It is ideal for this to be done using custom profile fields, edited on the same edit-profile screen as their existing fields. However, it is not possible to predict what the ID numbers of custom profile fields will be (necessary for recall), so Composr provides a special mechanism for programmers that allows definition and recall of customer profile fields, under identifiers of their choosing.
 
@@ -454,7 +511,7 @@ Conversr stores the data in two tables (you should not need to know this, but it
 1) [tt]f_custom_fields[/tt] -- this stores the field definitions, one field definition per row. Think of it being like a schema.
 2) [tt]f_member_custom_fields[/tt] -- this stores the actual field values, each row represents a member and the field values are spread across normal database columns (aka fields).
 
-[title="3"]Showing new links on member profiles[/title]
+[title="4"]Showing new links on member profiles[/title]
 
 To add new links to member profiles, write a [tt]modules/members[/tt] hook. Look at existing hooks as examples.
 
@@ -485,37 +542,10 @@ The advantages to this file are...
 
 Just write your code into the [tt]execute_temp[/tt] function, load up the file by URL, and the code will run. Then delete your code when you're done (actually that's optional, unless the code is dangerous in some way and should never be run again by a hacker -- so you can keep the code around a bit if you want to use it again later).
 
-Tip: Often when a new version of a module is being written the upgrade code for that module will go through a number of iterations (e.g. maybe a new config option is added, at a late stage). The result of that is the automatic upgrade process won't work because it can only track full module upgrade jumps (i.e. it has no way of tracking small additions and changes to the upgrade code within a single version). If you need a little bit of new upgrade code to run copy&paste it into [tt]execute_temp.php[/tt] to force it to run that way.
-
-[title="3"]Debugging, and stack traces[/title]
-
-Some developers like to use IDE's with breakpoint support, watches, code-stepping, etc. The core Composr staff do not do this, as we tend to find the IDE environment a little clunky and slow, but others have other opinions. Netbeans is an excellent system and has recently had PHP support added.
-
-The core Composr staff usually debug via just putting temporary bits of code in, like:
-[code="PHP"]
-@ob_end_flush(); @print(gettype($var)."\n"); @var_dump($var); flush(); exit();
-[/code]
-
-You don't need all that code all the time, but if you don't use "[tt]exit[/tt]" then you do need "[tt]ob_end_flush[/tt]". This is because Composr uses an "output buffer" for its Tempcode system, and by default any output you do will get written into an arbitrary point in the Tempcode tree -- often never to be seen at all!
-
-In fact, rather than the ugly code above that just dumps information into the output stream, you can do something a lot fancier:
-[code="PHP"]
-attach_message(gettype($var) . var_export($var, true), 'warn');
-[/code]
-
-This should show the message in a nice position in the Composr output.
-
-Of course, make sure you don't leave any temporary debugging code around when you finish!
-
-Composr will show a "stack trace" if it receives an error it treats fatally (a fatal error is one that terminates normal execution -- because execution cannot finish). These stack traces are amazingly good at helping you find bugs, so if you get one have a close look at it.
-
-A stack trace indicates the function call chain from the call of the script handling your current URL (at the bottom) to where Composr failed (near the top). In other words, as you look through the trace you are looking back through each function call all the way back to the top level script that the URL is calling. It doesn't show what the code has finished doing, only what it was doing when it failed and the function call chain that led to that action. At any level you can see the file the call was on, the line number, the function called from that line, and the arguments passed to that function (although large arguments like big arrays and Tempcode are omitted).
-
-Lateral reasoning usually allows spotting of the source of a bug in a few seconds, although sometimes it can be more difficult. Often the bug is caused by unexpected parameters, and you can see them reflected in the stack trace and laterally work out why those parameters were passed and thus work out how to solve the problem.
-
-One confusing thing about stack traces is that the error chain is included within the trace. With time you'll learn to read past this and see where the error was actually triggered. Typically anything above the [tt]fatal_exit[/tt] or [tt]composr_error_handler[/tt] function calls relates to the error handling process itself.
-
-[b]Tip[/b]: If you are getting a 'The requested resource does not exist.' error then you can find a stack trace for when the error is generated by adding "[tt]&keep_fatalistic=1[/tt]" to the URL. This is useful because there is otherwise no way to find where these errors come from (it would have required too many new language strings to be specific about them all).
+[box="Tip"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+Often when a new version of a module is being written the upgrade code for that module will go through a number of iterations (e.g. maybe a new config option is added, at a late stage). The result of that is the automatic upgrade process won't work because it can only track full module upgrade jumps (i.e. it has no way of tracking small additions and changes to the upgrade code within a single version). If you need a little bit of new upgrade code to run copy&paste it into [tt]execute_temp.php[/tt] to force it to run that way.
+[/box]
 
 [title="3"]How Tempcode works[/title]
 
@@ -551,57 +581,20 @@ I have just explained the history of Tempcode so I can make an important point -
 
 [title="3"]Development mode[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/1.jpg[/media]
 If Composr is running out of a git repository, or with our own custom version of PHP, it will automatically run inside 'development mode'. Development mode involves a number of intentionally quirky and strict changes to how Composr runs, including:
  - You will get error messages if you use too many queries, unless [tt]$GLOBALS['NO_QUERY_LIMIT'][/tt] is set to true.
  - Cookies will be disabled, forcing use of [tt]keep_session[/tt] for session propagating. This helps us make sure Composr doesn't need cookies to run.
  - Persistent caching will randomly toggle between on and off (this can cause strange XML errors occasionally due to a race condition in the text-based persistent cache -- try refreshing the page if you get random XML errors).
- - If you create a bad link to a screen (e.g. without using [tt]build_url[/tt]) you will get an error about that. This is because 'keep_devtest=1' is passed through and must be passed through for any referred (i.e. internal) link. Don't manually pass this -- the code must do it itself, as it is injected by [tt]build_url[/tt] to prove [tt]build_url[/tt] was used.
- - Form field descriptions will be forced to end with full stops (.).
+ - If you create a bad link to a screen (e.g. without using [tt]build_url[/tt]) you will get an error about that. This is because [tt]keep_devtest=1[/tt] is passed through and must be passed through for any referred (i.e. internal) link. Don't manually pass this -- the code must do it itself, as it is injected by [tt]build_url[/tt] to prove [tt]build_url[/tt] was used.
+ - Form field descriptions will be forced to end with full stops (.). We want to encourage consistent use of English grammar.
  - The template cache will randomly get emptied.
  - Extra error messages if you try and pass a number to [tt]do_lang[/tt] or [tt]do_lang_tempcode[/tt] (you are supposed to convert to a string first manually).
- - You'll get an error if you don't call a template ending '_SCREEN' at some point during your code.
- - Relative URLs will intentionally not work, due to an intentionally broken [tt]base[/tt] tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like '#example', which are broken by the [tt]base[/tt] tag, but then fixed at run time using JavaScript -- you are allowed to use those.
- - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file while removing it from your PHP file. For example, you can write: do_lang('EXAMPLE=This is an example'); and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
+ - You'll get an error if you don't call a template ending [tt]_SCREEN[/tt] at some point during your code. This enforces our convention of labelling for the screen templates.
+ - Relative URLs will intentionally not work, due to an intentionally broken HTML [tt]base[/tt] tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like [tt]#example[/tt], which are broken by the [tt]base[/tt] tag, but then fixed at run time using JavaScript -- you are allowed to use those.
+ - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file while removing it from your PHP file. For example, you can write: [tt]do_lang('EXAMPLE=This is an example');[/tt] and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
 
 You can turn off most of development mode by putting "[tt]&keep_no_dev_mode=1[/tt]" into the URL, but this is not promoted as development mode was intentionally written to help us do on-the-fly testing of things that might otherwise go unnoticed.
-
-[title="3"]Kid-gloves modes (security)[/title]
-
-It's a fact of life that newbie coders don't know how to write secure code, and it's also a fact of life newbie developers will be expected to write real-world production code. Composr contains many security features and abstractions to protect common types of vulnerability, however there are also additional protections included for newbie developers.
-The additional protections may slow performance slightly, or cause some slight weird processing issues in rare events, but generally won't cause any problems. The protections automatically enable for any block or module in a [tt]*_custom[/tt] directory.
-The protections may be turned off by a code call like:
-[code="PHP"]
-i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
-[/code]
-This call serves philosophically as a self-certification, and practically turns off the kid-glove mode features related to what the developer is certifying against.
-This way Composr has the best of both worlds:
- - Experienced developers who write logical and correct code will not have to fight the system for rare corner case bugs that look like they could possibly be security-related.
- - Newbie developers will be protected for the vast majority of cases.
-
-Saying [tt]I_UNDERSTAND_SQL_INJECTION[/tt] disables extra scanning of queries to ensure they are always made in the most secure way and that custom data within the queries is correctly escaped. The scanning slightly impacts performance.
-Saying [tt]I_UNDERSTAND_XSS[/tt] disables automatic escaping of template parameters and language string parameters (which can result in accidental double-escaping in output) and any input parameters that make it into the output of a mini-module/mini-block.
-Saying [tt]I_UNDERSTAND_PATH_INJECTION[/tt] disables hack-attack errors from being generated if any URL parameter has ".." or null bytes in it.
-
-[title="3"]Input sanitisation, the right way[/title]
-
-Sanitising input is almost trivial in Composr. Just use the most appropriate reader function and Composr will then apply appropriate checking/filtering for you.
-Reader functions include:
- - [tt]get_param_string[/tt] -- reading in a string from GET (i.e. the URL)
- - [tt]get_param_integer[/tt] -- reading in an integer from GET (i.e. the URL)
- - [tt]post_param_string[/tt] -- reading in a string from POST (i.e. a form)
- - [tt]post_param_integer[/tt] -- reading in an integer from POST (i.e. a form)
-
-We also some separate security functions for preventing things like filesystem attacks, or basic conformance checking:
- - [tt]filter_naughty[/tt] -- make sure no file paths are in something that will be used as a path component
- - [tt]filter_naughty_harsh[/tt] -- make sure something is strictly alphanumeric
- - [tt]is_alphanumeric[/tt] -- an alphanumeric test that doesn't result in bail-out if failed
- - [tt]is_email_address[/tt] -- an e-mail address sanitisation check (valid syntax, does not check if it is real, although [tt]is_mail_bounced[/tt] can help find if an e-mail address has bounced in the past)
-
-For database queries (i.e. to avoid SQL injection) use the simplified database APIs wherever appropriate, [tt]query_select[/tt] for example.
-
-To avoid XSS attacks ensure you use the correct logical escaping in the templates. For example, plain text used in an HTML context would be escaping like [tt]{EXAMPLE*}[/tt] (i.e. with the asterisk).
-
-CSRF attacks are already avoided via a form token system and referral checking system.
 
 [title="3"]Custom version of PHP[/title]
 
@@ -610,30 +603,6 @@ Our custom version of PHP (linked to under "Programming/programmatic-interface s
 2) It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like [tt]htmlentities[/tt] result in escaping being marked, and there is also an [tt]cms_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
 
 It also enforces some other coding standards, such as not allowing relative paths to files.
-
-[title="3"]Engineering standards and trade-off[/title]
-
-When coding for Composr, you should be careful to make sure all our design goals are maintained. Sometimes trade-offs have to be made between design goals, sometimes an option can remove the need for a trade-off, and sometimes an option would just bloat and confuse the product. Good balance and thoughtfulness is required before rushing to add the latest cool ideas.
-
-We have established the following design goals (in no particular order):
- - [b]Security[/b] -- Composr should be completely secure and un-hackable, but also be able to track offenders and be easily restorable if the worst happens
- - [b]Performance[/b] -- Composr should be as efficient as possible, with both CPU and memory usage; things like caches and optimised code, and sensible feature design, can achieve this. Tip: use xdebug for profiling, along with WinCacheGrind.
- - [b]Great design[/b] -- Composr should look excellent on every page
- - [b]General quality[/b] -- Composr should not contain things such as spelling errors
- - [b]Flexibility[/b] / [b]generality[/b] -- Composr should be able to work in many different kinds of website. Features should be usable in different ways for different people. It should not have a restricted layout (hence Comcode, modules, blocks, and templates)
- - [b]International[/b] -- Composr should work well across the world, across language and culture (as long as someone puts the effort in to do a translation)
- - [b]Compatibility[/b] -- Composr should work well with common versions of required technologies
- - [b]Modability[/b] -- Composr should be modular, and overridable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
- - [b]Usability[/b] -- Composr should be very easy to use. The best user-experience and interaction-design methods should be used.
- - [b]Power[/b] / [b]features[/b] -- Composr should be as powerful as any competing product, but that should not be an excuse for implementing crap that bloats and over-complicates the product; we all want loads of features, but we don't want to confuse the users or tie ourselves up so tight that future development is very difficult
- - [b]Standards compliance[/b] -- An accessible web, based on open standards, which is stable and not tied to any specific vendor, is desirable for all; by sticking to standards, you are ensuring Composr works on a wide range of technologies, and for a wide audience
- - [b]Documentation[/b] -- Remember that the best documentation is when the interface describes itself, but the written documentation must be excellent.
- - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
- - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
- - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
- - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
- - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
- - [b]Simplicity[/b] -- Features only needed by a minority should be 'off-by-default'
 
 [title="3"]Importers[/title]
 
@@ -644,6 +613,7 @@ Forum/member integration, done using a forum driver, allows Composr to integrate
 Composr always uses one forum driver. The user picks a forum driver when the install and the default is the 'Conversr' driver which actually allows Composr to use its own inbuilt forum (Conversr).
 
 Generally ocProduct's advises people not to use forum/member integration, but rather to use the inbuilt Conversr forum instead (and therefore the 'Conversr' driver). This is because it's much cleaner just to have one piece of software. This said, people often have valid reasons for avoiding a migration.
+
 If one wishes to use Conversr but currently uses a different forum/member-system, then importing is the answer. If one doesn't care about Conversr but currently uses a different forum/member-system, then a forum driver is the answer.
 
 Sometimes you want the advantages of migration, but don't want to move too quickly. ocProduct's approach to supporting these kinds of migrations is to provide forum drivers, but also importers, so people can choose to move to Composr slowly in two separate steps:
@@ -678,6 +648,12 @@ The import system (the [tt]admin_import[/tt] module) provides a framework for im
 
 An importer imports data from the database of some other software into Composr. So it takes database records and converts them. The end result is the data is then part of a Composr-powered website.
 
+To learn how to write an importer consider copying an existing one (preferably one written for a product similar to the product you are importing) and adapting it. Work through the code function by function, adjusting field names and other code as appropriate.
+
+Always test a new importer and keep backups before actually running it on your data. It is surprisingly easy to make a typo in an update query, for example, which will trash a whole table (and if also accidentally executed on the source database, perhaps more disastrous).
+
+[title="5"]Implementation structure[/title]
+
 Importers are implemented using the Composr 'hook' system, meaning that a new importer may be added by just copying the importer-file into the [tt]sources_custom/hooks/modules/admin_import[/tt] directory. At the time of writing, the following importers are available:
  - phpNuke 6.5 (with possibly other versions and forked-products partially compatible)
  - phpBB 2
@@ -695,8 +671,12 @@ The importer-file consists of an object that defines:
   - a feature dependency map (to prevent users importing in the wrong order -- which they may do as they are allowed to skip features so long as there is no defined dependency by what they import next)
   - a message to display after the import has completed. In the case of most of the existing importers it's a standard message telling the user to go run our cleanup tools.
  - miscellaneous other advanced details
- - feature-import functions, which are named according to the code-names of the import features listed within the info data structure (import_<feature>). The object only needs to define feature-import functions for those features it can import.
+ - feature-import functions, which are named according to the code-names of the import features listed within the info data structure ([tt]import_<feature>[/tt]). The object only needs to define feature-import functions for those features it can import.
  - any other miscellaneous functions that the importer may use internally (sometimes importers have their own unique situations where moderately complex conversion of data between representation schemes is required, and support functions are often useful to keep the code tidy)
+
+If you need to import a feature for which no import code exists yet then you'll need to define it. They are defined by hook files in [tt]sources/hooks/modules/admin_import_types[/tt]. Each hook file has a function that returns a mapping between import codes and the language string identifiers that label them. e.g. the 'filedump' code is defined in [tt]sources/hooks/modules/admin_import_types/filedump.php[/tt] and is set to be labelled to the user with the language string 'FILEDUMP'. If you need to create a new import code put it in the most appropriate hook file that already exists (probably [tt]cns_forum.php[/tt]). Try and re-use an existing language string if one exists, otherwise create one in lang/EN/import.ini.
+
+[title="5"]Flow[/title]
 
 The import system mainly provides a workflow via its GUI, and the actual API is relatively light-weight (although the whole Composr API is available to importers). The workflow is as follows:
  - Finds which importer to use (options available correspond to what hooks are on the file system)
@@ -706,15 +686,16 @@ The import system mainly provides a workflow via its GUI, and the actual API is 
  - Provides the user a UI for working through each importable feature, one-at-a-time
 At the last stage the feature functions are called. The import functions themselves are passed details that will allow them access to the imported database, and they generally just loop over the data for the feature being imported, and use the Composr API's to add the data.
 
-If you need to import a feature for which no import code exists yet then you'll need to define it. They are defined by hook files in sources/hooks/modules/admin_import_types. Each hook file has a function that returns a mapping between import codes and the language string identifiers that label them. e.g. the 'filedump' code is defined in [tt]sources/hooks/modules/admin_import_types/filedump.php[/tt] and is set to be labelled to the user with the language string 'FILEDUMP'. If you need to create a new import code put it in the most appropriate hook file that already exists (probably [tt]cns_forum.php[/tt]). Try and re-use an existing language string if one exists, otherwise create one in lang/EN/import.ini.
+The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and "ID remap table" from each import separate. The "choose your session" interface exists so that if your Composr session is lost, you can still resume a previous import.
+
+The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.
+
+[title="5"]Coding techniques and notes[/title]
 
 Often special Composr API parameters are used to disable cache-regeneration and input-sanitisation-checks, to allow for a smoother and more error-free import. For example, if you're adding a topic in an importer you don't want to check poster permissions, so the [tt]cns_add_topic[/tt] function has parameters to disable its internal-checks.
 
-The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and "ID remap table" from each import separate. The "choose your session" interface exists so that if your Composr session is lost, you can still resume a previous import.
-
 The import API gives importers an ability to do foreign key conversions. For example, when importing a topic an importer will likely need to convert the foreign key representing who posted that topic into whatever it has been imported to (a member ID#5 on the import data may now be member ID#9 on Composr). This API is very simple: you just set key remappings when they become known (when importing the feature being referenced), and then look them up when importing whatever uses the key. You can treat the foreign keys either as a dependency (giving an error if there is an inconsistency in the data being imported) or you can handle failed lookups whatever way you wish.
 
-The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.
 One problem with importers that import members is that almost always passwords are not available and not compatible with Composr's hashing scheme. To workaround this:
 1) Conversr needs to be given a handler for the password hashing scheme. This is done by writing a special [tt]systems/cns_auth[/tt] hook.
 2) The member must be imported with a reference code representing the hashing scheme to use (the cns_make_member function supports passing this in)
@@ -728,17 +709,14 @@ There is a very complex situation for non-forum importers that use forum-driver 
 Note that the importer system does not change the actual forum driver used. Therefore it cannot be assumed that the global FORUM_DRIVER object is an Conversr forum driver, nor can it be assumed it holds a local database. The Conversr system has been programmed to never use FORUM_DRIVER itself, it uses CNS_DRIVER (which you may use yourself if writing a forum importer), which is always guaranteed to be linked to Conversr.
 A related problem is that some parts of Composr's API might assume that the FORUM_DB object points to Conversr if the [tt]get_forum_type[/tt] function returns [tt]cns[/tt]; or there can be problems with reference variables that confuses forum driver objects. Therefore running these commands might be required in some other cases -- in particular when Comcode is being parsed. Don't worry too much -- emulate what the other importers do.
 
-To learn how to write an importer consider copying an existing one (preferably one written for a product similar to the product you are importing) and adapting it. Work through the code function by function, adjusting field names and other code as appropriate.
-
 Sometimes data in software being imported has no use in Composr, or isn't quite compatible with how Composr does things. When the developers make an importer we try to make a call in these situations as to how important the feature is:
  - almost always it is fairly trivial (e.g. an option that does not exist in Composr as we'd use a template edit instead). In this case we would ignore the option.
  - sometimes a bit of clever code can convert the data into something useful.
  - if it is something that seems important, either a feature would need adding to Composr, or whoever has commissioned the importer would be consulted, or the issue would be documented. It shouldn't be ignored completely.
 
-Always test a new importer and keep backups before actually running it on your data. It is surprisingly easy to make a typo in an update query, for example, which will trash a whole table (and if also accidentally executed on the source database, perhaps more disastrous).
-
 [title="3"]eCommerce[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/4.jpg[/media]
 For technical information about how eCommerce is achieved in Composr, including how products work, see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
 
 For reference, the described eCommerce hooks have the following methods:
@@ -748,11 +726,10 @@ This is a custom function for hooks to report their products' information. It is
 Valid product types are:
 1) [tt]PRODUCT_PURCHASE_WIZARD[/tt] (a one-off purchase)
 2) [tt]PRODUCT_INVOICE[/tt] (an invoice payment) -- you are very unlikely to need this one
-3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain [tt]length[/tt] and [tt]length_units[/tt] values to define how the subscription will work). [tt]length_units[/tt] can be [tt]d[/tt], [tt]w[/tt], [tt]m[/tt] or [tt]y[/tt]. An example product details array (this would be for a subscription that recurred every 1 month):
-4) [tt]array('length' => 1, 'length_units' => 'm')[/tt]
-5) [tt]PRODUCT_OTHER[/tt] (something that is not purchased via the purchase wizard, but done manually -- usually it is something the website staff are adding manually to show up on the eCommerce charts, not something actually related to the website itself) -- you are very unlikely to need this one
-6) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
-7) [tt]PRODUCT_ORDERS[/tt] (a full shopping cart order) -- you are very unlikely to need this one
+3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain [tt]length[/tt] and [tt]length_units[/tt] values to define how the subscription will work). [tt]length_units[/tt] can be [tt]d[/tt], [tt]w[/tt], [tt]m[/tt] or [tt]y[/tt]. An example product details array (this would be for a subscription that recurred every 1 month): [tt]array('length' => 1, 'length_units' => 'm')[/tt]
+4) [tt]PRODUCT_OTHER[/tt] (something that is not purchased via the purchase wizard, but done manually -- usually it is something the website staff are adding manually to show up on the eCommerce charts, not something actually related to the website itself) -- you are very unlikely to need this one
+5) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
+6) [tt]PRODUCT_ORDERS[/tt] (a full shopping cart order) -- you are very unlikely to need this one
 [*][tt]get_needed_fields[/tt] -- This function will return field Tempcode, for inclusion in a purchase form.
 [*][tt]set_needed_fields[/tt] -- This function processes the data entered from the purchase form (get_needed_fields), or if there was no purchase form it may act on URL parameters that might be present. Often this function is used to save data into the database prior to purchase (after purchase the data would then be retrieved/processed/marked-active). You can assume this function always runs in a screen after get_needed_fields, and therefore you can use the normal functions like post_param_string to read in the data. This function returns the purchase-ID, which henceforth is used to refer to the sale (and thus, retrieve its data). The purchase-ID is often a database key, for the case of a row being added -- but also often it instead is more implicit (e.g. a member ID, or a chosen codename).
 [*][tt]get_identifier_manual_field_inputter[/tt] -- This optional function (often not used) will return field Tempcode for allowing an administrator to select an identifier when manually triggering a purchase. Often identifiers are automatically worked out (in fact, often they are member IDs of the purchasers), so this method allows a more user-friendly open selection for the identifier for the case where the identifier likely is not auto-computable (i.e. when the administrator is purchasing on behalf of a third-party).
@@ -780,7 +757,12 @@ Permissions are drawn from usergroup membership. Usually a forum allows multiple
 
 The permission architecture in Composr is particularly rich, giving the webmaster a high degree of control over their site, but where complexity is only added in if they need it. There are view permissions and privileges. Privileges can be overridden on a per-page and per-category basis, but otherwise apply globally from a simple list of settings.
 
-Note: View permissions are handled differently to privileges. Instead of having an 'overriding'/inheritance system, view permissions work in terms of barriers -- you need to be authorised a number of barriers (zone, page, category) before you are able to view a resource.
+[box="Note"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+View permissions are handled differently to privileges. Instead of having an 'overriding'/inheritance system, view permissions work in terms of barriers.
+
+You need to be authorised a number of barriers (zone, page, category) before you are able to view a resource.
+[/box]
 
 Permission-modules are simply string codes (e.g. [tt]downloads[/tt]) used to specify what kind of resources (e.g. download categories) identifiers are referencing -- in order to specify which view permissions or privileges are set. For view permissions it's simplest: permissions are set against a permission-module (e.g. [tt]download[/tt]) and an identifier (e.g. '3') and looked up correspondingly.
 The term 'module' here is not exactly the same as a 'module' in the usual Composr module-page sense. A permissions-module is usually given the same name as the page-module for viewing the resource it identifies permissions for, but it may not be if the page-module supports multiple types of resource. For example, the [tt]catalogues[/tt] page-module has support for both catalogue-permissions and category-permissions, so the permission-modules are [tt]catalogues_catalogue[/tt] and [tt]catalogues_category[/tt].
@@ -822,9 +804,9 @@ In your modules language file, add:
 PRIVILEGE_may_foobar=May foobar
 [/code]
 
-[title="3"]SEO meta-data[/title]
+[title="3"]SEO metadata[/title]
 
-To allow SEO (search engine optimization) meta-data in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
+To allow SEO (search engine optimization) metadata in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
 
 This function [tt]seo_meta_set_for_implicit()[/tt] implicitly (by virtue of extracting keywords from the strings it is passed) sets the meta information for the specified resource. Add it in the model [tt]add_download[/tt] function:
 [code="PHP"]
@@ -839,18 +821,28 @@ $fields->attach(
 [/code]
 
 In the CRUD CMS-module, you need extra parameters to the call to the model [tt]edit_download[/tt] function:
-[tt],post_param_string('meta_keywords'), post_param_string('meta_description')[/tt]
+[code="PHP"]
+,post_param_string('meta_keywords'), post_param_string('meta_description')
+[/code]
 
 In the model [tt]edit_download[/tt] function you need to take the extra parameters:
-[tt], $meta_keywords, $meta_description[/tt]
+[code="PHP"]
+, $meta_keywords, $meta_description
+[/code]
 and you need to use them:
-[tt]seo_meta_set_for_explicit('downloads_download',strval($id), $meta_keywords, $meta_description);[/tt]
+[code="PHP"]
+seo_meta_set_for_explicit('downloads_download',strval($id), $meta_keywords, $meta_description);
+[/code]
 
 The function [tt]seo_meta_erase_storage[/tt] erases a seo entry... as these shouldn't be left hanging around once content is deleted. Add this function in the model [tt]delete_download[/tt] function, you need to clean up:
-[tt]seo_meta_erase_storage('downloads_download', $id);[/tt]
+[code="PHP"]
+seo_meta_erase_storage('downloads_download', $id);
+[/code]
 
 In the page-module you need to load up the settings when the content is viewed:
-[tt]seo_meta_load_for('downloads_download', strval($id), $title_to_use);[/tt]
+[code="PHP"]
+seo_meta_load_for('downloads_download', strval($id), $title_to_use);
+[/code]
 
 [title="3"]Feedback mechanisms[/title]
 
@@ -992,11 +984,11 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 (in this example the CRUD module adds one extra entry-point, [tt]browse[/tt]).
 
 The standard entry-points defined by an CRUD module are:
- - add, The UI to add a resource.
- - _add, The actualiser to add a resource.
- - edit, To choose a resource to edit/delete.
- - _edit, The UI to edit/delete a resource.
- - __edit, The actualiser to edit/delete a resource.
+ - [tt]add[/tt], The UI to add a resource.
+ - [tt]_add[/tt], The actualiser to add a resource.
+ - [tt]edit[/tt], To choose a resource to edit/delete.
+ - [tt]_edit[/tt], The UI to edit/delete a resource.
+ - [tt]__edit[/tt], The actualiser to edit/delete a resource.
 (additional sets if a category or alternate CRUD module has been chained on, via cat_crud_module [add_category, _add_category, edit_category, _edit_category, __edit_category]/alt_crud_module [add_other, _add_other, edit_other, _edit_other, __edit_other]).
 
 CRUD modules define the following standard methods:
@@ -1041,8 +1033,8 @@ Often the following are overridden at run-time, from the run_start method:
 
 [title="3"]Attachment-supporting fields: Language lookup, Comcode, and attachments[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/3.jpg[/media]
 The following steps are required for correct use of Composr's language/Comcode/attachment system:
-
 1) Define your tables correctly -- human language should almost always be defined using a '*_TRANS' field type.
 2) To input Comcode data, use the Comcode versions of the field input functions (e.g. [tt]field_input_comcode[/tt]). To allow new attachments to be added, you need to use a posting form.
 3) insert/update/delete your data using the correct Comcode/language/attachment functions. When used correctly, the special functions in Composr's API automatically handle Comcode parsing, and attachment uploading. For example, to add some Comcode, you use the [tt]insert_lang_comcode[/tt] function as a filter to convert between Comcode-format string, to translate-table ID number (if multi-language content is enabled -- otherwise it's a null-op) -- and this ID number is then inserted using the normal [tt]query_insert[/tt] function. See how the news addon code does it all for a better example -- it is best understood by copying how existing addons do it.
@@ -1063,13 +1055,5 @@ To add the addon as non-bundled:
  - 'Add' the files to git, commit and push
 
 Your addon can then be managed through the bugfix push system, and will be pushed when the addons are bulk-uploaded (done as a part of the new version release process).
-
-[title="3"]Setting default parameters[/title]
-
-Sometimes on a complex project you will want a module to have a default Filtercode string, or a default virtual root, or some other default parameter different to what Composr hard-codes.
-
-The best way to achieve this is to code up a startup hook. Using PHP code you can detect non-presence of a URL variable, and then set your own default directly into [tt]$_GET[/tt] according to your own context.
-
-For example, if you wanted a module as seen in one zone to have one virtual root, and the same module as seen in another zone, to have another -- you could code up a startup hook that sets the default root accordingly.
 
 {$SET,tutorial_tags,Development,PHP,core_forum_drivers,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Back-end development, part 2.}[block]main_tutorial_rating[/block]

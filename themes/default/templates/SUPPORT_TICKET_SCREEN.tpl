@@ -12,6 +12,49 @@
 		{TICKET_PAGE_TEXT}
 	</div>
 {+END}
+{+START,IF,{$NOT,{NEW}}}
+	{+START,IF_NON_EMPTY,{$GET,ticket_page_existing_text}}
+		<div class="ticket_page_text">
+			{$GET,ticket_page_existing_text}
+		</div>
+	{+END}
+
+	{!_ASSIGNED_TO}
+	<ul class="spaced_list">
+		{+START,IF_NON_EMPTY,{ASSIGNED}}
+			{+START,LOOP,ASSIGNED}
+				<li>
+					{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
+						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment">
+							{$INSERT_SPAMMER_BLACKHOLE}
+
+							<span>{_loop_var*}</span>
+							<input class="button_micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
+						</form>
+					{+END}
+				</li>
+			{+END}
+		{+END}
+
+		{+START,IF_EMPTY,{ASSIGNED}}
+			<li><em>{!UNASSIGNED}</em></li>
+		{+END}
+
+		{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
+			<li>
+				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment">
+					{$INSERT_SPAMMER_BLACKHOLE}
+
+					{$REQUIRE_JAVASCRIPT,people_lists}
+
+					<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
+					<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
+				</form>
+			</li>
+		{+END}
+	</ul>
+{+END}
 
 <div>
 	{+START,SET,EXTRA_COMMENTS_FIELDS_1}
@@ -35,7 +78,7 @@
 		{+START,IF_NON_EMPTY,{POST_TEMPLATES}}
 			<tr>
 				<th class="de_th">
-					<span class="field_name"><label for="ticket_type_id">{!POST_TEMPLATE}:</label></span>
+					<span class="field_name"><label for="ticket_type_id">{!cns_post_templates:POST_TEMPLATE}:</label></span>
 				</th>
 				<td>
 					{POST_TEMPLATES}
@@ -77,44 +120,6 @@
 		{+END}
 	{+END}
 </div>
-
-{+START,IF,{$NOT,{NEW}}}
-	{!_ASSIGNED_TO}
-	<ul class="spaced_list">
-		{+START,IF_NON_EMPTY,{ASSIGNED}}
-			{+START,LOOP,ASSIGNED}
-				<li>
-					{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
-						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment">
-							{$INSERT_SPAMMER_BLACKHOLE}
-
-							<span>{_loop_var*}</span>
-							<input class="button_micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
-						</form>
-					{+END}
-				</li>
-			{+END}
-		{+END}
-
-		{+START,IF_EMPTY,{ASSIGNED}}
-			<li><em>{!UNASSIGNED}</em></li>
-		{+END}
-
-		{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
-			<li>
-				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment">
-					{$INSERT_SPAMMER_BLACKHOLE}
-
-					{$REQUIRE_JAVASCRIPT,people_lists}
-
-					<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
-					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
-					<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
-				</form>
-			</li>
-		{+END}
-	</ul>
-{+END}
 
 {+START,IF_NON_EMPTY,{EXTRA_DETAILS}}
 	<br />

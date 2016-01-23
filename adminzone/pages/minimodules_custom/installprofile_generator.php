@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,7 +41,7 @@ $profile = <<<END
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -148,7 +148,7 @@ $profile .= <<<END
     function default_blocks()
     {
         return array(
-            'YES'=>array(
+            'YES' => array(
 
 END;
 $blocks = find_blocks_in_page('start');
@@ -157,9 +157,9 @@ foreach (array_keys($blocks) as $block) {
 }
 $profile .= <<<END
             ),
-            'YES_CELL'=>array(
+            'YES_CELL' => array(
             ),
-            'PANEL_LEFT'=>array(
+            'PANEL_LEFT' => array(
 
 END;
 $blocks = find_blocks_in_page('panel_left');
@@ -168,7 +168,7 @@ foreach (array_keys($blocks) as $block) {
 }
 $profile .= <<<END
             ),
-            'PANEL_RIGHT'=>array(
+            'PANEL_RIGHT' => array(
 
 END;
 $blocks = find_blocks_in_page('panel_right');
@@ -227,7 +227,7 @@ foreach ($config_options as $option) {
     }
     $_name = php_addslashes($name);
     $_value = php_addslashes($value);
-    $profile .= "\t\tif (get_option(\"{$_name}\",true)!==NULL) set_option(\"{$_name}\",\"{$_value}\");\n";
+    $profile .= "\t\tif (get_option(\"{$_name}\", true) !== null) set_option(\"{$_name}\", \"{$_value}\");\n";
 }
 $profile .= <<<END
     }

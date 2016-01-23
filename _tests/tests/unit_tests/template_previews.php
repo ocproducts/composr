@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,8 +26,8 @@ class template_previews_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $_GET['keep_has_js'] = '0';
@@ -72,8 +72,7 @@ class template_previews_test_set extends cms_test_case
         global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
 
-        $only_do_these = array( // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
-        );
+        $only_do_these = array(); // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
 
         $lists = find_all_previews__by_template();
         foreach ($lists as $template => $list) {
@@ -101,8 +100,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $RECORDED_TEMPLATES_USED = array();
@@ -186,8 +185,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             init__lorem();
@@ -263,8 +262,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $ATTACHED_MESSAGES = new Tempcode();

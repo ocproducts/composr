@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -85,7 +85,7 @@ class Hook_content_meta_aware_member
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'cns_members',
             'rss_hook' => 'cns_members',

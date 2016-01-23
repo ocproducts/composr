@@ -50,17 +50,21 @@
 					<!-- List put in here -->
 				</div>
 				<script>// <![CDATA[
-					var current_selection='';
-					var sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					add_event_listener_abstract(window,'load',function() {
+						window.current_selection='';
+						window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					});
 				//]]></script>
 
 				<p class="associated_details">
 					{!CLICK_ENTRY_POINT_TO_USE}
 				</p>
 
-				<ul class="actions_list" role="navigation">
-					<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
-				</ul>
+				<nav>
+					<ul class="actions_list">
+						<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
+					</ul>
+				</nav>
 			</div>
 
 			<div class="menu_editor_lh_side">

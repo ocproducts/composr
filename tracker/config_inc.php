@@ -88,17 +88,17 @@ $g_email_send_using_cronjob = OFF;
 $g_show_realname = OFF;
 $g_show_user_realname_threshold = NOBODY;	# Set to access level (e.g. VIEWER, REPORTER, DEVELOPER, MANAGER, etc)
 
-# --- Others ---
+# --- Others (Composr-specific) ---
 $cms_sc_site_url = $SITE_INFO['base_url'];
 $cms_sc_site_name = 'compo.sr';
 $g_default_home_page = 'my_view_page.php';	# Set to name of page to go to after login
 $g_logo_url = $cms_sc_site_url.'/';
 $cms_sc_profile_url = $cms_sc_site_url.'/members/view.htm';
-$cms_sc_community_doc_url = $cms_sc_site_url.'/docs/tut_software_feedback.htm';
-$cms_sc_commercial_support_url = $cms_sc_site_url.'/commercial_support.htm';
+$cms_sc_community_doc_url = $cms_sc_site_url.'/docs/tut-software-feedback.htm';
+$cms_sc_commercial_support_url = $cms_sc_site_url.'/professional-support.htm';
 $cms_sc_join_url = $cms_sc_site_url.'/join.htm';
 $cms_sc_member_view_url = $cms_sc_site_url.'/members/view/%1$d.htm';  # Set the user id as variable in the url ie %1$d
-$cms_sc_sourcecode_link = '<a href="https://github.com/ocproducts/Composr">Github</a>';
+$cms_sc_sourcecode_link = '<a href="https://github.com/ocproducts/composr">Github</a>';
 $cms_sc_product_name = 'Composr';
 $cms_sc_business_name = 'ocProducts';
 $cms_sc_business_name_possesive = 'ocProduct\'s';
@@ -109,10 +109,10 @@ $cms_sc_main_currency_symbol = '&pound';
 $cms_sc_alternate_currencies = array('USD', 'CAD', 'EUR');
 $cms_sc_custom_profile_field = 'cms_support_credits';
 
-$cms_updater_groups=array();
-$cms_developer_groups=array(22);
-$cms_manager_groups=array();
-$cms_admin_groups=array(2,3);
+$cms_updater_groups = array();
+$cms_developer_groups = array(22);
+$cms_manager_groups = array();
+$cms_admin_groups = array(2,3);
 
 $g_enable_sponsorship = ON;
 $g_sponsorship_currency = $cms_sc_main_currency.' '.$cms_sc_main_currency_symbol;
@@ -130,6 +130,10 @@ $g_cookie_time_length	= 60*60*24*30;
 
 $g_default_bug_severity = FEATURE;
 $g_default_bug_reproducibility = 100;
+
+// Lets make it so only website-visitors can post. Otherwise spam happens.
+$g_add_bugnote_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
+$g_report_bug_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
 
 $g_html_valid_tags		= '';
 

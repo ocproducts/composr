@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_check_disk_space
     public function run()
     {
         $warning = array();
-        if (function_exists('disk_free_space')) {
+        if (php_function_allowed('disk_free_space')) {
             $disk_space = @disk_free_space(get_file_base());
             if ((is_integer($disk_space)) && ($disk_space < 25 * 1024 * 1024)) {
                 $warning[] = do_lang_tempcode('WARNING_DISK_SPACE');

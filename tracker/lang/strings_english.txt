@@ -548,7 +548,7 @@ $s_monitor_bug_button = 'Monitor';
 # Composr Additions
 $s_vote_added = 'You are now monitoring this issue, and your vote is added to the tally.';
 $s_cms_sc_view_details = 'View full details of bug';
-$s_cms_sc_close_window = ' (close this window to return to where you were)';
+$s_cp_sc_close_window = ' (close this window to return to where you were)';
 
 # bug_monitor_delete.php
 $s_unmonitor_bug_button = 'End Monitoring';
@@ -1291,7 +1291,7 @@ $s_total_sponsorship_amount = 'Total Sponsorship = %1$s';
 # Composr Additions
 $s_divide_cost = '/ Cost';
 $s_cms_sponsor_first_message = 'At %1$d hours, this would cost %2$d support credits at budget priority %3$s [ convert to  %4$s ] ). If this is reached and sponsors have this much in their accounts, %5$s will prioritise the feature and release the code early in this tracker. If a feature is not sponsored then it may also be done anyway, but there is no guarantee that any features posted in the tracker are planned as %6$s is non-commercial and no roadmap is maintained.';
-$s_cms_sponsor_second_message = 'Please be aware that even with sponsorship a requested feature may not end up in the main %1$s distribution, to avoid software bloat.';
+$s_cms_sponsor_second_message = 'Full details about the <a href="$1">sponsorship process and terms</a>.';
 $s_amount_in_support_credits = 'Amount in support credits ';
 $s_current_credits_balance = '(you currently have %1$d balance, although you can enter any number here), or&hellip; ';
 $s_amount_in_main_currency = 'Amount in %1$s ';

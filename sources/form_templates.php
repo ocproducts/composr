@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -605,7 +605,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
         $maxlength = strval($_maxlength);
     }
     $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', $pattern_error);
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (is_null($pattern_error) && !is_null($pattern)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
 /**
@@ -1604,7 +1604,7 @@ function form_input_combo($pretty_name, $description, $name, $default, $options,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('_GUID' => '4f4595c0b0dfcf09b004481e317d02a8', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -2200,8 +2200,7 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
     $default_height = ($_default_height == '') ? null : intval($_default_height);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array(
-        'TABINDEX' => strval($tabindex),
+    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array('_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35', 'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME_WIDTH' => $name_width,
         'DEFAULT_WIDTH' => is_null($default_width) ? '' : strval($default_width),
@@ -2312,7 +2311,7 @@ function single_field__end()
 }
 
 /**
- * Used to create a NULL option for field sets.
+ * Used to create a null option for field sets.
  *
  * @param  mixed $pretty_name The human-readable name for this field
  * @param  ?integer $tabindex The tab index (null: none specified)

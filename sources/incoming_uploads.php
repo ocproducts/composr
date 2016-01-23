@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -43,7 +43,9 @@ function incoming_uploads_script()
         } else {
             header('HTTP/1.1 500 File Upload Error');
 
-            @error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
+            if (php_function_allowed('error_log')) {
+                error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
+            }
 
             exit('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
         }

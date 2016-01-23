@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -61,10 +62,18 @@ class Hook_addon_registry_core
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_webapp',
             'tut_do',
             'tut_drinking',
             'tut_metadata',
+            'tut_sql',
+            'tut_short_urls',
+            'tut_seo',
+            'tut_selectcode',
+            'tut_filtercode',
+            'tut_keymap',
+            'tut_email',
+            'tut_disaster',
+            'tut_antispam',
         );
     }
 
@@ -515,6 +524,7 @@ class Hook_addon_registry_core
             'sources/hooks/systems/symbols/REGION.php',
             'lang/EN/locations.ini',
             'data/geocode.php',
+            'sources/web_resources.php',
             'sources/hooks/systems/cron/git_autopull.php',
             'sources/hooks/systems/cron/dynamic_firewall.php',
             'data_custom/firewall_rules.txt',
@@ -620,7 +630,7 @@ class Hook_addon_registry_core
             'sources/firephp.php',
             'sources/content.php',
             'sources/content2.php',
-            'lang/EN/meta_data.ini',
+            'lang/EN/metadata.ini',
             'adminzone/find_permissions.php',
             'themes/default/javascript/sound.js',
             'data/sounds/message_background.mp3',
@@ -778,7 +788,7 @@ class Hook_addon_registry_core
             'themes/default/templates/BLOCK_TOP_LOGIN.tpl',
             'themes/default/templates/BLOCK_TOP_PERSONAL_STATS.tpl',
             'themes/default/templates/BLOCK_MAIN_CONTENT_FILTERING.tpl',
-            'themes/default/templates/LOGIN_REDIRECT_SCREEN.tpl',
+            'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
             'themes/default/templates/CSS_NEED.tpl',
@@ -794,10 +804,7 @@ class Hook_addon_registry_core
             'themes/default/templates/LOOKUP_IP_LIST_ENTRY.tpl',
             'themes/default/templates/LOOKUP_SCREEN.tpl',
             'themes/default/templates/FATAL_SCREEN.tpl',
-            'themes/default/templates/STACK_TRACE_HYPER_WRAP.tpl',
-            'themes/default/templates/STACK_TRACE_LINE.tpl',
-            'themes/default/templates/STACK_TRACE_WRAP.tpl',
-            'themes/default/templates/BLOCK_MAIN_EMOTICON_CODES_ENTRY.tpl',
+            'themes/default/templates/STACK_TRACE.tpl',
             'themes/default/templates/BLOCK_MAIN_EMOTICON_CODES.tpl',
             'themes/default/templates/BLOCK_NO_ENTRIES.tpl',
             'adminzone/index.php',
@@ -1212,6 +1219,7 @@ class Hook_addon_registry_core
             'sources/symbols.php',
             'sources/symbols2.php',
             'sources/tar.php',
+            'sources/tar2.php',
             'sources/tempcode.php',
             'sources/tempcode_compiler.php',
             'sources/tempcode_optimiser.php',
@@ -1424,7 +1432,7 @@ class Hook_addon_registry_core
             'templates/ACTIONLOGS_SCREEN.tpl' => 'administrative__actionlogs_screen',
             'templates/ACTIONLOGS_TOGGLE_LINK.tpl' => 'administrative__actionlogs_toggle_link',
             'templates/LOGIN_SCREEN.tpl' => 'login_screen',
-            'templates/LOGIN_REDIRECT_SCREEN.tpl' => 'login_redirect_screen',
+            'templates/REDIRECT_POST_METHOD_SCREEN.tpl' => 'redirect_post_method_screen',
             'templates/FORUMS_EMBED.tpl' => 'forums_embed',
             'templates/JS_BLOCK.tpl' => 'js_block',
             'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
@@ -1432,9 +1440,7 @@ class Hook_addon_registry_core
             'templates/JAVASCRIPT_NEED.tpl' => 'javascript_need',
             'templates/CSS_NEED.tpl' => 'css_need',
             'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
-            'templates/STACK_TRACE_LINE.tpl' => 'administrative__stack_trace_hyper_wrap',
-            'templates/STACK_TRACE_WRAP.tpl' => 'administrative__stack_trace_hyper_wrap',
-            'templates/STACK_TRACE_HYPER_WRAP.tpl' => 'administrative__stack_trace_hyper_wrap',
+            'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
             'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
             'templates/MISSING_SCREEN.tpl' => 'missing_screen',
             'templates/PARAM_INFO.tpl' => 'param_info',
@@ -1448,7 +1454,6 @@ class Hook_addon_registry_core
             'templates/BLOCK_TOP_LOGIN.tpl' => 'block_top_login',
             'templates/BLOCK_TOP_PERSONAL_STATS.tpl' => 'block_top_personal_stats',
             'templates/BLOCK_NO_ENTRIES.tpl' => 'nothing_here',
-            'templates/BLOCK_MAIN_EMOTICON_CODES_ENTRY.tpl' => 'block_main_emoticon_codes',
             'templates/BLOCK_MAIN_EMOTICON_CODES.tpl' => 'block_main_emoticon_codes',
             'templates/BLOCK_MAIN_COMCODE_PAGE_CHILDREN.tpl' => 'block_main_comcode_page_children',
             'templates/QUERY_LOG.tpl' => 'administrative__query_screen',
@@ -1614,10 +1619,10 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__login_redirect_screen()
+    public function tpl_preview__redirect_post_method_screen()
     {
         return array(
-            lorem_globalise(do_lorem_template('LOGIN_REDIRECT_SCREEN', array(
+            lorem_globalise(do_lorem_template('REDIRECT_POST_METHOD_SCREEN', array(
                 'REFRESH' => '',
                 'TITLE' => lorem_title(),
                 'TEXT' => lorem_sentence_html(),
@@ -1716,27 +1721,27 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__stack_trace_hyper_wrap()
+    public function tpl_preview__administrative__stack_trace()
     {
-        $trace = new Tempcode();
+        $trace = array();
         foreach (placeholder_array() as $value) {
-            $traces = new Tempcode();
+            $traces = array();
             foreach (placeholder_array() as $key => $value1) {
-                $traces->attach(do_lorem_template('STACK_TRACE_LINE', array(
+                $traces[] = array(
                     'LINE' => $value1,
                     'FILE' => lorem_phrase(),
                     'KEY' => ucfirst($value1),
                     'VALUE' => lorem_sentence(),
-                )));
+                );
             }
-            $trace->attach(do_lorem_template('STACK_TRACE_WRAP', array(
+            $trace[] = array(
                 'TRACES' => $traces,
-            )));
+            );
         }
 
         return array(
-            lorem_globalise(do_lorem_template('STACK_TRACE_HYPER_WRAP', array(
-                'CONTENT' => $trace,
+            lorem_globalise(do_lorem_template('STACK_TRACE', array(
+                'TRACE' => $trace,
                 'POST' => placeholder_array(),
             )), null, '', true)
         );
@@ -2012,16 +2017,16 @@ class Hook_addon_registry_core
 
         $emoticons = placeholder_emoticons();
 
-        $rows = new Tempcode();
+        $rows = array();
         global $EMOTICON_LEVELS;
         foreach ($emoticons as $code => $imgcode) {
             if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
-                $rows->attach(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
+                $rows[] = array(
                     'COLUMNS' => array(array(
-                                           'CODE' => $code,
-                                           'TPL' => do_emoticon($imgcode),
-                                       )),
-                )));
+                       'CODE' => $code,
+                       'TPL' => do_emoticon($imgcode),
+                   )),
+                );
             }
         }
 

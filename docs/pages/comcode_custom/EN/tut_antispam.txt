@@ -120,4 +120,4 @@ Once you've made your report hopefully someone can then tell you what case categ
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
 
-{$SET,tutorial_tags,Security,Configuration,expert}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Tools and techniques for preventing spam in Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Security,Configuration,core,expert}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Tools and techniques for preventing spam in Composr.}[block]main_tutorial_rating[/block]

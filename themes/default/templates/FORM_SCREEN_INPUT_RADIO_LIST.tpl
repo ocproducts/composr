@@ -1,3 +1,5 @@
+{$SET,early_description,1}
+
 {+START,IF_PASSED,NAME}
 	<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 {+END}

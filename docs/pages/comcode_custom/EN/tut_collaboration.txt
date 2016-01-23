@@ -16,7 +16,7 @@ Composr can be used to organise shared documents, provide a forum for discussion
 
 By default, some resources (Comcode pages, menu links, and catalogues), are created in the Collaboration Zone:
  - A 'Projects' catalogue (so that super-members can advertise projects they are working on, to solicit help with them)
- - A page about how the Super-Member can request web-hosting-space
+ - A page about how the Super-Member can request webhosting-space
  - A link for the Super-Member to manage their author profile
 These may be used, deleted, or moved, according to your specific needs.
 

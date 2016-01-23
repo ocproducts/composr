@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,7 +45,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -80,10 +80,10 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -226,11 +226,11 @@ class Module_admin_cns_forums extends Standard_crud_module
         $list->attach(form_input_list_entry('last_post', $order == 'last_post', do_lang_tempcode('FORUM_ORDER_BY_LAST_POST')));
         $list->attach(form_input_list_entry('first_post', $order == 'first_post', do_lang_tempcode('FORUM_ORDER_BY_FIRST_POST')));
         $list->attach(form_input_list_entry('title', $order == 'title', do_lang_tempcode('FORUM_ORDER_BY_TITLE')));
-        $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'order', $list));
+        $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'topic_order', $list));
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
     
-        $fields->attach(meta_data_get_fields('forum', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('forum', is_null($id) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('forum', is_null($id) ? null : strval($id)));
@@ -537,9 +537,9 @@ class Module_admin_cns_forums extends Standard_crud_module
         $parent_forum = post_param_integer('parent_forum', -1);
         $name = post_param_string('name');
 
-        $meta_data = actual_meta_data_get_fields('forum', null);
+        $metadata = actual_metadata_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
+        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('topic_order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
 
         set_url_moniker('forum', $id);
 
@@ -596,7 +596,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        $meta_data = actual_meta_data_get_fields('forum', $id);
+        $metadata = actual_metadata_get_fields('forum', $id);
 
         cns_edit_forum(
             intval($id),
@@ -611,7 +611,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_string('intro_question', STRING_MAGIC_NULL),
             post_param_string('intro_answer', STRING_MAGIC_NULL),
             post_param_string('redirection', STRING_MAGIC_NULL),
-            post_param_string('order', STRING_MAGIC_NULL),
+            post_param_string('topic_order', STRING_MAGIC_NULL),
             post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('reset_intro_acceptance', 0) == 1

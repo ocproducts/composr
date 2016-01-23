@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,21 +20,23 @@ function init__composr_homesite()
     define('DEMONSTRATR_DEMO_LAST_DAYS', 30);
 }
 
-function server__public__demo_reset()
+// IDENTIFYING RELEASES
+// --------------------
+
+function get_latest_version_pretty()
 {
-    require_lang('sites');
-
-    set_value('last_demo_set_time', strval(time()));
-
-    require_lang('composr_homesite');
-
-    $servers = find_all_servers();
-    $server = array_shift($servers);
-    $codename = 'shareddemo';
-    $password = 'demo123';
-    $email_address = '';
-    demonstratr_add_site_raw($server, $codename, $email_address, $password);
+    static $version = null;
+    if ($version !== null) {
+        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        if ($version !== null) {
+            $version = preg_replace('# \(.*#', '', $version);
+        }
+    }
+    return $version;
 }
+
+// MAKING RELEASES
+// ---------------
 
 function server__public__get_tracker_categories()
 {
@@ -90,6 +92,25 @@ function server__upload_to_tracker_issue($tracker_id)
 {
     require_code('mantis');
     upload_to_tracker_issue(intval($tracker_id), $_FILES['upload']);
+}
+
+// DEMONSTRATR
+// -----------
+
+function server__public__demo_reset()
+{
+    require_lang('sites');
+
+    set_value('last_demo_set_time', strval(time()));
+
+    require_lang('composr_homesite');
+
+    $servers = find_all_servers();
+    $server = array_shift($servers);
+    $codename = 'shareddemo';
+    $password = 'demo123';
+    $email_address = '';
+    demonstratr_add_site_raw($server, $codename, $email_address, $password);
 }
 
 function demonstratr_add_site($codename, $name, $email_address, $password, $description, $category, $show_in_directory)
@@ -329,7 +350,7 @@ global \$SITE_INFO;
 
 \$SITE_INFO['custom_base_url_stub']='http://'.\$_SERVER['HTTP_HOST'].'/sites';
 \$SITE_INFO['custom_file_base_stub']='/home/cms/public_html/servers/composr.info/sites';
-\$SITE_INFO['custom_share_domain']=(strpos(\$_SERVER['HTTP_HOST'],'.3c.ms')!==false)?'3c.ms':'composr.info';
+\$SITE_INFO['custom_share_domain']='composr.info';
 \$SITE_INFO['custom_share_path']='sites';
 ";
     $rows = $GLOBALS['SITE_DB']->query_select('sites', array('s_codename', 's_domain_name'), array('s_server' => $server));
@@ -367,7 +388,6 @@ function reset_aliases()
     $sites = $GLOBALS['SITE_DB']->query_select('sites', array('s_codename', 's_domain_name'));
     foreach ($sites as $site) {
         $text .= $site['s_codename'] . '.composr.info:' . 'alias-demonstratr_' . $site['s_codename'] . "\n";
-        $text .= $site['s_codename'] . '.3c.ms:' . 'alias-demonstratr_' . $site['s_codename'] . "\n";
         if ($site['s_domain_name'] != '') {
             $text .= $site['s_domain_name'] . ':' . 'alias-demonstratr_' . $site['s_codename'] . "\n";
         }
@@ -386,15 +406,14 @@ function reset_aliases()
     $hosts = array();
     foreach ($vds as $vd) {
         if (trim($vd) != '') {
-            $hosts[$vd] = 1;
+            $hosts[$vd] = true;
         }
     }
     $sites = $GLOBALS['SITE_DB']->query_select('sites', array('s_codename', 's_domain_name'));
     foreach ($sites as $site) {
-        $hosts[$site['s_codename'] . '.composr.info'] = 1;
-        $hosts[$site['s_codename'] . '.3c.ms'] = 1;
+        $hosts[$site['s_codename'] . '.composr.info'] = true;
         if ($site['s_domain_name'] != '') {
-            $hosts[$site['s_domain_name']] = 1;
+            $hosts[$site['s_domain_name']] = true;
         }
     }
     $myfile = fopen(special_demonstratr_dir() . '/rcpthosts', GOOGLE_APPENGINE ? 'wb' : 'at');
@@ -430,35 +449,6 @@ function reset_aliases()
     }
 
     shell_exec(special_demonstratr_dir() . '/reset_aliases');
-}
-
-/**
- * Find the size of a directory.
- *
- * @param  PATH $dir The pathname to the directory
- * @return integer The size in bytes
- */
-function find_dir_size($dir)
-{
-    $amount = 0;
-
-    $current_dir = @opendir($dir);
-    if ($current_dir !== false) {
-        while (false !== ($entryname = readdir($current_dir))) {
-            if (($entryname == '.') || ($entryname == '..')) {
-                continue;
-            }
-
-            if (is_dir($dir . '/' . $entryname)) {
-                $amount += find_dir_size($dir . '/' . $entryname);
-            } else {
-                $amount += filesize($dir . '/' . $entryname);
-            }
-        }
-        closedir($current_dir);
-    }
-
-    return $amount;
 }
 
 /**
@@ -527,7 +517,7 @@ function do_backup_script()
     // Create data
     require_code('zip');
     $file_array = zip_scan_folder(special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($id));
-    $tmp_path = cms_tempnam('demonstratr_backup');
+    $tmp_path = cms_tempnam();
     $user = substr(md5('demonstratr_site_' . $id), 0, 16);
     shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
     $file_array[] = array('full_path' => $tmp_path, 'name' => 'database.sql', 'time' => time());
@@ -564,7 +554,7 @@ function do_backup_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    @set_time_limit(0);
+    set_time_limit(0);
     error_reporting(0);
 
     // Send actual data

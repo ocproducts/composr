@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,7 +50,7 @@ function init__forum__cns()
 class Forum_driver_cns extends Forum_driver_base
 {
     /**
-     * Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for NULL. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
+     * Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for null. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
      */
     public function forum_layer_initialise()
     {
@@ -235,7 +235,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
      * @param  ?TIME $time_post The post time (null: use current time)
      * @param  ?MEMBER $spacer_post_member_id Owner of comment topic (null: Guest)
-     * @return array Topic ID (may be NULL), and whether a hidden post has been made
+     * @return array Topic ID (may be null), and whether a hidden post has been made
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $time_post = null, $spacer_post_member_id = null)
     {
@@ -879,7 +879,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Get the member ID of the next member after the given one, or NULL.
+     * Get the member ID of the next member after the given one, or null.
      * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
      *
      * @param  MEMBER $member The member ID to increment
@@ -911,7 +911,7 @@ class Forum_driver_cns extends Forum_driver_base
 
     /**
      * Get the name relating to the specified member ID.
-     * If this returns NULL, then the member has been deleted. Always take potential NULL output into account.
+     * If this returns null, then the member has been deleted. Always take potential null output into account.
      *
      * @param  MEMBER $member The member ID
      * @return ?SHORT_TEXT The member name (null: member deleted)
@@ -931,7 +931,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  ID_TEXT $username The username
      * @return SHORT_TEXT The display name
      */
-    public function get_displayname($username)
+    protected function _get_displayname($username)
     {
         $generator = get_option('display_name_generator');
         if ($generator != '') {
@@ -1508,7 +1508,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+     * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
@@ -1517,7 +1517,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
-     * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+     * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {

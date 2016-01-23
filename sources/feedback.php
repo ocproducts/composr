@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -348,9 +348,9 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
                 $all_rating_criteria[$i] = array('NUM_RATINGS' => integer_format($num_ratings), 'RATING' => strval($calculated_rating)) + $all_rating_criteria[$i];
 
-                $extra_meta_data = array();
-                $extra_meta_data['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
-                set_extra_request_metadata($extra_meta_data);
+                $extra_metadata = array();
+                $extra_metadata['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
+                set_extra_request_metadata($extra_metadata);
 
                 $has_ratings = true;
             }
@@ -1098,13 +1098,13 @@ function actualise_post_trackback($allow_trackbacks, $content_type, $content_id)
     require_code('antispam');
     inject_action_spamcheck();
 
-    $url = either_param_string('url', null);
+    $url = post_param_string('url', null);
     if (is_null($url)) {
         return false;
     }
-    $title = either_param_string('title', $url);
-    $excerpt = either_param_string('excerpt', '');
-    $name = either_param_string('blog_name', $url);
+    $title = post_param_string('title', $url);
+    $excerpt = post_param_string('excerpt', '');
+    $name = post_param_string('blog_name', $url);
 
     $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id, 'trackback_ip' => get_ip_address(), 'trackback_time' => time(), 'trackback_url' => $url, 'trackback_title' => $title, 'trackback_excerpt' => $excerpt, 'trackback_name' => $name));
 

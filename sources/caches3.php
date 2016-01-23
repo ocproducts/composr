@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -63,8 +63,8 @@ function composr_cleanup($caches = null)
 
     $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
     if ($max_time < 60 * 4) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
     }
     send_http_output_ping();

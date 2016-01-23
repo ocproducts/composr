@@ -23,12 +23,13 @@ The developers have a track record of responding to bug reports within just a fe
 Bug fixes usually come with an automated (non-personal) response that includes a hotfix, a description of the bug, and a link to show the changes made in the code repository (git/github).
 
 If you really do require an urgent priority response it means either (or both):
- - You need to be using paid support tickets to get commercial-grade support
+ - You need to be using paid support tickets to get professional-grade support
  - You need to take better backups so you don't rely on external factors
 So please bear this in mind and structure your own processes accordingly.
 
 [title="3"]Rules to follow[/title]
 
+[media width="350" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/report_bug.png[/media]
 We don't want people to have to labour over bug reports. However there are some basic rules you will need to follow...
 
 Before starting your report:
@@ -58,19 +59,19 @@ In general:
  - [b]Don't write a long meandering essay[/b]. If you could convey as much meaning using fewer words, try and do that. Remember that the developers might have to read another 10 reports in the same morning, actually deal with them, and finish it all without having expended the energy required for their primary job. They don't have time to read too much narrative.
  - [b]Don't write it as a letter[/b] to someone specific. Chris Graham may currently be the lead developer, but don't start your report "Dear Chris" - it's a little annoying because it adds some unnecessary pressure / filing difficulty. What if Chris is on holiday or ill and someone else is covering lead development duties?
  - [b]Write for a broad audience[/b]. Other users are probably also reading your report. Don't write the report as something about you and your site, try to keep the focus on the problem itself, and Composr.
- - [b]Assume the staff have amnesia[/b]. You may have previously interacted with staff, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that staff will often dump their memory after dealing with something.
+ - [b]Assume the developers have amnesia[/b]. You may have previously interacted with the developers, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that the developers will often dump their memory after dealing with something.
 
 If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Error log). The error log shows all non-user-errors that have occurred on your site.
 
-If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
+If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a paid ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
 [title="3"]Automatic reporting[/title]
 
-Composr comes with an automatic bug reporting mechanism, that is enabled by default but may be disabled during installation and at any time in the site configuration. We prefer that users leave this option enabled, as it allows us to fix bugs that do not get reported (which is probably a high percentage). This system logs and emails us any stack traces you may encounter.
+Composr comes with an automatic bug reporting mechanism, that is enabled by default but may be disabled during installation and at any time in the site configuration. We prefer that users leave this option enabled, as it allows us to fix bugs that do not get reported (which is probably a high percentage). This system logs and e-mails us any stack traces you may encounter.
 
 [title="3"]Where to post[/title]
 
-The "correct" place is the [url="tracker"]http://compo.sr/tracker[/url]. However, practically speaking most users are most comfortable posting informally on the forum, and up to this point the developers have been very happy with that. The staff have tools for automatic submission of formal reports to the tracker anyway.
+The "correct" place is the [url="tracker"]http://compo.sr/tracker[/url]. However, practically speaking most users are most comfortable posting informally on the forum, and up to this point the developers have been very happy with that. The developers have tools for automatic submission of formal reports to the tracker anyway.
 
 The developers don't promise to check the forum, so if you don't get a reply to a bug after about a week then you should go to post on the tracker, but not getting a reply on the forum has been rare in the past.
 
@@ -84,7 +85,7 @@ On shared hosting it is always possible that a webhost can come along and say yo
 
 Shared hosts fit many sites onto the same server, and depending on the price and reputability of the webhost, you may be allowed to use more or less server resource.
 
-Web hosts may work on various metrics, or may respond to issues they have manually identified.
+Webhosts may work on various metrics, or may respond to issues they have manually identified.
 
 [title="3"]Database size[/title]
 
@@ -96,7 +97,7 @@ This could be an issue if you are hosting large files, such as videos or downloa
 
 [title="3"]Request volume[/title]
 
-It may be that you have very large numbers of visitors. If you have many hits each second, the web host may struggle to serve these requests. This is not specific to Composr.
+It may be that you have very large numbers of visitors. If you have many hits each second, the webhost may struggle to serve these requests. This is not specific to Composr.
 
 [title="3"]CPU usage[/title]
 
@@ -113,7 +114,7 @@ So you can see, depending on what kinds of customers the host has, what software
 
 If you are using the Composr chatroom, and a few people leave it open, the reqs/sec could rise considerably.
 
-If you are going to run a popular CMS site, you will eventually outgrow shared hosting and need a VPS, dedicated server, or cloud instances. Until then, try and see past webhost marketing and choose a host that has a good reputation and good hardware -- absolutely don't cheap-out and try and get really cheap hosting, as you'll suffer from it. Cheap hosting is ideal only for simple static sites that get few hits. It's really important to realise how cut-throat and difficult it is for web hosts -- think how much salary a host needs to pay for the support you use from them, for the hardware they provide, for the marketing/advertising/offers they run, and for maintaining their business (their own website, etc) -- you'll see how squeezed it is and how if you go on the cheap end you can't possibly do well from it.
+If you are going to run a popular CMS site, you will eventually outgrow shared hosting and need a VPS, dedicated server, or cloud instances. Until then, try and see past webhost marketing and choose a host that has a good reputation and good hardware -- absolutely don't cheap-out and try and get really cheap hosting, as you'll suffer from it. Cheap hosting is ideal only for simple static sites that get few hits. It's really important to realise how cut-throat and difficult it is for webhosts -- think how much salary a host needs to pay for the support you use from them, for the hardware they provide, for the marketing/advertising/offers they run, and for maintaining their business (their own website, etc) -- you'll see how squeezed it is and how if you go on the cheap end you can't possibly do well from it.
 
 [title="3"]Disk I/O[/title]
 
@@ -158,9 +159,9 @@ If there are 500 sites on the server and 7% are using this level of resource and
 
 As with the last example, it should not be a problem -- but if the host has a lot of users on the same server, or users are using a lot of resources (maybe there's a trend to move to CMSs universally, and also spiders are heavily hitting all the sites regularly) it could be a problem.
 
-[title="3"]If a web host is complaining[/title]
+[title="3"]If a webhost is complaining[/title]
 
-If a web host says you are using too many resources, find out specifics from them. Ask what URLs are causing problems, what resources are being used, and what is valid on their AUP (Acceptable Use Policy).
+If a webhost says you are using too many resources, find out specifics from them. Ask what URLs are causing problems, what resources are being used, and what is valid on their AUP (Acceptable Use Policy).
 
 If the host has reasonable limits, and you aren't serving a high ongoing or peaking volume or users, pass on those specifics to the developers in a bug report.
 
@@ -174,10 +175,11 @@ If you are using too many resources for shared hosting, you'll need something be
 
 [title="2"]Requesting support[/title]
 
-If you require a professional or official response, you'll need to use the Composr paid support service (or an equivalent third-party service -- we do not hold or seek to hold any support/development monopoly).
+If you require a professional or official response, you'll need to use the Composr [page="site:professional_support"]paid support service[/page] (or an equivalent third-party service -- we do not hold or seek to hold any support/development monopoly).
+
 Generally, users can help each other out on the community forum.
 
-Please don't ask for free professional/official support (except when reporting bugs in Composr), as we have to pay our dedicated staff and thus have to have funding for their work hours.
+Please don't ask for free professional/official support (except when reporting bugs in Composr, or under our referral scheme ["Referral scheme for free support"]), as we have to pay our dedicated staff and thus have to have funding for their work hours.
 
 [title="3"]Reporting and avoiding emergency problems[/title]
 
@@ -191,18 +193,18 @@ It is not about:
  - general bugs in functionality
  - problems with your hosting, e.g. databases suddenly corrupting
 
-If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page="_SEARCH:tickets:ticket:ticket_template=bug:cost=free"]free bug report support ticket[/page]. The staff will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
+If you have a major problem that you believe to have been caused by a Composr bug, you can open a [page=":contact:free"]free bug report support ticket[/page]. The developers will respond appropriately (although if it is a problem with your computer's software or hosting, they may say so and not be able to tackle as a Composr bug report).
 
-It is important that you help the staff help you. Remember that no staff are not employed 24x7 to manage your bug reports, they have to fit it in within their working hours, and it is a secondary job to what pays the bills. You need to make it really easy for them to jump in to fix the problem, the first time they open the ticket. The staff will not want to:
+It is important that you help the developers help you. Remember that the developers are not employed 24x7 to manage your bug reports, they have to fit it in within their working hours, and it is a secondary job to what pays the bills. You need to make it really easy for them to jump in to fix the problem, the first time they open the ticket. The developers will not want to:
  - negotiate for the access needed to fix the problem
  - have a protracted back-and-forth over hours or days
  - have to schedule processing of the ticket
  - have to keep requesting additional information
-In short: provide the access they need to solve the problem immediately when they open the ticket for the first time, i.e. FTP or control panel access. There is functionality to encrypt these details. Ideally, the staff should be able to look at your ticket, have the access they need to resolve the problem immediately, resolve it there and then, and then simply be able to tell you it has been resolved.
+In short: provide the access they need to solve the problem immediately when they open the ticket for the first time, i.e. FTP or control panel access. There is functionality to encrypt these details. Ideally, the developers should be able to look at your ticket, have the access they need to resolve the problem immediately, resolve it there and then, and then simply be able to tell you it has been resolved.
 
-Don't make the staff have to do detective work just to extra crucial information from you. Explain the exact situation and anything pertinent. For example, if it is a problem upgrading, describe the exact process you used to upgrade, what you upgraded from, and what you upgraded to.
+Don't make the developers have to do detective work just to extra crucial information from you. Explain the exact situation and anything pertinent. For example, if it is a problem upgrading, describe the exact process you used to upgrade, what you upgraded from, and what you upgraded to.
 
-In return, the staff will try their best to ensure unintended glitches don't cause you unnecessarily pain. They have a [i]very[/i] strong track record for this.
+In return, the developers will try their best to ensure unintended glitches don't cause you unnecessarily pain. They have a [i]very[/i] strong track record for this.
 
 Specifically for upgrading, the developers do advise taking backups as part of the upgrade process. If you did have a problem upgrading, the best process you could follow would be:
 1) Take a backup
@@ -211,9 +213,9 @@ Specifically for upgrading, the developers do advise taking backups as part of t
 4) Move the current site into a temporary directory (e.g. [tt]failed_upgrade[/tt]), and rename the database (e.g. [tt]failed_upgrade[/tt])
 5) Restore the backup to its original directory and database
 6) Open a support ticket explaining the problem, and providing access to the temporary site
-7) (The staff would then quickly resolve)
+7) (The developers would then quickly resolve)
 
-Bear in mind that the primary defence to something suddenly going wrong with your site is to take backups, and know how to restore them (having practised it at least once). The staff are committed to ensuring Composr's stability as a product, but bug fixing is [i]not[/i] a free concierge service that puts the responsibility for your site onto the staff's shoulders. The staff can provide this kind of service via commercial support, but not via free bug fixing.
+Bear in mind that the primary defence to something suddenly going wrong with your site is to take backups, and know how to restore them (having practised it at least once). The developers are committed to ensuring Composr's stability as a product, but bug fixing is [i]not[/i] a free concierge service that puts the responsibility for your site onto the developer's shoulders. The developers can provide this kind of service via professional support, but not via free bug fixing.
 
 &raquo; Also see the [page="_SEARCH:tut_disaster"]Disaster recovery[/page] tutorial.
 
@@ -229,16 +231,46 @@ Issues with AJAX and frames specifically can be caused by JavaScript security re
 
 In Composr it can happen if the base URL has changed. One possibility is if it is blank in the [tt]_config.php[/tt] file. If it was never set, and sometimes Composr is getting called by different variants of the base URL (typically with and without 'www.') then the cache can get a mixture, and it triggers such cross-domain errors.
 
+[title="3"]Referral scheme for free support[/title]
+
+We know a lot of users would benefit from some advanced professional support on occasion, but that it's hard to find/justify the money if your website is not part of a successful business. The community helps, but sometimes only a programmer has the answer.
+
+Of course after making a great product for free the last thing ocProducts can afford is free individual tuition too.
+
+However, if you do help us bring in direct revenue, we can reward you for that. If you refer agency-service projects to us, you'll be given 5% of the value back in support credits to spend with us as you wish.
+
+This is a great way for us to be able to help you out further, and to help you help us.
+
+We're always in need of projects to pay the bills and to continue innovating. Sometimes it seems like we're "programming Gods", and sometimes businesses can seem inhuman or money-grabbing, but actually we're people who work very hard and make big long-term personal commitments, with big bills to pay. And unlike other non-contributing web design companies we have to compete with on a daily basis, we're always aiming for the stars and taking the Composr community with us.
+
+You can find all about our business offerings from the [url="ocProducts"]http://ocproducts.com/[/url] part of this site. If you know an established or funded business who needs a site doing -- see if you can sell them on our services, and [page=":contact:project"]send us the details of the referral[/page].
+
+So, time to get started :)? If you strike it big and are able to refer a development project at say £5,328, you'll earn one full days free support. That could be a [i]lot[/i] of questions answered, or a simple new addon developed.
+
+The smallprint:
+ - It must be a true referral. The entity being referred must not have been considering Composr previously. The entity could be your employer, but it can't be your own business.
+ - The order must be over [currency="GBP"]1000[/currency].
+ - The exact earning calculation is: 1 support credit for each £111 GBP spent with us, rounded down to the nearest support credit.
+ - Only work in the initial order will be considered.
+ - The project must actually start (i.e. deposit paid or support credits purchased). We reserve the right to reduce awarded credits if the project is cancelled for some reason, as we won't have made the money to pass on.
+ - We reserve the right to change these rules at any time, it's not a binding agreement.
+ - This applies for projects done at our agency rate, or long-term secondments of staff -- it doesn't apply to professional support or feature sponsorship which is done at a lower hourly rate.
+ - If referred out to a third-party company (which we often do), ocProducts will ask that company to pass back a referral to you, but we cannot guarantee they'll do it.
+
+We suggest that you are open with whoever you are referring: if they realise you'll get a referral but think you are hiding this, it is likely to reflect poorly on you. Also, of course don't refer work you don't think we could realistically do -- e.g. print design work, PR strategy, IT network support.
+
+I neglected to mention that there's something inherently good about referring work – for most projects we do, at least one new feature makes it back into Composr. A lot of what Composr now is came from commercial projects originally.
+
 [title="2"]Providing feedback, or making feature requests[/title]
 
 [media width="150" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/482033_challenge.jpg[/media]
 Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
 
-The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below. 
+The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below.
 
 Regardless, we have the [url="feature tracker"]http://compo.sr/tracker/[/url] available for full discussions, so your feedback will always be heard, even though we won't necessarily be able to address it. In the spirit of Open Source you can even see ideas direct from the developers (which is our rough equivalent to having a product roadmap). Features can be directly sponsored from the tracker.
 
-[title="3"]If we declare 'yes' to a suggestion immediately[/title] 
+[title="3"]If we declare 'yes' to a suggestion immediately[/title]
 
  - We need to find funding for the majority of Composr development. Composr is developed professionally, i.e. by paid staff, and we need to meet their salaries. We enthusiastically accept contributions, and some things do come through without direct funding (either sponsored internally, or achieved indirectly through client work). However, as a general rule, funding is required. So, regardless of our views, it often comes down to whether our users are willing to sponsor functionality and is out of the developers hands.
  - Our plans might change for a good reason that we hadn't foreseen -- meaning it wouldn't be included after all. This can happen if the design process reveals a big problem with the idea. This is often the case, even for our team's own ideas. This is a big problem if any of our users build their plans around our premature announcement.
@@ -301,7 +333,7 @@ Most features introduce risk in a number of areas, and all features are subject 
  - there is large incompatibility if we add to the CSS, because it means people's customised themes get busted.
 It is best that risk and incompatibility is managed in bulk, in major releases.
 
-[title="3"]Rules of thumb[/title] 
+[title="3"]Rules of thumb[/title]
 
 [b]No free guarantees[/b] -- There is no guarantee that someone will implement what you want. Open Source is not a free lunch, and volunteer Open Source developers makers only tend to implement things that are useful to themselves or fun to do. While Open Source programmers are usually highly ethical, and care about moving the world forward through cooperation, it's important to remember the best web developers are highly skilled and experienced professionals, like solicitors or doctors, and thus are paid as such. There's a lot of expertise in a lot of disciplines that is required to be a good web developer.
 
@@ -457,7 +489,7 @@ A consequence for this is that when we are providing services to people we are a
 One tricky thing about our business is we walk the line between enthusiast and enterprise services, trying to serve everybody's needs well, and aiming to be fair and open to everybody, be socially responsible, and to maintain a healthy community atmosphere. We make advanced stuff really affordable, but when that stuff is heavily customised with a lot of extra design work, and given heavy customisation to tune it to particular needs, it still can cost a lot of money. Often people who are in communities aren't accustomed to the kind of figures that companies have to pay for things, and expect services to be cheaper, more like the price you see for things in shops, or pay for a software license. There's a big gap between 'free'/$100 and 'tens of thousands of dollars'. The reality though is most websites for businesses cost this much, or often a lot more because they are developed by a permanent staff.
 Prices seem relatively high, because wages are always a lot higher than disposable income -- think how many $100 there are in the yearly salary of someone who has been through years of university training and with an in-demand skill-set, and then add to that things like the cost of dead time (periods where incoming work is slow), administration costs, write-downs (e.g. non-paying-clients), training, marketing and PR, management, sickness leave, vacation periods, tax, expansion funds, contingency, office and bills, return on investment, and many other costs. For people outside business costing, the actual cost things come to is a bit of a shock, but the figures that go around are fair reflections on the costs of it all.
 
-Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our commercial services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
+Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our professional services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
 
 Please be aware also that ocProducts doesn't take payment-in-kind, such as payment in stock, payment via advertising, mentions on mailing lists, commissions, or long-deferred payments. Our operating margins are already quite slim, so in these situations we'd expect a business client to use something like a bank loan to fund their enterprise. We're not professional valuators or risk assessors.
 
@@ -473,8 +505,8 @@ The developers are generally polite (if sometimes a bit curt due to time pressur
 
 So, please aim to:
 1) properly plan out your project (written business plan, discussions and arrangements with investors if appropriate, SWOT analysis, written and costed specification);
-2) think of Composr saving you a certain percent (say, 30%, compared to the effective budget of other successful live websites), not eliminating the need for a budget;
-3) start reasonably simple (perhaps a "minimum viable product", and agile development plan to iterate to/from that);
+2) think of Composr saving you a certain percent (say, 30%, compared to the effective budget of other successful live websites), [page="_SEARCH:sup_pricing"]not eliminating the need for a budget[/page];
+3) start reasonably simple (perhaps a [page="_SEARCH:sup_minimum_viable_products"]minimum viable product[/page], and agile development plan to iterate to/from that);
 4) follow the [page="_SEARCH:tut_antifeatures"]advice given[/page].
 
 If you do then find it a big challenge to achieve your desired goals, don't approach the developers asking for free support or for new features to be implemented for free. Please do fully interact with other users in the community though, of course.
@@ -491,7 +523,7 @@ That said, please don't let it stop you giving feedback. The critical difference
 1) Expect the developers to work on a weekend, or evenings, or in the middle of the night, unless there's been a very special arrangement for it
 2) Expect free one-on-one support
 3) When the developers say they can't do something for free, try and twist definitions (e.g. if something specific you want to do is not easy, call it a usability problem and call all usability problems bugs)
-4) If a developer gives out a personal email address for dealing with some issue, keep coming back to it with support questions. Or, send support questions to developers via other external channels, e.g. on Facebook, to try and circumvent the support system (in the process, completely failing to involve yourself in the Composr community)
+4) If a developer gives out a personal e-mail address for dealing with some issue, keep coming back to it with support questions. Or, send support questions to developers via other external channels, e.g. on Facebook, to try and circumvent the support system (in the process, completely failing to involve yourself in the Composr community)
 5) Call the developers idiots for not doing your work for free, as "it'll bring in lots of paying customers"
 6) Don't take backups, then blame bugs if anything happens to stop your site working, expecting free support to get it fixed
 7) Sponsor a feature, then try and use that to leverage free support in other areas (a sponsorship payment would go directly to fund the work involved implementing the feature, so would not be a donation)
@@ -507,7 +539,9 @@ Bugs and security issues are both classified as 'flaws'. There are two classific
  - [b]Major[/b]. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
  - [b]Minor[/b]. Any flaw that is not major.
 
-ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal). Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
+ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal).
+Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
+
 A [b]supported[/b] version is a previous major version where the initial release of a subsequent new major version was made only in the past 8 months. A [b]defunct[/b] version is older than that. Flaws are handled for the different support statuses as follows:
  - [b]Beta[/b] version. ocProducts will typically release the next new beta version with all bugs up to the major flaw fixed, but there are no guarantees.
  - [b]Stable[/b] version. ocProducts will release a new version with all bugs fixed.
@@ -540,7 +574,7 @@ If a minor flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts w
 
 ocProducts believes in being open about how we treat security issues. By explaining how we deal with security issues and why we deal with them in the way we do, we hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them -- ocProducts has very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built in to Composr itself. Even with all this though, problems will inevitably by found.
 
-There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. Whilst implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
+There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. While implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
 
 Security researchers sometimes find vulnerabilities, and usually they do follow full disclosure processes. Therefore it is very possible security holes do get disclosed by third-parties. However, these researchers usually only do their full disclosure after a reasonable time window.
 
@@ -553,4 +587,11 @@ As stated, we will not always disclose the existence of low-risk vulnerabilities
  - and most importantly, to avoid alerting hackers
 We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
 
-{$SET,tutorial_tags,Contributing,Advice & Guidance,novice,pinned}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project[/page]
+ - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
+ - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
+ - [page="_SEARCH:faq"]Composr/ocProducts FAQ[/page]
+
+{$SET,tutorial_tags,Contributing,Advice & Guidance,novice}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]

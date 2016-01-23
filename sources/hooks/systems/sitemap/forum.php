@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -86,7 +86,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => null), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => db_get_first_id()), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . strval($row['id']);
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
@@ -147,6 +147,11 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
                       'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_downloads')),
                   ) + $partial_struct;
+
+        $struct['extra_meta'] = array(
+            'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/social/forum/forums') : null,
+            'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
+        ) + $struct['extra_meta'];
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

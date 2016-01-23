@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,8 +80,14 @@ class Block_main_google_map_users
         if (!array_key_exists('longitude', $map)) {
             $map['longitude'] = '';
         }
-        $mapwidth = array_key_exists('width', $map) ? $map['width'] : '100%';
-        $mapheight = array_key_exists('height', $map) ? $map['height'] : '300px';
+        $map_width = array_key_exists('width', $map) ? $map['width'] : '100%';
+        if (is_numeric($map_width)) {
+            $map_width .= 'px';
+        }
+        $map_height = array_key_exists('height', $map) ? $map['height'] : '300px';
+        if (is_numeric($map_height)) {
+            $map_height .= 'px';
+        }
         $api_key = array_key_exists('api_key', $map) ? $map['api_key'] : '';
         $set_zoom = array_key_exists('zoom', $map) ? $map['zoom'] : '3';
         $set_center = array_key_exists('center', $map) ? $map['center'] : '0';
@@ -140,7 +146,7 @@ class Block_main_google_map_users
             if ($i != 0) {
                 $member_data_js .= ',';
             }
-            $member_data_js .= "['" . addslashes($member_data['m_username']) . "'," .
+            $member_data_js .= "['" . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . "'," .
                                float_to_raw_string(@floatval($member_data['field_' . strval($latitude_cpf_id)])) . "," .
                                float_to_raw_string(@floatval($member_data['field_' . strval($longitude_cpf_id)])) . "," .
                                strval($member_data['m_primary_group']) . "]";
@@ -164,8 +170,8 @@ class Block_main_google_map_users
             'REGION' => $map['region'],
             'DATA' => $member_data_js,
             'USERNAME_PREFIX' => $map['username_prefix'],
-            'WIDTH' => $mapwidth,
-            'HEIGHT' => $mapheight,
+            'WIDTH' => $map_width,
+            'HEIGHT' => $map_height,
             'LATITUDE' => $map['latitude'],
             'LONGITUDE' => $map['longitude'],
             'ZOOM' => $set_zoom,

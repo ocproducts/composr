@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -78,7 +78,7 @@ class Hook_snippet_profile_tab
             $login_url = build_url(array('page' => 'login', 'type' => 'login'), '_SELF');
             require_css('login');
             $passion = form_input_hidden('redirect', static_evaluate_tempcode($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true, true)));
-            $ret = do_template('LOGIN_SCREEN', array('EXTRA' => '', 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of), 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(), 'TITLE' => '', 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
+            $ret = do_template('LOGIN_SCREEN', array('_GUID' => 'f401d48a9d2a70af6c2976d396207fc1', 'EXTRA' => '', 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of), 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(), 'TITLE' => '', 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
             $out = new Tempcode();
             $eval = $ret->evaluate();
             $out->attach(symbol_tempcode('CSS_TEMPCODE'));

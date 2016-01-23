@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -101,11 +101,8 @@ class Module_downloads
             $map += insert_lang_comcode('description', '', 3);
             $map += lang_code_to_default_content('category', 'DOWNLOADS_HOME');
             $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads'));
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($id), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('downloads', $id);
 
             $GLOBALS['SITE_DB']->create_index('download_categories', 'child_find', array('parent_id'));
 
@@ -202,7 +199,7 @@ class Module_downloads
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -223,7 +220,7 @@ class Module_downloads
     public $num_images;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -279,7 +276,7 @@ class Module_downloads
             }
             breadcrumb_set_parents($breadcrumbs);
 
-            // Meta data
+            // Metadata
             seo_meta_load_for('downloads_category', strval($category_id), $title_to_use);
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $category['add_date']),
@@ -290,7 +287,7 @@ class Module_downloads
                 'title' => comcode_escape($title_to_use),
                 'identifier' => '_SEARCH:downloads:browse:' . strval($category_id),
                 'description' => get_translated_text($category['description']),
-                //'category'=>???,
+                //'category' => ???,
             ));
             $main_rep_image = $category['rep_image'];
             if ($main_rep_image != '') {
@@ -400,7 +397,7 @@ class Module_downloads
                 $images_details = $_out;
             }
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['add_date']),
                 'creator' => $myrow['author'],
@@ -411,7 +408,7 @@ class Module_downloads
                 'identifier' => '_SEARCH:downloads:view:' . strval($id),
                 'description' => get_translated_text($myrow['description']),
                 'image' => $image_url,
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             $this->id = $id;
@@ -467,7 +464,7 @@ class Module_downloads
         $root = $this->root;
         $category = $this->category;
 
-        $description = get_translated_tempcode('download_downloads', $category, 'description');
+        $description = get_translated_tempcode('download_categories', $category, 'description');
 
         // Sorting
         $sort = get_param_string('sort', get_option('downloads_default_sort_order'));
@@ -507,14 +504,16 @@ class Module_downloads
         $sorting = do_template('PAGINATION_SORT', array('_GUID' => 'f4112dcd72d1dd04afbe7277a3871399', 'SORT' => 'sort', 'URL' => $sort_url, 'SELECTORS' => $selectors));
 
         // Get category contents
-        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0'));
+        //  Subcategories:
+        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
+        //  Downloads:
         if (get_option('downloads_subcat_narrowin') == '1') {
             $select = strval($category_id) . '*';
         } else {
-            $select = strval($category_id);
+            $select = strval($category_id) . '#';
         }
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_multi_content', array('param' => 'download', 'select' => $select, 'efficient' => '0', 'zone' => '_SELF', 'sort' => $sort, 'max' => get_option('download_entries_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'filter' => $filter, 'block_id' => 'module'));
+        $downloads = do_block('main_multi_content', array('param' => 'download', 'select' => $select, 'efficient' => '0', 'zone' => '_SELF', 'sort' => $sort, 'max' => get_option('download_entries_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'filter' => $filter, 'block_id' => 'module', 'guid' => 'module'));
 
         // Management links
         if (has_actual_page_access(null, 'cms_downloads', null, array('downloads', strval($category_id)), 'submit_midrange_content')) {
@@ -545,7 +544,7 @@ class Module_downloads
             'EDIT_CAT_URL' => $edit_cat_url,
             'DESCRIPTION' => $description,
             'SUBCATEGORIES' => $subcategories,
-            'DOWNLOADS' => $entries,
+            'DOWNLOADS' => $downloads,
             'SORTING' => $sorting,
         ));
     }

@@ -55,7 +55,7 @@
 				<td>
 					{SHIPPING_ADDRESS}
 				</td>
-			</tr>		
+			</tr>
 			<tr>
 				<th>{!ORDER_ACTIONS}</th>
 				<td>

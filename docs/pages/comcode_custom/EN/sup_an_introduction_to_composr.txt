@@ -47,7 +47,7 @@ Another of Composr's strongest features is the inbuilt security. This strength i
 
 As a user of Composr of the [page="forum:"]Composr forums[/page], you have access to the original developers of the software. Chris Graham who is the main programmer behind Composr is a regular user of the forums. This doesn't mean he will give free support or implement new features for free! However, it does give a level of access that other CMS offer. Between Chris, his team and the rest of the friendly community, you will find the available level of help is impressive!
 
-For developers who are looking to implement their own features or make modifications, the CMS is completely open source, meaning you can make modifications and have access to the source code behind the software. The code has been intentionally designed to be very clean to make it easier to modify where needed.
+For developers who are looking to implement their own features or make modifications, the CMS is completely Open Source, meaning you can make modifications and have access to the source code behind the software. The code has been intentionally designed to be very clean to make it easier to modify where needed.
 
 Accessibility is a huge plus point for Composr and goes much further than any other CMS in support for visually impaired users. As far as I know Composr is the only CMS where it is possible to fully manage your site without help from a sighted person. The Composr forums have a number of visually impaired users who have their own development section to help the Composr team with their understanding of issues.
 

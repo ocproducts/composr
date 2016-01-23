@@ -44,11 +44,11 @@ Products that require manual setup will usually only be charged for upon activat
 
 Other features we have include:
 [list]
-{+START,IF,{$ADDON_INSTALLED,calendar}}[*]a calendar[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,chat}}[*]chatrooms[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,downloads}}[*]downloads[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,cns_forum}}[*]forums[/*][*]private topics (for private messaging)[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,quizzes}}[*]quizzes[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,calendar}}[*] a calendar[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,chat}}[*] chatrooms[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,downloads}}[*] downloads[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,cns_forum}}[*] forums[/*][*] private topics (for private messaging)[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,quizzes}}[*] quizzes[/*]{+END}
 [/list]
 
 You may see submission links on the menus, and in other places. Submitting any kind of entry will be a similar process to submitting news: your entry will likely be put in a validation queue.

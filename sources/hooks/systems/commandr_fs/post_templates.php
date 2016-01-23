@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('id'), array('t_title' => $label));
+        $_ret = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('id'), array('t_title' => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);

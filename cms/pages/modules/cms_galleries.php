@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Module_cms_galleries extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -91,10 +91,10 @@ class Module_cms_galleries extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -483,7 +483,7 @@ class Module_cms_galleries extends Standard_crud_module
 
                             // Load in file
                             zip_entry_open($myfile, $entry);
-                            $tmp_name_2 = cms_tempnam('bi');
+                            $tmp_name_2 = cms_tempnam();
                             $myfile2 = fopen($tmp_name_2, 'wb') or intelligent_write_error($tmp_name_2);
                             $more = mixed();
                             do {
@@ -520,7 +520,7 @@ class Module_cms_galleries extends Standard_crud_module
                         $this->_sort_media($directory);
 
                         foreach ($directory as $entry) {
-                            $tmp_name_2 = cms_tempnam('bi');
+                            $tmp_name_2 = cms_tempnam();
 
                             // Load in file
                             $_in = tar_get_file($myfile, $entry['path'], false, $tmp_name_2);
@@ -549,7 +549,7 @@ class Module_cms_galleries extends Standard_crud_module
                     break;
                 default:
                     if ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
-                        $tmp_name_2 = cms_tempnam('bi');
+                        $tmp_name_2 = cms_tempnam();
 
                         if ($__file['type'] != 'plupload') {
                             $test = @move_uploaded_file($tmp_name, $tmp_name_2);
@@ -1147,7 +1147,7 @@ class Module_cms_galleries extends Standard_crud_module
             $fields->attach(form_input_regions($regions));
         }
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
@@ -1159,7 +1159,7 @@ class Module_cms_galleries extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_trackbacks', strval($allow_trackbacks)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(meta_data_get_fields('image', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('image', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -1289,11 +1289,11 @@ class Module_cms_galleries extends Standard_crud_module
 
         $this->donext_type = $cat;
 
-        $meta_data = actual_meta_data_get_fields('image', null);
+        $metadata = actual_metadata_get_fields('image', null);
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        $id = add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], null, '', '', $regions);
+        $id = add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['submitter'], $metadata['add_time'], $metadata['edit_time'], $metadata['views'], null, '', '', $regions);
 
         set_url_moniker('image', strval($id));
 
@@ -1396,11 +1396,11 @@ class Module_cms_galleries extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('image', strval($id));
+        $metadata = actual_metadata_get_fields('image', strval($id));
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
+        edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], $regions, true);
 
         if ((!fractional_edit()) && (has_edit_permission('cat_mid', get_member(), get_member_id_from_gallery_name($cat), 'cms_galleries', array('galleries', $cat))) && (post_param_integer('rep_image', 0) == 1)) {
             $GLOBALS['SITE_DB']->query_update('galleries', array('rep_image' => $thumb_url), array('name' => $cat), '', 1);
@@ -1558,7 +1558,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     $download_test = null;
                     $temp_path = '';
                     if ($url != '') {
-                        $temp_path = cms_tempnam('cmsafm');
+                        $temp_path = cms_tempnam();
                         $write_to_file = fopen($temp_path, 'wb');
                         $download_test = http_download_file($url, 1024 * 50, false, false, 'Composr', null, null, null, null, null, $write_to_file);
                         rewind($write_to_file);
@@ -1734,7 +1734,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             $fields->attach(form_input_regions($regions));
         }
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
@@ -1746,7 +1746,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_trackbacks', strval($allow_trackbacks)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(meta_data_get_fields('video', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('video', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -1894,11 +1894,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $this->donext_type = $cat;
 
-        $meta_data = actual_meta_data_get_fields('video', null);
+        $metadata = actual_metadata_get_fields('video', null);
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        $id = add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], null, '', '', $regions);
+        $id = add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $metadata['submitter'], $metadata['add_time'], $metadata['edit_time'], $metadata['views'], null, '', '', $regions);
 
         set_url_moniker('video', strval($id));
 
@@ -2019,11 +2019,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('video', strval($id));
+        $metadata = actual_metadata_get_fields('video', strval($id));
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
-        edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
+        edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], $regions, true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('video', strval($id));
@@ -2168,7 +2168,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                         $parent_gallery_title = get_translated_text($_parent_gallery_title);
                     }
                 }
-                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'gallery'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*HACKHACK: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
+                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'gallery'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*FUDGE: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
             } else {
                 $hidden->attach(form_input_hidden('parent_id', $parent_id));
             }
@@ -2217,7 +2217,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(get_category_permissions_hidden_on());
         }
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, ($name == '') ? null : $name, false);
         if (get_option('gallery_feedback_fields') == '1') {
@@ -2228,7 +2228,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(meta_data_get_fields('gallery', ($name == '') ? null : $name, true, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('gallery', ($name == '') ? null : $name, true, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -2302,9 +2302,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $allow_rating = post_param_integer('allow_rating', 0);
         $allow_comments = post_param_integer('allow_comments', 0);
 
-        $meta_data = actual_meta_data_get_fields('gallery', null);
+        $metadata = actual_metadata_get_fields('gallery', null);
 
-        add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $url, $watermark_top_left[0], $watermark_top_right[0], $watermark_bottom_left[0], $watermark_bottom_right[0], $allow_rating, $allow_comments, false, $meta_data['add_time'], $meta_data['submitter']);
+        add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $url, $watermark_top_left[0], $watermark_top_right[0], $watermark_bottom_left[0], $watermark_bottom_right[0], $allow_rating, $allow_comments, false, $metadata['add_time'], $metadata['submitter']);
 
         set_url_moniker('gallery', $name);
 
@@ -2365,7 +2365,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $allow_rating = post_param_integer('allow_rating', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $allow_comments = post_param_integer('allow_comments', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
-        $meta_data = actual_meta_data_get_fields('gallery', $id, null, $name);
+        $metadata = actual_metadata_get_fields('gallery', $id, null, $name);
 
         edit_gallery(
             $id,
@@ -2387,8 +2387,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
             post_param_string('meta_description', STRING_MAGIC_NULL),
             $allow_rating,
             $allow_comments,
-            $meta_data['submitter'],
-            $meta_data['add_time'],
+            $metadata['submitter'],
+            $metadata['add_time'],
             true
         );
 

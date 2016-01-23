@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -130,7 +130,7 @@ function friend_remove($likes, $liked)
 /**
  * Get form fields for adding/editing a chatroom.
  *
- * @param  ?AUTO_LINK $id The chat room ID (null: new)
+ * @param  ?AUTO_LINK $id The chatroom ID (null: new)
  * @param  boolean $is_made_by_me Whether the room is being made as a private room by the current member
  * @param  SHORT_TEXT $room_name The room name
  * @param  LONG_TEXT $welcome The welcome message
@@ -219,7 +219,7 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
     }
 
     require_code('content2');
-    $fields->attach(meta_data_get_fields('chat', is_null($id) ? null : strval($id)));
+    $fields->attach(metadata_get_fields('chat', is_null($id) ? null : strval($id)));
 
     if (addon_installed('content_reviews')) {
         require_code('content_reviews2');
@@ -314,7 +314,7 @@ function read_in_chat_perm_fields()
  * @param  LONG_TEXT $disallow2_groups The comma-separated list of usergroups that may NOT access it (blank: no restriction)
  * @param  LANGUAGE_NAME $room_language The room language
  * @param  BINARY $is_im Whether it is an IM room
- * @return AUTO_LINK The chat room ID
+ * @return AUTO_LINK The chatroom ID
  */
 function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups, $disallow2, $disallow2_groups, $room_language, $is_im = 0)
 {
@@ -354,7 +354,7 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 /**
  * Edit a chatroom.
  *
- * @param  AUTO_LINK $id The chat room ID
+ * @param  AUTO_LINK $id The chatroom ID
  * @param  SHORT_TEXT $welcome The welcome message
  * @param  SHORT_TEXT $room_name The room name
  * @param  MEMBER $room_owner The room owner
@@ -399,7 +399,7 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
 /**
  * Delete a chatroom.
  *
- * @param  AUTO_LINK $id The chat room ID
+ * @param  AUTO_LINK $id The chatroom ID
  */
 function delete_chatroom($id)
 {
@@ -440,8 +440,8 @@ function delete_chatroom($id)
  */
 function delete_chat_messages($where)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $messages = $GLOBALS['SITE_DB']->query_select('chat_messages', array('id', 'the_message'), $where, '', 400);
@@ -457,8 +457,8 @@ function delete_chat_messages($where)
  */
 function delete_all_chatrooms()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     do {
         $c_welcomes = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'c_welcome'), array('is_im' => 0), '', 400);
@@ -478,7 +478,7 @@ function delete_all_chatrooms()
  * Ban a member from a chatroom.
  *
  * @param  MEMBER $member_id The member to ban
- * @param  AUTO_LINK $id The chat room ID
+ * @param  AUTO_LINK $id The chatroom ID
  */
 function chatroom_ban_to($member_id, $id)
 {
@@ -497,7 +497,7 @@ function chatroom_ban_to($member_id, $id)
  * Unban a member from a chatroom.
  *
  * @param  MEMBER $member_id The member to unban
- * @param  AUTO_LINK $id The chat room ID
+ * @param  AUTO_LINK $id The chatroom ID
  */
 function chatroom_unban_to($member_id, $id)
 {
@@ -519,7 +519,7 @@ function chatroom_unban_to($member_id, $id)
 /**
  * Delete all messages in a chatroom.
  *
- * @param  AUTO_LINK $id The chat room ID
+ * @param  AUTO_LINK $id The chatroom ID
  */
 function delete_chatroom_messages($id)
 {

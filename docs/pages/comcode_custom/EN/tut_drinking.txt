@@ -75,37 +75,37 @@ Here are the main content types (your meat & potatoes of publishing)...
 | [tt]calendar[/tt]
 | Organise events on a public calendar / private diary.
 | Flat (event types).
-| 
+|
 |-
 ! Wiki+
 | [tt]wiki[/tt]
 | Encyclopaedia system, designed for taking public contributions. Like a wiki but a hybrid system that also supports tree-like structuring. Made up of pages, consisting of page text and/or posts.
 | Node structure (Wiki+ pages), looks hierarchical but you may place child pages under multiple parent pages.
-| 
+|
 |-
 ! Downloads
 | [tt]downloads[/tt]
 | A library of downloadable files. Can be used to provide documents, or any other organised structure of files for visitors to download.
 | Hierarchical (download categories).
-| 
+|
 |-
 ! Galleries
 | [tt]galleries[/tt]
 | Browsable galleries containing Images and Videos.
 | Hierarchical (galleries).
-| 
+|
 |-
 ! Polls
 | [tt]polls[/tt]
 | Post polls, often chronologically. Take in the views of your visitors via a simple voting mechanism.
 | None.
-| 
+|
 |-
 ! Quizzes
 | [tt]quiz[/tt]
 | Have tests, competitions, and surveys, consisting of multiple questions, with a variety of answer inputting methods. Visitors may fill the quizzes in and results get processed.
 | None.
-| 
+|
 |-
 ! Catalogues
 | [tt]catalogues[/tt]
@@ -114,10 +114,10 @@ Here are the main content types (your meat & potatoes of publishing)...
 | Shopping cart, Orders
 |-
 ! [i]Custom[/i]
-| 
+|
 | Using custom PHP code you can extend the system with new content types that fully integrate with all standard Composr features. Seriously consider this over inbuilt types or a catalogue if you want to do something custom that is fancy or expansive. Requires an experienced programmer.
 | None.
-| 
+|
 |}
 
 Additionally, there are support features for content...
@@ -129,19 +129,19 @@ Additionally, there are support features for content...
 ! Sub concepts
 |-
 ! Comcode
-| 
+|
 | Composr's markup language for embellishing written content or aggregating features. Can also include HTML.
 | Emoticons, Custom Comcode, Attachments, Blocks
 |-
 ! Attachments
-| 
+|
 | Attachments let you easily embed files (images, videos, downloads, etc) within certain Comcode-supporting fields via direct upload.
-| 
+|
 |-
 ! File/Media Library
 | filedump
 | A file manager that lets you organise contributor files independently of any particular content type, building up a library. Maps directly to the uploads/filedump folder.
-| 
+|
 |-
 ! Members
 | members
@@ -151,47 +151,47 @@ Additionally, there are support features for content...
 ! Authors
 | authors
 | The author of News / Downloads, manageable as an independent record that is not necessarily tied to a Member.
-| 
+|
 |-
-! Meta-data
-| 
-| Content types allow specification of meta data, such as keywords (tags) and descriptions. This gets integrated with third-party web services, such as Facebook Open Graph.
-| 
+! Metadata
+|
+| Content types allow specification of metadata, such as keywords (tags) and descriptions. This gets integrated with third-party web services, such as Facebook Open Graph.
+|
 |-
 ! Awards
 | awards
 | Content may be assigned awards, as a mechanism for drawing it out into pre-defined feature spots, and/or highlighting it within the awards archive, and/or to actually award the submitting member with Points.
-| 
+|
 |-
 ! Content Translation
 | lang
 | Translate content into multiple languages.
-| 
+|
 |-
 ! Custom Fields
-| 
+|
 | Attach custom fields to any of the main inbuilt content types (both categories and entries).
-| 
+|
 |-
 ! Feedback
-| 
+|
 | Accept ratings/trackbacks/comments by users on your content. Comments are stored on the forum.
 | Rating, Trackbacks, Comments
 |-
 ! Validation
-| 
+|
 | Determine whether content is live on the site or not.
-| 
+|
 |-
 ! Permissions
-| 
+|
 | Define category access ('view') permissions.
-| 
+|
 |-
 ! Aggregate content types
-| 
+|
 | Allow bulk creation of complex content structures involving multiple other content types.
-| 
+|
 |}
 
 Honourable mentions...
@@ -213,19 +213,19 @@ Honourable mentions...
 | chat
 | Live chats between users.
 | You can have multiple chatrooms.
-| 
+|
 |-
 ! Newsletters
 | newsletter
 | Send bulk e-mails to users.
 | You can have multiple newsletters.
-| 
+|
 |-
 ! Menus
 | menus
 | Define your site navigation.
 | You can have multiple menus.
-| 
+|
 |-
 ! Themes
 | themes
@@ -237,7 +237,7 @@ Honourable mentions...
 | banners
 | Deliver advertisements (there is support for different kinds of advert code and media).
 | You can have multiple banner types, to maintain separate spots/rotations of banners.
-| 
+|
 |-
 ! Usergroups
 | groups
@@ -249,37 +249,37 @@ Honourable mentions...
 | staff_messaging
 | Various blocks exist that let you place contact forms on your website. The messaging system provides a way for staff to coordinate to respond to enquiries.
 | N/A
-| 
+|
 |-
 ! Support tickets
 | tickets
 | Support tickets are a step up from contact forms, allowing an ongoing conversation with members.
 | There are multiple support ticket types.
-| 
+|
 |-
 ! Addons
 | addons
 | Most of the features of Composr are logically divided into addons, but everything installed is perfectly integrated.
 | Addons shipped with Composr are called bundled addons, and some are core (i.e. can't be removed). Other addons (some official, some third-party) are non-bundled addons.
-| 
+|
 |-
 ! Zones
 | zones
 | Zones are subdirectories of your site, grouping pages together.
 | N/A
-| 
+|
 |-
 ! Pages
-| 
+|
 | Your site consists of pages. There are different kinds of pages, including Comcode Pages (see above), and modules (for accessing the primary interfaces to the inbuilt content types). We don't call the deeper URLs for viewing individual content items "pages" (except for Comcode Pages), we call these screens.
 | Effectively categorised by zones, in that a page exists within a zone.
-| 
+|
 |-
 ! Staff checklist
-| 
+|
 | The Admin Zone dashboard contains a checklist so that tasks may be centrally declared to the website staff. There is support for manual adding of tasks. Similarly, there are blocks on the dashboard for staff link sharing and competitor tracking.
 | N/A
-| 
+|
 |}
 
 [title="2"]Performing common tasks in Composr[/title]
@@ -309,7 +309,7 @@ If you would like to create a formal catalogue, head over to Content Management 
 
 If you'd like to add to Wiki+, you can choose it from your menus of your main website and begin to edit the tree structure to create new pages, and then edit them and post within them, as required. You should read the [page="_SELF:tut_wiki"]Wiki+ tutorial[/page] for more information.
 
-If you desire integration of an existing system into your website and are not a developer yourself, commercial developers are available for such work.
+If you desire integration of an existing system into your website and are not a developer yourself, professional developers are available for such work.
 
 [title="3"]Adding images[/title]
 

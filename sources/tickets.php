@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -135,7 +135,7 @@ function check_ticket_access($id)
  * @param  ?AUTO_LINK $member_id The member ID (null: no member)
  * @param  ?integer $ticket_type_id The ticket type (null: all ticket types)
  * @param  boolean $create Create the forum if it's missing
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning NULL instead
+ * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
  * @return ?AUTO_LINK Forum ID (null: not found)
  */
 function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create = false, $silent_error_handling = false)

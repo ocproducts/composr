@@ -38,7 +38,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: block" role="navigation">
+					<nav class="toggleable_tray" style="display: block">
 						<ul class="nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
@@ -54,7 +54,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -69,7 +69,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -85,7 +85,7 @@
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>
@@ -126,7 +126,7 @@
 									</th>
 
 									<td>
-										<span{+START,IF,{$EQ,{NAME},{!SPECIAL_CPF__cms_fullname}}} class="fn given-name"{+END}>
+										<span>
 											{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 												{+START,IF_PASSED,EDITABILITY}
 													{$SET,edit_type,{EDIT_TYPE}}
@@ -169,7 +169,7 @@
 					<h2>{_loop_key*}</h2>
 
 					<div class="wide_table_wrap">
-						<table class="map_table wide_table cns_profile_fields">
+						<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
 							{+START,IF,{$NOT,{$MOBILE}}}
 								<colgroup>
 									<col class="cns_profile_about_field_name_column" />
@@ -187,12 +187,18 @@
 										<td>
 											<span>
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF_PASSED,EDITABILITY}
-														{$SET,edit_type,{EDIT_TYPE}}
-														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+													{+START,IF,{$EQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
+														{$COUNTRY_CODE_TO_NAME,{VALUE}}
 													{+END}
-													{+START,IF_NON_PASSED,EDITABILITY}
-														{VALUE}
+
+													{+START,IF,{$NEQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
+														{+START,IF_PASSED,EDITABILITY}
+															{$SET,edit_type,{EDIT_TYPE}}
+															{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+														{+END}
+														{+START,IF_NON_PASSED,EDITABILITY}
+															{VALUE}
+														{+END}
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
@@ -214,7 +220,7 @@
 		{+START,IF,{VIEW_PROFILES}}
 			<h2>{!DETAILS}</h2>
 
-			<meta itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
+			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_details cns_profile_about_section">

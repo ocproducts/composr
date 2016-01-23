@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Web design glossary[/title]
 
-We don't blame you if you get a little bit baffled by all the terminology involved in modern web design. Here are the top 100 buzzwords that will help you understand what web designers are talking about.
+We don't blame you if you get a little bit baffled by all the terminology involved in modern web design.
+
+Here are the top 100 buzzwords that will help you understand what web designers are talking about.
 
 [html]
 <table class="columned_table results_table very_spaced_table">
@@ -14,19 +16,19 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 	<tbody>
 		<tr>
 			<td>Accessibility</td>
-			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' or represented on a braille-reader.</td>
+			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' (e.g. JAWS) or represented on a braille-reader. We also use the term 'semantics' to refer to the defined meaningfulness of the structure of a page (regardless of its visual appearance).</td>
 		</tr>
 		<tr>
-			<td>Adsense</td>
-			<td>Adsense is Google's business program for getting paid money for the placement of relevant Adword ads on your web page (contextual advertising).</td>
+			<td>AdSense</td>
+			<td>AdSense is Google's business program for getting paid money for the placement of relevant Adword ads on your web page (contextual advertising).</td>
 		</tr>
 		<tr>
-			<td>Adwords</td>
-			<td>Adwords is Google's business program for paying money for the placement of adverts on Google searches and the websites of relevant Adsense customers.</td>
+			<td>AdWords</td>
+			<td>AdWords is Google's business program for paying money for the placement of adverts on Google searches and the websites of relevant AdSense customers.</td>
 		</tr>
 		<tr>
 			<td>AJAX</td>
-			<td>A technique for web pages to send background messages to the server (and receive responses/data) without the whole page having to be reloaded.</td>
+			<td>A technique for web pages to send background messages to the server (and receive responses/data) without the whole page having to be reloaded. An abbreviation of Asynchronous JavaScript and XML.</td>
 		</tr>
 		<tr>
 			<td>Analytics</td>
@@ -34,15 +36,19 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Apache</td>
-			<td>The most common web server software.</td>
+			<td>Apache is the most widespread web server software.</td>
 		</tr>
 		<tr>
 			<td>API</td>
-			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API.</td>
+			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API. An API is often made available via an SDK (Software Development Kit).</td>
 		</tr>
 		<tr>
-			<td>ASP.net</td>
+			<td>ASP.NET</td>
 			<td>A programming language, similar to PHP.</td>
+		</tr>
+		<tr>
+			<td>Avatar</td>
+			<td>An image representing a user that is not an actual photo.</td>
 		</tr>
 		<tr>
 			<td>Back-end</td>
@@ -54,7 +60,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Bandwidth</td>
-			<td>This either refers to how much data a visitor can send or receive per second (measured in megabits for a modern Internet connection), or how much total data is transferred from your website each month. If your website transfers a lot of data each month, it's ongoing bandwidth will need to be high too, so they are essentially different ways of looking at the same thing. If you have particularly 'heavy' web pages (for example, video) you may end up using a lot of bandwidth. Video websites need to be careful not to exceed hosting limits, as this amount of bandwidth can be very expensive.</td>
+			<td>This either refers to how much data a visitor can send or receive per second (measured in megabits for a modern Internet connection), or how much total data is transferred from your website each month. If your website transfers a lot of data each month, its ongoing bandwidth will need to be high too, so they are essentially different ways of looking at the same thing. If you have particularly 'heavy' web pages (for example, video) you may end up using a lot of bandwidth. Video websites need to be careful not to exceed hosting limits, as this amount of bandwidth can be very expensive.</td>
 		</tr>
 		<tr>
 			<td>Billboard / slide-show / slider</td>
@@ -89,8 +95,12 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>A navigation mechanism where clickable pictures are shown in a little horizontally-scrollable sub-area of the web page.</td>
 		</tr>
 		<tr>
+			<td>CAPTCHA</td>
+			<td>When you sign up for something and have to enter the numbers/letters from an image to prove you are human, this is called a "CAPTCHA".</td>
+		</tr>
+		<tr>
 			<td>The Cloud</td>
-			<td>The Cloud' is an umbrella term for services delivered over the Internet where it is not fully defined where exactly the service comes from. It works via an intermediate broker service that will disseminate web page requests out to a number of possible actual web servers. This is useful for three main reasons: it allows complex or busy websites to function when the demand exceeds what a single server can do, it allows less complex or busy websites to easily share server resources with others, and it allows general purpose services (such as backup services) to be implemented in a very general way so that individual sites do not need individual maintenance.</td>
+			<td>The Cloud' is an umbrella term for services delivered over the Internet where it is not fully defined where exactly the service comes from. It works via an intermediate broker service that will disseminate web page requests out to a number of possible actual web servers. This is useful for three main reasons: it allows complex or busy websites to function when the demand exceeds what a single server can do, it allows less complex or busy websites to easily share server resources with others, and it allows general purpose services (such as backup services) to be implemented in a very general way so that individual sites do not need individual maintenance. Cloud hosting is made available through VM (virtual machine) technology.</td>
 		</tr>
 		<tr>
 			<td>Composr</td>
@@ -115,7 +125,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Database</td>
-			<td>An organised store of data. Web sites often use database to store user accounts and content.</td>
+			<td>An organised store of data. Websites often use database to store user accounts and content.</td>
 		</tr>
 		<tr>
 			<td>DNS</td>
@@ -127,11 +137,11 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Dublin Core</td>
-			<td>A meta data standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
+			<td>A metadata standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
 		</tr>
 		<tr>
 			<td>Facebook App</td>
-			<td>A web application designed to run on top of the Facebook website. It can interact with Facebook user accounts, but provide it's own functionality. Many Facebook Apps are games (such as Farmville).</td>
+			<td>A web application designed to run on top of the Facebook website. It can interact with Facebook user accounts, but provide its own functionality. Many Facebook Apps are games (such as Farmville).</td>
 		</tr>
 		<tr>
 			<td>Facebook Connect</td>
@@ -143,7 +153,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Favicon</td>
-			<td>A small icon that shows in the toolbar when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
+			<td>A small icon that shows in the browser tab when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
 		</tr>
 		<tr>
 			<td>Fixed width vs Fluid width</td>
@@ -159,7 +169,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>FTP</td>
-			<td>File Transfer Protocol, a way of putting files onto a web server.</td>
+			<td>File Transfer Protocol, a way of uploading files to a server, or downloading them from a server.</td>
 		</tr>
 		<tr>
 			<td>GIF</td>
@@ -206,10 +216,6 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>The programming language used to give a webpage interactive functionality.</td>
 		</tr>
 		<tr>
-			<td>JAWS</td>
-			<td>A screen reader so that blind users may use a website. JAWS is something users may install on their own computer (it's a commercial software application). If a website has blind users it is advisable to give it some testing with JAWS.</td>
-		</tr>
-		<tr>
 			<td>JPEG</td>
 			<td>A computer file format for images. JPEG files are inaccurate, but as a result they are very small. They make files smaller by representing an image in terms of patterns of nature that we recognise, rather than directly as pixels.</td>
 		</tr>
@@ -223,7 +229,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Lightbox</td>
-			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightbox's are a type of 'overlay'.</td>
+			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightboxes are a type of 'overlay'.</td>
 		</tr>
 		<tr>
 			<td>Linux</td>
@@ -234,8 +240,8 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>A markup language is a way to add structure and meaning to content, in addition to the actual text. It binds things together and defines relationships, by adding special 'markup tags' around parts of the content</td>
 		</tr>
 		<tr>
-			<td>Meta data</td>
-			<td>Data about data. For example, keywords and summaries are examples of meta data.</td>
+			<td>Metadata</td>
+			<td>Data about data. For example, keywords and summaries are examples of metadata.</td>
 		</tr>
 		<tr>
 			<td>Microsite</td>
@@ -243,7 +249,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Mobile Phone App</td>
-			<td>iPhone and Android phone handsets support their own kinds of 'app'. These often mix web technologies with more traditional kinds of programming technology, and need to be specially coded. Mobile apps are extremely popular with user's, but also quite costly to develop. Mobile website designs are a lower-cost (but lower quality) alternative, as code can usually be shared with the main desktop web design.</td>
+			<td>iPhone/iPad and Android smartphones and tablets support their own kinds of 'app'. These often mix web technologies with more traditional kinds of programming technology, and need to be specially coded. Mobile apps are extremely popular with users, but also quite costly to develop. Mobile website designs are a lower-cost (but lower quality) alternative, as code can usually be shared with the main desktop web design. iPhone and iPad run the iOS operating system.</td>
 		</tr>
 		<tr>
 			<td>Multivariate testing / split testing</td>
@@ -263,7 +269,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Overlay</td>
-			<td>A modern replacement for a 'popup window'. Overlays show on top of normal web page contents and are often used for adverts or to display content that doesn't need it's own full page but should not be embedded directly either.</td>
+			<td>A modern replacement for a 'popup window'. Overlays show on top of normal web page contents and are often used for adverts or to display content that doesn't need its own full page but should not be embedded directly either.</td>
 		</tr>
 		<tr>
 			<td>PageRank</td>
@@ -303,7 +309,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Resolution</td>
-			<td>How many pixels across and down there are on the screen. Websites are typically designed for user's with 1024x768 and upwards, although mobile websites need to work on 320x240. In actual fact, screen quality has improved remarkably in recent years, and we tend to design to a particular "virtual resolution" while showing higher fidelity (higher-dpi) to users with better screens.</td>
+			<td>How many pixels across and down there are on the screen. Websites are typically designed for users with 1024x768 and upwards, although mobile websites need to work on 320x240. In actual fact, screen quality has improved remarkably in recent years, and we tend to design to a particular "virtual resolution" while showing higher fidelity (higher-dpi) to users with better screens.</td>
 		</tr>
 		<tr>
 			<td>Responsive design</td>
@@ -311,19 +317,15 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>RSS</td>
-			<td>A way for a website to provide a news feed, so that user's may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
+			<td>A way for a website to provide a news feed, so that users may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
 		</tr>
 		<tr>
 			<td>Schema.org</td>
-			<td>A meta data/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
+			<td>A metadata/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
 		</tr>
 		<tr>
 			<td>Search Engine</td>
 			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Google is a search engine.</td>
-		</tr>
-		<tr>
-			<td>Semantics</td>
-			<td>The meaning of some data. We talk about good web pages being written with 'semantics', which means that they use proper mark-up so that machine tools to identify what they are all about.</td>
 		</tr>
 		<tr>
 			<td>SEO</td>
@@ -335,7 +337,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Social media</td>
-			<td>An umbrella term for marketing using online social tools such as Twitter and Facebook, as well as older tools like commenting and forums.</td>
+			<td>An umbrella term for marketing using online social tools such as Twitter and Facebook, as well as older tools like commenting and forums. Commercial users of social media hope that content will go "viral". Very popular content may take the form of a "meme".</td>
 		</tr>
 		<tr>
 			<td>Social network</td>
@@ -347,7 +349,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>SSL Certificate</td>
-			<td>An SSL certificate is needed for when you need to encrypt traffic between the web server and visitor web browsers, such as when taking credit card details. SSL certificates need to be purchased for your domain name, and need to be installed on your web server. Many web hosting services will not work with an SSL certificate as you need a dedicated IP address for your particular website.</td>
+			<td>An SSL certificate is needed for when you need to encrypt traffic between the web server and visitor web browsers, such as when taking credit card details. SSL certificates need to be purchased for your domain name, and need to be installed on your web server. Many webhosting services will not work with an SSL certificate as you need a dedicated IP address for your particular website.</td>
 		</tr>
 		<tr>
 			<td>Staging server</td>
@@ -363,7 +365,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>Usability</td>
-			<td>A general term for making things user-friendly and effective. Good usability often requires significant investment in user testing and ongoing tuning of designs, but it can be very worthwhile (or absolutely necessary in many cases). User-friendly websites follow conventions (for example, labelling a contact page 'Contact us' rather than 'Send us a message'), and make it easy and quick to navigate around and perform key website tasks. Poor interfaces require the user to study concepts before they can work, good ones are intuitive and metaphorical. With proper testing you often find issues you had no idea about, as people often think about things in very different ways and issues like undesired ambiguities in wording can lead to serious misunderstandings. Usability testing can range from simply watching stakeholders use the website, to seeking impartial participants who match the target customer profile. There are some basic things you need to do when conducting a usability test, particularly explaining any confusion users have is your fault not theirs, giving them background information, setting particular clear and simple tasks in advance that provide good coverage of the usage scenarios you wish to optimise, and providing any supplementary material they might need to complete the test. It is best to record tasks using a tool such as <a target="_blank" title="Jing (this link will open in a new window)" href="http://www.techsmith.com/jing/">Jing</a>, but at minimum copious notes should be taken for every small misstep a user makes, and resolutions decided. For the test to be realistic it is best to give no or few hints to the user and to not give any emotional signals whilst they are working (if lots of hints are needed perhaps the task was poorly explained). After a test is finished, you should debrief the testers, and ask if they have any general or specific feedback to give. Depending on budget, you might test with just a few people to get rid of the biggest issues, or you might run tests iteratively with larger groups until everyone in the final group completes each task successfully. User Experience is a very similar term, but applies more broadly to the complete a experience a user is subjected to.</td>
+			<td>A general term for making things user-friendly and effective. Good usability often requires significant investment in user testing and ongoing tuning of designs, but it can be very worthwhile (or absolutely necessary in many cases). User-friendly websites follow conventions (for example, labelling a contact page 'Contact us' rather than 'Send us a message'), and make it easy and quick to navigate around and perform key website tasks. Poor interfaces require the user to study concepts before they can work, good ones are intuitive and metaphorical. With proper testing you often find issues you had no idea about, as people often think about things in very different ways and issues like undesired ambiguities in wording can lead to serious misunderstandings. Usability testing can range from simply watching stakeholders use the website, to seeking impartial participants who match the target customer profile. There are some basic things you need to do when conducting a usability test, particularly explaining any confusion users have is your fault not theirs, giving them background information, setting particular clear and simple tasks in advance that provide good coverage of the usage scenarios you wish to optimise, and providing any supplementary material they might need to complete the test. It is best to record tasks using a tool such as <a target="_blank" title="Jing (this link will open in a new window)" href="http://www.techsmith.com/jing/">Jing</a>, but at minimum copious notes should be taken for every small misstep a user makes, and resolutions decided. For the test to be realistic it is best to give no or few hints to the user and to not give any emotional signals while they are working (if lots of hints are needed perhaps the task was poorly explained). After a test is finished, you should debrief the testers, and ask if they have any general or specific feedback to give. Depending on budget, you might test with just a few people to get rid of the biggest issues, or you might run tests iteratively with larger groups until everyone in the final group completes each task successfully. User Experience is a very similar term, but applies more broadly to the complete a experience a user is subjected to.</td>
 		</tr>
 		<tr>
 			<td>W3C</td>
@@ -371,7 +373,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>WCAG</td>
-			<td>The Web Content Accessibility Guidelines: W3C's guidelines on how to make an accessible website.</td>
+			<td>The Web Content Accessibility Guidelines: W3C's (Web Accessibility Initiative, WAI) guidelines on how to make an accessible website.</td>
 		</tr>
 		<tr>
 			<td>Web 2.0</td>
@@ -394,8 +396,8 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 			<td>The process of implementing a web design. The terms 'web design' and 'web development' overlap, but things like PHP-programming would normally be done by a specialist web developer rather than someone with a design background.</td>
 		</tr>
 		<tr>
-			<td>Web hosting</td>
-			<td>Websites are hosted on a server, but often the server is only accessed via a specific 'web hosting account' on it. These web hosting accounts are sold and configured separately, as a web server will often have many web hosting accounts.</td>
+			<td>Webhosting</td>
+			<td>Websites are hosted on a server, but often the server is only accessed via a specific 'webhosting account' on it. These webhosting accounts are sold and configured separately, as a web server will often have many webhosting accounts.</td>
 		</tr>
 		<tr>
 			<td>Web server</td>
@@ -407,7 +409,7 @@ We don't blame you if you get a little bit baffled by all the terminology involv
 		</tr>
 		<tr>
 			<td>WYSIWYG</td>
-			<td>What You See Is What You Get. This term refers to how tools like Microsoft Word work &ndash; during editing text is displayed as it would be printed and displayed to a user. i.e. the actual display is manipulated intuitively until it looks correct. CMS's often have support for creating text content using WYSIWYG. This has advantages (ease of use) and disadvantages (it can mask accessibility issues, and make it hard to make the content automatically adapt for different display scenarios, such as mobile phones, or showing different content to users who are not logged in).</td>
+			<td>What You See Is What You Get. This term refers to how tools like Microsoft Word work &ndash; during editing text is displayed as it would be printed and displayed to a user. i.e. the actual display is manipulated intuitively until it looks correct. CMSs often have support for creating text content using WYSIWYG. This has advantages (ease of use) and disadvantages (it can mask accessibility issues, and make it hard to make the content automatically adapt for different display scenarios, such as mobile phones, or showing different content to users who are not logged in).</td>
 		</tr>
 		<tr>
 			<td>XML</td>

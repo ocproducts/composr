@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -521,7 +521,7 @@ class DatabaseConnector
      * @param string $db_user The connection username
      * @param string $db_password The connection password
      * @param string $table_prefix The table prefix
-     * @param boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @param ?object         $static Static call object (null: use global static call object)
      */
     public function __construct($db_name, $db_host, $db_user, $db_password, $table_prefix, $fail_ok = false, $static = null)
@@ -613,7 +613,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
-     * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+     * @param  boolean $skip_null_check Whether to skip the check for null string fields
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
     public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
@@ -824,7 +824,7 @@ class DatabaseConnector
     }
 
     /**
-     * Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present.
+     * Get the specified value from the database, or null if there is no matching row (or if the value itself is null). This is good for detection existence of records, or for use if they might may or may not be present.
      *
      * @param  string $table The table name
      * @param  string $select The field to select

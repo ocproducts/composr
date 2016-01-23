@@ -36,14 +36,15 @@ This simplicity is key to the flexibility of the system -- it is a system of con
 
 [title="2"]Setting up the structure[/title]
 
-The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an ad hoc basis, by either:[list="a"]
+The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an ad hoc basis, by either:
+[list="a"]
 [*] referencing them in the child-list for a page,
 [*] or, by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
 [/list]
 
 There is an obvious 'Edit tree' button to edit the tree structure visible when you're on a Wiki+ page. You can create child pages just by listing the titles you want. When you've saved the child structure you can then see that reflected.
 
-When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form. 
+When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form.
 
 The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ tree.
 
@@ -94,4 +95,4 @@ You can see the edits a page has gone through via the revision history on the ed
 
  - [page="_SEARCH:tut_catalogues"]Creating structured information (via catalogues)[/page]
 
-{$SET,tutorial_tags,Wiki+,wiki,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The Wiki+ system is Composr's equivalent to a wiki, but extended with additional features.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Wiki,wiki,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The Wiki+ system is Composr's equivalent to a wiki, but extended with additional features.}[block]main_tutorial_rating[/block]

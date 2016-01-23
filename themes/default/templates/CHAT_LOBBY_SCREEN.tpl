@@ -9,26 +9,28 @@
 
 	<div class="float_surrounder">
 		{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
-			<nav class="chat_actions" role="navigation">
+			<nav class="chat_actions">
 				<h3>{!OTHER_ACTIONS}</h3>
 
-				<ul role="navigation" class="actions_list">
-					{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
-						<li class="icon_14_add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
-					{+END}
-					{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
-						<li class="icon_14_proceed">{PRIVATE_CHATROOM}</li>
-					{+END}
-					{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
-						<li class="icon_14_remove_manage">{BLOCKING_LINK}</li>
-					{+END}
-					{+START,IF_NON_EMPTY,{MOD_LINK}}
-						<li class="icon_14_tools">{MOD_LINK}</li>
-					{+END}
-					{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
-						<li class="icon_14_sound_effects">{SETEFFECTS_LINK}</li>
-					{+END}
-				</ul>
+				<nav>
+					<ul class="actions_list">
+						{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
+							<li class="icon_14_add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
+						{+END}
+						{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
+							<li class="icon_14_proceed">{PRIVATE_CHATROOM}</li>
+						{+END}
+						{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
+							<li class="icon_14_remove_manage">{BLOCKING_LINK}</li>
+						{+END}
+						{+START,IF_NON_EMPTY,{MOD_LINK}}
+							<li class="icon_14_tools">{MOD_LINK}</li>
+						{+END}
+						{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
+							<li class="icon_14_sound_effects">{SETEFFECTS_LINK}</li>
+						{+END}
+					</ul>
+				</nav>
 			</nav>
 		{+END}
 
@@ -37,7 +39,9 @@
 
 			{+START,IF_NON_EMPTY,{CHATROOMS}}
 				<ul class="actions_list">
-					{CHATROOMS}
+					{+START,LOOP,CHATROOMS}
+						<li><a href="{URL*}">{+START,FRACTIONAL_EDITABLE,{NAME},room_name,_SEARCH:admin_chat:__edit:{ID}}{NAME*}{+END}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
+					{+END}
 				</ul>
 
 				<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>

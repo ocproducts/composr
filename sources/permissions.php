@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -1009,7 +1009,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member = n
  * Check to see if a member has permission to edit a Comcode page
  *
  * @param  integer $scope A bitmask of COMCODE_EDIT_* constants, identifying what kind of editing permission we are looking for
- * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a NULL zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
+ * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a null zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
  * @param  ?MEMBER $member The member being checked for access (null: current member)
  * @return boolean If the permission is there
  */

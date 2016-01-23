@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -98,10 +98,10 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
  * @param  ?array $params Parameters sent to the language string (null: none)
  * @param  ?Tempcode $user_online_title Separate title to put into the 'currently viewing' data (null: use $title)
  * @param  ?array $awards Awards to say this has won (null: none)
- * @param  boolean $save_as_meta_data Whether to use this as meta-data for the screen
+ * @param  boolean $save_as_metadata Whether to use this as metadata for the screen
  * @return Tempcode The title Tempcode
  */
-function get_screen_title($title, $dereference_lang = true, $params = null, $user_online_title = null, $awards = null, $save_as_meta_data = true)
+function get_screen_title($title, $dereference_lang = true, $params = null, $user_online_title = null, $awards = null, $save_as_metadata = true)
 {
     global $TITLE_CALLED;
     $TITLE_CALLED = true;
@@ -155,7 +155,7 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
         }
     }
 
-    if ($save_as_meta_data) {
+    if ($save_as_metadata) {
         global $DISPLAYED_TITLE;
         $DISPLAYED_TITLE = $_title;
     }

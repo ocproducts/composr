@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -570,7 +570,7 @@ function js_pos_to_line_details($i, $absolute = false)
  * @param  string $line The line
  * @param  string $message The error
  * @param  integer $i The global position
- * @return ?boolean Always NULL (null: exit)
+ * @return ?boolean Always null (null: exit)
  */
 function js_die_error($system, $pos, $line, $message, $i)
 {

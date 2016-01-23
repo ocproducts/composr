@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -49,7 +49,7 @@ class Module_cms_wiki
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -85,7 +85,7 @@ class Module_cms_wiki
     public $page_title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -249,18 +249,22 @@ class Module_cms_wiki
         $radios->attach(form_input_radio_entry('send_notification', '1', $notify, do_lang_tempcode('YES')));
         $fields2->attach(form_input_radio(do_lang_tempcode('SEND_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SEND_NOTIFICATION'), 'send_notification', $radios));
 
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5ae885a9f92415498340c41edfb47501', 'SECTION_HIDDEN' => $notes == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
-        if (get_option('enable_staff_notes') == '1') {
-            $fields2->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
-        }
-
         require_code('fields');
-        if (has_tied_catalogue('wiki_page')) {
-            append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+
+        if ((get_option('enable_staff_notes') == '1') || (has_tied_catalogue('wiki_page'))) {
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5ae885a9f92415498340c41edfb47501', 'SECTION_HIDDEN' => $notes == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
+            if (get_option('enable_staff_notes') == '1') {
+                $fields2->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
+            }
+
+            if (has_tied_catalogue('wiki_page')) {
+                append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+            }
         }
 
         require_code('content2');
-        $fields2->attach(meta_data_get_fields('wiki_page', is_null($id) ? null : strval($id)));
+        $fields2->attach(metadata_get_fields('wiki_page', is_null($id) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -318,9 +322,9 @@ class Module_cms_wiki
         check_submit_permission('cat_low');
 
         require_code('content2');
-        $meta_data = actual_meta_data_get_fields('wiki_page', null);
+        $metadata = actual_metadata_get_fields('wiki_page', null);
 
-        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $meta_data['submitter'], $meta_data['add_time'], $meta_data['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
+        $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $metadata['submitter'], $metadata['add_time'], $metadata['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
 
         set_url_moniker('wiki_page', strval($id));
 
@@ -476,11 +480,11 @@ class Module_cms_wiki
             check_edit_permission('cat_low', null, array('wiki_page', $id));
 
             require_code('content2');
-            $meta_data = actual_meta_data_get_fields('wiki_page', strval($id));
+            $metadata = actual_metadata_get_fields('wiki_page', strval($id));
 
             require_code('permissions2');
             set_category_permissions_from_environment('wiki_page', strval($id), 'cms_wiki');
-            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['submitter'], $meta_data['add_time'], $meta_data['views']);
+            wiki_edit_page($id, post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $metadata['submitter'], $metadata['add_time'], $metadata['views']);
 
             require_code('fields');
             if (has_tied_catalogue('wiki_page')) {
@@ -628,15 +632,9 @@ class Module_cms_wiki
                 } else { // New
                     $title = $new_link;
                     $child_id = wiki_add_page($title, '', '', $hide_posts, null, null, 0, '', '', null, false);
-                    $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-                    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-                    foreach (array_keys($groups) as $group_id) {
-                        if (in_array($group_id, $admin_groups)) {
-                            continue;
-                        }
 
-                        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'wiki_page', 'category_name' => strval($child_id), 'group_id' => $group_id));
-                    }
+                    require_code('permissions2');
+                    set_global_category_access('wiki_page', $child_id);
 
                     require_code('notifications2');
                     copy_notifications_to_new_child('wiki', strval($id), strval($child_id));

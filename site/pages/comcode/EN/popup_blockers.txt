@@ -26,7 +26,7 @@ Instructions:
  - From the gear menu, go to [b]Internet Options[/b]
  - Click the Privacy tab
  - Under Pop-up Blocker, click [b]Settings[/b].
- - In the [b]Address of web site to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
+ - In the [b]Address of website to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
  - Click [b]Add[/b].
  - Click [b]Close[/b].
  - Click [b]OK[/b].
@@ -57,7 +57,7 @@ Instructions:
  - Click the [b]Content[/b] icon located at the top of the window.
  - Click the [b]Exceptions[/b] button located to the right of [b]Block pop-up windows[/b].
  - You will see the [b]Allowed Sites[/b] dialog box.
- - In the [b]Address of web site[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
+ - In the [b]Address of website[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
  - Click [b]Allow[/b].
  - Click [b]Close[/b].
  - Click [b]OK[/b] to close the [i]Options[/i] dialog box.

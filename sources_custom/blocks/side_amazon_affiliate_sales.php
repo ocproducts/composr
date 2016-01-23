@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -77,7 +77,7 @@ class Block_side_amazon_affiliate_sales
             'PRODUCT_LINE' => $product_line,
             'SUBJECT_KEYWORDS' => $subject_keywords,
             'ITEMS_NUMBER' => strval($items_number),
-            'REGION'=> $region,
+            'REGION' => $region,
         ));
     }
 }

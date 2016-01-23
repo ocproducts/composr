@@ -29,9 +29,9 @@
 
 		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);">
 			<div class="right">
-				<label class="accessibility_hidden" for="recur">{!TASK_LENGTH}</label>
-				<label class="accessibility_hidden" for="recurevery">{!TASK_LENGTH_UNITS}</label>
-				{!RECUR_EVERY,<input maxlength="8" value="" type="text" id="recur" name="recur" size="3" />,<select id="recurevery" name="recurevery"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
+				<label class="accessibility_hidden" for="recur_interval">{!TASK_LENGTH}</label>
+				<label class="accessibility_hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>
+				{!RECUR_EVERY,<input maxlength="8" value="" type="text" id="recur_interval" name="recur_interval" size="3" />,<select id="recur_every" name="recur_every"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
 				<input class="menu___generic_admin__add_one button_micro" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})" value="{!ADD}" />
 			</div>
 			<div class="constrain_field">

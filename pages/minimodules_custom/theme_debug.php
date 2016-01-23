@@ -1,6 +1,24 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    theme_debug
+ */
+
+// IDEA: Find if conflicting theme images, e.g. foo.png and foo.jpg in the same directory. We have a unit test for this right now, so share the code.
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$title = get_screen_title('Theme repair tools', false);
+$title->evaluate_echo();
 
 echo '<p>Pick a theme&hellip;</p><ul class="spaced_list">';
 
@@ -30,10 +48,8 @@ if (count($themes) == 1) {
 }
 foreach (array_keys($themes) as $theme) {
     if ($theme != 'default') {
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
-        foreach (array_keys($groups) as $gid) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('group_id' => $gid, 'module_the_name' => 'theme', 'category_name' => $theme), false, true);
-        }
+        require_code('permissions2');
+        set_global_category_access('theme', $theme);
 
         echo '<li>';
         echo '<a href="' . static_evaluate_tempcode(build_url(array('page' => 'start', 'keep_theme_test' => '1', 'keep_theme' => $theme), '')) . '">' . escape_html($theme) . '</a><br />
@@ -76,7 +92,7 @@ foreach (array_keys($themes) as $theme) {
                 if (
                     (substr($f, -4) == '.css') ||
                     (substr($f, -4) == '.tpl') ||
-                    ((substr($f, -4) == '.txt') && ((count($themes < 5)) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
+                    ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
                 ) {
                     $contents = file_get_contents($dir . '/' . $f);
 

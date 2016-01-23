@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -53,8 +53,8 @@ function push_to_transifex()
     require_code('lang2');
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
@@ -190,7 +190,7 @@ function _push_to_transifex($f, $project_slug, $custom, $addon_files, $descripti
         $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'INI', 'content' => $c)));
     }
 
-    // Set meta-data
+    // Set metadata
     foreach ($map as $key => $val) {
         if (isset($descriptions[$key])) {
             $descrip = $descriptions[$key];
@@ -236,8 +236,8 @@ function pull_from_transifex($version)
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     require_code('lang2');
@@ -290,7 +290,7 @@ function pull_from_transifex($version)
 {$open} /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -310,9 +310,10 @@ class Hook_addon_registry_addon_publish
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }

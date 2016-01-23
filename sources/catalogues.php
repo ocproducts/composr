@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ function init__catalogues()
  * Get a catalogue row.
  *
  * @param  ID_TEXT $catalogue_name The catalogue name
- * @param  boolean $fail_ok Whether to return NULL if we can't find it (as opposed to a fatal error)
+ * @param  boolean $fail_ok Whether to return null if we can't find it (as opposed to a fatal error)
  * @return ?array Catalogue row (null: could not find it, and $fail_ok was set to true)
  */
 function load_catalogue_row($catalogue_name, $fail_ok = false)
@@ -161,7 +161,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         $rep_image = do_image_thumb($row['rep_image'], $_title, false);
     }
 
-    // Meta data
+    // Metadata
     $child_counts = count_catalogue_category_children($row['id']);
     $num_children = $child_counts['num_children_children'];
     $num_entries = $child_counts['num_entries_children'];
@@ -181,6 +181,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'RESOURCE_TYPE' => 'catalogue_category',
     ));
 }
 
@@ -224,20 +225,8 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'RESOURCE_TYPE' => 'catalogue',
     ));
-}
-
-/**
- * Grant all usergroups access to the specified catalogue category.
- *
- * @param  AUTO_LINK $category_id The ID of the category that access is being given to
- */
-function grant_catalogue_full_access($category_id)
-{
-    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($category_id), 'group_id' => $group_id));
-    }
 }
 
 /**
@@ -621,8 +610,8 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  *
  * @param  ID_TEXT $catalogue_name Name of the catalogue
  * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)
- * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not NULL) (null: all)
- * @param  ?integer $start The entry number to start at (ignored if $filter is not NULL) (null: all)
+ * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not null) (null: all)
+ * @param  ?integer $start The entry number to start at (ignored if $filter is not null) (null: all)
  * @param  ?mixed $filter The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $filtercode List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value
@@ -998,7 +987,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         $map['EDIT_URL'] = '';
     }
 
-    // Various bits of meta data
+    // Various bits of metadata
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
     $map['VIEWS'] = strval($entry['ce_views']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
@@ -1900,7 +1889,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
         'title' => comcode_escape($title_to_use_2),
         'identifier' => '_SEARCH:catalogues:entry:' . strval($id),
         'description' => '',
-        //'category'=>???,
+        //'category' => ???,
     ));
 
     return do_template('CATALOGUE_' . $tpl_set . '_ENTRY_SCREEN', $map, null, false, 'CATALOGUE_DEFAULT_ENTRY_SCREEN');

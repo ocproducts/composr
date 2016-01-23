@@ -42,7 +42,7 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param  array $dataRow Array containing data to be streamed.
      *          Example $dataRow = ['data1', 1234, null, '', 'data5'];
-     * @param  array $metaData Array containing meta-data maps for individual cells, such as 'url'
+     * @param  array $metaData Array containing metadata maps for individual cells, such as 'url'
      * @return void
      */
     abstract protected function addRowToWriter(array $dataRow, array $metaData);
@@ -139,7 +139,7 @@ abstract class AbstractWriter implements WriterInterface
      *
      * @param  array $dataRow Array containing data to be streamed.
      *          Example $dataRow = ['data1', 1234, null, '', 'data5'];
-     * @param  array $metaData Array containing meta-data maps for individual cells, such as 'url'
+     * @param  array $metaData Array containing metadata maps for individual cells, such as 'url'
      *
      * @return \Box\Spout\Writer\AbstractWriter
      * @throws \Box\Spout\Writer\Exception\WriterNotOpenedException If this function is called before opening the writer

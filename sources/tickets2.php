@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -214,7 +214,7 @@ function update_ticket_type_lead_times()
  * @param  AUTO_LINK $member_id The member ID
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: all ticket types)
  * @param  boolean $override_view_others_tickets Don't view others' tickets, even if the member has permission to
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning NULL instead
+ * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
  * @param  boolean $open_only Open tickets only
  * @param  boolean $include_first_posts Whether to include first posts
  * @return array Array of tickets, empty on failure
@@ -384,7 +384,7 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
         $time_post
     );
 
-    // Save meta-data
+    // Save metadata
     $topic_id = $GLOBALS['LAST_TOPIC_ID'];
     $is_new = $GLOBALS['LAST_TOPIC_IS_NEW'];
     if (($is_new) && ($ticket_type_id !== null)) {
@@ -466,8 +466,8 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
                 $subject = do_lang(
                     'TICKET_REPLY',
                     $ticket_type_name,
-                    $ticket_type_name,
                     $title,
+                    null,
                     $uid_lang
                 );
 

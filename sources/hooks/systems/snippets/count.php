@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_snippet_count
      */
     public function run()
     {
-        $name = get_param_string('name');
+        $name = post_param_string('name');
         update_stat($name, 1);
 
         return new Tempcode();

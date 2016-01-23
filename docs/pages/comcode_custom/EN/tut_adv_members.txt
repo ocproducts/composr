@@ -148,7 +148,7 @@ Some CPFS are only activated by certain addons. They are pre-installed as they m
 
 [title="3"]Encrypted CPFs (advanced)[/title]
 
-When creating a custom profile field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured (see the [page="_SEARCH:tut_web_hosting"]Web Hosting for Composr[/page] tutorial), Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
+When creating a custom profile field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured (see the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial), Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
 
 To mark a CPF as encrypted, tick the "Encryption" box when creating the field, making sure to first have encryption set up on your server and on Composr.
 
@@ -183,7 +183,8 @@ The privileges are:
  - Bypass filling-in date of birth account options
  - Bypass filling-in date of birth account options on existing accounts
 
-Note that there are effectively two sets of privileges:[list="a"]
+Note that there are effectively two sets of privileges:
+[list="a"]
 [*] Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
 [*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
 [/list]
@@ -223,7 +224,7 @@ For welcome e-mails to work the CRON bridge scheduler must be configured as disc
 
 [title="3"]Referencing member-specific data[/title]
 
-As long as you have the newsletters addon installed, welcome emails will piggy-back off the newsletters templating code (regardless of whether the welcome email is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
+As long as you have the newsletters addon installed, welcome e-mails will piggy-back off the newsletters templating code (regardless of whether the welcome e-mail is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
 
 [title="2"]Importing/exporting members[/title]
 
@@ -284,7 +285,7 @@ Passwords may be given in raw text, for the specific new password. If there is a
 Boolean fields (true/false) are assumed false unless one of the following case-insensitive values is given: YES, 1, Y, ON.
 
 [box="If you're importing huge quantities of data"]
-The import process disables normal PHP memory and time limits, however some web hosts may put in restrictions regardless. If you come against problems you may need to limit import batches to a few thousand records per attempt, or temporarily copy your site to a more reliable host (such as your own development machine), then copy the database back across to the live host.
+The import process disables normal PHP memory and time limits, however some webhosts may put in restrictions regardless. If you come against problems you may need to limit import batches to a few thousand records per attempt, or temporarily copy your site to a more reliable host (such as your own development machine), then copy the database back across to the live host.
 [/box]
 
 Note that these instructions are based on using an export as a template. We do try and support de-facto standards for laying out basic fields such as Username and Password fields (with a variation of different spellings/abbreviation/synonyms/data-formats), but the template method is the best way because it is more predictable for you.
@@ -338,6 +339,6 @@ UPDATE cms_f_members SET m_password_compat_scheme='temporary' WHERE m_password_c
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_subcom"]Creating sub-communities[/page]
- - [page="_SEARCH:tut_web_hosting"]Web Hosting for Composr[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
 
-{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome emails for new members.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome e-mails for new members.}[block]main_tutorial_rating[/block]

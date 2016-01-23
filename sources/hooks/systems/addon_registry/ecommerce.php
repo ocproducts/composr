@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_ecommerce
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -149,7 +150,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/PURCHASE_WIZARD_STAGE_DETAILS.tpl',
             'themes/default/templates/PURCHASE_WIZARD_STAGE_FINISH.tpl',
             'themes/default/templates/PURCHASE_WIZARD_STAGE_GUEST.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_LICENCE.tpl',
+            'themes/default/templates/PURCHASE_WIZARD_STAGE_TERMS.tpl',
             'themes/default/templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl',
             'themes/default/templates/PURCHASE_WIZARD_STAGE_PAY.tpl',
             'themes/default/templates/PURCHASE_WIZARD_STAGE_SUBSCRIBE.tpl',
@@ -254,7 +255,7 @@ class Hook_addon_registry_ecommerce
             'templates/PURCHASE_WIZARD_STAGE_GUEST.tpl' => 'purchase_wizard_stage_guest',
             'templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl' => 'purchase_wizard_stage_choose',
             'templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl' => 'purchase_wizard_stage_message',
-            'templates/PURCHASE_WIZARD_STAGE_LICENCE.tpl' => 'purchase_wizard_stage_licence',
+            'templates/PURCHASE_WIZARD_STAGE_TERMS.tpl' => 'purchase_wizard_stage_terms',
             'templates/PURCHASE_WIZARD_STAGE_DETAILS.tpl' => 'purchase_wizard_stage_details',
             'templates/PURCHASE_WIZARD_STAGE_FINISH.tpl' => 'purchase_wizard_stage_finish',
             'templates/ECOM_INVOICES_SCREEN.tpl' => 'ecom_invoices_screen',
@@ -745,14 +746,14 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_licence()
+    public function tpl_preview__purchase_wizard_stage_terms()
     {
         require_lang('installer');
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_LICENCE', array(
+            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TERMS', array(
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
-                'LICENCE' => lorem_phrase(),
+                'TERMS' => lorem_paragraph(),
             )), null, '', true)
         );
     }

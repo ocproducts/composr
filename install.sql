@@ -1779,11 +1779,11 @@ insert into `cms10_db_meta` values('translate','id','*AUTO'),
  ('adminlogs','ip','IP'),
  ('adminlogs','date_and_time','TIME'),
  ('customtasks','id','*AUTO'),
- ('customtasks','tasktitle','SHORT_TEXT'),
- ('customtasks','datetimeadded','TIME'),
- ('customtasks','recurinterval','INTEGER'),
- ('customtasks','recurevery','ID_TEXT'),
- ('customtasks','taskisdone','?TIME'),
+ ('customtasks','task_title','SHORT_TEXT'),
+ ('customtasks','add_date','TIME'),
+ ('customtasks','recur_interval','INTEGER'),
+ ('customtasks','recur_every','ID_TEXT'),
+ ('customtasks','task_is_done','?TIME'),
  ('stafflinks','id','*AUTO'),
  ('stafflinks','link','URLPATH');
 insert into `cms10_db_meta` values('stafflinks','link_title','SHORT_TEXT'),
@@ -8489,7 +8489,7 @@ insert into `cms10_addons_files` values('3636','core_form_interfaces','data/cked
  ('4153','core_rich_media','themes/default/templates/COMCODE_JUMPING.tpl'),
  ('4154','core_rich_media','themes/default/templates/COMCODE_JUMPING_PART.tpl'),
  ('4155','core_rich_media','themes/default/templates/COMCODE_MESSAGE.tpl'),
- ('4156','core_rich_media','themes/default/templates/COMCODE_MINOR_TITLE.tpl'),
+ ('4156','core_rich_media','themes/default/templates/COMCODE_SUBTITLE.tpl'),
  ('4157','core_rich_media','themes/default/templates/COMCODE_MISTAKE_ERROR.tpl'),
  ('4158','core_rich_media','themes/default/templates/COMCODE_MISTAKE_LINE.tpl'),
  ('4159','core_rich_media','themes/default/templates/COMCODE_MISTAKE_SCREEN.tpl'),
@@ -13159,11 +13159,11 @@ DROP TABLE IF EXISTS `cms10_customtasks`;
 
 CREATE TABLE `cms10_customtasks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tasktitle` varchar(255) NOT NULL,
-  `datetimeadded` int(10) unsigned NOT NULL,
-  `recurinterval` int(11) NOT NULL,
-  `recurevery` varchar(80) NOT NULL,
-  `taskisdone` int(10) unsigned DEFAULT NULL,
+  `task_title` varchar(255) NOT NULL,
+  `add_date` int(10) unsigned NOT NULL,
+  `recur_interval` int(11) NOT NULL,
+  `recur_every` varchar(80) NOT NULL,
+  `task_is_done` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 

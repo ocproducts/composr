@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -51,10 +51,7 @@ class Hook_config_smtp_sockets_host
      */
     public function get_default()
     {
-        if (!function_exists('fsockopen')) {
-            return null;
-        }
-        if (strpos(@ini_get('disable_functions'), 'shell_exec') !== false) {
+        if (!php_function_allowed('fsockopen')) {
             return null;
         }
         return 'mail.yourispwhateveritis.net';

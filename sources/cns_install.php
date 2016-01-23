@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -242,8 +242,8 @@ function install_cns($upgrade_from = null)
         delete_config_option('prevent_shouting');
 
         // Initialise f_password_history with current data (we'll assume m_last_submit_time represents last password change, which is not true - but ok enough for early initialisation, and will scatter things quite nicely to break in the new rules gradually)
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         $max = 500;
         $start = 0;
@@ -279,6 +279,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_post_history');
 
         rename_config_option('post_history_days', 'post_read_history_days');
+
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'');
     }
 
     // If we have the forum installed to this db already, leave
@@ -328,15 +330,17 @@ function install_cns($upgrade_from = null)
         ));
 
         cns_make_boiler_custom_field('about');
+        cns_make_boiler_custom_field('interests');
+        cns_make_boiler_custom_field('occupation');
+        cns_make_boiler_custom_field('staff_notes');
+        if (!addon_installed('user_mappr')) {
+            cns_make_boiler_custom_field('location');
+        }
         //cns_make_boiler_custom_field('im_jabber'); Old-school, although XMPP is still popular for some, so we won't remove entirely
         cns_make_boiler_custom_field('im_skype');
         cns_make_boiler_custom_field('sn_facebook');
         cns_make_boiler_custom_field('sn_google');
         cns_make_boiler_custom_field('sn_twitter');
-        cns_make_boiler_custom_field('interests');
-        cns_make_boiler_custom_field('location');
-        cns_make_boiler_custom_field('occupation');
-        cns_make_boiler_custom_field('staff_notes');
 
         $GLOBALS['FORUM_DB']->create_table('f_invites', array(
             'id' => '*AUTO',
@@ -753,7 +757,7 @@ function install_cns($upgrade_from = null)
             'id' => '*AUTO',
             'pv_poll_id' => 'AUTO_LINK',
             'pv_member_id' => 'MEMBER',
-            'pv_answer_id' => 'AUTO_LINK', // -1 means "forfeited". We'd use NULL, but we aren't allowed NULL fragments in keys
+            'pv_answer_id' => 'AUTO_LINK', // -1 means "forfeited". We'd use null, but we aren't allowed null fragments in keys
             'pv_ip' => 'IP'
         ));
 

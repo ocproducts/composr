@@ -9,7 +9,7 @@
 [media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/tut_msn/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
-[i]This functionality is not fully supported by the developers[/i]. Bug fixes will be produced if the functionality is not working correctly, but it is not proactively and regularly tested. Those relying on it for large deployments should make sure they have appropriate budgets to deal with the maintenance of the volume of sites desired, and to sponsor custom functionality they are likely to want running such a large/custom/special/complex operation. At the time of writing this note (2015), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.  
+[i]This functionality is not fully supported by the developers[/i]. Bug fixes will be produced if the functionality is not working correctly, but it is not proactively and regularly tested. Those relying on it for large deployments should make sure they have appropriate budgets to deal with the maintenance of the volume of sites desired, and to sponsor custom functionality they are likely to want running such a large/custom/special/complex operation. At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
 
@@ -89,10 +89,11 @@ You can make it so you have a single Composr site that runs across different sub
 
 [i]This is an advanced feature that is not fully supported by the developers. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared webhosts).[/i]
 
-The procedure is as follows:[list="a"]
+The procedure is as follows:
+[list="a"]
 [*] It is strongly recommended, for simplicity and user-friendliness, that you operate Composr from the root of your domain name, e.g. having [tt]http://example.com[/tt] as your base URL.
 [*] [list="i"]
-[*]For multiple sub(domain) names, each representing a different zone...
+[*] For multiple sub(domain) names, each representing a different zone...
 Set up multiple website profiles in IIS manager / virtual hosts in the Apache configuration file. These profiles must all point to the Composr installation directory (not the zone you're linking the subdomain to).
 [*] For complex hierarchies:
 Set up virtual directories in IIS manager / directory sections in the Apache configuration file. These virtual directories must all point to the Composr installation directory (not the zone you're linking the subdomain to).
@@ -116,7 +117,7 @@ Please note it is essential to configure your cookie domain to be encompassing o
 
 Composr has some residual support for running many websites of a single install, although [i]not officially supported[/i]. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
 
-If run like this, certain functions of Composr, such as email settings, or addon management, are disabled.
+If run like this, certain functions of Composr, such as e-mail settings, or addon management, are disabled.
 
 The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible. Be prepared to invest serious money or effort to sponsor the upkeep of this Composr functionality, as it has no regular testing or maintenance by core developers.
 
@@ -213,13 +214,9 @@ sites/www/caches/lang/EN/.htaccess
 sites/www/caches/lang/index.html
 sites/www/caches/guest_pages
 sites/www/caches/guest_pages/.htaccess
-sites/www/caches/guest_pages/EN
-sites/www/caches/guest_pages/EN/.htaccess
 sites/www/caches/guest_pages/index.html
 sites/www/caches/self_learning
 sites/www/caches/self_learning/.htaccess
-sites/www/caches/self_learning/EN
-sites/www/caches/self_learning/EN/.htaccess
 sites/www/caches/self_learning/index.html
 sites/www/lang_custom
 sites/www/lang_custom/.htaccess
@@ -346,7 +343,7 @@ Composr does not contain a way for individual sites to be set up automatically o
  1_key="M.S.N."        1_value="A multi-site-network: a network of Composr sites that share a member community. Composr provides special features that are designed for such a situation"
  2_key="Central site"  2_value="Every M.S.N. should have a central site which hosts the community and the netlink system; it often makes sense to also structure things so this site is seen to be the central site in the network, but this is optional"
  3_key="Satellite site"  2_value="A site on an M.S.N. that is not a central site"
- 4_key="netlink"       3_value="The site-jump system intended for multi-site-networks"
+ 4_key="Netlink"       3_value="The site-jump system intended for multi-site-networks"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

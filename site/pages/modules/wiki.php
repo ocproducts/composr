@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -111,10 +111,8 @@ class Module_wiki
             $map += insert_lang_comcode('description', '', 2);
             $map += lang_code_to_default_content('title', 'WIKI_HOME', false, 1);
             $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'wiki_page', 'category_name' => strval(db_get_first_id()), 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('wiki_page', db_get_first_id());
 
             add_privilege('WIKI', 'wiki_manage_tree', false);
 
@@ -193,7 +191,7 @@ class Module_wiki
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -203,7 +201,8 @@ class Module_wiki
             'random' => array('RANDOM_PAGE', 'menu/rich_content/wiki/random_page'),
         );
         if (addon_installed('actionlog')) {
-            $ret['revisions'] = array('actionlog:REVISIONS', 'buttons/revisions');
+            require_lang('actionlog');
+            $ret['revisions'] = array('REVISIONS', 'buttons/revisions');
         }
         return $ret;
     }
@@ -219,7 +218,7 @@ class Module_wiki
     public $num_posts;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -295,7 +294,7 @@ class Module_wiki
                 'description' => (strlen($description_comcode) < 200) ? $description_comcode : '',
                 'numposts' => strval($num_posts),
                 'image' => find_theme_image('icons/48x48/menu/rich_content/wiki'),
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             breadcrumb_set_parents($breadcrumbs);
@@ -477,7 +476,7 @@ class Module_wiki
 
         // Child Links
         $num_children = 0;
-        $children = new Tempcode();
+        $children = array();
         if (get_option('wiki_enable_children') == '1') {
             $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
@@ -495,19 +494,16 @@ class Module_wiki
                 $my_child_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $child_id));
                 $my_child_children = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'COUNT(*)', array('parent_id' => $child_id));
 
-                if (($my_child_posts > 0) || ($my_child_children > 0) || (trim($child_description) != '')) {
-                    $sup = do_template('WIKI_SUBCATEGORY_CHILDREN', array(
-                        '_GUID' => '90e9f1647fdad0cacccecca3cbf12888',
-                        'MY_CHILD_POSTS' => integer_format($my_child_posts),
-                        'MY_CHILD_CHILDREN' => integer_format($my_child_children),
-                        'BODY_CONTENT' => (trim($child_description) != '') ? strval(strlen($child_description)) : null,
-                    ));
-                } else {
-                    $sup = ($myrow['hide_posts'] == 1) ? new Tempcode() : do_lang_tempcode('EMPTY');
-                }
-
                 $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => wiki_derive_chain($child_id)), '_SELF');
-                $children->attach(do_template('WIKI_SUBCATEGORY_LINK', array('_GUID' => 'e9f9b504093220dc23a1ab59b3e8e5df', 'URL' => $url, 'CHILD' => $child_title, 'SUP' => $sup)));
+                $children[] = array(
+                    'URL' => $url,
+                    'CHILD' => $child_title,
+
+                    'MY_CHILD_POSTS' => integer_format($my_child_posts),
+                    'MY_CHILD_CHILDREN' => integer_format($my_child_children),
+                    'BODY_CONTENT' => (trim($child_description) != '') ? strval(strlen($child_description)) : '0',
+                    'HIDE_POSTS' => $myrow['hide_posts'] == 1,
+                );
 
                 $num_children++;
             }
@@ -975,7 +971,7 @@ class Module_wiki
             $parsed = get_translated_tempcode('wiki_posts', $myrow, 'the_message');
 
             require_code('content2');
-            $specialisation->attach(meta_data_get_fields('wiki_post', strval($post_id)));
+            $specialisation->attach(metadata_get_fields('wiki_post', strval($post_id)));
 
             if (has_delete_permission('low', get_member(), $original_poster, 'cms_wiki', array('wiki_page', $myrow['page_id']))) {
                 $specialisation->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '569be0b840914473a0928606a045f838', 'TITLE' => do_lang_tempcode('ACTIONS'))));
@@ -1010,7 +1006,7 @@ class Module_wiki
             list($warning_details, $ping_url) = array(null, null);
 
             require_code('content2');
-            $specialisation->attach(meta_data_get_fields('wiki_post', null));
+            $specialisation->attach(metadata_get_fields('wiki_post', null));
 
             if (has_privilege(get_member(), 'bypass_validation_lowrange_content', 'cms_wiki')) {
                 $specialisation->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'wiki_post'), 'validated', $validated == 1));
@@ -1136,10 +1132,10 @@ class Module_wiki
             check_submit_permission('low', null, 'cms_wiki');
 
             require_code('content2');
-            $meta_data = actual_meta_data_get_fields('wiki_post', null);
+            $metadata = actual_metadata_get_fields('wiki_post', null);
 
             require_code('content2');
-            $post_id = wiki_add_post($id, $message, $validated, $meta_data['submitter'], true, $meta_data['add_time'], $meta_data['views']);
+            $post_id = wiki_add_post($id, $message, $validated, $metadata['submitter'], true, $metadata['add_time'], $metadata['views']);
 
             set_url_moniker('wiki_post', strval($post_id));
 
@@ -1179,9 +1175,9 @@ class Module_wiki
                 check_edit_permission('low', $original_poster, array('wiki_page', $myrow['page_id']), 'cms_wiki');
 
                 require_code('content2');
-                $meta_data = actual_meta_data_get_fields('wiki_post', strval($post_id));
+                $metadata = actual_metadata_get_fields('wiki_post', strval($post_id));
 
-                wiki_edit_post($post_id, $message, $validated, $meta_data['submitter'], null, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], true);
+                wiki_edit_post($post_id, $message, $validated, $metadata['submitter'], null, $metadata['edit_time'], $metadata['add_time'], $metadata['views'], true);
             }
         }
 

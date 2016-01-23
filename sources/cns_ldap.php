@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ Group membership mechanism is hard-coded for Linux and Active Directory LDAP:
 
 We assume groups are always referenced as 'cn'.
 
-When looping over results, we always have to skip non-numeric keys, which are for meta-data returned within result set (e.g. 'count'). Ugly, I know - you'd think LDAP would be neater ;).
+When looping over results, we always have to skip non-numeric keys, which are for metadata returned within result set (e.g. 'count'). Ugly, I know - you'd think LDAP would be neater ;).
 */
 
 /**

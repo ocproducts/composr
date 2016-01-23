@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -126,9 +126,11 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
         foreach ($subscriptions as $sub) {
             $member_id = $sub['s_member_id'];
-            if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
-                $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
-                $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
+            if ((get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group'))) {
+                    $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
+                    $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
+                }
             } else {
                 $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id), '', 1);
                 cns_add_member_to_group($member_id, $group_id);

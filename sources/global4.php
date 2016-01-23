@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -239,8 +239,7 @@ function member_personal_links_and_details($member_id)
                 if ((!is_null($expiry_time)) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
                     require_lang('ecommerce');
                     $expiry_date = is_null($expiry_time) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false, false, false, true);
-                    $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
-                        'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),
+                    $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '2675d56aa278616aa9f00b051ca084fc', 'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),
                         'VALUE' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_DATE', escape_html($expiry_date)),
                     )));
                 }
@@ -278,7 +277,7 @@ function member_personal_links_and_details($member_id)
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
         } else {
             $url = build_url(array('page' => ''), 'cms');
-            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
+            $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '3f63dad2645b6c39f68dcfebe7d7a0ab', 'ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
         }
     }
 
@@ -443,6 +442,22 @@ function _log_it($type, $a = null, $b = null)
         return null; // If this is during installation
     }
 
+    // Need to update copyright date?
+    if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) && $type != 'CONFIGURATION') {
+        $matches = array();
+        $old_copyright = get_option('copyright');
+        if (preg_match('#^(.*\$CURRENT_YEAR=)(\d+)(.*)$#', $old_copyright, $matches) != 0) {
+            $new_copyright = $matches[1] . date('Y') . $matches[3];
+            if ($old_copyright != $new_copyright) {
+                require_code('config2');
+                set_option('copyright', $new_copyright);
+                require_code('caches3');
+                erase_cached_templates(true);
+            }
+        }
+    }
+
+    // No more logging if site closed (possibly)
     if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
         return null;
     }
@@ -458,6 +473,7 @@ function _log_it($type, $a = null, $b = null)
         $ob->run($type, $a, $b);
     }
 
+    // Add to log
     $log_id = mixed();
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
@@ -475,6 +491,7 @@ function _log_it($type, $a = null, $b = null)
     static $logged = 0;
     $logged++;
 
+    // Cache clearing
     if ($logged == 1) {
         decache('side_tag_cloud');
         decache('main_staff_actions');
@@ -488,7 +505,8 @@ function _log_it($type, $a = null, $b = null)
     require_code('autosave');
     clear_cms_autosave();
 
-    if ((get_page_name() != 'admin_themewizard') && (get_page_name() != 'admin_import') && ($ADMIN_LOGGING_ON)) {
+    // Notification
+    if ((!get_mass_import_mode()) && ($ADMIN_LOGGING_ON)) {
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
             if (addon_installed('actionlog')) {
                 require_all_lang();

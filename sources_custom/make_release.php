@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -92,8 +92,8 @@ function make_installers($skip_file_grab = false)
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
     $make_aps = (get_param_integer('skip_aps', 0) == 0);
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     disable_php_memory_limit();
 

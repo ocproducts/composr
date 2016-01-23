@@ -217,7 +217,8 @@ This can be done in two ways:
 1) Using the Admin Zone, the theme image editing screen
 2) Manually managing files, FTP / Hosting File manager
 
-To actual get rid of the existing default avatars you will need to remove the addons that they are bundled with:[list="a"]
+To actual get rid of the existing default avatars you will need to remove the addons that they are bundled with:
+[list="a"]
 [*][tt]cns_avatars[/tt]
 [*][tt]cns_cartoon_avatars[/tt]
 [*][tt]cns_thematic_avatars[/tt]
@@ -289,10 +290,10 @@ It works as follows:
 Essentially member profiles contain a last request date (in the database), which is maintained as you browse through the site. If you login, or open the browser, it copies that into a cookie that's value persists until you login again or reopen the browser. The cookie is the reference point which is used as the last visit date.
 
 [concepts
- 1_key="profile"           1_value="Member profiles define details, including options, relating to members"
+ 1_key="Profile"           1_value="Member profiles define details, including options, relating to members"
  2_key="Account"           2_value="The zone that a member manages and accesses settings and content related to themselves"
- 3_key="avatar"            3_value="A pictorial representation of self"
- 4_key="usergroup"         4_value="usergroups allow common representation of properties (especially permissions) relating to a group of users in similar situations."
+ 3_key="Avatar"            3_value="A pictorial representation of self"
+ 4_key="Usergroup"         4_value="usergroups allow common representation of properties (especially permissions) relating to a group of users in similar situations."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

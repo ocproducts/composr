@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -121,6 +121,11 @@ function sync_file($filename)
  */
 function php_function_allowed($function)
 {
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            return false;
+        }
+    }
     return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
 }
 
@@ -138,9 +143,9 @@ function get_html_trace()
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
-    $trace = new Tempcode();
+    $trace = array();
     foreach ($_trace as $i => $stage) {
-        $traces = new Tempcode();
+        $traces = array();
         //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;
         $file = '';
         $line = '';
@@ -188,13 +193,13 @@ function get_html_trace()
                     ob_end_clean();
                 }
             }
-            $traces->attach(do_template('STACK_TRACE_LINE', array('_GUID' => 'a3bdbe9f0980b425f6aeac5d00fe4f96', 'LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value)));
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
-        $trace->attach(do_template('STACK_TRACE_WRAP', array('_GUID' => '748860b0c83ea19d56de594fdc04fe12', 'TRACES' => $traces)));
+        $trace[] = array('TRACES' => $traces);
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    return do_template('STACK_TRACE_HYPER_WRAP', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'CONTENT' => $trace, 'POST' => ''));
+    return do_template('STACK_TRACE', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'TRACE' => $trace, 'POST' => ''));
 }
 
 /**
@@ -249,6 +254,18 @@ function fatal_exit($text)
     $out_final->evaluate_echo();
 
     exit();
+}
+
+/**
+ * Lookup error on compo.sr, to see if there is more information.
+ * (null implementation for minikernel)
+ *
+ * @param  mixed $error_message The error message (string or Tempcode)
+ * @return ?string The result from the web service (null: no result)
+ */
+function get_webservice_result($error_message)
+{
+    return null;
 }
 
 /**
@@ -606,7 +623,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function either_param_string($name, $default = null)
 {
@@ -619,7 +636,7 @@ function either_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function post_param_string($name, $default = null)
 {
@@ -632,7 +649,7 @@ function post_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function get_param_string($name, $default = null)
 {
@@ -648,7 +665,7 @@ function get_param_string($name, $default = null)
  * @param  ?mixed $default The default value to use for the parameter (null: no default)
  * @param  boolean $must_integer Whether the parameter has to be an integer
  * @param  boolean $is_post Whether the parameter is a POST parameter
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  * @ignore
  */
 function __param($array, $name, $default, $must_integer = false, $is_post = false)
@@ -821,7 +838,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {

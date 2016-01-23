@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,9 +41,9 @@ class Hook_cron_staff_checklist_notify
 
         // Find if anything needs doing
         $outstanding = 0;
-        $rows = $GLOBALS['SITE_DB']->query_select('customtasks', array('*'));
+        $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
         foreach ($rows as $r) {
-            $task_done = ((!is_null($r['taskisdone'])) && (($r['recurinterval'] == 0) || (($r['recurevery'] != 'mins') || (time() < $r['taskisdone'] + 60 * $r['recurinterval'])) && (($r['recurevery'] != 'hours') || (time() < $r['taskisdone'] + 60 * 60 * $r['recurinterval'])) && (($r['recurevery'] != 'days') || (time() < $r['taskisdone'] + 24 * 60 * 60 * $r['recurinterval'])) && (($r['recurevery'] != 'months') || (time() < $r['taskisdone'] + 31 * 24 * 60 * 60 * $r['recurinterval']))));
+            $task_done = ((!is_null($r['task_is_done'])) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval']))));
             if (!$task_done) {
                 $outstanding++;
             }

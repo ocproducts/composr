@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_news
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -132,7 +133,6 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_SIDE_NEWS.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl',
-            'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY.tpl',
             'themes/default/templates/NEWS_CHICKLETS.tpl',
             'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl',
             'themes/default/images/newscats/index.html',
@@ -192,7 +192,6 @@ class Hook_addon_registry_news
             'templates/BLOCK_MAIN_NEWS.tpl' => 'block_main_news',
             'templates/BLOCK_SIDE_NEWS.tpl' => 'block_side_news',
             'templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl' => 'block_side_news_categories',
-            'templates/BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY.tpl' => 'block_side_news_categories',
             'templates/BLOCK_SIDE_NEWS_SUMMARY.tpl' => 'block_side_news',
             'templates/BLOCK_BOTTOM_NEWS.tpl' => 'block_bottom_news',
             'templates/NEWS_ENTRY_SCREEN.tpl' => 'news_full_screen',
@@ -494,17 +493,17 @@ class Hook_addon_registry_news
     public function tpl_preview__block_side_news_categories()
     {
         require_lang('news');
-        $contents = new Tempcode();
+        $categories = array();
         foreach (placeholder_array() as $k => $v) {
-            $contents->attach(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY', array(
+            $categories[] = array(
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
                 'COUNT' => placeholder_number(),
-            )));
+            );
         }
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES', array(
-                'CONTENT' => $contents,
+                'CATEGORIES' => $categories,
                 'PRE' => '',
                 'POST' => '',
             )), null, '', true)

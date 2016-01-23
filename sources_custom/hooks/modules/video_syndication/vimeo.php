@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -220,8 +220,8 @@ class Hook_video_syndication_vimeo
 
     public function upload_video($video)
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10000);
         }
         list($file_path, $is_temp_file) = $this->_url_to_file_path($video['url']);
         try {
@@ -274,7 +274,7 @@ class Hook_video_syndication_vimeo
         $is_temp_file = false;
 
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
-            $temppath = cms_tempnam('vimeo_temp_dload');
+            $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
             http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, null, null, null, null, $tempfile);
 
@@ -311,8 +311,8 @@ class Hook_video_syndication_vimeo
                         break;
 
                     case 'url':
-                        if (function_exists('set_time_limit')) {
-                            @set_time_limit(10000);
+                        if (php_function_allowed('set_time_limit')) {
+                            set_time_limit(10000);
                         }
                         list($file_path, $is_temp_file) = $this->_url_to_file_path($changes['url']);
                         $remote_id = $this->_vimeo_ob->upload($file_path, true, 2097152, $video['remote_id']);

@@ -63,7 +63,8 @@ The 'post history' feature allows you to view text of all revisions a post has g
 
 To access this feature navigate to the [tt]forumview[/tt] module (Social > Forums on the default menus). Go into one of the listed forums.
 
-If no topics and posts has been yet made to the selected forum, go ahead and try to add some sample topics and posts to test:[list="1"]
+If no topics and posts has been yet made to the selected forum, go ahead and try to add some sample topics and posts to test:
+[list="1"]
 [*] To add a topic, press the 'Add topic' button and provide the title and post for the topic, then press the "Add topic" button at the bottom of the form.
 [*] To add replies to the a topic quickly type some out via the Quick Reply box, pressing the "Make Post" button to submit each post.
 [/list]

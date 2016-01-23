@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -944,8 +944,8 @@ function is_plain_text_template($temp_name)
 /**
  * Checks if the template is a full screen template
  *
- * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
- * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
+ * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-null)
+ * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-null)
  * @return boolean Whether it is
  */
 function is_full_screen_template($temp_name = null, $tempcode = null)

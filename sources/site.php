@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -214,6 +214,9 @@ function load_zone_data()
                     $zone_default_page = 'start';
                     if ($real_zone == 'forum') { // A bit of an architectural fudge, but people get confused why it doesn't come back the same
                         $zone_default_page = 'forumview';
+                    }
+                    if ($real_zone == 'docs') {
+                        $zone_default_page = 'tutorials';
                     }
                     $map = array(
                         'zone_name' => $real_zone,
@@ -495,7 +498,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
                     $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
                 }
 
-                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '769236ef4f20a0a05cee6d7a335eaf9f', 'LABEL' => $label)));
             }
         }
     }
@@ -526,14 +529,14 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
         }
 
         if ($entry_point == '') {
-            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => 'fcf371ee4a071ebdd170dc16a55f36dd', 'LABEL' => $label)));
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
             list($zone, $attributes, $hash) = page_link_decode($entry_point);
             $url = build_url($attributes, $zone, null, false, false, $hash);
 
-            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
+            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
     }
 
@@ -867,7 +870,7 @@ function do_site()
     }
 
     // Caching for spiders
-    if (running_script('index')) {
+    if ($GLOBALS['STATIC_CACHE_ENABLED']) {
         save_static_caching($out);
     }
 
@@ -933,7 +936,7 @@ function do_site()
             set_value('last_space_check', strval(time()));
         }
 
-        if (function_exists('disk_free_space')) {
+        if (php_function_allowed('disk_free_space')) {
             $low_space_check = intval(get_option('low_space_check')) * 1024 * 1024;
             $disk_space = @disk_free_space(get_file_base());
             if ((is_integer($disk_space)) && ($disk_space < $low_space_check)) {
@@ -1077,7 +1080,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * Take the specified parameters, and try to find the corresponding page, then execute a function to load the page (load_html_page/load_comcode_page).
  *
  * @param  ID_TEXT $codename The codename of the page to load
- * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return NULL
+ * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return null
  * @param  ?ID_TEXT $zone The zone the page is being loaded in (null: as shown by access URL)
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  boolean $being_included Whether the page is being included from another
@@ -1607,7 +1610,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             ($codename[0] == '_') ||
             ($zone . ':' . $codename == ':404') ||
 
-            // HACKHACK. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
+            // FUDGE. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
             ($codename == 'rules') ||
             ($zone . ':' . $codename == ':recommend_help') ||
             ($zone . ':' . $codename == ':popup_blockers') ||
@@ -1765,12 +1768,12 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $add_child_url = new Tempcode();
     if (has_add_comcode_page_permission($zone)) {
         if (strpos($raw_comcode, 'main_comcode_page_children') !== false) {
-            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow ,'lang'=>user_lang()*//*,'redirect'=>$redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
+            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => $redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
         }
     }
 
     $warning_details = new Tempcode();
-    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0)) {
+    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0) && (!$being_included)) {
         require_code('site2');
         $warning_details = get_page_warning_details($zone, $codename, $edit_url);
     }
@@ -1791,7 +1794,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
             'identifier' => $zone . ':' . $codename,
             'description' => '',
-            //'category'=>???,
+            //'category' => ???,
         ));
     }
 

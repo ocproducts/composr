@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -75,7 +75,7 @@ class Block_main_multi_content
         $info['cache_on'] = '
             (preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\'))!=0)
             ?
-            NULL
+            null
             :
             array(
                 array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,
@@ -86,13 +86,13 @@ class Block_main_multi_content
                 get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):30),
                 get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),
                 ((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),
-                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',NULL),
+                ((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?intval($map[\'root\']):get_param_integer(\'keep_\'.(array_key_exists(\'param\',$map)?$map[\'param\']:\'download\').\'_root\',null),
                 (array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',
                 (array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',
                 array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',
                 array_key_exists(\'no_links\',$map)?$map[\'no_links\']:0,
-                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):NULL,
-                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):NULL,
+                ((array_key_exists(\'days\',$map)) && ($map[\'days\']!=\'\'))?intval($map[\'days\']):null,
+                ((array_key_exists(\'lifetime\',$map)) && ($map[\'lifetime\']!=\'\'))?intval($map[\'lifetime\']):null,
                 ((array_key_exists(\'pinned\',$map)) && ($map[\'pinned\']!=\'\'))?explode(\',\',$map[\'pinned\']):array(),
                 array_key_exists(\'title\',$map)?$map[\'title\']:\'\',
                 array_key_exists(\'param\',$map)?$map[\'param\']:\'download\',
@@ -438,7 +438,7 @@ class Block_main_multi_content
                             }
 
                             $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS average_rating';
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query, $max, $start, 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
@@ -451,7 +451,7 @@ class Block_main_multi_content
                             }
 
                             $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS compound_rating';
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query, $max, $start, 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
@@ -459,7 +459,7 @@ class Block_main_multi_content
                     case 'title ASC':
                     case 'title DESC':
                         if ($sort == 'title') {
-                            $sort .= ' DESC';
+                            $sort .= ' ASC';
                         }
                         $sort_order = preg_replace('#^.* #', '', $sort);
 

@@ -13318,7 +13318,7 @@ function upload_finished(ob,file,data)
 	if (id.value!='') id.value+=':';
 	id.value+=decoded_data['upload_id'];
 
-	if (typeof window.handle_meta_data_receipt!='undefined') handle_meta_data_receipt(decoded_data);
+	if (typeof window.handle_metadata_receipt!='undefined') handle_metadata_receipt(decoded_data);
 
 	if (all_done)
 	{

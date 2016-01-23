@@ -184,7 +184,7 @@ It is easy to imagine useful bots that could be created; as just one example, im
 
 [title="2"]The shout-box block[/title]
 
-Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chatroom, which by default, is the 'General Chat' chat-room.
+Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chatroom, which by default, is the 'General Chat' chatroom.
 
 [title="2"]Third-party approaches[/title]
 
@@ -224,7 +224,7 @@ For this we advise integration external software, which should be very easy. For
 This is one of the few cases where relying on a third party tool does not provide user experience problems, as it's a use-case that is quite oblique to the rest of the website experience (works in a popup, and is an isolated sequence of interactions).
 
 [concepts
- 1_key="Chatroom"          1_value="An online congregation point, where many people can talk simultaneously -- over the internet -- in one big text-based conversation"
+ 1_key="Chatroom"          1_value="An online congregation point, where many people can talk simultaneously -- over the Internet -- in one big text-based conversation"
  2_key="Bot"               2_value="A conversant that is powered by Composr code rather than a real human"
  3_key="Shout-box"         3_value="An embedded chatroom"
  4_key="Chat Lobby"        4_value="The screen listing chatrooms and hosting IMs"

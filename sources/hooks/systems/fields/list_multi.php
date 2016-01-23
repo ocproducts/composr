@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -221,13 +221,9 @@ class Hook_fields_list_multi
             natsort($list);
         }
 
-        $_list = array();
         $custom_name = $input_name . '_other';
         $custom_value = mixed();
         $custom_value = array();
-        foreach ($list as $i => $l) {
-            $_list[] = array($l, $input_name . '_' . strval($i), in_array($l, $exploded_chosen), '');
-        }
         foreach ($exploded_chosen as $chosen) {
             if (!in_array($chosen, $list)) {
                 $custom_value[] = $chosen;
@@ -256,13 +252,17 @@ class Hook_fields_list_multi
         {
             case 'vertical_checkboxes':
             case 'horizontal_checkboxes':
+                $_list = array();
+                foreach ($list as $i => $l) {
+                    $_list[] = array(protect_from_escaping(comcode_to_tempcode($l, null, true)), $input_name . '_' . strval($i), in_array($l, $exploded_chosen), '');
+                }
                 return form_input_various_ticks($_list, $_cf_description, null, $_cf_name, ($widget == 'vertical_checkboxes'), $custom_name, $custom_value);
 
             case 'multilist':
             default:
                 $list_tpl = new Tempcode();
                 foreach ($list as $l) {
-                    $list_tpl->attach(form_input_list_entry($l, in_array($l, $exploded_chosen)));
+                    $list_tpl->attach(form_input_list_entry(protect_from_escaping(comcode_to_tempcode($l, null, true)), in_array($l, $exploded_chosen)));
                 }
                 return form_input_multi_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, $input_size, $field['cf_required'] == 1, $custom_name, $custom_value);
         }
@@ -273,7 +273,7 @@ class Hook_fields_list_multi
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

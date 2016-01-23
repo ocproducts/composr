@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Module_admin_addons
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -118,7 +118,7 @@ class Module_admin_addons
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -330,8 +330,8 @@ class Module_admin_addons
      */
     public function gui()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(180); // So it can scan inside addons
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(180); // So it can scan inside addons
         }
         send_http_output_ping();
 
@@ -575,8 +575,8 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
         send_http_output_ping();
 
@@ -853,9 +853,8 @@ class Module_admin_addons
             $frm_files->attach(do_template('ADDON_EXPORT_FILE_CHOICE', array('_GUID' => '77a91b947259c5e0cc7b5240b24425ca', 'ID' => strval($i), 'PATH' => $file)));
             $i++;
         }
-        $tpl_files = do_template('ADDON_EXPORT_LINE_CHOICE', array('_GUID' => '525b161afe5d84268360e960da5e759f', 'URL' => $url, 'FILES' => $frm_files));
 
-        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'FILES' => $tpl_files, 'THEMES' => $tpl_themes));
+        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
     }
 
     /**
@@ -918,12 +917,12 @@ class Module_admin_addons
 
         require_code('files');
 
-        // Default meta data
+        // Default metadata
         $name = '';
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $organisation = get_site_name();
         $description = '';
-        $category = is_null($theme) ? ($is_language ? 'Translation' : 'Uncategorised/Unstable') : 'Themes';
+        $category = is_null($theme) ? ($is_language ? 'Translations' : 'Uncategorised/Unstable') : 'Themes';
         $version = '1.0';
         $copyright_attribution = '';
         $licence = 'Creative Commons Attribution-ShareAlike';
@@ -1124,7 +1123,7 @@ class Module_admin_addons
     public function modules_view()
     {
         $zone = get_param_string('id');
-        $tpl_modules = new Tempcode();
+        $tpl_modules = array();
 
         require_code('templates_columned_table');
         require_code('zones2');
@@ -1210,7 +1209,7 @@ class Module_admin_addons
             if (is_null($hack_version)) {
                 $hack_version = do_lang_tempcode('NA_EM');
             }
-            $tpl_modules->attach(do_template('MODULE_SCREEN_MODULE', array('_GUID' => 'cf19adfd129c44a7ef1d6789002c6535', 'STATUS' => $status, 'NAME' => $module, 'AUTHOR' => $author, 'ORGANISATION' => $organisation, 'VERSION' => strval($version), 'HACKED_BY' => $hacked_by, 'HACK_VERSION' => $hack_version, 'ACTIONS' => $actions)));
+            $tpl_modules[] = array('STATUS' => $status, 'NAME' => $module, 'AUTHOR' => $author, 'ORGANISATION' => $organisation, 'VERSION' => strval($version), 'HACKED_BY' => $hacked_by, 'HACK_VERSION' => $hack_version, 'ACTIONS' => $actions);
         }
 
         return do_template('MODULE_SCREEN', array('_GUID' => '132b23107b49a23e0b11db862de1dd56', 'TITLE' => $this->title, 'MODULES' => $tpl_modules));

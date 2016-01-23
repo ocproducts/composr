@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -75,7 +75,7 @@ abstract class Standard_crud_module
     public $second_stage_preview = false;
     public $add_submit_name = null;
     public $edit_submit_name = null;
-    public $do_preview = true; // true or NULL (NULL means false here)
+    public $do_preview = true; // true or null (null means false here)
     public $add_one_label = null;
     public $add_one_cat_label = null;
     public $edit_this_label = null;
@@ -134,7 +134,7 @@ abstract class Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -165,10 +165,10 @@ abstract class Standard_crud_module
     public $success_message_str;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -419,7 +419,7 @@ abstract class Standard_crud_module
         }
         $type = get_param_string('type', $this->default_type);
 
-        // Meta data etc
+        // Metadata etc
         require_code('content2');
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -1637,7 +1637,7 @@ abstract class Standard_crud_module
             }
 
             if ($this->user_facing) {
-                if (($this->check_validation) && (post_param_integer('validated', 0) == 0)) {
+                if (($this->check_validation) && (post_param_integer('validated', 0) == 0) && (post_param_integer('tick_on_form__validated', null) === null)) {
                     require_code('submit');
                     if (($this->send_validation_request) && (addon_installed('unvalidated'))) {
                         $edit_url = build_url(array('page' => '_SELF', 'type' => $this->get_screen_type_for('_edit', $this->type_code), 'id' => $id, 'validated' => 1), '_SELF', null, false, false, true);

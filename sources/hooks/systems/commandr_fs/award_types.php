@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -159,7 +159,7 @@ class Hook_commandr_fs_award_types extends Resource_fs_base
         edit_award_type(intval($resource_id), $label, $description, $points, $resource_type, $hide_awardee, $update_time_hours);
 
         if (isset($properties['archive'])) {
-            table_from_portable_rows('award_archive', $properties['archive'], array('TODO-foreign-key' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+            table_from_portable_rows('award_archive', $properties['archive'], array('a_type_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);

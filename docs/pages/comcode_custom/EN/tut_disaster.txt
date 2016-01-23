@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Disaster recovery[/title]
 
-[i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page=":free_tickets"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
+[i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page=":contact:free"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
 
 This tutorial will go through some solutions to 'disastrous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
 
@@ -47,14 +47,14 @@ For this, I am assuming that you are using [concept]Conversr[/concept]. If you a
 [media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_2.png[/media]
 [media width="150" description="Select to browse the f_members table" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_1.png[/media]
 [list="1"]
-[*]Enter phpMyAdmin
-[*]Browse the contents of the Composr f_members table (named [tt]cms_f_members[/tt] if you used the default table prefix).
-[*]You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
-[*]There are numerous fields, but we only need to change three:[list]
+[*] Enter phpMyAdmin
+[*] Browse the contents of the Composr f_members table (named [tt]cms_f_members[/tt] if you used the default table prefix).
+[*] You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
+[*] There are numerous fields, but we only need to change three:[list]
 [*][tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
 [*][tt]m_pass_salt[/tt] should be blanked out.
 [*][tt]m_password_compat_scheme[/tt] should be set to the literal value 'md5'.[/list]
-[*]Scroll to the bottom of the form and click 'Go'.
+[*] Scroll to the bottom of the form and click 'Go'.
 [/list]
 
 You should now be able to log in to Composr using your new password.
@@ -122,12 +122,12 @@ The above requires for to be logged in at admin, which you may not be or be able
 
 [title="2"]Disabling URL Schemes[/title]
 
-URL Schemes are subject to your web host supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
+URL Schemes are subject to your webhost supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
 You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the short-URL (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
- - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr users[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr users[/page]
 
-{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disastrous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disastrous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]

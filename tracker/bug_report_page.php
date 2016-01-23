@@ -162,7 +162,7 @@
 <br />
 
 <p>
-	<?php echo sprintf(lang_get('bug_report_guidance'), $cms_sc_community_doc_url);?>
+	<?php echo sprintf(lang_get('bug_report_guidance'), $cms_sc_report_guidance_url);?>
 </p>
 
 <div align="center">

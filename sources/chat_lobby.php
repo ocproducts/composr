@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -125,7 +125,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
 /**
  * Prune timed-out private chatrooms.
  *
- * @param  array $row The row of the chat room to possibly prune
+ * @param  array $row The row of the chatroom to possibly prune
  * @return boolean Whether the room was pruned
  */
 function handle_chatroom_pruning($row)

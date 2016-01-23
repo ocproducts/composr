@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ function init__caches()
     define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
 
     global $PERSISTENT_CACHE, $SITE_INFO;
-    /** The persistent cache access object (NULL if there is no persistent cache).
+    /** The persistent cache access object (null if there is no persistent cache).
      *
      * @global ?object $PERSISTENT_CACHE
      */
@@ -91,14 +91,19 @@ function init__caches()
     $SMART_CACHE = new Self_learning_cache($bucket_name);
 
     // Some loading from the smart cache
-    global $JAVASCRIPT, $CSSS;
+    global $CSS_OUTPUT_STARTED_LIST, $JS_OUTPUT_STARTED_LIST;
+    $CSS_OUTPUT_STARTED_LIST = array();
+    $JS_OUTPUT_STARTED_LIST = array();
+    global $JAVASCRIPT, $JS_OUTPUT_STARTED_LIST, $CSSS, $CSS_OUTPUT_STARTED_LIST;
     $test = $SMART_CACHE->get('JAVASCRIPT');
     if ($test !== null) {
         $JAVASCRIPT += $test;
+        $JS_OUTPUT_STARTED_LIST += $test;
     }
     $test = $SMART_CACHE->get('CSSS');
     if ($test !== null) {
         $CSSS += $test;
+        $CSS_OUTPUT_STARTED_LIST += $test;
     }
 }
 
@@ -281,8 +286,19 @@ class Self_learning_cache
                 register_shutdown_function(array($this, '_page_cache_resave'));
             }
             $this->pending_save = true;
+            return;
         }
 
+        $this->_page_cache_resave();
+    }
+
+    /**
+     * Actually save the cache.
+     *
+     * @ignore
+     */
+    function _page_cache_resave()
+    {
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             persistent_cache_set(array('SELF_LEARNING_CACHE', $this->bucket_name), $this->data);
             return;
@@ -351,12 +367,12 @@ class Self_learning_cache
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {
     global $PERSISTENT_CACHE;
-    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0, 3) == 1)) return NULL;  Annoying when doing performance tests, but you can enable to test persistent cache more
+    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0, 3) == 1)) return null;  Annoying when doing performance tests, but you can enable to test persistent cache more
     if ($PERSISTENT_CACHE === null) {
         return null;
     }

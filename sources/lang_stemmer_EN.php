@@ -80,8 +80,8 @@ class Stemmer_EN
             $v = self::$regex_vowel;
 
             // ing and ed
-            if (preg_match("#$v+#", substr($word, 0, -3)) && self::replace($word, 'ing', '')
-                OR preg_match("#$v+#", substr($word, 0, -2)) && self::replace($word, 'edit', '')
+            if (strlen($word) > 3 && preg_match("#$v+#", substr($word, 0, -3)) && self::replace($word, 'ing', '')
+                || strlen($word) > 2 && preg_match("#$v+#", substr($word, 0, -2)) && self::replace($word, 'edit', '')
             ) { // Note use of && and OR, for precedence reasons
 
                 // If one of above two test successful

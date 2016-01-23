@@ -1,14 +1,15 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, contents and introduction[/title]
 
-The Code Book contains documentation to teach experienced developers how to program for Composr.
+[box float="right" width="250px"]
+Our official [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym] is PhpStorm:
+[url="https://www.jetbrains.com/phpstorm/"][img]https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png[/img][/url]
+Major core contributors to Composr can get a free license to aid development.
+[/box]
+The Code Book contains documentation to teach experienced developers how to program for Composr. This page of the Codebook is mostly for sign-posting to the deeper pages of the book.
 
 This guide is not a substitute for learning PHP, HTML, CSS, or other languages. Some introductory material for learning web development is available in our [page="docs:"]main set of tutorials[/page]. There is an excellent PHP book available for free online.
 
 To learn Composr's API, see the phpdoc comments in the source files. The source files are logically named, so it should be relatively easy to get a handle on it all. Alternatively, view the [url="auto-generated documentation"]{$BRAND_BASE_URL}/docs/api/[/url].
-
-Our official IDE is PhpStorm:
-[url="https://www.jetbrains.com/phpstorm/"][img]https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png[/img][/url]
-Major core contributors to Composr can get a free license to aid development.
 
 [contents][/contents]
 
@@ -18,10 +19,10 @@ Major core contributors to Composr can get a free license to aid development.
 
 Composr's file system is basically split up into:
 [list]
-[*]Zones (the root directory itself, the [tt]site[/tt] directory, the [tt]adminzone[/tt] directory, the [tt]cms[/tt] directory, the [tt]forum[/tt] directory, and in a way the [tt]data[/tt] directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
-[*]Modules ([tt].php[/tt] files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the [tt]downloads[/tt] addon are in the [tt]downloads[/tt] module.
-[*]Comcode ([tt].txt[/tt] files)
-[*]HTML ([tt].htm[/tt] files)[/list]
+[*] Zones (the root directory itself, the [tt]site[/tt] directory, the [tt]adminzone[/tt] directory, the [tt]cms[/tt] directory, the [tt]forum[/tt] directory, and in a way the [tt]data[/tt] directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
+[*] Modules ([tt].php[/tt] files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the [tt]downloads[/tt] addon are in the [tt]downloads[/tt] module.
+[*] Comcode ([tt].txt[/tt] files)
+[*] HTML ([tt].htm[/tt] files)[/list]
 [*][tt]sources[/tt] which contain code to be included
 [*][tt]sources/hooks[/tt] which contain hooks that tie addons together so they can interoperate
 [*][tt]sources/blocks[/tt] and [tt]sources/miniblocks[/tt] which contain block files. Blocks are pluggable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
@@ -29,7 +30,10 @@ Composr's file system is basically split up into:
 [*][tt]lang[/tt] which contains language strings.
 [/list]
 
+[box="Overrides"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
 When you make modifications to any of Composr's default files, There is no need to overwrite the existing files, because Composr comes with a file-based override/inheritance system. This allows files to be overridden with replacements while leaving the old files intact for reference. This is done by saving your modified files in the [tt]*_custom[/tt] directories. i.e. if we need to make modifications in [tt]site/pages/modules/polls.php[/tt], then we need to save our modified version as [tt]site/pages/modules_custom/polls.php[/tt]) .
+[/box]
 
 [title="3"]Composr structure[/title]
 
@@ -100,7 +104,7 @@ Here is a glossary of some of the terms that are used to describe Composr concep
   - 'HTML pages' -- written in HTML
   - modules pages -- pages, that belong to a modules.
  - [b]Panels[/b], These are pages (usually Comcode pages) that are named with the prefix [tt]panel_[/tt]. They may be referenced in the templates using the 'LOAD_PANEL' symbol. The default Composr templates automatically place panels named [tt]panel_left[/tt] or [tt]panel_right[/tt].
- - [b]Page-link[/b], These are paths formatted like "zone:page:screentype:id:param=value(:...)" that Composr uses for detailing links. They are like URLs, but local to a Composr website. Page-links are converted to URLs and this conversion sometimes adds extra URL parameters (for instance, any parameters prefixed [tt]keep_[/tt] are propagated across screens). Entry points are a special case of page-link -- entry points are the page-links to screens that modules provide regardless of the current state of the modules content (e.g. the catalogue index will always be there -- it is a stable entry point into the system).
+ - [b]Page-link[/b], These are paths formatted like [tt]zone:page:screentype:id:param=value(:...)[/tt] that Composr uses for detailing links. They are like URLs, but local to a Composr website. Page-links are converted to URLs and this conversion sometimes adds extra URL parameters (for instance, any parameters prefixed [tt]keep_[/tt] are propagated across screens). Entry points are a special case of page-link -- entry points are the page-links to screens that modules provide regardless of the current state of the modules content (e.g. the catalogue index will always be there -- it is a stable entry point into the system).
  - [b]Personal post[/b], a post either within a private topic or within a normal topic, that can only be seen by the sender, the recipient, and administration staff
  - [b]Private topic[/b], a topic only seen by a select group of members (currently, the initiator and target members)
  - [b]Points[/b], Members of a site can earn 'points' by participating in site activities. The site administrator can adjust the value of different activities. Members can then gift these points to each other or redeem them at the Point Store.
@@ -120,7 +124,9 @@ The following Composr concepts are used to describe content:
  - [b]Entry[/b]. An entry is a piece of content.
  - [b]Resource[/b]. A resource is a very general term that may mean anything from entries to categories to files.
 
-At the time of writing, 'resource' is often used loosely, and 'category' and 'entry' are used differently depending on the context. This is not a design flaw, but merely indicative of the diversity of context in Composr and the difficulty of being consistent across different contexts (e.g. a topic is a category for posts, but really we would usually consider the categories of the forum system to be the actual forums).
+'resource' is often used loosely, and 'category' and 'entry' are used differently depending on the context. This is not a design flaw, but merely indicative of the diversity of context in Composr and the difficulty of being consistent across different contexts (e.g. a topic is a category for posts, but really we would usually consider the categories of the forum system to be the actual forums).
+
+We use the formal term [b]content type[/b] to refer to a type of content (obviously). Examples: [tt]download[/tt], [tt]image[/tt], [tt]video[/tt]. We also use the term [b]resource type[/b] when being more broad. Typically particular addons will provide different content/resource types -- but there's no formal link. An addon could provide no new content/resource types, or more than one.
 
 There are many other terms in Composr that belong to certain addons (such as 'Download' or 'Wiki+'), but these won't be explained here.
 
@@ -128,7 +134,7 @@ There are many other terms in Composr that belong to certain addons (such as 'Do
 
 Composr contains many "cross-cutting" features that are often present in different areas of the system. These need to be individually implemented/referenced all throughout the code. These features are:
  - [b]CRUD/CMS functionality[/b] (this will be provided to you when you write your CMS module to inherit from the standard CRUD module code. Most Composr CMS modules are CRUD module)
- - [b]SEO meta-data keywords/description[/b] (instructions for implementation provided in this book)
+ - [b]SEO metadata keywords/description[/b] (instructions for implementation provided in this book)
  - [b]Feedback[/b]: rating, commenting, trackbacks (instructions for implementation provided in this book)
  - [b]Permissions[/b] (instructions for implementation provided in this book)
  - [b]Virtual roots[/b] (see how breadcrumb code for the news addon handles virtual roots -- it provides the capability to define them, and also applies them in the way it decides the root of a breadcrumb trail)
@@ -154,6 +160,7 @@ Composr contains many "cross-cutting" features that are often present in differe
 
 [title="2"]General approach to coding standards[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook/1.jpg[/media]
 If you bought a watch, and the watch wasn't quite a perfect circle, this would impact your perception of its quality, even if the watch worked perfectly. Or, if you opened it up to do some maintenance, and it looked messy inside, you'd lose your respect for the skills of the watchmaker.
 
 This is why we insist that core Composr programmers make everything (attainably close-to / within-reason) perfect, even at the code level. That is, applying sufficient care and attention to detail when coding such that your code looks almost poetic, guided by an inbuilt sense for quality, tidiness, and consistency. It doesn't really have to take any longer to code like this -- it's more that if you wrote something that didn't have and continue beauty, you'd be instinctively repulsed by that code you wrote.
@@ -197,11 +204,12 @@ Of course, with all things, a sense of balance is important. An instinct/habit f
 
 &raquo; See [page="_SEARCH:codebook_3"]Final document[/page].
 
+[media float="right" thumb="0" framed="0" width="200"]data_custom/images/docs/codebook/octocat.jpg[/media]
 [title="2"]Resources[/title]
 
-The documentation and tools on the Composr website may be out of date between Composr versions. For the latest resources, see our repositories and work tools:
- - [url="Github"]https://github.com/chrisgraham/Composr/[/url] (contains Composr, unit tests, all unbundled addons and support tools)
+The documentation and tools on the Composr website may be out of date between Composr versions.
+For the latest resources, see our repositories and work tools:
+ - [url="Github"]http://github.com/ocproducts/composr[/url] (contains Composr, unit tests, all unbundled addons and support tools)
  - [url="Tracker"]{$BRAND_BASE_URL}/tracker/my_view_page.php[/url]
- - [url="Written test sets"]https://www.dropbox.com/sh/07d7we9bu3voj8v/SPa1GlArQd[/url] (when tracker tasks are carried out, tests may be pasted onto the tracker issue; there is also a master list of manual test sets on {$BRAND_BASE_URL}, but access is limited is its within an interactive tool)
 
 {$SET,tutorial_tags,Development,PHP,testing_platform,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Contents and Introduction.}[block]main_tutorial_rating[/block]

@@ -41,8 +41,8 @@ Since we are going to make a block, we'll quickly go over the fundamentals of wh
 
 Blocks are fully self-contained units. Blocks have no limit in the amount of code or page space they may take. There are two kinds:
 [list]
-[*]mini-block (very simple to code, no class required, recommended for quick coding)
-[*](regular) block (supports caching, supports install/uninstall code, uses OOP, recommended for mature codebases)
+[*] mini-block (very simple to code, no class required, recommended for quick coding)
+[*] (regular) block (supports caching, supports install/uninstall code, uses OOP, recommended for mature codebases)
 [/list]
 
 We will create a mini-block for this example, as follows:
@@ -99,10 +99,11 @@ Make a block that acts as a good old-style hit counter. To do this you'll probab
 [title="3"]Exercise-2: Post requestor[/title]
 
 Make a block that detects if the current logged in member has ever posted on the forum. If they have, don't do any output, but if they haven't output a suggestion that they make a post.
-You might go about this in one of two ways:[list]
-[*]Writing it by checking post count, which can be read via the Composr forum driver system
+You might go about this in one of two ways:
+[list]
+[*] Writing it by checking post count, which can be read via the Composr forum driver system
 ([tt]$count=$GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt])
-[*]Assuming a forum type, such as Conversr, and querying the database
+[*] Assuming a forum type, such as Conversr, and querying the database
 ([tt]$count=$GLOBALS['FORUM_DB']->query_select_value('<post table name>','COUNT(*)',array('<poster field id>'=>get_member()));[/tt])
 [/list]
 

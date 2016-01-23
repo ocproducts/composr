@@ -24,9 +24,9 @@ Make sure you have followed these guidelines:
 [list]
 [*][b]Add[/b] some test content for each content type. This will give you test data and also give you an idea of the features available and what fields there are.
 [*][b]Edit[/b] the front page (there's a link to do it under it as long as you are logged in as an Administrator). On the form you'll see an "Add Block" button that can add all the different blocks. You don't actually need to add all the blocks to see them because there's a preview feature. Preview all the blocks and look at the options to see what they do.
-[*]Visit the site-map, and [b]go to each screen[/b] on it. This will give you an idea what screens the system has.
+[*] Visit the site-map, and [b]go to each screen[/b] on it. This will give you an idea what screens the system has.
 [/list]
-[*]Now that you know what features are available, you need to decide [b]which features[/b] will be used for each part of your design. [url="Making_a_theme.pdf"]{$BRAND_BASE_URL}/docs/making_a_theme.pdf[/url] shows an annotated theme design that was done by someone who has never used Composr. You can see via the annotations how this clean-room-design can be implemented.
+[*] Now that you know what features are available, you need to decide [b]which features[/b] will be used for each part of your design. [url="Making_a_theme.pdf"]{$BRAND_BASE_URL}/docs/making_a_theme.pdf[/url] shows an annotated theme design that was done by someone who has never used Composr. You can see via the annotations how this clean-room-design can be implemented.
 [/list]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
@@ -76,8 +76,8 @@ This is what will happen with the elements of your static design (roughly):
 [title="3"]A starting point (the Theme Wizard)[/title]
 
 [list="1"]
-[*]Using the Theme Wizard (in Admin Zone > Style > Themes), create a base theme that matches the colour of the theme that needs to be build as closely as possible (if your theme has many colours, choose the one used most). Tell it to make the theme active.
-[*]You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Site options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
+[*] Using the Theme Wizard (in Admin Zone > Style > Themes), create a base theme that matches the colour of the theme that needs to be build as closely as possible (if your theme has many colours, choose the one used most). Tell it to make the theme active.
+[*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Site options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/1ZvECzgtcEM">video</a>.[/b][/semihtml]
@@ -87,9 +87,9 @@ This is what will happen with the elements of your static design (roughly):
 CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates_cached/EN[/tt] directory (i.e. where the compiled CSS files get placed). CSS always works like that, rather than loading relative to where the current page URL is. This is problematic and confusing, and best solved by not using relative URLs -- use the theme image system instead, as described below.
 
 [list="1"]
-[*]Take your theme images and copy them into a new [tt]themes/<yourthemename>/images_custom/<yoursitename>[/tt] directory. This will allow you to reference them in Composr as theme images.
-[*]Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit CSS' option next to your theme. Choose to edit the [tt]global[/tt] CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
-[*]You need to change the image references in your CSS. If you had something like [tt]images/example.jpg[/tt] it would need to be changed to [tt]{$IMG,<yoursitename>/example}[/tt]. You should not add the [tt].jpg[/tt]/[tt].png[/tt]/[tt].gif[/tt] on the end. This will make it find [tt]themes/<yourthemename>/images_custom/<yoursitename>/example.jpg[/tt] (or [tt]example.png[/tt] or [tt]example.gif[/tt]).
+[*] Take your theme images and copy them into a new [tt]themes/<yourthemename>/images_custom/<yoursitename>[/tt] directory. This will allow you to reference them in Composr as theme images.
+[*] Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit CSS' option next to your theme. Choose to edit the [tt]global[/tt] CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
+[*] You need to change the image references in your CSS. If you had something like [tt]images/example.jpg[/tt] it would need to be changed to [tt]{$IMG,<yoursitename>/example}[/tt]. You should not add the [tt].jpg[/tt]/[tt].png[/tt]/[tt].gif[/tt] on the end. This will make it find [tt]themes/<yourthemename>/images_custom/<yoursitename>/example.jpg[/tt] (or [tt]example.png[/tt] or [tt]example.gif[/tt]).
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/Osrcpl4wnk4">video</a>.[/b][/semihtml]
@@ -97,19 +97,19 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 [title="3"]Global layout of XHTML[/title]
 
 [list="1"]
-[*]You will next need to start modifying templates to incorporate your "global" XHTML (XHTML you expect to show on all pages). Start with the main one: [tt]GLOBAL_HTML_WRAP.tpl[/tt]. You can do this in Composr from the themes section, or you can do it in your favourite text editor (e.g. Dreamweaver) by copying for example [tt]themes/default/templates/GLOBAL_HTML_WRAP.tpl[/tt] to [tt]themes/<yourthemename>/templates_custom/GLOBAL_HTML_WRAP.tpl[/tt]. It will take you a bit of time to learn what default template code to keep and what can go. Basically you will want to keep:
+[*] You will next need to start modifying templates to incorporate your "global" XHTML (XHTML you expect to show on all pages). Start with the main one: [tt]GLOBAL_HTML_WRAP.tpl[/tt]. You can do this in Composr from the themes section, or you can do it in your favourite text editor (e.g. Dreamweaver) by copying for example [tt]themes/default/templates/GLOBAL_HTML_WRAP.tpl[/tt] to [tt]themes/<yourthemename>/templates_custom/GLOBAL_HTML_WRAP.tpl[/tt]. It will take you a bit of time to learn what default template code to keep and what can go. Basically you will want to keep:
 [list]
-	[*]The contents of the [tt]<head>[/tt] tag from [tt]GLOBAL_HTML_WRAP.tpl[/tt]
-	[*]References to panels, like [tt]{$LOAD_PANEL,left}[/tt] from [tt]GLOBAL_HTML_WRAP.tpl[/tt], so that panels can still be placed (assuming you have panels on your design! - or you may have a left and no right, or vice-versa). You can rearrange it all and place it in different places, and you don't need all the stuff about widths because you are allowed to make bigger assumptions than our default templates can. It is possible to hard-code the equivalent of panels into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template instead of using separate files, but is makes it harder for webmasters to make changes. If you feel more comfortable not using panels at first this is fine.
+	[*] The contents of the [tt]<head>[/tt] tag from [tt]GLOBAL_HTML_WRAP.tpl[/tt]
+	[*] References to panels, like [tt]{$LOAD_PANEL,left}[/tt] from [tt]GLOBAL_HTML_WRAP.tpl[/tt], so that panels can still be placed (assuming you have panels on your design! - or you may have a left and no right, or vice-versa). You can rearrange it all and place it in different places, and you don't need all the stuff about widths because you are allowed to make bigger assumptions than our default templates can. It is possible to hard-code the equivalent of panels into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template instead of using separate files, but is makes it harder for webmasters to make changes. If you feel more comfortable not using panels at first this is fine.
 	[*][tt]{MIDDLE}[/tt] from [tt]GLOBAL_HTML_WRAP.tpl[/tt], which is the main content of a page.
 	[*][tt]{$MESSAGES_TOP}[/tt] and [tt]{$LATE_MESSAGES}[/tt] from [tt]GLOBAL_HTML_WRAP.tpl[/tt], which is used to put out status messages as you complete things on the site or if small errors happen.
 	[*][tt]{$JS_TEMPCODE,footer}[/tt] and the [tt]<script>[/tt] tag from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
 	[*][tt]{$COPYRIGHT`}[/tt] from [tt]GLOBAL_HTML_WRAP.tpl[/tt], which should be used instead of the hard-coded copyright of your design (most designs have it).
-	[*]The rest (and there are lots, because our default theme is very thorough) can be removed.
+	[*] The rest (and there are lots, because our default theme is very thorough) can be removed.
 [/list]
-[*]If you have incorporated left and/or right Composr panels and have made the assumption that they can never be blank/hidden (even on pages in Composr that are normally full-width), then you must put [tt]supports_wide=0[/tt] into your [tt]themes/<yourthemename>/theme.ini[/tt] file.
-[*]Once you have your main XHTML incorporated you will see lots of problems with layout, because there will be incompatibilities with your styling and the default styling. So now is a good time to fix all these. You probably will want to remove many of the default styles Composr uses from [tt]global.css[/tt], but be careful to only remove really general layout style rules -- don't just remove huge chunks of CSS indiscriminately.
-[*]Similarly, you may find you made assumptions in your CSS. For example, you may have set quite specific styles for default elements because you only use them in a specific way on your design (e.g. making all [tt]strong[/tt] tags really large). Your Composr theme will need to not make too many assumptions like this, remember a lot of your CSS will be running on screens you haven't given individual design attention to because they will be running a lot of default XHTML from Composr. Adjust your CSS so it targets your style rules with the necessary specificity.
+[*] If you have incorporated left and/or right Composr panels and have made the assumption that they can never be blank/hidden (even on pages in Composr that are normally full-width), then you must put [tt]supports_wide=0[/tt] into your [tt]themes/<yourthemename>/theme.ini[/tt] file.
+[*] Once you have your main XHTML incorporated you will see lots of problems with layout, because there will be incompatibilities with your styling and the default styling. So now is a good time to fix all these. You probably will want to remove many of the default styles Composr uses from [tt]global.css[/tt], but be careful to only remove really general layout style rules -- don't just remove huge chunks of CSS indiscriminately.
+[*] Similarly, you may find you made assumptions in your CSS. For example, you may have set quite specific styles for default elements because you only use them in a specific way on your design (e.g. making all [tt]strong[/tt] tags really large). Your Composr theme will need to not make too many assumptions like this, remember a lot of your CSS will be running on screens you haven't given individual design attention to because they will be running a lot of default XHTML from Composr. Adjust your CSS so it targets your style rules with the necessary specificity.
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/qQOoz_6QPCA">video</a>.[/b][/semihtml]
@@ -126,7 +126,7 @@ Blocks are linked in via Comcode [tt][block][/tt] tags.
 Comcode is explained in more detail further down.
 [/box]
 [list="1"]
-[*]Once things look fairly good it is time to start linking in all the individual blocks onto the site (via Comcode), as identified in the 'Research into Composr' stage.
+[*] Once things look fairly good it is time to start linking in all the individual blocks onto the site (via Comcode), as identified in the 'Research into Composr' stage.
 
 Mostly this is done by editing individual Comcode pages.
 For example, the left panel is a page called [tt]:panel_left[/tt] that you can edit from Content Management > Pages (Comcode pages). Or, you can edit it by copying [tt]pages/comcode/EN/panel_left.txt[/tt] to [tt]pages/comcode_custom/EN/panel_left.txt[/tt] and using any text editor.
@@ -135,11 +135,11 @@ You will probably want to blank out what is already in the files and start them 
 
 Place the blocks as appropriate onto your:
 [list]
-	[*]Comcode page: Start page, [tt]:start[/tt]
-	[*]Comcode page: Left panel (if you have one on the design), [tt]:panel_left[/tt]
-	[*]Comcode page: Right panel (if you have one on the design), [tt]:panel_right[/tt]
-	[*]Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
-	[*]Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
+	[*] Comcode page: Start page, [tt]:start[/tt]
+	[*] Comcode page: Left panel (if you have one on the design), [tt]:panel_left[/tt]
+	[*] Comcode page: Right panel (if you have one on the design), [tt]:panel_right[/tt]
+	[*] Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
+	[*] Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
 	[*][tt]GLOBAL_HTML_WRAP.tpl[/tt]: Often there will be blocks in the header, like search or login blocks. You can place these using Tempcode rather than Comcode like:
 [tt]{$BLOCK,block=<blockname>}[/tt]. The default template already shows this in some cases, and the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page] provides a section "Tempcode syntax". Similarly sometimes there is a menu in the footer, which can be placed like:
 [code="Tempcode"]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
@@ -158,8 +158,8 @@ If you put [tt]&special_page_type=show_markers[/tt] onto the end of the URL you'
 There are a small number of cases where (for performance reasons) Composr does not feed full templating structure all the way through the system, in which case the templates can't be shown with [tt]show_markers[/tt]. In this case you can guess the names via [tt]&special_page_type=tree[/tt] or if you are feeling very technical you can look at the PHP code (for example most of the templates uses in the [tt]main_news[/tt] block are mentioned in [tt]sources/blocks/main_news.php[/tt] as PHP calls to [tt]do_template[/tt]).
 [/box]
 [list="1"]
-[*]Now that the blocks are placed, you need to style them. See the tip to the right for how to find out what templates to edit.
-[*]There's a big risk that the final webmaster may come along and ruin any custom XHTML you have written via editing using the WYSIWYG editor. You can disable the WYSIWYG editor for a Comcode page by pasting this special comment into the end of the page:[code="Tempcode"]{$,page hint: no_wysiwyg}{$,page hint: no_smart_conversion}[/code]
+[*] Now that the blocks are placed, you need to style them. See the tip to the right for how to find out what templates to edit.
+[*] There's a big risk that the final webmaster may come along and ruin any custom XHTML you have written via editing using the WYSIWYG editor. You can disable the WYSIWYG editor for a Comcode page by pasting this special comment into the end of the page:[code="Tempcode"]{$,page hint: no_wysiwyg}{$,page hint: no_smart_conversion}[/code]
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/bClwMQ9f08c">video</a>.[/b][/semihtml]
@@ -179,17 +179,17 @@ This template is specifically created so that you can easily slot in new JavaScr
 
 Testing:
 [list="1"]
-[*]It is a good idea to verify your theme is stable across different Composr screens. When you defined the global layout and associated CSS it is possible you made some bad assumptions, like assuming fixed width styles can be placed on [tt]body[/tt] (which is bad if Composr uses [tt]global.css[/tt] inside an iframe, for example). First do a verification manually by viewing a few screens; good choices are:[list="i"][*]the forum index[*]doing a website search[*]previewing some changes from an edit form[/list]
-[*]Next you can verify your theme more formally by using the 'Screen previews' feature from Admin Zone > Style > Themes. It provides details of all screens, and you can check them for how well they work. Don't spend ages on this unless you have made very extensive modifications or the site is going to use a very wide number of default Composr features, but at least do some checks on some random selections to give yourself greater confidence.
+[*] It is a good idea to verify your theme is stable across different Composr screens. When you defined the global layout and associated CSS it is possible you made some bad assumptions, like assuming fixed width styles can be placed on [tt]body[/tt] (which is bad if Composr uses [tt]global.css[/tt] inside an iframe, for example). First do a verification manually by viewing a few screens; good choices are:[list="i"][*] the forum index[*] doing a website search[*] previewing some changes from an edit form[/list]
+[*] Next you can verify your theme more formally by using the 'Screen previews' feature from Admin Zone > Style > Themes. It provides details of all screens, and you can check them for how well they work. Don't spend ages on this unless you have made very extensive modifications or the site is going to use a very wide number of default Composr features, but at least do some checks on some random selections to give yourself greater confidence.
 [*][page="_SEARCH:tut_browsers"]Test your theme for all the major browsers[/page].
 [/list]
 
 Supplementary concerns:
 [list="1"]
-[*]You will need to make an e-mail template. If you are making a theme, do this by overriding the [tt]MAIL.tpl[/tt] template into [tt]themes/<yourthemename>/templates_custom/MAIL.tpl[/tt]. However if you are making a website it is absolutely critical you save it into [tt]themes/default/templates_custom/MAIL.tpl[/tt] or otherwise the default e-mail theme and Composr branding will be used on many system e-mails or queued e-mails. When designing an e-mail template, don't think about it as themeing -- put whatever CSS code you wish to use directly inline in the template, as e-mail clients are not good at rendering general purpose CSS rules.
-[*]Also, don't forget to implement a favicon ;). In Composr this is done just as a theme image called [tt]favicon[/tt], so you can override it by making a [tt]themes/<yourthemename>/images_custom/favicon.ico[/tt] file.
-[*]If you override any existing default theme image manually, such as a favicon, you will need to empty the theme image cache from Admin Zone > Tools > Cleanup Tools.
-[*]You may also want to check how the website prints, possibly adding some print-overrides into your CSS file (CSS can target printing separately, and the default [tt]global.css[/tt] does already to an extent)
+[*] You will need to make an e-mail template. If you are making a theme, do this by overriding the [tt]MAIL.tpl[/tt] template into [tt]themes/<yourthemename>/templates_custom/MAIL.tpl[/tt]. However if you are making a website it is absolutely critical you save it into [tt]themes/default/templates_custom/MAIL.tpl[/tt] or otherwise the default e-mail theme and Composr branding will be used on many system e-mails or queued e-mails. When designing an e-mail template, don't think about it as themeing -- put whatever CSS code you wish to use directly inline in the template, as e-mail clients are not good at rendering general purpose CSS rules.
+[*] Also, don't forget to implement a favicon ;). In Composr this is done just as a theme image called [tt]favicon[/tt], so you can override it by making a [tt]themes/<yourthemename>/images_custom/favicon.ico[/tt] file.
+[*] If you override any existing default theme image manually, such as a favicon, you will need to empty the theme image cache from Admin Zone > Tools > Cleanup Tools.
+[*] You may also want to check how the website prints, possibly adding some print-overrides into your CSS file (CSS can target printing separately, and the default [tt]global.css[/tt] does already to an extent)
 [/list]
 
 [title="2"]Things you may wonder about[/title]

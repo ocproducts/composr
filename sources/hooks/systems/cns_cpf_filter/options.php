@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -42,6 +42,10 @@ class Hook_cns_cpf_filter_options
 
         if (get_option('cpf_enable_state') == '1') {
             $cpf = array_merge($cpf, array('state' => true));
+        }
+
+        if (get_option('cpf_enable_county') == '1') {
+            $cpf = array_merge($cpf, array('county' => true));
         }
 
         if (get_option('cpf_enable_country') == '1') {

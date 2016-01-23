@@ -15,7 +15,8 @@ This tutorial covers some basic information relating to Comcode pages.
 [title="2"]Default pages[/title]
 
 [media width="150" description="The list of Comcode pages to be edited/deleted" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages.png[/media]
-Comcode pages may be selected for editing either:[list="a"]
+Comcode pages may be selected for editing either:
+[list="a"]
 [*] From Content Management > Pages (Comcode pages), which gives you a table to choose from.
 [*] By clicking the edit link underneath a page being viewed.
 [/list]
@@ -151,7 +152,8 @@ Actually If you are using a URL Scheme, then it may be something else (depending
 [media width="150" description="The easy way to add a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
 There are two ways to add a new Comcode page in Composr.
 
-Method 1:[list="a"]
+Method 1:
+[list="a"]
 [*] Click the browser address bar
 [*] Just type in the URL to where you want the page to be
 [*] Click the given link to add the missing page
@@ -160,7 +162,8 @@ Method 1:[list="a"]
 
 [surround]
 [media width="150" description="Choosing to add a page" float="right"]data_custom/images/docs/tut_comcode_pages/add_page_box.png[/media]
-Method 2:[list="a"]
+Method 2:
+[list="a"]
 [*] Go to Content Management > Pages (Comcode pages)
 [*] Scroll down
 [*] Give a new page name in the [tt]<zone>:<page-name>[/tt] format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be [tt]:<page-name>[/tt])

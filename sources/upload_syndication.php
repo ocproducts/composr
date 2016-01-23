@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ function init__upload_syndication()
  * Get details for what upload syndication we can do for particular filtered upload types.
  *
  * @param  integer $file_handling_types The kind of files we are going to be handling.
- * @return array A pair: JSON data describing what upload syndication we can do (may be NULL), a filetype filter.
+ * @return array A pair: JSON data describing what upload syndication we can do (may be null), a filetype filter.
  */
 function get_upload_syndication_json($file_handling_types)
 {

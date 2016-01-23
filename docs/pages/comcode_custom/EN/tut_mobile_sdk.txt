@@ -1,10 +1,12 @@
-[title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps -- the Composr Mobile SDK[/title]
+[title sub="Written by ocProducts"]Composr Tutorial: Mobile apps via Composr Mobile SDK[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
-Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
+Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experienced iOS and Android developers.
+
+As well as containing Composr integrations, there are also a large collection of standalone utilities for building apps. These create a common base between iOS and Android that is reminiscent of the PHP and Composr APIs, allowing easier code porting while also remaining 100% native.
 
 [contents]decimal,lower-alpha[/contents]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
 [title="2"]Getting Composr Mobile SDK[/title]
 
 [title="3"]SDK[/title]
@@ -16,11 +18,9 @@ The main iOS/Android SDK can be [url="found on github"]https://github.com/ocprod
 To connect to a Composr site you will need to install the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 This addon also contains some scripting to help generate app assets from the Composr site.
 
-[title="2"]The SDK[/title]
+[title="2"]Setup[/title]
 
-[title="3"]Setup[/title]
-
-[title="4"]iOS[/title]
+[title="3"]iOS[/title]
 
 How to link the SDK into your project:
 [list="1"]
@@ -52,8 +52,1814 @@ How to link the SDK into your project:
 [/list]
 That's it. You are now good to go work with the features of [tt]CMS_SDK[/tt].
 
+[title="3"]Android[/title]
+
+How to link the SDK into your project, assuming you are using Eclipse:
+[list="1"]
+[*] Create a new project to use with [tt]CMS_SDK[/tt], or open an existing project
+[*] Import [tt]CMS_SDK[/tt] into your workspace as an android project
+[*] Open the "Properties" of [tt]CMS_SDK[/tt] and make sure "is Library" is checked under the "Android" tab
+[*] Now open the "Properties" of your project and add [tt]CMS_SDK[/tt] as a dependent library[list]
+	[*] Open "Properties"
+	[*] Choose the "Android" tab
+	[*] Click "Add" button under the "Library" section
+	[*] A dialog box opens up asking to select the library. Select [tt]CMS_SDK[/tt] from the list and click "OK"
+	[*] Click "OK" on the "Properties" dialog box
+	[*] Eclipse should automatically re-build your project (or) you can do a project cleanup from under Project --> Clean.
+[/list]
+[*] Now you can access all the features of CMS_SDK in your project.
+[/list]
+
+If you are using Android Studio then the process would be similar. CMS SDK is implemented as a very conventional library.
+
+[title="2"]Using Composr Mobile SDK[/title]
+
+The SDK is very consistent between Android and iOS. Our documentation will be written in terms of iOS, but you should not have a problem writing for Android also.
+
+We haven't provided code examples for everything, but the API has extensive unit test coverage. These tests show you expected behaviours clearly.
+
+CMS SDK is fully Open Source, so all code can be inspected and contributions are welcome.
+
+We use PHP terminology for data structures: lists and maps. In Android a list is the [tt]List[/tt] interface ([tt]ArrayList[/tt], [tt]LinkedList[/tt], etc) and a map is the [tt]Map[/tt] interface ([tt]HashMap[/tt], [tt]TreeMap[/tt], etc). In iOS a list is a [tt]NSArray[/tt] and a map is a [tt]NSDictionary[/tt]. In PHP they are actually both implemented as arrays, but the array internally is always held either a list or a map.
+
+We use the PHP term "function". In iOS and Android a function is a method.
+
+We use the iOS term "view controller". In Android this is an "activity".
+
+Callbacks in particular have different implementations. We use the iOS term/concept "block". In Android this is generally implemented by passing an object matching a particular interface, and then a method is called upon it.
+
+[title="3"]CMS_Arrays[/title]
+
+The [tt]CMS_Arrays[/tt] class provides the array operation functionalities. The class contains the following functions:
+
+[title="4"]collapse_1d_complexity[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)collapse_1d_complexity:(NSString *)key :(NSArray *)arr;
+[/code]
+
+[i]Description:[/i]
+Takes a list of maps and turns it into a simple list by extracting just one element from each map.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays collapse_1d_complexity :<key to be extracted> :<array>];
+[/code]
+
+[i]Example:[/i]
+Let us consider that you have an array of maps. Each maps contains an ID and a title as keys. Using the [tt]collapse_1d_complexity[/tt] function, you can get all the title key values from the array. The code will be:
+[code="objc"]
+NSArray *inputArray = @[
+	@{@"id" : @"1",@"title" : @"Belgium"},
+	@{@"id" : @"2",@"title" : @"France"}
+];
+NSString *inputKey = @"title";
+NSArray *output = [CMS_Arrays collapse_1d_complexity:inputKey :inputArray];
+[/code]
+The output from above code will be: [tt]@[@"Belgium",@"France"][/tt]
+
+[title="4"]collapse_2d_complexity[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSDictionary *)collapse_2d_complexity:(NSString *)keyKey :(NSString *)valKey :(NSArray *)arr;
+[/code]
+
+[i]Description:[/i]
+Takes a list of maps and simplify by extracting two elements from each map. First element is kept as the key and second as value in the resultant map.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays collapse_2d_complexity:<key of key> :<key of val> :<array>];
+[/code]
+
+[i]Example:[/i]
+Consider an array of maps with each map contains an ID and a title. You need to convert the array into a map by fetching two values from each map by keeping the first as the key and second as the value.
+[code="objc"]
+NSArray *inputArray = @[
+	@{@"id" : @"1",@"title" : @"Belgium"},
+	@{@"id" : @"2",@"title" : @"France"}
+];
+NSString *inputKeyKey = @"id";
+NSString *inputKeyVal = @"title";
+[/code]
+By calling:
+[tt][CMS_Arrays collapse_2d_complexity:inputKeyKey :inputKeyVal:inputArray];[/tt]
+... you would get a dictionary of the following form:
+[code="objc"]
+@{
+	@"1" : @"Belgium",
+	@"2" : @"France"
+};
+[/code]
+The values from the ID field is taken as key and the value of the title field is taken as value.
+
+[title="4"]explode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)explode:(NSString *)sep :(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+Similar to PHP explode functionality, will split multiple strings from input string. The function will return an array of strings, where each split is a substring of string formed by splitting it on boundaries formed by the string separator.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays explode:<separator string> :<source string>];
+[/code]
+
+[i]Example:[/i]
+The example shown below is an instance with split strings separated by hyphens.
+[code="objc"]
+NSString *source = @"This-is-an-example-string";
+NSString *separator = @"-";
+[/code]
+Calling [tt][CMS_Arrays explode:separator :source];[/tt] will return an array of strings:
+[code="objc"]
+@[@"This",@"is",@"an",@"example",@"string"];
+[/code]
+
+[title="4"]implode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)implode:(NSString *)sep :(NSArray *)arr;
+[/code]
+
+[i]Description:[/i]
+Implode will join multiple array elements to form a single string. The functionality is the same as in PHP implode.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays implode:<joiner string> :<source array>];
+[/code]
+
+[i]Example:[/i]
+Code example on having an array of strings, and joining strings by using a hyphen, through implode.
+[code="objc"]
+NSArray *source = @[@"This",@"is",@"an",@"example",@"string"];
+NSArray *joiner = @"-";
+[/code]
+Calling [tt][CMS_Arrays implode:joiner :source];[/tt] will return a single string:
+[code="objc"]
+@"This-is-an-example-string"
+[/code]
+
+[title="4"]list_to_map[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSDictionary *)list_to_map:(NSString *)key :(NSArray *)dict;
+[/code]
+
+[i]Description:[/i]
+Take a list of maps, and make one of the values of each array the index of a map to the map.
+[tt]list_to_map[/tt] is very useful for handling query results. Let's imagine you get the result of [tt]SELECT id,title FROM sometable[/tt]. [tt]list_to_map[/tt] turns the array of rows into a map between the ID key and each row.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays list_to_map:<key> :<source array>];
+[/code]
+
+[i]Example:[/i]
+Below example code will restructure the given list of maps into a map of maps.
+[code="objc"]
+NSArray *source = @[
+	@{
+		@"key1":@"valA1",
+		@"key2":@"valA2"
+	},
+	@{
+		@"key1":@"valB1",
+		@"key2":@"valB2"
+	}
+];
+[/code]
+Calling [tt][CMS_Arrays list_to_map:keyA1 :source];[/tt] will return:
+[code="objc"]
+@{
+	@"valA1":@{
+		@"key1":@"valA1",
+		@"key2":@"valA2"
+	}
+},
+@{
+	@"valB1":@{
+		@"key1":@"valB1",
+		@"key2":@"valB2"
+	}
+}
+[/code]
+
+[title="4"]array_values[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)array_values:(BOOL)useKey :(NSDictionary *)dict;
+[/code]
+
+[i]Description:[/i]
+[tt]array_values[/tt] will return either all keys or all values from a map based on the boolean value that is set.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays array_values:<want keys ?> :<source map>];
+[/code]
+
+[i]Example:[/i]
+Below example code will return only keys from the map if the value is set to YES, otherwise will return only values from a map that contains many keys and values.
+[code="objc"]
+NSDictionary *source = @{
+	@"key1":@"val1",
+	@"key2":@"val2"
+};
+[/code]
+Calling [tt][CMS_Arrays array_values:YES :source];[/tt] will return:
+[code="objc"]
+@[@"key1",@"key2"]
+[/code]
+Calling [tt][CMS_Arrays array_values:NO :source];[/tt] will return:
+[code="objc"]
+@[@"val1",@"val2"]
+[/code]
+
+[title="3"]CMS_Strings[/title]
+
+[tt]CMS_Strings[/tt] functions provide common string operation functionalities.
+
+[title="4"]strip_tags[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)strip_tags:(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+Removes all the HTML tags from the input string.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings strip_tags:<input string>];
+[/code]
+
+[i]Example:[/i]
+Consider the scenario where a string returned from a web service contains few HTML tags. These unwanted HTML tags can be removed by using [tt]strip_tags[/tt].
+[code="objc"]
+NSString *inputString = @"Hi. </br>How are you?";
+[/code]
+Calling [tt][CMS_Strings strip_tags:inputString];[/tt] will return:
+[code="objc"]
+@"Hi. How are you?"
+[/code]
+
+[title="4"]html_entity_decode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)html_entity_decode:(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+Convert the common HTML entity into standard keyboard characters. For example, the entity [tt]&amp;[/tt] will be converted to [tt]&[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings html_entity_decode:<input string>]
+[/code]
+
+[i]Example:[/i]
+Consider that an HTML entity is present for double quotes in your string returned from a query. These entities can be converted to keyboard characters by calling the [tt]html_entity_decode[/tt] function:
+[code="objc"]
+NSString *inputString = @"&ldquo;I love cats &amp; dogs&ldquo;";
+[/code]
+Calling [tt][CMS_Strings html_entity_decode:inputString];[/tt] will return:
+[code="objc"]
+@"\"I love cats & dogs\"".
+[/code]
+
+[title="4"]float_format[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)float_format:(double)number :(int)decimalPoints :(BOOL)onlyIncludeNeededDecimalPoints;
+[/code]
+
+[i]Description:[/i]
+Formats a number value nicely by including commas and decimal points wherever applicable.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings float_format:<input double value> :<number of required decimal points> :<should consider the second param ?>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+double input = 12345678.012110;
+[/code]
+[tt][CMS_Strings float_format:input :0 :NO][/tt] will return [tt]@"12,345,678.01211"[/tt]
+[tt][CMS_Strings float_format:input :0 :YES][/tt] will return [tt]@"12,345,678"[/tt]
+[tt][CMS_Strings float_format:input :2 :YES][/tt] will return [tt]@"12,345,678.01"[/tt]
+
+[title="4"]strpos[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)strpos:(NSString *)searchIn :(NSString *)searchFor;
+[/code]
+
+[i]Description:[/i]
+[tt]strpos[/tt] works similarly to the functionality available in PHP's [tt]strpos[/tt]. The function is used to find the position of the first occurrence of a substring in a string. If not found, then will return [tt]-1[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings strpos:<input string> :<search string>]
+[/code]
+
+[i]Example:[/i]
+For example, if you need to find the starting position of "s" in the string "I love cats and dogs" then [tt]strpos[/tt] can be used.
+Calling [tt][CMS_Strings strpos:"I love cats and dogs" :@"s"][/tt] will return [tt]10[/tt].
+
+[title="4"]str_replace[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)str_replace:(NSString *)search :(NSString *)replace :(NSString *)searchIn;
+[/code]
+
+[i]Description:[/i]
+Similar to the common search and replace string functionality in PHP. The [tt]str_replace[/tt] function will replace all the instances of the search string with the provided replacement string.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings str_replace:<search_string> :<replace_string> :<input_string>]
+[/code]
+
+[title="4"]substr[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)substr:(NSString *)searchIn :(int)offset :(int)length;
+[/code]
+
+[i]Description:[/i]
+The function returns the portion of string specified by the [tt]offset[/tt] and [tt]length[/tt] parameters.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings substr:<input_string> :<start_position> :<length to be copied>]
+[/code]
+
+[title="4"]trim[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)trim:(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+To strip the whitespace and newline characters from the beginning and end of a string, the [tt]trim[/tt] function can be used.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings trim:<input_string>]
+[/code]
+
+[title="4"]stringWithFormat[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)stringWithFormat:(NSString *)format array:(NSArray *)arguments;
+[/code]
+
+[i]Description:[/i]
+The [tt]stringWithFormat[/tt] function is to replace the [tt]%@[/tt] strings from the string array values in the source string.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings stringWithFormat:<input_strings> array:<replace arguments>];
+[/code]
+
+[i]Example:[/i]
+Consider that there is a generic string template from a web API saying [tt]@"Hi %@. Welcome to %@"[/tt]. Use the [tt]stringWithFormat[/tt] function to substitute first instance of %@ the user's name and the second instance with forum name.
+Calling [tt][CMS_Strings stringWithFormat:@"Hi %@. Welcome to %@" array:@[@"Allen",@"CMS"]];[/tt] will return:
+[code="objc"]
+@"Hi Allen. Welcome to CMS"
+[/code]
+
+[title="3"]CMS_Langs[/title]
+
+The [tt]CMS_Langs[/tt] class provides all the necessary localisation functions. The common localisation functions are available via the two variants of the [tt]do_lang[/tt] function (with or without parameters).
+
+[title="4"]do_lang[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)do_lang:(NSString *)key
+[/code]
+
+[i]Description:[/i]
+The do_lang function returns the localised value of the supplied input key string from the [tt]localizable.strings[/tt] file, based on the device language.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Langs do_lang:inputString]
+[/code]
+
+[title="4"]do_lang: parameters:[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)do_lang:(NSString *)strName :(NSArray *)parameters;
+[/code]
+
+[i]Description:[/i]
+Returns the localised value of the string after replacing the string with arguments.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Langs do_lang:<input_string> :<arguments>]
+[/code]
+
+[i]Example:[/i]
+[tt][CMS_Langs do_lang:@"%@_%@" :@[@"EXAMPLE",@"STRING"]];[/tt] will find the localised version of string found by replacing [tt]@"%@_%@"[/tt] with the arguments given. So, it will return the localised version of [tt]@"EXAMPLE_STRING"[/tt].
+
+[title="3"]CMS_Preferences[/title]
+
+The [tt]CMS_Preferences[/tt] class provides the common functions used to define the user default preferences.
+
+[title="4"]get_value[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_value:(NSString *)string;
+[/code]
+
+[i]Description:[/i]
+Get the default value from [tt]NSUserDefaults[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Preferences get_value:<key>]
+[/code]
+
+[title="4"]set_value[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)set_value:(NSString *)name :(NSString *)value;
+[/code]
+
+[i]Description:[/i]
+Assign a default value for key, to [tt]NSUserDefaults[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Preferences set_value:<key> :<value>]
+[/code]
+
+[title="3"]CMS_Timestamps[/title]
+
+Timestamp-related functionalities such as [tt]get_timezoned_date[/tt] and [tt]time[/tt] are available as functions under the [tt]CMS_Timestamps[/tt] class.
+
+[title="4"]get_timezoned_date[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_timezoned_date:(int)timestamp :(BOOL)includeTime;
+[/code]
+
+[i]Description:[/i]
+Converts the given timestamp to [tt]@"MMM dd, yyyy - HH:mm:ss"[/tt] date format and returns the value as a string. If the [tt]includeTime[/tt] parameter is set to [tt]FALSE[/tt], then the time is excluded from the output.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Timestamps get_timezoned_date:<timestamp> :<includeTime ?>]
+[/code]
+
+[title="4"]time[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)time;
+[/code]
+
+[i]Description:[/i]
+Returns the UNIX timestamp.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Timestamps time]
+[/code]
+
+[title="3"]CMS_HTTP[/title]
+
+The [tt]CMS_HTTP[/tt] class provides functions needed while connecting and parsing web services. This class contains the following functions:
+
+[title="4"]rawurlencode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)rawurlencode:(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+Returns a string in which all non-alphanumeric characters except [tt]-_.~[/tt] will be replaced with a percentage ([tt]%[/tt]) symbol, followed by two hexadecimal digits. This is the encoding described in [url="RFC 3986"]https://www.ietf.org/rfc/rfc3986.txt[/url] for protecting the literal characters from being interpreted as special URL delimiters. For example, within URL parameters.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP rawurlencode:<input_string>]
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *inputString = @"test encoding the url + something";
+[/code]
+Calling [tt][CMS_HTTP rawurlencode:inputString][/tt] will return:
+[code="objc"]
+@"test%20encoding%20the%20url%20%2B%20something"
+[/code]
+
+[title="4"]json_decode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id) json_decode:(NSString *)value;
+[/code]
+
+[i]Description:[/i]
+Takes a JSON encoded string and converts it into a corresponding Objective-C variable.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP json_decode:<input_json_string>]
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *jsonString = @"{\"test\":\"val\",\"test1\":\"val1\"}";
+[/code]
+Calling [tt][CMS_HTTP json_decode:jsonString][/tt] will return a dictionary of the form:
+[code="objc"]
+@{
+	@"test" : @"val",
+	@"test1" : @"val1"
+};
+[/code]
+
+[title="4"]json_encode[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)json_encode:(id)value;
+[/code]
+
+[i]Description:[/i]
+Returns a string containing the JSON representation of an Objective-C variable.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP json_encode:<input_objc_variable>]
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSDictionary *inputDict = @{
+	@"test" : @"val",
+	@"test1" : @"val1"
+};
+[/code]
+Calling [tt][CMS_HTTP json_encode:inputDict][/tt] will return the string of the form:
+[code="objc"]
+@"{\"test\":\"val\",\"test1\":\"val1\"}"
+[/code]
+
+[title="4"]get_base_url[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_base_url;
+[/code]
+
+[i]Description:[/i]
+Gets the base URL to the Composr website, defined for the project in [tt]CMS_Constants.h[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP get_base_url]
+[/code]
+
+[title="4"]build_url[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)build_url:(NSDictionary *)params :(NSString *)zone;
+[/code]
+
+[i]Description:[/i]
+Returns a URL with the given parameters and zone name using the format:
+[tt]<base_url>/<zone>/index.php?<params...>[/tt]
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP build_url:<params> :<zone_name>]
+[/code]
+
+[i]Example:[/i]
+Calling [tt][CMS_HTTP build_url:@{@"param1":@"value1",@"param2":@"value2"} :@"testZone"][/tt] will return:
+[code="objc"]
+@"http://<base_url>/testZone/index.php?&param1=value1&param2=value2"
+[/code]
+
+[title="4"]http_download_file[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)http_download_file:(NSString *)url :(BOOL)triggerError :(NSDictionary *)postParams :(int)timeoutInSeconds :(CMSCompletedDownloadBlock)completionHandler;
+[/code]
+
+[i]Description:[/i]
+Downloads the response from the web service and returns as a response in a completion handler. If the [tt]triggerError[/tt] is [tt]TRUE[/tt], then a failure will be displayed as a generic error alert. If [tt]postParams[/tt] is not nil then it will be an HTTP post.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP http_download_file:<web service url> :<trigger_error ?> :<post parameters> :<custom_timeout_value> :<completion_handler>];
+[/code]
+
+[i]Example:[/i]
+Calling:
+[code="objc"]
+[CMS_HTTP http_download_file:<url> :YES :nil :kHTTPTimeout :^(NSString *response) {
+	NSLog(@"%@",response);
+}];
+[/code]
+... will print the response of the resulting web service call.
+
+[title="4"]has_network_connection[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL) has_network_connection;
+[/code]
+
+[i]Description:[/i]
+Check and return a boolean value based on the Internet connectivity available for the app. The function will check whether the app is connected to the Internet or not.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_HTTP has_network_connection]
+[/code]
+
+[title="3"]CMS_Users[/title]
+
+The [tt]CMS_Users[/tt] class provides user-related functionalities such as retrieve member, usergroup, and privilege information from Composr to the app (this data is synced during login).
+
+When a successful login is executed using [tt]CMSNetworkManager[/tt], each value from the resultant JSON response is stored in the [tt]NSUserDefaults[/tt]. Also, the values inside the [tt]user_data[/tt] key are extracted and saved into [tt]NSUserDefaults[/tt]. The [tt]CMS_Users[/tt] class provides a Composr-like way of accessing this information.
+
+This class contains the following functions:
+
+[title="4"]has_page_access[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)has_page_access:(NSString *)pageName;
+[/code]
+
+[i]Description:[/i]
+Returns a boolean value indicating if the user has access to a particular page in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users has_page_access:@"example"]
+[/code]
+
+[title="4"]has_privilege[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)has_privilege:(NSString *)privilegeName;
+[/code]
+
+[i]Description:[/i]
+Returns a boolean value if the user has a particular privilege on their account in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users has_privilege:<privilege_name>]
+[/code]
+
+[title="4"]has_zone_access[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)has_zone_access:(NSString *)zoneName;
+[/code]
+
+[i]Description:[/i]
+Returns a boolean value after checking whether the user has the access to a particular zone in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users has_zone_access:<zone_name>]
+[/code]
+
+[title="4"]is_staff[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)is_staff;
+[/code]
+
+[i]Description:[/i]
+Returns a boolean value if the user is staff or not in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users is_staff]
+[/code]
+
+[title="4"]is_super_admin[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)is_super_admin;
+[/code]
+
+[i]Description:[/i]
+Returns a boolean value if the user is a super admin or not in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users is_super_admin]
+[/code]
+
+[title="4"]get_member[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)get_member;
+[/code]
+
+[i]Description:[/i]
+Returns the member ID of the user in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_member]
+[/code]
+
+[title="4"]get_session_id[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)get_session_id;
+[/code]
+
+[i]Description:[/i]
+Returns the session ID of the user in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_session_id]
+[/code]
+
+[title="4"]get_username[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_username;
+[/code]
+
+[i]Description:[/i]
+Returns the username of logged in user.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_username]
+[/code]
+
+[title="4"]get_members_groups[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)get_members_groups;
+[/code]
+
+[i]Description:[/i]
+Returns all the details of member groups a user has in Composr. This is a list of maps, with each map containing 'id' and 'name'.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_members_groups]
+[/code]
+
+[title="4"]get_members_groups_names[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)get_members_groups_names;
+[/code]
+
+[i]Description:[/i]
+Returns only names of the member groups a user had in Composr.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_members_groups_names]
+[/code]
+
+[title="4"]get_password[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_password;
+[/code]
+
+[i]Description:[/i]
+Returns the password of the user saved in [tt]NSUserDefaults[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Users get_password]
+[/code]
+
+[title="3"]CMS_Flow[/title]
+
+The [tt]CMS_Flow[/tt] class provides functions that you can use to control the flow of your app. This class contains the following functions:
+
+[title="4"]access_denied[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)access_denied;
+[/code]
+
+[i]Description:[/i]
+Dismisses any screen that is shown now and presents the login page as root controller.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Flow access_denied];
+[/code]
+
+[title="4"]attach_message[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)attach_message:(NSString *)msg;
+[/code]
+
+[i]Description:[/i]
+Pops up an alert with the given message. The alert title will be "Message".
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Flow attach_message:<some_text>];
+[/code]
+
+[title="4"]inform_screen[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)inform_screen:(NSString *)msg :(UIViewController *)viewController;
+[/code]
+
+[i]Description:[/i]
+Pops up an alert with the given message. The alert title will be "Message". Automatically dismisses the calling view controller.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Flow inform_screen:<some_text> :<presenting_controller_instance>];
+[/code]
+
+[title="4"]warn_screen[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)warn_screen:(NSString *)msg :(UIViewController *)viewController;
+[/code]
+
+[i]Description:[/i]
+Pops up an alert with the given message. The alert title will be "Warning". Automatically dismisses the calling view controller.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Flow warn_screen:<some_text> :<presenting_controller_instance>];
+[/code]
+
+[title="4"]redirect_screen[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)redirect_screen:(UIViewController *)sourceViewController :(UIViewController *)viewController;
+[/code]
+
+[i]Description:[/i]
+Open a new view controller modally from the [tt]sourceViewController[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Flow redirect_screen:<source_controller_instance> :<destination_controller_instance>];
+[/code]
+
+[title="3"]CMS_Forms[/title]
+
+The forms-related functionalities is provided in the [tt]CMS_Forms[/tt] class. This works like as a form builder. The [tt]CMS_Forms[/tt] class itself is a subclass of the [tt]UIView[/tt] class and can be added as a subview into any view. All the functions in this class are instance methods. So, you will need an instance of the class to access the features.
+
+For including the form in full screen on a controller, use:
+[code="objc"]
+CMS_Forms *form = [[CMS_Forms alloc] initWithFrame:self.view.frame];
+[self.view addSubview:form];
+[/code]
+
+The class has a delegate variable which can be used to get responses of form submissions and such communications.
+
+All the form field adding functions have the following common parameters:
+ - [b]prettyName:[/b] Text that is displayed as the form field placeholder.
+ - [b]description:[/b] String that is shown as an instruction text of the field above it.
+ - [b]paramName:[/b] This will be the parameter name of the value for the particular form field when sending an HTTP request.
+ - [b]defaultValue:[/b] The default value that will be populated in the form field
+ - [b]isRequired:[/b] A boolean value used to set whether a form field is mandatory or optional. When submitting a form, the unfilled form fields will be shown in red and the delegate will be notified through the [tt]preSubmitCallback[/tt].
+
+The class contains the following functions:
+
+[title="4"]form_input_field_spacer_withHeading[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)form_input_field_spacer_withHeading:(NSString *)heading withText:(NSString *)text;
+[/code]
+
+[i]Description:[/i]
+Adds a heading into the form.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_field_spacer_withHeading:<heading text>withText:<sub_heading text>];
+[/code]
+
+[title="4"]form_input_hidden_withParamName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)form_input_hidden_withParamName:(NSString *)paramName withParamValue:(NSString *)paramValue;
+[/code]
+
+[i]Description:[/i]
+Insert a hidden form parameter which is only considered when submitting the form. This hidden form will not appear anywhere in the UI.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_hidden_withParamName:<param_name> withParamValue:<param_value>];
+[/code]
+
+[title="4"]form_input_integer_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_integer_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts an integer only input control. The input control will not accept decimal points, alphabetical characters, or special characters.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_integer_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
+[title="4"]form_input_float_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_float_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a floating point input control and will not accept alphabetical characters, or special characters.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_float_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
+[title="4"]form_input_line_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_line_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a string input control similar to an HTML input box. There are no validations: it will accept any type of characters.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_line_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
+[title="4"]form_input_list_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_list_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withOptions:(NSDictionary *)options withDefaultValue:(NSString*)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a combo-box type control. Options is a map between actual values and the displayed labels. The functionality is the same as the [tt]<option>[/tt] in an HTML [tt]<select>[/tt] control. The default value is the actual value (not an index) to be selected by default.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_list_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withOptions:<options_map>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[form_instance form_input_list_withPrettyName:@"gender"
+		withDescription:@"Gender"
+		withParamName:@"gender"
+		withOptions:@{
+			@"male":@"Male",
+			@"female":@"Female"
+		}
+		withDefaultValue:@"male"
+		isRequired:YES];
+[/code]
+
+[title="4"]form_input_text_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_text_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a multiline text input control.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_text_withPrettyName:<pretty_name>
+ 		withDescription:<description>
+ 		withParamName:<param_name>
+ 		withDefaultValue:<default_value>
+ 		isRequired:<is_required ?>];
+[/code]
+
+[title="4"]form_input_tick_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_tick_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(BOOL)defaultValue;
+[/code]
+
+[i]Description:[/i]
+Inserts a checkbox (aka switch) control. This is equivalent to a two-option-only radio input. The form value will be either 0 or 1.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_tick_withPrettyName:<pretty_name>
+ 		withDescription:<description>
+ 		withParamName:<param_name>
+ 		withDefaultValue:<default_value>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[form_instance form_input_tick_withPrettyName:@"Subscribe to newsletter?"
+ 		withDescription:@""
+ 		withParamName:@"subscribe"
+ 		withDefaultValue:NO];
+[/code]
+
+[title="4"]form_input_uploaded_picture_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_uploaded_picture_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a photo upload control. Picks a photo from user photo library or shows an option to capture photo using camera.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_uploaded_picture_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		isRequired:<is_required ?>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[form_instance form_input_uploaded_picture_withPrettyName:@"profilePic"
+ 		withDescription:@"upload your profile pic"
+ 		withParamName:@"profilePic"
+		isRequired:YES];
+[/code]
+
+[title="4"]form_input_date_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_date_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName isRequired:(BOOL)isRequired withDefaultValue:(NSString *)defaultValue includeTimeChoice:(BOOL)includeTimeChoice;
+[/code]
+
+[i]Description:[/i]
+Inserts a date picker control. [tt]includeTimeChoice[/tt] determines whether the date picker should show time or not.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_date_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		sRequired:<is_required ?>
+		withDefaultValue:<default_value>
+		includeTimeChoice:<show time ?>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[form_instance form_input_date_withPrettyName:@"DOB"
+		withDescription:@"Provide your DOB :"
+		withParamName:@"dob"
+		isRequired:YES
+		withDefaultValue:@""
+		includeTimeChoice:NO];
+[/code]
+
+[title="4"]get_input_date[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)get_input_date:(NSString *)paramName;
+[/code]
+
+[i]Description:[/i]
+Get UNIX timestamp from a date input field ([tt]form_input_date_withPrettyName[/tt]) in the form with the given [tt]paramName[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance get_input_date:<paramName>];
+[/code]
+
+[i]Example:[/i]
+Calling:
+[code="objc"]
+[form_instance get_input_date:@"DOB"];
+[/code]
+... returns the timestamp of the DOB date input field. The previous example mentioned for [tt]form_input_date_withPrettyName[/tt] is relevant.
+
+[title="4"]post_param_string[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)post_param_string:(NSString *)paramName;
+[/code]
+
+[i]Description:[/i]
+Gets the string value from an input field in a form with the given [tt]paramName[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance post_param_string:<paramName>];
+[/code]
+
+[title="4"]post_param_integer[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)post_param_integer:(NSString *)paramName;
+[/code]
+
+[i]Description:[/i]
+Gets int value from an input field in a form with the given [tt]paramName[/tt].
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance post_param_integer:<paramName>];
+[/code]
+
+[title="4"]set_url[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)set_url:(NSString *)url;
+[/code]
+
+[i]Description:[/i]
+Sets the URL to which the form is submitted. This is similar to the [tt]action[/tt] attribute of an HTML form.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance set_url:<url>];
+[/code]
+
+[title="4"]set_button_withName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)set_button_withName:(NSString *)name preSubmitGuard:(SEL)preSubmitGuard postCallback:(SEL)postCallback autoSubmit:(BOOL)autoSubmit;
+[/code]
+
+[i]Description:[/i]
+Sets the form's submit button. [tt]preSubmitGuard[/tt] is the selector that will be called in case of validation failure while sending the form. [tt]postCallback[/tt] is the selector that is called after the form submit is finished. All selectors will be executed in the delegate.
+ - By default, the submit button will be executing the validation. If the validation fails, then the [tt]preSubmitGuard[/tt] is called and if it succeeds, the [tt]postCallback[/tt] will be called. This feature can be used if the form is not needed to be submitted on an HTTP URL. This feature is available in the [tt]CMS_SDK_Sample[/tt] app.
+ - If [tt]autoSubmit[/tt] is [tt]TRUE[/tt], then the submit button will automatically trigger the HTTP form submit if the validation is successful.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance set_button_withName:@"Done"
+ 		preSubmitGuard:<validation_error_callback_selector>
+ 		postCallback:<submit_success_callback_selector>
+ 		autoSubmit:<autoSubmit ?>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[form_instance set_button_withName:@"Done"
+ 		preSubmitGuard:@selector(validationError)
+ 		postCallback:@selector(callback)
+ 		autoSubmit:YES];
+[/code]
+
+[title="4"]do_http_post_request[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)do_http_post_request;
+[/code]
+
+[i]Description:[/i]
+Execute the form HTTP submit. Will call the [tt]preSubmitGuard[/tt] if validation fails and the submit process will be aborted. If the validation succeeds, then it will call [tt]postCallback[/tt] after the HTTP submit is completed. The screen will be blocked automatically with a loader when the HTTP submit happens.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance do_http_post_request];
+[/code]
+
+[title="4"]getFormValues[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSDictionary *)getFormValues;
+[/code]
+
+[i]Description:[/i]
+Returns a map of all the values of the form with each [tt]paramName[/tt] as the keys and entered values as values.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance getFormValues];
+[/code]
+
+[title="3"]CMS_Database[/title]
+
+This class provides the functions that you will need to access a SQLite database. The class functionality is similar to the Composr database class. So, you can access the database the same way you access your SQL database on the Composr. You can also set up the custom database upgrading code (not something possible out of the box with SQLite).
+
+The functions are:
+
+[title="4"]createCopyOfDatabaseIfNeeded[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)createCopyOfDatabaseIfNeeded;
+[/code]
+
+[i]Description:[/i]
+Looks for an [tt]cms_DB.sqlite[/tt] named file in the project bundle. If a similar file does not exist in the documents directory (i.e. within the live app filesystem) then this file is copied into it. If the project is run with the flag [tt]database_reset[/tt], the file in the documents directory is forcefully rewritten. These techniques can be used to include an initial version of the database packed within your project.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database createCopyOfDatabaseIfNeeded];
+[/code]
+
+[title="4"]initializeDatabase[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)initializeDatabase;
+[/code]
+
+[i]Description:[/i]
+This function opens the connection to the database. It must be called before executing any of the below functions to ensure that the connection to the database is established.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database initializeDatabase];
+[/code]
+
+[title="4"]create_table[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)create_table:(NSString *)tableName :(NSArray *)fieldNames;
+[/code]
+
+[i]Description:[/i]
+Create a table. Note that because we are using SQLite (a typeless database), we do not need to specify any field types.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database create_table:<table_name> :<field_names_array>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *tableName = @"testTable";
+NSArray *fields = @[
+	@"field1",
+	@"field2"
+];
+[CMS_Database create_table:tableName :fields];
+[/code]
+
+[title="4"]drop_table_if_exists[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)drop_table_if_exists:(NSString *)tableName;
+[/code]
+
+[i]Description:[/i]
+Delete a table.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database drop_table_if_exists:<table_name>];
+[/code]
+
+[title="4"]add_table_field[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)add_table_field:(NSString *)tableName :(NSString *)fieldName;
+[/code]
+
+[i]Description:[/i]
+Adds a new column to the table.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database add_table_field:<table_name> :<field_name>];
+[/code]
+
+[title="4"]rename_table_field[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)rename_table_field:(NSString *)tableName :(NSString *)oldFieldName :(NSString *)newFieldName;
+[/code]
+
+[i]Description:[/i]
+Renames a table column.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database rename_table_field:<table_name> :<old_field_name> :<new_field_name>];
+[/code]
+
+[title="4"]delete_table_field[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)delete_table_field:(NSString *)tableName :(NSString *)fieldName;
+[/code]
+
+[i]Description:[/i]
+Delete a column from the table.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database delete_table_field:<table_name> :<delete_field_name>];
+[/code]
+
+[title="4"]db_escape_string[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)db_escape_string:(NSString *)value;
+[/code]
+
+[i]Description:[/i]
+Escapes any single quote strings so we can embed them within a quoted portion of SQL.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database db_escape_string:<string_to_be_escaped>]
+[/code]
+
+[title="4"]query[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)query:(NSString *)query;
+[/code]
+
+[i]Description:[/i]
+Executes the query and returns an array of resultant rows. Each row is represented as a map. Values in the row will be presented with column names as the map keys.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query:<query>];
+[/code]
+
+[title="4"]query_delete[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)query_delete:(NSString *)tableName :(NSDictionary *)whereMap;
+[/code]
+
+[i]Description:[/i]
+Delete a specific set of rows based on any number of equality-test conditions provided in [tt]whereMap[/tt]. i.e. each key value pair in [tt]whereMap[/tt] will be converted into [tt]key=value[/tt] checks in the SQL. No other condition types are supported (so no "OR" checks etc).
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_delete:<table_name> :<where_map>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *tableName = @"testTable";
+NSDictionary *deleteWhereMap = @{
+	@"field2":@"value22"
+};
+[CMS_Database query_delete:tableName :deleteWhereMap];
+[/code]
+Executing
+[tt][CMS_Database query_delete:tableName :deleteWhereMap];[/tt]
+is equivalent to running - [tt]DELETE FROM testTable WHERE field2='value22';[/tt]
+
+[title="4"]query_insert[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)query_insert:(NSString *)tableName :(NSDictionary *)valueMap;
+[/code]
+
+[i]Description:[/i]
+Insert values into a table. Value map will contain the values to be inserted saved in a dictionary against the column names as keys.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_insert:<table_name> :<insert_map>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *tableName = @"testTable";
+NSDictionary *insertMap = @{
+	@"field1":@"value11",
+	@"field2":@"value12"
+};
+[CMS_Database query_insert:tableName :insertMap];
+[/code]
+is equivalent to running [tt]INSERT INTO testTable (field1, field2) VALUES ('value11', 'value12');[/tt]
+
+[title="4"]query_select[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)query_select:(NSString *)tableName :(NSArray *)selectList :(NSDictionary *)whereMap :(NSString *)extraSQL;
+[/code]
+
+[i]Description:[/i]
+Running a select query. "selectList" is the array of fields that needs to be selected. "whereMap" contains the conditions to be matched. Any extra SQL can be specified in "extraSQL".
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_select:<table_name> :<selectFields> :<whereMap> :nil];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *tableName = @"testTable";
+[CMS_Database query_select:tableName :@[@"field1"] :@{@"field2":@"value22"} :nil];
+[/code]
+is equivalent to running [tt]SELECT field1 from testTable where field2='value22';[/tt]
+
+[title="4"]query_select_value[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)query_select_value:(NSString *)tableName :(NSString *)selectFieldName :(NSDictionary *)whereMap :(NSString *)extraSQL;
+[/code]
+
+[i]Description:[/i]
+Selecting a single string value from the database. If more than one rows are found in the result of the query, the value in the first row is returned. If no value, blank string will be returned.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_select_value:<table_name> :<selectField> :<whereMap> :nil];
+[/code]
+
+[title="4"]query_select_int_value[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)query_select_int_value:(NSString *)tableName :(NSString *)selectFieldName :(NSDictionary *)whereMap :(NSString *)extraSQL;
+[/code]
+
+[i]Description:[/i]
+Selecting a single integer value from the database. If more than one rows are found in the result of the query then the value in the first row is returned. If no value, -1 is returned. If the value was not an integer convertible, 0 is returned.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_select_int_value:<table_name> :<selectField> :<whereMap> :nil];
+[/code]
+
+[title="4"]query_update[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)query_update:(NSString *)tableName :(NSDictionary *)valueMap :(NSDictionary *)whereMap;
+[/code]
+
+[i]Description:[/i]
+Update rows in a table based on a particular condition. "valueMap" is Values to be updated in a map saved against field name as keys.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database query_update:<table_name> :<value_map> :<where_map>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+NSString *tableName = @"testTable";
+[CMS_Database query_update:tableName :@{@"field2":@"40"} :@{@"field1":@"value31"}];
+[/code]
+is equivalent to executing [tt]UPDATE testTable SET field2='40' WHERE field1='value31';[/tt]
+
+[title="4"]getFieldNamesForTable[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
++ (NSArray *) getFieldNamesForTable:(NSString *)tableName;
+[/code]
+
+[i]Description:[/i]
+Get the list of column names of a table.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database getFieldNamesForTable:<table_name>];
+[/code]
+
+[title="4"]upgradeDatabaseIfRequired[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)upgradeDatabaseIfRequired:(CMSDatabaseUpgradeBlock)upgradeBlock;
+[/code]
+
+[i]Description:[/i]
+Upgrade the database using the code handler provided. The code handler receives a database object as a parameter so that you can execute your SQLite queries directly. The latest database version is saved in the [tt]NSUserDefaults[/tt] so that your step by step upgrades will be executed. In short, we provide a convention (similar to in Composr) for progressive upgrading.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Database upgradeDatabaseIfRequired:<upgrade_handler>];
+[/code]
+
+[i]Example:[/i]
+[code="objc"]
+[CMS_Database upgradeDatabaseIfRequired:^(sqlite3 *dbInstance){
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *previousVersion = [defaults objectForKey:k_DBVERSION];
+	NSString *currentVersion = [self versionNumberString];
+
+	if (previousVersion==nil){
+		// do nothing. first install.
+	}
+	else if([previousVersion compare:currentVersion options:NSNumericSearch] == NSOrderedAscending) {
+		// previous < current
+		// place upgrade codes here for each versions in their corresponding if structures.
+		// You can use the "dbInstance" variable to access the db.
+
+		int prevVersion = [previousVersion intValue];
+		if (prevVersion < 1) {
+			// place all codes for upgrading to version 1
+			prevVersion = 1;
+		}
+		if (prevVersion < 2) {
+			// place all codes for upgrading to version 2
+			prevVersion = 2;
+		}
+	}
+	[defaults setObject:currentVersion forKey:k_DBVERSION];
+	[defaults synchronize];
+}];
+[/code]
+
+[title="3"]CMS_Notification[/title]
+
+This class provides all the functions required to handle push notifications in an iPhone app. The functions are:
+
+[title="4"]registerForRemoteNotifications[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)registerForRemoteNotifications;
+[/code]
+
+[i]Description:[/i]
+Register the app for permission to push notifications.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Notification registerForRemoteNotifications];
+[/code]
+
+[title="4"]parseDeviceToken[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)parseDeviceToken:(NSData *)deviceToken;
+[/code]
+
+[i]Description:[/i]
+Parse the device token that has been received from the APNS server.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Notification parseDeviceToken:<NSData received from the server that registered for remote notifications>
+[/code]
+
+[title="4"]notifyDeviceTokenToServer[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void) notifyDeviceTokenToServer:(NSString *)deviceToken;
+[/code]
+
+[i]Description:[/i]
+Send the device token to the Composr website.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Notification notifyDeviceTokenToServer:<parsed device token as string>];
+[/code]
+
+[title="4"]showNotification[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void) showNotification:(NSDictionary *)userInfo;
+[/code]
+
+[i]Description:[/i]
+Parse a push notification received from the Composr server and show the alert.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Notification showNotification:<payload received as notification>];
+[/code]
+
+[title="3"]CMSNetworkManager[/title]
+
+[tt]CMSNetworkManager[/tt] is a singleton network manager that is built on AFNetworking 2.0. A JSON parser is mounted as the default response parser. So, if you need to parse any other kind of responses like XML, plain/text or so, you will need to modify the response serialiser.
+
+The following APIs are already built into the [tt]CMSNetworkManager[/tt]:[list="i"]
+[*] Login[list="a"]
+	[*] The response received is saved in the [tt]NSUserDefaults[/tt][/*]
+	[*] Cookie and session variables are automatically set in the header of all the API calls after a successful login[/*]
+[/list][/*]
+[*] Register[/*]
+[*] Recover Password[/*]
+[*] Feedback/Contact Us[/*]
+[*] Save push token to Composr Server[/*]
+[/list]
+
+More APIs can be integrated as required. The above written API calls use a standard format. All the API functions have a completion handler attached and the CMSNetworkManager also has a delegate. If completion handler is available, the callback is executed using the completion handler. If the completion handler is nil, the delegate methods are called. The same case goes for failures too.
+
+Initiating the [tt]CMSNetworkManager[/tt] singleton class...
+
+Initialize a generic network manager:
+[code="objc"]
+[CMSNetworkManager sharedManager];
+[/code]
+
+Initialize network manager with a specific base URL:
+[code="objc"]
+[[CMSNetworkManager sharedManager] initWithBaseURL:<domain_url>];
+[/code]
+
+The class has two generic API functions, one for GET, another for POST.
+
+[title="4"]GET[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)executeGETWithParams:(NSDictionary *)params forURL:(NSString *)url onCompletion:(CMSResponseBlock)objectBlock onFaillure:(CMSErrorBlock)failBlock showLoader:(BOOL)showLoader;
+[/code]
+
+[i]Description:[/i]
+Executes a GET request on the given URL:
+ - [b]params[/b] -- map of parameters to be sent as key value pair along with URL
+ - [b]URL[/b] -- URL to connect to
+ - [b]completion block[/b]
+ - [b]failure block[/b]
+ - [b]showLoader[/b] -- should a loader be shown blocking the screen when executing the API call
+
+[i]Usage:[/i]
+[code="objc"]
+[self executeGETWithParams:<params_map>
+ 	forURL:<url>
+ 		onCompletion:<completion handler>
+ 		onFaillure:<failure_handler>
+ 		showLoader:<show loader ?>];
+[/code]
+
+[title="4"]POST[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)executePOSTWithParams:(NSDictionary *)params forURL:(NSString *)url onCompletion:(CMSResponseBlock)objectBlock onFaillure:(CMSErrorBlock)failBlock showLoader:(BOOL)showLoader
+[/code]
+
+[i]Description:[/i]
+Executes a POST request on the given URL:
+ - [b]params[/b] -- map of parameters to be sent as key value pair in body
+ - [b]URL[/b] -- URL to connect to
+ - [b]completion block[/b]
+ - [b]failure block[/b]
+ - [b]showLoader[/b] -- should a loader be shown blocking the screen when executing the API call
+
+[i]Usage:[/i]
+[code="objc"]
+[self executePOSTWithParams:<params_map>
+ 	forURL:<url>
+ 		onCompletion:<completion handler>
+ 		onFaillure:<failure_handler>
+ 		showLoader:<show loader ?>];
+[/code]
+
+Apart from this, the [tt]CMSNetworkManager[/tt] has functions within it for parsing responses and error, from the Composr API calls. These are:[list="i"]
+[*] [b]isResponseValid[/b] -- if passed a response, it returns [tt]TRUE[/tt] or [tt]FALSE[/tt][/*]
+[*] [b]getResponseData[/b] -- if passed a response, it returns the JSON response's [tt]response_data[/tt] as a map, or an empty map on error[/*]
+[*] [b]getError[/b] -- if passed a response, it returns an [tt]NSError[/tt][/*]
+[/list]
+
+[title="3"]More Utilities[/title]
+
+Composr Mobile SDK contains some custom generic utility views that are used within the form builder. These functions can be reused separately if required. They are:
+
+[title="4"]NumberInput[/title]
+
+Number-only entry text field.
+
+[i]Usage:[/i]
+[code="objc"]
+NumberInput *txtInput = [[NumberInput alloc] initWithFrame:<frame> defaultValue:<default_value> placeHolder:<placeholder> supportFloat:<support floating point?>];
+[/code]
+
+[title="4"]ComboBox[/title]
+
+Textfield linked with a picker automatically.
+
+[i]Usage:[/i]
+[code="objc"]
+ComboBox *txtInput = [[ComboBox alloc] initWithFrame:<frame>];[txtInput setOptions:<values of options>];[txtInput setKeys:<the param name or key of options>];[txtInput setDefaultValue:<default value to be selected>];
+[/code]
+
+[title="4"]DatePicker[/title]
+
+Textfield linked to a date picker automatically.
+
+[i]Usage:[/i]
+[code="objc"]
+DatePicker *txtInput = [[DatePicker alloc] initDatePickerWithTime:includeTimeChoice frame:<frame>];
+[/code]
+
+[title="4"]PhotoUpload[/title]
+
+A control that acts as a photo upload form control by itself. Has option to take image from photo gallery as well as the camera.
+
+[i]Usage:[/i]
+[code="objc"]
+PhotoUpload *photoView = [[PhotoUpload alloc] initWithFrame:<frame>];[photoView setImage:<a no image placeholder image>];
+[/code]
+
 [title="2"]Notifications[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/android.png[/media]
 Composr can support sending native iOS/Android push notifications.
 
 There are many configuration options located in Admin Zone > Setup > Configuration > Composr APIs.
@@ -62,7 +1868,6 @@ For iOS notifications to work, put your Apple-provided server certificate over [
 
 [title="2"]Toolkit[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 The toolkit will help you mirror some Composr website resources into a mobile app. It is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 
 [title="3"]Language files[/title]
@@ -105,6 +1910,7 @@ php data_custom/composr_mobile_sdk_build.php images example
 
 [title="2"]Server-side API[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 You may access the server-side API by making HTTP calls to [tt]http://yourbaseurl/data/endpoint.php[/tt]. Results are returned as JSON.
 
 The API is split into a number of endpoints, which are given a 'hook' name, and categorised by 'hook type'.
@@ -209,7 +2015,7 @@ Lots of data from Composr's [tt]cns_read_in_member_profile[/tt] function
 
 [tt]title[/tt] (optional, the subject line)
 
-[tt]email[/tt] (optional, the email to send from -- defaults to that of current member)
+[tt]email[/tt] (optional, the e-mail to send from -- defaults to that of current member)
 | [tt]message[/tt]
 |-
 | [tt]content[/tt]
@@ -235,10 +2041,19 @@ On the [url="tracker"]http://compo.sr/tracker/search.php?tag_string=Type%3A+Mobi
 
 [title="3"]Tapatalk[/title]
 
-There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users. Tapatalk will essentially function as an "out of the box Composr app", as we continue to extend our implementation to include other kinds of content within virtual-forums/virtual-topics.
+There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users. Tapatalk will essentially function as an "out of the box Composr app", as we continue to extend our Tapatalk implementation to include other kinds of content within virtual-forums/virtual-topics.
 
 [concepts
- 1_key="TODO"   1_value="TODO"
+ 1_key="SDK"							1_value="Software Development Kit. An implementation of an API, typically in the form of a library."
+ 2_key="Composr Mobile SDK"		2_value="Official toolkit for mobile apps that connect to a Composr-powered website. The name may be shortened to CMS SDK. CMS SDK is a set of libraries for Composr, Android, and iOS."
+ 3_key="Objective-C"					3_value="The main programming language used for programming Apple devices. Swift was released around the time of us writing CMS SDK, but we have used Objective-C to be conservative -- both are cross-compatible, so there's no compatibility problems."
+ 4_key="REST"							4_value="A read/write convention/protocol implemented in terms of standard HTTP web calls."
+ 5_key="JSON"							5_value="JavaScript object notation, a common language for transferring structured data over REST"
+ 6_key="Push notification"			6_value="A notification sent to a mobile device"
 ]Concepts[/concepts]
 
-{$SET,tutorial_tags,Mobile,Development,composr_mobile_sdk,expert,pinned}{$SET,tutorial_add_date,Jan 2014}{$SET,tutorial_summary,TODO}[block]main_tutorial_rating[/block]
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_mobile"]Mobile design[/page]
+
+{$SET,tutorial_tags,Mobile,Development,composr_mobile_sdk,expert}{$SET,tutorial_add_date,Jan 2016}{$SET,tutorial_summary,Composr Mobile SDK is the toolkit for building mobile apps that connect to a Composr-powered website.}[block]main_tutorial_rating[/block]

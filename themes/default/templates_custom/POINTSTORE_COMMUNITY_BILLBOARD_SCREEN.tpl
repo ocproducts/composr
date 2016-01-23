@@ -18,9 +18,11 @@
 
 <div>
 	<p>{!COMMUNITY_BILLBOARD_E}</p>
-	<ul role="navigation" class="actions_list">
-		<li class="actions_list_strong">
-			<a href="{COMMUNITY_BILLBOARD_URL*}">{!PROCEED}</a>
-		</li>
-	</ul>
+	<nav>
+		<ul class="actions_list">
+			<li class="actions_list_strong">
+				<a href="{COMMUNITY_BILLBOARD_URL*}">{!PROCEED}</a>
+			</li>
+		</ul>
+	</nav>
 </div>

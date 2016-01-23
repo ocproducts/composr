@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,8 +38,8 @@ function sitemap_script()
         exit();
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(30);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(30);
     }
 
     disable_php_memory_limit(); // Needed for loading large amount of permissions (potentially)
@@ -424,7 +424,7 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
             'edit_own_cat_lowrange_content' => 0,
             'delete_cat_lowrange_content' => 0,
             'delete_own_cat_lowrange_content' => 0,
-            'submit_lowrange_content'=>1,
+            'submit_lowrange_content' => 1,
             'bypass_validation_lowrange_content' => 1,
             'edit_own_lowrange_content' => 1,
             'edit_lowrange_content' => 1,

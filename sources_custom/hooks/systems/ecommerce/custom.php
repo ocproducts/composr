@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -76,7 +76,14 @@ class Hook_ecommerce_custom
         foreach ($rows as $row) {
             if ($row['c_cost'] != 0) {
                 $cost = floatval($row['c_cost']) / $ppc;
-                $products['CUSTOM_' . strval($row['id'])] = array(PRODUCT_PURCHASE_WIZARD, float_to_raw_string($cost), 'handle_custom_purchase', array(), get_translated_text($row['c_title']));
+                $products['CUSTOM_' . strval($row['id'])] = array(
+                    PRODUCT_PURCHASE_WIZARD,
+                    float_to_raw_string($cost),
+                    'handle_custom_purchase',
+                    array(),
+                    get_translated_text($row['c_title']),
+                    get_option('currency'),
+                );
             }
         }
 

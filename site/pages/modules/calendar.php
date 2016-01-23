@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -93,14 +93,14 @@ class Module_calendar
             $GLOBALS['SITE_DB']->create_table('calendar_events', array(
                 'id' => '*AUTO',
                 'e_submitter' => 'MEMBER',
-                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if NULL, it shows globally
+                'e_member_calendar' => '?MEMBER', // Which member's calendar it shows on; if null, it shows globally
                 'e_views' => 'INTEGER',
                 'e_title' => 'SHORT_TRANS__COMCODE',
                 'e_content' => 'LONG_TRANS__COMCODE',
                 'e_add_date' => 'TIME',
                 'e_edit_date' => '?TIME',
                 'e_recurrence' => 'ID_TEXT', // [none, daily, weekly, monthly, yearly, xth_dotw_of_monthly] X [fractional-occurrence]. e.g. "daily yyyyynn" for weekdays
-                'e_recurrences' => '?SHORT_INTEGER', // NULL means none/infinite
+                'e_recurrences' => '?SHORT_INTEGER', // null means none/infinite
                 'e_seg_recurrences' => 'BINARY',
                 'e_start_year' => 'INTEGER',
                 'e_start_month' => 'SHORT_INTEGER',
@@ -184,19 +184,11 @@ class Module_calendar
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
-            $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
             // Save in permissions for event type
             $types = $GLOBALS['SITE_DB']->query_select('calendar_types');
             foreach ($types as $type) {
-                foreach (array_keys($groups) as $group_id) {
-                    if (in_array($group_id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'calendar', 'category_name' => strval($type['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('calendar', $type['id']);
             }
         }
 
@@ -242,7 +234,7 @@ class Module_calendar
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -264,7 +256,7 @@ class Module_calendar
     public $back_url;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -319,7 +311,7 @@ class Module_calendar
 
             $just_event_row = db_map_restrict($event, array('id', 'e_content'));
 
-            // Title and meta data
+            // Title and metadata
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
                 $awards = find_awards_for('event', strval($id));
@@ -349,7 +341,7 @@ class Module_calendar
                 'identifier' => '_SEARCH:calendar:view:' . strval($id),
                 'description' => get_translated_text($event['e_content']),
                 'image' => find_theme_image('icons/48x48/menu/rich_content/calendar'),
-                //'category'=>???,
+                //'category' => ???,
             ));
 
             set_feed_url(find_script('backend') . '?mode=calendar&select=' . urlencode(implode(',', $this->get_and_filter())));
@@ -1464,7 +1456,7 @@ class Module_calendar
         $is_public = $_is_public ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
 
         // Personal subscriptions (reminders)
-        $subscribed = new Tempcode();
+        $subscribed = array();
         if ((has_privilege(get_member(), 'view_event_subscriptions')) && (cron_installed())) {
             $subscriptions = $GLOBALS['SITE_DB']->query_select('calendar_reminders', array('DISTINCT n_member_id'), array('e_id' => $id), '', 100);
             if (count($subscriptions) < 100) {
@@ -1472,12 +1464,12 @@ class Module_calendar
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id']);
                     if (!is_null($username)) {
                         $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], false, true);
-                        $subscribed->attach(do_template('CALENDAR_EVENT_SCREEN_SUBSCRIPTION', array('_GUID' => 'c756b8b3f0c57494fd46a94e9abce029', 'MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username)));
+                        $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);
                     }
                 }
             }
         }
-        $_subscriptions = new Tempcode();
+        $_subscriptions = array();
         if ((is_guest()) || (!cron_installed())) {
             $subscribe_url = new Tempcode();
         } else {
@@ -1485,7 +1477,7 @@ class Module_calendar
             foreach ($subscriptions as $subscription) {
                 $time = display_time_period(intval($subscription['n_seconds_before']));
                 $unsubscribe_url = build_url(array('page' => '_SELF', 'type' => 'unsubscribe_event', 'id' => $id, 'reminder_id' => $subscription['id']), '_SELF');
-                $_subscriptions->attach(do_template('CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION', array('_GUID' => 'cc36c75ea516abfab1c65328c0e290fc', 'UNSUBSCRIBE_URL' => $unsubscribe_url, 'TIME' => $time)));
+                $_subscriptions[] = array('UNSUBSCRIBE_URL' => $unsubscribe_url, 'TIME' => $time);
             }
             $subscribe_url = build_url(array('page' => '_SELF', 'type' => 'subscribe_event', 'id' => $id), '_SELF');
         }

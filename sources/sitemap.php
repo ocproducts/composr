@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,8 +44,8 @@ Node structure includes the following special data for menu rendering:
  */
 function init__sitemap()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(100);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(100);
     }
 
     // Defining what should be gathered with the Sitemap
@@ -256,7 +256,7 @@ abstract class Hook_sitemap_base
             return true;
         }
 
-        // Note that other things are disabled via get_entry_points returning NULL
+        // Note that other things are disabled via get_entry_points returning null
 
         return false;
     }

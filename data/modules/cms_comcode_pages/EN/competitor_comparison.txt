@@ -2,7 +2,7 @@
 
 {| wide
 
-! 
+!
 ! Foo
 ! Bar
 ! {$SITE_NAME}

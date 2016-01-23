@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_topics
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -77,7 +77,7 @@ class Module_topics
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -1683,7 +1683,7 @@ class Module_topics
         }
 
         require_code('content2');
-        $specialisation2->attach(meta_data_get_fields('topic', null, false, array('submitter', 'add_time', 'edit_time')));
+        $specialisation2->attach(metadata_get_fields('topic', null, false, array('submitter', 'add_time', 'edit_time')));
 
         if (is_null($text)) {
             $text = new Tempcode();
@@ -2016,7 +2016,7 @@ class Module_topics
         }
 
         require_code('content2');
-        $specialisation2->attach(meta_data_get_fields('post', null));
+        $specialisation2->attach(metadata_get_fields('post', null));
 
         $topic_posts = new Tempcode();
         $posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE p_topic_id=' . strval($topic_id) . ' AND (p_intended_solely_for IS NULL OR p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ') AND p_validated=1 ORDER BY p_time DESC,p.id DESC', 20);
@@ -2268,7 +2268,7 @@ class Module_topics
             $topic_title = $title;
 
             require_code('content2');
-            $meta_data = actual_meta_data_get_fields('topic', null, array('submitter', 'add_time', 'edit_time'));
+            $metadata = actual_metadata_get_fields('topic', null, array('submitter', 'add_time', 'edit_time'));
 
             if ($forum_id == -1) { // New Private Topic
                 if ($anonymous == 1) {
@@ -2279,7 +2279,7 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $meta_data['views']);
+                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic
                 if (!cns_may_report_post()) {
@@ -2304,7 +2304,7 @@ class Module_topics
                 if (!is_null($topic_id)) {
                     // Already a topic
                 } else { // New topic
-                    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false, $meta_data['views']);
+                    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false, $metadata['views']);
                 }
 
                 $_title = get_screen_title('REPORT_POST');
@@ -2322,7 +2322,7 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $meta_data['views']);
+                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $metadata['views']);
                 $_title = get_screen_title('ADD_TOPIC');
 
                 $_topic_id = strval($topic_id);
@@ -2398,7 +2398,7 @@ END;
                     $_new_title = is_null($new_title) ? 'null' : ('\'' . str_replace("\n", '\'."\n".\'', addslashes($new_title)) . '\'');
 
                     $schedule_code = <<<END
-:require_code('cns_topics_action2'); require_code('cns_topics_action'); cns_edit_topic($topic_id,NULL,NULL,$validated,$open,$pinned,$sunk,$cascading,'',$_new_title); if (($to!=$forum_id) && (!is_null($to))) cns_move_topics($forum_id,$to,array($topic_id)); \$post_id=cns_make_post($topic_id,$__title,$_postdetails,$skip_sig,$_first_post,$validated,$is_emphasised,$_postdetailser_name_if_guest,NULL,NULL,NULL,$_intended_solely_for,NULL,NULL,false,true,NULL,true,$topic_title,$sunk,NULL,$anonymous==1); if (addon_installed('awards')) { require_code('awards'); handle_award_setting('post',strval(\$post_id)); }
+:require_code('cns_topics_action2'); require_code('cns_topics_action'); cns_edit_topic($topic_id,null,null,$validated,$open,$pinned,$sunk,$cascading,'',$_new_title); if (($to!=$forum_id) && (!is_null($to))) cns_move_topics($forum_id,$to,array($topic_id)); \$post_id=cns_make_post($topic_id,$__title,$_postdetails,$skip_sig,$_first_post,$validated,$is_emphasised,$_postdetailser_name_if_guest,null,null,null,$_intended_solely_for,null,nullfalse,true,null,true,$topic_title,$sunk,null,$anonymous==1); if (addon_installed('awards')) { require_code('awards'); handle_award_setting('post',strval(\$post_id)); }
 END;
                     require_code('calendar');
                     $start_year = intval(date('Y', $schedule));
@@ -2435,24 +2435,24 @@ END;
         }
 
         require_code('content2');
-        $meta_data = actual_meta_data_get_fields('post', null);
+        $metadata = actual_metadata_get_fields('post', null);
 
         // Substitution of support operator for tickets, if required
         if (!is_null($forum_id)) {
             if (addon_installed('tickets')) {
                 require_code('tickets');
                 if (is_ticket_forum($forum_id)) {
-                    if ($meta_data['submitter'] === null || $meta_data['submitter'] == get_member()) {
-                        $meta_data['submitter'] = get_active_support_user();
+                    if ($metadata['submitter'] === null || $metadata['submitter'] == get_member()) {
+                        $metadata['submitter'] = get_active_support_user();
                         if ($poster_name_if_guest == $GLOBALS['FORUM_DRIVER']->get_username(get_member())) {
-                            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($meta_data['submitter']);
+                            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter']);
                         }
                     }
                 }
             }
         }
 
-        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $meta_data['add_time'], $meta_data['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, $sunk, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
+        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $metadata['add_time'], $metadata['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, $sunk, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
 
         set_url_moniker('post', strval($post_id));
 
@@ -3101,7 +3101,7 @@ END;
         }
 
         require_code('content2');
-        $specialisation2->attach(meta_data_get_fields('post', strval($post_id)));
+        $specialisation2->attach(metadata_get_fields('post', strval($post_id)));
 
         if (count($moderation_options) != 0) {
             $specialisation2->attach(form_input_various_ticks($moderation_options, '', null, do_lang_tempcode('MODERATION_OPTIONS')));
@@ -3256,9 +3256,9 @@ END;
         require_code('cns_posts_action3');
 
         require_code('content2');
-        $meta_data = actual_meta_data_get_fields('post', strval($post_id));
+        $metadata = actual_metadata_get_fields('post', strval($post_id));
 
-        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['submitter'], true);
+        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true);
 
         require_code('fields');
         if (has_tied_catalogue('post')) {
@@ -3415,7 +3415,7 @@ END;
         }
 
         require_code('content2');
-        $fields->attach(meta_data_get_fields('topic', strval($topic_id), false, array('submitter', 'add_time', 'edit_time')));
+        $fields->attach(metadata_get_fields('topic', strval($topic_id), false, array('submitter', 'add_time', 'edit_time')));
 
         $title = get_screen_title('EDIT_TOPIC');
         $submit_name = do_lang_tempcode('SAVE');
@@ -3451,9 +3451,9 @@ END;
         require_code('cns_topics_action2');
 
         require_code('content2');
-        $meta_data = actual_meta_data_get_fields('topic', strval($topic_id), array('submitter', 'add_time', 'edit_time'));
+        $metadata = actual_metadata_get_fields('topic', strval($topic_id), array('submitter', 'add_time', 'edit_time'));
 
-        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $sunk, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $meta_data['views']);
+        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $sunk, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $metadata['views']);
 
         require_code('fields');
         if (has_tied_catalogue('topic')) {
@@ -4047,7 +4047,7 @@ END;
      */
     public function topic_history() // Type
     {
-        $title = get_screen_title('POST_HISTORY');
+        $title = get_screen_title('REVISIONS');
 
         // We should be somewhere else entirely - it's just our moderator action list took us here
         $url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'topic,post', 'category_id' => get_param_integer('id')), get_module_zone('admin_revisions'));

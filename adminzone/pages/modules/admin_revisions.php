@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -95,7 +95,7 @@ class Module_admin_revisions
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -108,7 +108,7 @@ class Module_admin_revisions
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -249,13 +249,13 @@ class Module_admin_revisions
 
         if (has_privilege(get_member(), 'delete_revisions')) {
             $delete_url = get_self_url(false, false, array('type' => 'delete', 'id' => $revision['id']));
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'delete', 'IMMEDIATE' => true, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'menu___generic_admin__delete'));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'fff6126f163c05a6966208a6f1244e08', 'REL' => 'delete', 'IMMEDIATE' => true, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'menu___generic_admin__delete'));
             $_revision[] = $delete;
         }
 
         /*if (has_privilege(get_member(), 'undo_revisions')) {
             $undo_url = build_url(array('page' => '_SELF', 'type' => 'undo', 'id' => $revision['id']), '_SELF');
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'undo', 'IMMEDIATE' => true, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '8b3b9bc19246045bf1537ee0f6b67fe1', 'REL' => 'undo', 'IMMEDIATE' => true, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
             $_revision[] = $delete;
         }*/
 

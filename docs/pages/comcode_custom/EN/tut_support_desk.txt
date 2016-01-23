@@ -168,7 +168,7 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 		</tr>
 		<tr>
 			<th>Prioritisation</th>
-			<td><em>Not supported at the time of writing, although ticket types may be used in this way</em></td>
+			<td><em>Not supported, although ticket types may be used in this way</em></td>
 		</tr>
 		<tr>
 			<th>Assigning</th>
@@ -329,8 +329,8 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
 
 [concepts
- 1_key="support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
- 2_key="support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
+ 1_key="Support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
+ 2_key="Support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
  3_key="Post template"    3_value="A pre-defined body of text that can be used as a template for new posts"
 ]Concepts[/concepts]
 

@@ -80,7 +80,7 @@ The advantage to moving them is that then you can essentially forget about them.
 You may, optionally, add multiple licences to your site, and specify which licence any download uses. This is useful for sites that have copyrighted downloads, or if some kind of agreement must be agreed to before downloading.
 
 [concepts
- 1_key="outmode"   1_value="Mark an entry as having been replaced by another one"
+ 1_key="Outmode"   1_value="Mark an entry as having been replaced by another one"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -125,7 +125,8 @@ It is preferable that we did this before the actual cancelled event occurrence. 
 
 [title="2"]Scheduling commands[/title]
 
-To schedule a command for execution, add an event with the event type of 'System command'. All settings (including recurrence) are as for any event, except the event text should be either:[list="a"]
+To schedule a command for execution, add an event with the event type of 'System command'. All settings (including recurrence) are as for any event, except the event text should be either:
+[list="a"]
 [*] a URL for Composr to call up (the process of calling a URL can be used to invoke some function of a web application)
 [*] a portion of Commandr code
 [/list]

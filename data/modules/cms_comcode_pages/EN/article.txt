@@ -26,14 +26,20 @@ If it is a persuasive piece:
 Consider some basic parameters that you can plan against, and assess your final article against...
 
 Do you need images? Original photos, or stock graphics? How many? Note that some people best learn via reading, while others learn better through images, or even video.
+
 How many words should your article be?
+
 Will you be using outbound links?
+
 Do you need to build in particular key words or phrases, for SEO purposes?
+
 Are you intentionally writing the article on the back of a particular craze, and hence aligning it to people interested in that?
+
 If it is a sales piece, have you considered providing an offer to incentivise, and potentially add a sense for urgency (perhaps using the [tt]main_countdown[/tt] block to count down to the end of an offer)?
+
 Do you want to tie in some third-party live chat software, to capture leads who are reading the article?
 
-[quote="Sage"]
+[quote="Dr Expert"]
 Do you need to gather some quotes or testimonials?
 [/quote]
 
@@ -62,19 +68,6 @@ Long copy techniques may include:
  - Talking about free bonuses that have been thrown in
  - May be written for skim-readers, immersed-readers, or ideally both
 
-[title="2"]Split testing[/title]
-
-The call to action is ideal for split-testing (aka A/B testing), to identify what version of your copy works best.
-To gather data you could, for example:
- - give a different phone number extension for different randomised versions of the copy
- - pass through a different software [tt]keep_referrer[/tt] parameter to the [tt]join[/tt] module, e.g. [page=":join:keep_referrer=2"]a[/page] or [page=":join:keep_referrer=3"]b[/page] (in this case make sure '2' and '3' are the IDs of admin accounts, so you can then use the non-bundled [tt]referrals[/tt] addon to track the referrals these accounts make)
- - inject different Google Analytics tracker codes
-
-{+START,CASES,{$SET_RAND,a,b}}
-a=This is shown in random case A.
-b=This is shown in random case B.
-{+END}
-
 [title="2"]Address the key angles[/title]
 
 Give a full picture:
@@ -92,6 +85,6 @@ Consider using humour.
 
 [title="2"]Get it proof-read[/title]
 
-Everybody makes mistakes. Either get a friend or colleague to proof-read your work, or at least read it again several times yourself.
+Everybody makes mistakes. Either get a friend or colleague to proof-read your work, or at least read it again several times yourself after long breaks.
 
 Depending on the need for demonstrating accuracy, you may want to build citations, or at least quotes.

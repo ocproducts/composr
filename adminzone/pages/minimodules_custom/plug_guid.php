@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,6 +19,9 @@
 */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$title = get_screen_title('Plug in missing GUIDs', false);
+$title->evaluate_echo();
 
 global $FOUND_GUID;
 $FOUND_GUID = array();
@@ -46,10 +49,10 @@ foreach ($files as $i => $file) {
 
     echo 'Doing ' . escape_html($file) . '<br />';
 
-    $IN = file_get_contents($file);
+    $IN = file_get_contents(get_custom_file_base() . '/' . $file);
 
-    $out = preg_replace_callback("#do_template\('([^']*)',array\(\s*'([^']+)'=>('[^\']+')#", 'callback', $IN);
-    $out = preg_replace_callback("#do_template\('([^']*)',array\(\s*'([^']+)'=>#", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => ('[^\']+')#", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => #", 'callback', $IN);
 
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
@@ -90,7 +93,7 @@ function callback($match)
             $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
             return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "'";
         }
-        $FOUND_GUID[$guid_value] = 1;
+        $FOUND_GUID[$guid_value] = true;
         $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $guid_value);
     }
     return $match[0];

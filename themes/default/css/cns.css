@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 /*
@@ -585,6 +585,11 @@ hr.cns_sig_barrier {
 	text-decoration: none;
 }
 
+.cns_forum_in_category_forum .horizontal_meta_details img {
+	position: relative;
+	top: 2px;
+}
+
 .cns_forum_new_post_indicator {
 	vertical-align: middle;
 }
@@ -708,6 +713,9 @@ hr.cns_sig_barrier {
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	/*{+END}*/
 }
+.cns_whisper_choose_box .box {
+	margin-top: 0;
+}
 .cns_whisper_choose_box.right {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		padding: 4em 4em 4em 2em;
@@ -798,9 +806,6 @@ hr.cns_sig_barrier {
 
 .buttons__forum {
 	background-image: url('{$IMG,icons/24x24/buttons/forum}') !important;
-}
-.buttons__revisions {
-	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 }
 .buttons__mark_read_forum {
 	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;

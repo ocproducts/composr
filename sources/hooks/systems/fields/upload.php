@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -127,8 +127,10 @@ class Hook_fields_upload
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if (strpos($actual_value, '::') !== false) {
-            list($actual_value,) = explode('::', $actual_value);
+        if (!is_null($actual_value)) {
+            if (strpos($actual_value, '::') !== false) {
+                list($actual_value,) = explode('::', $actual_value);
+            }
         }
 
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
@@ -149,7 +151,7 @@ class Hook_fields_upload
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

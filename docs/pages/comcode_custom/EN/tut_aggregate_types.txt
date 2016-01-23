@@ -92,7 +92,8 @@ At no point do you reference raw content IDs. The repository does not use them (
 
 [title="3"]More detail on subpaths[/title]
 
-If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:[list="a"]
+If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:
+[list="a"]
 [*] Making an entry for a content type that does not have categories at all.
 [*] Making a new folder (a category) for a content type that doesn't have hierarchical categories.
 [/list]
@@ -132,7 +133,7 @@ You can re-sync all instances of all aggregate content types, or for just a sele
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
  - [page="_SEARCH:tut_commandr"]Commandr[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 

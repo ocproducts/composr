@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -381,7 +381,7 @@ function load_redirect_cache()
     if (addon_installed('redirects_editor')) {
         $redirect = persistent_cache_get(array('REDIRECT', $_zone));
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them ,array('r_from_zone'=>$_zone)*/);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
             persistent_cache_set(array('REDIRECT', $_zone), $redirect);
         }
         foreach ($redirect as $r) {
@@ -588,8 +588,8 @@ function load_minimodule_page($string, &$out = null)
         $PAGE_STRING = $string;
     }
 
-    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out!==NULL))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
-        $out->evaluate_echo(NULL,true);*/
+    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
+        $out->evaluate_echo(null, true);*/
 
     return _load_mini_code($string);
 }
@@ -1105,8 +1105,8 @@ function do_block($codename, $map = null, $ttl = null)
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
                         disable_php_memory_limit();
-                        if (function_exists('set_time_limit')) {
-                            @set_time_limit(200);
+                        if (php_function_allowed('set_time_limit')) {
+                            set_time_limit(200);
                         }
                     }
                     if ($new_security_scope) {
@@ -1616,7 +1616,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             if (is_string($param)) {
                 $_params .= '\'' . str_replace('\'', '\\\'', $param) . '\'';
             } elseif ($param === null) {
-                $_params .= 'NULL';
+                $_params .= 'null';
             } elseif (is_bool($param)) {
                 $_params .= $param ? 'true' : 'false';
             } else {

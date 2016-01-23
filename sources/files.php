@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -231,6 +231,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '.ftpquota' => '',
                                              'cgi-bin' => '',
 
+                                             // Stuff from composr_homesite deployment
+                                             'upgrades' => '',
+
                                              // Specially-recognised naming conventions
                                              '_old' => '.*',
                                              '_old_backups' => '.*',
@@ -345,7 +348,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
-                                                    array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image meta data file, e.g. ".example.png"
+                                                    array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
                                                     array('\_vti\_.*', '.*'), // Frontpage
                                                     array('google.*\.html', ''), // Google authorisation files
                                                     array('\.\_.*', '.*'), // MacOS extended attributes
@@ -363,6 +366,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'functions.dat' => 'data_custom',
             'errorlog.php' => 'data_custom',
             'execute_temp.php' => 'data_custom',
+            'upgrader.cms.tmp' => 'data_custom',
+            'unit_test_positive_ignore_sampler.cms' => 'data_custom', // To help us test this function. This file won't ever exist.
         );
     }
 

@@ -109,16 +109,16 @@ This will batch-update the database.
 That should do it!
 
 [concepts
- 1_key="visitor"              1_value="Someone who visits the site in some vague sense"
- 2_key="user"                 2_value="Someone who uses the site in a determinable way"
- 3_key="member"               3_value="Someone has is joined and logged in"
- 4_key="guest"                4_value="Someone who is not joined or not logged in"
- 5_key="author"               5_value="Someone who authored something (not necessary a user)"
- 6_key="submitter"            6_value="Someone who has submitted something"
- 7_key="staff"                7_value="Someone who is on the staff list, or generally has staff access (term is often used vaguely as a convenience, as permissions in reality are very configurable)"
- 8_key="super moderator"      8_value="Someone who has special staff-like access, but not full site control"
- 9_key="super administrator"  9_value="Someone who has full site control, and can't have it taken away as long as they are a super administrator"
- 10_key="super member"        10_value="Someone who in in a super member usergroup, which typically has Collaboration Zone access; a vague concept to avoid having to refer to the low-level permissions"
+ 1_key="Visitor"              1_value="Someone who visits the site in some vague sense"
+ 2_key="User"                 2_value="Someone who uses the site in a determinable way"
+ 3_key="Member"               3_value="Someone has is joined and logged in"
+ 4_key="Guest"                4_value="Someone who is not joined or not logged in"
+ 5_key="Author"               5_value="Someone who authored something (not necessary a user)"
+ 6_key="Submitter"            6_value="Someone who has submitted something"
+ 7_key="Staff"                7_value="Someone who is on the staff list, or generally has staff access (term is often used vaguely as a convenience, as permissions in reality are very configurable)"
+ 8_key="Super moderator"      8_value="Someone who has special staff-like access, but not full site control"
+ 9_key="Super administrator"  9_value="Someone who has full site control, and can't have it taken away as long as they are a super administrator"
+ 10_key="Super member"        10_value="Someone who in in a super member usergroup, which typically has Collaboration Zone access; a vague concept to avoid having to refer to the low-level permissions"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

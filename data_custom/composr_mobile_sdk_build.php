@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -69,7 +69,7 @@ class Composr_mobile_sdk_tools
     public function run()
     {
         // Check running on the command line
-        $cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+        $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
         if (!$cli) {
             header('Content-type: text/plain');
             exit('This script must be run from the command line, php data_custom/composr_mobile_sdk_build.php <toolname> <params...>' . "\n");

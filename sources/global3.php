@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -59,13 +59,13 @@ function init__global3()
     global $MSN_DB;
     $MSN_DB = null;
 
-    // This is like NULL, but is a higher-precedence NULL that can also survive string layers (such as HTML forms). It should only be used when:
-    //  - 'NULL' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
+    // This is like null, but is a higher-precedence null that can also survive string layers (such as HTML forms). It should only be used when:
+    //  - 'null' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
     //  - OR, as the standard "ignore this field" indicator for query_update (so that "fractional edits" can happen without requiring a secondary API set or a messed up primary API)
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when NULL and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -87,7 +87,7 @@ function init__global3()
     global $OUTPUT_STATE_VARS;
     $OUTPUT_STATE_VARS = array(
         'HTTP_STATUS_CODE',
-        'META_DATA',
+        'METADATA',
         'ATTACHED_MESSAGES',
         'ATTACHED_MESSAGES_RAW',
         'LATE_ATTACHED_MESSAGES',
@@ -171,7 +171,7 @@ function is_suexec_like()
 
     static $answer = null;
     if ($answer === null) {
-        $answer = (((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
+        $answer = (((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
                    || (is_writable_wrap(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
     }
     return $answer;
@@ -209,15 +209,15 @@ function fix_permissions($path, $perms = 0666)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -262,8 +262,8 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
         global $HTTP_STATUS_CODE;
         $HTTP_STATUS_CODE = '200';
 
-        global $META_DATA;
-        $META_DATA = array();
+        global $METADATA;
+        $METADATA = array();
 
         global $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW, $LATE_ATTACHED_MESSAGES;
         $ATTACHED_MESSAGES = null;
@@ -377,7 +377,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
         $keep = array();
     }
 
-    $mergeable_arrays = array('META_DATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
+    $mergeable_arrays = array('METADATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
     $mergeable_tempcode = array('EXTRA_HEAD' => true, 'EXTRA_FOOT' => true, 'JAVASCRIPT' => true);
 
     $old_state = array_pop($OUTPUT_STATE_STACK);
@@ -459,8 +459,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         if (headers_sent()) {
-            $global = do_template('STANDALONE_HTML_WRAP', array(
-                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+            $global = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd579b62182a0f815e0ead1daa5904793', 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
                 'FRAME' => false,
                 'TARGET' => '_self',
                 'CONTENT' => $middle,
@@ -503,16 +502,16 @@ function attach_to_screen_footer($data)
 }
 
 /**
- * Add some meta-data for the request.
+ * Add some metadata for the request.
  *
  * @sets_output_state
  *
- * @param  array $meta_data Extra meta-data
+ * @param  array $metadata Extra metadata
  */
-function set_extra_request_metadata($meta_data)
+function set_extra_request_metadata($metadata)
 {
-    global $META_DATA;
-    $META_DATA += $meta_data;
+    global $METADATA;
+    $METADATA += $metadata;
 }
 
 /**
@@ -992,7 +991,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
  */
 function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 {
-    $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+    $locale = localeconv();
     if ($locale['thousands_sep'] == '') {
         $locale['thousands_sep'] = ',';
     }
@@ -1024,7 +1023,7 @@ function integer_format($val)
 {
     static $locale = null;
     if ($locale === null) {
-        $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+        $locale = localeconv();
         if ($locale['thousands_sep'] == '') {
             $locale['thousands_sep'] = ',';
         }
@@ -1247,7 +1246,7 @@ function cns_require_all_forum_stuff()
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
  */
-function cms_tempnam($prefix)
+function cms_tempnam($prefix = 'cms')
 {
     require_code('files2');
     return _cms_tempnam($prefix);
@@ -1342,6 +1341,10 @@ function fix_id($param)
  */
 function match_key_match($match_keys, $support_post = false, $current_params = null, $current_zone_name = null, $current_page_name = null)
 {
+    if (!running_script('index') && !running_script('iframe')) {
+        return false;
+    }
+
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
@@ -1382,11 +1385,21 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 } else {
                     $default = '';
                 }
-                if (
-                    (count($subparts) != 2) ||
-                    (($current_params !== null) && ((isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : $default) != $subparts[1])) ||
-                    (($current_params === null) && (call_user_func_array($req_func, array($subparts[0], $default)) != $subparts[1]))
-                ) {
+                if (count($subparts) != 2) {
+                    $bad = true;
+                    continue;
+                }
+                $env_val = ($current_params === null) ? call_user_func_array($req_func, array($subparts[0], null)) : (isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : null);
+                if ($subparts[1] == '_WILD') {
+                    if ($env_val !== null) {
+                        $subparts[1] = $env_val;
+                    } // null won't match to a wildcard
+                } else {
+                    if ($env_val === null) {
+                        $env_val = $default;
+                    }
+                }
+                if ($env_val !== $subparts[1]) {
                     $bad = true;
                     continue;
                 }
@@ -1466,7 +1479,11 @@ function fix_page_name_dashing($zone, $page)
 }
 
 /**
- * Take a list of maps, and make one of the values of each array the index of a map to the map
+ * Take a list of maps, and make one of the values of each array the index of a map to the map.
+ *
+ * list_to_map is very useful for handling query results.
+ * Let's imagine you get the result of SELECT id,title FROM sometable.
+ * list_to_map turns the array of rows into a map between the id key and each row.
  *
  * @param  string $map_value The key key of our maps that reside in our map
  * @param  array $list The list of maps
@@ -1617,7 +1634,7 @@ function is_valid_ip($ip)
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
  * @set    1 2 3 4
- * @param  ?IP $ip IP address to use, normally left NULL (null: current user's)
+ * @param  ?IP $ip IP address to use, normally left null (null: current user's)
  * @return IP The users IP address (blank: could not find a valid one)
  */
 function get_ip_address($amount = 4, $ip = null)
@@ -1838,7 +1855,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return NULL, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -1912,7 +1929,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
+                    if (!php_function_allowed('gethostbyname')) {
                         $self_ip = gethostbyname($self_host);
                     } else {
                         $self_ip = '';
@@ -2375,7 +2392,7 @@ function is_mobile($user_agent = null, $truth = false)
 }
 
 /**
- * Get the name of a webcrawler bot, or NULL if no bot detected
+ * Get the name of a webcrawler bot, or null if no bot detected
  *
  * @return ?string Webcrawling bot name (null: not a bot)
  */
@@ -2538,7 +2555,7 @@ function wordfilter_text($text)
 }
 
 /**
- * Assign this to explicitly declare that a variable may be of mixed type, and initialise to NULL.
+ * Assign this to explicitly declare that a variable may be of mixed type, and initialise to null.
  *
  * @return ?mixed Of mixed type (null: default)
  */
@@ -2697,7 +2714,7 @@ function get_zone_default_page($zone_name)
                 }
             }
             if ($_zone_default_page === null) {
-                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name'=>$zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
+                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
             $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = 'start';
             $ZONE_DEFAULT_PAGES_CACHE['collaboration'] = 'start'; // Set this in case collaboration zone removed but still referenced. Performance tweak!
@@ -2742,6 +2759,7 @@ function titleify($boring)
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('Cpfs', 'CPFs', $ret);
+    $ret = str_replace('Emails', 'E-mails', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);
 
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($boring)) {
@@ -2860,12 +2878,16 @@ function get_brand_base_url()
 /**
  * Get a URL to a Composr tutorial.
  *
- * @param  ID_TEXT $tutorial Name of a tutorial
+ * @param  ?ID_TEXT $tutorial Name of a tutorial (null: don't include the page part)
  * @return URLPATH URL to a tutorial
  */
 function get_tutorial_url($tutorial)
 {
-    return get_brand_page_url(array('page' => $tutorial), 'docs' . strval(cms_version()));
+    $ret = get_brand_page_url(array('page' => is_null($tutorial) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
+    if (is_null($tutorial)) {
+        $ret = str_replace('abcdef.htm', '', $ret);
+    }
+    return $ret;
 }
 
 /**
@@ -2877,8 +2899,8 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value = get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
-    return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
+    // Assumes brand site supports .htm URLs, which it should
+    return get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
 }
 
 /**
@@ -2962,7 +2984,7 @@ function get_mass_import_mode()
  */
 function escapeshellarg_wrap($arg)
 {
-    if ((function_exists('escapeshellarg')) && (strpos(@ini_get('disable_functions'), 'escapeshellarg') === false)) {
+    if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";

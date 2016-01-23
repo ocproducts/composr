@@ -2,8 +2,8 @@
 
 {!menus:DOC_MENUS} There are two ways to define menus:
 [list="1"]
-[*]Comcode menus. These are described in the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page]
-[*]Menu-editor managed menus. These are described in this tutorial and the usual approach
+[*] Comcode menus. These are described in the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page]
+[*] Menu-editor managed menus. These are described in this tutorial and the usual approach
 [/list]
 Panel-pages are described in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page], and also in the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode) tutorial[/page].
 

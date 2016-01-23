@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,7 @@ class Module_cms_banners extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -72,10 +72,10 @@ class Module_cms_banners extends Standard_crud_module
     }
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -228,7 +228,7 @@ class Module_cms_banners extends Standard_crud_module
             'name' => do_lang_tempcode('CODENAME'),
             'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
-            //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
+            //'campaign_remaining' => do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
             'expiry_date' => do_lang_tempcode('EXPIRY_DATE'),
             'add_date' => do_lang_tempcode('ADDED'),
@@ -275,20 +275,20 @@ class Module_cms_banners extends Standard_crud_module
 
             $deployment_agreement = new Tempcode();
             switch ($row['the_type']) {
-                case 0:
+                case BANNER_PERMANENT:
                     $deployment_agreement = do_lang_tempcode('BANNER_PERMANENT');
                     break;
-                case 1:
+                case BANNER_CAMPAIGN:
                     $deployment_agreement = do_lang_tempcode('BANNER_CAMPAIGN');
                     break;
-                case 2:
-                    $deployment_agreement = do_lang_tempcode('BANNER_DEFAULT');
+                case BANNER_FALLBACK:
+                    $deployment_agreement = do_lang_tempcode('BANNER_FALLBACK');
                     break;
             }
 
             $fr = array(
-                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('CONTENT' => escape_html($row['name']))), false, false),
-                ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'],
+                hyperlink(build_url(array('page' => 'banners', 'type' => 'view', 'source' => $row['name']), get_module_zone('banners')), do_template('COMCODE_TELETYPE', array('_GUID' => '25c57dd13c0801ad64f5bb8e6c9860f3', 'CONTENT' => escape_html($row['name']))), false, false),
+                ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'],
                 $deployment_agreement,
                 //integer_format($row['campaign_remaining']),
                 strval($row['importance_modulus']),
@@ -332,7 +332,7 @@ class Module_cms_banners extends Standard_crud_module
      * @range  1 max
      * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
      * @range  0 max
-     * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+     * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
      * @set    0 1 2
      * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -352,7 +352,7 @@ class Module_cms_banners extends Standard_crud_module
         list($fields, $_javascript) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $title_text);
         $this->javascript .= $_javascript;
 
-        $fields->attach(meta_data_get_fields('banner', $name));
+        $fields->attach(metadata_get_fields('banner', $name));
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('banner', $name));
@@ -418,7 +418,7 @@ class Module_cms_banners extends Standard_crud_module
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $campaignremaining = post_param_integer('campaignremaining', 0);
-        $siteurl = fixup_protocolless_urls(post_param_string('site_url', ''));
+        $site_url = fixup_protocolless_urls(post_param_string('site_url', ''));
         $importancemodulus = post_param_integer('importancemodulus', 3);
         $notes = post_param_string('notes', '');
         $the_type = post_param_integer('the_type', 1);
@@ -433,9 +433,9 @@ class Module_cms_banners extends Standard_crud_module
 
         list($url, $title_text) = check_banner($title_text, $direct_code, $b_type, $b_types);
 
-        $meta_data = actual_meta_data_get_fields('banner', null);
+        $metadata = actual_metadata_get_fields('banner', null);
 
-        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $siteurl, $importancemodulus, $notes, $the_type, $expiry_date, $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['add_time'], 0, 0, 0, 0, $meta_data['edit_time']);
+        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['add_time'], 0, 0, 0, 0, $metadata['edit_time']);
 
         $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
         if (array_key_exists(0, $_banner_type_row)) {
@@ -443,7 +443,7 @@ class Module_cms_banners extends Standard_crud_module
         } else {
             $banner_type_row = array('t_image_width' => 728, 't_image_height' => 90);
         }
-        $stats_url = build_url(array('page' => '_SELF', 'type' => 'view', 'source' => $name), '_SELF');
+        $stats_url = build_url(array('page' => 'banners', 'type' => 'view', 'source' => $name), '_SELF');
         $banner_code = do_template('BANNER_SHOW_CODE', array('_GUID' => '745d555fcca3a1320123ad3a5a04418b', 'TYPE' => $b_type, 'NAME' => $name, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
         $tpl = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '897bab3e444f0d3c909e7a95b84d4396', 'DO_NEXT' => '', 'TEXT' => '', 'TITLE' => '', 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url));
 
@@ -483,9 +483,9 @@ class Module_cms_banners extends Standard_crud_module
 
         $new_id = post_param_string('name');
 
-        $meta_data = actual_meta_data_get_fields('banner', $id, null, $new_id);
+        $metadata = actual_metadata_get_fields('banner', $id, null, $new_id);
 
-        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['edit_time'], $meta_data['add_time'], true);
+        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
 
         $this->new_id = post_param_string('name');
 
@@ -560,7 +560,7 @@ class Module_cms_banners extends Standard_crud_module
 
             $csv_row[do_lang('CODENAME')] = $row['name'];
 
-            $csv_row[do_lang('BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'];
+            $csv_row[do_lang('BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('_DEFAULT') : $row['b_type'];
 
             $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))));
             $csv_row[do_lang('SECONDARY_CATEGORIES')] = $banner_types;
@@ -580,11 +580,11 @@ class Module_cms_banners extends Standard_crud_module
             // Basic stats...
 
             if ($has_banner_network) {
-                $csv_row[strip_html(do_lang('BANNER_HITSFROM'))] = integer_format($row['hits_from']);
-                $csv_row[strip_html(do_lang('BANNER_VIEWSFROM'))] = integer_format($row['views_from']);
+                $csv_row[strip_html(do_lang('BANNER_HITS_FROM'))] = integer_format($row['hits_from']);
+                $csv_row[strip_html(do_lang('BANNER_VIEWS_FROM'))] = integer_format($row['views_from']);
             }
-            $csv_row[strip_html(do_lang('BANNER_HITSTO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['hits_to']);
-            $csv_row[strip_html(do_lang('BANNER_VIEWSTO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['views_to']);
+            $csv_row[strip_html(do_lang('BANNER_HITS_TO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['hits_to']);
+            $csv_row[strip_html(do_lang('BANNER_VIEWS_TO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['views_to']);
 
             if ($row['views_to'] != 0) {
                 $click_through = float_format(100.0 * (floatval($row['hits_to']) / floatval($row['views_to'])));
@@ -606,8 +606,8 @@ class Module_cms_banners extends Standard_crud_module
                     case BANNER_CAMPAIGN:
                         $deployment_agreement = do_lang('BANNER_CAMPAIGN');
                         break;
-                    case BANNER_DEFAULT:
-                        $deployment_agreement = do_lang('BANNER_DEFAULT');
+                    case BANNER_FALLBACK:
+                        $deployment_agreement = do_lang('BANNER_FALLBACK');
                         break;
                 }
                 $csv_row[do_lang('DEPLOYMENT_AGREEMENT')] = $deployment_agreement;
@@ -712,7 +712,7 @@ class Module_cms_banners_cat extends Standard_crud_module
 
             $total = integer_format($GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('b_type' => $row['id'])));
 
-            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('GENERAL') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
+            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -744,7 +744,7 @@ class Module_cms_banners_cat extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_BANNER_FILE_SIZE'), 'max_file_size', $max_file_size, true));
         $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_INLINE'), do_lang_tempcode('DESCRIPTION_COMCODE_INLINE'), 'comcode_inline', $comcode_inline == 1));
 
-        $fields->attach(meta_data_get_fields('banner_type', ($id == '') ? null : $id));
+        $fields->attach(metadata_get_fields('banner_type', ($id == '') ? null : $id));
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('banner_type', $id));
@@ -786,7 +786,7 @@ class Module_cms_banners_cat extends Standard_crud_module
         $max_file_size = post_param_integer('max_file_size');
         $comcode_inline = post_param_integer('comcode_inline', 0);
 
-        $meta_data = actual_meta_data_get_fields('banner_type', null);
+        $metadata = actual_metadata_get_fields('banner_type', null);
 
         add_banner_type($id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline);
 
@@ -815,7 +815,7 @@ class Module_cms_banners_cat extends Standard_crud_module
 
         $new_id = post_param_string('new_id');
 
-        $meta_data = actual_meta_data_get_fields('banner_type', $id, null, $new_id);
+        $metadata = actual_metadata_get_fields('banner_type', $id, null, $new_id);
 
         edit_banner_type($id, $new_id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline);
 

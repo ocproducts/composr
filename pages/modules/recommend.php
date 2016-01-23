@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -84,7 +84,7 @@ class Module_recommend
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -104,7 +104,7 @@ class Module_recommend
     public $type;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -432,47 +432,49 @@ class Module_recommend
 
                     $skip_next_process = false;
 
-                    if ((function_exists('mb_detect_encoding')) && (function_exists('mb_convert_encoding')) && (strlen(mb_detect_encoding($csv_header_line_fields[0], "ASCII,UTF-8,UTF-16,UTF16")) == 0)) { // Apple mail weirdness
-                        // Test string just for Apple mail detection
-                        $test_unicode = utf8_decode(mb_convert_encoding($csv_header_line_fields[0], "UTF-8", "UTF-16"));
-                        if (preg_match('#\?\?ame#u', $test_unicode) != 0) {
-                            foreach ($csv_header_line_fields as $key => $value) {
-                                $csv_header_line_fields[$key] = utf8_decode(mb_convert_encoding($csv_header_line_fields[$key], "UTF-8", "UTF-16"));
+                    if (function_exists('mb_convert_encoding')) {
+                        if ((function_exists('mb_detect_encoding')) && (strlen(mb_detect_encoding($csv_header_line_fields[0], "ASCII,UTF-8,UTF-16,UTF16")) == 0)) { // Apple mail weirdness
+                            // Test string just for Apple mail detection
+                            $test_unicode = utf8_decode(mb_convert_encoding($csv_header_line_fields[0], "UTF-8", "UTF-16"));
+                            if (preg_match('#\?\?ame#u', $test_unicode) != 0) {
+                                foreach ($csv_header_line_fields as $key => $value) {
+                                    $csv_header_line_fields[$key] = utf8_decode(mb_convert_encoding($csv_header_line_fields[$key], "UTF-8", "UTF-16"));
 
-                                $found_email_address = '';
-                                $found_name = '';
+                                    $found_email_address = '';
+                                    $found_name = '';
 
-                                $first_row_exploded = explode(';', $csv_header_line_fields[0]);
+                                    $first_row_exploded = explode(';', $csv_header_line_fields[0]);
 
-                                $email_index = 1; // by default
-                                $name_index = 0; // by default
+                                    $email_index = 1; // by default
+                                    $name_index = 0; // by default
 
-                                foreach ($csv_header_line_fields as $key2 => $value2) {
-                                    if (preg_match('#\?\?ame#', $value2) != 0) {
-                                        $name_index = $key2; // Windows mail
-                                    }
-                                    if (preg_match('#E\-mail#', $value2) != 0) {
-                                        $email_index = $key2; // both
-                                    }
-                                }
-
-                                while (($csv_line = fgetcsv($myfile, 10240, $del)) !== false) { // Reading a CSV record
-                                    foreach ($csv_line as $key2 => $value2) {
-                                        $csv_line[$key2] = utf8_decode(mb_convert_encoding($value2, "UTF-8", "UTF-16"));
+                                    foreach ($csv_header_line_fields as $key2 => $value2) {
+                                        if (preg_match('#\?\?ame#', $value2) != 0) {
+                                            $name_index = $key2; // Windows mail
+                                        }
+                                        if (preg_match('#E\-mail#', $value2) != 0) {
+                                            $email_index = $key2; // both
+                                        }
                                     }
 
-                                    $found_email_address = (array_key_exists($email_index, $csv_line) && strlen($csv_line[$email_index]) > 0) ? $csv_line[$email_index] : '';
-                                    $found_email_address = (preg_match('#.*\@.*\..*#', $found_email_address) != 0) ? preg_replace("#\"#", '', $found_email_address) : '';
-                                    $found_name = $found_email_address;
+                                    while (($csv_line = fgetcsv($myfile, 10240, $del)) !== false) { // Reading a CSV record
+                                        foreach ($csv_line as $key2 => $value2) {
+                                            $csv_line[$key2] = utf8_decode(mb_convert_encoding($value2, "UTF-8", "UTF-16"));
+                                        }
 
-                                    if (strlen($found_email_address) > 0) {
-                                        $skip_next_process = true;
-                                        // Add to the list what we've found
-                                        $fields->attach(form_input_tick($found_name, $found_email_address, 'use_details_' . strval($email_counter), true));
-                                        $hidden->attach(form_input_hidden('details_email_' . strval($email_counter), $found_email_address));
-                                        $hidden->attach(form_input_hidden('details_name_' . strval($email_counter), $found_name));
-                                        $email_counter++;
-                                        $success_read = true;
+                                        $found_email_address = (array_key_exists($email_index, $csv_line) && strlen($csv_line[$email_index]) > 0) ? $csv_line[$email_index] : '';
+                                        $found_email_address = (preg_match('#.*\@.*\..*#', $found_email_address) != 0) ? preg_replace("#\"#", '', $found_email_address) : '';
+                                        $found_name = $found_email_address;
+
+                                        if (strlen($found_email_address) > 0) {
+                                            $skip_next_process = true;
+                                            // Add to the list what we've found
+                                            $fields->attach(form_input_tick($found_name, $found_email_address, 'use_details_' . strval($email_counter), true));
+                                            $hidden->attach(form_input_hidden('details_email_' . strval($email_counter), $found_email_address));
+                                            $hidden->attach(form_input_hidden('details_name_' . strval($email_counter), $found_name));
+                                            $email_counter++;
+                                            $success_read = true;
+                                        }
                                     }
                                 }
                             }

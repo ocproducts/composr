@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -78,7 +78,7 @@ class Hook_content_meta_aware_banner_type
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'banners', // NULL if has no permissions
+            'permissions_type_code' => 'banners', // null if has no permissions
 
             'search_hook' => null,
             'rss_hook' => null,

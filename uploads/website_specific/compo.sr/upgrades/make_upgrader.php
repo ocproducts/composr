@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -14,7 +14,7 @@
  * @package    composr_homesite
  */
 
-/* Returns triple: PATH or NULL if critical error, NULL or error string if error */
+/* Returns triple: PATH or null if critical error, null or error string if error */
 function make_upgrade_get_path($from_version, $to_version)
 {
     $err = null;
@@ -36,8 +36,8 @@ function make_upgrade_get_path($from_version, $to_version)
         return array(null, $err);
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     require_code('tar');
     require_code('m_zip');

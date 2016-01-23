@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -83,7 +83,7 @@ class Module_purchase
             ));
 
             require_code('currency');
-            $cpf = array('currency' => array(3, 'list', implode('|', array_keys(get_currency_map()))));
+            $cpf = array('currency' => array(3, 'list', '|' . implode('|', array_keys(get_currency_map()))));
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
             }
@@ -129,7 +129,7 @@ class Module_purchase
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -142,7 +142,7 @@ class Module_purchase
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -362,7 +362,7 @@ class Module_purchase
         }
         $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $terms)), $this->title, null);
+        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -173,10 +173,8 @@ class Module_galleries
 
             // Add root gallery
             add_gallery('root', do_lang('GALLERIES_HOME'), '', '', '', 1, 1, 0, 1);
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'galleries', 'category_name' => 'root', 'group_id' => $group_id));
-            }
+            require_code('permissions2');
+            set_global_category_access('galleries', 'root');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
@@ -239,7 +237,7 @@ class Module_galleries
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -265,7 +263,7 @@ class Module_galleries
     public $category_name;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -347,7 +345,7 @@ class Module_galleries
             $title_to_use_2 = do_lang('_GALLERY', $fullname);
             $this->title = get_screen_title($title_to_use, false, null, null, $awards);
 
-            // Meta data
+            // Metadata
             seo_meta_load_for('gallery', $cat, $title_to_use_2);
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $myrow['add_date']),
@@ -358,7 +356,7 @@ class Module_galleries
                 'title' => comcode_escape($fullname),
                 'identifier' => '_SEARCH:galleries:browse:' . $cat,
                 'description' => get_translated_text($myrow['description']),
-                //'category'=>???,
+                //'category' => ???,
             ));
             if ($rep_image != '') {
                 set_extra_request_metadata(array(
@@ -461,7 +459,7 @@ class Module_galleries
                     'video:height' => strval($myrow['video_height']),
                     'video:width' => strval($myrow['video_width']),
                     'video:type' => $mime_type,
-                    //'category'=>???,
+                    //'category' => ???,
                 ));
             } else {
                 set_extra_request_metadata(array(
@@ -474,7 +472,7 @@ class Module_galleries
                     'identifier' => '_SEARCH:galleries:' . $type . ':' . strval($id),
                     'description' => get_translated_text($myrow['description']),
                     'image' => $url,
-                    //'category'=>???,
+                    //'category' => ???,
                 ));
             }
 
@@ -1047,7 +1045,7 @@ class Module_galleries
         if (get_option('galleries_subcat_narrowin') == '1') {
             $cat_select = $cat . '*';
         } else {
-            $cat_select = $cat;
+            $cat_select = $cat . '>';
         }
         $days = get_param_string('days', '');
         $image_select = get_param_string('select', '*');

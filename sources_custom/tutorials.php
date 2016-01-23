@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,6 +31,7 @@ function list_tutorial_tags($skip_addons_and_specials = false)
 {
     $tags = array();
     $tutorials = list_tutorials();
+
     foreach ($tutorials as $tutorial) {
         foreach ($tutorial['tags'] as $tag) {
             if ($skip_addons_and_specials) {
@@ -54,6 +55,7 @@ function list_tutorials_by($criteria, $tag = null)
     switch ($criteria) {
         case 'pinned':
             $_tutorials = list_tutorials();
+            shuffle($_tutorials);
 
             $tutorials = array();
             foreach ($_tutorials as $tutorial) {
@@ -62,43 +64,48 @@ function list_tutorials_by($criteria, $tag = null)
                 }
             }
 
-            sort_maps_by($tutorials, 'title');
-
             break;
 
         case 'recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!add_date');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!add_date');
             break;
 
         case 'likes':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!likes');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!likes');
             break;
 
         case 'likes_recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!likes_recent');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!likes_recent');
             break;
 
         case 'rating':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!rating');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!rating');
             break;
 
         case 'rating_recent':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!rating_recent');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!rating_recent');
             break;
 
         case 'views':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, '!views');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, '!views');
             break;
 
         case 'title':
             $tutorials = list_tutorials();
-            sort_maps_by($_tutorials, 'title');
+            shuffle($tutorials);
+            sort_maps_by($tutorials, 'title');
             break;
     }
 
@@ -159,34 +166,46 @@ function list_tutorials()
     return $tutorials;
 }
 
-function templatify_tutorial_list($tutorials)
+function templatify_tutorial_list($tutorials, $simple = false)
 {
     $_tutorials = array();
 
-    foreach ($tutorials as $tutorial) {
-        $tags = array();
-        foreach ($tutorial['tags'] as $tag) {
-            if (strtolower($tag) != $tag) {
-                $tags[] = $tag;
-            }
-        }
-
-        $_tutorials[] = array(
-            'URL' => $tutorial['url'],
-            'TITLE' => $tutorial['title'],
-            'SUMMARY' => $tutorial['summary'],
-            'ICON' => $tutorial['icon'],
-            'TAGS' => $tags,
-            'MEDIA_TYPE' => $tutorial['media_type'],
-            'DIFFICULTY_LEVEL' => $tutorial['difficulty_level'],
-            'CORE' => $tutorial['core'],
-            'AUTHOR' => $tutorial['author'],
-            'ADD_DATE' => get_timezoned_date($tutorial['add_date'], false),
-            'EDIT_DATE' => get_timezoned_date($tutorial['edit_date'], false),
-        );
+    foreach ($tutorials as $metadata) {
+        $_tutorials[] = templatify_tutorial($metadata, $simple);
     }
 
     return $_tutorials;
+}
+
+function templatify_tutorial($metadata, $simple = false)
+{
+    $tags = array();
+    foreach ($metadata['tags'] as $tag) {
+        if (strtolower($tag) != $tag) {
+            $tags[] = $tag;
+        }
+    }
+
+    $tutorial = array(
+        'NAME' => $metadata['name'],
+        'URL' => $metadata['url'],
+        'TITLE' => $metadata['title'],
+        'ICON' => $metadata['icon'],
+    );
+    if (!$simple) {
+        $tutorial += array(
+            'SUMMARY' => $metadata['summary'],
+            'TAGS' => $tags,
+            'MEDIA_TYPE' => $metadata['media_type'],
+            'DIFFICULTY_LEVEL' => $metadata['difficulty_level'],
+            'CORE' => $metadata['core'],
+            'AUTHOR' => $metadata['author'],
+            'ADD_DATE' => get_timezoned_date($metadata['add_date'], false),
+            'EDIT_DATE' => get_timezoned_date($metadata['edit_date'], false),
+        );
+    }
+
+    return $tutorial;
 }
 
 function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
@@ -203,7 +222,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         if (is_null($tags)) {
-            $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external', array('t_tag'), array('t_id' => intval($tutorial_name)));
+            $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_tag'), array('t_id' => intval($tutorial_name)));
             $tags = collapse_1d_complexity('t_tag', $_tags);
         }
 
@@ -213,6 +232,8 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         return array(
+            'name' => $tutorial_name,
+
             'url' => $db_row['t_url'],
             'title' => $db_row['t_title'],
             'summary' => $db_row['t_summary'],
@@ -313,6 +334,8 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         $difficulty_level = in_array('expert', $raw_tags) ? 'expert' : (in_array('novice', $raw_tags) ? 'novice' : 'regular');
 
         return array(
+            'name' => $tutorial_name,
+
             'url' => static_evaluate_tempcode($url),
             'title' => $title,
             'summary' => $summary,

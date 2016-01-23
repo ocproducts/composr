@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -42,7 +42,7 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['SITE_DB']->query_select('iotd', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('i_title') => $label));
+        $_ret = $GLOBALS['SITE_DB']->query_select('iotd', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('i_title') => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);

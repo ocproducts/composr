@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,7 +26,7 @@ class Hook_task_import_member_csv
     /**
      * Run the task hook.
      *
-     * @param  string $default_password The default password to use
+     * @param  ?string $default_password The default password to use (null: skip members with no password)
      * @param  boolean $use_temporary_passwords Whether to assign temporary passwords
      * @param  PATH $path The path of the file to import
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
@@ -37,6 +37,8 @@ class Hook_task_import_member_csv
         require_code('cns_members_action');
 
         log_it('IMPORT_MEMBER_CSV');
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         $num_added = 0;
         $num_edited = 0;
@@ -300,7 +302,7 @@ class Hook_task_import_member_csv
                     $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($linked_id, 'm_photo_url');
                 } else {
                     require_code('images');
-                    $photo_thumb_url = 'uploads/cns_photos_thumbs/' . uniqid('', true) . '.png';
+                    $photo_thumb_url = get_custom_file_base() . '/uploads/cns_photos_thumbs/' . uniqid('', true) . '.png';
                     convert_image($photo_url, $photo_thumb_url, -1, -1, intval(get_option('thumb_width')), false);
                 }
             } else {
@@ -361,6 +363,9 @@ class Hook_task_import_member_csv
             if ($new_member) {
                 if (is_null($password)) {
                     $password = $default_password;
+                    if (is_null($password)) {
+                        continue;
+                    }
                 }
                 if (is_null($salt)) {
                     $salt = '';

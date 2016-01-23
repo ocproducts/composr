@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Module_cms_comcode_pages
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -74,7 +74,7 @@ class Module_cms_comcode_pages
     public $file;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -112,7 +112,7 @@ class Module_cms_comcode_pages
             }
             $page_link_parts = explode(':', $page_link);
             if (count($page_link_parts) != 2) {
-                warn_exit(do_lang_tempcode('ZONE_COLON_FILE'));
+                warn_exit(do_lang_tempcode('ZONE_COLON_PAGE'));
             }
             $zone = $page_link_parts[0];
             $file = $page_link_parts[1];
@@ -240,7 +240,12 @@ class Module_cms_comcode_pages
         $fields = new Tempcode();
         $add_new_permission = has_add_comcode_page_permission();
         if ($add_new_permission) {
-            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true));
+            if (get_option('collapse_user_zones') == '1') {
+                $sample_page_name = ':example_new_page';
+            } else {
+                $sample_page_name = 'site:example_new_page';
+            }
+            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, null, 'text', $sample_page_name, '([\w\_\-]*:)?[\w\_\-]+'));
 
             $template_list = new Tempcode();
             $template_list->attach(form_input_list_entry('', true, do_lang('NA')));
@@ -405,7 +410,7 @@ class Module_cms_comcode_pages
 
             $zone_name = array_key_exists($zone, $all_zones) ? $all_zones[$zone][1] : $zone;
 
-            // We need to separately read from DB to work out meta data?
+            // We need to separately read from DB to work out metadata?
             $row = mixed();
             if (!array_key_exists(2, $path_bits)) {
                 $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
@@ -419,7 +424,7 @@ class Module_cms_comcode_pages
                 $row = $path_bits[2];
             }
 
-            // Work out meta data
+            // Work out metadata
             $page_title = new Tempcode();
             if (!is_null($row)) {
                 $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['p_submitter']));
@@ -512,7 +517,7 @@ class Module_cms_comcode_pages
         if ($fields->is_empty()) {
             $extra = new Tempcode();
         } else {
-            $extra = do_template('FORM', array('FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_NAME' => $submit_name, 'SUBMIT_ICON' => 'menu___generic_admin__add_one'));
+            $extra = do_template('FORM', array('_GUID' => '52f88211619a877e5c6f85fd4d46a90e', 'FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_NAME' => $submit_name, 'SUBMIT_ICON' => 'menu___generic_admin__add_one'));
         }
 
         // Custom fields
@@ -527,8 +532,7 @@ class Module_cms_comcode_pages
             );
         }
 
-        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array(
-            'TITLE' => $this->title,
+        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array('_GUID' => 'eba3e03c65d96530e3a42d600f90ccd8', 'TITLE' => $this->title,
             'TEXT' => $text,
             'TABLE' => $table,
             'FIELDS' => $fields,
@@ -634,7 +638,6 @@ class Module_cms_comcode_pages
             if ($new) {
                 if (strpos($contents, '[title') === false) {
                     $contents = '[title]' . $file . '[/title]' . "\n\n" . $contents;
-                    $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
                 }
 
                 if ((get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous'))) {
@@ -755,7 +758,7 @@ class Module_cms_comcode_pages
             $fields2->attach(get_award_fields('comcode_page', $zone . ':' . $file));
         }
 
-        $fields2->attach(meta_data_get_fields('comcode_page', ($page_link == '') ? null : $page_link));
+        $fields2->attach(metadata_get_fields('comcode_page', ($page_link == '') ? null : $page_link));
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -835,7 +838,7 @@ class Module_cms_comcode_pages
         $order = post_param_order_field();
         $show_as_edit = post_param_integer('show_as_edit', 0);
         $text_raw = post_param_string('post');
-        $meta_data = actual_meta_data_get_fields('comcode_page', $zone . ':' . $file, null, $new_file);
+        $metadata = actual_metadata_get_fields('comcode_page', $zone . ':' . $file, null, $new_file);
 
         // Handle attachments
         require_code('attachments2');
@@ -877,7 +880,7 @@ class Module_cms_comcode_pages
         }
 
         // Main save function
-        $path = save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_page, $order, $meta_data['add_time'], $meta_data['edit_time'], $show_as_edit, $meta_data['submitter'], $file, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
+        $path = save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_page, $order, $metadata['add_time'], $metadata['edit_time'], $show_as_edit, $metadata['submitter'], $file, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
 
         // Deleting?
         if (post_param_integer('delete', 0) == 1) {
@@ -936,8 +939,8 @@ class Module_cms_comcode_pages
         require_code('type_sanitisation');
 
         disable_php_memory_limit();
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(600);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(600);
         }
         send_http_output_ping();
 
@@ -1007,7 +1010,7 @@ class Module_cms_comcode_pages
 
         $page_structure = $this->organise_page_tree($pages, '', $menu_branches);
 
-        return do_template('GENERATE_PAGE_SITEMAP_SCREEN', array('TITLE' => $title, 'ZONES' => $zones, 'PAGE_STRUCTURE' => $page_structure));
+        return do_template('GENERATE_PAGE_SITEMAP_SCREEN', array('_GUID' => 'b07b07bfca5d4191e99671040b70ed51', 'TITLE' => $title, 'ZONES' => $zones, 'PAGE_STRUCTURE' => $page_structure));
     }
 
     /**
@@ -1068,7 +1071,7 @@ class Module_cms_comcode_pages
                     }
                 }
 
-                $edit_url = build_url(array('page' => '_SELF', 'type' => '_ed', 'page_link' => $page_link), '_SELF');
+                $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $page_link), '_SELF');
 
                 $page_structure[] = array(
                     'EDIT_URL' => $edit_url,
@@ -1083,6 +1086,6 @@ class Module_cms_comcode_pages
             }
         }
 
-        return do_template('GENERATE_PAGE_SITEMAP', array('PAGE_STRUCTURE' => $page_structure));
+        return do_template('GENERATE_PAGE_SITEMAP', array('_GUID' => 'f92876ca45010873c71a9fea574d17c1', 'PAGE_STRUCTURE' => $page_structure));
     }
 }

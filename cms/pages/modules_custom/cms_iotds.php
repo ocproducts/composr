@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,10 +34,10 @@ class Module_cms_iotds extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -101,7 +101,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -184,10 +184,10 @@ class Module_cms_iotds extends Standard_crud_module
             $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($id === null) ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
-        // Meta data
+        // Metadata
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(meta_data_get_fields('iotd', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('iotd', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {
@@ -315,9 +315,9 @@ class Module_cms_iotds extends Standard_crud_module
         $allow_trackbacks = post_param_integer('allow_trackbacks', 0);
         $validated = post_param_integer('validated', 0);
 
-        $meta_data = actual_meta_data_get_fields('iotd', null);
+        $metadata = actual_metadata_get_fields('iotd', null);
 
-        $id = add_iotd($url, $title, $caption, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], 0, null, $meta_data['views']);
+        $id = add_iotd($url, $title, $caption, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['add_time'], $metadata['submitter'], 0, null, $metadata['views']);
 
         set_url_moniker('iotd', strval($id));
 
@@ -384,9 +384,9 @@ class Module_cms_iotds extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('iotd', strval($id));
+        $metadata = actual_metadata_get_fields('iotd', strval($id));
 
-        edit_iotd($id, $title, post_param_string('caption'), $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        edit_iotd($id, $title, post_param_string('caption'), $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], true);
 
         if ($current == 1) {
             if ($is_current == 0) {

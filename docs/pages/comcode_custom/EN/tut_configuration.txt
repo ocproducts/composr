@@ -10,7 +10,8 @@ During basic configuration, you will be familiarising yourself with Composr for 
 
 [surround]
 [media width="150" description="Reaching the Admin Zone from the main website" float="right"]data_custom/images/docs/tut_configuration/reaching_adminzone.png[/media]
-When the installer finishes, you have a choice to either:[list="a"]
+When the installer finishes, you have a choice to either:
+[list="a"]
 [*] view your website
 [*] run the Admin Zone's Setup Wizard (recommend)
 [/list]
@@ -127,12 +128,12 @@ Examples of scheduling tasks:
  - Sending out automatic newsletters
  - Sending newsletters (dripping out e-mails over a period of time, to stop resource spiking)
 
-The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my web host does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my webhost does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
 
 [title="3"]Specific advice for Linux[/title]
 
-[media width="150" description="Setting up CRON in the cPanel web hosting control panel (different control panels vary in their UI)" float="right"]data_custom/images/docs/tut_configuration/cron.png[/media]
-On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many web hosting control panels allow you to do this.
+[media width="150" description="Setting up CRON in the cPanel webhosting control panel (different control panels vary in their UI)" float="right"]data_custom/images/docs/tut_configuration/cron.png[/media]
+On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many webhosting control panels allow you to do this.
 
 The following command might work for a Composr installation in the [tt]/home/examplesite/htdocs[/tt] directory:
 [code="Bash"]
@@ -182,7 +183,7 @@ The following is a Windows Vista scheduler step by step process for scheduling t
 17) Click 'OK'
 This should have now added a schedule within Windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
 
-[title="3"]Help -- my web host does not support CRON![/title]
+[title="3"]Help -- my webhost does not support CRON![/title]
 
 In the event your hosting platform does not allow you access to CRON, there are a number of options available to you. These options work to call the [tt]data/cron_bridge.php[/tt] script by URL, rather than via a direct command on the server.
 
@@ -225,4 +226,4 @@ It's not advertised in the interface, but it is possible for a user to join a cl
  - [page="_SEARCH:tut_adv_configuration"]Advanced Configuration[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
 
-{$SET,tutorial_tags,zone_logos,setupwizard,help_page,core_configuration,Configuration,Installation,pinned,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Once Composr is installed, there is some basic configuration to do before your website is ready to open. We discuss it here.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,zone_logos,setupwizard,help_page,core_configuration,Configuration,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Once Composr is installed, there is some basic configuration to do before your website is ready to open. We discuss it here.}[block]main_tutorial_rating[/block]

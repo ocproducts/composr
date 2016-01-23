@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -250,7 +250,9 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog($syslog_type, $php_error_label);
         }
-        @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+        if (php_function_allowed('error_log')) {
+            @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+        }
     }
 
     if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) { // Don't display - die as normal
@@ -633,7 +635,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
         }
         $dns = @gethostbyaddr($alt_ip ? $ip2 : $ip);
-        if ((preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) != 0) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
+        if ((php_function_allowed('gethostbyname')) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
             foreach ($se_domain_names as $domain_name) {
                 if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
@@ -868,7 +870,7 @@ function get_webservice_result($error_message)
         $brand = 'Composr';
     }
 
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . float_to_raw_string(cms_version_number()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
+    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
     if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
         return null;
     }
@@ -971,7 +973,9 @@ function _fatal_exit($text, $return = false)
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog(LOG_ERR, $php_error_label);
         }
-        @error_log('Composr: ' . $php_error_label, 0);
+        if (php_function_allowed('error_log')) {
+            @error_log('Composr: ' . $php_error_label, 0);
+        }
     }
 
     $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace));
@@ -1000,13 +1004,13 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 {
     // Make sure we don't send too many error emails
     if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && (!is_null($GLOBALS['SITE_DB']))) {
-        $num = intval(get_value('num_error_mails_' . date('Y-m-d'))) + 1;
+        $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
-        set_value('num_error_mails_' . date('Y-m-d'), strval($num));
+        set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
 
     if (!function_exists('require_lang')) {
@@ -1030,7 +1034,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '_custom\\') === false) &&
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
-        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free web hosts
+        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free webhosts
         (strpos($text, 'failed with: Connection refused') === false) && // Memcache error
         (strpos($text, 'data/commandr.php') === false) &&
         (strpos($text, '.less problem') === false) &&
@@ -1050,7 +1054,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
+        (strpos($text, 'The SELECT would examine more than MAX_JOIN_SIZE rows') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
+        (strpos($text, 'MySQL client ran out of memory') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
@@ -1207,9 +1213,9 @@ function get_html_trace()
 {
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
-    $trace = new Tempcode();
+    $trace = array();
     foreach ($_trace as $i => $stage) {
-        $traces = new Tempcode();
+        $traces = array();
         //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;  Hinders more than helps
         $file = '';
         $line = '';
@@ -1239,13 +1245,13 @@ function get_html_trace()
                 $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
-            $traces->attach(do_template('STACK_TRACE_LINE', array('_GUID' => '40752b5212f56534ebe7970baa638e5a', 'LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value)));
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
-        $trace->attach(do_template('STACK_TRACE_WRAP', array('_GUID' => 'beb78896baefd0f623c1c480840dace1', 'TRACES' => $traces)));
+        $trace[] = array('TRACES' => $traces);
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    return do_template('STACK_TRACE_HYPER_WRAP', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'CONTENT' => $trace));
+    return do_template('STACK_TRACE', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'TRACE' => $trace));
 }
 
 /**

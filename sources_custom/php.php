@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -318,7 +318,7 @@ function get_php_file_api($filename, $include_code = true)
                 // Check that null is fully specified
                 if ($return['type'][0] == '?') {
                     if (strpos($return['description'], '(null: ') === false) {
-                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('NULL'))), 'warn');
+                        attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('null'))), 'warn');
                     }
                 }
                 if ($return['type'][0] == '~') {
@@ -801,7 +801,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
             break;
         case 'AUTO_LINK':
             if ((!is_integer($value)) || ($value < -1)) {
-                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to NULL
+                _fail_php_type_check($type, $function_name, $name, $value, $echo); // -1 means something different to null
             }
             break;
         case 'BINARY':
@@ -872,7 +872,7 @@ function render_php_function($function, $class, $show_filename = false)
 
     $description = comcode_to_tempcode($function['description']);
 
-    if ((function_exists('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
+    if ((php_function_allowed('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
         $_code = "<" . "?php\n" . $function['code'] . "\n?" . ">";
 
         ob_start();

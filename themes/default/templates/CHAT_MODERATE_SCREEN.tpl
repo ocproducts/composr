@@ -16,9 +16,11 @@
 	<hr class="spaced_rule" />
 
 	<p class="lonely_label">{!ACTIONS}:</p>
-	<ul role="navigation" class="actions_list">
-		{+START,LOOP,LINKS}
-			<li>{_loop_var}</li>
-		{+END}
-	</ul>
+	<nav>
+		<ul class="actions_list">
+			{+START,LOOP,LINKS}
+				<li>{_loop_var}</li>
+			{+END}
+		</ul>
+	</nav>
 {+END}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,7 +35,7 @@ class Hook_block_ui_renderers_chat
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
-        if ($block . ':' . $parameter == 'side_shoutbox:param') { // special case for chat rooms
+        if ($block . ':' . $parameter == 'side_shoutbox:param') { // special case for chatrooms
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'room_name'), array('is_im' => 0), '', 100/*In case insane number*/);
             foreach ($rows as $row) {

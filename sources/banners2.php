@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,7 +32,7 @@
  * @range  1 max
  * @param  ?integer $campaignremaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=fallback)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -115,7 +115,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         $radios = new Tempcode();
         $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
         $radios->attach(form_input_radio_entry('the_type', strval(BANNER_CAMPAIGN), ($the_type == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
-        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_DEFAULT), ($the_type == BANNER_DEFAULT), do_lang_tempcode('BANNER_DEFAULT')));
+        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_FALLBACK), ($the_type == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
         $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'the_type', $radios));
         $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaignremaining', $campaignremaining, false));
         $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
@@ -127,7 +127,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6df9d181757c40237d9459b06075de97', 'TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
 
     $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
 
@@ -281,7 +281,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  integer $importancemodulus The banners "importance modulus"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -393,7 +393,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  integer $importancemodulus The banners "importance modulus"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (a BANNER_* constant)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)
@@ -401,9 +401,9 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
  * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
- * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
+ * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
- * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */

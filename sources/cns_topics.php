@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -64,6 +64,7 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
         'BREADCRUMBS' => $breadcrumbs,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:topics:_edit_topic:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'topic',
     ));
 }
 

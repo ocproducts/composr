@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -108,14 +108,12 @@ function init__tempcode()
         $OUTPUT_STREAMING = false;
     }
 
-    global $STOP_IF_STUCK, $STUCK_ABORT_SIGNAL, $TEMPCODE_OUTPUT_STARTED, $CSS_OUTPUT_STARTED, $JS_OUTPUT_STARTED, $CSS_OUTPUT_STARTED_LIST, $JS_OUTPUT_STARTED_LIST, $TEMPCODE_CURRENT_PAGE_OUTPUTTING;
+    global $STOP_IF_STUCK, $STUCK_ABORT_SIGNAL, $TEMPCODE_OUTPUT_STARTED, $CSS_OUTPUT_STARTED, $JS_OUTPUT_STARTED, $TEMPCODE_CURRENT_PAGE_OUTPUTTING;
     $STOP_IF_STUCK = false;
     $STUCK_ABORT_SIGNAL = false;
     $TEMPCODE_OUTPUT_STARTED = false;
     $CSS_OUTPUT_STARTED = false;
     $JS_OUTPUT_STARTED = false;
-    $CSS_OUTPUT_STARTED_LIST = array();
-    $JS_OUTPUT_STARTED_LIST = array();
     $TEMPCODE_CURRENT_PAGE_OUTPUTTING = null;
 }
 
@@ -163,7 +161,7 @@ function fast_uniqid()
 /**
  * Get a string (natural for Tempcode's stream-based processing-model) representation of a bound Tempcode construct
  *
- * @param  mixed $var Construct (or NULL if not set)
+ * @param  mixed $var Construct (or null if not set)
  * @param  ID_TEXT $origin Where this parameter is referenced, in a compressed reference form
  * @return string Value
  */
@@ -899,7 +897,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $url_parts['type'] = 'browse';
                 }
                 if ($url_parts['type'] === null) {
-                    $url_parts['type'] = 'browse'; // NULL means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
+                    $url_parts['type'] = 'browse'; // null means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
                 }
                 if (!array_key_exists('page', $url_parts)) {
                     return;
@@ -1022,12 +1020,12 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $block_parms[$key] = $val;
                 }
 
-                if ((isset($_GET['keep_show_loading'])) && (function_exists('memory_get_usage')) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                     $before = memory_get_usage();
                 }
                 if (isset($block_parms['block'])) {
                     $b_value = do_block($block_parms['block'], $block_parms);
-                    if ((isset($_GET['keep_show_loading'])) && (function_exists('memory_get_usage')) && ($_GET['keep_show_loading'] == '1')) {
+                    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                         require_code('files');
                         @ob_end_flush();
                         @ob_end_flush();
@@ -1114,11 +1112,11 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $wide_high = is_wide_high();
                     $wide = is_wide();
                     if ((($wide == 0) || (($wide_high == 0) && (($param[0] == 'bottom') || ($param[0] == 'top')))) && ((get_option('site_closed') == '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
-                        if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                             $before = memory_get_usage();
                         }
                         $tp_value = request_page('panel_' . $param[0], false, array_key_exists(1, $param) ? $param[1] : null, null);
-                        if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                             require_code('files');
                             @ob_end_flush();
                             @ob_end_flush();
@@ -1193,7 +1191,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $being_included = (!array_key_exists(2, $param)) || ($param[2] == '1');
                 $virtual_state = (array_key_exists(3, $param)) && ($param[3] == '1');
 
-                if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                     $before = memory_get_usage();
                 }
 
@@ -1223,7 +1221,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     );
                 }
 
-                if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                     require_code('files');
                     @ob_end_flush();
                     @ob_end_flush();
@@ -1497,7 +1495,7 @@ class Tempcode
         if ((count($this->code_to_preexecute) > 10) && ($GLOBALS['CACHE_TEMPLATES'])) {
             // We don't actually use $code_to_preexecute, because it uses too much RAM and DB space throwing full templates into the caching. Instead we rewrite to custom load it whenever it's needed. This isn't inefficient due to normal opcode caching and optimizer opcode caching, and because we cache Tempcode object's evaluations at runtime so it can only happen once per screen view.
             $_file = (strpos($file, '\'') === false) ? $file : php_addslashes($file);
-            $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',NULL,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] == '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
+            $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',null,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] == '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
             else { debug_eval($result[4]); unset($result); }';
             // NB: $GLOBALS[\'CACHE_TEMPLATES\']=false; is in case the template cache has been detected as broken, it prevents this branch running as it would fail again
         }

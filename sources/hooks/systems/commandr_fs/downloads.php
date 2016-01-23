@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -57,7 +57,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'download':
-                $_ret = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('name') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('name') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -65,7 +65,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
                 return $ret;
 
             case 'download_category':
-                $_ret = $GLOBALS['SITE_DB']->query_select('download_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('category') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('download_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('category') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);

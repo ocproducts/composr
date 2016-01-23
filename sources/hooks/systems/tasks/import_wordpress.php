@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -54,8 +54,6 @@ class Hook_task_import_wordpress
         }
 
         $cat_id = array();
-
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
         $NEWS_CATS = list_to_map('id', $NEWS_CATS);
@@ -152,9 +150,8 @@ class Hook_task_import_wordpress
                                 }
                                 if (is_null($cat_id)) { // Could not find existing category, create new
                                     $cat_id = add_news_category($category, 'newscats/community', $category);
-                                    foreach (array_keys($groups) as $group_id) {
-                                        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                                    }
+                                    require_code('permissions2');
+                                    set_global_category_access('news', $cat_id);
                                     // Need to reload now
                                     $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'));
                                     $NEWS_CATS = list_to_map('id', $NEWS_CATS);

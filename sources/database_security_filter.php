@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,6 +41,10 @@ function init__database_security_filter()
  */
 function is_simple_query($query)
 {
+    if (strpos($query, get_table_prefix()) === false) {
+        return false;
+    }
+
     $complex_keywords = array('ORDER' => true, 'GROUP' => true, 'AS' => true, 'OR' => true, 'NOT' => true, 'LIKE' => true, 'IN' => true, 'BETWEEN' => true, 'UNION' => true, 'HAVING' => true);
     $complex_operators = array('<', '>', '!', '+', '-', '/', '*');
     $query = _trim_quoted_substrings($query);

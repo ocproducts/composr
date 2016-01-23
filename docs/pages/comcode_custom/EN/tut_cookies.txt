@@ -15,8 +15,8 @@ Originally there was no way to identify a user on the web that was viewing a web
 
 Cookies were designed to resolve this problem, and another one:
 [list="1"]
-[*]it would allow server-side web applications to identify a specific user by the computer they accessed with
-[*]it would allow client-side web applications to have a memory, which was otherwise impossible
+[*] it would allow server-side web applications to identify a specific user by the computer they accessed with
+[*] it would allow client-side web applications to have a memory, which was otherwise impossible
 [/list]
 
 [title="2"]Login cookies[/title]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -60,7 +60,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'post':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_title' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_title' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -68,7 +68,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 return $ret;
 
             case 'topic':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id'), array('t_cache_first_title' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id'), array('t_cache_first_title' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -76,7 +76,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 return $ret;
 
             case 'forum':
-                $_ret = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_name' => $label));
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_name' => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -192,7 +192,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * Get the resource ID for a filename. Note that filenames are unique across all folders in a filesystem.
      *
      * @param  ID_TEXT $filename The filename, or filepath
-     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-NULL from overridden functions within hooks that are calling this as a helper function)
+     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-null from overridden functions within hooks that are calling this as a helper function)
      * @return array A pair: The resource type, the resource ID
      */
     public function folder_convert_filename_to_id($filename, $resource_type = null)

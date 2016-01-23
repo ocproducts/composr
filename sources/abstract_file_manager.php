@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,8 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/*EXTRA FUNCTIONS: ftp_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -146,7 +148,7 @@ function get_afm_form_fields()
         if (array_key_exists('ftp_username', $GLOBALS['SITE_INFO'])) {
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
-            if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+            if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 if ($u_info !== false) {
                     $ftp_username = $u_info['name'];
@@ -562,7 +564,7 @@ function afm_make_file($basic_path, $contents, $world_access)
 
     $conn = _ftp_info();
     if ($conn !== false) {
-        $path2 = cms_tempnam('cmsafm');
+        $path2 = cms_tempnam();
 
         $h = fopen($path2, 'wb');
         if (fwrite($h, $contents) < strlen($contents)) {

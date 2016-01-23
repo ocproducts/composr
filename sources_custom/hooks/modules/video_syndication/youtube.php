@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -234,8 +234,8 @@ class Hook_video_syndication_youtube
 
         $api_url = 'https://uploads.gdata.youtube.com/resumable/feeds/api/users/default/uploads';
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10000);
         }
         try {
             $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);
@@ -271,7 +271,7 @@ class Hook_video_syndication_youtube
         $is_temp_file = false;
 
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
-            $temppath = cms_tempnam('vimeo_temp_dload');
+            $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
             http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, null, null, null, null, $tempfile);
 

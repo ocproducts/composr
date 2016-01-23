@@ -279,7 +279,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
             }
             if ($myfile === null) {
-                $myfile = cms_tempnam('email_attachment');
+                $myfile = cms_tempnam();
                 http_download_file($img, null, false, false, 'Composr', null, null, null, null, null, $myfile);
                 if (filesize($myfile) == 0) {
                     continue;
@@ -319,7 +319,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'temp' => false,
                 );
             } else {
-                $myfile = cms_tempnam('email_attachment');
+                $myfile = cms_tempnam();
                 http_download_file($path, null, false, false, 'Composr', null, null, null, null, null, $myfile);
                 if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
                     $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];

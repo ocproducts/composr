@@ -352,7 +352,6 @@
        that this substitution should apply to.
   -->
 
-
   <parameter
     name="SetAclParameter0" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/modules/chat" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/modules/chat" />
@@ -366,6 +365,11 @@
   <parameter
     name="SetAclParameter2" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/modules/admin_backup" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/modules/admin_backup" />
+  </parameter>
+
+  <parameter
+    name="SetAclParameter3" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/sitemaps" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/sitemaps" />
   </parameter>
 
   <parameter
@@ -389,8 +393,8 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter8" description="Sets the ACL on the right file" defaultValue="{Application Path}/persistent_cache" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/persistent_cache" />
+    name="SetAclParameter8" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/persistent" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/persistent" />
   </parameter> 
 
   <parameter
@@ -400,7 +404,7 @@
 
   <parameter
     name="SetAclParameter11" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/lang" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang/EN" />
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang" />
   </parameter>
 
   <parameter
@@ -410,22 +414,12 @@
 
   <parameter
     name="SetAclParameter13" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/self_learning" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter14" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/self_learning/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang/EN" />
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/self_learning" />
   </parameter>
 
   <parameter
     name="SetAclParameter15" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/guest_pages" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter16" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/guest_pages/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/lang/EN" />
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/guest_pages" />
   </parameter>
 
   <parameter
@@ -444,8 +438,8 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter20" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default" />
+    name="SetAclParameter23" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/theme.ini" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/theme.ini" />
   </parameter> 
 
   <parameter
@@ -479,14 +473,14 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter28" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/templates_cached/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/templates_cached/EN" />
+    name="SetAclParameter27" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/templates_cached" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/templates_cached" />
   </parameter>
 
   <parameter
-    name="SetAclParameter87" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin" />
-  </parameter> 
+    name="SetAclParameter28" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/templates_cached/EN" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/templates_cached/EN" />
+  </parameter>
 
   <parameter
     name="SetAclParameter88" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/css_custom" tags="Hidden">
@@ -519,14 +513,14 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter94" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/templates_cached/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin/templates_cached/EN" />
+    name="SetAclParameter66" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/templates_cached" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin/templates_cached" />
   </parameter>
 
   <parameter
-    name="SetAclParameter30" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom" />
-  </parameter> 
+    name="SetAclParameter94" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/templates_cached/EN" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin/templates_cached/EN" />
+  </parameter>
 
   <parameter
     name="SetAclParameter31" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/errorlog.php" tags="Hidden">
@@ -534,13 +528,13 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter32" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/firewall_rules.txt" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/firewall_rules.txt" />
+    name="SetAclParameter41" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/xml_config" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/xml_config" />
   </parameter> 
 
   <parameter
-    name="SetAclParameter33" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/sitemap" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/sitemap" />
+    name="SetAclParameter32" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/firewall_rules.txt" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/firewall_rules.txt" />
   </parameter> 
 
   <parameter
@@ -689,16 +683,6 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter72" description="Sets the ACL on the right file" defaultValue="{Application Path}/docs/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/docs/pages/comcode_custom" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter73" description="Sets the ACL on the right file" defaultValue="{Application Path}/docs/pages/comcode_custom/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/docs/pages/comcode_custom/EN" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter74" description="Sets the ACL on the right file" defaultValue="{Application Path}/site/pages/comcode_custom" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/site/pages/comcode_custom" />
   </parameter>
@@ -757,16 +741,6 @@
   <parameter
     name="SetAclParameter169" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms/pages/html_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms/pages/html_custom/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter172" description="Sets the ACL on the right file" defaultValue="{Application Path}/docs/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/docs/pages/html_custom" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter173" description="Sets the ACL on the right file" defaultValue="{Application Path}/docs/pages/html_custom/EN" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/docs/pages/html_custom/EN" />
   </parameter>
 
   <parameter

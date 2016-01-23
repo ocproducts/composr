@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,8 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
             $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, ($field_class == 'dob') ? ('m_' . $field_class . '_day') : ('m_' . $field_class));
         }
 
-        if ((empty($current_value)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
+        $cv = trim($current_value);
+        if ((@empty($cv)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
             return false;
         }
     }
@@ -290,10 +291,6 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         $map['id'] = $id;
     }
     $member_id = $GLOBALS['FORUM_DB']->query_insert('f_members', $map, true);
-
-    if (get_option('signup_fullname') == '1') {
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'fullname', preg_replace('# \(\d+\)$#', '', $username));
-    }
 
     if ($check_correctness) {
         // If it was an invite/recommendation, award the referrer

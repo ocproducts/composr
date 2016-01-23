@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -74,8 +74,8 @@ class Hook_cleanup_page_stats
             exit();
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Write install.php file
@@ -84,7 +84,7 @@ class Hook_cleanup_page_stats
             $template = get_file_base() . '/data/modules/admin_cleanup/page_stats.php.pre';
         }
         $_install_php_file = file_get_contents($template);
-        $install_php_file = cms_tempnam('ps');
+        $install_php_file = cms_tempnam();
         $tmpfile = fopen($install_php_file, 'wb');
         fwrite($tmpfile, substr($_install_php_file, 0, strpos($_install_php_file, '{!!DB!!}')));
 

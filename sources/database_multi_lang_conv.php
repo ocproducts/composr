@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -61,8 +61,8 @@ function disable_content_translation()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     reload_lang_fields(true);
@@ -145,8 +145,8 @@ function enable_content_translation()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     reload_lang_fields(true);

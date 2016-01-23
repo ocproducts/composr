@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -72,8 +72,8 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     $just_download_row = db_map_restrict($row, array('id', 'description'));
 
     // Details
-    $filesize = $row['file_size'];
-    $filesize = ($filesize > 0) ? clean_file_size($filesize) : do_lang('UNKNOWN');
+    $file_size = $row['file_size'];
+    $file_size = ($file_size > 0) ? clean_file_size($file_size) : do_lang('UNKNOWN');
     $description = (!is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
     if (array_key_exists('id', $row)) {
         $map = array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']);
@@ -153,12 +153,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'VIEWS' => integer_format($row['download_views']),
         'SUBMITTER' => strval($row['submitter']),
         'DESCRIPTION' => $description,
-        'FILE_SIZE' => $filesize,
+        'FILE_SIZE' => $file_size,
         'DOWNLOADS' => integer_format($row['num_downloads']),
         'DATE_RAW' => strval($date_raw),
         'DATE' => $date,
         'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
-        'SIZE' => $filesize,
         'URL' => $view_url,
         'NAME' => is_string($row['name']) ? $row['name'] : get_translated_text($row['name']),
         'BREADCRUMBS' => $breadcrumbs,
@@ -215,6 +214,16 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
     $num_entries = $child_counts['num_downloads_children'];
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE', escape_html(integer_format($num_entries)), escape_html(integer_format($num_children)));
 
+    // Image
+    $img = $row['rep_image'];
+    $rep_image = mixed();
+    $_rep_image = mixed();
+    if ($img != '') {
+        require_code('images');
+        $_rep_image = $img;
+        $rep_image = do_image_thumb($img, $_title, false);
+    }
+
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '4074a20248289c28cde8201272627129',
         'ID' => strval($row['id']),
@@ -222,10 +231,13 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
         'TITLE' => $title,
         'TITLE_PLAIN' => $_title,
         'SUMMARY' => $summary,
+        '_REP_IMAGE' => $_rep_image,
+        'REP_IMAGE' => $rep_image,
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_downloads:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'download_category',
     ));
 }
 

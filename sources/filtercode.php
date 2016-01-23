@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -720,7 +720,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
  * @param  object $db Database object to use
  * @param  array $filters Parsed Filtercode structure
  * @param  ID_TEXT $content_type The content type (blank: no function needed, direct in-table mapping always works)
- * @param  string $context First parameter to send to the conversion function, may mean whatever that function wants it to. If we have no conversion function, this is the name of a table to read field meta data from
+ * @param  string $context First parameter to send to the conversion function, may mean whatever that function wants it to. If we have no conversion function, this is the name of a table to read field metadata from
  * @param  string $table_join_code What MySQL will join the table with
  * @return array Tuple: array of extra select, array of extra join, string of extra where
  */

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,10 +19,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$title = get_screen_title('Publish new Composr release', false);
+$title->evaluate_echo();
+
 set_mass_import_mode(true);
 
 restrictify();
-$groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+require_code('permissions2');
 require_code('composr_homesite');
 
 // Version info / plan
@@ -59,48 +62,38 @@ if (!$is_bleeding_edge) {
     require_code('catalogues');
     require_code('catalogues2');
 
-    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . $version_dottted;
+    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . $version_dotted;
 }
 
 // Add downloads (assume uploaded already)
 
 require_code('downloads2');
-$releases_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Releases'));
-if (is_null($releases_category_id)) {
-    $releases_category_id = add_download_category('Releases', db_get_first_id(), '', '');
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($releases_category_id), 'group_id' => $group_id));
-    }
-}
+$releases_category_id = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Composr Releases'));
+// ^ Result must return, composr_homesite_install.php added the category
 
 $release_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Version ' . strval(intval($version_dotted))));
 if (is_null($release_category_id)) {
     $release_category_id = add_download_category('Version ' . strval(intval($version_dotted)), $releases_category_id, '', '');
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($release_category_id), 'group_id' => $group_id));
-    }
+    set_global_category_access('downloads', $release_category_id);
 }
+// NB: We don't add addon categories. This is done in publish_addons_as_downloads.php
 
 $installatron_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Installatron integration'));
 if (is_null($installatron_category_id)) {
     $installatron_category_id = add_download_category('Installatron integration', $releases_category_id, '', '');
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($installatron_category_id), 'group_id' => $group_id));
-    }
+    set_global_category_access('downloads', $installatron_category_id);
 }
 
 $microsoft_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Microsoft integration'));
 if (is_null($microsoft_category_id)) {
     $microsoft_category_id = add_download_category('Microsoft integration', $releases_category_id, '', '');
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($microsoft_category_id), 'group_id' => $group_id));
-    }
+    set_global_category_access('downloads', $microsoft_category_id);
 }
 
 $all_downloads_to_add = array(
     array(
         'name' => "Composr Version {$version_pretty}{$bleeding1}",
-        'description' => "This is version {$version_pretty}."),
+        'description' => "This is version {$version_pretty}.",
         'filename' => 'composr_quick_installer-' . $version_dotted . '.zip',
         'comments' => ($is_bleeding_edge || $is_old_tree) ? '' : 'This is the latest version.',
         'category_id' => $release_category_id,
@@ -223,9 +216,7 @@ To upgrade follow the steps in your website's [tt]http://mybaseurl/upgrader.php[
 $news_category = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('nc_title') => 'New releases'));
 if (is_null($news_category)) {
     $news_category = add_news_category('New releases', 'newscats/general', '');
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($news_category), 'group_id' => $group_id));
-    }
+    set_global_category_access('news', $news_category);
 }
 
 $news_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'id', array('news_category' => $news_category, $GLOBALS['SITE_DB']->translate_field_ref('title') => $news_title));

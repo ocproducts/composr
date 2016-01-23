@@ -55,6 +55,9 @@
 	<substitution match_key="_WILD:catalogues:index">
 		<link label="{!HOME}">:</link>
 	</substitution>
+	<substitution match_key="_WILD:catalogues:atoz">
+		<link label="{!HOME}">:</link>
+	</substitution>
 
 	<!-- Examples follow... -->
 
@@ -69,4 +72,4 @@
 	</substitution>-->
 </breadcrumbs>
 
-<!-- Note PHP regular expressions are allowed -->
+<!-- Note PHP regular expressions are not allowed but _WILD is for any component -->

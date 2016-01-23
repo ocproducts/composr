@@ -196,8 +196,8 @@ Fortunately Composr has a special feature for this situation: go to Admin Zone >
 [/surround]
 
 [concepts
- 1_key="access permission"        1_value="Whether members of a certain usergroup have permission to access somewhere (a zone, page, or category, for example); a member does not need all their usergroups to have access, only one"
- 2_key="privilege"                2_value="Whether a certain usergroup has permission to do specific things (such as using high-level Comcode, or bypass the word-filter)"
+ 1_key="Access permission"        1_value="Whether members of a certain usergroup have permission to access somewhere (a zone, page, or category, for example); a member does not need all their usergroups to have access, only one"
+ 2_key="Privilege"                2_value="Whether a certain usergroup has permission to do specific things (such as using high-level Comcode, or bypass the word-filter)"
  3_key="SU"                       3_value="Named after the Unix command 'SU' (superuser / switch user), which when used at the command line allows somebody to temporarily log in as a different user"
  4_key="Permissions Tree Editor"  4_value="This editor is a user friendly interface for editing all permissions (except privileges) on a Composr website"
 ]Concepts[/concepts]

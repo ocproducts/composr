@@ -31,7 +31,7 @@
 			</label>:
 
 			<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
-			<input size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
+			<input maxlength="255" size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
 		</p>
 
 		<p>
@@ -71,7 +71,7 @@
 
 				<p>
 					<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
-					<input size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
+					<input maxlength="255" size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
 				</p>
 
 				<p>

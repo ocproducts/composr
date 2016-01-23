@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1a[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1a (Core back-end programming)[/title]
 
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
@@ -8,6 +8,7 @@
 
 [title="3"]Bootstrapping[/title]
 
+[media description="Bootstrap flow diagram (a diagram showing the bootstrap process expressed a little differently)" width="300" float="right"]data_custom/images/docs/codebook_1/flow.png[/media]
 The basic interaction chain for a request is the same as pretty much any PHP system:
 
 Web browser > HTTP request (URL, GET/POST) > Web server > Web server configuration > PHP > Composr > HTTP response > Web browser
@@ -45,10 +46,9 @@ When [tt]init__global2()[/tt] is finished, control pops back into the original [
 
 We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the URL Schemes described above.
 
-For a diagram showing this process expressed a little differently, see our [url="bootstrap flow diagram"]{$BRAND_BASE_URL}/docs/flow.pdf[/url].
-
-
+[box="Note"]
 The above descriptions are for standard page views. We have similar process for many other "entry-point scripts", but they don't do the stuff inside [tt]site.php[/tt], essentially. For example, [tt]site/dload.php[/tt] handles download requests, so streams files out, it doesn't do an Composr page load.
+[/box]
 
 [title="4"]Philosophical points[/title]
 
@@ -61,14 +61,24 @@ We try and stick fairly close to PHPs own architecture rather than forcing an en
 [title="4"]Configurable bootstrapping[/title]
 
 Composr initialisation can be controlled by a few global variables in the entry-point script. They all default to [tt]false[/tt].
- - [tt]$MICRO_BOOTUP[/tt] ([tt]1[/tt] will tell Composr to not use a user login, skip the ability for sophisticated interfaces, and skip permissions)
- - [tt]$MICRO_AJAX_BOOTUP[/tt] ([tt]1[/tt] will skip a lot of stuff loading, intended for AJAX scripts that run a lot; this is intended to reduce server load)
+ - [tt]$MICRO_BOOTUP[/tt] ([tt]true[/tt] will tell Composr to not use a user login, skip the ability for sophisticated interfaces, and skip permissions)
+ - [tt]$MICRO_AJAX_BOOTUP[/tt] ([tt]true[/tt] will skip a lot of stuff loading, intended for AJAX scripts that run a lot; this is intended to reduce server load)
  - [tt]$KNOWN_UTF8[/tt] ([tt]true[/tt] will tell Composr the request character set is definitely in Unicode, as the request came from JavaScript)
- - [tt]$FORCE_INVISIBLE_GUEST[/tt] ([tt]1[/tt] will tell Composr to not use a member login)
+ - [tt]$FORCE_INVISIBLE_GUEST[/tt] ([tt]true[/tt] will tell Composr to not use a member login)
+ - [tt]$CSRF_TOKENS[/tt] ([tt]true[/tt] will tell Composr to check for a CSRF-token if reading any POST-data; so only use this if CSRF-tokens are being set in calls to the script!)
+ - [tt]$STATIC_CACHE_ENABLED[/tt] ([tt]true[/tt] will tell Composr it can check the static cache for possible static-cached versions of the output)
+
+We do use global variables in Composr, even though many frown on them. Composr is optimised to the bone in terms of performance and code size. We have a rule that if a global variable is used in more than a few places that variable must be documented clearly within the code.
 
 [title="3"]Addons[/title]
 
-Composr is split into addons. Some addons are core, some are optional. Optional addons may be removed, and the removal results in file-deletion. Composr has inbuilt addon import and export support, that allows a user to use and distribute packaged addons for Composr.
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/2.jpg[/media]
+Composr is split into addons. Some addons are core, some are optional. Optional addons may be removed, and the removal results in file-deletion. Composr has inbuilt addon import and export support, that allows a user to use and distribute packaged addons for Composr ("non-bundled addons").
+
+Example:
+ - [b]Bundled core addon[/b] -- [tt]core_rich_media[/tt] (the implementation of Comcode, basically)
+ - [b]Bundled non-core addon[/b] -- [tt]downloads[/tt] (file publishing / document management)
+ - [b]Non-bundled addon[/b] -- [tt]facebook_support[/tt] (Login using a Facebook account, etc)
 
 Addons contain module-pages (and blocks), and it is these modules (and blocks) that define things like database structure. Actually addons may define this too directly in their registry file, but it is rare for us to do it this way. Modules (and blocks) are independently versioned, but the versions of individual modules (and blocks) are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
 
@@ -92,6 +102,7 @@ A user should upgrade an addon by installing it on top of itself. i.e. don't uni
 
 [title="4"]What is a module?[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/3.jpg[/media]
 In Composr terminology 'modules' are dynamic 'pages' .
 
 Example: [tt]index.php?page=<module_name>[/tt]
@@ -115,6 +126,7 @@ Recall that Composr zones are sub-directories of your site, which operate with d
  - Site ([tt]/site[/tt]) -- Where the majority of the Composr modules are, by default
  - CMS ([tt]/cms[/tt]) -- Where the content is managed
  - Forum ([tt]/forum[/tt]) -- Only for installations using Conversr
+A Composr site webmaster can add as many additional zones as they wish. Additionally, addons may come with zones. For example, [tt]buildr[/tt] (an online dungeon game system) comes with a [tt]buildr[/tt] zone.
 
 [title="4"]How do you create a new mini-module?[/title]
 
@@ -225,7 +237,7 @@ The [tt]run[/tt] function typically is written to do 4 things:
 1) Loads-up/records dependencies that all screens in the module use, using the [tt]require_code[/tt]/[tt]require_lang[/tt]/[tt]require_css[/tt]/[tt]require_javascript[/tt] API calls.
 2) Gets the URL parameter named [tt]type[/tt] into the variable [tt]$type[/tt], usually giving a default [tt]type[/tt] of [tt]browse[/tt] for when no [tt]type[/tt] parameter was specified. Remember that [tt]type[/tt] indicates which 'screen' the module will be outputting.
 3) Delegates to another function depending on [tt]$type[/tt].
-4) Outputs the result of the function that was delegates to, or [tt]new Tempcode()[/tt] if no delegate was found for the given [tt]type[/tt].
+4) Outputs the result of the function that was delegated to, or [tt]new Tempcode()[/tt] if no delegate was found for the given [tt]type[/tt].
 
 For example,
 [code="PHP"]
@@ -266,7 +278,8 @@ returns a mapping for two entry-points: the [tt]browse[/tt] screen (which almost
 
 [title="5"]The [tt]install[/tt] and [tt]uninstall[/tt] functions[/title]
 
-Modules are responsible for the installation, upgrading, and uninstallation of the database (and some filesystem) parts of the system that they provide screens for.
+Modules are typically responsible for the installation, upgrading, and uninstallation of the database (and some filesystem) parts of the system that they provide screens for.
+
 For example, the [tt]downloads[/tt] module sets up:
 1) database tables that relate to downloads
 2) database indexes that relate to downloads
@@ -355,7 +368,6 @@ The code in the [tt]install[/tt] function needs to analyse the parameters passed
 For a new module there is no need to consider how upgrades would happen.
 
 Your code will follow a pattern like:
-
 [code="PHP"]
 /**
  * Standard modular info function.
@@ -415,21 +427,14 @@ The following object methods are not actually called as methods, but actually as
  - [tt]get_entry_points[/tt]
  - [tt]install[/tt]
  - [tt]uninstall[/tt]
+
 This means that you cannot use [tt]$this[/tt] inside the code.
+
 Architecturally this is not ideal, but for practical reasons it was necessary because of the PHP memory limit. Upon installation, or module querying (e.g. to build the site map), instantiating all objects fully would use a lot more memory than the PHP memory limit would allow.
-
-[title="5"]Config options[/title]
-
-Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
-1) A language string codename that identifies a human-readable name for the configuration option.
-2) The codename for the configuration option.
-3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
-4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
-5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
-6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.
 
 [title="5"]Screen conventions[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/4.jpg[/media]
 Modules functionality is subdivided by 'screen'. 'Screens' are segregated by their unique expected output -- individual error messages don't run from separate screen functions, because error messages aren't expected in advance, they're incidental.
 
 As an example, if a module was designed to add a resource, it would need at least two screens:
@@ -440,6 +445,16 @@ The function names of screens do not need to mirror the names of the [tt]type[/t
 
 All modules must also define the default screen, which is almost always identified by [tt]type=browse[/tt] or by there being no [tt]type[/tt] parameter given. The role of the default screen depends on the module, but usually it either acts to display a category browser or a menu. Usually all other screens in a module will be reachable by navigating starting from the default screen of that module.
 
+[title="3"]Config options[/title]
+
+Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
+1) A language string codename that identifies a human-readable name for the configuration option.
+2) The codename for the configuration option.
+3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
+4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
+5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
+6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.
+
 [title="3"]Templates and Tempcode[/title]
 
 Composr is basically a programming language within a programming language. The outside programming language is PHP, and the inside programming language is Tempcode. Tempcode is two things:
@@ -448,7 +463,7 @@ Composr is basically a programming language within a programming language. The o
 
 Tempcode (the language) is very rich and dynamic. It is designed so that templates can be infinitely complex but so that they can be cached so that the data that goes into them does not need to be recalculated each time. This caching usually only applies to blocks -- modules generally do not employ Tempcode caching. For example, the [tt]main_multi_content[/tt] block might have been templated to look different for people in a certain usergroup, yet we also don't want to have to regenerate this block each time it is viewed. Tempcode is powerful enough to be able to represent arbitrary differences like this in a way that survives caching.
 
-Due to this requirement, Composr must not deal in string output, it has to deal in Tempcode output. All through the system Tempcode is composed together, rather than strings.
+Due to this requirement, Composr must not deal in string output, it has to deal in Tempcode output. If we flatten Tempcode down to a string we would lose the scope for dynamic calculation within it. All through the system Tempcode is composed together, rather than strings.
 
 A typical scenario for a module screen is as follows:
 [code="PHP"]
@@ -507,6 +522,25 @@ function category_screen()
 {SUBCATEGORIES}
 </ul>
 [/code]
+
+[title="4"]Tempcode (template) types[/title]
+
+Be aware that Tempcode only supports these data types as template parameters:
+ - more Tempcode
+ - strings
+ - booleans (which are converted to strings as '1' or '0', which is what Tempcode uses for its boolean logic)
+ - arrays (but only for use by special directives -- referencing an array as a normal parameter will only return its size)
+It intentionally does not support integers or floats, so these must be converted to strings manually when passed through, using [tt]strval[/tt] (machine-read integers), [tt]integer_format[/tt] (human-read integers), [tt]float_to_raw_string[/tt] (machine-read floats), or [tt]float_format[/tt] (human-read floats).
+
+[title="4"]GUIDs[/title]
+
+There is a design issue that comes to us when we design template structure... do we re-use templates so that editing is easier, load is decreased, and consistency is raised; or do we allow maximum customisation of different aspects of the system by not re-using templates?
+
+We stick to a middle ground between these extremes, and re-use templates when the usage pattern is almost identical. For example, almost all of Composr uses the same form field templates, but Wiki+ posts use different templates to forum posts. However, there are still places where we re-use templates in situations that sites may wish to develop in separate directions.
+
+Each [tt]do_template[/tt] call in Composr, which loads up a template, may pass in a parameter, [tt]_GUID[/tt]. The GUIDs may then be used by themers with tempcode directives to control what the template outputs.
+
+Don't bother manually putting in GUIDs. We have a script that auto-generates them and inserts them across the code base. We run this script before major releases.
 
 [title="3"]Making a simple two-screen full-module[/title]
 
@@ -660,17 +694,16 @@ It was ticked: {TICKED}.
 
 [title="3"]Blocks[/title]
 
-Blocks in Composr are written almost identically to modules. They may have [tt]install[/tt]/[tt]uninstall[/tt]/[tt]info[/tt] methods, which work in the same way, and a [tt]run[/tt] method.
+Blocks in Composr are written almost identically to modules. They may have [tt]install[/tt]/[tt]uninstall[/tt]/[tt]info[/tt] methods, which work in the same way, and a [tt]run[/tt] method. The similarity is not surprising given blocks function almost the same as modules -- the only difference being that blocks are embedded within wider page layout, while modules defining whole screens (excluding panels etc).
 
-The main five differences and points of note are:
-1) The run method takes a parameter, which is a map (array) of the parameters given to the block. You cannot assume any parameter is passed, so for each you must allow a default which you can hard-code into your block code. If you see existing blocks that do [tt]unset($map)[/tt] in the code that is just because that particular block does not use any parameters and we wanted the code to pass Zend's Code Analyzer with zero errors about unused variables.
+The main five implementation differences and points of note are:
+1) The run method takes a parameter, which is a map (array) of the parameters given to the block. You cannot assume any parameter is passed, so for each you must allow a default which you can hard-code into your block code.
 2) You should define a [tt]BLOCK_blockname_DESCRIPTION[/tt] and [tt]BLOCK_blockname_USE[/tt] language string for the block, to explain what it does and what it is for.
-3) The info method defines a 'parameters' entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at  how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
+3) The [tt]info[/tt] method defines a [tt]parameters[/tt] entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
 4) You can allow the block to cache by defining a [tt]caching_environment[/tt] method. This returns an array which has a [tt]ttl[/tt] (the number of minutes the cache lasts) and a [tt]cache_on[/tt] which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
 5) Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
 
 Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the Block construction assistant to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
-
 [code="INI"]
 BLOCK_TRANS_NAME_example=Example
 BLOCK_example_DESCRIPTION=An example block.
@@ -818,14 +851,24 @@ An example of some code that uses hooks is:
 [code="PHP"]
 <?php
 
-$_hooks = find_all_hooks('modules','search');
+// Find all hooks under sources[_custom]/hooks/modules/search
+$_hooks = find_all_hooks('modules', 'search');
+
+// Loop over all the hook names (we do array_keys because $_hooks is a map between names and directory name, and we only want the names)
 foreach (array_keys($_hooks) as $hook) {
+    // Load in the code for the hook.
+    // filter_naughty_harsh is just paranoid coding, in case somehow a hook name was insecure. It's not possible, but it's just good to do extra care in case of making mistakes.
     require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
 
+    // Create the object for the hook. The class name is typically Hook_<hooktype>, but it can vary between hook types
     $object = object_factory('Hook_search_' . filter_naughty_harsh($hook),true);
+
+    // Just in case the file was corrupt. We don't want corrupt hook files to completely crash us
     if (is_null($object)) {
         continue;
     }
+
+    // Call some method on the hook. What methods are available would depend on the hook type
     $info = $object->info();
     ...
 }
@@ -838,10 +881,11 @@ This code finds all modules/search hooks, then loops over the list of hook names
 4) calls the [tt]info[/tt] function on the hook, loading its results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
-This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to Composr.
+This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as custom. It is very common in the case of hooks, if you're adding a new hook to Composr, because they are a key tool in the customisation/extension of Composr.
 
-(*2) The Conversr [tt]members[/tt] module does member searching, but does not use the search hooks. This search is separate and hard-coded. There is still a search hook for member searching for the [tt]search[/tt] module to use though.
-You can generally tell what the hook is used by by it's file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the [tt]search[/tt] module.
+(*2) The Conversr [tt]members[/tt] module does member searching, but does not use the search hooks. This module's member search is separate and hard-coded. There is still a search hook for member searching for the [tt]search[/tt] module to use though.
+
+You can generally tell what the hook is used by by its file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the [tt]search[/tt] module.
 
 [title="4"]Another example: member profiles[/title]
 
@@ -861,7 +905,6 @@ foreach (array_keys($hooks) as $hook) {
 In this case you can see the code assumes the hooks have a [tt]->run[/tt] method that takes a member ID as a parameter, and returns an array. Again this is the 'contract' these hooks have to meet.
 
 Let's look at one of our hook implementations to see what code it has in it. We will look at the [tt]calendar[/tt] members hook ([tt]sources/hooks/members/calendar.php[/tt]):
-
 [code="PHP"]
 class Hook_members_calendar
 {
@@ -946,6 +989,7 @@ In Composr content types are implemented via a lot of different files. The best 
 
 [title="3"]Installation code[/title]
 
+[media description="" width="280" float="right" framed="0"]data_custom/images/docs/codebook_1/5.jpg[/media]
 In Composr we need to program modules so that they auto-create database structure and database contents. Even if working direct for a single client, it is best that modules be constructed like this as it eases development (it's easy to set up different development sites for example).
 
 If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default [tt]catalogues[/tt] module does a similar thing, with its creation of some default catalogues.
@@ -956,7 +1000,7 @@ If you find stack traces are generated by module management then some of your co
 
 When developing you'll probably want to start your development site afresh a few times to test your code in different configurations, or to wipe test data. If you develop on a server that is not reachable from the public web, you can leave the installer in place so long as you have a blank file named [tt]install_ok[/tt] in the base directory. This is better than having to move or rename the install.php file because if you do that you risk messing up its versioning, especially if you work out of a source code control system.
 
-[title="3"]Programming/programmatic-interface Coding Standards[/title]
+[title="3"]Programming/programmatic-interface Coding Standards & Testing[/title]
 
 The developers maintain a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/standards-checklist.xls[/url]. These standards used to be listed in this Code Book, but there are now too many to clearly explain here, and we needed a document we could morph and use on a routine basis for quick review.
 
@@ -984,9 +1028,15 @@ These tools may now be downloaded:
  - [url="ocProducts PHP"]{$BRAND_BASE_URL}/docs/php-5.2.4-ocproducts.zip[/url] (The source code tree for our special version of PHP -- confirmed to work on Mac and Linux; optional, but useful for auto-detecting some common development mistakes)
  - [url="ocProducts PHP, Windows build"]{$BRAND_BASE_URL}/docs/php-windows-ocproducts.zip[/url] (The Windows build of our special version of PHP -- to transplant into a vanilla PHP 5.2.4 install)
 
-[title="3"]Editing code[/title]
+[title="3"]Software for editing code[/title]
 
-We have found the best editors for Composr have been 'ConTEXT' (Windows), 'TextMate' (Mac), and 'Kate' (Linux). We also love NetBeans. Use whatever you like, but that's our personal advice.
+For coding you'll want to use either an [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym] or a text editor. IDEs are heavier but have more features.
+
+[url="PhpStorm"]https://www.jetbrains.com/phpstorm/[/url] is our official  IDE. We also love [url="NetBeans"]https://netbeans.org/[/url].
+
+We have found the best text editors for Composr have been [url="ConTEXT"]http://www.contexteditor.org/index.php[/url] (Windows), [url="TextMate"]https://macromates.com/[/url] (Mac), and 'Kate' (Linux).
+
+The above are just suggestions. Use whatever you like (within reason -- not Windows Notepad).
 
 [title="3"]Javadoc-like commenting[/title]
 
@@ -1059,29 +1109,50 @@ We don't normally bother defining a descriptions section, but I included it here
 
 [title="3"]Error handling[/title]
 
-Error handling in PHP is very inconsistent.
-
-There are four main ways to get an error message:
-1) use a [tt]*_last_error()[/tt] function
-2) check return values
-3) catch the output of a command using output buffering
-4) suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
-
-Composr will react fatally on errors unless they are suppressed. This includes PHP_NOTICE's. To suppress errors from a PHP command, put an '@' symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'deferred' rather than fatal, you can set the global SUPPRESS_ERROR_DEATH variable to 1 temporarily.
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/6.jpg[/media]
+[title="4"]Error-checking policy (automatic raising of errors)[/title]
 
 There's no need in Composr code to listen for every possible error that PHP might give back. You can use some common sense, only detecting errors that have a cause, rather than trying to detect those that can't theoretically happen. Errors that can't theoretically happen, but happen anyway, will trigger Composr's automatic error mechanism and we can then deal with them as they come up.
+
 For example:
  - File permissions may always be wrong, so we should check return values / suppress and handle write-errors.
  - We can assume things like critical Composr directories are present, such as [tt]sources[/tt]
  - We can't assume non-standard directories like 'lang/FR' are present, so we must either add some conditional logic, or cleanly handle the error event in an appropriate way (in this case perhaps explaining to the user that 'The French language pack is not installed').
 
-[title="3"]Escaping[/title]
+[title="4"]Supressing errors[/title]
+
+Composr will react fatally on most errors unless they are suppressed. This includes [tt]PHP_NOTICE[/tt]s. To suppress errors from a PHP command, put an [tt]@[/tt] symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'deferred' rather than fatal, you can set the global [tt]SUPPRESS_ERROR_DEATH[/tt] variable to [tt]true[/tt] temporarily.
+
+[title="4"]Manually raising errors / showing messages[/title]
+
+To raise an error you'll typically call one of these functions:.
+ - [tt]inform_exit[/tt] -- not actually an error, but exit with a message.
+ - [tt]warn_exit[/tt] -- normal error situation, inform the user.
+ - [tt]fatal_exit[/tt] -- some kind of particularly unexpected/egregious error, that needs to come with a stack track.
+ - [tt]attach_message[/tt] -- an error is shown in the global layout, processing otherwise continues as normal. You can generate [tt]inform[/tt]/[tt]notice[/tt]/[tt]warn[/tt] messages.
+
+[title="4"]Getting error messages[/title]
+
+Error handling in PHP is very inconsistent.
+
+This section does not directly/specially relate to Composr, but we thought we would add it to help new PHP programmers. Generally we deal with what we need to, in the way we need to, within the Composr framework -- and you need to do whatever you need to do for PHP within your own code.
+
+There are 5 main ways to get an error message in PHP:
+1) use a [tt]*_last_error()[/tt] function
+2) check return values
+3) catch the echoed output of a command using output buffering
+4) suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
+5) catch exceptions (newer PHP features only)
+
+[title="3"]Security[/title]
+
+[title="4"]Escaping[/title]
 
 A source of great confusion in programming is all the different kinds of 'escaping' that occur. Because the web is a great fusion of technologies, all kinds of things operate together with their own encodings, and when lumped together, it can be a mess unless you truly understand it all. And understanding escaping is the key to secure and robust coding.
 
 Therefore I will summarise the kinds of escaping here...
 
-[title="4"]JavaScript/PHP escaping[/title]
+[title="5"]JavaScript/PHP escaping[/title]
 
 If you want to output a string in JavaScript/PHP that contains quotes, you need to prefix the quote with a '\' symbol. The same applies for '\' symbols themselves. The reason for this is because strings themselves are bounded by these quotes and hence to actually use these quotes within these quotes they need to be distinguished. This convention was taken from C and is used in many languages.
 For example,
@@ -1090,13 +1161,13 @@ echo 'Hello \'reader\'';
 [/code]
 would output, Hello 'reader'.
 
-[title="4"]SQL string escaping[/title]
+[title="5"]SQL string escaping[/title]
 
 SQL encloses string values for fields inside quotes, which presents the same issue PHP had. With Composr coding the [tt]db_escape_string[/tt] function abstracts the process of SQL escaping. Any manually assembled queries should be assembled very carefully using db_escape_string (to escape strings) and intval (to enforce integers not to contain string data).
 
 SQL escaping is key to PHP security, as it prevents data leaking out into the query itself, which could potentially allow users to rewrite the query to a malicious form.
 
-[title="4"]HTML escaping[/title]
+[title="5"]HTML escaping[/title]
 
 HTML uses the characters < > " ' and & with special meaning: they help define the HTML tags themselves. Thus if these symbols need to be referred to directly, things called 'entities' are employed instead. Entities are a special HTML syntax that encode characters which the standard character set, or the natural of HTML, would normally preclude from use.
 
@@ -1112,12 +1183,13 @@ Composr has the means to perform escaping of template parameters, so if you pass
 
 Escaping all data embedded in HTML is a key part of security.
 
-[title="4"]URL parameter escaping[/title]
+[title="5"]URL parameter escaping[/title]
 
 Parameters in URLs are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, among many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]window.encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
 
-[title="3"]Security[/title]
+[title="4"]Vulnerability types[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/7.jpg[/media]
 Security is treated very seriously by the developers. We have implemented a number of abstractions and policies to keep Composr as secure as possible and it is crucial that developers understand security issues and our policies.
 
 Even admin-only sections should not have unintended exploitable behaviour. If a user is hosted in a restricted Composr-only environment, their software should not allow circumvention of current environment. Also, if a user exploits their way into somewhere they shouldn't be, it is best that that somewhere shouldn't allow them to exploit themselves into somewhere even worse... for example, if Composr's Admin Zone gets hacked, a user should not be able to get full PHP code execution access on a hosting account.
@@ -1149,6 +1221,7 @@ Another common logic error is passing in secondary ID values from a form, for ed
 
 Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/8.jpg[/media]
 XSS is short-hand for "cross-site-scripting", and essentially poisons a user's HTML output. There are two common ways this can occur:
 1) through URLs
 2) through submitted data
@@ -1188,6 +1261,44 @@ This code would allow any user to inject malicious PHP code into the [tt]image_i
 
 On a similar note, when using user-input with the PHP [tt]preg_replace[/tt] function, always make sure that it is properly escaped, as the [tt]preg_replace[/tt] function can actually do arbitrary code execution if input is not properly escaped.
 
+[title="4"]Kid-gloves modes[/title]
+
+It's a fact of life that novice coders don't know how to write secure code, and it's also a fact of life novice developers will be expected to write real-world production code. Composr contains many security features and abstractions to protect common types of vulnerability, however there are also additional protections included for novice developers.
+The additional protections may slow performance slightly, or cause some slight weird processing issues in rare events, but generally won't cause any problems. The protections automatically enable for any block or module in a [tt]*_custom[/tt] directory.
+The protections may be turned off by a code call like:
+[code="PHP"]
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+[/code]
+This call serves philosophically as a self-certification, and practically turns off the kid-glove mode features related to what the developer is certifying against.
+This way Composr has the best of both worlds:
+ - Experienced developers who write logical and correct code will not have to fight the system for rare corner case bugs that look like they could possibly be security-related.
+ - Newbie developers will be protected for the vast majority of cases.
+
+Saying [tt]I_UNDERSTAND_SQL_INJECTION[/tt] disables extra scanning of queries to ensure they are always made in the most secure way and that custom data within the queries is correctly escaped. The scanning slightly impacts performance.
+Saying [tt]I_UNDERSTAND_XSS[/tt] disables automatic escaping of template parameters and language string parameters (which can result in accidental double-escaping in output) and any input parameters that make it into the output of a mini-module/mini-block.
+Saying [tt]I_UNDERSTAND_PATH_INJECTION[/tt] disables hack-attack errors from being generated if any URL parameter has ".." or null bytes in it.
+
+[title="4"]Input sanitisation, the right way[/title]
+
+Sanitising input is almost trivial in Composr. Just use the most appropriate reader function and Composr will then apply appropriate checking/filtering for you.
+Reader functions include:
+ - [tt]get_param_string[/tt] -- reading in a string from GET (i.e. the URL)
+ - [tt]get_param_integer[/tt] -- reading in an integer from GET (i.e. the URL)
+ - [tt]post_param_string[/tt] -- reading in a string from POST (i.e. a form)
+ - [tt]post_param_integer[/tt] -- reading in an integer from POST (i.e. a form)
+
+We also some separate security functions for preventing things like filesystem attacks, or basic conformance checking:
+ - [tt]filter_naughty[/tt] -- make sure no file paths are in something that will be used as a path component
+ - [tt]filter_naughty_harsh[/tt] -- make sure something is strictly alphanumeric
+ - [tt]is_alphanumeric[/tt] -- an alphanumeric test that doesn't result in bail-out if failed
+ - [tt]is_email_address[/tt] -- an e-mail address sanitisation check (valid syntax, does not check if it is real, although [tt]is_mail_bounced[/tt] can help find if an e-mail address has bounced in the past)
+
+For database queries (i.e. to avoid SQL injection) use the simplified database APIs wherever appropriate, [tt]query_select[/tt] for example.
+
+To avoid XSS attacks ensure you use the correct logical escaping in the templates. For example, plain text used in an HTML context would be escaping like [tt]{EXAMPLE*}[/tt] (i.e. with the asterisk).
+
+CSRF attacks are already avoided via a form token system and referral checking system.
+
 [title="3"]Stability[/title]
 
 There are many important programming considerations that need to be applied in most projects, including Composr. This section discussions some of them:
@@ -1199,6 +1310,7 @@ There are many important programming considerations that need to be applied in m
 
 [title="3"]Type strictness[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/codebook_1/1.jpg[/media]
 Type strictness comes naturally in most traditional programming languages, but languages like PHP and JavaScript are 'weak typed' and automatically perform conversions on the fly. For simple systems this is good as it makes things quicker and easier, but for complex systems like Composr it poses a problem.
 
 As a strict rule we always use strict typing. The custom version of PHP the developers use enforces this.
@@ -1227,11 +1339,11 @@ foreach ($values as $x) {
 This is a perfect example of how nasty PHP can be in the wrong hands, as "Value is false" is written out four times (each time).
 
 For Composr we would expect the following:
- - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt].
- - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]is_null($something)[/tt].
+ - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt] or [tt]$something === null[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt].
+ - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]is_null($something)[/tt] or [tt]$something === null[/tt].
  - Don't use [tt]isset[/tt] unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element, $array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
- - Similar to the above, don't use [tt]empty[/tt].
- - If you have a variable that really is mixed type (like [tt]$x[/tt] in this example) and you need to do a boolean check just for the case it is a boolean variable, do either [tt]is_bool($x) && (!$x)[/tt] or [tt]$x===false[/tt].
+ - If you have a variable that really is mixed type (like [tt]$x[/tt] in this example) and you need to do a boolean check just for the case it is a boolean variable, do either [tt]is_bool($x) && (!$x)[/tt] or [tt]$x === false[/tt].
+ - Don't use Tempcode objects as strings. These are not strings, and shouldn't be used as strings unless you do something like [tt]$string = $tempcode->evaluate();[/tt] to get the string equivalent first. It does actually work, due to [tt]__toString[/tt] being implemented on the Tempcode object, but it makes the code harder to analyse.
 
 [title="4"]Example strict-typing mistakes[/title]
 
@@ -1288,73 +1400,5 @@ This is a good example of why type strictness is important to us. This will crea
 [code="PHP"]
 $secondary_groups = array_map('intval', explode(',', $row['additionalGroups']));
 [/code]
-
-[title="3"]Tempcode (template) types[/title]
-
-Be aware that Tempcode only supports these data types as template parameters:
- - more Tempcode
- - strings
- - booleans (which are converted to strings as '1' or '0', which is what Tempcode uses for its boolean logic)
- - arrays (but only for use by special directives -- referencing an array as a normal parameter will only return its size)
-It intentionally does not support integers or floats, so these must be converted to strings manually when passed through, using [tt]strval[/tt] (machine-read integers), [tt]integer_format[/tt] (human-read integers), [tt]float_to_raw_string[/tt] (machine-read floats), or [tt]float_format[/tt] (human-read floats).
-
-[title="3"]Do-next-manager interfaces[/title]
-
-A 'do-next-manager' is a special navigation interface in Composr that is used in two roles:
-1) What the user wants to do next. These are often shown after an administrative/content-management action is performed.
-2) Where to go. These are used for browsing through the Admin and CMS zone interfaces.
-
-The do-next-manager provides a full-screen choice of options, laying out those options with icons.
-
-The do-next-browser is called up by passing in an array of lines. Here is an example of a simplified call to one (the [tt]do_lang[/tt] lookups have been removed -- this is hard-coded as English for simplicity):
-[code="PHP"]
-return do_next_manager(
-	get_page_title('Page Title'),
-	make_string_tempcode('Text to show on the page'),
-	array(
-		...
-		array(
-			'blog_icon',
-			array('cms_news',array('type' => 'add'), 'cms'),
-			'Add a blog entry',
-			'Blah blah this text is hovered'
-		),
-		...
-	)
-);
-[/code]
-
-Going from top to bottom:
- - the icon theme image name
- - the page name (cms_news)
- - the list of URL parameters (in this case, one: [tt]type[/tt] as [tt]add[/tt])
- - the zone ([tt]cms[/tt])
- - the link caption
- - the hover text
-
-To place a new item into the Admin Zone or CMS "Where to go" menus, create a new hook file in [tt]sources/hooks/systems/page_groupings[/tt]. The syntax is essentially as above, and there are plenty of existing files to use as examples.
-
-[title="3"]The translation table[/title]
-
-If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submittable text) are stored in the [tt]translate[/tt] table. There are two reasons for this:
-1) It can be used to store parsed Comcode as Tempcode format, effectively a cache
-2) Composr's API supports multi-language websites in the truest sense. Meaning that potentially, translated versions of virtually any content can be supplied for visitors. As of version 4.2 this is fully supported.
-
-All translatable attributes in Composr are given priorities. The scheme for these priorities at the time of writing are as follows...
-1) absolutely crucial and permanent/featured
-2) pretty noticeable: titles, descriptions of very-important
-3) full body descriptions
-4) for individual members, or very low level
-These priorities are intended to be reflected in the content translation interface, with "yet untranslated" text strings being ordered by priority.
-
-[title="3"]GUIDs[/title]
-
-There is a design issue that comes to us when we design template structure... do we re-use templates so that editing is easier, load is decreased, and consistency is raised; or do we allow maximum customisation of different aspects of the system by not re-using templates?
-
-We stick to a middle ground between these extremes, and re-use templates when the usage pattern is almost identical. For example, almost all of Composr uses the same form field templates, but Wiki+ posts use different templates to forum posts. However, there are still places where we re-use templates in situations that sites may wish to develop in separate directions.
-
-Each [tt]do_template[/tt] call in Composr, which loads up a template, passes in a parameter, [tt]_GUID[/tt]. The GUIDs may then be used by themers with tempcode directives to control what the template outputs.
-
-Don't bother manually putting in GUIDs. We have a script that auto-generates them and inserts them across the code base. We run this script before major releases.
 
 {$SET,tutorial_tags,Development,PHP,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Back-end development, part 1.}[block]main_tutorial_rating[/block]

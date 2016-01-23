@@ -1,11 +1,13 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/*EXTRA FUNCTIONS: ftp_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -384,13 +386,13 @@ function step_1()
     // Some checks relating to installation permissions
     global $FILE_ARRAY;
     if (!@is_array($FILE_ARRAY)) { // Talk about manual permission setting a bit
-        if ((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
+        if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('SUEXEC_SERVER'))));
         } elseif (is_writable_wrap(get_file_base() . '/install.php')) {
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!function_exists('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -802,7 +804,7 @@ function step_4()
 
     // Detect FTP settings
 
-    if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+    if (php_function_allowed('posix_getpwuid')) {
         $u_info = posix_getpwuid(fileowner(get_file_base() . '/install.php'));
         if ($u_info !== false) {
             $ftp_username = $u_info['name'];
@@ -877,7 +879,6 @@ function step_4()
 
     // Database settings for forum (if applicable)
 
-    $hidden = new Tempcode();
     $forum_text = new Tempcode();
     if (($forum_type == 'cns') || ($forum_type == 'none')) {
         $forum_title = do_lang_tempcode('MEMBER_SETTINGS');
@@ -1039,8 +1040,8 @@ function step_5()
         exit(do_lang('INST_POST_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     $url = 'install.php?step=6';
@@ -1225,7 +1226,7 @@ function step_5()
         $log->attach(step_5_core_2());
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9', 'PREVIOUS_STEP' => '4', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9', 'PREVIOUS_STEP' => '4', 'CURRENT_STEP' => '5', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -1710,7 +1711,9 @@ if (!function_exists(\'git_repos\')) {
     }
 
     // Derive a random session cookie name, to stop conflicts between sites
-    fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+    if (!isset($_POST['session_cookie'])) {
+        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+    }
 
     // On the live GAE, we need to switch in different settings to the local dev server
     if (GOOGLE_APPENGINE) {
@@ -1926,7 +1929,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('attachments', array(
         'id' => '*AUTO',
         'a_member_id' => 'MEMBER',
-        'a_file_size' => '?INTEGER', // NULL means non-local. Doesn't count to quota
+        'a_file_size' => '?INTEGER', // null means non-local. Doesn't count to quota
         'a_url' => 'SHORT_TEXT',
         'a_description' => 'SHORT_TEXT',
         'a_thumb_url' => 'SHORT_TEXT',
@@ -1970,7 +1973,7 @@ function step_5_core_2()
 
     // Create default zones
     require_lang('zones');
-    $trans1 = insert_lang('zone_header_text', do_lang('A_SITE_ABOUT', '???'), 1, null, false, null, $INSTALL_LANG);
+    $trans1 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
     $h1 = insert_lang('zone_title', do_lang('_WELCOME'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => '', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans1 + $h1);
     $trans2 = insert_lang('zone_header_text', do_lang('HEADER_TEXT_ADMINZONE'), 1, null, false, null, $INSTALL_LANG);
@@ -1981,12 +1984,17 @@ function step_5_core_2()
         $h3 = insert_lang('zone_title', do_lang('COLLABORATION'), 1, null, false, null, $INSTALL_LANG);
         $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'collaboration', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans3 + $h3);
     }
-    $trans4 = insert_lang('zone_header_text', do_lang('A_SITE_ABOUT', '???'), 1, null, false, null, $INSTALL_LANG);
+    $trans4 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
     $h4 = insert_lang('zone_title', do_lang('SITE'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'site', 'zone_default_page' => 'start', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans4 + $h4);
     $trans5 = insert_lang('zone_header_text', do_lang('CMS'), 1, null, false, null, $INSTALL_LANG);
     $h5 = insert_lang('zone_title', do_lang('CMS'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'cms', 'zone_default_page' => 'cms', 'zone_theme' => 'admin', 'zone_require_session' => 1) + $trans5 + $h5);
+    if (file_exists(get_file_base() . '/docs')) { // installing from git
+        $trans6 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
+        $h6 = insert_lang('zone_title', do_lang('TUTORIALS'), 1, null, false, null, $INSTALL_LANG);
+        $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'docs', 'zone_default_page' => 'tutorials', 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans6 + $h6);
+    }
 
     // Forums
     $forum_type = post_param_string('forum_type');
@@ -2078,8 +2086,8 @@ function step_5_core_2()
  */
 function step_6()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2105,7 +2113,7 @@ function step_6()
     install_cns();
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'f268a7e03ca5b06ed9f62b29b1357d25', 'SOMETHING' => do_lang_tempcode('INSTALLED_CNS'))));
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '450f62a4664c67b6780228781218a8f2', 'PREVIOUS_STEP' => '5', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '450f62a4664c67b6780228781218a8f2', 'PREVIOUS_STEP' => '5', 'CURRENT_STEP' => '6', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2113,8 +2121,8 @@ function step_6()
  */
 function big_installation_common()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(180);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2195,7 +2203,7 @@ function step_7()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'CURRENT_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2221,7 +2229,7 @@ function step_8()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'CURRENT_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2261,7 +2269,7 @@ function step_9()
         $url .= '&keep_safe_mode=1';
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'CURRENT_STEP' => '9', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
 
 /**
@@ -2296,7 +2304,7 @@ function step_10()
         closedir($_dir);
     }
 
-    return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'FINAL' => $final, 'LOG' => $log));
+    return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'CURRENT_STEP' => '10', 'FINAL' => $final, 'LOG' => $log));
 }
 
 /**
@@ -2365,7 +2373,7 @@ function step_10_forum_stuff()
  */
 function require_code($codename)
 {
-    if ($codename == 'mail') {
+    if ($codename == 'mail' || $codename == 'failure') {
         return;
     }
 
@@ -2375,10 +2383,8 @@ function require_code($codename)
     }
 
     if (!array_key_exists('type', $_GET)) {
-        if (function_exists('memory_get_usage')) {
-            $prior = memory_get_usage();
-            echo '<!-- Memory: ' . number_format(memory_get_usage()) . ' -->' . "\n";
-        }
+        $prior = memory_get_usage();
+        echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n";
         echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
         flush();
     }
@@ -2410,9 +2416,7 @@ function require_code($codename)
         }
     }
     /*if (!array_key_exists('type', $_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
-        if (function_exists('memory_get_usage')) {
-            echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
-        }
+        echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
     }*/
 }
 

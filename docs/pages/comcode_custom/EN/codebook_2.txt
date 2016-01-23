@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 2[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 2 (Front-end)[/title]
 
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
@@ -26,9 +26,9 @@ The following language strings from [tt]global.ini[/tt] and [tt]critical_errors.
 
 [title="3"]Templates and themes[/title]
 
-Template files are stored in a raw format, and are defined with the standard 'override system' of Composr; as well as this, though, a theme only has to define those templates and css files which have been changed from the [tt]default[/tt] theme. Search, parsing, and applying linguistic translation, to templates like this would not be efficient, so Composr compiles the templates upon first-use (unless this option is disabled).
+Template files are stored on disk, and are defined with the standard "override system" of Composr; as well as this, though, a theme only has to define those templates and CSS files which have been changed from the [tt]default[/tt] theme. Search, parsing, and applying linguistic translation, to templates like this would not be efficient, so Composr compiles the templates upon first-use.
 
-The ultimate compilation target for templates is 'serialised tempcode'; if the template is cached as this, it will be loaded direct into memory, and it will be bound to the parameters of the template (for example, a download box template might take the download name and URL as parameters).
+The ultimate compilation target for templates is "serialised tempcode"; if the template is cached as this, it will be loaded directly into memory, and it will then be bound with the parameters of the template (for example, a download box template might take the download name and URL as parameters).
 
 Tempcode is Composr's template programming language. On the simplest level, it provides a substitution mechanism so that parameters and global symbols (like the current user's username, or the time) can be inserted into a template. It also serves as a complete programming language with a powerful set of control mechanisms.
 
@@ -37,9 +37,9 @@ Tempcode is Composr's template programming language. On the simplest level, it p
 The syntax for Tempcode (the Composr language used for controlling template output) has the following basic syntax:
  - [tt]{X}[/tt] means "Insert parameter X" (parameters are essentially variables which are passed into the template by the PHP code).
  - [tt]{!X}[/tt] means "Insert language string X".
- - [tt]{!X,BLAH}[/tt] means "Insert language element X with parameter BLAH". BLAH will usually be a parameter itself, so it might look like: [tt]{!X,BLAH,{SOME_PARAM}}[/tt]. (often language strings will have a place for such a parameter, for instance: [tt]A_SITE_ABOUT=A site about {1}[/tt])
- - [tt]{$X}[/tt] means "Insert symbol X". The symbols are not PHP variables (although the syntax is similar, because it is a similar concept). An example of a symbol is 'BASE_URL' (so to use this write [tt]{$BASE_URL}[/tt]). Symbols can also be used to perform functions, such as equality checks.
- - [tt]{+START,BLAH}...{+END}[/tt] means "Wrap (...) with a directive named BLAH". A directive can be anything that does something to the code it wraps. There are a number of directives that you may use, including output filters such as 'IF', loops, and boxes.
+ - [tt]{!X,BLAH}[/tt] means "Insert language element X with parameter BLAH". BLAH will usually be a parameter itself, so it might look like: [tt]{!X,BLAH,{SOME_PARAM}}[/tt]. (often language strings will have a place for such a parameter, for instance: [tt]SUBMITTED_BY=Submitted by {1}[/tt])
+ - [tt]{$X}[/tt] means "Insert symbol X". The symbols are not PHP variables (although the syntax is similar, because it is a similar concept). An example of a symbol is [tt]BASE_URL[/tt] (so to use this write [tt]{$BASE_URL}[/tt]). Symbols can also be used to perform functions, such as equality checks.
+ - [tt]{+START,BLAH}...{+END}[/tt] means "Wrap (...) with a directive named BLAH". A directive can be anything that does something to the code it wraps. There are a number of directives that you may use, including output filters such as [tt]IF[/tt], loops, and boxes.
 
 A full description of the Tempcode language is available in the [page="docs:tut_tempcode"]Tempcode programming[/page] tutorial. Read the Escaping section careful because it is extremely important for security.
 
@@ -86,26 +86,25 @@ If you are adding features to the standard Composr, you must make use of Theme W
 
 [title="3"]PNG images[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_2/png.png[/media]
 As a standard Composr uses 32-bit PNG files over other image types, unless:
  - animation is required ([tt].gif[/tt] used instead)
- - background image transparency is required (8-bit [tt].png[/tt] used instead)
- - where the image needs to be given a size different to its natural dimensions ([tt].gif[/tt] used instead)
 
-We use PNG files as they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
+We use PNG files because they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
 
 GIF files are:
  - limited to 256 colours
  - only have "binary transparency". so for smooth blending the image itself needs to be "pre-compiled" against the background colour of your website (which may be edited in the CSS, or be different in different areas of the site, so you really don't want pre-compilation assumptions).
- - can not be created by most versions of PHP, which rules out the Composr Theme Wizard from being able to modify them
+ - can not be created by some versions of PHP, which rules out the Composr Theme Wizard from being able to modify them
 
 JPEG files do not support transparency, and as we prefer to not assume any particular image won't be edited to have transparency, we opt to not use them. Also JPEG has serious problems when images are re-saved, which is a standard event when editing default images. Otherwise we acknowledge JPEG provides superior compression in most normal circumstances.
 
-Besides the lack of animation, there is one further problem with PNG images -- various web browsers, including Microsoft Edge and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called PNGGauntlet (for Windows; use OptiPNG on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
+Besides the lack of animation, there is one further problem with PNG images -- various web browsers, including Microsoft Edge and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called [url="PNGGauntlet"]http://pnggauntlet.com/[/url] (for Windows; use [url="OptiPNG"]http://optipng.sourceforge.net/[/url] on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
  - Backup your images, just in case something goes wrong.
  - Download PNGGauntlet and run it. Select RGB+Alpha as the output type, and minimise depth reduction. Do not preserve gamma information.
- - Tick (check) the 'Overwrite Original Files' checkbox.
+ - Tick (check) the "Overwrite Original Files" checkbox.
  - In the file selection dialogue, choose to only show PNG files. We should ONLY be optimising these, otherwise PNGGauntlet will convert any GIFs and JPEGs to PNGs.
- - Start optimi[sz]ing. Choose your files. You must do the optimisation one directory at a time because PNGGauntlet will erase the task list each time you click 'Choose files to optimize'.
+ - Start optimi[sz]ing. Choose your files. You must do the optimisation one directory at a time because PNGGauntlet will erase the task list each time you click "Choose files to optimize".
  - Once done, you may need to tell Windows to reset the permissions in the images folder from that of the parent folder (because PNGGauntlet will copy the compressed image in from a temp dir, with the permissions of that temp dir). If you don't do this, you may find you get a permission denied when viewing the images and lots of red crosses.
 
 [title="3"]JavaScript[/title]
@@ -114,13 +113,13 @@ JavaScript is separate from Java, and built into web browsers directly. It is us
 
 [title="3"]JavaScript libraries[/title]
 
-Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files that each begin with the name 'JAVASCRIPT'. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules -- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the [tt]chat[/tt] module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
+Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files in the [tt]javascript[_custom][/tt] template directory. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules -- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the [tt]chat[/tt] module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
 1) [tt]ajax[/tt] -- AJAX call functionality, which should be used for all AJAX code.
 2) [tt]dragdrop[/tt] -- A drag and drop library (do not use this unless drag & drop really is the best way to build an interface, which is very rare)
 3) [tt]jquery[/tt] -- Bundled jQuery library, used on some screens (but not usually included as a cross-site dependency).
 4) [tt]transitions[/tt] -- Provide various transition/animation effects.
 
-To flag a javascript file to be loaded up, use the [tt]require_javascript[/tt] API command in the PHP code. For example, if you wanted to load up the JavaScript defined in an 'example.js' template, use:
+To flag a javascript file to be loaded up, use the [tt]require_javascript[/tt] API command in the PHP code. For example, if you wanted to load up the JavaScript defined in an [tt]example.js[/tt] template, use:
 [code="PHP"]
 require_javascript('example');
 [/code]
@@ -183,14 +182,14 @@ You should use 'CDATA' for your [tt]<script>[/tt] tag, like:
 
 It is important that:
 [list]
-[*]You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
-[*]You should actually use CDATA so the document does conform as XHTML.
-[*]You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
-[*]Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
+[*] You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
+[*] You should actually use CDATA so the document does conform as XHTML.
+[*] You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
+[*] Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
 [code="JavaScript"]
 add_event_listener_abstract(window,'load',function() { ... });
 [/code]
-[*]This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
+[*] This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
 [/list]
 
 [title="4"]Example: mixing event handlers, inline JavaScript, and a library[/title]
@@ -237,36 +236,70 @@ function output_my_parameter(message)
 
 [title="3"]Writing AJAX functionality[/title]
 
+AJAX requests allow dynamic updating of webpages by making calls to the web server during the viewing of a web page.
+
+AJAX requests can be either synchronous or asynchronous. A synchronous request runs linearly: JavaScript makes the call and then the browser will wait for the response before resuming execution. An asynchronous request involves a later (at an unknown point) 'call back' to a response handler (the "method") that we would write specially. Technically a synchronous-AJAX request is a contradiction (the 'A' in AJAX means 'asynchronous'), but the way people use the term AJAX means it's best we not worry about this. It's rare for us to use synchronous requests as it can make the browser freeze while it waits.
+
+[title="4"]Detailed steps for writing code involving AJAX[/title]
+
+[list="1"]
+[*] [b]Write normal Composr screen[/b]:
+
+We'll assume you already have some working PHP code that calls a template.
+
+[*] [b]Load Composr JavaScript library from your PHP code[/b]:
+
 For adding AJAX functionality, we can use the functions defined in the [tt]ajax.js[/tt] template (in particular, [tt]do_ajax_request[/tt]). For using those functions, we should include [tt]ajax[/tt] as a JavaScript dependency using this PHP code:
 [code="PHP"]
 require_javascript('ajax');
 [/code]
 
-Also we need our own JavaScript template file to implement our AJAX-tied behaviour, because the code is probably going to be too long to include in-line with the HTML. For example, create a new file named [tt]example.js[/tt], which would be loaded up from PHP code by:
+[*] [b]Write custom JavaScript code[/b]:
+
+We need our own JavaScript template file to implement our AJAX-tied behaviour, because the code is probably going to be too long to include in-line with the HTML. For our purposes we'll decide it is a JavaScript template named [tt]example.js[/tt].
+
+In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
+
+[*] [b]Load custom JavaScript code[/b]:
+
+Our JavaScript code must be loaded up from the PHP code by:
 [code="PHP"]
 require_javascript('example');
 [/code]
 
-AJAX requests can be either synchronous or asynchronous. A synchronous request runs linearly: JavaScript makes the call and then the browser will wait for the response before resuming execution. An asynchronous request involves a later (at an unknown point) 'call back' to a response handler (the "method") that we would write specially. Technically a synchronous-AJAX request is a contradiction (the 'A' in AJAX means 'asynchronous'), but the way people use the term AJAX means it's best we not worry about this. It's rare for us to use synchronous requests as it can make the browser freeze while it waits.
+[*] [b]Write entry-point script[/b]:
 
-In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
+To handle the AJAX request on the server-side we will need to call a new entry-point script. We'll place in the [tt]data/[/tt] folder -- or, if you are writing third-party functionality, it should go into [tt]data_custom/[/tt] instead.
 
-To handle the AJAX request on the server-side we will need to call a new entry-point script that we'll place in the [tt]data[/tt] folder; so we make a URL to this script, and of course we also need to write it.
-In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that will contain a new PHP function to implement our server-side behaviour and then call that function (and nothing else). It is a Composr convention to define this function in [tt]sources/ajax.php[/tt], but we don't have to (and shouldn't if it's not a very core AJAX function to Composr). Remember if you are writing third-party functionality it should go into a file under [tt]sources_custom/[/tt] instead.
+In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that will contain a new PHP function to implement our server-side handler code, and then call that function (and nothing else). We'll describe that in the next step.
 
 Note that the Composr entry-point script code is 99% boilerplate. Only the final few lines are customised, the rest is copy&pasted.
 
-Don't try and omit making an entry-point script and call index.php instead, because you really do not want all the peripheral implications of a full page load (zone permissions, global HTML wrapper, etc). In other words, you are not going through a zone, you are not using the [tt]do_site[/tt] methodology of loading up a Composr page.
+[box="Use entry-point scripts properly"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
+Don't try and omit making an entry-point script by calling [tt]index.php[/tt] directly.
 
-Our PHP function should return a response in XML (i.e. XML format, with a [tt]text/xml[/tt] mime type) or for the very simplest use-cases in text format (i.e. with a [tt]text/plain[/tt] mime type). In other words, run the correct [tt]header[/tt] command before anything else. You can only return XHTML if you do it under an [tt]text/plain[/tt] mime type. The only time in which XHTML is returned with a [tt]text/html[/tt] mime type is if there was some kind of error and Composr outputs an error screen, in which case it would be automatically accompanied with an HTTP status code of '500', and any non-200 status code would prompt the AJAX framework to put out an error message. If you are writing your own webmaster-friendly error handling then you should put out errors in the XML frame Composr uses (described below), or you should encode your own error passing system into the pay-load data.
+You really do not want all the peripheral implications of a full page load (zone permissions, global HTML wrapper, etc). In other words, you are not going through a zone, you are not using the [tt]do_site[/tt] methodology of loading up a Composr page.
+[/box]
+
+[*] [b]Write server-side handler code[/b]:
+
+It is a Composr convention to define our server-side handler function in [tt]sources/ajax.php[/tt], but we don't have to (and shouldn't if it's not a very core AJAX function to Composr). Remember if you are writing third-party functionality it should go into a file under [tt]sources_custom/[/tt] instead.
+
+Our PHP function should return a response in XML (i.e. XML format, with a [tt]text/xml[/tt] mime type) -- or, for the very simplest use-cases, in text format (i.e. with a [tt]text/plain[/tt] mime type). In other words, run the correct [tt]header[/tt] command before anything else. You can only return XHTML if you do it under an [tt]text/plain[/tt] mime type.
 
 Note that you must use XML format in any of these situations:
  - You need to implement error handling and just returning a blank response upon some kind of known error would be insufficient.
  - You need to return structured data.
 If in doubt, use XML.
 
-The XML frame you should output from PHP should be structured as follows:
+[box="Returning errors"]
+The only time in which XHTML is returned with a [tt]text/html[/tt] mime type is if there was some kind of error and Composr outputs an error screen, in which case it would be automatically accompanied with an HTTP status code of '500', and any non-200 status code would prompt the AJAX framework to put out an error message.
 
+If you are writing your own webmaster-friendly error handling then you should put out errors in the XML frame Composr uses (described below), or you should encode your own error passing system into the pay-load data.
+[/box]
+
+The XML frame you should output from PHP should be structured as follows:
 [code="XML"]
 <?xml version="1.0" encoding="charset"?>
 <request>
@@ -298,6 +331,7 @@ $out->evaluate_echo();
 echo xmlentities($out);
 echo '</result></request>';
 [/code]
+[/list]
 
 Once the server has returned a result to the client, it will be processed for handling.
  - For synchronous requests, the result object is returned from [tt]do_ajax_request[/tt] linearly (asynchronous requests will return nothing from [tt]do_ajax_request[/tt]). Code may then use the [tt]responseText[/tt] and [tt]responseXML[/tt] properties of this as required.
@@ -309,9 +343,16 @@ Example:
  - Data file -- [tt]data/namelike.php[/tt] (calls [tt]namelike_script()[/tt] defined in [tt]sources/ajax.php[/tt])
  - Ajax php script -- [tt]source/ajax.php[/tt]
 
-Tip: If you develop on Firefox and have the Firebug addon installed, leave Firebug open when testing AJAX, as all the requests will come up in the Firebug console, and you can review them there to debug any server-side issues.
+[box="Debugging"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+Modern web browsers have excellent debugging capabilities for AJAX.
 
-[b]Advanced tip[/b]: You can either pass a function to the [tt]do_ajax_request[/tt] function as your method, or you can pass an object that has a [tt]response[/tt] function in it. The latter is useful if you want to make your response a neat part of an OOP approach.
+You can open up development tools and inspect the requests and responses of all AJAX requests that are happening.
+[/box]
+
+[title="4"]Object-based callbacks (advanced)[/title]
+
+You can either pass a function to the [tt]do_ajax_request[/tt] function as your method, or you can pass an object that has a [tt]response[/tt] function in it. The latter is useful if you want to make your response a neat part of an OOP approach.
 
 [title="3"]Boxes[/title]
 
@@ -344,7 +385,7 @@ Box templates are used on category listings, previews, search results, and when 
 
 [title="4"]Category listings[/title]
 
-As mentioned in the section above, category listings consist of a run of boxes. Composr has a standard block for displaying runs of boxes, the [tt]main_multi_content[/tt] block. Where possible the module category listing screens will simply glue themselves to an appropriate call to that block with minimal other code (code for breadcrumbs, loading up meta-data, checking permissions, providing a wrapper template, etc).
+As mentioned in the section above, category listings consist of a run of boxes. Composr has a standard block for displaying runs of boxes, the [tt]main_multi_content[/tt] block. Where possible the module category listing screens will simply glue themselves to an appropriate call to that block with minimal other code (code for breadcrumbs, loading up metadata, checking permissions, providing a wrapper template, etc).
 
 By gluing listings to a block, pagination can work via AJAX because a block is defined neatly as an autonomous region of a page. It also saves lots of code duplication -- we need the blocks anyway so that webmasters have fluidity in how they can lay content out, so it makes sense to centralise around them. Lastly, it creates important consistency and maintains important building blocks as high quality.
 
@@ -363,7 +404,7 @@ This abstraction quandary comes up in other places too. Often programmers will t
 [/box]
 There is a constant battle between abstraction, and intuitive interfaces. Not everything can be simplified down to an instance of a common pattern. Therefore Composr abstracts the patterns in layers, and then module/block code will interface with the layer that is compatible with its requirements and fill in the gaps. This minimises code, while maximises the user experience, and allows new unplanned experiences to be created by webmasters who wish to interface with the APIs at various levels. In general, even if a block is not used to display listings, the code required is still minimal due to use of the [tt]render_<content-type>_box[/tt] functions.
 
-[title="4"]Why not use blocks for everything?[/title]
+[title="4"]Why doesn't Composr just use blocks for everything?[/title]
 
 Some people might also wonder why we have modules to display categories at all. Why is it not entirely fluid, done through putting the blocks where you want them? There are three main answers to this:
 1) Content needs a 'home' URL that the system knows, for many reasons (e.g. RSS linkage, XML sitemaps, notification URLs, ...). It can't reliably second guess this via looking where blocks are.
@@ -374,6 +415,7 @@ Some people might wonder why entry viewing isn't done via blocks, or really any 
 
 [title="3"]Making theme changes outside Composr[/title]
 
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_2/1.jpg[/media]
 When you add/edit theme images inside Composr, it makes up a filename. But instead if you make the [tt]themes/<theme>/images_custom[/tt] naming structure match that of [tt]themes/default/images[/tt], then Composr automatically finds them. This is better when working collaboratively with git, or if synching development and live sites, because a new database record is not needed to track the theme image reference.
 
 Generally you should rarely use the Composr inbuilt theming tools when acting as a programmer. Just put the files in the right place and use your text editor to alter the CSS and templates. This makes for a more integrated, programmer-friendly, workflow.

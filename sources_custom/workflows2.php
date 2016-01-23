@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,13 +28,13 @@
  *
  * @param  array $bits Language string bits
  * @param  AUTO_LINK $workflow_id The ID of the workflow to add this approval point to
- * @param  ?integer $position The position in the workflow that this approval point will have. NULL adds it to the end (null: default)
+ * @param  ?integer $position The position in the workflow that this approval point will have. null adds it to the end (null: default)
  * @return AUTO_LINK Requirement ID
  */
 function add_approval_point_to_workflow($bits, $workflow_id, $position = null)
 {
     // Now see what position we're adding to. We either need to determine
-    // the next position (if we've been given NULL), or else just dump
+    // the next position (if we've been given null), or else just dump
     // the position in the record (we don't assume that positions are
     // unique in any case, points with the same position will appear
     // together but their specific order is undefined)

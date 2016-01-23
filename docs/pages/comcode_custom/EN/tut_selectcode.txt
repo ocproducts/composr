@@ -9,14 +9,17 @@ Various areas of Composr support the Selectcode syntax, including the [tt]main_m
 [title="2"]The syntax[/title]
 
 Selectcode is a comma-separated list of match-specifier tokens, where a match-specifier may be:
- - an acceptable-literal (e.g. [tt]1[/tt]).
- - an avoiding-literal (e.g. [tt]!1[/tt])
- - a bounded acceptable-range (e.g. [tt]1-3[/tt])
- - a non-bounded acceptable-range (e.g. [tt]3+[/tt])
- - an acceptable subtree (e.g. [tt]3*[/tt])
- - an avoiding subtree (e.g. [tt]3~[/tt])
- - an acceptable set of direct descendents (e.g. [tt]3>[/tt])
- - all-acceptable ([tt]*[/tt])
+ - [i]entries[/i] (or categories if filter directly applied to categories):
+  - an acceptable-literal (e.g. [tt]1[/tt]).
+  - an avoiding-literal (e.g. [tt]!1[/tt])
+  - a bounded acceptable-range (e.g. [tt]1-3[/tt])
+  - a non-bounded acceptable-range (e.g. [tt]3+[/tt])
+  - all-acceptable ([tt]*[/tt])
+ - [i]categories[/i]:
+  - an acceptable category (e.g. [tt]3#[/tt])
+  - an acceptable subtree (e.g. [tt]3*[/tt])
+  - an avoiding subtree (e.g. [tt]3~[/tt])
+  - an acceptable set of direct descendents (e.g. [tt]3>[/tt])
 
 [title="2"]Examples[/title]
 
@@ -68,14 +71,19 @@ Match anything under a category (e.g. a gallery) named [tt]foo[/tt], but not [tt
 foo*,!foo
 [/code]
 
-Match anything  except anything under '3':
+Match anything except anything under '3':
 [code="Selectcode"]
 *,3~
 [/code]
 
-Match anything  directly under '3':
+Match anything directly under '3':
 [code="Selectcode"]
 3>
+[/code]
+
+Match anything in category '3':
+[code="Selectcode"]
+3#
 [/code]
 
 [title="2"]Numeric or not?[/title]
@@ -90,7 +98,7 @@ Obviously you can only use the tree match specifiers if you are applying the fil
 [title="2"]Categories or entries?[/title]
 
 Selectcode is not written specifically to be for matching against category IDs or entry IDs, it again depends what the filter is applied to.
-However, if you are using tree match specifiers then these will be written against categories even if you are matching against entries. For example, if you are writing a filter to match against download entries, and you use tree match specifiers, the tree match specifiers would be referring to download categories, while the other specifiers would be referring to download entries.
+However, if you are using tree match specifiers or [tt]#[/tt] then these will be written against categories even if you are matching against entries. For example, if you are writing a filter to match against download entries, and you use tree match specifiers, the tree match specifiers would be referring to download categories, while the other specifiers would be referring to download entries.
 
 [title="2"]Blank filters, and precedence[/title]
 
@@ -141,4 +149,4 @@ You may wonder how to find IDs for use in filtering. The best way is to look at 
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_filtercode"]Filtering using Filtercode syntax[/page]
 
-{$SET,tutorial_tags,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Power tools,core,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]

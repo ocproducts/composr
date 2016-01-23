@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_configuration
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -211,6 +212,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/cpf_enable_name.php',
             'sources/hooks/systems/config/cpf_enable_phone.php',
             'sources/hooks/systems/config/cpf_enable_post_code.php',
+            'sources/hooks/systems/config/cpf_enable_county.php',
             'sources/hooks/systems/config/cpf_enable_state.php',
             'sources/hooks/systems/config/filter_regions.php',
             'sources/hooks/systems/config/cns_show_profile_link.php',
@@ -273,7 +275,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/imap_username.php',
             'sources/hooks/systems/addon_registry/core_configuration.php',
             'themes/default/templates/CONFIG_CATEGORY_SCREEN.tpl',
-            'themes/default/templates/CONFIG_GROUP.tpl',
             'adminzone/pages/modules/admin_config.php',
             'lang/EN/config.ini',
             'sources/hooks/systems/config/.htaccess',
@@ -292,7 +293,6 @@ class Hook_addon_registry_core_configuration
     public function tpl_previews()
     {
         return array(
-            'templates/CONFIG_GROUP.tpl' => 'administrative__config_category_screen',
             'templates/CONFIG_CATEGORY_SCREEN.tpl' => 'administrative__config_category_screen',
             'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen'
         );
@@ -307,16 +307,15 @@ class Hook_addon_registry_core_configuration
      */
     public function tpl_preview__administrative__config_category_screen()
     {
-        $groups = new Tempcode();
+        $groups = array();
 
         foreach (placeholder_array() as $k => $group) {
-            $group = do_lorem_template('CONFIG_GROUP', array(
+            $groups[] = array(
                 'GROUP_DESCRIPTION' => lorem_word(),
                 'GROUP_NAME' => $group,
                 'GROUP' => placeholder_fields(),
                 'GROUP_TITLE' => 'ID' . strval($k),
-            ));
-            $groups->attach($group->evaluate());
+            );
         }
 
         return array(

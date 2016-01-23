@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_shoutr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -87,7 +88,7 @@ class Hook_addon_registry_shoutr
     {
         return 'Two new features to your shout box. Shake makes all the current visitors to your website\'s browser screen shake. The second makes any new messages within the shout box appear like an apparition and fly towards the current users of the site.
 
-After installing this addon your shout box will essentially be treated as an embedded copy of the chat room linked to it. Enter/leave room messages will be saved into the room when a member goes somewhere it is shown. For that reason you may want to associate it to a chat room that isn\'t used independently to avoid that room being cluttered with these messages (the messages don\'t show in the shout box itself, as they are filtered out there). Alternatively you can blank out the language strings that provide the enter/leave room messages - Composr will recognise this and turn the feature off.';
+After installing this addon your shout box will essentially be treated as an embedded copy of the chatroom linked to it. Enter/leave room messages will be saved into the room when a member goes somewhere it is shown. For that reason you may want to associate it to a chatroom that isn\'t used independently to avoid that room being cluttered with these messages (the messages don\'t show in the shout box itself, as they are filtered out there). Alternatively you can blank out the language strings that provide the enter/leave room messages - Composr will recognise this and turn the feature off.';
     }
 
     /**
@@ -136,7 +137,6 @@ After installing this addon your shout box will essentially be treated as an emb
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/shoutr.php',
-            'data_custom/messages.php',
             'themes/default/javascript_custom/shake.js',
             'themes/default/javascript_custom/shoutbox.js',
             'themes/default/javascript_custom/text_ghosts.js',

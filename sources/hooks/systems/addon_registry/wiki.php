@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_wiki
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -50,7 +51,7 @@ class Hook_addon_registry_wiki
      */
     public function get_description()
     {
-        return 'Collaborative/encyclopaedic database interface. A WIKI-like community database with rich media capabilities.';
+        return 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.';
     }
 
     /**
@@ -130,8 +131,6 @@ class Hook_addon_registry_wiki
             'themes/default/templates/WIKI_POSTING_SCREEN.tpl',
             'themes/default/templates/WIKI_RATING.tpl',
             'themes/default/templates/WIKI_RATING_FORM.tpl',
-            'themes/default/templates/WIKI_SUBCATEGORY_CHILDREN.tpl',
-            'themes/default/templates/WIKI_SUBCATEGORY_LINK.tpl',
             'themes/default/css/wiki.css',
             'sources/hooks/systems/ajax_tree/choose_wiki_page.php',
             'cms/pages/modules/cms_wiki.php',
@@ -166,8 +165,6 @@ class Hook_addon_registry_wiki
         return array(
             'templates/WIKI_MANAGE_TREE_SCREEN.tpl' => 'administrative__wiki_manage_tree_screen',
             'templates/WIKI_LIST_TREE_LINE.tpl' => 'wiki_list_tree',
-            'templates/WIKI_SUBCATEGORY_CHILDREN.tpl' => 'wiki_page_screen',
-            'templates/WIKI_SUBCATEGORY_LINK.tpl' => 'wiki_page_screen',
             'templates/WIKI_POST.tpl' => 'wiki_page_screen',
             'templates/WIKI_PAGE_SCREEN.tpl' => 'wiki_page_screen',
             'templates/WIKI_RATING.tpl' => 'wiki_page_screen',
@@ -225,6 +222,7 @@ class Hook_addon_registry_wiki
     public function tpl_preview__wiki_page_screen()
     {
         require_lang('cns');
+
         $extra = new Tempcode();
         $extra = do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => 'edit',
@@ -234,7 +232,6 @@ class Hook_addon_registry_wiki
             'FULL_TITLE' => do_lang_tempcode('EDIT'),
             'IMG' => 'buttons__edit',
         ));
-
         $extra->attach(do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => 'move',
             'IMMEDIATE' => false,
@@ -286,15 +283,13 @@ class Hook_addon_registry_wiki
             'BUTTONS' => $extra,
         ));
 
-        $_child = do_lorem_template('WIKI_SUBCATEGORY_CHILDREN', array(
-            'MY_CHILD_POSTS' => lorem_phrase(),
-            'MY_CHILD_CHILDREN' => lorem_phrase(),
-        ));
-        $child = do_lorem_template('WIKI_SUBCATEGORY_LINK', array(
+        $children = array();
+        $children[] = array(
             'URL' => placeholder_url(),
-            'CHILD' => $_child,
-            'SUP' => lorem_phrase(),
-        ));
+            'MY_CHILD_POSTS' => placeholder_number(),
+            'MY_CHILD_CHILDREN' => placeholder_number(),
+            'BODY_CONTENT' => placeholder_number(),
+        );
 
         return array(
             lorem_globalise(do_lorem_template('WIKI_PAGE_SCREEN', array(
@@ -306,7 +301,7 @@ class Hook_addon_registry_wiki
                 'STAFF_ACCESS' => '1',
                 'DESCRIPTION' => lorem_paragraph_html(),
                 'TITLE' => lorem_title(),
-                'CHILDREN' => $child,
+                'CHILDREN' => $children,
                 'POSTS' => $posts,
                 'NUM_POSTS' => placeholder_number(),
                 'BUTTONS' => placeholder_button(),

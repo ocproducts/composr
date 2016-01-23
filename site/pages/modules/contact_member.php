@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_contact_member
     public $to_name;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -135,7 +135,7 @@ class Module_contact_member
         $fields = new Tempcode();
         require_code('form_templates');
         $default_email = (is_guest()) ? '' : $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_email_address');
-        $default_name = (is_guest()) ? '' : $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_username');
+        $default_name = (is_guest()) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $name_field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('_DESCRIPTION_NAME'), 'name', $default_name, true);
         if ($default_name == '') {
             $fields->attach($name_field);

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,8 +44,8 @@ function user_sync__inbound($since = null)
 {
     global $USER_SYNC_IMPORT_LIMIT, $DO_USER_SYNC_OFFSET, $DO_USER_SYNC, $DO_USER_ONLY_ID, $PROGRESS_UPDATE_GAP;
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     require_code('cns_members');

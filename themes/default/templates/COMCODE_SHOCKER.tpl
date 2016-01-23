@@ -14,7 +14,7 @@
 		window.shocker_parts={};
 		window.shocker_pos={};
 	}
-	window.shocker_parts['{$GET,RAND_ID_SHOCKER}']=[{PARTS/}''];
+	window.shocker_parts['{$GET,RAND_ID_SHOCKER}']=[{+START,LOOP,PARTS}['{LEFT;^/}','{RIGHT;^/}'],{+END}''];
 	window.shocker_pos['{$GET,RAND_ID_SHOCKER}']=0;
 	add_event_listener_abstract(window,'load',function() {
 		shocker_tick('{$GET,RAND_ID_SHOCKER}',{TIME%},'{MAX_COLOR;/}','{MIN_COLOR;/}');

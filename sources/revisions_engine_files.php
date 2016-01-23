@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -394,8 +394,7 @@ class RevisionEngineFiles
 
                 if (function_exists('diff_simple_2')) {
                     $rendered_diff = diff_simple_2($revision['r_original_text'], $more_recent_text);
-                    $diff_icon = do_template('REVISIONS_DIFF_ICON', array(
-                        'RENDERED_DIFF' => $rendered_diff,
+                    $diff_icon = do_template('REVISIONS_DIFF_ICON', array('_GUID' => '9ea39609ba90f5f756b53df5269d036d', 'RENDERED_DIFF' => $rendered_diff,
                     ));
                 } else {
                     $diff_icon = new Tempcode();

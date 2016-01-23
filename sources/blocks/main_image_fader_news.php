@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -130,7 +130,7 @@ class Block_main_image_fader_news
                 if (preg_match('#["\'\]](http:[^\'"\[\]]+\.(jpeg|jpg|gif|png))["\'\[]#i', $article, $matches) != 0) {
                     $image_url = $matches[1];
                 } else {
-                    continue; // Invalid: no image
+                    $image_url = find_theme_image('no_image');
                 }
             }
             if (url_is_local($image_url)) {

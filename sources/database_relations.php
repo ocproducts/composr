@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -104,7 +104,7 @@ function get_table_purpose_flags()
         'content_reviews' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under <content>*/,
         'cron_caching_requests' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'custom_comcode' => TABLE_PURPOSE__NORMAL,
-        'customtasks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
+        'staff_checklist_cus_tasks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'db_meta' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'db_meta_indices' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'digestives_consumed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
@@ -217,10 +217,10 @@ function get_table_purpose_flags()
         'shopping_order_addresses' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__MISC_NO_MERGE/*too-site-tied*/ | TABLE_PURPOSE__SUBDATA/*under shopping_order*/,
         'shopping_order_details' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__MISC_NO_MERGE/*too-site-tied*/ | TABLE_PURPOSE__SUBDATA/*under shopping_order*/,
         'sitemap_cache' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
-        'sitewatchlist' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
+        'staff_website_monitoring' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'sms_log' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
         'staff_tips_dismissed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
-        'stafflinks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
+        'staff_links' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'stats' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'subscriptions' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'task_queue' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
@@ -453,6 +453,8 @@ function get_relation_map()
         'images.cat' => 'galleries.name',
         'import_id_remap.id_new' => null,
         'import_id_remap.id_old' => null,
+        'import_id_remap.id_session' => 'import_session.imp_session',
+        'import_parts_done.imp_session' => 'import_session.imp_session',
         'member_category_access.category_name' => null,
         'member_page_access.page_name' => 'modules.module_the_name',
         'member_page_access.zone_name' => 'zones.zone_name',
@@ -467,7 +469,7 @@ function get_relation_map()
         'news_category_entries.news_entry' => 'news.id',
         'news_category_entries.news_entry_category' => 'news_categories.id',
         'notifications_enabled.l_code_category' => null,
-        'poll_votes.v_poll_id' => 'poll.poll_id',
+        'poll_votes.v_poll_id' => 'poll.id',
         'pstore_permissions.p_category' => null,
         'pstore_permissions.p_page' => 'modules.module_the_name',
         'pstore_permissions.p_privilege' => 'privilege_list.the_name',
@@ -487,7 +489,7 @@ function get_relation_map()
         'review_supplement.r_post_id' => 'f_posts.id',
         'review_supplement.r_rating_for_id' => 'modules.module_the_name',
         'review_supplement.r_topic_id' => 'f_topics.id',
-        'revisions.r_actionlog_id' => 'actionlog.id',
+        'revisions.r_actionlog_id' => 'actionlogs.id',
         'revisions.r_moderatorlog_id' => 'f_moderator_logs.id',
         'sales.purcase_type' => 'prices.name',
         'seo_meta.meta_for_id' => null,
@@ -497,7 +499,7 @@ function get_relation_map()
         'shopping_order_addresses.order_id' => 'shopping_order.id',
         'shopping_order_details.order_id' => 'shopping_order.id',
         'shopping_order_details.p_id' => 'catalogue_entries.id',
-        'temp_block_permissions.p_session_id' => 'sessions.id',
+        'temp_block_permissions.p_session_id' => 'sessions.the_session',
         'tickets.forum_id' => 'f_forums.id',
         'tickets.ticket_type' => 'ticket_types.id',
         'tickets.topic_id' => 'f_topics.id',

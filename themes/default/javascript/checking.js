@@ -12,18 +12,18 @@ function password_strength(ob)
 	var _ind=document.getElementById('password_strength_'+ob.id);
 	if (!_ind) return;
 	var ind=_ind.getElementsByTagName('div')[0];
-	var url='password='+window.encodeURIComponent(ob.value);
+	var post='password='+window.encodeURIComponent(ob.value);
 	if (ob.form && typeof ob.form.elements['username']!='undefined')
 	{
-		url+='&username='+ob.form.elements['username'].value;
+		post+='&username='+ob.form.elements['username'].value;
 	} else
 	{
 		if (ob.form && typeof ob.form.elements['edit_username']!='undefined')
 		{
-			url+='&username='+ob.form.elements['edit_username'].value;
+			post+='&username='+ob.form.elements['edit_username'].value;
 		}
 	}
-	var strength=load_snippet('password_strength',url);
+	var strength=load_snippet('password_strength',post);
 	strength*=2; if (strength>10) strength=10; // Normally too harsh!
 	ind.style.width=(strength*10)+'px';
 	if (strength>=6)
@@ -344,8 +344,21 @@ function clever_find_value(form,element)
 			value='';
 			if (element.selectedIndex>=0)
 			{
-				value=element.options[element.selectedIndex].value;
-				if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				if (element.multiple)
+				{
+					for (var i=0;i<element.options.length;i++)
+					{
+						if (element.options[i].selected)
+						{
+							if (value!='') value+=',';
+							value+=element.options[i].value;
+						}
+					}
+				} else if (element.selectedIndex>=0)
+				{
+					value=element.options[element.selectedIndex].value;
+					if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				}
 			}
 			break;
 		case 'input':
@@ -379,6 +392,8 @@ function clever_find_value(form,element)
 				case 'time':
 				case 'url':
 				case 'week':
+				case 'password':
+				default:
 					value=element.value;
 					break;
 			}
@@ -1250,12 +1265,12 @@ function geolocate_address_fields()
 		{
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var fields=[
-					'{!cns:SPECIAL_CPF__cms_street_address;}',
-					'{!cns:SPECIAL_CPF__cms_city;}',
-					'{!cns:SPECIAL_CPF__cms_county;}',
-					'{!cns:SPECIAL_CPF__cms_state;}',
-					'{!cns:SPECIAL_CPF__cms_post_code;}',
-					'{!cns:SPECIAL_CPF__cms_country;}'
+					'{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
 				];
 
 				var geocode_url='{$FIND_SCRIPT;,geocode}';

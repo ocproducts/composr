@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -57,7 +57,7 @@ class Hook_profiles_tabs_edit
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return array A tuple: The tab title, the tab contents, the suggested tab order, the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -77,8 +77,8 @@ class Hook_profiles_tabs_edit
             return array($title, null, $order, 'tabs/settings');
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(60); // Raise time limit, as can be slow
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(60); // Raise time limit, as can be slow
         }
 
         if (count($_POST) > 0) {

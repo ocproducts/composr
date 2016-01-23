@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,7 +39,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/sources/global.php');
 
-if (function_exists('set_time_limit')) {
+if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
 safe_ini_set('ocproducts.xss_detect', '0');
@@ -170,14 +170,14 @@ function do_work()
         gc_enable();
     }
 
-    // chat rooms
+    // chatrooms
     require_code('chat2');
     require_code('chat');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $room_id = add_chatroom(random_text(), random_line(), mt_rand(db_get_first_id() + 1, $num_wanted - 1), strval(db_get_first_id() + 1), '', '', '', fallback_lang());
     }
     $room_id = db_get_first_id() + 1;
-    // messages in chat room
+    // messages in chatroom
     for ($j = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)'); $j < $num_wanted; $j++) {
         $map = array(
             'system_message' => 0,

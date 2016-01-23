@@ -190,7 +190,7 @@ It's worth pointing out that there are some other similar approaches for similar
 2) If the issue is with a shared template rather than a block, the [tt]_GUID[/tt] parameter is usually passed in different for each different place the template is used, so you can base logic around that value. GUIDs are explained in the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page].
 3) If the particular block supports template sets, you can differentiate based on this. For example, the menu block allows you to specify the 'type' of the menu, which determines which templates will be used. You can therefore invent your own new 'type' of menu and store the HTML for it in a new set of templates. Not much in Composr template sets though.
 4) Sometimes there is a particular template parameter value that you can tie your logic into. For example, if we are making the [tt]NEWS_BOX.tpl[/tt] template look a little different for a particular news category, we could latch on to the [tt]CATEGORY[/tt] parameter carrying the name of that news category.
- 
+
 [title="2"]Third-party widgets[/title]
 
 Many websites provide widgets that you can embed.
@@ -205,24 +205,24 @@ These widgets aren't Composr blocks, but we are including this explanation in th
 
 You can add a video chat box to your site without any special API integration, just via a simple HTML embed. Here's a brief step by step to go through the process:
 [list]
-[*]Sign up for an account at [url="TokBox"]http://www.tokbox.com/[/url]
-[*]Create a Comcode page on your site where you want the video chat/conferencing to be located
-[*]Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the username and password from step 1 if you aren't already logged in.
-[*]Select the size you want your video chat to be
-[*]Choose whether you want to add text chat or not
-[*]Choose whether you want to show the list of participants or not
-[*]Click "Add to my site"
-[*]Click "Copy code"
-[*]Go to your previously created video chat/conference page and click to edit it
-[*]Disable the WYSIWYG editor (if the WYSIWYG editor is already disabled jump to step 12)
-[*]On the pop up agree and convert the page to Comcode
-[*]After the title or the text where you want to box to appear paste the code you have copied in between [tt][html][/tt] and [tt][/html][/tt] tags which will look something like this:
+[*] Sign up for an account at [url="TokBox"]http://www.tokbox.com/[/url]
+[*] Create a Comcode page on your site where you want the video chat/conferencing to be located
+[*] Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the username and password from step 1 if you aren't already logged in.
+[*] Select the size you want your video chat to be
+[*] Choose whether you want to add text chat or not
+[*] Choose whether you want to show the list of participants or not
+[*] Click "Add to my site"
+[*] Click "Copy code"
+[*] Go to your previously created video chat/conference page and click to edit it
+[*] Disable the WYSIWYG editor (if the WYSIWYG editor is already disabled jump to step 12)
+[*] On the pop up agree and convert the page to Comcode
+[*] After the title or the text where you want to box to appear paste the code you have copied in between [tt][html][/tt] and [tt][/html][/tt] tags which will look something like this:
 [code="Comcode"]
 [html]
 <object type="application/x-shockwave-flash" data="http://www.tokbox.com/vc/zy57q6aodg1k7lvw" width="800" height="600" pid="4b9a2b80beb18ab2"> <param name="movie" value="http://www.tokbox.com/vc/zy57q6aodg1k7lvw"/> <param name="flashvars" value="guestList=true&textChat=true&showExpandButton=true"/></object><br /><a href="http://www.tokbox.com/">TokBox - Free Video Chat and Video Messaging</a>
 [/html]
 [/code]
-[*]Fill in the rest of the page data and save the page
+[*] Fill in the rest of the page data and save the page
 [/list]
 
 If the size is not quite right you can modify the width and height easily to make sure it fits into your website nicely. Your website users will need to sign up to TokBox to use the video conference.

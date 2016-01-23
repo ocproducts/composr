@@ -22,7 +22,7 @@ This tutorial explains how the Composr GAE support works.
 [title="2"]Limitations[/title]
 
 The following are known limitations with GAE:
- - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. Most commercial developers will be happy to bring non-bundled third-party addons up to scratch. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
+ - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. Most professional developers will be happy to bring non-bundled third-party addons up to scratch. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
  - The comments above extend to other applications you may wish to integrate. You need to be comfortable of their compatibility, or that you will get them updated, or that you will run them on another server.
  - LDAP will not work (LDAP would typically be used on a local corporate network anyway).
  - There is a 32MB upload limit, which means uploading large files is not realistic. This could be worked around, [url="with investment"]http://compo.sr/tracker/view.php?id=1426[/url].
@@ -68,13 +68,13 @@ You will also need to install MySQL, as this doesn't come with the SDK. MySQL is
 
 I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/tut_google_appengine/appengine_launcher.png[/media]
 [list="1"]
-[*]Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
-[*]Start up the GAE launcher.
-[*]Add Composr in the launcher: simply add the directory you extracted Composr to, and it should automatically configure it from that.
-[*]Select your application row in the list of applications, and click "Run".
-[*]In your web browser, go to [tt]http://localhost:8080/install.php[/tt] (your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
+[*] Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
+[*] Start up the GAE launcher.
+[*] Add Composr in the launcher: simply add the directory you extracted Composr to, and it should automatically configure it from that.
+[*] Select your application row in the list of applications, and click "Run".
+[*] In your web browser, go to [tt]http://localhost:8080/install.php[/tt] (your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
 Ignore any "There is no PHP GD extension on the server" error. The PHP SDK (at the time of writing does not have GD), but the live environment does.
-[*]The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
+[*] The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
 A top-level view of what you'll be setting up:
  - App Engine application ID -- The identifier for the live GAE application; Google will automatically also use this as the Google Cloud project name
  - Google Cloud Storage bucket name -- The identifier for the live Google Cloud Storage (this is basically the live filesystem, which is stored separately to the application itself)
@@ -205,7 +205,8 @@ In given code samples replace [tt]<application>[/tt] with the name of your appli
 
 [title="3"]Storage[/title]
 
-You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:[list="a"]
+You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:
+[list="a"]
 [*] [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
 [*] Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
 [/list]
@@ -222,7 +223,7 @@ Now consider your plans for world domination while your files upload (or, read a
 [title="3"]Database[/title]
 
 (in the below instructions obviously substitute [tt]<application>[/tt] for the real name of the application)
- 
+
 To copy your initial database to live, you need to follow a rather complex procedure of exporting, copying to live Google Cloud Storage, then importing from live Google Cloud Storage...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
@@ -366,4 +367,4 @@ Be advised that Google cannot provide automated "sharding" of data. This means t
  - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
  - [page="_SEARCH:tut_repository"]The Repository[/page]
 
-{$SET,tutorial_tags,google_appengine,Installation,Web hosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,google_appengine,Installation,Webhosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]

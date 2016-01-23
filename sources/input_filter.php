@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,8 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/*EXTRA FUNCTIONS: xml_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -141,7 +143,7 @@ function check_posted_field($name, $val)
                     }
                 }
             }
-        } elseif (cms_admirecookie('has_referers') === '1') {
+        } elseif (cms_admirecookie('has_referers') === '1' && !addon_installed('ssl')/*https->http removes referer*/) {
             $evil = true;
         }
     }

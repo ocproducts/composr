@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -233,7 +233,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         $member_info = new Tempcode();
     }
 
-    // Meta data
+    // Metadata
     list($num_children, $num_images, $num_videos) = get_recursive_gallery_details($myrow['name']);
     if ($num_children == 0) {
         if ($myrow['accept_videos'] == 0) {
@@ -393,7 +393,7 @@ function gallery_has_content($name)
  *
  * @param  ID_TEXT $gallery_name The name of the gallery
  * @param  ?array $row Gallery row (null: look it up)
- * @param  boolean $only_if_personal_gallery Only non-NULL if it is a personal gallery
+ * @param  boolean $only_if_personal_gallery Only non-null if it is a personal gallery
  * @return ?MEMBER The owner of the gallery (null: not a member owned gallery)
  */
 function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_personal_gallery = false)

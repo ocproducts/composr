@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,6 +41,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         'TITLE' => $title,
         'SUMMARY' => get_translated_tempcode('author', $row, 'description'),
         'URL' => $url,
+        'RESOURCE_TYPE' => 'author',
     ));
 }
 

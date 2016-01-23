@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -407,7 +407,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
             if (strpos($oembed_manual_pattern, '=') !== false) {
                 if (strpos($oembed_manual_pattern, ' = ') !== false) {
                     list($url_pattern, $endpoint) = explode(' = ', $oembed_manual_pattern, 2);
-                } else {
+                } else { // No spaces around "=", so will use regexps to split around last "=" sign
                     $url_pattern = preg_replace('#(.*)=.*$#', '${1}', $oembed_manual_pattern); // Before last =
                     $endpoint = preg_replace('#^.*=#', '', $oembed_manual_pattern); // After last =
                 }

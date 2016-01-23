@@ -78,7 +78,7 @@ The module should be used to cancel purchases, such as an e-mail address bought 
 [title="3"]Banners[/title]
 
 While by default any member may submit a banner, the implication is that a Point Store-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
- 
+
 All banners bought are added to the 'General' banner type.
 
 [title="3"]Topic pinning[/title]
@@ -96,19 +96,19 @@ Members can gamble points. On average, members lose out on points when they try 
 By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
 
 What may be purchased:
- - POP3 email accounts, and upgrades
-  - staff define which email domains members may purchase addresses on
-  - staff must set up the email accounts manually after they are purchased/upgrades
- - email Forwarding accounts, and updates
-  - staff define which email domains members may purchase addresses on
-  - staff must set up the email accounts manually after they are purchased/upgrades
+ - POP3 e-mail accounts, and upgrades
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+ - e-mail Forwarding accounts, and updates
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
 
 These may be configured via the inventory management screen at:
 Admin Zone > Setup > Point Store inventory management
 
 If e-mail accounts are sold through the Point Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point Store configuration defines 3 URLs that can be set according to your server.
 
-Example URLs follow for different web hosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
+Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
 
 [title="4"]For Plesk users[/title]
 
@@ -261,11 +261,11 @@ A common point of confusion is users thinking the leader-board shows who are the
 [/surround]
 
 [concepts
- 1_key="points"          1_value="Points are accumulated by various means and illustrate rank and provide spending power (currency)"
- 2_key="rank"            2_value="Rank is determined by the total of points ever earned, and is a status symbol"
+ 1_key="Points"          1_value="Points are accumulated by various means and illustrate rank and provide spending power (currency)"
+ 2_key="Rank"            2_value="Rank is determined by the total of points ever earned, and is a status symbol"
  3_key="Gift points"     3_value="Gift points are automatically accumulated over time and exist only as gifts to give to other members, where they translate to real points"
  4_key="Point Store"     4_value="The Point Store allows conversion of points into items such as community e-mail accounts"
- 5_key="leader-board"    5_value="The point leader-board shows the top point holders, and is drawn up on a weekly basis"
+ 5_key="Leader-board"    5_value="The point leader-board shows the top point holders, and is drawn up on a weekly basis"
  6_key="Buildr"          6_value="A Composr addon that provides a simple virtual world environment to interact in; points are the currency of Buildr"
 ]Concepts[/concepts]
 

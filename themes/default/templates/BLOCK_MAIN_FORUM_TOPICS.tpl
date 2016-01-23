@@ -8,7 +8,24 @@
 	</h3>
 
 	<div class="toggleable_tray">
-		{CONTENT}
+		{+START,LOOP,TOPICS}
+			<div class="box box___block_main_forum_topics_topic"><div class="box_inner">
+				<p class="tiny_paragraph">
+					<a title="{$STRIP_TAGS,{TITLE}} {!LINK_NEW_WINDOW}" rel="external" target="_blank" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30,0,1}</a>
+				</p>
+
+				<div role="note">
+					<ul class="tiny_paragraph associated_details horizontal_meta_details">
+						<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{USERNAME}}}</li>
+						<li>{!POST_PLU,{NUM_POSTS*}}</li>
+					</ul>
+				</div>
+
+				<p class="tiny_paragraph associated_details">
+					<span class="field_name">{!LAST_POST}:</span> {DATE*}
+				</p>
+			</div></div>
+		{+END}
 
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}}
 			<ul class="horizontal_links associated_links_block_group force_margin">

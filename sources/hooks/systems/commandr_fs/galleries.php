@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -59,7 +59,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         switch ($resource_type) {
             case 'image':
             case 'video':
-                $_ret = $GLOBALS['SITE_DB']->query_select($resource_type . 's', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select($resource_type . 's', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);

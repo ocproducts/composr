@@ -188,10 +188,11 @@ The following escaping filters are provided ([color="green"]green[/color] indica
 		</tr>
 		<tr style="background-color: #FFDDDD">
 			<td>[tt]+[/tt]</td>
-			<td colspan="3">Must be used as the only escaping character. This indicates that something:[list]
-[*]should not be escaped
-[*]definitely is passed into the template (no user-friendly warnings will be given if it is not)
-[*]should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
+			<td colspan="3">Must be used as the only escaping character. This indicates that something:
+[list]
+[*] should not be escaped
+[*] definitely is passed into the template (no user-friendly warnings will be given if it is not)
+[*] should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
 [/list]
 This is substantially faster in terms of the amount of memory, CPU time, and storage. However, it should only really be used by programmers knowing exactly what they are doing.
 </td>
@@ -212,7 +213,8 @@ Templates are composed together into a tree structure, and then the tree structu
 
 Tempcode is quite different from other templating languages, and it's worth covering that.
 
-Most templating languages will try to either:[list="a"]
+Most templating languages will try to either:
+[list="a"]
 [*] use XML, to add programming constructs into the mark-up itself
 [*] allow PHP code, or an abstraction of PHP code, to run within the templates
 [/list]
@@ -465,7 +467,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MEMBER_EMAIL,2}</td>
-			<td>The member's email address (optionally takes a member ID, else assumes current user)</td>
+			<td>The member's e-mail address (optionally takes a member ID, else assumes current user)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$PHOTO,2}</td>
@@ -692,8 +694,8 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Get page-link to current screen.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$META_DATA,created}</td>
-			<td>Fetch a defined dublin core meta data property (by code name), relating to the current content. Also supports some Facebook connect fields, HTML SEO meta data (keywords, meta_description). You can also query HTML SEO meta data for specific content item, by giving two additional parameters: the content type and the content ID</td>
+			<td>{$METADATA,created}</td>
+			<td>Fetch a defined dublin core metadata property (by code name), relating to the current content. Also supports some Facebook connect fields, HTML SEO metadata (keywords, meta_description). You can also query HTML SEO metadata for specific content item, by giving two additional parameters: the content type and the content ID</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$REFRESH}</td>
@@ -1983,7 +1985,6 @@ If you are not comfortable with creating new code files you may want to glance o
 Lets start by adding a new sample block to our front page so that we can test different examples of Tempcode. Go to the [tt]sources_custom/blocks[/tt] folder and create and add a new empty file named [tt]main_first_block.php[/tt].
 
 Now lets add something to our block file. Edit [tt]main_first_block.php[/tt] using your favorite text editor and add the following:
-
 [code="PHP"]
 <?php
 
@@ -1993,27 +1994,27 @@ class Block_main_first_block
 	{
 		return do_template('BLOCK_MAIN_FIRST_BLOCK',array());
 	}
-} 
+}
 [/code]
 
 In this code we are simply creating a new class for our block and then defining the standard [tt]run()[/tt] method which is executed when the block is invoked. We are calling a template file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] in the [tt]run()[/tt] method using the [tt]do_template()[/tt] function. This tells the system to use this template file for our block. Our next step is creating a template file for the block.
 
 [title="3"]Creating a template file[/title]
 
-Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the pre-defined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there. 
+Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the pre-defined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there.
 Create a new blank file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] and save it in to [tt]templates_custom[/tt]. [tt].tpl[/tt] is the default extension we give to template files.
 
 &dagger; Actually this isn't quite true. The [tt]css[_custom][/tt], [tt]javascript[_custom][/tt] and [tt]text[_custom][/tt] folders also hold templates. Even CSS files are handled as templates in Composr.
 
 [title="3"]Adding the block to front page[/title]
 
-Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page. 
+Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page.
 [tt]start.txt[/tt] file is located in [tt]pages/comcode_custom/EN[/tt] (the same rule as templates applies here as well, i.e. the customised comcode files should go in to [tt]_custom[/tt] folder).
 
 [media width="150" description="Our empty box" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp1.png[/media]
 Edit [tt]start.txt[/tt] file using your text editor, and add this on the end:
 [code="Comcode"]
-[box="first block"][block]main_first_block[/block][/box] 
+[box="first block"][block]main_first_block[/block][/box]
 [/code]
 
 This Comcode adds the block to our front page.
@@ -2095,7 +2096,7 @@ All the three functions have the same parameter order, which is as follows:
 [media width="150" description="Match-key example, running from start page (nothing would be seen if we placed the block on another page)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp7.png[/media]
 We can use that to show a specific message only if a match-key is satisfied.
 
-A match-key is basically the same thing as a page-link. The only difference is that a match-key is used for matching and will also match any page-links with additional parameters not mentioned in the match-key -- i.e. the match is performed against the parameters in the match-key, all other parameters are ignored. As you are probably already comfortable with the term "page-link", we'll use that henceforth. 
+A match-key is basically the same thing as a page-link. The only difference is that a match-key is used for matching and will also match any page-links with additional parameters not mentioned in the match-key -- i.e. the match is performed against the parameters in the match-key, all other parameters are ignored. As you are probably already comfortable with the term "page-link", we'll use that henceforth.
 
 [code="HTML"]
 {+START,IF,{$MATCH_KEY_MATCH,site:start}}
@@ -2224,11 +2225,11 @@ The template editor has special support for the GUIDs, showing what GUIDs a temp
 If you enter the template editor from the 'Template tree' screen then you will be told the GUID that was used by the node in the tree that you selected.
 
 [concepts
- 1_key="symbol"           1_value="A special element that may be inserted into"
- 2_key="parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
- 3_key="directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
- 4_key="variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
- 5_key="construct"        5_value="A Tempcode symbol, parameter, or language reference"
+ 1_key="Symbol"           1_value="A special element that may be inserted into"
+ 2_key="Parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
+ 3_key="Directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
+ 4_key="Variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
+ 5_key="Construct"        5_value="A Tempcode symbol, parameter, or language reference"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

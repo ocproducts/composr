@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -155,7 +155,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'SU and the if_in_group tag',
-                'url' => 'https://www.youtube.com/watch?v=J6OGys3s6v8',
+                'url' => 'https://www.youtube.com/watch?v=VKlWTgKbQ0w',
                 'author' => 'Allen Ellis (ocProducts)',
                 'difficulty_level' => 'novice',
                 'summary' => 'How to switch users under your admin login, and how to customise page contents based on usergroup membership.',
@@ -548,8 +548,8 @@ class Module_tutorials
                 't_author' => $external_tutorial['author'],
                 't_submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                 't_views' => 0,
-                't_add_date' => time(),
-                't_edit_date' => time(),
+                't_add_date' => time() - 60 * 60 * 24 * 365,
+                't_edit_date' => time() - 60 * 60 * 24 * 365,
             ), true);
 
             foreach ($external_tutorial['tags'] as $tag) {
@@ -567,7 +567,7 @@ class Module_tutorials
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -588,15 +588,14 @@ class Module_tutorials
 
         $title = get_screen_title('Tutorials &ndash; Learning Composr', false);
 
-        $tag = get_param_string('type', 'Installation');
+        $tag = get_param_string('type', 'Installation', true); // $type, essentially
 
         $tags = list_tutorial_tags(true, ($tag == '' || $tag == 'browse') ? null : $tag);
 
         $tutorials = list_tutorials_by('title', ($tag == '') ? null : $tag);
         $_tutorials = templatify_tutorial_list($tutorials);
 
-        return do_template('TUTORIAL_INDEX_SCREEN', array(
-            'TITLE' => $title,
+        return do_template('TUTORIAL_INDEX_SCREEN', array('_GUID' => '4569ab28e8959d9556dbb6d73c0e834a', 'TITLE' => $title,
             'TAGS' => $tags,
             'SELECTED_TAG' => $tag,
             'TUTORIALS' => $_tutorials,
