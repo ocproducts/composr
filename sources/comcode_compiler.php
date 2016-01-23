@@ -450,6 +450,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $NUM_COMCODE_LINES_PARSED = 0;
     $queued_tempcode = new Tempcode();
 
+    // Silliness
     $stupidity_mode = get_value('stupidity_mode'); // bork or leet
     if ($comcode_dangerous) {
         $stupidity_mode = get_param_string('stupidity_mode', '');
@@ -473,6 +474,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     $has_banners = addon_installed('banners');
 
+    // Special textcode
     $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // We'll be needing the emoticon array
     $emoticon_start_chars = array();
     foreach (array_keys($emoticons) as $emoticon) {
@@ -484,10 +486,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $list_indent = 0;
     $list_type = 'ul';
 
+    // Security
     if ($is_all_semihtml) {
         filter_html($as_admin, $source_member, $pos, $len, $comcode, false, false); // Pre-filter the whole lot (note that this means during general output we do no additional filtering)
     }
 
+    // Do parsing
     while ($pos < $len) {
         $next = $comcode[$pos];
         ++$pos;
@@ -878,7 +882,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             // Variable lookahead
                             if ((!$in_code_tag) && (($next == '{') && (isset($comcode[$pos])) && (($comcode[$pos] == '$') || ($comcode[$pos] == '+') || ($comcode[$pos] == '!')))) {
                                 if ($comcode_dangerous) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] == '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
@@ -902,16 +906,37 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $p_len++;
                                             }
                                             $p_len--;
+
+                                            $p_opener = substr($comcode, $pos - 1, $p_len + 1);
                                             $p_portion = substr($comcode, $pos + $p_len, $p_end - ($pos + $p_len));
-                                            require_code('tempcode_compiler');
-                                            $ret = template_to_tempcode(substr($comcode, $pos - 1, $p_len + 1) . '{DIRECTIVE_EMBEDMENT}' . substr($comcode, $p_end, 6));
-                                            if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) == '{+START,CASES,') {
-                                                $ret->singular_bind('DIRECTIVE_EMBEDMENT', make_string_tempcode($p_portion));
+                                            $p_closer = substr($comcode, $p_end, 6);
+
+                                            if ($semiparse_mode) {
+                                                $ret = new Tempcode();
+
+                                                require_code('xhtml');
+                                                if (preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) == preg_replace('#\s#', '', $p_portion)) {
+                                                    $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
+                                                    $ret->attach($p_portion);
+                                                    $ret->attach('</tempcode>');
+
+                                                    $pos = $p_end + 6;
+                                                } else {
+                                                    // Not aligning with HTML, so cannot do it
+                                                    $continuation .= '{';
+                                                }
                                             } else {
-                                                $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
-                                                $ret->singular_bind('DIRECTIVE_EMBEDMENT', $p_portion_comcode);
+                                                require_code('tempcode_compiler');
+                                                $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer);
+                                                if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) == '{+START,CASES,') {
+                                                    $ret->singular_bind('DIRECTIVE_EMBEDMENT', make_string_tempcode($p_portion));
+                                                } else {
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                    $ret->singular_bind('DIRECTIVE_EMBEDMENT', $p_portion_comcode);
+                                                }
+
+                                                $pos = $p_end + 6;
                                             }
-                                            $pos = $p_end + 6;
                                         } elseif ($comcode[$pos] == '!') {
                                             $p_len = $pos;
                                             $balance = 1;
@@ -1931,7 +1956,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         }
     }
 
-    /*if ($html_element_stack !== array()) {    No use to do this
+    /*if ($html_element_stack !== array()) {    Not actually needed
         $html_errors = true;
     }*/
 
