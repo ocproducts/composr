@@ -132,7 +132,7 @@ class Hook_addon_registry_cleanup_repository
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/cleanup_repository.php',
-            'killjunk.sh',
+            'deleteaddons.sh',
         );
     }
 }
