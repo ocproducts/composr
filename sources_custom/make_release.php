@@ -313,26 +313,25 @@ function make_installers($skip_file_grab = false)
 
     // Build APS package
     if ($make_aps) {
-		// TODO for install.sql: Cache tables should be empty
         @unlink($aps_zip);
 
-		if (file_exists($builds_path.'/builds/aps/')) {
-            deldir_contents($builds_path.'/builds/aps/');
+        if (file_exists($builds_path . '/builds/aps/')) {
+            deldir_contents($builds_path . '/builds/aps/');
         }
 
         // Copy the files we need
-		copy_r(get_file_base().'/aps', $builds_path.'/builds/aps');
-		fix_permissions($builds_path.'/builds/aps',0777);
+        copy_r(get_file_base() . '/aps', $builds_path . '/builds/aps');
+        fix_permissions($builds_path . '/builds/aps', 0777);
         copy(get_file_base() . '/install.sql', $builds_path . '/builds/aps/scripts/install.sql');
         fix_permissions($builds_path . '/builds/aps/scripts/install.sql', 0777);
 
         // Temporary renaming
-        rename($builds_path.'/builds/build/'.$version_branch.'/', $builds_path.'/builds/aps/htdocs/');
+        rename($builds_path . '/builds/build/' . $version_branch . '/', $builds_path . '/builds/aps/htdocs/');
 
-		/* Prepare changelog for APP-META.xml*/
+        /* Prepare changelog for APP-META.xml*/
         // Load the template APP-META.xml
         $app_meta_doc = new DOMDocument();
-        $app_meta_doc->loadXML(file_get_contents(get_file_base().'/aps/APP-META.xml'));
+        $app_meta_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-META.xml'));
 
         $xpath = new DOMXPath($app_meta_doc);
         $xpath->registerNamespace('x', 'http://apstandard.com/ns/1');
@@ -353,48 +352,50 @@ function make_installers($skip_file_grab = false)
             $changelog_version_el->setAttribute('version', $version_dotted);
 
             $changelog_version_entry_el = $changelog_version_el->getElementsByTagName('entry')->item(0);
-            $changelog_version_entry_el->nodeValue = 'Composr '.$version_dotted.' release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version='.$version_dotted;
+            $changelog_version_entry_el->nodeValue = 'Composr ' . $version_dotted . ' release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=' . $version_dotted;
 
             $changelog_el->insertBefore($changelog_version_el, $changelog_previous_version_el);
         }
 
         $app_meta_doc = pretty_print_dom_document($app_meta_doc);
-		// Update the template APP-META.xml
-        $app_meta_doc->save(get_file_base().'/aps/APP-META.xml');
-		// Make the build APP-META.xml
-        $app_meta_doc->save($builds_path.'/builds/aps/APP-META.xml');
+        // Update the template APP-META.xml
+        $app_meta_doc->save(get_file_base() . '/aps/APP-META.xml');
+        // Make the build APP-META.xml
+        $app_meta_doc->save($builds_path . '/builds/aps/APP-META.xml');
 
-		/* Prepare APP-LIST.xml */
-		// Load the template APP-LIST.xml
-		$app_list_doc = new DOMDocument();
-		$app_list_doc->loadXML(file_get_contents(get_file_base().'/aps/APP-LIST.xml'));
+        /* Prepare APP-LIST.xml */
+        // Load the template APP-LIST.xml
+        $app_list_doc = new DOMDocument();
+        $app_list_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-LIST.xml'));
 
-		$files_el = $app_list_doc->getElementsByTagName('files')->item(0);
+        $files_el = $app_list_doc->getElementsByTagName('files')->item(0);
 
-		unlink($builds_path.'/builds/aps/APP-LIST.xml'); // Delete the copied template so it's not included in the list
+        unlink($builds_path . '/builds/aps/APP-LIST.xml'); // Delete the copied template so it's not included in the list
 
-		$success = make_file_elements($app_list_doc, $files_el, $builds_path.'/builds/aps');
-		if ($success === false) warn_exit('Failed to build APP-LIST.xml');
+        $success = make_file_elements($app_list_doc, $files_el, $builds_path . '/builds/aps');
+        if ($success === false) {
+            warn_exit('Failed to build APP-LIST.xml');
+        }
 
         // Save the build APP-LIST.xml
         $app_list_doc = pretty_print_dom_document($app_list_doc);
-		$app_list_doc->save($builds_path.'/builds/aps/APP-LIST.xml');
+        $app_list_doc->save($builds_path . '/builds/aps/APP-LIST.xml');
 
-		// Do the main work
-		chdir($builds_path.'/builds/aps');
-		$cmd = 'zip -r -9 -v '.escapeshellarg($aps_zip).' htdocs images scripts test APP-LIST.xml APP-META.xml';
-		$output2 = shell_exec($cmd);
-		$out .= do_build_zip_output($aps_zip, $output2);
+        // Do the main work
+        chdir($builds_path . '/builds/aps');
+        $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
+        $output2 = shell_exec($cmd);
+        $out .= do_build_zip_output($aps_zip, $output2);
 
         // Undo temporary renaming
-        rename($builds_path.'/builds/aps/htdocs/', $builds_path.'/builds/build/'.$version_branch.'/');
+        rename($builds_path . '/builds/aps/htdocs/', $builds_path . '/builds/build/' . $version_branch . '/');
 
         // Delete the copied files
-        deldir_contents($builds_path.'/builds/aps/');
-        rmdir($builds_path.'/builds/aps/');
+        deldir_contents($builds_path . '/builds/aps/');
+        rmdir($builds_path . '/builds/aps/');
 
-		chdir(get_file_base());
-	}
+        chdir(get_file_base());
+    }
 
     // We're done, show the result
 
@@ -436,38 +437,40 @@ function make_installers($skip_file_grab = false)
 function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $dir_path)
 {
     $entries = scandir($dir_path);
-    if ($entries === false) return false;
-	$entries = array_diff($entries, array('.', '..'));
+    if ($entries === false) {
+        return false;
+    }
+    $entries = array_diff($entries, array('.', '..'));
 
-	foreach ($entries as $entry) {
-		$entry_path = $dir_path.'/'.$entry;
+    foreach ($entries as $entry) {
+        $entry_path = $dir_path . '/' . $entry;
 
-		if (is_dir($entry_path)) {
-			$success = make_file_elements($app_list_doc, $files_el, $entry_path);
-			if ($success === false) return false;
-			continue;
-		}
+        if (is_dir($entry_path)) {
+            $success = make_file_elements($app_list_doc, $files_el, $entry_path);
+            if ($success === false) return false;
+            continue;
+        }
 
-		$name = substr($entry_path, strlen(get_builds_path().'/builds/aps/')); // Remove base path, we need a relative path
+        $name = substr($entry_path, strlen(get_builds_path() . '/builds/aps/')); // Remove base path, we need a relative path
 
-		$el = $app_list_doc->createElement('ns2:file');
-		$el->setAttribute('name', $name);
-		$el->setAttribute('size', filesize($entry_path));
-		$el->setAttribute('sha256', hash_file('sha256', $entry_path));
+        $el = $app_list_doc->createElement('ns2:file');
+        $el->setAttribute('name', $name);
+        $el->setAttribute('size', filesize($entry_path));
+        $el->setAttribute('sha256', hash_file('sha256', $entry_path));
 
-		$files_el->appendChild($el);
-	}
+        $files_el->appendChild($el);
+    }
 
-	return true;
+    return true;
 }
 
 // Used in the APS build process
 function pretty_print_dom_document(DOMDocument $doc)
 {
     $new_doc = new DOMDocument();
-	$new_doc->preserveWhiteSpace = false;
-	$new_doc->formatOutput = true;
-	$new_doc->loadXML($doc->saveXML());
+    $new_doc->preserveWhiteSpace = false;
+    $new_doc->formatOutput = true;
+    $new_doc->loadXML($doc->saveXML());
 
     return $new_doc;
 }
@@ -702,8 +705,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
             if ($file == 'sources/cns_install.php') {
                 $privilege_regexp = '#\'(\w+)\'#';
-            }
-            elseif ($file == 'sources/database_action.php') {
+            } elseif ($file == 'sources/database_action.php') {
                 $privilege_regexp = '#array\(\'\w+\',\s*\'(\w+)\'\)#';
             } else {
                 $privilege_regexp = '#add_privilege\(\'\w+\',\s*\'(\w+)\'#';

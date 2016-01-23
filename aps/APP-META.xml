@@ -117,9 +117,13 @@
       <!-- mysqli is needed to run the "configure" script -->
       <php:extension>mysqli</php:extension>
       <php:extension>gd</php:extension>
+      <php:extension>xml</php:extension>
+      <php:extension>mbstring</php:extension>
+      <php:extension>curl</php:extension>
+      <!-- Safe Mode must be off -->
       <php:safe-mode>false</php:safe-mode>
-      <!-- Minimum 20 MiB memory -->
-      <php:memory-limit>20971520</php:memory-limit>
+      <!-- Minimum 64 MiB memory -->
+      <php:memory-limit>67108864</php:memory-limit>
       <!-- Minimum 5 MiB post_max_size -->
       <php:post_max_size>5242880</php:post_max_size>
       <db:db xmlns:db="http://apstandard.com/ns/1/db">
@@ -127,7 +131,7 @@
         <db:default-name>composr</db:default-name>
         <db:can-use-tables-prefix>false</db:can-use-tables-prefix>
         <db:server-type>mysql</db:server-type>
-        <db:server-min-version>4.1</db:server-min-version>
+        <db:server-min-version>5.5.3</db:server-min-version>
       </db:db>
     </requirements>
     <provision>
