@@ -132,7 +132,7 @@ The documentation is primarily maintained on our website, and this archive is on
      */
     public function get_default_icon()
     {
-        return 'themes/default/icons/48x48/menu/adminzone/help.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/help.png';
     }
 
     /**
