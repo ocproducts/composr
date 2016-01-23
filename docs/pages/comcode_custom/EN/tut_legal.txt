@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Legal and social responsibilities[/title]
 
+[media width="350" description="" float="right"]data_custom/images/docs/tut_legal/image.png[/media]
 If you are running a website, in particular a large or corporate website, there are important legal and social issues that need to be understood, and procedures or rules need to be put in place.
 
 [contents]decimal,lower-alpha[/contents]
@@ -158,7 +159,9 @@ You may wish to make rules and policies regarding abuse between members.
 
 [title="3"]Personality types[/title]
 
-As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users. With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
+As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users.
+
+With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
 
 [title="3"]Handling feedback[/title]
 
