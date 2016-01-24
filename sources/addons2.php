@@ -149,11 +149,13 @@ function uninstall_addon_soft($addon)
     require_code('config2');
     require_code('files2');
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
-    $ob = object_factory('Hook_addon_registry_' . $addon);
+    if (addon_installed($addon)) {
+        require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+        $ob = object_factory('Hook_addon_registry_' . $addon);
 
-    if (method_exists($ob, 'uninstall')) {
-        $ob->uninstall();
+        if (method_exists($ob, 'uninstall')) {
+            $ob->uninstall();
+        }
     }
 }
 
@@ -693,13 +695,15 @@ function install_addon($file, $files = null)
  * Uninstall an addon.
  *
  * @param  string $addon Name of the addon
+ * @param  boolean $clear_caches Whether to clear caches
  */
-function uninstall_addon($addon)
+function uninstall_addon($addon, $clear_caches = true)
 {
     $addon_info = read_addon_info($addon);
 
     require_code('zones2');
     require_code('zones3');
+    require_code('abstract_file_manager');
 
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);
@@ -758,21 +762,24 @@ function uninstall_addon($addon)
         }
     }
 
-    // Clear some caching
-    require_code('caches3');
-    erase_comcode_page_cache();
-    erase_block_cache();
-    erase_persistent_cache();
-    erase_cached_templates();
-    erase_cached_language();
-    erase_theme_images_cache();
-    global $HOOKS_CACHE;
-    $HOOKS_CACHE = array();
-
     global $ADDON_INSTALLED_CACHE;
     unset($ADDON_INSTALLED_CACHE[$addon_info['name']]);
-    if (function_exists('persistent_cache_set')) {
-        persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
+
+    if ($clear_caches) {
+        // Clear some caching
+        require_code('caches3');
+        erase_comcode_page_cache();
+        erase_block_cache();
+        erase_persistent_cache();
+        erase_cached_templates();
+        erase_cached_language();
+        erase_theme_images_cache();
+        global $HOOKS_CACHE;
+        $HOOKS_CACHE = array();
+
+        if (function_exists('persistent_cache_set')) {
+            persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
+        }
     }
 
     log_it('UNINSTALL_ADDON', $addon_info['name']);

@@ -66,15 +66,24 @@ $extra_files_to_delete = array();
 if (git_repos() != 'master') {
     $addons_definitely_not_wanted[] = 'installer';
     $extra_files_to_delete[] = 'install_ok';
-    $extra_files_to_delete[] = 'data_custom/images/addon_screenshots';
+    if (git_repos() != 'composr_homesite') {
+        $extra_files_to_delete[] = 'data_custom/images/addon_screenshots';
+    }
+}
+
+if (git_repos() == 'composr_homesite') {
+    // Wanted so that icons, documentation, etc, can still work
+    $files_to_always_keep[] = '#^lang/EN/#';
+    $files_to_always_keep[] = '#^themes/default/images/#';
+    $files_to_always_keep[] = 'data_custom/composr_homesite_install.php';
 }
 
 foreach ($extra_files_to_delete as $file) {
     if (file_exists(get_file_base() . '/' . $file)) {
         if (is_dir(get_file_base() . '/' . $file)) {
-            echo 'rm -f ' . escapeshellarg($file) . "\n";
-        } else {
             echo 'rm -rf ' . escapeshellarg($file) . "\n";
+        } else {
+            echo 'rm -f ' . escapeshellarg($file) . "\n";
         }
     }
 }
@@ -95,7 +104,7 @@ if ($intersection == array()) {
         $ob = object_factory('Hook_addon_registry_' . $hook);
         $files = $ob->get_file_list();
         foreach ($files as $file) {
-            if ((!in_array($file, $files_to_always_keep)) && ((!in_array($hook, $installed_addons)) || (in_array($hook, $addons_definitely_not_wanted)))) {
+            if (((!in_array($hook, $installed_addons)) || (in_array($hook, $addons_definitely_not_wanted))) && (!force_keep($file, $files_to_always_keep))) {
                 if (file_exists(get_file_base() . '/' . $file)) {
                     echo 'rm -f ' . escapeshellarg($file) . "\n";
                 }
@@ -107,7 +116,9 @@ if ($intersection == array()) {
 
 // Alien files (non-ignored files not within one of the known addons)
 foreach (array_keys($GFILE_ARRAY) as $file) {
-    echo 'rm -f ' . escapeshellarg($file) . "\n";
+    if (!force_keep($file, $files_to_always_keep)) {
+        echo 'rm -f ' . escapeshellarg($file) . "\n";
+    }
 }
 
 // Empty dirs
@@ -120,6 +131,22 @@ foreach ($directories as $directory) {
     }
 }
 
+function force_keep($file, $files_to_always_keep)
+{
+    foreach ($files_to_always_keep as $_file) {
+        if (substr($_file, 0, 1) == '#') {
+            if (preg_match($_file, $file) != 0) {
+                return true;
+            }
+        } else {
+            if ($_file == $file) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function do_dir($dir = '')
 {
     global $GFILE_ARRAY;
@@ -127,7 +154,7 @@ function do_dir($dir = '')
     $full_dir = get_file_base() . '/' . $dir;
     $dh = opendir($full_dir);
     while (($file = readdir($dh)) !== false) {
-        $ignore = IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE;
+        $ignore = IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_USER_CUSTOMISE;
         if (should_ignore_file($dir . $file, $ignore, 0)) {
             continue;
         }
