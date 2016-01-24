@@ -497,7 +497,7 @@ function cleanup()
         deldir_contents(get_custom_file_base() . '/uploads/incoming_uploads', true);
         deldir_contents(get_custom_file_base() . '/uploads/auto_thumbs', true);
         foreach ($table_purposes as $table => $purpose) {
-            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) {
+            if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);
             }
         }
@@ -517,7 +517,7 @@ function cleanup()
 
     if ($aggressive_cleanup) {
         foreach ($table_purposes as $table => $purpose) {
-            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE)) {
+            if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);
             }
         }

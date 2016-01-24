@@ -73,6 +73,7 @@ function make_installers($skip_file_grab = false)
 
         make_files_manifest();
         make_database_manifest();
+        make_install_sql();
     }
 
     //header('Content-type: text/plain; charset=' . get_charset());var_dump(array_keys($MAKE_INSTALLERS__FILE_ARRAY));exit(); Useful for testing quickly what files will be built
@@ -695,3 +696,131 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 }
+
+function make_install_sql()
+{
+    global $SITE_INFO;
+
+    // Where to build database to
+    $database = 'cms_make_release_tmp';
+    $username = 'root';
+    $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
+    $table_prefix = 'cms_';
+
+    // Build database
+    require_code('install_headless');
+    do_install_to($database, $username, $password, $table_prefix, true);
+
+    // Get database connection
+    $conn = new DatabaseConnector($database, get_db_site_host(), $username, $password, $table_prefix);
+
+    // Remove caching
+    require_code('database_relations');
+    $table_purposes = get_table_purpose_flags();
+    foreach ($table_purposes as $table => $purpose) {
+        if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($conn->table_exists($table))) {
+            $conn->query_delete($table);
+        }
+    }
+
+    // Build SQL dump
+    require_code('database_toolkit');
+    $st = get_sql_dump(true, false, null, null, null, false, $conn);
+    $myfile = fopen(get_file_base() . '/install.sql', 'wb');
+    foreach ($st as $s) {
+        fwrite($myfile, $s);
+        fwrite($myfile, "\n\n");
+    }
+    fclose($myfile);
+    fix_permissions(get_file_base() . '/install.sql');
+    sync_file(get_file_base() . '/install.sql');
+
+    // Run some checks to make sure our process is not buggy...
+
+    $contents = file_get_contents(get_file_base() . '/install.sql');
+
+    // Not with forced charsets or other contextual noise
+    if (strpos($contents, "\n" . 'SET') !== false) {
+        warn_exit('Contains unwanted context');
+    }
+    if (preg_match('#\d+ SET #', $contents) != 0) {
+        warn_exit('Contains unwanted context');
+    }
+
+    // Old way of specifying table types
+    if (strpos($contents, ' TYPE=') !== false) {
+        warn_exit('Change TYPE= to ENGINE=');
+    }
+
+    // Not with bundled addons
+    if (strpos($contents, 'CREATE TABLE cms_workflow_') !== false) {
+        warn_exit('Contains non-bundled addons');
+    }
+
+    // Not with wrong table prefixes / multiple installs
+    if (preg_match('#CREATE TABLE cms\d+\_#', $contents) != 0) {
+        warn_exit('Contains a version-prefixed install');
+    }
+    if (preg_match('#CREATE TABLE cms\_#', $contents) == 0) {
+        warn_exit('Does not contain a standard-prefixed install');
+    }
+
+    // Not having been run
+    if (preg_match('#INSERT INTO cms\_cache#i', $contents) != 0) {
+        warn_exit('Contains cache data');
+    }
+    if (preg_match('#INSERT INTO cms\_stats#i', $contents) != 0) {
+        warn_exit('Contains stat data - site should not have been loaded ever yet');
+    }
+
+    // Out-dated version
+    $v = float_to_raw_string(cms_version_number());
+    if (strpos($contents, '\'version\',\'' . $v . '\'') !== false || strpos($contents, '\'version\', \'' . $v . '\'') !== false) {
+        warn_exit('Contains wrong version');
+    }
+
+    // Do split...
+
+    $split_points = array(
+        '',
+        'DROP TABLE IF EXISTS cms_db_meta;',
+        'DROP TABLE IF EXISTS cms_f_polls;',
+        'DROP TABLE IF EXISTS cms_member_privileges;',
+    );
+
+    // Check we can find split points
+    $contents = file_get_contents(get_file_base() . '/install.sql');
+    foreach ($split_points as $p) {
+        if ($p != '') {
+            if (strpos($contents, $p) === false) {
+                warn_exit('Cannot find split point ' . $p);
+            }
+        }
+    }
+    $froms = array();
+    foreach ($split_points as $p) {
+        if ($p == '') {
+            $from = 0;
+        } else {
+            $from = strpos($contents, $p);
+        }
+        $froms[] = $from;
+    }
+    sort($froms);
+    for ($i = 0; $i < 4; $i++) {
+        $from = $froms[$i];
+        if ($i < 3) {
+            $to = $froms[$i + 1];
+            $segment = substr($contents, $from, $to - $from);
+        } else {
+            $segment = substr($contents, $from);
+        }
+        file_put_contents(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment);
+        fix_permissions(get_file_base() . '/install' . strval($i + 1) . '.sql');
+        sync_file(get_file_base() . '/install' . strval($i + 1) . '.sql');
+    }
+}
+
+// See phpdoc_parser.php for functions.dat manifest building
+
+// Also see chmod_consistency.php, and build_rewrite_rules.php

@@ -180,19 +180,24 @@ function find_all_tables($db)
  *
  * @param  boolean $include_drops Whether to include 'DROP' statements
  * @param  boolean $output_statuses Whether to output status as we go
- * @param  ?ID_TEXT $from Table to look from (null: first table)
+ * @param  ?ID_TEXT $from Table to start from (null: first table)
  * @param  ?array $skip Array of table names to skip (null: none)
  * @param  ?array $only Array of only table names to do (null: all)
  * @param  boolean $echo Whether to echo out
+ * @param  ?object $conn Database connection to use (null: site database)
  * @return array The SQL statements
  */
-function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false)
+function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false, $conn = null)
 {
     if (is_null($skip)) {
         $skip = array();
     }
 
-    $tables = find_all_tables($GLOBALS['SITE_DB']);
+    if (is_null($conn)) {
+        $conn = $GLOBALS['SITE_DB'];
+    }
+
+    $tables = find_all_tables($conn);
 
     $out = array();
 
@@ -230,7 +235,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         // Data
         $start = 0;
         do {
-            $data = $GLOBALS['SITE_DB']->query_select($table_name, array('*'), null, '', 100, $start, false, array());
+            $data = $conn->query_select($table_name, array('*'), null, '', 100, $start, false, array());
             foreach ($data as $map) {
                 $keys = '';
                 $all_values = array();
@@ -282,7 +287,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
     }
 
     // Indexes
-    $indexes = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
+    $indexes = $conn->query_select('db_meta_indices', array('*'));
     foreach ($indexes as $index) {
         $index_name = $index['i_name'];
         if ($index_name[0] == '#') {

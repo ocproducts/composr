@@ -16,6 +16,7 @@
 // This test checks the chmod files are consistent.
 // Here's a similar and related thing:
 // If you need the rewrite rule files to be consistent, you need to run data_custom/build_rewrite_rules.php to rebuild them.
+// Also, manifests are built in make_release.php.
 
 /**
  * Composr test case class (unit testing).

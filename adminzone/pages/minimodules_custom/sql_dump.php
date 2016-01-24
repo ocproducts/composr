@@ -50,7 +50,7 @@ if ((strpos(ini_get('disallowed_functions'), 'shell_exec') === false) && (strpos
     }
 }/* else*/
 {
-    $st = get_sql_dump(false, false, null, null, null, true);
+    $st = get_sql_dump(false, false, null, null, null, false);
     foreach ($st as $s) {
         echo $s;
         echo "\n\n";

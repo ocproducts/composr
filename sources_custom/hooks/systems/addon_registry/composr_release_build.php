@@ -107,7 +107,9 @@ class Hook_addon_registry_composr_release_build
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'meta_toolkit',
+            ),
             'recommends' => array(
                 'composr_homesite',
                 'composr_homesite_support_credits',
