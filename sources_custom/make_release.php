@@ -50,6 +50,7 @@ function make_installers($skip_file_grab = false)
         @mkdir($builds_path . '/builds/build/', 0777) or warn_exit('Could not make temporary build folder');
         fix_permissions($builds_path . '/builds/build/', 0777);
     }
+
     if (!$skip_file_grab) {
         deldir_contents($builds_path . '/builds/build/' . $version_branch . '/');
     }
@@ -72,7 +73,6 @@ function make_installers($skip_file_grab = false)
         $out .= '</ul>';
 
         make_files_manifest();
-        make_database_manifest();
         make_install_sql();
     }
 
@@ -83,12 +83,14 @@ function make_installers($skip_file_grab = false)
     $quick_zip = $builds_path . '/builds/' . $version_dotted . '/composr_quick_installer-' . $version_dotted . '.zip';
     $manual_zip = $builds_path . '/builds/' . $version_dotted . '/composr_manualextraction_installer-' . $version_dotted . '.zip';
     $mszip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '-webpi.zip'; // Aka msappgallery, related to webmatrix
+    $aps_zip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '.app.zip'; // APS package
 
     // Flags
     $make_quick = (get_param_integer('skip_quick', 0) == 0);
     $make_manual = (get_param_integer('skip_manual', 0) == 0);
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
+    $make_aps = (get_param_integer('skip_aps', 0) == 0);
 
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(0);
@@ -309,6 +311,93 @@ function make_installers($skip_file_grab = false)
         chdir(get_file_base());
     }
 
+    // Build APS package
+    // @TODO #1034: Submit this package for certification and APS catalog listing following the process in APS_Package_Certification_Guide_2_1.pdf
+    if ($make_aps) {
+        @unlink($aps_zip);
+
+        if (file_exists($builds_path . '/builds/aps/')) {
+            deldir_contents($builds_path . '/builds/aps/');
+        }
+
+        // Copy the files we need
+        copy_r(get_file_base() . '/aps', $builds_path . '/builds/aps');
+        fix_permissions($builds_path . '/builds/aps', 0777);
+        copy(get_file_base() . '/install.sql', $builds_path . '/builds/aps/scripts/install.sql');
+        fix_permissions($builds_path . '/builds/aps/scripts/install.sql', 0777);
+
+        // Temporary renaming
+        rename($builds_path . '/builds/build/' . $version_branch . '/', $builds_path . '/builds/aps/htdocs/');
+
+        /* Prepare changelog for APP-META.xml*/
+        // Load the template APP-META.xml
+        $app_meta_doc = new DOMDocument();
+        $app_meta_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-META.xml'));
+
+        $xpath = new DOMXPath($app_meta_doc);
+        $xpath->registerNamespace('x', 'http://apstandard.com/ns/1');
+
+        $application_el = $xpath->query('/x:application')->item(0);
+        $application_el->setAttribute('packaged', date(DATE_ATOM));
+
+        $version_el = $xpath->query('/x:application/x:version')->item(0);
+        $version_el->nodeValue = $version_dotted;
+
+        $changelog_el = $xpath->query('/x:application/x:presentation/x:changelog')->item(0);
+        $changelog_previous_version_el = $changelog_el->getElementsByTagName('version')->item(0);
+
+        $previous_version_dotted = $changelog_previous_version_el->getAttribute('version');
+
+        if ($version_dotted !== $previous_version_dotted) {
+            $changelog_version_el = $changelog_previous_version_el->cloneNode(true);
+            $changelog_version_el->setAttribute('version', $version_dotted);
+
+            $changelog_version_entry_el = $changelog_version_el->getElementsByTagName('entry')->item(0);
+            $changelog_version_entry_el->nodeValue = 'Composr ' . $version_dotted . ' release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=' . $version_dotted;
+
+            $changelog_el->insertBefore($changelog_version_el, $changelog_previous_version_el);
+        }
+
+        $app_meta_doc = pretty_print_dom_document($app_meta_doc);
+        // Update the template APP-META.xml
+        $app_meta_doc->save(get_file_base() . '/aps/APP-META.xml');
+        // Make the build APP-META.xml
+        $app_meta_doc->save($builds_path . '/builds/aps/APP-META.xml');
+
+        /* Prepare APP-LIST.xml */
+        // Load the template APP-LIST.xml
+        $app_list_doc = new DOMDocument();
+        $app_list_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-LIST.xml'));
+
+        $files_el = $app_list_doc->getElementsByTagName('files')->item(0);
+
+        unlink($builds_path . '/builds/aps/APP-LIST.xml'); // Delete the copied template so it's not included in the list
+
+        $success = make_file_elements($app_list_doc, $files_el, $builds_path . '/builds/aps');
+        if ($success === false) {
+            warn_exit('Failed to build APP-LIST.xml');
+        }
+
+        // Save the build APP-LIST.xml
+        $app_list_doc = pretty_print_dom_document($app_list_doc);
+        $app_list_doc->save($builds_path . '/builds/aps/APP-LIST.xml');
+
+        // Do the main work
+        chdir($builds_path . '/builds/aps');
+        $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
+        $output2 = shell_exec($cmd);
+        $out .= do_build_zip_output($aps_zip, $output2);
+
+        // Undo temporary renaming
+        rename($builds_path . '/builds/aps/htdocs/', $builds_path . '/builds/build/' . $version_branch . '/');
+
+        // Delete the copied files
+        deldir_contents($builds_path . '/builds/aps/');
+        rmdir($builds_path . '/builds/aps/');
+
+        chdir(get_file_base());
+    }
+
     // We're done, show the result
 
     $details = '';
@@ -325,6 +414,9 @@ function make_installers($skip_file_grab = false)
     if ($make_bundled) {
         $details .= '<li>' . $bundled . '.gz file size: ' . clean_file_size(filesize($bundled . '.gz')) . '</li>';
     }
+    if ($make_aps) {
+        $details .= '<li>' . $aps_zip . ' file size: ' . clean_file_size(filesize($aps_zip)) . '</li>';
+    }
 
     $out .= '
         <h2>Statistics</h2>
@@ -340,6 +432,48 @@ function make_installers($skip_file_grab = false)
     $_MODIFIED_FILES = array();
 
     return $out;
+}
+
+// Used in the APS build process
+function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $dir_path)
+{
+    $entries = scandir($dir_path);
+    if ($entries === false) {
+        return false;
+    }
+    $entries = array_diff($entries, array('.', '..'));
+
+    foreach ($entries as $entry) {
+        $entry_path = $dir_path . '/' . $entry;
+
+        if (is_dir($entry_path)) {
+            $success = make_file_elements($app_list_doc, $files_el, $entry_path);
+            if ($success === false) return false;
+            continue;
+        }
+
+        $name = substr($entry_path, strlen(get_builds_path() . '/builds/aps/')); // Remove base path, we need a relative path
+
+        $el = $app_list_doc->createElement('ns2:file');
+        $el->setAttribute('name', $name);
+        $el->setAttribute('size', filesize($entry_path));
+        $el->setAttribute('sha256', hash_file('sha256', $entry_path));
+
+        $files_el->appendChild($el);
+    }
+
+    return true;
+}
+
+// Used in the APS build process
+function pretty_print_dom_document(DOMDocument $doc)
+{
+    $new_doc = new DOMDocument();
+    $new_doc->preserveWhiteSpace = false;
+    $new_doc->formatOutput = true;
+    $new_doc->loadXML($doc->saveXML());
+
+    return $new_doc;
 }
 
 function get_builds_path()
@@ -572,8 +706,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
             if ($file == 'sources/cns_install.php') {
                 $privilege_regexp = '#\'(\w+)\'#';
-            }
-            elseif ($file == 'sources/database_action.php') {
+            } elseif ($file == 'sources/database_action.php') {
                 $privilege_regexp = '#array\(\'\w+\',\s*\'(\w+)\'\)#';
             } else {
                 $privilege_regexp = '#add_privilege\(\'\w+\',\s*\'(\w+)\'#';

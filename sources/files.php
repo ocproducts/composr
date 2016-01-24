@@ -264,6 +264,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'cms.sql' => '', // Temporary backup
                                              'restore.php' => '',
 
+                                             // APS packaging files directory
+                                             'aps' => '',
+
                                              // IDE projects
                                              'nbproject' => '', // Netbeans
                                              '.project' => '', // Eclipse

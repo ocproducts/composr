@@ -90,6 +90,12 @@ if (is_null($microsoft_category_id)) {
     set_global_category_access('downloads', $microsoft_category_id);
 }
 
+$aps_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Plesk APS integration'));
+if (is_null($aps_category_id)) {
+    $aps_category_id = add_download_category('Plesk APS integration', $releases_category_id, '', '');
+    set_global_category_access('downloads', $aps_category_id);
+}
+
 $all_downloads_to_add = array(
     array(
         'name' => "Composr Version {$version_pretty}{$bleeding1}",
@@ -125,6 +131,15 @@ $all_downloads_to_add = array(
         'comments' => '',
         'category_id' => $microsoft_category_id,
         'internal_name' => 'Microsoft installer',
+    ),
+
+    array(
+        'name' => "Composr {$version_pretty}",
+        'description' => "This is a Plesk APS package of Composr. We will update this routinely when we release new versions, and update the APS catalog.\n\nIt can be manually installed into Plesk using the Application Vault interface available to administrators.",
+        'filename' => 'composr-' . $version_dotted . '.app.zip',
+        'comments' => '',
+        'category_id' => $aps_category_id,
+        'internal_name' => 'Plesk APS package',
     ),
 );
 
