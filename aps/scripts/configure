@@ -183,6 +183,7 @@ function remove_app() {
     import_sql();
 }
 
+
 function enable_app() {
     set_option('site_closed', '0');
 }

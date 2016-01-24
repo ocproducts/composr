@@ -13,7 +13,7 @@
  * @package    composr_release_build
  */
 
-/*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
+/*EXTRA FUNCTIONS: shell_exec|escapeshellarg|DOM.*|pretty_print_dom_document*/
 
 function init__make_release()
 {
@@ -313,7 +313,6 @@ function make_installers($skip_file_grab = false)
     }
 
     // Build APS package
-    // @TODO #1034: Submit this package for certification and APS catalog listing following the process in APS_Package_Certification_Guide_2_1.pdf
     if ($make_aps) {
         @unlink($aps_zip);
 
@@ -449,7 +448,9 @@ function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $di
 
         if (is_dir($entry_path)) {
             $success = make_file_elements($app_list_doc, $files_el, $entry_path);
-            if ($success === false) return false;
+            if ($success === false) {
+                return false;
+            }
             continue;
         }
 

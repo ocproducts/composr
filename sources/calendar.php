@@ -131,7 +131,7 @@ function date_from_week_of_year($year, $week)
 
     $basis = strval($year) . '-' . str_pad(strval($week), 2, '0', STR_PAD_LEFT);
     $time = mktime(12, 0, 0, 1, 1, $year);
-    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < 366; $i++) {
+    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < 365 + 7; $i++) {
         $new_time = $time + 60 * 60 * 24 * $i;
         $w = intval(date('w', $new_time));
         if ((($ssw) && ($w == 0)) || ((!$ssw) && ($w == 1))) {

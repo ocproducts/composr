@@ -8,8 +8,7 @@
   <vendor>
     <name>Composr</name>
     <homepage>http://compo.sr/</homepage>
-    <!-- @TODO: Update -->
-    <icon path="images/icon.gif"/>
+    <icon path="images/icon.png"/>
   </vendor>
   <packager>
     <name>ocProducts</name>
@@ -25,8 +24,7 @@
       downloads, hosting galleries, serving your own databases, eCommerce, and much more. Everything
       is customisable, done to high standards, and easy to use.
     </description>
-    <!-- @TODO: Update -->
-    <icon path="images/icon.gif"/>
+    <icon path="images/icon.png"/>
     <screenshot path="images/screenshot.png">
       <description>
         Homepage
@@ -35,10 +33,6 @@
     <changelog>
       <version release="1" version="10.alpha1">
         <entry>Composr 10.alpha1 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.alpha1</entry>
-      </version>
-      <version release="1" version="10.alpha0">
-        <entry>Composr 10.alpha0 Release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.alpha0
-        </entry>
       </version>
     </changelog>
     <categories>
@@ -113,7 +107,7 @@
       </group>
     </settings>
     <requirements>
-      <php:version min="5.0.0"/>
+      <php:version min="5.1.0"/>
       <!-- mysqli is needed to run the "configure" script -->
       <php:extension>mysqli</php:extension>
       <php:extension>gd</php:extension>
@@ -146,34 +140,67 @@
         <installed-size>52428800</installed-size>
         <mapping path="htdocs" url="/">
           <!-- Writable directories and files -->
-          <mapping url="themes">
+          <mapping url="adminzone/pages/comcode_custom/EN">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="lang_custom ">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="text_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="safe_mode_temp">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="caches/lang">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="caches/self_learning">
+          <mapping url="adminzone/pages/html_custom/EN">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="caches/guest_pages">
             <php:permissions writable="true"/>
           </mapping>
+          <mapping url="caches/lang">
+            <php:permissions writable="true"/>
+          </mapping>
+          <!--<mapping url="caches/lang/EN">  APS will not let you declare subdirectories of something already covered
+            <php:permissions writable="true"/>
+          </mapping>-->
           <mapping url="caches/persistent">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="data_custom">
+          <mapping url="caches/self_learning">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="imports/addons">
+          <mapping url="cms/pages/comcode_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="cms/pages/html_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="collaboration/pages/comcode_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="collaboration/pages/html_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/errorlog.php">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/firewall_rules.txt">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/modules/admin_backup">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/modules/admin_stats">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/modules/chat">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/modules/web_notifications">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/sitemaps">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/spelling/personal_dicts">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom/xml_config">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="exports/addons">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="exports/backups">
@@ -182,13 +209,118 @@
           <mapping url="exports/file_backups">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="exports/addons">
+          <mapping url="forum/pages/comcode_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="forum/pages/html_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="imports/addons">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="lang_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="lang_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="pages/comcode_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="pages/html_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="safe_mode_temp">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="site/pages/comcode_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="site/pages/html_custom/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="text_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <!--<mapping url="text_custom/EN">  APS will not let you declare subdirectories of something already covered
+            <php:permissions writable="true"/>
+          </mapping>-->
+          <mapping url="themes">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/css_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/images_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/javascript_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/templates_cached/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/templates_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/text_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/admin/xml_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/css_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/images_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/javascript_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/templates_cached/EN">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/templates_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/text_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/theme.ini">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/default/xml_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="themes/map.ini">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/attachments">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/attachments_thumbs">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/auto_thumbs">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="uploads/banners">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="uploads/catalogues">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_avatars">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_cpf_upload">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_photos">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_photos_thumbs">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="uploads/downloads">
@@ -203,25 +335,10 @@
           <mapping url="uploads/galleries_thumbs">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="uploads/attachments">
+          <mapping url="uploads/incoming">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="uploads/attachments_thumbs">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/auto_thumbs">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/cns_photos">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/cns_photos_thumbs">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/cns_avatars">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/cns_cpf_upload">
+          <mapping url="uploads/personal_sound_effects">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="uploads/repimages">
@@ -230,49 +347,7 @@
           <mapping url="uploads/watermarks">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="uploads/incoming">
-            <php:permissions writable="true"/>
-          </mapping>
           <mapping url="uploads/website_specific">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="uploads/personal_sound_effects">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="forum/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="forum/pages/html_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="site/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="adminzone/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="pages/html_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="cms/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="cms/pages/html_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="site/pages/html_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="adminzone/pages/html_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="collaboration/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="collaboration/pages/html_custom">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="_config.php">
