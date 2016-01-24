@@ -1,3 +1,0 @@
-<tr>
-	{ENTRIES}
-</tr>

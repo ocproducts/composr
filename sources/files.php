@@ -246,7 +246,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'php.ini' => '.*',
                                              '.htpasswd' => '.*',
                                              'iirf.ini' => '',
-                                             'robots.txt' => 'text',
+                                             'robots.txt' => '',
                                              'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
                                              '400.shtml' => '',
                                              '500.shtml' => '',
@@ -363,6 +363,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'permissioncheckslog.php' => 'data_custom',
             'failover_rewritemap.txt' => 'data_custom',
             'failover_rewritemap__mobile.txt' => 'data_custom',
+            'aggregate_types.xml' => 'data_custom/xml_config',
+            'breadcrumbs.xml' => 'data_custom/xml_config',
+            'fields.xml' => 'data_custom/xml_config',
         );
     }
 

@@ -382,5 +382,96 @@ function composr_homesite_install()
     	$GLOBALS['SITE_DB']->query_insert('group_privileges', $map);
     }
 
+    // Addons
+    require_code('addons');
+    require_code('addons2');
+    $addons = array_keys(find_installed_addons());
+    $addons_wanted = array(
+        'actionlog',
+        'addon_publish',
+        'apache_config_files',
+        'authors',
+        'awards',
+        'banners',
+        'breadcrumbs',
+        'captcha',
+        'catalogues',
+        'chat',
+        'cleanup_repository',
+        'cns_avatars',
+        'cns_cartoon_avatars',
+        'cns_contact_member',
+        'cns_cpfs',
+        'cns_forum',
+        'cns_member_avatars',
+        'cns_member_photos',
+        'cns_multi_moderations',
+        'cns_reported_posts',
+        'cns_signatures',
+        'cns_tapatalk',
+        'cns_thematic_avatars',
+        'cns_warnings',
+        'commandr',
+        'composr_homesite',
+        'composr_homesite_support_credits',
+        'composr_release_build',
+        'composr_tutorials',
+        'custom_comcode',
+        'data_mappr',
+        'downloads',
+        'ecommerce',
+        'errorlog',
+        'facebook_support',
+        'forum_blocks',
+        'galleries',
+        'geshi',
+        'getid3',
+        'help_page',
+        'linux_helper_scripts',
+        'match_key_permissions',
+        'meta_toolkit',
+        'news',
+        'newsletter',
+        'news_shared',
+        'page_management',
+        'phpinfo',
+        'points',
+        'pointstore',
+        'quizzes',
+        'random_quotes',
+        'recommend',
+        'redirects_editor',
+        'rootkit_detector',
+        'search',
+        'securitylogging',
+        'ssl',
+        'staff_messaging',
+        'stats',
+        'stats_block',
+        'syndication',
+        'syndication_blocks',
+        'tickets',
+        'twitter_support',
+        'unvalidated',
+        'users_online_block',
+        'user_mappr',
+        'welcome_emails',
+        'wordfilter',
+        'xml_fields',
+    );
+    $addons_to_remove = array();
+    foreach ($addons as $addon) {
+        if ((substr($addon, 0, 4) != 'core') && (!in_array($addon, $addons_wanted))) {
+            $addons_to_remove[] = $addon;
+        }
+    }
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
+    }
+    foreach ($addons_to_remove as $i => $addon) {
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        uninstall_addon($addon, $i == count($addons_to_remove) - 1);
+    }
+
     echo 'Done';
 }

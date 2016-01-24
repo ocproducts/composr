@@ -1,6 +1,0 @@
-[surround="boxless_space"]
-[block failsafe="1"]side_calendar[/block]
-[block failsafe="1"]side_users_online[/block]
-[block failsafe="1"]side_shoutbox[/block]
-{+START,IF,{$CONFIG_OPTION,sitewide_im}}[block failsafe="1"]side_friends[/block]
-{+END}[/surround]
