@@ -56,19 +56,37 @@ class _installer_test_set extends cms_test_case
 
     public function testFullInstallSafeMode()
     {
-        // Assumes we're using a blank root password, which is typically the case on development) - or you have it in $SITE_INFO['mysql_root_password']
-        global $SITE_INFO;
-        require_code('install_headless');
-        $success = do_install_to('test', 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', 'cms_unit_test_', true);
-        $this->assertTrue($success);
+        $this->doHeadlessInstall(true);
     }
 
     public function testFullInstallNotSafeMode()
     {
+        $this->doHeadlessInstall(false);
+    }
+
+    private function doHeadlessInstall($safe_mode)
+    {
+        $database = 'test';
+        $table_prefix = 'cms_unit_test_';
+
+        // Cleanup old install
+        $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database);
+        foreach ($tables as $table) {
+            if (substr($table['Tables_in_' . $database], 0, strlen($table_prefix)) == $table_prefix) {
+                $GLOBALS['SITE_DB']->query('DROP TABLE ' . $database . '.' . $table['Tables_in_' . $database]);
+            }
+        }
+
         // Assumes we're using a blank root password, which is typically the case on development) - or you have it in $SITE_INFO['mysql_root_password']
         global $SITE_INFO;
         require_code('install_headless');
-        $success = do_install_to('test', 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', 'cms_unit_test_', false);
-        $this->assertTrue($success);
+        for ($i = 0; $i < 2; $i++) { // 1st trial is clean DB, 2nd trial is dirty DB
+            $success = do_install_to($database, 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
+            $this->assertTrue($success);
+
+            if (!$success) {
+                break; // Don't do further trials if there's an error
+            }
+        }
     }
 }
