@@ -55,6 +55,12 @@ do_work();
 
 function do_work()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain; charset=' . get_charset());
+        exit('Must run this script on command line, for security reasons');
+    }
+
     $num_wanted = 200;
 
     require_code('config2');

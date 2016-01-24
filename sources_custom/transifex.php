@@ -39,6 +39,12 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain');
+        exit('Must run this script on command line, for security reasons');
+    }
+
     push_to_transifex();
 
     header('Content-type: text/plain; charset=' . get_charset());
@@ -48,6 +54,12 @@ function transifex_push_script()
 
 function push_to_transifex()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain; charset=' . get_charset());
+        exit('Must run this script on command line, for security reasons');
+    }
+
     require_code('addons');
     require_code('lang_compile');
     require_code('lang2');

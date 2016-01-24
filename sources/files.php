@@ -222,7 +222,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '.gitattributes' => '',
                                              '.gitignore' => '',
                                              'phpdoc.dist.xml' => '',
-                                             'composer.json' => '',
 
                                              // Web server extensions / leave-behinds
                                              'web-inf' => '.*',
@@ -261,19 +260,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                              // Installer files
                                              'install.php' => '',
-                                             '_config.php.template' => '',
                                              'data.cms' => '',
                                              'cms.sql' => '', // Temporary backup
-                                             'install.sql' => '',
-                                             'install1.sql' => '',
-                                             'install2.sql' => '',
-                                             'install3.sql' => '',
-                                             'install4.sql' => '',
-                                             'user.sql' => '',
-                                             'postinstall.sql' => '',
                                              'restore.php' => '',
-                                             'parameters.xml' => '',
-                                             'manifest.xml' => '',
 
                                              // IDE projects
                                              'nbproject' => '', // Netbeans
@@ -299,9 +288,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'hphp-static-cache' => '',
                                              'hphp.files.list' => '',
                                              'hphp' => '',
-
-                                             // Files only for the build process
-                                             'execute_temp.php.bundle' => 'data_custom',
 
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php

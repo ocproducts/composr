@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    lang_tools
+ * @package    meta_toolkit
  */
 
 /**
  * Hook class.
  */
-class Hook_addon_registry_lang_tools
+class Hook_addon_registry_meta_toolkit
 {
     /**
      * Get a list of file permissions to set
@@ -86,7 +86,7 @@ class Hook_addon_registry_lang_tools
      */
     public function get_description()
     {
-        return 'Tool (string_scan Admin Zone minimodule) to work out whether language strings are administrative or not.';
+        return 'Various tools for meta-management of a Composr site, including generating schemas, and exporting data.';
     }
 
     /**
@@ -131,8 +131,21 @@ class Hook_addon_registry_lang_tools
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/lang_tools.php',
+            'sources_custom/hooks/systems/addon_registry/meta_toolkit.php',
+            'data_custom/xml_db_import.php',
+            'adminzone/pages/minimodules_custom/sql_schema_generate.php',
+            'adminzone/pages/minimodules_custom/sql_schema_generate_by_addon.php',
+            'adminzone/pages/minimodules_custom/sql_show_tables_by_addon.php',
+            'adminzone/pages/minimodules_custom/sql_dump.php',
+            'adminzone/pages/minimodules_custom/tar_dump.php',
             'adminzone/pages/minimodules_custom/string_scan.php',
+            'sources_custom/hooks/systems/page_groupings/meta_toolkit.php',
+            'sources_custom/database_relations.php',
+            'sources_custom/database_toolkit.php',
+            'data_custom/cleanout.php',
+            'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
+            'delete_alien_files.php',
+            'line_count.sh',
         );
     }
 }

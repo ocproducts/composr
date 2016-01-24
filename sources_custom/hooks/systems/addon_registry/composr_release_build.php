@@ -142,9 +142,21 @@ class Hook_addon_registry_composr_release_build
             'sources_custom/hooks/systems/page_groupings/make_release.php',
             'adminzone/pages/minimodules_custom/push_bugfix.php',
             'adminzone/pages/minimodules_custom/plug_guid.php',
+            'data_custom/make_db_meta_file.php',
             'exports/builds/index.html',
             'data_custom/builds/index.html',
             'data_custom/builds/readme.txt',
+            '_config.php.template',
+            'install.sql',
+            'install1.sql',
+            'install2.sql',
+            'install3.sql',
+            'install4.sql',
+            'user.sql',
+            'postinstall.sql',
+            'parameters.xml',
+            'manifest.xml',
+            'data_custom/execute_temp.php.bundle',
         );
     }
 }
