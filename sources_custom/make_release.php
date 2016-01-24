@@ -73,7 +73,7 @@ function make_installers($skip_file_grab = false)
         $out .= '</ul>';
 
         make_files_manifest();
-        //make_database_manifest();
+        make_database_manifest();
         make_install_sql();
     }
 
@@ -313,6 +313,7 @@ function make_installers($skip_file_grab = false)
     }
 
     // Build APS package
+    // @TODO #1034: Submit this package for certification and APS catalog listing following the process in APS_Package_Certification_Guide_2_1.pdf
     if ($make_aps) {
         @unlink($aps_zip);
 
