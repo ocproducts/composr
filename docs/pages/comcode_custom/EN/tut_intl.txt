@@ -233,7 +233,7 @@ Transifex is not being used for things other than language strings (within langu
 
 [title="3"]Speeding up translation[/title]
 
-There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which strings are only used on administrative screens (i.e. skippable if only doing a public translation) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
+There is a non-bundled addon called [tt]meta_toolkit[/tt] that has a [tt]string_scan[/tt] module that can tell you which strings are only used on administrative screens (i.e. skippable if only doing a public translation) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
 
 [title="3"]Downloading translations from Transifex[/title]
 

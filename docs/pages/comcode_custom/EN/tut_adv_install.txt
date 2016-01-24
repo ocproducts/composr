@@ -251,7 +251,7 @@ If you are a programmer making your own standalone site you can use git, but you
 
 Here is some specific advice for people working from our git repository:
  - To temporarily turn off addons, use safe mode ([tt]&keep_safe_mode=1[/tt])
- - There is a script, [tt]killjunk.sh[/tt] which should remove files from non-bundled addons. However it won't uninstall their database tables so must be run prior to making a new install. If this script is run you become out-of-sync with git and further pulls won't work.
+ - You'll want to uninstall lots of non-bundled addons hosted in the repository. When merging with upstream files may come back, so there is a script [tt]delete_alien_files.php[/tt] which should help you decide what files to delete.
  - Running from git runs Composr in dev mode, which adds extra constraints and checks (or maybe even removes some designed for live sites). No live site should ever be left in dev mode. To change that add this to [tt]_config.php[/tt]: [tt]$SITE_INFO['dev_mode'] = '0';[/tt]
  - To stop Composr complaints about the installer being there, while also blocking the installer from running, create empty [tt]install_ok[/tt] and [tt]install_locked[/tt] files.
 

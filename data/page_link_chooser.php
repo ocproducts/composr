@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package core_menus
+ * @package    core_menus
  */
 
 // Find Composr base directory, and chdir into it

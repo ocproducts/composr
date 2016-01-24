@@ -128,6 +128,10 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
+    if (!isset($GLOBALS['SITE_DB'])) {
+        return;
+    }
+
     $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
 
     if ($temp === null) {

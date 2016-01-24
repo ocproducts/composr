@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    db_schema
+ * @package    meta_toolkit
  */
 
 /**
@@ -180,19 +180,31 @@ function find_all_tables($db)
  *
  * @param  boolean $include_drops Whether to include 'DROP' statements
  * @param  boolean $output_statuses Whether to output status as we go
- * @param  ?ID_TEXT $from Table to look from (null: first table)
+ * @param  ?ID_TEXT $from Table to start from (null: first table)
  * @param  ?array $skip Array of table names to skip (null: none)
  * @param  ?array $only Array of only table names to do (null: all)
  * @param  boolean $echo Whether to echo out
+ * @param  ?object $conn Database connection to use (null: site database)
  * @return array The SQL statements
  */
-function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false)
+function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false, $conn = null)
 {
+    disable_php_memory_limit();
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
+    }
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
     if (is_null($skip)) {
         $skip = array();
     }
 
-    $tables = find_all_tables($GLOBALS['SITE_DB']);
+    if (is_null($conn)) {
+        $conn = $GLOBALS['SITE_DB'];
+    }
+
+    $tables = find_all_tables($conn);
 
     $out = array();
 
@@ -214,14 +226,14 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         }
 
         if ($include_drops) {
-            $out[] = 'DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name . ";\n\n";
+            $out[] = 'DROP TABLE IF EXISTS ' . $conn->get_table_prefix() . $table_name . ";\n\n";
             if ($echo) {
                 echo $out[0];
                 $out = array();
             }
         }
 
-        $out[] = db_create_table_sql($table_name, $fields) . "\n";
+        $out[] = db_create_table_sql($table_name, $fields, $conn) . "\n";
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -230,7 +242,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         // Data
         $start = 0;
         do {
-            $data = $GLOBALS['SITE_DB']->query_select($table_name, array('*'), null, '', 100, $start, false, array());
+            $data = $conn->query_select($table_name, array('*'), null, '', 100, $start, false, array());
             foreach ($data as $map) {
                 $keys = '';
                 $all_values = array();
@@ -270,7 +282,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
                     }
                 }
 
-                $out[] = 'INSERT INTO ' . get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')' . ";\n";
+                $out[] = 'INSERT INTO ' . $conn->get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')' . ";\n";
                 if ($echo) {
                     echo $out[0];
                     $out = array();
@@ -282,7 +294,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
     }
 
     // Indexes
-    $indexes = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
+    $indexes = $conn->query_select('db_meta_indices', array('*'));
     foreach ($indexes as $index) {
         $index_name = $index['i_name'];
         if ($index_name[0] == '#') {
@@ -291,7 +303,32 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
         } else {
             $type = 'INDEX';
         }
-        $out[] = 'ALTER TABLE ' . get_table_prefix() . $index['i_table'] . ' ADD ' . $type . ' ' . $index_name . ' (' . $index['i_fields'] . ')' . ";\n";
+
+        $ok_to_create = true;
+
+        $_fields = '';
+        foreach (explode(',', $index['i_fields']) as $field) {
+            if ($_fields != '') {
+                $_fields .= ',';
+            }
+            $_fields .= $field;
+
+            if ((!multi_lang_content()) && (substr($index_name, 0, 1) != '#') && (strpos($field, '(') === false)) {
+                $db_type = $conn->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $index['i_table'], 'm_name' => $field));
+                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+                }
+            }
+
+            if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && (substr($index_name, 0, 1) == '#') && ($index['i_table'] != 'translate')) {
+                $ok_to_create = false;
+            }
+        }
+
+        if ($ok_to_create) {
+            $out[] = 'ALTER TABLE ' . $conn->get_table_prefix() . $index['i_table'] . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')' . ";\n";
+        }
+
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -339,11 +376,25 @@ function db_get_type_remap()
  *
  * @param  ID_TEXT $table_name The table name
  * @param  array $fields A map of field names to Composr field types (with *#? encodings)
+ * @param  ?object $conn Database connection to use (null: site database)
  * @return string The SQL for it
  */
-function db_create_table_sql($table_name, $fields)
+function db_create_table_sql($table_name, $fields, $conn)
 {
     $type_remap = db_get_type_remap();
+
+    foreach ($fields as $name => $type) {
+        if (!multi_lang_content()) {
+            if (strpos($type, '_TRANS') !== false) {
+                if (strpos($type, '__COMCODE') !== false) {
+                    $fields[$name . '__text_parsed'] = 'LONG_TEXT';
+                    $fields[$name . '__source_user'] = 'MEMBER';
+                }
+
+                $fields[$name] = 'LONG_TEXT'; // In the DB layer, it must now save as such
+            }
+        }
+    }
 
     $_fields = '';
     $keys = '';
@@ -375,7 +426,7 @@ function db_create_table_sql($table_name, $fields)
         $_fields .= ' ' . $perhaps_null . ',' . "\n";
     }
 
-    $query = 'CREATE TABLE ' . get_table_prefix() . $table_name . ' (
+    $query = 'CREATE TABLE ' . $conn->get_table_prefix() . $table_name . ' (
 ' . $_fields . '
     PRIMARY KEY (' . $keys . ')
 ) engine=' . ('MyISAM') . ';';

@@ -222,7 +222,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '.gitattributes' => '',
                                              '.gitignore' => '',
                                              'phpdoc.dist.xml' => '',
-                                             'composer.json' => '',
 
                                              // Web server extensions / leave-behinds
                                              'web-inf' => '.*',
@@ -247,7 +246,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'php.ini' => '.*',
                                              '.htpasswd' => '.*',
                                              'iirf.ini' => '',
-                                             'robots.txt' => 'text',
+                                             'robots.txt' => '',
                                              'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
                                              '400.shtml' => '',
                                              '500.shtml' => '',
@@ -261,19 +260,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                              // Installer files
                                              'install.php' => '',
-                                             '_config.php.template' => '',
                                              'data.cms' => '',
                                              'cms.sql' => '', // Temporary backup
-                                             'install.sql' => '',
-                                             'install1.sql' => '',
-                                             'install2.sql' => '',
-                                             'install3.sql' => '',
-                                             'install4.sql' => '',
-                                             'user.sql' => '',
-                                             'postinstall.sql' => '',
                                              'restore.php' => '',
-                                             'parameters.xml' => '',
-                                             'manifest.xml' => '',
 
                                              // APS packaging files directory
                                              'aps' => '',
@@ -302,9 +291,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'hphp-static-cache' => '',
                                              'hphp.files.list' => '',
                                              'hphp' => '',
-
-                                             // Files only for the build process
-                                             'execute_temp.php.bundle' => 'data_custom',
 
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
@@ -380,6 +366,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'permissioncheckslog.php' => 'data_custom',
             'failover_rewritemap.txt' => 'data_custom',
             'failover_rewritemap__mobile.txt' => 'data_custom',
+            'aggregate_types.xml' => 'data_custom/xml_config',
+            'breadcrumbs.xml' => 'data_custom/xml_config',
+            'fields.xml' => 'data_custom/xml_config',
         );
     }
 

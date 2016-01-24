@@ -10,18 +10,12 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    xml_db_manage
+ * @package    meta_toolkit
  */
 
 /*EXTRA FUNCTIONS: shell_exec*/
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
-
-disable_php_memory_limit();
-if (php_function_allowed('set_time_limit')) {
-    set_time_limit(0);
-}
-$GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
 $filename = 'composr-' . get_site_name() . '.' . date('Y-m-d') . '.sql';
 
@@ -50,10 +44,9 @@ if ((strpos(ini_get('disallowed_functions'), 'shell_exec') === false) && (strpos
     }
 }/* else*/
 {
-    $st = get_sql_dump(false, false, null, null, null, true);
+    $st = get_sql_dump(false, false, null, null, null, false);
     foreach ($st as $s) {
         echo $s;
-        echo "\n\n";
     }
 }
 

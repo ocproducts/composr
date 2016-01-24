@@ -1,10 +1,25 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    theme_debug
+ */
 
 /*
 This script will spot when a theme has bits of default theme CSS that is not adjusted for that theme's seed.
 It could fix CSS upgraded via diff, or just poor copy-and-pasting of code back from the default theme CSS files.
 
 Take BACKUPs before running this.
+
+TODO: Maybe merge into ":theme_debug"
 */
 
 $title = get_screen_title('Themewizard theme repair', false);

@@ -86,7 +86,7 @@ class Hook_addon_registry_user_simple_csv_sync
      */
     public function get_description()
     {
-        return 'A simple system for importing and exporting member CSV files automatically, on a scheduler. This is intended as a base for programmers seeking to integrate simple user synching, and requires custom programming to customise it.';
+        return 'A simple system for importing and exporting member CSV files automatically, on a scheduler. This is intended as a base for programmers seeking to integrate simple user synching, and requires custom programming to customise it. The [tt]data_custom/modules/user_export[/tt] directory should be protected with a [tt].htaccess[/tt] file, restricting it to particular IP addresses.';
     }
 
     /**

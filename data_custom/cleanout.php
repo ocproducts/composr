@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cleanout
+ * @package    meta_toolkit
  */
 
 // Find Composr base directory, and chdir into it
@@ -80,14 +80,14 @@ function cleanup()
 
     /* Customise this. This is the list of delete functions needed */
     $purge = array(
-        'delete_calendar_event',
+        /*'delete_calendar_event',
         'delete_news_category',
         'delete_news',
         'cns_delete_topic',
         'cns_delete_forum',
         'cns_delete_forum_grouping',
         'cns_delete_group',
-        'cns_delete_member',
+        'cns_delete_member',*/
     );
 
     $log_cache_wip_cleanup = true;
@@ -497,7 +497,7 @@ function cleanup()
         deldir_contents(get_custom_file_base() . '/uploads/incoming_uploads', true);
         deldir_contents(get_custom_file_base() . '/uploads/auto_thumbs', true);
         foreach ($table_purposes as $table => $purpose) {
-            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) {
+            if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);
             }
         }
@@ -517,7 +517,7 @@ function cleanup()
 
     if ($aggressive_cleanup) {
         foreach ($table_purposes as $table => $purpose) {
-            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE)) {
+            if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);
             }
         }

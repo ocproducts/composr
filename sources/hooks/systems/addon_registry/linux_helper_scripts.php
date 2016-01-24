@@ -108,23 +108,6 @@ class Hook_addon_registry_linux_helper_scripts
             'db_init.sh',
             'db_export.sh',
             'db_import.sh',
-
-            // The following are PHP scripts designed to be callable directly (not all bundled with the main Composr)
-            // sources/critical_errors.php (works to monitor for logged critical errors, and email them)
-            // data/commandr.php (command line tunnel into Commandr, VERY useful)
-            // _tests/codechecker/code_quality.php (Code Quality Checker)
-            // _tests/codechecker/phpdoc_parser.php (Code Quality Checker function signature parsing)
-            // data_custom/compile_in_includes.php (Compile Composr overrides against originals, for slight performance improvement)
-
-            // Various tools are also built into the Admin Zone menus
-
-            // Various tools are built into the upgrader
-            //  E.g. detecting alien files
-            //  E.g. detecting missing files
-            //  E.g. detecting corrupt files
-            //  E.g. clearing the caches (without having to run the full Composr)
-            //  E.g. detecting missing permissions
-            //  E.g. deleting files accidentally uploaded from non-installed addons
         );
     }
 }

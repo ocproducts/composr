@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    db_schema
+ * @package    meta_toolkit
  */
 
 /**
  * Hook class.
  */
-class Hook_page_groupings_db_schema
+class Hook_page_groupings_meta_toolkit
 {
     /**
      * Run function for do_next_menu hooks. They find links to put on standard navigation menus of the system.
@@ -31,6 +31,8 @@ class Hook_page_groupings_db_schema
             array('tools', 'menu/_generic_admin/tool', array('sql_schema_generate', array(), get_page_zone('sql_schema_generate')), make_string_tempcode('Doc build: Generate database schema')),
             array('tools', 'menu/_generic_admin/tool', array('sql_schema_generate_by_addon', array(), get_page_zone('sql_schema_generate_by_addon')), make_string_tempcode('Doc build: Generate database schema, by addon')),
             array('tools', 'menu/_generic_admin/tool', array('sql_show_tables_by_addon', array(), get_page_zone('sql_show_tables_by_addon')), make_string_tempcode('Doc build: Show database tables, by addon')),
+            array('tools', 'menu/_generic_admin/tool', array('sql_dump', array(), get_page_zone('sql_dump')), make_string_tempcode('Backup tools: Create SQL dump (MySQL syntax)')),
+            array('tools', 'menu/_generic_admin/tool', array('tar_dump', array(), get_page_zone('tar_dump')), make_string_tempcode('Backup tools: Create files dump (TAR file)')),
         );
     }
 }

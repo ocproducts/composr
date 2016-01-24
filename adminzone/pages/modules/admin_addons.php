@@ -583,6 +583,8 @@ class Module_admin_addons
         require_code('abstract_file_manager');
         force_have_afm_details();
 
+        $addons_to_remove = array();
+
         foreach ($_POST as $key => $passed) {
             if (substr($key, 0, 8) == 'install_') {
                 install_addon($passed);
@@ -599,28 +601,32 @@ class Module_admin_addons
                     continue;
                 }
 
-                $addon_info = read_addon_info($name);
-
-                // Archive it off to exports/addons
-                $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
-                create_addon(
-                    $file,
-                    $addon_info['files'],
-                    $addon_info['name'],
-                    implode(',', $addon_info['incompatibilities']),
-                    implode(',', $addon_info['dependencies']),
-                    $addon_info['author'],
-                    $addon_info['organisation'],
-                    $addon_info['version'],
-                    $addon_info['category'],
-                    implode("\n", $addon_info['copyright_attribution']),
-                    $addon_info['licence'],
-                    $addon_info['description'],
-                    'imports/addons'
-                );
-
-                uninstall_addon($name);
+                $addons_to_remove[] = $name;
             }
+        }
+
+        foreach ($addons_to_remove as $i => $name) {
+            $addon_info = read_addon_info($name);
+
+            // Archive it off to exports/addons
+            $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
+            create_addon(
+                $file,
+                $addon_info['files'],
+                $addon_info['name'],
+                implode(',', $addon_info['incompatibilities']),
+                implode(',', $addon_info['dependencies']),
+                $addon_info['author'],
+                $addon_info['organisation'],
+                $addon_info['version'],
+                $addon_info['category'],
+                implode("\n", $addon_info['copyright_attribution']),
+                $addon_info['licence'],
+                $addon_info['description'],
+                'imports/addons'
+            );
+
+            uninstall_addon($name, $i == count($addons_to_remove) - 1);
         }
 
         // Clear some caching

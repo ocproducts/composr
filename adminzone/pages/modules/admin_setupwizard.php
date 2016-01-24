@@ -829,6 +829,11 @@ class Module_admin_setupwizard
         }
         send_http_output_ping();
 
+        // Clear some caching (we do it early AND at the end, in case we fail part way through and the user comes back to an inconsistent state)
+        $this->clear_caching();
+
+        // Proceed...
+
         require_code('config2');
         require_code('themes2');
         require_lang('zones');
@@ -1134,15 +1139,23 @@ class Module_admin_setupwizard
         set_value('setupwizard_completed', '1');
 
         // Clear some caching
+        $this->clear_caching();
+
+        $url = build_url(array('page' => '_SELF', 'type' => 'step11'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Clear caches we want to clear to clean up.
+     */
+    private function clear_caching()
+    {
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
         erase_cached_templates();
-
-        $url = build_url(array('page' => '_SELF', 'type' => 'step11'), '_SELF');
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
     /**

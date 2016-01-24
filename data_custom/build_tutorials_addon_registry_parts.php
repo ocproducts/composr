@@ -54,7 +54,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-header('Content-type: text/plain');
+header('Content-type: text/plain; charset=' . get_charset());
 
 safe_ini_set('ocproducts.xss_detect', '0');
 
