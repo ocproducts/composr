@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    meta_toolkit
+ */
 
 /*EXTRA FUNCTIONS: diff_simple_2*/
 
@@ -329,21 +342,10 @@ function get_addon_structure()
 
         $file_list = $hook_ob->get_file_list();
 
-        $_file_list = array();
-        foreach ($file_list as $file) {
-            if (preg_match('#^[^/]*\.tpl$#', $file) != 0) {
-                $_file_list[] = 'themes/default/templates/' . $file;
-            } elseif (preg_match('#^[^/]*\.css$#', $file) != 0) {
-                $_file_list[] = 'themes/default/css/' . $file;
-            } else {
-                $_file_list[] = $file;
-            }
-        }
-
         if ($place == 'sources') {
-            $struct['bundled'][$hook] = $_file_list;
+            $struct['bundled'][$hook] = $file_list;
         } else {
-            $struct['non_bundled'][$hook] = $_file_list;
+            $struct['non_bundled'][$hook] = $file_list;
         }
     }
     ksort($struct['bundled']);

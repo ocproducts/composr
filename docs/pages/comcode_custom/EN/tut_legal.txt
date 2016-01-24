@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Legal and social responsibilities[/title]
 
+[media width="350" description="" float="right"]data_custom/images/docs/tut_legal/image.png[/media]
 If you are running a website, in particular a large or corporate website, there are important legal and social issues that need to be understood, and procedures or rules need to be put in place.
 
 [contents]decimal,lower-alpha[/contents]
@@ -102,24 +103,7 @@ It is also possible that miscreants will attempt to use your website as a vehicl
 
 The sub-sections of this section briefly cover the main social issues you are likely to need to consider. By running a website with community features, such as a forum, or chatrooms, you are in essence making yourself or your team, community leaders, and therefore you hold the responsibilities that come with this.
 
-[title="3"]Offensive content and moderation[/title]
-
-It is unfortunate but inevitable that in most social climates, people will have strongly opposing views about what is appropriate behaviour. I have personal experience moderating forums, and know people may be explosively passionate about their views, and highly accusative of those who do not carry them.
-
-Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism and liberalism.
-
-You need to make three main decisions:
-1) Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
-2) Are you going to define a level of what is 'appropriate' for your community, not based on personal view, but merely what you think your community should be allowed to discuss?
-3) Are you going to limit discussion of topics related purely on relevance to a central topic?
-These decisions more than anything will mould the feeling of your community and held you set specific rules and policies.
-
-When it comes to moderation, the words 'freedom' and 'offensive' very often get carried around:
- - if you moderate someone, it is likely they will accuse you of 'removing their freedom' (even though your website is not public property)
- - if you allow someone to be offensive to others, they will likely accuse you of building a website that is a vehicle to propaganda or an agenda they disagree with
-It is inevitable that you will be '[i]damned if you do and damned if you don't[/i]', so you need to be able to cope fairly with criticism.
-
-[title="3"]Children and young teenagers[/title]
+[title="3"]Child protection[/title]
 
 There is a US law, [concept]COPPA[/concept] (Children's Online Privacy Protection Act), that you need to comply with if your (US) website targets children under 13 for membership, or if you know that members of your website are under 13. More information on this law is available here from the COPPA website (see 'see also').
 
@@ -136,7 +120,28 @@ Young members (or even older members) are often naive, as they have less experie
  - paedophiles
 The Private Topic (PT) system (of [concept]Conversr[/concept]) can be a particular hot spot. You need to develop a policy of whether you should moderate the PTs of (certain?) members to avoid issues such as online stalking, and you need to make this available in your privacy policy -- usually this would only be undertaken at the request of the other (unwilling?) participant of the PT.
 
-[title="3"]Freedom of discussion vs 'off-topic'[/title]
+[title="3"]Free speech[/title]
+
+[title="4"]Offensive content and moderation[/title]
+
+It is unfortunate but inevitable that in most social climates, people will have strongly opposing views about what is appropriate behaviour. I have personal experience moderating forums, and know people may be explosively passionate about their views, and highly accusative of those who do not carry them.
+
+Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism and liberalism.
+
+You need to make three main decisions:
+1) Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
+2) Are you going to define a level of what is 'appropriate' for your community, not based on personal view, but merely what you think your community should be allowed to discuss?
+3) Are you going to limit discussion of topics related purely on relevance to a central topic?
+These decisions more than anything will mould the feeling of your community and held you set specific rules and policies.
+
+When it comes to moderation, the words 'freedom' and 'offensive' very often get carried around:
+ - if you moderate someone, it is likely they will accuse you of 'removing their freedom' (even though your website is not public property)
+ - if you allow someone to be offensive to others, they will likely accuse you of building a website that is a vehicle to propaganda or an agenda they disagree with
+It is inevitable that you will be '[i]damned if you do and damned if you don't[/i]', so you need to be able to cope fairly with criticism.
+
+[title="4"]Staying on-topic[/title]
+
+Unless you are a government entity, true "free speech" is unlikely to be an issue -- but users may still appreciate some level of unmoderated discussion. You will need to strike a balance between "freedom of discussion" and "staying on topic" that is appropriate to your particular website.
 
 You should make a decision upon this:
  - is it necessary to stick to discussing certain topics in certain places?
@@ -152,9 +157,11 @@ You may wish to consider anti-discrimination clauses in your rules, possibly cit
 
 You may wish to make rules and policies regarding abuse between members.
 
-[title="3"]Psychologies[/title]
+[title="3"]Personality types[/title]
 
-As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users. With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
+As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users.
+
+With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
 
 [title="3"]Handling feedback[/title]
 

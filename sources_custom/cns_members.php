@@ -1,4 +1,18 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ * @package    openid
+ */
 
 /**
  * Find whether a member is bound to HTTP authentication (an exceptional situation, only for sites that use it).

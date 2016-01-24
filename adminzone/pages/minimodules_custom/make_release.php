@@ -133,6 +133,7 @@ function phase_1_pre()
     echo '
     <p>As this is a substantial new release make sure you have done the following:</p>
     <ul>
+        <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
         <li>Build <kbd>install.sql</kbd>. If you think you\'ve done it then the <a href="' . get_base_url() . '/_tests/?id=unit_tests/installsql" target="_blank">installsql unit test</a> will confirm.</li>
         <li>Run the <a href="' . escape_html(get_base_url() . '/_test') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>

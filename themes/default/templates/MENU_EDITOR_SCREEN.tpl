@@ -50,8 +50,10 @@
 					<!-- List put in here -->
 				</div>
 				<script>// <![CDATA[
-					var current_selection='';
-					var sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					add_event_listener_abstract(window,'load',function() {
+						window.current_selection='';
+						window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					});
 				//]]></script>
 
 				<p class="associated_details">

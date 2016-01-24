@@ -17,6 +17,8 @@
 Search for CSS classes used in templates, and check they exist in the default theme CSS files.
 
 This is a general Composr tool for testing out the default theme manually but with some help. theme_debug.php has a theme-specific checker.
+
+TODO: Maybe merge into ":theme_debug"
 */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);

@@ -315,7 +315,7 @@ class Virtual_shell
 <response>
     <result>
         <command>' . xmlentities($this->current_input) . '</command>
-        <stdcommand>' . $this->output[STREAM_STDCOMMAND] . '</stdcommand>
+        <stdcommand>' . xmlentities($this->output[STREAM_STDCOMMAND]) . '</stdcommand>
         <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . $this->output[STREAM_STDHTML] . '</div></stdhtml>
         <stdout>' . xmlentities($this->output[STREAM_STDOUT]) . '</stdout>
         <stderr>' . xmlentities($this->output[STREAM_STDERR]) . '</stderr>

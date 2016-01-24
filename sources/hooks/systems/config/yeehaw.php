@@ -51,7 +51,7 @@ class Hook_config_yeehaw
     public function get_default()
     {
         require_code('locations');
-        if (get_country() == 'US') {
+        if (geolocate_ip() == 'US') {
             return '1';
         }
         return '0';

@@ -385,6 +385,68 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
 }
 
 /**
+ * Delete a column from a CSV file.
+ *
+ * @param  PATH $in_path Path to the CSV file
+ * @param  string $column_name Column name
+ */
+function delete_csv_column($in_path, $column_name)
+{
+    if (!is_writable_wrap($in_path)) {
+        fatal_exit(do_lang_tempcode('WRITE_ERROR', $in_path));
+    }
+
+    // Find which field index this named column is
+    $in_file = fopen($in_path, 'rb');
+    $header_row = fgetcsv($in_file);
+    $column_i = null;
+    foreach ($header_row as $i => $h) {
+        if ($h == $column_name) {
+            $column_i = $i;
+            break;
+        }
+    }
+    if (is_null($column_i)) {
+        return;
+    }
+
+    // Rewrite out to a temp file
+    $tmp_path = cms_tempnam();
+    $tmp_file = fopen($tmp_path, 'wb');
+
+    // Write out header
+    unset($header_row[$i]);
+    foreach ($header_row as $i => $h) {
+        if ($i != 0) {
+            fwrite($tmp_file, ',');
+        }
+        fwrite($tmp_file, str_replace('"', '""', $h));
+    }
+    fwrite($tmp_file, "\n");
+
+    // Write out each row
+    while (($row = fgetcsv($in_file)) !== false) {
+        unset($row[$column_i]);
+
+        foreach ($row as $i => $c) {
+            if ($i != 0) {
+                fwrite($tmp_file, ',');
+            }
+            fwrite($tmp_file, '"' . str_replace('"', '""', $c) . '"');
+        }
+        fwrite($tmp_file, "\n");
+    }
+
+    // Clean up; put temp file back over main file
+    fclose($in_file);
+    fclose($tmp_file);
+    @unlink($in_path);
+    rename($tmp_path, $in_path);
+    sync_file($in_path);
+    fix_permissions($in_path);
+}
+
+/**
  * Find path to the PHP executable.
  *
  * @param  boolean $cgi Whether we need a CGI interpreter
@@ -843,7 +905,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
             $file_path = $file_base . urldecode($parsed['path']);
 
-            if ((function_exists('shell_exec')) && (php_function_allowed('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (php_function_allowed('shell_exec'))) {
+            if ((php_function_allowed('escapeshellcmd')) && (php_function_allowed('shell_exec')) && (substr($file_path, -4) == '.php')) {
                 $cmd = 'DOCUMENT_ROOT=' . escapeshellarg_wrap(dirname(get_file_base())) . ' PATH_TRANSLATED=' . escapeshellarg_wrap($file_path) . ' SCRIPT_NAME=' . escapeshellarg_wrap($file_path) . ' HTTP_USER_AGENT=' . escapeshellarg_wrap($ua) . ' QUERY_STRING=' . escapeshellarg_wrap($parsed['query']) . ' HTTP_HOST=' . escapeshellarg_wrap($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . escapeshellarg_wrap($file_path);
                 $contents = shell_exec($cmd);
                 $split_pos = strpos($contents, "\r\n\r\n");
@@ -932,7 +994,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $put_path = current($files);
                     $put = fopen($put_path, 'rb');
                 } else { // No, we need to spool out HTTP blah to make a new file to PUT
-                    $put_path = cms_tempnam('temp_put');
+                    $put_path = cms_tempnam();
                     $put = fopen($put_path, 'wb');
                 }
             }
@@ -1070,9 +1132,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
-                                                curl_setopt($ch,CURLOPT_SSLVERSION,CURL_SSLVERSION_TLSv1);
+                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
                                             } else {
-                                                curl_setopt($ch,CURLOPT_SSL_CIPHER_LIST,'TLSv1');
+                                                curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
                                             }
                                             //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));

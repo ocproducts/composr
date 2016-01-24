@@ -240,10 +240,17 @@ function upgrade_script()
                             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
                         }
 
-                        $temp_path = cms_tempnam('cmsfu');
+                        $temp_path = cms_tempnam();
                         $myfile = fopen($temp_path, 'wb');
                         http_download_file(post_param_string('url'), null, true, false, 'Composr', null, null, null, null, null, $myfile);
                         fclose($myfile);
+                    }
+                    if (substr(strtolower($temp_path), -4) == '.zip') {
+                        require_code('tar2');
+                        $temp_path_new = convert_zip_to_tar($temp_path, true);
+                        @unlink($temp_path);
+                        rename($temp_path_new, $temp_path);
+                        fix_permissions($temp_path);
                     }
                     $upgrade_resource = tar_open($temp_path, 'rb');
                     //tar_extract_to_folder($upgrade_resource, '', true);

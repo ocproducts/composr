@@ -46,6 +46,16 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+$password = post_param_string('password', null);
+if (is_null($password)) {
+    @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
+}
+if (!check_master_password($password)) {
+    warn_exit('Access denied - you must pass the master password through correctly');
+}
+
+header('Content-type: text/plain; charset=' . get_charset());
+
 $mode = get_param_string('mode'); // bundle | unbundle
 $addon = get_param_string('addon');
 

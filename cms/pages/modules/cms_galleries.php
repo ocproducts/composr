@@ -483,7 +483,7 @@ class Module_cms_galleries extends Standard_crud_module
 
                             // Load in file
                             zip_entry_open($myfile, $entry);
-                            $tmp_name_2 = cms_tempnam('bi');
+                            $tmp_name_2 = cms_tempnam();
                             $myfile2 = fopen($tmp_name_2, 'wb') or intelligent_write_error($tmp_name_2);
                             $more = mixed();
                             do {
@@ -520,7 +520,7 @@ class Module_cms_galleries extends Standard_crud_module
                         $this->_sort_media($directory);
 
                         foreach ($directory as $entry) {
-                            $tmp_name_2 = cms_tempnam('bi');
+                            $tmp_name_2 = cms_tempnam();
 
                             // Load in file
                             $_in = tar_get_file($myfile, $entry['path'], false, $tmp_name_2);
@@ -549,7 +549,7 @@ class Module_cms_galleries extends Standard_crud_module
                     break;
                 default:
                     if ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
-                        $tmp_name_2 = cms_tempnam('bi');
+                        $tmp_name_2 = cms_tempnam();
 
                         if ($__file['type'] != 'plupload') {
                             $test = @move_uploaded_file($tmp_name, $tmp_name_2);
@@ -1558,7 +1558,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     $download_test = null;
                     $temp_path = '';
                     if ($url != '') {
-                        $temp_path = cms_tempnam('cmsafm');
+                        $temp_path = cms_tempnam();
                         $write_to_file = fopen($temp_path, 'wb');
                         $download_test = http_download_file($url, 1024 * 50, false, false, 'Composr', null, null, null, null, null, $write_to_file);
                         rewind($write_to_file);

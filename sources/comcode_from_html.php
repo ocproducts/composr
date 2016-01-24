@@ -267,8 +267,10 @@ function _reorder_css_properties($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function semihtml_to_comcode_wrap($matches)
+function _semihtml_to_comcode_wrap($matches)
 {
     $middle = semihtml_to_comcode($matches[2]);
     if (substr($middle, 0, 10) == '[semihtml]') {
@@ -282,23 +284,54 @@ function semihtml_to_comcode_wrap($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function debuttonise($matches)
+function _debuttonise($matches)
 {
     return html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 }
 
 /**
- * Extract underlying Comcode from an editor Comcode XML tag. preg_replace_callback callback
+ * Extract underlying Comcode from an editor XML tag. preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function detagonise($matches)
+function _detagonise($matches)
 {
     $tag = $matches[1];
     $attributes = html_entity_decode(str_replace('&quot;', '\"', isset($matches[2]) ? $matches[2] : ''), ENT_QUOTES, get_charset());
+    $attributes = preg_replace('# id="[^"]*"#', '', $attributes); // IDs aren't a real Comcode attribute
     return '[' . $tag . $attributes . ']';
+}
+
+/**
+ * Extract underlying Tempcode directive from an editor XML tag. preg_replace_callback callback
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted text
+ *
+ * @ignore
+ */
+function _dedirectiveise($matches)
+{
+    $attributes_arr = array();
+    $attributes_xml = isset($matches[1]) ? $matches[1] : '';
+    $matches_attributes = array();
+    $num_matches_attributes = preg_match_all('#\s+([\w\_\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
+    for ($i = 0; $i < $num_matches_attributes; $i++) {
+        $attributes_arr[$matches_attributes[1][$i]] = $matches_attributes[2][$i];
+    }
+
+    $attributes = '';
+    if (!empty($attributes_arr['params'])) {
+        $attributes = html_entity_decode($attributes_arr['params'], ENT_QUOTES, get_charset());
+    }
+
+    return $attributes;
 }
 
 /**
@@ -318,7 +351,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     // Our button editing for embedded tags
     do {
         $semihtml_before = $semihtml;
-        $semihtml = preg_replace_callback('#<input [^>]*class="cms_keep_ui_controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', 'debuttonise', $semihtml);
+        $semihtml = preg_replace_callback('#<input [^>]*class="cms_keep_ui_controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', '_debuttonise', $semihtml);
     } while ($semihtml != $semihtml_before);
 
     // Our Comcode tag start/end markers
@@ -330,9 +363,11 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     _custom_comcode_import($GLOBALS['SITE_DB']);
     global $VALID_COMCODE_TAGS;
     foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-        $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', 'detagonise', $semihtml);
-        $semihtml = preg_replace('#</\s*comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
+        $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', '_detagonise', $semihtml);
+        $semihtml = preg_replace('#</comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
     }
+    $semihtml = preg_replace_callback('#<tempcode( [^<>]*)' . '>\s*#', '_dedirectiveise', $semihtml);
+    $semihtml = preg_replace('#</tempcode\s*>#', '{+END}', $semihtml);
 }
 
 /**
@@ -890,7 +925,7 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // Cleanup impossible stuff in code tags
     foreach (array_keys($CODE_TAGS) as $tag) {
-        $semihtml2 = comcode_preg_replace($tag, '#^(\[' . $tag . '\])([.\n]*)(\[/' . $tag . '\])$#i', array('semihtml_to_comcode_wrap'), $semihtml2);
+        $semihtml2 = comcode_preg_replace($tag, '#^(\[' . $tag . '\])([.\n]*)(\[/' . $tag . '\])$#i', array('_semihtml_to_comcode_wrap'), $semihtml2);
     }
 
     // These can only be used outside semihtml - so we do them in a copy of our output, and only use that copy if we find we are able to do a 100% Comcode conversion

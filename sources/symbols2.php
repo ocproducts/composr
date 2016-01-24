@@ -282,7 +282,9 @@ function ecv2_MOBILE($lang, $escaped, $param)
  */
 function ecv2_COPYRIGHT($lang, $escaped, $param)
 {
-    $value = str_replace('$CURRENT_YEAR', date('Y'), get_option('copyright'));
+    $value = get_option('copyright');
+    $value = str_replace('$CURRENT_YEAR=', '', $value); // Update-on-posting, does nothing dynamically
+    $value = str_replace('$CURRENT_YEAR', date('Y'), $value); // Always updated
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);

@@ -112,7 +112,7 @@ class Module_cms_comcode_pages
             }
             $page_link_parts = explode(':', $page_link);
             if (count($page_link_parts) != 2) {
-                warn_exit(do_lang_tempcode('ZONE_COLON_FILE'));
+                warn_exit(do_lang_tempcode('ZONE_COLON_PAGE'));
             }
             $zone = $page_link_parts[0];
             $file = $page_link_parts[1];
@@ -1071,7 +1071,7 @@ class Module_cms_comcode_pages
                     }
                 }
 
-                $edit_url = build_url(array('page' => '_SELF', 'type' => '_ed', 'page_link' => $page_link), '_SELF');
+                $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $page_link), '_SELF');
 
                 $page_structure[] = array(
                     'EDIT_URL' => $edit_url,

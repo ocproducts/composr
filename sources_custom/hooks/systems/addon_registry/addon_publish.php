@@ -134,8 +134,6 @@ class Hook_addon_registry_addon_publish
             'sources_custom/hooks/systems/addon_registry/addon_publish.php',
             'adminzone/pages/minimodules_custom/publish_addons_as_downloads.php',
             'adminzone/pages/minimodules_custom/build_addons.php',
-            'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
-            'adminzone/pages/minimodules_custom/tar_dump.php',
             'sources_custom/hooks/systems/page_groupings/addon_publish.php',
             'sources_custom/transifex.php',
             'sources_custom/addon_publish.php',

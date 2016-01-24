@@ -806,6 +806,383 @@ It's overkill to apply the full range of Composr coding standards if you're writ
 
 Bear in mind that some sites need maintenance or have multiple people working on them, so you should bear this in mind when you decide the level of engineered design and code documentation to implement for your custom functionality. It is a trade-off between initial development cost, and long-term time savings.
 
+[title="2"]Scripts and tools[/title]
+
+There are a large number of scripts and tools for helping in particular situations, outside the normal content management processes of running a Composr website.
+
+Many of these are designed just for programmers, to speed up development. But some are particularly useful just for basic configuration management and DevOps.
+
+In this section we document all the scripts and tools that may be generally useful to you as a developer.
+
+This section is not designed as primary documentation for the tools. Those tools not designed for programmer use may be described in various individual tutorials. The tools for programmers are typically undocumented, but a programmer can analyse the code to see how they work (and make improvements as needed).
+
+[title="3"]Website management[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]decache.sh[/tt]
+| Clear out file-system caches, and leave a mark for the next Composr page load to clear database caches.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]fixperms.sh[/tt]
+| Set appropriate file permissions.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]fixperms.bat[/tt]
+| Set appropriate file permissions.
+| [tt]windows_helper_scripts[/tt]
+| Command-line prompt on Windows
+|-
+| [tt]hphp.sh[/tt]
+| Launch HPHP instance with appropriate parameters.
+| [tt]hphp_buildkit[/tt]
+| Command-line via Bash
+|-
+| [tt]hphp_debug.sh[/tt]
+| Launch HPHP instance in debug mode.
+| [tt]hphp_buildkit[/tt]
+| Command-line via Bash
+|-
+| [tt]transcoder/go.sh[/tt]
+| Launch video transcoder background service.
+| [tt]transcoder[/tt]
+| Command-line via Bash + 'screen'
+|-
+| [tt]data/failover_script.php[/tt]
+| Continually check system load, and initiate/deinitiate failover mode as required.
+| [tt]failover[/tt]
+| Command-line via PHP interpretor + 'screen'
+|-
+| [tt]adminzone:static_export[/tt]
+| Export website as a static site, as far as is possible.
+| [tt]static_export[/tt]
+| Composr module
+|-
+| [tt]data/comcode_convert.php[/tt]
+| Do various conversions to and from Comcode.
+| [tt]core_rich_media[/tt]
+| Web browser
+|-
+| [tt]data/cron_bridge.php[/tt]
+| Run system scheduler tasks. Can also be used to probe for the likely CRON command to configure against.
+| [tt]core[/tt]
+| CRON (or equivalent) via PHP interpretor
+|-
+| [tt]upgrader.php[/tt]
+| Performing upgrades, detecting alien files, missing files, corrupt files, missing permissions, clearing the caches (without having to run the full Composr), deleting files accidentally uploaded from non-installed addons.
+| [tt]core_upgrader[/tt]
+| Web browser
+|-
+| [tt]data/commandr.php[/tt]
+| Command line tunnel into Commandr.
+| [tt]commandr[/tt]
+| Command-line via PHP interpretor
+|}
+
+[title="3"]DevOps[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]delete_alien_files.php[/tt]
+| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons.
+| [tt]meta_toolkit[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]db_export.sh[/tt]
+| Export the live database to an SQL dump.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]db_import.sh[/tt]
+| Import an SQL dump to the live database.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]db_init.sh[/tt]
+| Create an empty database as specified by [tt]_config.php[/tt].
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]adminzone:tar_dump[/tt]
+| Save the live website into a TAR file.
+| [tt]addon_publish[/tt]
+| Composr module
+|-
+| [tt]adminzone:sql_dump[/tt]
+| Save the live database into an SQL file.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|-
+| [tt]recentchanges.sh[/tt]
+| Zip up recently changed files.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|-
+| [tt]data_custom/cleanout.php[/tt]
+| Customisable script for erasing all Composr data. Useful for undoing a test import on a new site, or removing test data before going live. Only to be used by programmers who understand how to customise the code to specify what to get deleted.
+| [tt]meta_toolkit[/tt]
+| Web browser
+|-
+| [tt]sources/critical_errors.php[/tt]
+| Monitors for logged critical errors, and e-mails them to site staff.
+| [tt]core[/tt]
+| Command-line via PHP interpretor + 'screen'
+|-
+| [tt]data_custom/compile_in_includes.php[/tt]
+| Compile Composr overrides against originals, for a slight performance improvement
+| [tt]performance_compile[/tt]
+| Command-line via PHP interpretor
+|}
+
+[title="3"]Theme development[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]:theme_debug[/tt]
+| Tool providing a number of fixes to themes to get them up to spec.
+| [tt]theme_debug[/tt]
+| Composr module
+|-
+| [tt]adminzone:fix_partial_themewizard_css[/tt]
+| Improve a theme wizard theme that has got outdated.
+| [tt]theme_debug[/tt]
+| Composr module
+|-
+| [tt]adminzone:css_check[/tt]
+| Search for possible CSS problems.
+| [tt]theme_debug[/tt]
+| Composr module
+|-
+| [tt]themechanges.sh[/tt]
+| Show a diff of theme changes.
+| [tt]linux_helper_scripts[/tt]
+| Command-line via Bash
+|}
+
+[title="3"]Development[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]_tests/codechecker/codechecker.sh[/tt]
+| Run the Code Quality Checker.
+| [tt]testing_platform[/tt]
+| Command-line via Bash
+|-
+| [tt]line_count.sh[/tt]
+| Count the numer of lines of code, exclusing third-party code.
+| [tt]meta_toolkit[/tt]
+| Command-line via Bash
+|-
+| [tt]data_custom/xml_db_import.php[/tt]
+| Script to help keep the XML database in sync (auto-detects when it is out of date, and launches a syncing front-end tool).
+| [tt]meta_toolkit[/tt]
+| Web browser
+|-
+| [tt]adminzone:admin_generate_adhoc_upgrade[/tt]
+| Generate a TAR file of recent central repository file changes to upgrade a site's installed addons. Works by looking at what exact addons are installed on the site, and finds if they are outdated.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|}
+
+[title="3"]Core development[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]_tests/codechecker/build.sh[/tt]
+| Build the Code Quality Checker Java code.
+| [tt]testing_platform[/tt]
+| Command-line via Bash
+|-
+| [tt]_tests/codechecker/phpdoc_parser.php[/tt]
+| Build the function signature library used by the Code Quality Checker.
+| [tt]testing_platform[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]data_custom/build_rewrite_rules.php[/tt]
+| Rebuild all files containing rewrite rules.
+| [tt]composr_release_build[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]data_custom/transifex_pull.php[/tt]
+| Pull language packs down from transifex.
+| [tt]addon_publish[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]data_custom/transifex_push.php[/tt]
+| Push language packs up to transifex.
+| [tt]addon_publish[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]template_xss[/tt]
+| Look to see if templates may have XSS holes. Can be given a parameter to write "fixes" back in (which should be verified by hand).
+| [tt]testing_platform[/tt]
+| Unit test
+|-
+| [tt]adminzone:string_scan[/tt]
+| Tool to work out whether language strings are administrative or not.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|-
+| [tt]adminzone:plug_guid[/tt]
+| Insert GUIDs for all [tt]do_template[/tt] calls that don't currently have them.
+| [tt]composr_release_build[/tt]
+| Composr module
+|-
+| [tt]data_custom/stress_test_loader.php[/tt]
+| Create a large amount of test content.
+| [tt]stress_test[/tt]
+| Command-line via PHP interpretor
+|-
+| [tt]data_custom/change_addon_bundling.php[/tt]
+| Move an addon between bundled and non-bundled.
+| [tt]addon_publish[/tt]
+| Web browser
+|-
+| [tt]data_custom/composr_mobile_sdk_build.php[/tt]
+| Bundle string and image assets from a Composr website for making a mobile app.
+| [tt]composr_mobile_sdk[/tt]
+| Command-line via PHP interpretor
+|}
+
+[title="3"]Documentation development[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]adminzone:sql_schema_generate[/tt]
+| Build structure (schema) documentation for the Composr database.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|-
+| [tt]adminzone:sql_schema_generate_by_addon[/tt]
+| Build structure (schema) documentation for the Composr database, by addon.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|-
+| [tt]adminzone:sql_show_tables_by_addon[/tt]
+| List all the tables in all addons.
+| [tt]meta_toolkit[/tt]
+| Composr module
+|-
+| [tt]adminzone:doc_index_build[/tt]
+| Build the documentation index page.
+| [tt]composr_tutorials[/tt]
+| Composr module
+|-
+| [tt]data_custom/build_tutorials_addon_registry_parts.php[/tt]
+| Used for completing the [tt]addon_registry[/tt] hook to include all the latest tutorials and associated graphics.
+| [tt]composr_tutorials[/tt]
+| Command-line via PHP interpretor
+|}
+
+[title="3"]Release management[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]adminzone:build_addons[/tt]
+| Mass-build addon TARs.
+| [tt]addon_publish[/tt]
+| Composr module
+|-
+| [tt]adminzone:publish_addons_as_downloads[/tt]
+| Publish addon TARs on the website the module runs on.
+| [tt]addon_publish[/tt]
+| Composr module
+|-
+| [tt]adminzone:make_release[/tt]
+| Make a Composr release.
+| [tt]composr_release_build[/tt]
+| Composr module
+|-
+| [tt]adminzone:_make_release[/tt]
+| Publish a Composr release on the website the module runs on (not usually run directly, linked to from [tt]adminzone:make_release[/tt]).
+| [tt]composr_homesite[/tt]
+| Composr module
+|-
+| [tt]adminzone:push_bugfix[/tt]
+| Push a bug fix to compo.sr.
+| [tt]composr_release_build[/tt]
+| Composr module
+|-
+| [tt]installsql[/tt]
+| Check the [tt]install.sql[/tt] file is valid, and if requested will build the split up versions of it.
+| [tt]testing_platform[/tt]
+| Unit test
+|}
+
+[title="3"]API services[/title]
+
+{|
+! Filename
+! Purpose
+! Addon
+! Call method
+|-
+| [tt]data/endpoint.php[/tt]
+| JSON web service entry point.
+| [tt]core[/tt]
+| Web service call
+|-
+| [tt]data/webdav.php[/tt]
+| WebDAV entry point.
+| [tt]webdav[/tt]
+| Web service call
+|-
+| [tt]backend.php[/tt]
+| RSS/Atom entry point.
+| [tt]syndication[/tt]
+| Web service call
+|-
+| [tt]data/form_to_email.php[/tt]
+| Pipes POSTed data to a staff e-mail.
+| [tt]staff_messaging[/tt]
+| Web browser POST target
+|-
+| [tt]data/opensearch.php[/tt]
+| OpenSearch provider, for search auto-completion and initiation.
+| [tt]search[/tt]
+| Web service call
+|-
+| [tt]data_custom/user_export.php[/tt]
+| Export users to CSV, designed for automatic synching.
+| [tt]user_simple_csv_sync[/tt]
+| Web service call
+|-
+| [tt]data_custom/user_import.php[/tt]
+| Import users from CSV, designed for automatic synching.
+| [tt]user_simple_csv_sync[/tt]
+| Web service call
+|}
+
 [title="2"]Composr version naming[/title]
 
 [media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/1.jpg[/media]

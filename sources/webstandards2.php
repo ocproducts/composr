@@ -1840,7 +1840,7 @@ function _webstandards_css_sheet($data)
                         $class = '';
                     } else {
                         $matches = array();
-                        if (($next == '[') && (preg_match('#\[(\w+|)?\w+([$*~|^]?="[^;"]*")?\]#', substr($data, $i, 50), $matches))) {
+                        if (($next == '[') && (preg_match('#\[(\w+|)?\w+([$*~|^]?="[^;"]*")?\]#', $data, $matches, 0, $i) == 1)) {
                             $i += strlen($matches[0]) - 1;
                         } else {
                             $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);

@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cleanup_repository
+ * @package    meta_toolkit
  */
 
 /**
  * Hook class.
  */
-class Hook_addon_registry_cleanup_repository
+class Hook_addon_registry_meta_toolkit
 {
     /**
      * Get a list of file permissions to set
@@ -86,7 +86,7 @@ class Hook_addon_registry_cleanup_repository
      */
     public function get_description()
     {
-        return 'Delete non-bundled addons from a github checkout.';
+        return 'Various tools for meta-management of a Composr site, including generating schemas, and exporting data.';
     }
 
     /**
@@ -131,8 +131,21 @@ class Hook_addon_registry_cleanup_repository
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/cleanup_repository.php',
-            'killjunk.sh',
+            'sources_custom/hooks/systems/addon_registry/meta_toolkit.php',
+            'data_custom/xml_db_import.php',
+            'adminzone/pages/minimodules_custom/sql_schema_generate.php',
+            'adminzone/pages/minimodules_custom/sql_schema_generate_by_addon.php',
+            'adminzone/pages/minimodules_custom/sql_show_tables_by_addon.php',
+            'adminzone/pages/minimodules_custom/sql_dump.php',
+            'adminzone/pages/minimodules_custom/tar_dump.php',
+            'adminzone/pages/minimodules_custom/string_scan.php',
+            'sources_custom/hooks/systems/page_groupings/meta_toolkit.php',
+            'sources_custom/database_relations.php',
+            'sources_custom/database_toolkit.php',
+            'data_custom/cleanout.php',
+            'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
+            'delete_alien_files.php',
+            'line_count.sh',
         );
     }
 }

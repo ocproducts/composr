@@ -442,6 +442,22 @@ function _log_it($type, $a = null, $b = null)
         return null; // If this is during installation
     }
 
+    // Need to update copyright date?
+    if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) && $type != 'CONFIGURATION') {
+        $matches = array();
+        $old_copyright = get_option('copyright');
+        if (preg_match('#^(.*\$CURRENT_YEAR=)(\d+)(.*)$#', $old_copyright, $matches) != 0) {
+            $new_copyright = $matches[1] . date('Y') . $matches[3];
+            if ($old_copyright != $new_copyright) {
+                require_code('config2');
+                set_option('copyright', $new_copyright);
+                require_code('caches3');
+                erase_cached_templates(true);
+            }
+        }
+    }
+
+    // No more logging if site closed (possibly)
     if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
         return null;
     }
@@ -457,6 +473,7 @@ function _log_it($type, $a = null, $b = null)
         $ob->run($type, $a, $b);
     }
 
+    // Add to log
     $log_id = mixed();
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
@@ -474,6 +491,7 @@ function _log_it($type, $a = null, $b = null)
     static $logged = 0;
     $logged++;
 
+    // Cache clearing
     if ($logged == 1) {
         decache('side_tag_cloud');
         decache('main_staff_actions');
@@ -487,7 +505,8 @@ function _log_it($type, $a = null, $b = null)
     require_code('autosave');
     clear_cms_autosave();
 
-    if ((get_page_name() != 'admin_themewizard') && (get_page_name() != 'admin_import') && ($ADMIN_LOGGING_ON)) {
+    // Notification
+    if ((!get_mass_import_mode()) && ($ADMIN_LOGGING_ON)) {
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
             if (addon_installed('actionlog')) {
                 require_all_lang();

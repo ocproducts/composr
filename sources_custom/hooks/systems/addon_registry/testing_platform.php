@@ -401,6 +401,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/news_category.php',
             '_tests/tests/unit_tests/newsletter.php',
             '_tests/tests/unit_tests/cms_merge.php',
+            '_tests/tests/unit_tests/should_ignore_file.php',
             '_tests/tests/unit_tests/points.php',
             '_tests/tests/unit_tests/poll.php',
             '_tests/tests/unit_tests/post_template.php',

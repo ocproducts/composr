@@ -575,7 +575,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'odp':
         case 'docx':
             require_code('m_zip');
-            $tmp_file = cms_tempnam('dcdm');
+            $tmp_file = cms_tempnam();
             $myfile2 = fopen($tmp_file, 'wb');
             fwrite($myfile2, $data);
             fclose($myfile2);
@@ -612,7 +612,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             break;
         case 'tar':
             require_code('tar');
-            $tmp_file = cms_tempnam('dcdm');
+            $tmp_file = cms_tempnam();
             $myfile = fopen($tmp_file, 'wb');
             fwrite($myfile, $data);
             fclose($myfile);
@@ -641,7 +641,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             if (function_exists('gzopen')) {
                 if (function_exists('gzeof')) {
                     if (function_exists('gzread')) {
-                        $tmp_file = cms_tempnam('dcdm');
+                        $tmp_file = cms_tempnam();
                         $myfile = fopen($tmp_file, 'wb');
                         fwrite($myfile, $data);
                         fclose($myfile);
@@ -737,7 +737,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                         $path = '"' . get_file_base() . DIRECTORY_SEPARATOR . 'data_custom' . DIRECTORY_SEPARATOR . '"' . $path;
                     }
                 }
-                $tmp_file_2 = cms_tempnam('pdfxml');
+                $tmp_file_2 = cms_tempnam();
                 @shell_exec($path . ' > ' . $tmp_file_2);
                 $mash = create_data_mash($tmp_file_2, null, 'xml', true);
                 @unlink($tmp_file_2);

@@ -76,7 +76,7 @@ $tar_path = mixed();
 if (get_param_integer('dir', 0) == 0) {
     $tar_path = null;
 } else {
-    $tar_path = cms_tempnam('');
+    $tar_path = cms_tempnam();
 }
 $STATIC_EXPORT_TAR = tar_open($tar_path, 'wb');
 

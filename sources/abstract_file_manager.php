@@ -564,7 +564,7 @@ function afm_make_file($basic_path, $contents, $world_access)
 
     $conn = _ftp_info();
     if ($conn !== false) {
-        $path2 = cms_tempnam('cmsafm');
+        $path2 = cms_tempnam();
 
         $h = fopen($path2, 'wb');
         if (fwrite($h, $contents) < strlen($contents)) {

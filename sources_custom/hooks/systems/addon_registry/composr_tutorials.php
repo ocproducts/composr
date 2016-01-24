@@ -132,7 +132,7 @@ The documentation is primarily maintained on our website, and this archive is on
      */
     public function get_default_icon()
     {
-        return 'themes/default/icons/48x48/menu/adminzone/help.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/help.png';
     }
 
     /**
@@ -663,6 +663,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_correspondance/correspondance_whisper_link.png',
             'data_custom/images/docs/tut_correspondance/correspondance_whisper_page.png',
             'data_custom/images/docs/tut_design/simple_box.png',
+            'data_custom/images/docs/tut_design/image.png',
             'data_custom/images/docs/tut_disaster/disaster_ban_1.png',
             'data_custom/images/docs/tut_disaster/disaster_ban_2.png',
             'data_custom/images/docs/tut_disaster/disaster_pass_1.png',
@@ -914,6 +915,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_ldap/ldap_login.png',
             'data_custom/images/docs/tut_ldap/ldap_sync.png',
             'data_custom/images/docs/tut_legal/legal_rules.png',
+            'data_custom/images/docs/tut_legal/image.png',
             'data_custom/images/docs/tut_members/members_add.png',
             'data_custom/images/docs/tut_members/members_directory.png',
             'data_custom/images/docs/tut_members/members_edit_avatar.png',
@@ -1022,6 +1024,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_short_urls/iis.png',
             'data_custom/images/docs/tut_software_feedback/482033_challenge.jpg',
             'data_custom/images/docs/tut_software_feedback/feature_workflow.png',
+            'data_custom/images/docs/tut_software_feedback/report_bug.png',
             'data_custom/images/docs/tut_sql/sql_1.png',
             'data_custom/images/docs/tut_sql/sql_2.png',
             'data_custom/images/docs/tut_sql/sql_edit_1.png',

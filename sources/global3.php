@@ -1246,7 +1246,7 @@ function cns_require_all_forum_stuff()
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
  */
-function cms_tempnam($prefix)
+function cms_tempnam($prefix = 'cms')
 {
     require_code('files2');
     return _cms_tempnam($prefix);

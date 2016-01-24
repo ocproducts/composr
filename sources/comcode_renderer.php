@@ -556,11 +556,12 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
+ * @param  boolean $html_errors Whether HTML structure errors have been spotted so far (limits how $semiparse_mode rendering works)
  * @return Tempcode The Tempcode for the Comcode
  *
  * @ignore
  */
-function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $connection, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false)
+function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $connection, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false, $html_errors = false)
 {
     if (($structure_sweep) && ($tag != 'title')) {
         return new Tempcode();
@@ -579,7 +580,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $username = do_lang('UNKNOWN');
         }
         if ($semiparse_mode) { // Can't load through error for this, so just show it as a tag
-            return make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK));
+            return make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
         }
         return do_template('WARNING_BOX', array('_GUID' => 'faea04a9d6f1e409d99b8485d28b2225', 'WARNING' => do_lang_tempcode('comcode:NO_ACCESS_FOR_TAG', escape_html($tag), escape_html($username))));
     } // These are just for convenience.. we will remap to more formalised Comcode
@@ -598,8 +599,16 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     }
 
     if ($semiparse_mode) { // We have got to this point because we want to provide a special 'button' editing representation for these tags
-        if (wysiwyg_comcode_markup_style($tag, $attributes, $embed) != WYSIWYG_COMCODE__HTML) {
-            $_temp_tpl = add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml));
+        $eval = $embed->evaluate();
+        if (strpos($eval, '<') !== false) {
+            require_code('xhtml');
+            if (preg_replace('#\s#', '', xhtmlise_html($eval, true)) != preg_replace('#\s#', '', $eval)) {
+                $html_errors = true;
+            }
+        }
+
+        if (wysiwyg_comcode_markup_style($tag, $attributes, $embed, $html_errors) != WYSIWYG_COMCODE__HTML) {
+            $_temp_tpl = add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), null, $html_errors);
             if ($_temp_tpl !== null) {
                 $temp_tpl = make_string_tempcode($_temp_tpl);
                 return $temp_tpl;
@@ -945,7 +954,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'surround':
             if (($semiparse_mode) && ($embed->evaluate() == '')) { // This is probably some signal like a break, so show it in Comcode form
-                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK));
+                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
                 break;
             }
 
@@ -1338,7 +1347,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'title':
             if (($semiparse_mode) && (strpos($comcode, '[contents') !== false)) {
-                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK));
+                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
                 break;
             }
 
@@ -1787,7 +1796,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'img':
             if (($semiparse_mode) && (array_key_exists('rollover', $attributes))) {
-                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK));
+                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
                 break;
             }
 

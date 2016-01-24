@@ -71,7 +71,7 @@ function sitemap_xml_build()
 function rebuild_sitemap_set($set_number, $last_time)
 {
     // Open
-    $sitemaps_out_temppath = cms_tempnam('cmssmap'); // We write to temporary path first to minimise the time our target file is invalid (during generation)
+    $sitemaps_out_temppath = cms_tempnam(); // We write to temporary path first to minimise the time our target file is invalid (during generation)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($set_number) . '.xml';
     $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
@@ -145,7 +145,7 @@ function rebuild_sitemap_set($set_number, $last_time)
 function rebuild_sitemap_index()
 {
     // Open
-    $sitemaps_out_temppath = cms_tempnam('cmssmapindex'); // We write to temporary path first to minimise the time our target file is invalid (during generation)
+    $sitemaps_out_temppath = cms_tempnam(); // We write to temporary path first to minimise the time our target file is invalid (during generation)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/index.xml';
     $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>

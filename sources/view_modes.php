@@ -815,7 +815,8 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
                 $escaped_code = do_template('WEBSTANDARDS_LINE_END');
                 $escaped_code->evaluate_echo();
             }
-            if (preg_match('#^\s*\n#', substr($out, $i + 1)) != 0) {
+            $matches = array();
+            if (preg_match('#\s*\n#A', $out, $matches, 0, $i + 1) != 0) {
                 // Do not show blank lines
                 ++$number;
                 continue;

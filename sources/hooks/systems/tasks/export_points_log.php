@@ -115,7 +115,7 @@ class Hook_task_export_points_log
         $ini_set['ocproducts.xss_detect'] = '0';
 
         require_code('files2');
-        $outfile_path = cms_tempnam('csv');
+        $outfile_path = cms_tempnam();
         make_csv($winner_data, $filename, false, false, $outfile_path);
         return array('text/csv', array($filename, $outfile_path), $headers, $ini_set);
     }

@@ -71,7 +71,7 @@ class Composr_mobile_sdk_tools
         // Check running on the command line
         $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
         if (!$cli) {
-            header('Content-type: text/plain');
+            header('Content-type: text/plain; charset=' . get_charset());
             exit('This script must be run from the command line, php data_custom/composr_mobile_sdk_build.php <toolname> <params...>' . "\n");
         }
 

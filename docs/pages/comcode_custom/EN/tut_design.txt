@@ -6,6 +6,7 @@ This tutorial is an introduction to the artistic side of web development -- web 
 
 [title="2"]Introduction[/title]
 
+[media width="250" description="" float="right"]data_custom/images/docs/tut_design/image.png[/media]
 With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blending into the wider commercial design industry.
 
 Nowadays visitors expect an important website to be as impressive as a glossy magazine, or a TV show, and good design is the route to this.
