@@ -146,7 +146,8 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         foreach ($get as $key => $val) {
             $url .= '&' . urlencode($key) . '=' . urlencode($val);
         }
-        http_download_file($url, null, true, false, 'Composr', $post);
+        $data = http_download_file($url, null, true, false, 'Composr', $post);
+
         if ($GLOBALS['HTTP_MESSAGE'] != '200') {
             break; // Don't keep installing if there's an error
         }

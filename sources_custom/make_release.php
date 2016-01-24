@@ -709,7 +709,10 @@ function make_install_sql()
 
     // Build database
     require_code('install_headless');
-    do_install_to($database, $username, $password, $table_prefix, true);
+    $test = do_install_to($database, $username, $password, $table_prefix, true);
+    if (!$test) {
+        warn_exit('Failed to execute installer, while building install.sql');
+    }
 
     // Get database connection
     $conn = new DatabaseConnector($database, get_db_site_host(), $username, $password, $table_prefix);
@@ -741,42 +744,43 @@ function make_install_sql()
 
     // Not with forced charsets or other contextual noise
     if (strpos($contents, "\n" . 'SET') !== false) {
-        warn_exit('Contains unwanted context');
+        warn_exit('install.sql: Contains unwanted context');
     }
     if (preg_match('#\d+ SET #', $contents) != 0) {
-        warn_exit('Contains unwanted context');
+        warn_exit('install.sql: Contains unwanted context');
     }
 
     // Old way of specifying table types
     if (strpos($contents, ' TYPE=') !== false) {
-        warn_exit('Change TYPE= to ENGINE=');
+        warn_exit('install.sql: Change TYPE= to ENGINE=');
     }
 
     // Not with bundled addons
     if (strpos($contents, 'CREATE TABLE cms_workflow_') !== false) {
-        warn_exit('Contains non-bundled addons');
+        warn_exit('install.sql: Contains non-bundled addons');
     }
 
     // Not with wrong table prefixes / multiple installs
     if (preg_match('#CREATE TABLE cms\d+\_#', $contents) != 0) {
-        warn_exit('Contains a version-prefixed install');
+        warn_exit('install.sql: Contains a version-prefixed install');
     }
     if (preg_match('#CREATE TABLE cms\_#', $contents) == 0) {
-        warn_exit('Does not contain a standard-prefixed install');
+        warn_exit('install.sql: Does not contain a standard-prefixed install');
     }
 
     // Not having been run
     if (preg_match('#INSERT INTO cms\_cache#i', $contents) != 0) {
-        warn_exit('Contains cache data');
+        warn_exit('install.sql: Contains cache data');
     }
     if (preg_match('#INSERT INTO cms\_stats#i', $contents) != 0) {
-        warn_exit('Contains stat data - site should not have been loaded ever yet');
+        warn_exit('install.sql: Contains stat data - site should not have been loaded ever yet');
     }
 
     // Out-dated version
     $v = float_to_raw_string(cms_version_number());
-    if (strpos($contents, '\'version\',\'' . $v . '\'') !== false || strpos($contents, '\'version\', \'' . $v . '\'') !== false) {
-        warn_exit('Contains wrong version');
+    $version_marker = '\'version\', \'' . $v . '\'';
+    if (strpos($contents, $version_marker) === false) {
+        warn_exit('install.sql: Contains wrong version');
     }
 
     // Do split...
@@ -793,7 +797,7 @@ function make_install_sql()
     foreach ($split_points as $p) {
         if ($p != '') {
             if (strpos($contents, $p) === false) {
-                warn_exit('Cannot find split point ' . $p);
+                warn_exit('install.sql: Cannot find split point ' . $p);
             }
         }
     }
