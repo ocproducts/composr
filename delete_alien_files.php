@@ -144,6 +144,11 @@ function force_keep($file, $files_to_always_keep)
             }
         }
     }
+
+    if ((in_array('git_only', $_SERVER['argv'])) && (shell_exec('git ls-files ' . escapeshellarg($file)) == '')) {
+        return true;
+    }
+
     return false;
 }
 

@@ -1,17 +1,24 @@
 #!/usr/bin/env php
 <?php
 
-$changed=shell_exec('git diff --cached --name-only');
+chdir(dirname(dirname(realpath(__FILE__))));
 
-if (strpos($changed,'data_custom/execute_temp.php')!==false && is_file('data_custom/execute_temp.php'))
-{
-	$data=file_get_contents('data_custom/execute_temp.php');
-	if (preg_match('#function execute_temp\(\)\n\{\n\}#',$data)==0)
-	{
-		echo "Clear out data_custom/execute_temp.php first, to reduce chance of noise/privacy-issues\n";
-		exit(1);
-	}
+if (git_repos() == 'composr_homesite') {
+    $issues = shell_exec('php delete_alien_files.php git_only');
+
+    if ($issues != '') {
+        echo "There seem to be files not expected in this branch, possible cleanup commands are...\n\n" . $issues;
+        exit(1);
+    }
 }
 
 exit(0);
 
+function git_repos()
+{
+    $path = dirname(__FILE__).'/.git/HEAD';
+    if (!is_file($path)) return '';
+    $lines = file($path);
+    $parts = explode('/', $lines[0]);
+    return trim(end($parts));
+}
