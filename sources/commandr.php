@@ -130,8 +130,8 @@ function commandr_script()
                 $temp = new Virtual_shell(trim($command));
                 $temp->output_xml();
             } catch (Exception $e) {
-                header('HTTP/1.0 200 Ok');
-                header('Content-type: text/xml; charset=' . get_charset());
+                @header('HTTP/1.0 200 Ok');
+                @header('Content-type: text/xml; charset=' . get_charset());
                 $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
                     <response>
                     	<result>

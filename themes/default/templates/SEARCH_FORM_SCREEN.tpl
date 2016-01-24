@@ -65,7 +65,7 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
 							<div class="constrain_field">
-								<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" onkeypress="if (enter_pressed(event)) this.form.submit();" class="search_content wide_field" type="search" size="48" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+								<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" onkeypress="if (enter_pressed(event)) this.form.submit();" class="search_content wide_field" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 							</div>
 
 							{+START,IF,{HAS_TEMPLATE_SEARCH}}

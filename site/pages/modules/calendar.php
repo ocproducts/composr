@@ -429,7 +429,10 @@ class Module_calendar
     {
         $filter = array();
         $some_pos = false;
-        $types = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'));
+        static $types = null;
+        if ($types === null) {
+            $types = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'));
+        }
         foreach ($types as $type) {
             $t = $type['id'];
             $filter['int_' . strval($t)] = get_param_integer('int_' . strval($t), 0);
@@ -672,6 +675,7 @@ class Module_calendar
         $interests_url = build_url(array('page' => '_SELF', 'type' => 'interests', 'view' => $view, 'id' => $id), '_SELF');
         $event_types_1 = new Tempcode();
         $types = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id', 't_title'));
+        $member_interests = collapse_1d_complexity('t_type', $GLOBALS['SITE_DB']->query_select('calendar_interests', array('t_type'), array('i_member_id' => get_member())));
         foreach ($types as $type) {
             if ($type['id'] == db_get_first_id()) {
                 continue;
@@ -683,7 +687,7 @@ class Module_calendar
             if (is_guest()) {
                 $interested = '';
             } else {
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_interests', 'i_member_id', array('i_member_id' => get_member(), 't_type' => $type['id']));
+                $test = in_array($type['id'], $member_interests);
                 $interested = (!is_null($test)) ? 'not_interested' : 'interested';
             }
             $event_types_1->attach(do_template('CALENDAR_EVENT_TYPE', array('_GUID' => '104b723d5211f400267345f616c4a677', 'S' => 'I', 'INTERESTED' => $interested, 'TYPE' => get_translated_text($type['t_title']), 'TYPE_ID' => strval($type['id']))));

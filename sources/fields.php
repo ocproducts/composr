@@ -372,7 +372,10 @@ function get_bound_content_entry($content_type, $id)
     // Optimisation: don't keep up looking custom field linkage if we have no custom fields
     static $content_type_has_custom_fields_cache = null;
     $content_type_has_custom_fields_cache = persistent_cache_get('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
-    if (!isset($content_type_has_custom_fields_cache[$content_type])) {
+    if ($content_type_has_custom_fields_cache === null) {
+        $content_type_has_custom_fields_cache = array();
+    }
+    if (!array_key_exists($content_type, $content_type_has_custom_fields_cache)) {
         $content_type_has_custom_fields_cache[$content_type] = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_fields', 'id', array(
             'c_name' => '_' . $content_type,
         )));
