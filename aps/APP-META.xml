@@ -149,6 +149,9 @@
           <mapping url="themes">
             <php:permissions writable="true"/>
           </mapping>
+          <mapping url="lang_custom ">
+            <php:permissions writable="true"/>
+          </mapping>
           <mapping url="text_custom">
             <php:permissions writable="true"/>
           </mapping>
@@ -162,6 +165,9 @@
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="caches/guest_pages">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="caches/persistent">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="data_custom">
@@ -239,7 +245,7 @@
           <mapping url="forum/pages/comcode_custom">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="cms/pages/comcode_custom">
+          <mapping url="forum/pages/html_custom">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="site/pages/comcode_custom">
@@ -248,13 +254,10 @@
           <mapping url="adminzone/pages/comcode_custom">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="collaboration/pages/comcode_custom">
-            <php:permissions writable="true"/>
-          </mapping>
           <mapping url="pages/html_custom">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="forum/pages/html_custom">
+          <mapping url="cms/pages/comcode_custom">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="cms/pages/html_custom">
@@ -264,6 +267,9 @@
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="adminzone/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="collaboration/pages/comcode_custom">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="collaboration/pages/html_custom">
