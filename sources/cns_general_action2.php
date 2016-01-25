@@ -116,6 +116,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
     if ($code != $old_code) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_code', array('e_code' => $code));
         if (!is_null($test)) {
+            require_lang('cns');
             warn_exit(do_lang_tempcode('CONFLICTING_EMOTICON_CODE', escape_html($code)));
         }
     }

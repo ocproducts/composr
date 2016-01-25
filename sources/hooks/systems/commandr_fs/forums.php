@@ -646,7 +646,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
         $properties = array(
             'label' => $row['p_title'],
-            'post' => $row['p_post'],
+            'post' => get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']),
             'skip_sig' => $row['p_skip_sig'],
             'validated' => $row['p_validated'],
             'is_emphasised' => $row['p_is_emphasised'],

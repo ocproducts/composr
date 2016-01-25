@@ -140,8 +140,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for('wiki_page', strval($row['id']));
 
         $properties = array(
-            'label' => $row['title'],
-            'description' => $row['description'],
+            'label' => get_translated_text($row['title']),
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
             'hide_posts' => $row['hide_posts'],
             'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
@@ -283,7 +283,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $row = $rows[0];
 
         $properties = array(
-            'label' => $row['the_message'],
+            'label' => get_translated_text($row['the_message']),
             'validated' => $row['validated'],
             'views' => $row['wiki_views'],
             'member_id' => remap_resource_id_as_portable('member', $row['member_id']),

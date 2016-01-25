@@ -153,9 +153,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
         $properties = array(
-            'label' => $row['fullname'],
+            'label' => get_translated_text($row['fullname']),
             'name' => $row['name'],
-            'description' => $row['description'],
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
             'accept_images' => $row['accept_images'],
             'accept_videos' => $row['accept_videos'],
@@ -373,8 +373,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
         $properties = array(
-            'label' => $row['title'],
-            'description' => $row['description'],
+            'label' => get_translated_text($row['title']),
+            'description' => get_translated_text($row['description']),
             'url' => remap_urlpath_as_portable($row['url']),
             'thumb_url' => remap_urlpath_as_portable($row['thumb_url']),
             'validated' => $row['validated'],

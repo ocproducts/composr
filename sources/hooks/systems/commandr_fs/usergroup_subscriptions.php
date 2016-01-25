@@ -133,8 +133,8 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $row = $rows[0];
 
         $properties = array(
-            'label' => $row['s_title'],
-            'description' => $row['s_description'],
+            'label' => get_translated_text($row['s_title'], $GLOBALS['FORUM_DB']),
+            'description' => get_translated_text($row['s_description'], $GLOBALS['FORUM_DB']),
             'cost' => $row['s_cost'],
             'length' => $row['s_length'],
             'length_units' => $row['s_length_units'],
@@ -205,5 +205,25 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         delete_usergroup_subscription(intval($resource_id));
 
         return true;
+    }
+
+    /**
+     * Get the resource ID for a filename (of file). Note that filenames are unique across all folders in a filesystem.
+     *
+     * @param  ID_TEXT $filename The filename, or filepath
+     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-null from overridden functions within hooks that are calling this as a helper function)
+     * @return ?array A pair: The resource type, the resource ID (null: could not find)
+     */
+    public function file_convert_filename_to_id($filename, $resource_type = null)
+    {
+        if (is_null($resource_type)) {
+            $resource_type = $this->file_resource_type;
+        }
+
+        $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
+
+        $label = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Remove file extension from filename
+        $resource_id = find_id_via_label($resource_type, $label);
+        return array($resource_type, $resource_id);
     }
 }
