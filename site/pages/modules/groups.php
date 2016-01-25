@@ -243,7 +243,9 @@ class Module_groups
         }
         $sql .= ')';
         $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
-        $groups = $GLOBALS['FORUM_DB']->query($sql);
+        global $TABLE_LANG_FIELDS_CACHE;
+        $lang_fields = $TABLE_LANG_FIELDS_CACHE['f_groups'];
+        $groups = $GLOBALS['FORUM_DB']->query($sql, null, null, false, false, $lang_fields);
 
         foreach ($groups as $g_id => $row) {
             $groups[$g_id]['_name'] = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
@@ -423,8 +425,8 @@ class Module_groups
         $sql .= ' AND g.id<>' . strval(db_get_first_id());
         $sql .= ')';
         $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
-        $_others = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
-        $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there(str_replace('SELECT * ', 'SELECT COUNT(*) ', $sql));
+        $_others = $GLOBALS['FORUM_DB']->query($sql, $max, $start, false, false, $lang_fields);
+        $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there(str_replace('SELECT * ', 'SELECT COUNT(*) ', $sql), false, false, $lang_fields);
         $has_images = false;
         foreach ($_others as $row) {
             if ($row['g_rank_image'] != '') {

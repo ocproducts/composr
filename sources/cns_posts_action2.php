@@ -282,7 +282,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             't_cache_first_post_id=' . (is_null($first_post_id) ? 'NULL' : strval($first_post_id)) . ',
         ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\'') . ',') . '
         t_cache_first_time=' . (is_null($first_time) ? 'NULL' : strval($first_time)) . ',
-        t_cache_first_post=' . (multi_lang_content() ? ((is_null($first_post) ? '\'NULL\'' : strval($first_post))) : '\'\'') . ',
+        t_cache_first_post=' . (multi_lang_content() ? ((is_null($first_post) ? 'NULL' : strval($first_post))) : '\'\'') . ',
         t_cache_first_username=\'' . db_escape_string($first_username) . '\',
         t_cache_first_member_id=' . (is_null($first_member_id) ? 'NULL' : strval($first_member_id)) . ',';
     }
