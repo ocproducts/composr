@@ -400,12 +400,12 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             $properties = array(
                 'label' => $row['f_name'],
-                'description' => $row['f_description'],
+                'description' => get_translated_text($row['f_description']),
                 'forum_grouping_id' => remap_resource_id_as_portable('forum_grouping', $row['f_forum_grouping_id']),
                 'position' => $row['f_position'],
                 'post_count_increment' => $row['f_post_count_increment'],
                 'order_sub_alpha' => $row['f_order_sub_alpha'],
-                'intro_question' => $row['f_intro_question'],
+                'intro_question' => get_translated_text($row['f_intro_question']),
                 'intro_answer' => $row['f_intro_answer'],
                 'redirection' => $row['f_redirection'],
                 'order' => $row['f_order'],
@@ -646,7 +646,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
         $properties = array(
             'label' => $row['p_title'],
-            'post' => $row['p_post'],
+            'post' => get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']),
             'skip_sig' => $row['p_skip_sig'],
             'validated' => $row['p_validated'],
             'is_emphasised' => $row['p_is_emphasised'],

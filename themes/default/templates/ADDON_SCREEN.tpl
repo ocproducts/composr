@@ -81,4 +81,4 @@
 			{!ADVANCED}: <a href="{$PAGE_LINK*,_SELF:_SELF:modules}">{!MODULE_MANAGEMENT}</a>
 		</li>
 	</ul>
-</div>
+</nav>

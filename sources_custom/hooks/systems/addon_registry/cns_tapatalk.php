@@ -122,7 +122,7 @@ As Tapatalk is a third-party product, there are a number of limitations we need 
 
 The limitations...
 
-The addon only works for users of OCF. If you use a third-party forum with Composr then Tapatalk needs to connect to that forum independently of Composr. This will work for many popular forums which Tapatalk also supports.
+The addon only works for users of Conversr. If you use a third-party forum with Composr then Tapatalk needs to connect to that forum independently of Composr. This will work for many popular forums which Tapatalk also supports.
 
 The addon has not been tested with multi-site-network installs of Composr. It assumes your Composr website is standalone.
 

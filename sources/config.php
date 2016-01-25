@@ -128,6 +128,10 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
+    if (!isset($GLOBALS['SITE_DB'])) {
+        return;
+    }
+
     $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
 
     if ($temp === null) {
@@ -248,7 +252,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = get_translated_text($option['c_value_trans']);
+    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : get_translated_text($option['c_value_trans']);
     $option['c_value_translated'] = $value;
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {

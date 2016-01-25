@@ -40,6 +40,15 @@ class DatabaseRepair
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
+        $meta_tables = array();
+        $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
+        foreach ($field_details as $field) {
+            if (!isset($meta_tables[$field['m_table']])) {
+                $meta_tables[$field['m_table']] = array();
+            }
+            $meta_tables[$field['m_table']][$field['m_name']] = $field['m_type'];
+        }
+
         $_existent_tables = collapse_1d_complexity(null, $GLOBALS['SITE_DB']->query('SHOW TABLES'));
         $existent_tables = array();
         $existent_indices = array();
@@ -88,15 +97,6 @@ class DatabaseRepair
             }
         }
 
-        $meta_tables = array();
-        $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
-        foreach ($field_details as $field) {
-            if (!isset($meta_tables[$field['m_table']])) {
-                $meta_tables[$field['m_table']] = array();
-            }
-            $meta_tables[$field['m_table']][$field['m_name']] = $field['m_type'];
-        }
-
         $meta_indices = array();
         $index_details = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
         $indices = array();
@@ -105,11 +105,19 @@ class DatabaseRepair
             $table_name = $index['i_table'];
             $universal_index_key = $table_name . '__' . $index['i_name'];
 
+            $fields = explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields']));
+
+            $is_full_text = (strpos($index['i_name'], '#') !== false);
+
+            if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && ($is_full_text) && ($table_name != 'translate')) {
+                continue;
+            }
+
             $meta_indices[$universal_index_key] = array(
                 'table' => $table_name,
                 'name' => $index_name,
-                'fields' => explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields'])),
-                'is_full_text' => (strpos($index['i_name'], '#') !== false),
+                'fields' => $fields,
+                'is_full_text' => $is_full_text,
             );
         }
 
@@ -153,7 +161,7 @@ class DatabaseRepair
         $phase = $needs_changes ? 1 : 2;
         if (!$needs_changes) {
             $needs_changes = $needs_changes || $this->search_for_table_issues($existent_tables, $expected_tables, $meta_indices);
-            $needs_changes = $needs_changes || $this->search_for_index_issues($existent_indices, $expected_indices, $meta_indices);
+            $needs_changes = $needs_changes || $this->search_for_index_issues($existent_indices, $expected_indices, $meta_indices, $meta_tables);
             $needs_changes = $needs_changes || $this->search_for_privilege_issues($existent_privileges, $expected_privileges);
         }
 
@@ -330,6 +338,10 @@ class DatabaseRepair
 
         // Tables missing from DB -or- inconsistent in DB
         foreach ($expected_tables as $table_name => $table) {
+            if ($table_name == 'f_member_custom_fields') {
+                continue; // Can't check this, table is dynamic
+            }
+
             if (isset($existent_tables[$table_name])) {
                 // Fields missing from DB?
                 $expected_key_fields = array();
@@ -351,6 +363,7 @@ class DatabaseRepair
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
                         if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
+                            @var_dump($expected_null_ok);@exit($field_name);
                             $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, isset($meta_tables[$table_name][$field_name]));
                             $needs_changes = true;
                         }
@@ -404,20 +417,25 @@ class DatabaseRepair
      * @param  array $existent_indices Existent indices
      * @param  array $expected_indices Expected indices
      * @param  array $meta_indices Meta indices
+     * @param  array $meta_tables Meta tables
      * @return boolean Whether there have been issues found
      */
-    private function search_for_index_issues($existent_indices, $expected_indices, $meta_indices)
+    private function search_for_index_issues($existent_indices, $expected_indices, $meta_indices, $meta_tables)
     {
         $needs_changes = false;
 
         // Indices missing from DB -or- inconsistent in DB
         foreach ($expected_indices as $universal_index_key => $index) {
+            if ($index['table'] == 'f_member_custom_fields') {
+                continue; // Can't check this, table is dynamic
+            }
+
             $expected_index_name = $index['name'];
+            $expected_fields = $index['fields'];
+            $expected_is_full_text = $index['is_full_text'];
             if (isset($existent_indices[$universal_index_key])) {
                 $existent_fields = $existent_indices[$universal_index_key]['fields'];
-                $expected_fields = $index['fields'];
                 $existent_is_full_text = $existent_indices[$universal_index_key]['is_full_text'];
-                $expected_is_full_text = $index['is_full_text'];
                 sort($existent_fields);
                 sort($expected_fields);
                 if ($existent_fields != $expected_fields || $existent_is_full_text != $expected_is_full_text) {
@@ -425,14 +443,22 @@ class DatabaseRepair
                     $needs_changes = true;
                 }
             } else {
-                $this->create_index_missing_from_db($expected_index_name, $index, true);
-                $needs_changes = true;
+                if ((multi_lang_content()) && (((strpos($expected_index_name, '__combined') !== false) && ($expected_is_full_text) && ($index['table'] != 'translate')) || (count($expected_fields) == 1) && (isset($meta_tables[$index['table']][$expected_fields[0]])) && (strpos($meta_tables[$index['table']][$expected_fields[0]], '_TRANS') !== false))) {
+                    // Ignore, as it only existed to index a string column in non-multi-lang content mode
+                } else {
+                    $this->create_index_missing_from_db($expected_index_name, $index, true);
+                    $needs_changes = true;
+                }
             }
         }
 
         // Indices alien in DB
         foreach ($existent_indices as $universal_index_key => $index) {
             $table_name = $index['table'];
+
+            if ($table_name == 'f_member_custom_fields') {
+                continue; // Can't check this, table is dynamic
+            }
 
             if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
                 continue;

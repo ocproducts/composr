@@ -294,10 +294,11 @@ class Self_learning_cache
 
     /**
      * Actually save the cache.
+     * Has to be public for register_shutdown_function.
      *
      * @ignore
      */
-    function _page_cache_resave()
+    public function _page_cache_resave()
     {
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             persistent_cache_set(array('SELF_LEARNING_CACHE', $this->bucket_name), $this->data);

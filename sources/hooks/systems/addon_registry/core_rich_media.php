@@ -375,7 +375,6 @@ class Hook_addon_registry_core_rich_media
             'templates/COMCODE_REFERENCE.tpl' => 'comcode_reference',
             'templates/COMCODE_HIDE.tpl' => 'comcode_hide',
             'templates/COMCODE_SHOCKER.tpl' => 'comcode_shocker',
-            'templates/COMCODE_SHOCKER_PART.tpl' => 'comcode_shocker',
             'templates/COMCODE_QUOTE_BY.tpl' => 'comcode_quote_by',
             'templates/COMCODE_Q.tpl' => 'comcode_q',
             'templates/COMCODE_QUOTE.tpl' => 'comcode_quote',

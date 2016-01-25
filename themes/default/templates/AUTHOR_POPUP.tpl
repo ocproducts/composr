@@ -7,7 +7,7 @@
 		{+END}
 	</ul>
 {+END}
-{+START,IF_EMPTY,{CONTENT}}
+{+START,IF_EMPTY,{AUTHORS}}
 	<p class="nothing_here">
 		{!NO_ENTRIES}
 	</p>
@@ -20,5 +20,5 @@
 		<ul class="actions_list">
 			<li><a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
 		</ul>
-	</div>
+	</nav>
 {+END}

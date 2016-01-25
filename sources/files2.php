@@ -179,7 +179,7 @@ function cms_get_temp_dir()
  *
  * @ignore
  */
-function _cms_tempnam($prefix)
+function _cms_tempnam($prefix = '')
 {
     list($tmp_path, $problem_saving, $server_path, $local_path) = cms_get_temp_dir();
     if (php_function_allowed('tempnam')) {

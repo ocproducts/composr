@@ -17,6 +17,8 @@
 This script builds all the web-server script files that contain rewrite rules (e.g. recommended.htaccess), from the ones defined in here.
 
 Also see url_remappings.php for the Composr side of things (and to a lesser extent, urls.php and urls2.php).
+
+Also see chmod_consistency.php for the equivalent for chmodding rules, and make_release.php for manifest building.
 */
 
 $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));

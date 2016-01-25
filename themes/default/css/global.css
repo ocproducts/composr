@@ -45,7 +45,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
 {$THEME_WIZARD_COLOR,#A9A9A9,unfilled_input_text,100% A9A9A9}
 {$THEME_WIZARD_COLOR,#888888,locked_input_field,100% 888888}
-{$THEME_WIZARD_COLOR,#94979d,comfortable_input_field_text,65% area_2_background + 35% WB}
+{$THEME_WIZARD_COLOR,#3d434c,comfortable_input_field_text,20% WB + 65% BW + 15% seed}
 {$THEME_WIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
 {$THEME_WIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
 {$THEME_WIZARD_COLOR,#ffffff,floating_section_background,100% WB}
@@ -342,13 +342,18 @@ iframe {
 	direction: {!dir};
 }
 
+
 /*{+START,IF,{$MOBILE}}*/
 	select {
 		max-width: 100px;
 	}
 
-	/* On mobiles we want maximum fluidity */
+	/* This prevents automatic zooming when selecting inputs */
+	input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], select, textarea {
+		font-size: 16px !important;
+	}
 
+	/* On mobiles we want maximum fluidity */
 	table, table.do_next_section {
 		table-layout: auto !important;
 
@@ -1235,12 +1240,14 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 		padding-top: 1px;
 	/*{+END}*/
 }
-.trinav_mid.text>span:before {
-	content: "(";
-}
-.trinav_mid.text>span:after {
-	content: ")";
-}
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.trinav_mid.text>span:before {
+		content: "(";
+	}
+	.trinav_mid.text>span:after {
+		content: ")";
+	}
+/*{+END}*/
 .trinav_right {
 	float: right;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
@@ -2949,12 +2956,16 @@ There is 'actions_list' too (defined elsewhere). These are for links that are gi
 */
 
 ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
-	content: "( " !important;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		content: "( " !important;
+	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	font-size: 0.8em;
 }
 ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
-	content: " )" !important;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		content: " )" !important;
+	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	font-size: 0.8em;
 }
@@ -2962,7 +2973,9 @@ span.associated_link, a.associated_link, form.associated_link {
 	white-space: nowrap;
 }
 ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
-	content: "(" !important;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		content: "(" !important;
+	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 }
 ul.associated_links_block_group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
@@ -2972,7 +2985,9 @@ ul.associated_links_block_group.horizontal_links>li:after { /* Undoes the above 
 	content: "" !important;
 }
 ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
-	content: ")" !important;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		content: ")" !important;
+	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 }
 
@@ -2980,7 +2995,9 @@ ul.associated_links_block_group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
-	content: "\00b7" !important; /* a &middot; */
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		content: "\00b7" !important; /* a &middot; */
+	/*{+END}*/
 	padding: {$?,{$MOBILE},0 0.2em 0 0.1em,0 0.5em 0 0.1em};
 	vertical-align: -20%;
 }
@@ -3043,6 +3060,9 @@ ul.associated_link li img {
 }
 ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
 	vertical-align: middle;
+	/*{+START,IF,{$MOBILE}}*/
+		white-space: nowrap !important;
+	/*{+END}*/
 }
 
 .associated_links_block_group>li{
@@ -3231,7 +3251,7 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	padding: 6px 39px 7px 7px;
 	border-width: 2px;
 	font-size: 13px;
-	min-width: {$?,{$MOBILE},10,8}em; /* On mobile it will wrap, but we want it to look aligned when it does */
+	min-width: 8em;
 }
 .buttons__previous.button_screen, .buttons__previous_none.button_screen {
 	padding: 6px 7px 7px 39px !important;
@@ -3242,7 +3262,6 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	background-size: 18px 18px;
 	font-size: 13px;
 	/*{+START,IF,{$MOBILE}}*/
-		min-width: 6.5em;
 		margin: 0.25em 0.1em !important;
 	/*{+END}*/
 }
@@ -3764,23 +3783,41 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	height: 25px;
 }
 
+/*{+START,IF,{$MOBILE}}*/
+	.tabs {
+		border-bottom: 1px solid {$GET,tab_border};
+		overflow: hidden;
+		height: auto;
+	}
+/*{+END}*/
+
 a.tab, a.tab:visited, a.tab:hover {
 	text-decoration: none;
 }
 
 .tab {
 	float: left;
-	background-image: url('{$IMG;,tab}') !important;
 	padding: 3px 7px 0 7px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
 	line-height: 1em;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		background-image: url('{$IMG;,tab}') !important;
+	/*{+END}*/
 	/*{+START,IF,{$MOBILE}}*/
-		min-width: 85px; /* Allows 3 per row, neat alignment */
+		min-width: 107px; /* Allows 3 per row, neat alignment */
+		border-left: 1px solid {$GET,tab_border};
+		border-top: 1px solid {$GET,tab_border};
 	/*{+END}*/
 }
+
+/*{+START,IF,{$MOBILE}}*/
+	.tab_surround .tab {
+		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
+	}
+/*{+END}*/
 
 .tab * {
 	vertical-align: middle;
@@ -3808,10 +3845,18 @@ a.tab, a.tab:visited, a.tab:hover {
 .tab_first {
 }
 
-.tab_last {
-	border-right: 1px solid;
-	border-color: {$GET,tab_border};
-}
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.tab_last {
+		border-right: 1px solid;
+		border-color: {$GET,tab_border};
+	}
+/*{+END}*/
+
+/*{+START,IF,{$MOBILE}}*/
+	.tab:nth-child(3n+0) {
+		border-right: 1px solid {$GET,tab_border};
+	}
+/*{+END}*/
 
 div[role="tabpanel"] {
 	/*{+START,IF,{$MOBILE}}*/

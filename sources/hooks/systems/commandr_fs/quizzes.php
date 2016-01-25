@@ -176,7 +176,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         }
 
         $properties = array(
-            'label' => $row['q_name'],
+            'label' => get_translated_text($row['q_name']),
             'timeout' => $row['q_timeout'],
             'start_text' => $row['q_start_text'],
             'end_text' => $row['q_end_text'],

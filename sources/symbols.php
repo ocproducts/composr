@@ -4202,7 +4202,8 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
     if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
         if (get_option('spam_blackhole_detection') == '1' && !$done_once) {
             $field_name = 'y' . md5(get_site_name() . ': antispam');
-            $value .= '<div id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></div>';
+            $tag = ((isset($param[0])) && ($param[0] == '1')) ? 'span' : 'div';
+            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
             if (!$GLOBALS['SEMI_DEV_MODE']) {
                 $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
             }

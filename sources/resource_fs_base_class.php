@@ -328,6 +328,9 @@ abstract class Resource_fs_base
 
         $moniker = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Remove file extension from filename
         $resource_id = find_id_via_moniker($resource_type, $moniker);
+        if (is_null($resource_id)) {
+            $resource_id = find_id_via_label($resource_type, $moniker);
+        }
         return array($resource_type, $resource_id);
     }
 

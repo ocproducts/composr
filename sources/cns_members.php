@@ -440,7 +440,7 @@ function cns_get_custom_field_mappings($member_id)
                         case 'short_trans':
                         case 'long_trans':
                             if ($value !== null) {
-                                $row += insert_lang_comcode('field_' . strval($field['id']), $value, 3, $GLOBALS['FORUM_DB']);
+                                $row = insert_lang_comcode('field_' . strval($field['id']), $value, 3, $GLOBALS['FORUM_DB']) + $row;
                             } else {
                                 $row['field_' . strval($field['id'])] = null;
                             }

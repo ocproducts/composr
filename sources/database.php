@@ -792,7 +792,7 @@ class DatabaseConnector
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return mixed The first value of the first row returned
      */
     public function query_select_value($table, $selected_value, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
@@ -831,7 +831,7 @@ class DatabaseConnector
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_select_value_if_there($table, $select, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
@@ -849,7 +849,7 @@ class DatabaseConnector
      * @param  string $query The complete SQL query
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_value_if_there($query, $fail_ok = false, $skip_safety_check = false, $lang_fields = null)
@@ -892,7 +892,7 @@ class DatabaseConnector
      * @param  ?integer $max The maximum number of rows to select (null: get all)
      * @param  ?integer $start The starting row to select (null: start at first)
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return array The results (empty array: empty result set)
      */
     public function query_select($table, $select = null, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false, $lang_fields = null)
@@ -918,7 +918,7 @@ class DatabaseConnector
      * @param  array $select The SELECT map
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
      * @param  string $end Something to tack onto the end of the SQL query
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      */
     protected function _automatic_lang_fields(&$table, &$full_table, &$select, &$where_map, &$end, &$lang_fields)
     {
@@ -990,7 +990,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1029,7 +1029,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1084,7 +1084,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get an insert ID
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)

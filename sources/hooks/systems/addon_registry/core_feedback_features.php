@@ -356,6 +356,7 @@ class Hook_addon_registry_core_feedback_features
                 'POSTER_DETAILS' => new Tempcode(),
                 'ID' => placeholder_id() . strval($i),
                 'POST' => lorem_phrase(),
+                'IS_UNREAD' => false,
                 'POST_COMCODE' => lorem_phrase(),
                 'CHILDREN' => lorem_phrase(),
                 'OTHER_IDS' => array(

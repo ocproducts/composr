@@ -951,7 +951,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     if (is_array($cma_entry_info['category_field'])) {
                         $cma_entry_info['category_field'] = array_pop($cma_entry_info['category_field']);
                     }
-                    $where[$cma_entry_info['category_field']] = $cma_entry_info['id_field_numeric'] ? intval($content_id) : $content_id;
+                    $where[$cma_entry_info['category_field']] = $cma_info['id_field_numeric'] ? intval($content_id) : $content_id;
                     if (($consider_validation) && (!is_null($cma_entry_info['validated_field']))) {
                         $where[$cma_entry_info['validated_field']] = 1;
                     }
@@ -1025,9 +1025,11 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             }
 
             if (!$skip_children) {
+                $lang_fields = isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$cma_info['parent_spec__table_name']]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$cma_info['parent_spec__table_name']] : array();
+
                 $start = 0;
                 do {
-                    $rows = $cma_info['connection']->query_select($table, array('*'), $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
+                    $rows = $cma_info['connection']->query_select($table, array('*'), $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
                         if ($this->content_type == 'comcode_page') {
                             $child_page_link = $zone . ':' . $child_row['the_page'];

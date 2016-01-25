@@ -473,11 +473,6 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter27" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/templates_cached" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/templates_cached" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter28" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/default/templates_cached/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/default/templates_cached/EN" />
   </parameter>
@@ -511,11 +506,6 @@
     name="SetAclParameter93" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/text_custom" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin/text_custom" />
   </parameter> 
-
-  <parameter
-    name="SetAclParameter66" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/templates_cached" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/themes/admin/templates_cached" />
-  </parameter>
 
   <parameter
     name="SetAclParameter94" description="Sets the ACL on the right file" defaultValue="{Application Path}/themes/admin/templates_cached/EN" tags="Hidden">
@@ -653,18 +643,8 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter62" description="Sets the ACL on the right file" defaultValue="{Application Path}/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/pages/comcode_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter63" description="Sets the ACL on the right file" defaultValue="{Application Path}/pages/comcode_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/pages/comcode_custom/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter64" description="Sets the ACL on the right file" defaultValue="{Application Path}/forum/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/forum/pages/comcode_custom" />
   </parameter>
 
   <parameter
@@ -673,18 +653,8 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter68" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms/pages/comcode_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter69" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms/pages/comcode_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms/pages/comcode_custom/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter74" description="Sets the ACL on the right file" defaultValue="{Application Path}/site/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/site/pages/comcode_custom" />
   </parameter>
 
   <parameter
@@ -693,29 +663,13 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter77" description="Sets the ACL on the right file" defaultValue="{Application Path}/adminzone/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/adminzone/pages/comcode_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter78" description="Sets the ACL on the right file" defaultValue="{Application Path}/adminzone/pages/comcode_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/adminzone/pages/comcode_custom/EN" />
   </parameter>
 
   <parameter
-    name="SetAclParameter80" description="Sets the ACL on the right file" defaultValue="{Application Path}/collaboration/pages/comcode_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/collaboration/pages/comcode_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter81" description="Sets the ACL on the right file" defaultValue="{Application Path}/collaboration/pages/comcode_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/collaboration/pages/comcode_custom/EN" />
-  </parameter>
-
-
-  <parameter
-    name="SetAclParameter160" description="Sets the ACL on the right file" defaultValue="{Application Path}/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/pages/html_custom" />
   </parameter>
 
   <parameter
@@ -724,18 +678,8 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter163" description="Sets the ACL on the right file" defaultValue="{Application Path}/forum/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/forum/pages/html_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter164" description="Sets the ACL on the right file" defaultValue="{Application Path}/forum/pages/html_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/forum/pages/html_custom/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter168" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms/pages/html_custom" />
   </parameter>
 
   <parameter
@@ -744,28 +688,13 @@
   </parameter>
 
   <parameter
-    name="SetAclParameter174" description="Sets the ACL on the right file" defaultValue="{Application Path}/site/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/site/pages/html_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter175" description="Sets the ACL on the right file" defaultValue="{Application Path}/site/pages/html_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/site/pages/html_custom/EN" />
   </parameter>
 
   <parameter
-    name="SetAclParameter177" description="Sets the ACL on the right file" defaultValue="{Application Path}/adminzone/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/adminzone/pages/html_custom" />
-  </parameter>
-
-  <parameter
     name="SetAclParameter178" description="Sets the ACL on the right file" defaultValue="{Application Path}/adminzone/pages/html_custom/EN" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/adminzone/pages/html_custom/EN" />
-  </parameter>
-
-  <parameter
-    name="SetAclParameter180" description="Sets the ACL on the right file" defaultValue="{Application Path}/collaboration/pages/html_custom" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/collaboration/pages/html_custom" />
   </parameter>
 
   <parameter

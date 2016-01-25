@@ -107,6 +107,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         require_code('downloads2');
 
         $parent_id = $this->_integer_category($category);
+        if (is_null($parent_id)) {
+            $parent_id = db_get_first_id();
+        }
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
@@ -140,8 +143,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_category', strval($row['id']));
 
         $properties = array(
-            'label' => $row['category'],
-            'description' => $row['description'],
+            'label' => get_translated_text($row['category']),
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
             'rep_image' => remap_urlpath_as_portable($row['rep_image']),
             'meta_keywords' => $meta_keywords,
@@ -295,9 +298,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_download', strval($row['id']));
 
         $properties = array(
-            'label' => $row['name'],
+            'label' => get_translated_text($row['name']),
             'url' => remap_urlpath_as_portable($row['url']),
-            'description' => $row['description'],
+            'description' => get_translated_text($row['description']),
             'author' => $row['author'],
             'additional_details' => $row['additional_details'],
             'out_mode_id' => $row['out_mode_id'],

@@ -107,7 +107,9 @@ class Hook_addon_registry_composr_release_build
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'meta_toolkit',
+            ),
             'recommends' => array(
                 'composr_homesite',
                 'composr_homesite_support_credits',
@@ -157,6 +159,14 @@ class Hook_addon_registry_composr_release_build
             'parameters.xml',
             'manifest.xml',
             'data_custom/execute_temp.php.bundle',
+            'aps/APP-LIST.xml',
+            'aps/APP-META.xml',
+            'aps/images/icon.png',
+            'aps/images/screenshot.png',
+            'aps/scripts/configure',
+            'aps/scripts/templates/_config.php.in',
+            'aps/test/composrIDEtest.xml',
+            'aps/test/TEST-META.xml',
         );
     }
 }

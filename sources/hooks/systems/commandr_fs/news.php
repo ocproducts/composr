@@ -133,7 +133,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $row = $rows[0];
 
         $properties = array(
-            'label' => $row['nc_title'],
+            'label' => get_translated_text($row['nc_title']),
             'rep_image' => remap_urlpath_as_portable($row['nc_img']),
             'notes' => $row['notes'],
             'owner' => remap_resource_id_as_portable('member', $row['nc_owner']),
@@ -269,9 +269,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
         list($meta_keywords, $meta_description) = seo_meta_get_for('news', strval($row['id']));
 
         $properties = array(
-            'label' => $row['title'],
-            'summary' => $row['news'],
-            'article' => $row['news_article'],
+            'label' => get_translated_text($row['title']),
+            'summary' => get_translated_text($row['news']),
+            'article' => get_translated_text($row['news_article']),
             'author' => $row['author'],
             'validated' => $row['validated'],
             'allow_rating' => $row['allow_rating'],

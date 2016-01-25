@@ -51,22 +51,16 @@
        "Read", "Write", "Execute", and "Delete".
   -->
 
-  <setAcl path="composr/adminzone/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/adminzone/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/adminzone/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/adminzone/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/caches/guest_pages" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/caches/lang" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/caches/lang/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/caches/persistent" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/caches/self_learning" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/cms/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/cms/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/cms/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/cms/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/collaboration/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/collaboration/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/collaboration/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/collaboration/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/errorlog.php" setAclResourceType="File" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/firewall_rules.txt" setAclResourceType="File" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
@@ -80,21 +74,15 @@
   <setAcl path="composr/exports/addons" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/exports/backups" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/exports/file_backups" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/forum/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/forum/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/forum/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/forum/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/imports/addons" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/lang_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/lang_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/safe_mode_temp" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/site/pages/comcode_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/site/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/site/pages/html_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/site/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/text_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/text_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
@@ -102,7 +90,6 @@
   <setAcl path="composr/themes/admin/css_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/admin/images_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/admin/javascript_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/themes/admin/templates_cached" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/admin/templates_cached/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/admin/templates_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/admin/text_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
@@ -110,7 +97,6 @@
   <setAcl path="composr/themes/default/css_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/default/images_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/default/javascript_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/themes/default/templates_cached" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/default/templates_cached/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/default/templates_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/themes/default/text_custom" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />

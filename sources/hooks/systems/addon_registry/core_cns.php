@@ -853,7 +853,7 @@ class Hook_addon_registry_core_cns
         $per_row = 6;
 
         $usergroups = array();
-        $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => strval(placeholder_number()));
+        $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => placeholder_number());
 
         $symbols = array(
             array(
@@ -956,6 +956,7 @@ class Hook_addon_registry_core_cns
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'CUSTOM_FIELDS' => array(
                 array(
+                    'FIELD_ID' => placeholder_id(),
                     'NAME' => lorem_phrase(),
                     'VALUE' => lorem_phrase(),
                     'ENCRYPTED_VALUE' => '',
