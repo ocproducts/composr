@@ -180,7 +180,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $row = $rows[0];
 
         $properties = array(
-            'label' => $row['g_name'],
+            'label' => get_translated_text($row['g_name']),
             'is_default' => $row['g_is_default'],
             'is_super_admin' => $row['g_is_super_admin'],
             'is_super_moderator' => $row['g_is_super_moderator'],
@@ -440,7 +440,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'on_probation_until' => remap_time_as_portable($row['m_on_probation_until']),
             'theme' => $row['m_theme'],
             'avatar_url' => remap_urlpath_as_portable($row['m_avatar_url']),
-            'signature' => $row['m_signature'],
+            'signature' => get_translated_text($row['m_signature']),
             'is_perm_banned' => $row['m_is_perm_banned'],
             'preview_posts' => $row['m_preview_posts'],
             'reveal_age' => $row['m_reveal_age'],

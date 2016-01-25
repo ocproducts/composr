@@ -39,6 +39,7 @@ class resource_fs_test_set extends cms_test_case
         }
 
         $GLOBALS['SITE_DB']->query_delete('alternative_ids');
+        $GLOBALS['SITE_DB']->query_delete('url_id_monikers');
 
         $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
 
