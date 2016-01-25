@@ -57,8 +57,12 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'member':
-                $ret = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_username'), array('m_username' => $label), 'ORDER BY id');
-                return collapse_1d_complexity('m_username', $ret);
+                $_ret = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array('m_username' => $label), 'ORDER BY id');
+                $ret = array();
+                foreach ($_ret as $r) {
+                    $ret[] = strval($r['id']);
+                }
+                return $ret;
 
             case 'group':
                 $_ret = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $label), 'ORDER BY id');

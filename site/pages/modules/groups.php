@@ -230,7 +230,7 @@ class Module_groups
     {
         $staff_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
 
-        $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
+        $sql = 'SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
             $sql .= 'g_hidden=0 AND ';
         }
@@ -411,7 +411,7 @@ class Module_groups
         //-Others
         $start = get_param_integer('others_start', 0);
         $max = get_param_integer('others_max', intval(get_option('normal_groups_per_page')));
-        $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
+        $sql = 'SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
             $sql .= 'g_hidden=0 AND ';
         }
