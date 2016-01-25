@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr Enterprise Repository[/title]
 
+[media width="500" description="" thumb="1" framed="0" float="right"]data_custom/images/docs/tut_repository/image.png[/media]
 The Composr repository is a shadow representation of Composr's data.
 
 In most cases, Composr data is stored in the database, which is not a particular user-friendly form, given databases are generally designed with a special set of rules that lead to data being split up across multiple tables. Sometimes data is also stored on the filesystem (i.e. the disk); for example, file uploads.
