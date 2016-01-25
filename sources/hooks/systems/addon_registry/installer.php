@@ -525,7 +525,6 @@ class Hook_addon_registry_installer
         return array(
             lorem_globalise(do_lorem_template('INSTALLER_STEP_10', array(
                 'PREVIOUS_STEP' => placeholder_number(),
-                'PREVIOUS_STEP' => placeholder_number(),
                 'FINAL' => lorem_phrase(),
                 'LOG' => $message,
             )), null, '', true)

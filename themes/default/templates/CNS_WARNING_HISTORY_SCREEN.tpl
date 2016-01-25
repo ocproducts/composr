@@ -18,4 +18,4 @@
 			<a href="{$PAGE_LINK*,_SEARCH:rules}">{!RULES}</a>
 		</li>
 	</ul>
-</div>
+</nav>

@@ -708,7 +708,7 @@ function ce_check_master_password($password_given)
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
  */
-function ce_cms_tempnam($prefix)
+function ce_cms_tempnam($prefix = '')
 {
     global $FILE_BASE;
     $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)));

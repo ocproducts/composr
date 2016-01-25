@@ -326,7 +326,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                         if (($current_tag != 'br') && ($current_tag != 'img') && ($current_tag != 'hr')) { // A little sanity checking, for HTML used as XHTML
                             $tag_stack[] = $current_tag;
                             $matches = array();
-                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml_substr_no_break[^"<>]*"[^<>]*$#', $html, $matches, 0, $i) != 0));
+                            $unbreakable_tag_stack[] = (($current_tag == 'figure') || ($current_tag == 'div') && ($has_xhtml_substr_no_break_somewhere) && (preg_match('#\sclass="[^"<>]*xhtml_substr_no_break[^"<>]*"[^<>]*$#', substr($html, 0, $i)) != 0));
                         }
                     }
                 } elseif ($in_tag_type == 'CLOSE') {

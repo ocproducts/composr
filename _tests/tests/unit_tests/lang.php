@@ -93,6 +93,7 @@ class lang_test_set extends cms_test_case
         $string = preg_replace('#\{\$[^\{\}]*\}#', '', $string);
         $string = preg_replace('#\[code.*\[/code\]#s', '', $string);
         $string = preg_replace('#\[codebox.*\[/codebox\]#s', '', $string);
+        $string = preg_replace('#\[tt.*\[/tt\]#s', '', $string);
 
         $matches = array();
 

@@ -244,11 +244,11 @@ class Hook_addon_registry_community_billboard
                 'TEXT' => $text->evaluate(),
             )));
         }
-
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_LIST', array(
             'TABINDEX' => '5',
             'REQUIRED' => '_required',
-            'NAME' => placeholder_random_id(),
+            'NAME' => $name,
             'CONTENT' => $out,
             'INLINE_LIST' => true,
             'SIZE' => '9',
@@ -257,7 +257,7 @@ class Hook_addon_registry_community_billboard
             'REQUIRED' => true,
             'SKIP_LABEL' => false,
             'PRETTY_NAME' => lorem_word(),
-            'NAME' => placeholder_random_id(),
+            'NAME' => $name,
             'DESCRIPTION' => lorem_sentence_html(),
             'DESCRIPTION_SIDE' => '',
             'INPUT' => $input,

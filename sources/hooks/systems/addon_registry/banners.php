@@ -251,8 +251,8 @@ class Hook_addon_registry_banners
                 'SUBMIT_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_word(),
                 'BANNER' => lorem_word_2(),
-                'HITSFROM' => placeholder_number(),
-                'HITSTO' => placeholder_number(),
+                'HITS_FROM' => placeholder_number(),
+                'HITS_TO' => placeholder_number(),
             )), null, '', true)
         );
     }
@@ -298,6 +298,7 @@ class Hook_addon_registry_banners
             'TYPE' => lorem_phrase(),
             'BANNER' => $banners,
             'MORE_COMING' => lorem_phrase(),
+            'MAX' => placeholder_number(),
         ));
 
         return array(
@@ -305,6 +306,7 @@ class Hook_addon_registry_banners
                 'EXTRA' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
                 'ASSEMBLE' => $assemble,
+                'MAX' => placeholder_number(),
             )), null, '', true)
         );
     }

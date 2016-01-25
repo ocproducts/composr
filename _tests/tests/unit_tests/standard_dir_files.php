@@ -44,6 +44,10 @@ class standard_dir_files_test_set extends cms_test_case
                     continue;
                 }
 
+                if ($file == 'test-a') {
+                    continue;
+                }
+
                 if (is_dir($dir . '/' . $file)) {
                     $this->do_dir($dir . '/' . $file);
                 } else {

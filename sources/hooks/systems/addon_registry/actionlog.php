@@ -135,23 +135,8 @@ class Hook_addon_registry_actionlog
             // Revisions
             'templates/REVISIONS_WRAP.tpl' => 'administrative__show_revisions_wrap',
             'templates/REVISIONS_DIFF_ICON.tpl' => 'administrative__show_revision_diff_icon',
-            'templates/REVISION_RESTORE.tpl' => 'administrative__revision_restore',
             'templates/REVISIONS_SCREEN.tpl' => 'revisions_screen',
             'templates/REVISION_UNDO.tpl' => 'revision_undo',
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__revision_restore()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('REVISION_RESTORE', array()), null, '', true)
         );
     }
 
