@@ -188,16 +188,16 @@ class Block_twitter_feed
             $twitter_userdescription = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $twitter_userdescription);
 
             // Generate retweet, favorite, reply, and user page URLs
-            $retweet_url = 'https://twitter.com/intent/retweet?tweet_id=' . $status['id'];
-            $favorite_url = 'https://twitter.com/intent/favorite?tweet_id=' . $status['id'];
-            $reply_url = 'https://twitter.com/intent/tweet?in_reply_to=' . $status['id'];
-            $user_page_url = 'http://www.twitter.com/' . $status['user']['screen_name'];
+            $retweet_url = 'https://twitter.com/intent/retweet?tweet_id=' . strval($status['id']);
+            $favorite_url = 'https://twitter.com/intent/favorite?tweet_id=' . strval($status['id']);
+            $reply_url = 'https://twitter.com/intent/tweet?in_reply_to=' . strval($status['id']);
+            $user_page_url = 'http://www.twitter.com/' . urlencode($status['user']['screen_name']);
 
             // Generate follow buttons
             // must have the following javascript code in the main template for these to fully work:
             // <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-            $follow_button_normal = "<a href=\"https://twitter.com/" . $status['user']['screen_name'] . "\" class=\"twitter-follow-button\" data-show-count=\"false\" data-show-screen-name=\"false\">Follow @" . $status['user']['screen_name'] . "</a>";
-            $follow_button_large = "<a href=\"https://twitter.com/" . $status['user']['screen_name'] . "\" class=\"twitter-follow-button\" data-show-count=\"false\" data-size=\"large\" data-show-screen-name=\"false\">Follow @" . $status['user']['screen_name'] . "</a>";
+            $follow_button_normal = "<a href=\"https://twitter.com/" . escape_html(urlencode($status['user']['screen_name'])) . "\" class=\"twitter-follow-button\" data-show-count=\"false\" data-show-screen-name=\"false\">Follow @" . escape_html($status['user']['screen_name']) . "</a>";
+            $follow_button_large = "<a href=\"https://twitter.com/" . escape_html(urlencode($status['user']['screen_name'])) . "\" class=\"twitter-follow-button\" data-show-count=\"false\" data-size=\"large\" data-show-screen-name=\"false\">Follow @" . escape_html($status['user']['screen_name']) . "</a>";
 
             // Convert created_at date/time to unix timestamp and 'time ago' string...
 
@@ -307,7 +307,7 @@ class Block_twitter_feed
      */
     public function _convert_name_callback($matches)
     {
-        return '<a href="http://www.twitter.com/' . $matches[1] . '" target="_blank" rel="nofollow">@' . $matches[1] . '</a>';
+        return '<a href="http://www.twitter.com/' . escape_html(urlencode($matches[1])) . '" target="_blank" rel="nofollow">@' . escape_html($matches[1]) . '</a>';
     }
 
     /**
@@ -318,7 +318,7 @@ class Block_twitter_feed
      */
     public function _convert_hashtag_callback($matches)
     {
-        return '<a href="https://twitter.com/#!/search?q=%23' . $matches[1] . '" target="_blank" rel="nofollow">#' . $matches[1] . '</a>';
+        return '<a href="https://twitter.com/#!/search?q=%23' . escape_html(urlencode($matches[1])) . '" target="_blank" rel="nofollow">#' . escape_html($matches[1]) . '</a>';
     }
 
     /**
@@ -329,7 +329,7 @@ class Block_twitter_feed
      */
     public function _convert_url_callback($matches)
     {
-        return $matches[1] . '<a href="' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
+        return $matches[1] . '<a href="' . escape_html($matches[2]) . '" target="_blank" >' . escape_html($matches[2]) . '</a>';
     }
 
     /**
@@ -340,7 +340,7 @@ class Block_twitter_feed
      */
     public function _convert_website_callback($matches)
     {
-        return $matches[1] . '<a href="http://' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
+        return $matches[1] . '<a href="http://' . escape_html($matches[2]) . '" target="_blank" >' . escape_html($matches[2]) . '</a>';
     }
 }
 
