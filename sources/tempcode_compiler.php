@@ -880,19 +880,24 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         }
         file_put_contents($final_css_path, 'GENERATING');*/
 
-        // Heavy-weight, newer (iLess)
-        require_code('ILess/Autoloader');
-        ILess_Autoloader::register();
-        $less = new ILess_Parser(array(
-            'import_dirs' => array(dirname($_path)),
-        ), new ILess_Cache_FileSystem(array(
-            'cache_dir' => get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang,
-        )));
-        try {
-            $less->parseString($template_contents);
-            $template_contents = $less->getCSS();
-        } catch (Exception $ex) {
-            fatal_exit('.less problem: ' . $ex->getMessage());
+        if (file_exists(get_file_base() . '/sources_custom/less_proxy.php')) {
+            require_code('less_proxy');
+            $template_contents = less_proxy_compile($_path);
+        } else {
+            // Heavy-weight, newer (iLess)
+            require_code('ILess/Autoloader');
+            ILess_Autoloader::register();
+            $less = new ILess_Parser(array(
+                'import_dirs' => array(dirname($_path)),
+            ), new ILess_Cache_FileSystem(array(
+                'cache_dir' => get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang,
+            )));
+            try {
+                $less->parseString($template_contents);
+                $template_contents = $less->getCSS();
+            } catch (Exception $ex) {
+                fatal_exit('.less problem: ' . $ex->getMessage());
+            }
         }
     }
 
