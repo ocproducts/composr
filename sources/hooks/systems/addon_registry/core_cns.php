@@ -853,7 +853,7 @@ class Hook_addon_registry_core_cns
         $per_row = 6;
 
         $usergroups = array();
-        $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => strval(placeholder_number()));
+        $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => placeholder_number());
 
         $symbols = array(
             array(

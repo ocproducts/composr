@@ -146,6 +146,7 @@ class Hook_addon_registry_meta_toolkit
             'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
             'delete_alien_files.php',
             'line_count.sh',
+            'sources_custom/install_headless.php',
         );
     }
 }
