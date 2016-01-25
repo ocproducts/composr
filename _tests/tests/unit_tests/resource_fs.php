@@ -38,6 +38,8 @@ class resource_fs_test_set extends cms_test_case
             $this->paths = array();
         }
 
+        $GLOBALS['SITE_DB']->query_delete('alternative_ids');
+
         $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
 
         $this->resource_fs_obs = array();

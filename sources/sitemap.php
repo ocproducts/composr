@@ -951,7 +951,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     if (is_array($cma_entry_info['category_field'])) {
                         $cma_entry_info['category_field'] = array_pop($cma_entry_info['category_field']);
                     }
-                    $where[$cma_entry_info['category_field']] = $cma_entry_info['id_field_numeric'] ? intval($content_id) : $content_id;
+                    $where[$cma_entry_info['category_field']] = $cma_info['id_field_numeric'] ? intval($content_id) : $content_id;
                     if (($consider_validation) && (!is_null($cma_entry_info['validated_field']))) {
                         $where[$cma_entry_info['validated_field']] = 1;
                     }

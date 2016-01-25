@@ -359,8 +359,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_category', strval($row['id']));
 
             $properties = array(
-                'label' => $row['cc_title'],
-                'description' => $row['cc_description'],
+                'label' => get_translated_text($row['cc_title']),
+                'description' => get_translated_text($row['cc_description']),
                 'notes' => $row['cc_notes'],
                 'rep_image' => remap_urlpath_as_portable($row['rep_image']),
                 'move_days_lower' => $row['cc_move_days_lower'],
@@ -404,8 +404,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         }
 
         $properties = array(
-            'label' => $row['c_title'],
-            'description' => $row['c_description'],
+            'label' => get_translated_text($row['c_title']),
+            'description' => get_translated_text($row['c_description']),
             'display_type' => $row['c_display_type'],
             'is_tree' => $row['c_is_tree'],
             'notes' => $row['c_notes'],

@@ -298,10 +298,9 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
                 $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
             }
         }
-
-        if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && (substr($index_name, 0, 1) == '#') && ($table_name != 'translate')) {
-            $ok_to_create = false;
-        }
+    }
+    if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && (substr($index_name, 0, 1) == '#') && ($table_name != 'translate')) {
+        $ok_to_create = false;
     }
     $this_ref->query_insert('db_meta_indices', array('i_table' => $table_name, 'i_name' => $index_name, 'i_fields' => implode(',', $fields)), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
 
