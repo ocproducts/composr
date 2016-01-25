@@ -26,7 +26,9 @@ class Hook_addon_registry_disastr
      */
     public function get_chmod_array($runtime = false)
     {
-        return array();
+        return array(
+            'uploads/disastr_addon',
+        );
     }
 
     /**
@@ -147,8 +149,9 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
             'sources_custom/hooks/systems/page_groupings/disastr.php',
             'themes/default/templates_custom/POINTSTORE_DISASTR.tpl',
             'themes/default/templates_custom/POINTSTORE_DISASTR_DISEASES.tpl',
-            'uploads/diseases_addon/index.html',
-            'uploads/diseases_addon/hazard.jpg',
+            'uploads/disastr_addon/index.html',
+            'data_custom/images/disastr/hazard.jpg',
+            'data_custom/images/disastr/index.html',
         );
     }
 }

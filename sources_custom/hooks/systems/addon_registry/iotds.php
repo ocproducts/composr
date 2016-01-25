@@ -26,7 +26,10 @@ class Hook_addon_registry_iotds
      */
     public function get_chmod_array($runtime = false)
     {
-        return array();
+        return array(
+            'iotds_addon',
+            'iotds_addon_thumbs',
+        );
     }
 
     /**

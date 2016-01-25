@@ -138,7 +138,6 @@ class Hook_addon_registry_excel_support
             'sources_custom/spout/.gitignore',
             'sources_custom/spout/.travis.yml',
             'sources_custom/spout/composer.json',
-            'sources_custom/spout/composer.lock',
             'sources_custom/spout/composer.phar',
             'sources_custom/spout/CONTRIBUTING.md',
             'sources_custom/spout/LICENSE',
