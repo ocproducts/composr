@@ -161,6 +161,7 @@ class Hook_addon_registry_securitylogging
                 'WARNING_DETAILS' => '',
                 'TITLE' => lorem_title(),
                 'BANS' => placeholder_ip(),
+                'UNBANNABLE' => placeholder_ip(),
                 'LOCKED_BANS' => placeholder_ip(),
                 'URL' => placeholder_url(),
             )), null, '', true)

@@ -154,7 +154,6 @@ class Hook_addon_registry_core_addon_management
             'templates/ADDON_EXPORT_LINE.tpl' => 'administrative__addon_export_screen',
             'templates/ADDON_EXPORT_FILE_CHOICE.tpl' => 'administrative__addon_export_screen',
             'templates/ADDON_EXPORT_SCREEN.tpl' => 'administrative__addon_export_screen',
-            'templates/MODULE_SCREEN_MODULE.tpl' => 'administrative__module_screen',
             'templates/MODULE_SCREEN.tpl' => 'administrative__module_screen',
             'templates/ADDON_INSTALL_FILES_WARNING.tpl' => 'administrative__addon_install_confirm_screen',
             'templates/ADDON_INSTALL_FILES.tpl' => 'administrative__addon_install_confirm_screen',

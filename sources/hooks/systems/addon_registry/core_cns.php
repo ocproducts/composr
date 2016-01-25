@@ -956,6 +956,7 @@ class Hook_addon_registry_core_cns
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'CUSTOM_FIELDS' => array(
                 array(
+                    'FIELD_ID' => placeholder_id(),
                     'NAME' => lorem_phrase(),
                     'VALUE' => lorem_phrase(),
                     'ENCRYPTED_VALUE' => '',

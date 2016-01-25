@@ -548,7 +548,8 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     if (!array_key_exists($category_id, $PT_PAIR_CACHE_D)) {
         $category_rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('parent_id', 'category'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $category_rows)) {
-            warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'download_category'));
+            //warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'download_category'));
+            return array();
         }
         $PT_PAIR_CACHE_D[$category_id] = $category_rows[0];
     }

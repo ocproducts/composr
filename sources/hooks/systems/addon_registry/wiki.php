@@ -288,6 +288,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'MY_CHILD_POSTS' => placeholder_number(),
             'MY_CHILD_CHILDREN' => placeholder_number(),
+            'CHILD' => lorem_phrase(),
             'BODY_CONTENT' => placeholder_number(),
         );
 
