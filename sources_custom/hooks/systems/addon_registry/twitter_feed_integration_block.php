@@ -86,7 +86,12 @@ class Hook_addon_registry_twitter_feed_integration_block
      */
     public function get_description()
     {
-        return 'Integrate your Twitter feed into your web site, via a block.';
+        return 'Integrate your Twitter feed into your web site, via a block.
+
+First set up an app on Twitter, then use Comcode like:
+[code="Comcode"]
+[block consumer_key="xxx" consumer_secret="xxx" access_token="xxx" access_token_secret="xxx" screen_name="yourname"]twitter_feed[/block]
+[/code]';
     }
 
     /**
