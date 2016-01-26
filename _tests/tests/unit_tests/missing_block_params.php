@@ -79,9 +79,4 @@ class missing_block_params_test_set extends cms_test_case
             $this->assertTrue(false, 'Missing language string: ' . $x);
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

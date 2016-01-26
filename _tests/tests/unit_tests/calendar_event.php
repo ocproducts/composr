@@ -528,11 +528,6 @@ class calendar_event_test_set extends cms_test_case
     {
         delete_calendar_event($this->event_id);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }
 
 /*

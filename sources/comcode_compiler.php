@@ -1219,7 +1219,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             foreach ($rows as $h => $row) {
-                                                $cells = preg_split('/(\n\! | \!\! |\n\| | \|\| )/', $row, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                $cells = preg_split('/(\n\!| \!\!|\n\|| \|\|)/', $row, -1, PREG_SPLIT_DELIM_CAPTURE);
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
                                                 // Find which to float
@@ -1329,7 +1329,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             )));
                                             $finished_thead = false;
                                             foreach ($rows as $table_row) {
-                                                $cells = preg_split('/(\n\! | \!\! |\n\| | \|\| )/', $table_row, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                $cells = preg_split('/(\n\!| \!\!|\n\|| \|\|)/', $table_row, -1, PREG_SPLIT_DELIM_CAPTURE);
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
                                                 $c_type = '';

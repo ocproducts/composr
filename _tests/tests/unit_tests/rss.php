@@ -33,9 +33,4 @@ class rss_test_set extends cms_test_case
         $this->assertTrue('Item Example' == $rsstitle);
         $this->assertTrue('Atom-Powered Robots Run Amok' == $atomtitle);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

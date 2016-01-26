@@ -49,9 +49,4 @@ class config_lang_strings_test_set extends cms_test_case
             $this->assertFalse(is_null($test), 'Error on: ' . $option['human_name']);
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

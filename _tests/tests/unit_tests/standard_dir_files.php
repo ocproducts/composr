@@ -93,9 +93,4 @@ class standard_dir_files_test_set extends cms_test_case
             $this->assertTrue(count($diff) == 0, 'Missing in sources_custom/' . $dir . ': ' . serialize($diff));
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

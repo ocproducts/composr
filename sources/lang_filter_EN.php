@@ -313,14 +313,19 @@ class LangFilter_EN extends LangFilter
                     require_code('content');
                     $object = get_content_object($content_type);
                     if (is_null($object)) {
-                        $specific = strtolower($content_type);
+                        $specific = do_lang($content_type, null, null, null, null, false);
+                        if (is_null($specific)) {
+                            $specific = strtolower($content_type);
+                        } else {
+                            $specific = strtolower($specific);
+                        }
                     } else {
                         $info = $object->info();
                         $specific = strtolower(do_lang($info['content_type_label']));
                     }
 
-                    $is_vowel = in_array(substr($specific, 1), $this->vowels);
-                    $article_word = $is_vowel ? 'a' : 'an';
+                    $is_vowel = in_array(substr($specific, 0, 1), $this->vowels);
+                    $article_word = $is_vowel ? 'an' : 'a';
 
                     if (preg_match('#[^aeiou]y$#', $specific) != 0) {
                         $specific_plural = substr($specific, 0, strlen($specific) - 1) . 'ies';
@@ -333,6 +338,7 @@ class LangFilter_EN extends LangFilter
                         case 'resource':
                             $reps = array(
                                 'a resource' => $article_word . ' ' . $specific,
+                                'A resource' => ucfirst($article_word) . ' ' . $specific,
                                 'resources' => $specific_plural,
                                 'resource' => $specific,
                             );
@@ -341,6 +347,7 @@ class LangFilter_EN extends LangFilter
                         case 'category':
                             $reps = array(
                                 'a category' => $article_word . ' ' . $specific,
+                                'A category' => ucfirst($article_word) . ' ' . $specific,
                                 'categories' => $specific_plural,
                                 'category' => $specific,
                             );
@@ -349,6 +356,7 @@ class LangFilter_EN extends LangFilter
                         case 'entry':
                             $reps = array(
                                 'an entry' => $article_word . ' ' . $specific,
+                                'An entry' => ucfirst($article_word) . ' ' . $specific,
                                 'entries' => $specific_plural,
                                 'entry' => $specific,
                             );
@@ -357,6 +365,7 @@ class LangFilter_EN extends LangFilter
                         case 'content_type_module':
                             $reps = array(
                                 'a content-type' => $article_word . ' ' . $specific . ' module',
+                                'A content-type' => ucfirst($article_word) . ' ' . $specific . ' module',
                                 'content-types' => $specific_plural . ' module',
                                 'content-type' => $specific . ' module',
                             );

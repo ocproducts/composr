@@ -37,9 +37,4 @@ class user_banunban_test_set extends cms_test_case
 
         $this->assertTrue(0 == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_is_perm_banned', array('id' => 3)));
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

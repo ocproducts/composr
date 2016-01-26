@@ -52,9 +52,4 @@ class wiki_test_set extends cms_test_case
         // Delete Wiki+ page
         wiki_delete_page($this->id);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

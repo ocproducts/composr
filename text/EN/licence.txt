@@ -132,7 +132,7 @@ This product includes:
   - GUID implementation (from php.net comment by Andrew Moore, Creative Commons Attribution License)
   - adjust_pic_orientation function (from stackoverflow comment)
   - Stemmer (BSD-like licence)
-  - PHP5.5 hashing compatibility library (MIT licence)
+  - PHP 5.5 hashing compatibility library (MIT licence)
   - jsmin (MIT licence)
   - cssmin (MIT licence)
   - JSON decoder (BSD licence)

@@ -39,9 +39,4 @@ class comcode_test_set extends cms_test_case
             $this->assertTrue($matches, '"' . $comcode . '" produced instead of "' . $actual_altered . '" "' . $html . '"');
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

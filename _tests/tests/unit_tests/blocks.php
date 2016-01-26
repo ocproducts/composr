@@ -36,9 +36,4 @@ class blocks_test_set extends cms_test_case
             $this->assertTrue(is_object($test));
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

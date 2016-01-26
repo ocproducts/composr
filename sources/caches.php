@@ -309,7 +309,7 @@ class Self_learning_cache
             $contents = serialize($this->data);
 
             if (file_put_contents($this->path, $contents, LOCK_EX) < strlen($contents)) {
-                unlink($this->path);
+                @unlink($this->path);
                 fix_permissions($this->path);
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
@@ -350,7 +350,7 @@ class Self_learning_cache
         if ($dh !== false) {
             while (($f = readdir($dh)) !== false) {
                 if (substr($f, -4) == '.gcd') {
-                    unlink(get_custom_file_base() . '/caches/self_learning/' . $f);
+                    @unlink(get_custom_file_base() . '/caches/self_learning/' . $f);
                 }
             }
             closedir($dh);

@@ -230,9 +230,4 @@ class resource_fs_test_set extends cms_test_case
             }
         }
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

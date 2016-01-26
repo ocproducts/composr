@@ -68,9 +68,4 @@ class banners_test_set extends cms_test_case
         delete_banner_type($this->banner_type);
         delete_banner($this->banner_name);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

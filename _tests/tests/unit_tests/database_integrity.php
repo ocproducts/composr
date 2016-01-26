@@ -32,9 +32,4 @@ class database_integrity_test_set extends cms_test_case
         $this->assertTrue($phase == 2);
         $this->assertTrue($sql == '', $sql);
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }

@@ -211,6 +211,14 @@ class lang_test_set extends cms_test_case
             $this->assertTrue(false, 'The phrase \'CMS system\' was used in ' . $file . '. That would expand to Content Management System System. The plural of CMS is CMSs.');
         }
 
+        // Bad way of writing PHP versions etc
+        if (stripos($string, 'PHP5.') !== false || stripos($string, 'PHP7.') !== false) {
+            $this->assertTrue(false, 'PHP version written missing a space in ' . $file . '.');
+        }
+        if (stripos($string, 'end of life') !== false) {
+            $this->assertTrue(false, 'Use dashes for end-of-life, ' . $file . '.');
+        }
+
         // Old-fashioned words
         if (stripos($string, 'amongst') !== false) {
             $this->assertTrue(false, 'The word \'amongst\' was used in ' . $file . '. This should be changed to \'among\'.');
@@ -291,10 +299,5 @@ class lang_test_set extends cms_test_case
 
             //if (stripos($string, 'center') !== false) $this->assertTrue(false, 'The word \'center\' was used in ' . $file . '. This should be changed to \'centre\'.');
         }
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

@@ -49,6 +49,9 @@ public function cloudinary_transfer_upload($attach_name, $upload_folder, $filena
             $filearrays[$attach_name]['tmp_name'],
             $options
         );
+        if (get_param_integer('keep_fatalistic', 0) == 1) {
+            attach_message(serialize($result), 'inform');
+        }
     } catch (Exception $e) {
         if ($accept_errors) {
             attach_message($e->getMessage(), 'warn');

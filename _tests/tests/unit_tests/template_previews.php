@@ -335,9 +335,4 @@ class template_previews_test_set extends cms_test_case
         safe_ini_set('ocproducts.type_strictness', '0');
         safe_ini_set('ocproducts.xss_detect', '0');
     }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 }
