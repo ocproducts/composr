@@ -1582,6 +1582,10 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_LIST', array('_GUID' => '112dd79a8e0069aa21615594aec1e509', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $content, 'INLINE_LIST' => $inline_list, 'IMAGES' => $images, 'SIZE' => strval($size)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
@@ -1707,6 +1711,10 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+
     $_required = ($required) ? '_required' : '';
 
     return do_template('FORM_SCREEN_INPUT_HUGE_LIST', array(
@@ -1739,6 +1747,10 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
 function form_input_multi_list($pretty_name, $description, $name, $content, $tabindex = null, $size = 5, $required = false, $custom_name = null, $custom_value = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
+
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
 
     $input = do_template('FORM_SCREEN_INPUT_MULTI_LIST', array(
         '_GUID' => 'ed0739205c0bf5039e1d4fe2ddfc06da',

@@ -1,7 +1,3 @@
-{$REQUIRE_CSS,widget_select2}
-{$REQUIRE_JAVASCRIPT,jquery}
-{$REQUIRE_JAVASCRIPT,select2}
-
 <tr>
 	{$SET,randomised_id,{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}}
 	<th id="form_table_field_name__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_description_above_cell{+START,IF,{REQUIRED}} required{+END}">

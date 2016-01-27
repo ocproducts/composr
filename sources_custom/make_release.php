@@ -349,7 +349,7 @@ function make_installers($skip_file_grab = false)
         $previous_version_dotted = $changelog_previous_version_el->getAttribute('version');
 
         if ($version_dotted !== $previous_version_dotted) {
-            $changelog_version_el = $changelog_previous_version_el->cloneNode(true);
+            $changelog_version_el = $changelog_previous_version_el->cloneNode(1);
             $changelog_version_el->setAttribute('version', $version_dotted);
 
             $changelog_version_entry_el = $changelog_version_el->getElementsByTagName('entry')->item(0);
@@ -458,7 +458,7 @@ function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $di
 
         $el = $app_list_doc->createElement('ns2:file');
         $el->setAttribute('name', $name);
-        $el->setAttribute('size', filesize($entry_path));
+        $el->setAttribute('size', strval(filesize($entry_path)));
         $el->setAttribute('sha256', hash_file('sha256', $entry_path));
 
         $files_el->appendChild($el);

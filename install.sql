@@ -19134,12 +19134,8 @@ CREATE TABLE cms_authors (
      author varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      member_id integer NULL,
-     description longtext NOT NULL,
-     skills longtext NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     skills__text_parsed longtext NOT NULL,
-     skills__source_user integer DEFAULT 1 NOT NULL,
+     description integer unsigned NOT NULL,
+     skills integer unsigned NOT NULL,
 
     PRIMARY KEY (author)
 ) engine=MyISAM;
@@ -19180,14 +19176,12 @@ DROP TABLE IF EXISTS cms_award_types;
 
 CREATE TABLE cms_award_types (
      id integer unsigned auto_increment NOT NULL,
-     a_title longtext NOT NULL,
-     a_description longtext NOT NULL,
+     a_title integer unsigned NOT NULL,
+     a_description integer unsigned NOT NULL,
      a_points integer NOT NULL,
      a_content_type varchar(80) NOT NULL,
      a_hide_awardee tinyint(1) NOT NULL,
      a_update_time_hours integer NOT NULL,
-     a_description__text_parsed longtext NOT NULL,
-     a_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19256,7 +19250,7 @@ CREATE TABLE cms_banners (
      img_url varchar(255) NOT NULL,
      the_type tinyint NOT NULL,
      b_title_text varchar(255) NOT NULL,
-     caption longtext NOT NULL,
+     caption integer unsigned NOT NULL,
      b_direct_code longtext NOT NULL,
      campaign_remaining integer NOT NULL,
      site_url varchar(255) NOT NULL,
@@ -19270,8 +19264,6 @@ CREATE TABLE cms_banners (
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      b_type varchar(80) NOT NULL,
-     caption__text_parsed longtext NOT NULL,
-     caption__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (name)
 ) engine=MyISAM;
@@ -19595,11 +19587,9 @@ DROP TABLE IF EXISTS cms_cached_comcode_pages;
 CREATE TABLE cms_cached_comcode_pages (
      the_zone varchar(80) NOT NULL,
      the_page varchar(80) NOT NULL,
-     string_index longtext NOT NULL,
+     string_index integer unsigned NOT NULL,
      the_theme varchar(80) NOT NULL,
-     cc_page_title longtext NOT NULL,
-     string_index__text_parsed longtext NOT NULL,
-     string_index__source_user integer DEFAULT 1 NOT NULL,
+     cc_page_title integer unsigned NULL,
 
     PRIMARY KEY (the_zone, the_page, the_theme)
 ) engine=MyISAM;
@@ -19614,8 +19604,8 @@ CREATE TABLE cms_calendar_events (
      e_submitter integer NOT NULL,
      e_member_calendar integer NULL,
      e_views integer NOT NULL,
-     e_title longtext NOT NULL,
-     e_content longtext NOT NULL,
+     e_title integer unsigned NOT NULL,
+     e_content integer unsigned NOT NULL,
      e_add_date integer unsigned NOT NULL,
      e_edit_date integer unsigned NULL,
      e_recurrence varchar(80) NOT NULL,
@@ -19642,10 +19632,6 @@ CREATE TABLE cms_calendar_events (
      notes longtext NOT NULL,
      e_type integer NOT NULL,
      validated tinyint(1) NOT NULL,
-     e_title__text_parsed longtext NOT NULL,
-     e_title__source_user integer DEFAULT 1 NOT NULL,
-     e_content__text_parsed longtext NOT NULL,
-     e_content__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19698,11 +19684,9 @@ DROP TABLE IF EXISTS cms_calendar_types;
 
 CREATE TABLE cms_calendar_types (
      id integer unsigned auto_increment NOT NULL,
-     t_title longtext NOT NULL,
+     t_title integer unsigned NOT NULL,
      t_logo varchar(255) NOT NULL,
      t_external_feed varchar(255) NOT NULL,
-     t_title__text_parsed longtext NOT NULL,
-     t_title__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19764,8 +19748,8 @@ DROP TABLE IF EXISTS cms_catalogue_categories;
 CREATE TABLE cms_catalogue_categories (
      id integer unsigned auto_increment NOT NULL,
      c_name varchar(80) NOT NULL,
-     cc_title longtext NOT NULL,
-     cc_description longtext NOT NULL,
+     cc_title integer unsigned NOT NULL,
+     cc_description integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
      cc_notes longtext NOT NULL,
      cc_add_date integer unsigned NOT NULL,
@@ -19774,8 +19758,6 @@ CREATE TABLE cms_catalogue_categories (
      cc_move_days_lower integer NOT NULL,
      cc_move_days_higher integer NOT NULL,
      cc_order integer NOT NULL,
-     cc_description__text_parsed longtext NOT NULL,
-     cc_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19859,9 +19841,7 @@ CREATE TABLE cms_catalogue_efv_long_trans (
      id integer unsigned auto_increment NOT NULL,
      cf_id integer NOT NULL,
      ce_id integer NOT NULL,
-     cv_value longtext NOT NULL,
-     cv_value__text_parsed longtext NOT NULL,
-     cv_value__source_user integer DEFAULT 1 NOT NULL,
+     cv_value integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19889,9 +19869,7 @@ CREATE TABLE cms_catalogue_efv_short_trans (
      id integer unsigned auto_increment NOT NULL,
      cf_id integer NOT NULL,
      ce_id integer NOT NULL,
-     cv_value longtext NOT NULL,
-     cv_value__text_parsed longtext NOT NULL,
-     cv_value__source_user integer DEFAULT 1 NOT NULL,
+     cv_value integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19941,8 +19919,8 @@ DROP TABLE IF EXISTS cms_catalogue_fields;
 CREATE TABLE cms_catalogue_fields (
      id integer unsigned auto_increment NOT NULL,
      c_name varchar(80) NOT NULL,
-     cf_name longtext NOT NULL,
-     cf_description longtext NOT NULL,
+     cf_name integer unsigned NOT NULL,
+     cf_description integer unsigned NOT NULL,
      cf_type varchar(80) NOT NULL,
      cf_order integer NOT NULL,
      cf_defines_order tinyint NOT NULL,
@@ -20060,8 +20038,8 @@ DROP TABLE IF EXISTS cms_catalogues;
 
 CREATE TABLE cms_catalogues (
      c_name varchar(80) NOT NULL,
-     c_title longtext NOT NULL,
-     c_description longtext NOT NULL,
+     c_title integer unsigned NOT NULL,
+     c_description integer unsigned NOT NULL,
      c_display_type tinyint NOT NULL,
      c_is_tree tinyint(1) NOT NULL,
      c_notes longtext NOT NULL,
@@ -20070,8 +20048,6 @@ CREATE TABLE cms_catalogues (
      c_ecommerce tinyint(1) NOT NULL,
      c_default_review_freq integer NULL,
      c_send_view_reports varchar(80) NOT NULL,
-     c_description__text_parsed longtext NOT NULL,
-     c_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (c_name)
 ) engine=MyISAM;
@@ -20100,10 +20076,8 @@ CREATE TABLE cms_chargelog (
      id integer unsigned auto_increment NOT NULL,
      member_id integer NOT NULL,
      amount integer NOT NULL,
-     reason longtext NOT NULL,
+     reason integer unsigned NOT NULL,
      date_and_time integer unsigned NOT NULL,
-     reason__text_parsed longtext NOT NULL,
-     reason__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -20175,11 +20149,9 @@ CREATE TABLE cms_chat_messages (
      room_id integer NOT NULL,
      member_id integer NOT NULL,
      date_and_time integer unsigned NOT NULL,
-     the_message longtext NOT NULL,
+     the_message integer unsigned NOT NULL,
      text_colour varchar(255) NOT NULL,
      font_name varchar(255) NOT NULL,
-     the_message__text_parsed longtext NOT NULL,
-     the_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -20198,7 +20170,7 @@ CREATE TABLE cms_chat_rooms (
      disallow_list longtext NOT NULL,
      disallow_list_groups longtext NOT NULL,
      room_language varchar(5) NOT NULL,
-     c_welcome longtext NOT NULL,
+     c_welcome integer unsigned NOT NULL,
      is_im tinyint(1) NOT NULL,
 
     PRIMARY KEY (id)
@@ -20278,7 +20250,7 @@ CREATE TABLE cms_config (
      c_name varchar(80) NOT NULL,
      c_set tinyint(1) NOT NULL,
      c_value longtext NOT NULL,
-     c_value_trans longtext NOT NULL,
+     c_value_trans integer unsigned NULL,
      c_needs_dereference tinyint(1) NOT NULL,
 
     PRIMARY KEY (c_name)
@@ -20374,8 +20346,8 @@ DROP TABLE IF EXISTS cms_custom_comcode;
 
 CREATE TABLE cms_custom_comcode (
      tag_tag varchar(80) NOT NULL,
-     tag_title longtext NOT NULL,
-     tag_description longtext NOT NULL,
+     tag_title integer unsigned NOT NULL,
+     tag_description integer unsigned NOT NULL,
      tag_replace longtext NOT NULL,
      tag_example longtext NOT NULL,
      tag_parameters varchar(255) NOT NULL,
@@ -26470,7 +26442,7 @@ DROP TABLE IF EXISTS cms_digestives_tin;
 CREATE TABLE cms_digestives_tin (
      id integer unsigned auto_increment NOT NULL,
      d_subject longtext NOT NULL,
-     d_message longtext NOT NULL,
+     d_message integer unsigned NOT NULL,
      d_from_member_id integer NULL,
      d_to_member_id integer NOT NULL,
      d_priority tinyint NOT NULL,
@@ -26480,8 +26452,6 @@ CREATE TABLE cms_digestives_tin (
      d_code_category varchar(255) NOT NULL,
      d_frequency integer NOT NULL,
      d_read tinyint(1) NOT NULL,
-     d_message__text_parsed longtext NOT NULL,
-     d_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -26493,14 +26463,12 @@ DROP TABLE IF EXISTS cms_download_categories;
 
 CREATE TABLE cms_download_categories (
      id integer unsigned auto_increment NOT NULL,
-     category longtext NOT NULL,
+     category integer unsigned NOT NULL,
      parent_id integer NULL,
      add_date integer unsigned NOT NULL,
      notes longtext NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -26516,11 +26484,11 @@ DROP TABLE IF EXISTS cms_download_downloads;
 CREATE TABLE cms_download_downloads (
      id integer unsigned auto_increment NOT NULL,
      category_id integer NOT NULL,
-     name longtext NOT NULL,
+     name integer unsigned NOT NULL,
      url varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      author varchar(80) NOT NULL,
-     additional_details longtext NOT NULL,
+     additional_details integer unsigned NOT NULL,
      num_downloads integer NOT NULL,
      out_mode_id integer NULL,
      add_date integer unsigned NOT NULL,
@@ -26541,10 +26509,6 @@ CREATE TABLE cms_download_downloads (
      download_licence integer NULL,
      download_data_mash longtext NOT NULL,
      url_redirect varchar(255) NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     additional_details__text_parsed longtext NOT NULL,
-     additional_details__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -26615,8 +26579,8 @@ DROP TABLE IF EXISTS cms_f_custom_fields;
 CREATE TABLE cms_f_custom_fields (
      id integer unsigned auto_increment NOT NULL,
      cf_locked tinyint(1) NOT NULL,
-     cf_name longtext NOT NULL,
-     cf_description longtext NOT NULL,
+     cf_name integer unsigned NOT NULL,
+     cf_description integer unsigned NOT NULL,
      cf_default longtext NOT NULL,
      cf_public_view tinyint(1) NOT NULL,
      cf_owner_view tinyint(1) NOT NULL,
@@ -26974,13 +26938,13 @@ DROP TABLE IF EXISTS cms_f_forums;
 CREATE TABLE cms_f_forums (
      id integer unsigned auto_increment NOT NULL,
      f_name varchar(255) NOT NULL,
-     f_description longtext NOT NULL,
+     f_description integer unsigned NOT NULL,
      f_forum_grouping_id integer NULL,
      f_parent_forum integer NULL,
      f_position integer NOT NULL,
      f_order_sub_alpha tinyint(1) NOT NULL,
      f_post_count_increment tinyint(1) NOT NULL,
-     f_intro_question longtext NOT NULL,
+     f_intro_question integer unsigned NOT NULL,
      f_intro_answer varchar(255) NOT NULL,
      f_cache_num_topics integer NOT NULL,
      f_cache_num_posts integer NOT NULL,
@@ -26994,10 +26958,6 @@ CREATE TABLE cms_f_forums (
      f_order varchar(80) NOT NULL,
      f_is_threaded tinyint(1) NOT NULL,
      f_allows_anonymous_posts tinyint(1) NOT NULL,
-     f_description__text_parsed longtext NOT NULL,
-     f_description__source_user integer DEFAULT 1 NOT NULL,
-     f_intro_question__text_parsed longtext NOT NULL,
-     f_intro_question__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27073,13 +27033,13 @@ DROP TABLE IF EXISTS cms_f_groups;
 
 CREATE TABLE cms_f_groups (
      id integer unsigned auto_increment NOT NULL,
-     g_name longtext NOT NULL,
+     g_name integer unsigned NOT NULL,
      g_is_default tinyint(1) NOT NULL,
      g_is_presented_at_install tinyint(1) NOT NULL,
      g_is_super_admin tinyint(1) NOT NULL,
      g_is_super_moderator tinyint(1) NOT NULL,
      g_group_leader integer NULL,
-     g_title longtext NOT NULL,
+     g_title integer unsigned NOT NULL,
      g_promotion_target integer NULL,
      g_promotion_threshold integer NULL,
      g_flood_control_submit_secs integer NOT NULL,
@@ -27171,10 +27131,10 @@ DROP TABLE IF EXISTS cms_f_member_custom_fields;
 
 CREATE TABLE cms_f_member_custom_fields (
      mf_member_id integer NOT NULL,
-     field_1 longtext NOT NULL,
-     field_2 longtext NOT NULL,
+     field_1 integer unsigned NOT NULL,
+     field_2 integer unsigned NOT NULL,
      field_3 varchar(255) NOT NULL,
-     field_4 longtext NOT NULL,
+     field_4 integer unsigned NOT NULL,
      field_5 varchar(255) NOT NULL,
      field_6 varchar(255) NOT NULL,
      field_7 varchar(255) NOT NULL,
@@ -27207,24 +27167,18 @@ CREATE TABLE cms_f_member_custom_fields (
      field_14 integer NULL,
      field_15 integer NULL,
      field_9 integer NULL,
-     field_1__text_parsed longtext NOT NULL,
-     field_1__source_user integer DEFAULT 1 NOT NULL,
-     field_2__text_parsed longtext NOT NULL,
-     field_2__source_user integer DEFAULT 1 NOT NULL,
-     field_4__text_parsed longtext NOT NULL,
-     field_4__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (mf_member_id)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (1, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (1, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (2, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (2, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (3, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (3, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_member_known_login_ips;
@@ -27260,7 +27214,7 @@ CREATE TABLE cms_f_members (
      m_primary_group integer NOT NULL,
      m_last_visit_time integer unsigned NOT NULL,
      m_last_submit_time integer unsigned NOT NULL,
-     m_signature longtext NOT NULL,
+     m_signature integer unsigned NOT NULL,
      m_is_perm_banned tinyint(1) NOT NULL,
      m_preview_posts tinyint(1) NOT NULL,
      m_dob_day tinyint NULL,
@@ -27279,7 +27233,7 @@ CREATE TABLE cms_f_members (
      m_allow_emails_from_staff tinyint(1) NOT NULL,
      m_highlighted_name tinyint(1) NOT NULL,
      m_pt_allow varchar(255) NOT NULL,
-     m_pt_rules_text longtext NOT NULL,
+     m_pt_rules_text integer unsigned NOT NULL,
      m_max_email_attach_size_mb integer NOT NULL,
      m_password_change_code varchar(255) NOT NULL,
      m_password_compat_scheme varchar(80) NOT NULL,
@@ -27287,10 +27241,6 @@ CREATE TABLE cms_f_members (
      m_profile_views integer unsigned NOT NULL,
      m_total_sessions integer unsigned NOT NULL,
      m_auto_mark_read tinyint(1) NOT NULL,
-     m_signature__text_parsed longtext NOT NULL,
-     m_signature__source_user integer DEFAULT 1 NOT NULL,
-     m_pt_rules_text__text_parsed longtext NOT NULL,
-     m_pt_rules_text__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27328,7 +27278,7 @@ DROP TABLE IF EXISTS cms_f_multi_moderations;
 
 CREATE TABLE cms_f_multi_moderations (
      id integer unsigned auto_increment NOT NULL,
-     mm_name longtext NOT NULL,
+     mm_name integer unsigned NOT NULL,
      mm_post_text longtext NOT NULL,
      mm_move_to integer NULL,
      mm_pin_state tinyint(1) NULL,
@@ -27437,7 +27387,7 @@ DROP TABLE IF EXISTS cms_f_posts;
 CREATE TABLE cms_f_posts (
      id integer unsigned auto_increment NOT NULL,
      p_title varchar(255) NOT NULL,
-     p_post longtext NOT NULL,
+     p_post integer unsigned NOT NULL,
      p_ip_address varchar(40) NOT NULL,
      p_time integer unsigned NOT NULL,
      p_poster integer NOT NULL,
@@ -27451,8 +27401,6 @@ CREATE TABLE cms_f_posts (
      p_is_emphasised tinyint(1) NOT NULL,
      p_skip_sig tinyint(1) NOT NULL,
      p_parent_id integer NULL,
-     p_post__text_parsed longtext NOT NULL,
-     p_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27523,7 +27471,7 @@ CREATE TABLE cms_f_topics (
      t_cache_first_post_id integer NULL,
      t_cache_first_time integer unsigned NULL,
      t_cache_first_title varchar(255) NOT NULL,
-     t_cache_first_post longtext NOT NULL,
+     t_cache_first_post integer unsigned NULL,
      t_cache_first_username varchar(80) NOT NULL,
      t_cache_first_member_id integer NULL,
      t_cache_last_post_id integer NULL,
@@ -27532,8 +27480,6 @@ CREATE TABLE cms_f_topics (
      t_cache_last_username varchar(80) NOT NULL,
      t_cache_last_member_id integer NULL,
      t_cache_num_posts integer NOT NULL,
-     t_cache_first_post__text_parsed longtext NOT NULL,
-     t_cache_first_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27551,8 +27497,8 @@ CREATE TABLE cms_f_usergroup_sub_mails (
      m_usergroup_sub_id integer NOT NULL,
      m_ref_point varchar(80) NOT NULL,
      m_ref_point_offset integer NOT NULL,
-     m_subject longtext NOT NULL,
-     m_body longtext NOT NULL,
+     m_subject integer unsigned NOT NULL,
+     m_body integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27564,20 +27510,18 @@ DROP TABLE IF EXISTS cms_f_usergroup_subs;
 
 CREATE TABLE cms_f_usergroup_subs (
      id integer unsigned auto_increment NOT NULL,
-     s_title longtext NOT NULL,
-     s_description longtext NOT NULL,
+     s_title integer unsigned NOT NULL,
+     s_description integer unsigned NOT NULL,
      s_cost varchar(255) NOT NULL,
      s_length integer NOT NULL,
      s_length_units varchar(255) NOT NULL,
      s_auto_recur tinyint(1) NOT NULL,
      s_group_id integer NOT NULL,
      s_enabled tinyint(1) NOT NULL,
-     s_mail_start longtext NOT NULL,
-     s_mail_end longtext NOT NULL,
-     s_mail_uhoh longtext NOT NULL,
+     s_mail_start integer unsigned NOT NULL,
+     s_mail_end integer unsigned NOT NULL,
+     s_mail_uhoh integer unsigned NOT NULL,
      s_uses_primary tinyint(1) NOT NULL,
-     s_description__text_parsed longtext NOT NULL,
-     s_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -27613,8 +27557,8 @@ DROP TABLE IF EXISTS cms_f_welcome_emails;
 CREATE TABLE cms_f_welcome_emails (
      id integer unsigned auto_increment NOT NULL,
      w_name varchar(255) NOT NULL,
-     w_subject longtext NOT NULL,
-     w_text longtext NOT NULL,
+     w_subject integer unsigned NOT NULL,
+     w_text integer unsigned NOT NULL,
      w_send_time integer NOT NULL,
      w_newsletter integer NULL,
      w_usergroup integer NULL,
@@ -27661,7 +27605,7 @@ CREATE TABLE cms_filedump (
      id integer unsigned auto_increment NOT NULL,
      name varchar(80) NOT NULL,
      path varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      the_member integer NOT NULL,
 
     PRIMARY KEY (id)
@@ -27674,8 +27618,8 @@ DROP TABLE IF EXISTS cms_galleries;
 
 CREATE TABLE cms_galleries (
      name varchar(80) NOT NULL,
-     description longtext NOT NULL,
-     fullname longtext NOT NULL,
+     description integer unsigned NOT NULL,
+     fullname integer unsigned NOT NULL,
      add_date integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
      parent_id varchar(80) NOT NULL,
@@ -27692,10 +27636,6 @@ CREATE TABLE cms_galleries (
      flow_mode_interface tinyint(1) NOT NULL,
      gallery_views integer NOT NULL,
      g_owner integer NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     fullname__text_parsed longtext NOT NULL,
-     fullname__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (name)
 ) engine=MyISAM;
@@ -27714,10 +27654,8 @@ CREATE TABLE cms_gifts (
      amount integer NOT NULL,
      gift_from integer NOT NULL,
      gift_to integer NOT NULL,
-     reason longtext NOT NULL,
+     reason integer unsigned NOT NULL,
      anonymous tinyint(1) NOT NULL,
-     reason__text_parsed longtext NOT NULL,
-     reason__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -30990,7 +30928,7 @@ CREATE TABLE cms_images (
      cat varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      thumb_url varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      allow_rating tinyint(1) NOT NULL,
      allow_comments tinyint NOT NULL,
      allow_trackbacks tinyint(1) NOT NULL,
@@ -31000,9 +30938,7 @@ CREATE TABLE cms_images (
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      image_views integer NOT NULL,
-     title longtext NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
+     title integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31165,10 +31101,8 @@ DROP TABLE IF EXISTS cms_match_key_messages;
 
 CREATE TABLE cms_match_key_messages (
      id integer unsigned auto_increment NOT NULL,
-     k_message longtext NOT NULL,
+     k_message integer unsigned NOT NULL,
      k_match_key varchar(255) NOT NULL,
-     k_message__text_parsed longtext NOT NULL,
-     k_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31257,8 +31191,8 @@ CREATE TABLE cms_menu_items (
      i_menu varchar(80) NOT NULL,
      i_order integer NOT NULL,
      i_parent integer NULL,
-     i_caption longtext NOT NULL,
-     i_caption_long longtext NOT NULL,
+     i_caption integer unsigned NOT NULL,
+     i_caption_long integer unsigned NOT NULL,
      i_url varchar(255) NOT NULL,
      i_check_permissions tinyint(1) NOT NULL,
      i_expanded tinyint(1) NOT NULL,
@@ -31266,10 +31200,6 @@ CREATE TABLE cms_menu_items (
      i_include_sitemap tinyint NOT NULL,
      i_page_only varchar(80) NOT NULL,
      i_theme_img_code varchar(80) NOT NULL,
-     i_caption__text_parsed longtext NOT NULL,
-     i_caption__source_user integer DEFAULT 1 NOT NULL,
-     i_caption_long__text_parsed longtext NOT NULL,
-     i_caption_long__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31667,9 +31597,9 @@ DROP TABLE IF EXISTS cms_news;
 CREATE TABLE cms_news (
      id integer unsigned auto_increment NOT NULL,
      date_and_time integer unsigned NOT NULL,
-     title longtext NOT NULL,
-     news longtext NOT NULL,
-     news_article longtext NOT NULL,
+     title integer unsigned NOT NULL,
+     news integer unsigned NOT NULL,
+     news_article integer unsigned NOT NULL,
      allow_rating tinyint(1) NOT NULL,
      allow_comments tinyint NOT NULL,
      allow_trackbacks tinyint(1) NOT NULL,
@@ -31681,12 +31611,6 @@ CREATE TABLE cms_news (
      news_category integer NOT NULL,
      news_views integer NOT NULL,
      news_image varchar(255) NOT NULL,
-     title__text_parsed longtext NOT NULL,
-     title__source_user integer DEFAULT 1 NOT NULL,
-     news__text_parsed longtext NOT NULL,
-     news__source_user integer DEFAULT 1 NOT NULL,
-     news_article__text_parsed longtext NOT NULL,
-     news_article__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31698,7 +31622,7 @@ DROP TABLE IF EXISTS cms_news_categories;
 
 CREATE TABLE cms_news_categories (
      id integer unsigned auto_increment NOT NULL,
-     nc_title longtext NOT NULL,
+     nc_title integer unsigned NOT NULL,
      nc_owner integer NULL,
      nc_img varchar(80) NOT NULL,
      notes longtext NOT NULL,
@@ -31782,7 +31706,7 @@ CREATE TABLE cms_newsletter_drip_send (
      id integer unsigned auto_increment NOT NULL,
      d_inject_time integer unsigned NOT NULL,
      d_subject varchar(255) NOT NULL,
-     d_message longtext NOT NULL,
+     d_message integer unsigned NOT NULL,
      d_html_only tinyint(1) NOT NULL,
      d_to_email varchar(255) NOT NULL,
      d_to_name varchar(255) NOT NULL,
@@ -31790,8 +31714,6 @@ CREATE TABLE cms_newsletter_drip_send (
      d_from_name varchar(255) NOT NULL,
      d_priority tinyint NOT NULL,
      d_template varchar(80) NOT NULL,
-     d_message__text_parsed longtext NOT NULL,
-     d_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31860,8 +31782,8 @@ DROP TABLE IF EXISTS cms_newsletters;
 
 CREATE TABLE cms_newsletters (
      id integer unsigned auto_increment NOT NULL,
-     title longtext NOT NULL,
-     description longtext NOT NULL,
+     title integer unsigned NOT NULL,
+     description integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31903,17 +31825,17 @@ DROP TABLE IF EXISTS cms_poll;
 
 CREATE TABLE cms_poll (
      id integer unsigned auto_increment NOT NULL,
-     question longtext NOT NULL,
-     option1 longtext NOT NULL,
-     option2 longtext NOT NULL,
-     option3 longtext NOT NULL,
-     option4 longtext NOT NULL,
-     option5 longtext NOT NULL,
-     option6 longtext NOT NULL,
-     option7 longtext NOT NULL,
-     option8 longtext NOT NULL,
-     option9 longtext NOT NULL,
-     option10 longtext NOT NULL,
+     question integer unsigned NOT NULL,
+     option1 integer unsigned NOT NULL,
+     option2 integer unsigned NOT NULL,
+     option3 integer unsigned NULL,
+     option4 integer unsigned NULL,
+     option5 integer unsigned NULL,
+     option6 integer unsigned NULL,
+     option7 integer unsigned NULL,
+     option8 integer unsigned NULL,
+     option9 integer unsigned NULL,
+     option10 integer unsigned NULL,
      votes1 integer NOT NULL,
      votes2 integer NOT NULL,
      votes3 integer NOT NULL,
@@ -31935,28 +31857,6 @@ CREATE TABLE cms_poll (
      add_time integer NOT NULL,
      poll_views integer NOT NULL,
      edit_date integer unsigned NULL,
-     question__text_parsed longtext NOT NULL,
-     question__source_user integer DEFAULT 1 NOT NULL,
-     option1__text_parsed longtext NOT NULL,
-     option1__source_user integer DEFAULT 1 NOT NULL,
-     option2__text_parsed longtext NOT NULL,
-     option2__source_user integer DEFAULT 1 NOT NULL,
-     option3__text_parsed longtext NOT NULL,
-     option3__source_user integer DEFAULT 1 NOT NULL,
-     option4__text_parsed longtext NOT NULL,
-     option4__source_user integer DEFAULT 1 NOT NULL,
-     option5__text_parsed longtext NOT NULL,
-     option5__source_user integer DEFAULT 1 NOT NULL,
-     option6__text_parsed longtext NOT NULL,
-     option6__source_user integer DEFAULT 1 NOT NULL,
-     option7__text_parsed longtext NOT NULL,
-     option7__source_user integer DEFAULT 1 NOT NULL,
-     option8__text_parsed longtext NOT NULL,
-     option8__source_user integer DEFAULT 1 NOT NULL,
-     option9__text_parsed longtext NOT NULL,
-     option9__source_user integer DEFAULT 1 NOT NULL,
-     option10__text_parsed longtext NOT NULL,
-     option10__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32532,16 +32432,14 @@ DROP TABLE IF EXISTS cms_pstore_customs;
 
 
 CREATE TABLE cms_pstore_customs (
-     c_mail_body longtext NOT NULL,
+     c_mail_body integer unsigned NOT NULL,
      c_enabled tinyint(1) NOT NULL,
      c_cost integer NOT NULL,
      c_one_per_member tinyint(1) NOT NULL,
      id integer unsigned auto_increment NOT NULL,
-     c_title longtext NOT NULL,
-     c_description longtext NOT NULL,
-     c_mail_subject longtext NOT NULL,
-     c_description__text_parsed longtext NOT NULL,
-     c_description__source_user integer DEFAULT 1 NOT NULL,
+     c_title integer unsigned NOT NULL,
+     c_description integer unsigned NOT NULL,
+     c_mail_subject integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32553,10 +32451,10 @@ DROP TABLE IF EXISTS cms_pstore_permissions;
 
 CREATE TABLE cms_pstore_permissions (
      id integer unsigned auto_increment NOT NULL,
-     p_title longtext NOT NULL,
-     p_description longtext NOT NULL,
-     p_mail_subject longtext NOT NULL,
-     p_mail_body longtext NOT NULL,
+     p_title integer unsigned NOT NULL,
+     p_description integer unsigned NOT NULL,
+     p_mail_subject integer unsigned NOT NULL,
+     p_mail_body integer unsigned NOT NULL,
      p_enabled tinyint(1) NOT NULL,
      p_cost integer NOT NULL,
      p_hours integer NULL,
@@ -32566,8 +32464,6 @@ CREATE TABLE cms_pstore_permissions (
      p_page varchar(80) NOT NULL,
      p_module varchar(80) NOT NULL,
      p_category varchar(80) NOT NULL,
-     p_description__text_parsed longtext NOT NULL,
-     p_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32623,12 +32519,10 @@ DROP TABLE IF EXISTS cms_quiz_question_answers;
 CREATE TABLE cms_quiz_question_answers (
      id integer unsigned auto_increment NOT NULL,
      q_question integer NOT NULL,
-     q_answer_text longtext NOT NULL,
+     q_answer_text integer unsigned NOT NULL,
      q_is_correct tinyint(1) NOT NULL,
      q_order integer NOT NULL,
-     q_explanation longtext NOT NULL,
-     q_answer_text__text_parsed longtext NOT NULL,
-     q_answer_text__source_user integer DEFAULT 1 NOT NULL,
+     q_explanation integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32642,15 +32536,11 @@ CREATE TABLE cms_quiz_questions (
      id integer unsigned auto_increment NOT NULL,
      q_type varchar(80) NOT NULL,
      q_quiz integer NOT NULL,
-     q_question_text longtext NOT NULL,
-     q_question_extra_text longtext NOT NULL,
+     q_question_text integer unsigned NOT NULL,
+     q_question_extra_text integer unsigned NOT NULL,
      q_order integer NOT NULL,
      q_required tinyint(1) NOT NULL,
      q_marked tinyint(1) NOT NULL,
-     q_question_text__text_parsed longtext NOT NULL,
-     q_question_text__source_user integer DEFAULT 1 NOT NULL,
-     q_question_extra_text__text_parsed longtext NOT NULL,
-     q_question_extra_text__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32676,9 +32566,9 @@ DROP TABLE IF EXISTS cms_quizzes;
 CREATE TABLE cms_quizzes (
      id integer unsigned auto_increment NOT NULL,
      q_timeout integer NULL,
-     q_name longtext NOT NULL,
-     q_start_text longtext NOT NULL,
-     q_end_text longtext NOT NULL,
+     q_name integer unsigned NOT NULL,
+     q_start_text integer unsigned NOT NULL,
+     q_end_text integer unsigned NOT NULL,
      q_notes longtext NOT NULL,
      q_percentage integer NOT NULL,
      q_open_time integer unsigned NOT NULL,
@@ -32691,16 +32581,10 @@ CREATE TABLE cms_quizzes (
      q_submitter integer NOT NULL,
      q_points_for_passing integer NOT NULL,
      q_tied_newsletter integer NULL,
-     q_end_text_fail longtext NOT NULL,
+     q_end_text_fail integer unsigned NOT NULL,
      q_reveal_answers tinyint(1) NOT NULL,
      q_shuffle_questions tinyint(1) NOT NULL,
      q_shuffle_answers tinyint(1) NOT NULL,
-     q_start_text__text_parsed longtext NOT NULL,
-     q_start_text__source_user integer DEFAULT 1 NOT NULL,
-     q_end_text__text_parsed longtext NOT NULL,
-     q_end_text__source_user integer DEFAULT 1 NOT NULL,
-     q_end_text_fail__text_parsed longtext NOT NULL,
-     q_end_text_fail__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32877,7 +32761,7 @@ CREATE TABLE cms_seo_meta (
      id integer unsigned auto_increment NOT NULL,
      meta_for_type varchar(80) NOT NULL,
      meta_for_id varchar(80) NOT NULL,
-     meta_description longtext NOT NULL,
+     meta_description integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32894,7 +32778,7 @@ CREATE TABLE cms_seo_meta_keywords (
      id integer unsigned auto_increment NOT NULL,
      meta_for_type varchar(80) NOT NULL,
      meta_for_id varchar(80) NOT NULL,
-     meta_keyword longtext NOT NULL,
+     meta_keyword integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -33072,43 +32956,43 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 1, 'Set up website configuration and structure', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make \'favicon\' theme image', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 2, 'Make \'favicon\' theme image', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, 'Make \'webclipicon\' theme image', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 3, 'Make \'webclipicon\' theme image', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, 'Make/install custom theme', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 4, 'Make/install custom theme', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 5, 'Add your content', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 8, '[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to Google\"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 9, '[url=\"Submit to Google\"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 10, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Submit to Bing\"]http://www.bing.com/toolbox/submit-site-url[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 11, '[url=\"Submit to Bing\"]http://www.bing.com/toolbox/submit-site-url[/url]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (12, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 12, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1453620686);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (13, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/helping-out.htm[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (recur_interval, recur_every, task_is_done, id, task_title, add_date) VALUES (0, '', NULL, 13, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/helping-out.htm[/url]', 1453620686);
 
 
 DROP TABLE IF EXISTS cms_staff_links;
@@ -33352,7 +33236,7 @@ DROP TABLE IF EXISTS cms_ticket_types;
 
 CREATE TABLE cms_ticket_types (
      id integer unsigned auto_increment NOT NULL,
-     ticket_type_name longtext NOT NULL,
+     ticket_type_name integer unsigned NOT NULL,
      guest_emails_mandatory tinyint(1) NOT NULL,
      search_faq tinyint(1) NOT NULL,
      cache_lead_time integer unsigned NULL,
@@ -33624,7 +33508,7 @@ CREATE TABLE cms_videos (
      cat varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      thumb_url varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      allow_rating tinyint(1) NOT NULL,
      allow_comments tinyint NOT NULL,
      allow_trackbacks tinyint(1) NOT NULL,
@@ -33637,9 +33521,7 @@ CREATE TABLE cms_videos (
      video_width integer NOT NULL,
      video_height integer NOT NULL,
      video_length integer NOT NULL,
-     title longtext NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
+     title integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -33676,16 +33558,14 @@ DROP TABLE IF EXISTS cms_wiki_pages;
 
 CREATE TABLE cms_wiki_pages (
      id integer unsigned auto_increment NOT NULL,
-     title longtext NOT NULL,
+     title integer unsigned NOT NULL,
      notes longtext NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      wiki_views integer NOT NULL,
      hide_posts tinyint(1) NOT NULL,
      submitter integer NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -33701,14 +33581,12 @@ DROP TABLE IF EXISTS cms_wiki_posts;
 CREATE TABLE cms_wiki_posts (
      id integer unsigned auto_increment NOT NULL,
      page_id integer NOT NULL,
-     the_message longtext NOT NULL,
+     the_message integer unsigned NOT NULL,
      date_and_time integer unsigned NOT NULL,
      validated tinyint(1) NOT NULL,
      wiki_views integer NOT NULL,
      member_id integer NOT NULL,
      edit_date integer unsigned NULL,
-     the_message__text_parsed longtext NOT NULL,
-     the_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -33860,9 +33738,9 @@ DROP TABLE IF EXISTS cms_zones;
 
 CREATE TABLE cms_zones (
      zone_name varchar(80) NOT NULL,
-     zone_title longtext NOT NULL,
+     zone_title integer unsigned NOT NULL,
      zone_default_page varchar(80) NOT NULL,
-     zone_header_text longtext NOT NULL,
+     zone_header_text integer unsigned NOT NULL,
      zone_theme varchar(80) NOT NULL,
      zone_require_session tinyint(1) NOT NULL,
 
@@ -33903,13 +33781,13 @@ ALTER TABLE cms_actionlogs ADD INDEX ts (date_and_time);
 ALTER TABLE cms_actionlogs ADD INDEX xas (member_id);
 
 
-ALTER TABLE cms_aggregate_type_instances ADD INDEX aggregate_lookup (aggregate_label(250));
+ALTER TABLE cms_aggregate_type_instances ADD INDEX aggregate_lookup (aggregate_label);
 
 
 ALTER TABLE cms_alternative_ids ADD INDEX resource_guid (resource_guid);
 
 
-ALTER TABLE cms_alternative_ids ADD INDEX resource_label (resource_label(250));
+ALTER TABLE cms_alternative_ids ADD INDEX resource_label (resource_label);
 
 
 ALTER TABLE cms_alternative_ids ADD INDEX resource_moniker (resource_moniker,resource_type);
@@ -33924,10 +33802,10 @@ ALTER TABLE cms_attachments ADD INDEX attachmentlimitcheck (a_add_time);
 ALTER TABLE cms_attachments ADD INDEX ownedattachments (a_member_id);
 
 
-ALTER TABLE cms_authors ADD FULLTEXT description (description(250));
+ALTER TABLE cms_authors ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_authors ADD FULLTEXT skills (skills(250));
+ALTER TABLE cms_authors ADD FULLTEXT skills (skills);
 
 
 ALTER TABLE cms_authors ADD INDEX findmemberlink (member_id);
@@ -33939,13 +33817,13 @@ ALTER TABLE cms_autosave ADD INDEX myautosaves (a_member_id);
 ALTER TABLE cms_award_archive ADD INDEX awardquicksearch (content_id);
 
 
-ALTER TABLE cms_award_types ADD FULLTEXT a_description (a_description(250));
+ALTER TABLE cms_award_types ADD FULLTEXT a_description (a_description);
 
 
-ALTER TABLE cms_award_types ADD FULLTEXT a_title (a_title(250));
+ALTER TABLE cms_award_types ADD FULLTEXT a_title (a_title);
 
 
-ALTER TABLE cms_banners ADD FULLTEXT caption (caption(250));
+ALTER TABLE cms_banners ADD FULLTEXT caption (caption);
 
 
 ALTER TABLE cms_banners ADD INDEX badd_date (add_date);
@@ -33990,28 +33868,28 @@ ALTER TABLE cms_cache ADD INDEX cached_forf (cached_for,identifier,the_theme,lan
 ALTER TABLE cms_cache ADD INDEX cached_forh (the_theme);
 
 
-ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT cc_page_title (cc_page_title(250));
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT cc_page_title (cc_page_title);
 
 
-ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT page_search__combined (cc_page_title(250),string_index(250));
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT page_search__combined (cc_page_title,string_index);
 
 
-ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT string_index (string_index(250));
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT string_index (string_index);
 
 
 ALTER TABLE cms_cached_comcode_pages ADD INDEX ccp_join (the_page,the_zone);
 
 
-ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccpt (cc_page_title(250));
+ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccpt (cc_page_title);
 
 
-ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccsi (string_index(250));
+ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccsi (string_index);
 
 
-ALTER TABLE cms_calendar_events ADD FULLTEXT e_content (e_content(250));
+ALTER TABLE cms_calendar_events ADD FULLTEXT e_content (e_content);
 
 
-ALTER TABLE cms_calendar_events ADD FULLTEXT e_title (e_title(250));
+ALTER TABLE cms_calendar_events ADD FULLTEXT e_title (e_title);
 
 
 ALTER TABLE cms_calendar_events ADD INDEX ces (e_submitter);
@@ -34029,10 +33907,10 @@ ALTER TABLE cms_calendar_events ADD INDEX e_type (e_type);
 ALTER TABLE cms_calendar_events ADD INDEX e_views (e_views);
 
 
-ALTER TABLE cms_calendar_events ADD INDEX ftjoin_econtent (e_content(250));
+ALTER TABLE cms_calendar_events ADD INDEX ftjoin_econtent (e_content);
 
 
-ALTER TABLE cms_calendar_events ADD INDEX ftjoin_etitle (e_title(250));
+ALTER TABLE cms_calendar_events ADD INDEX ftjoin_etitle (e_title);
 
 
 ALTER TABLE cms_calendar_events ADD INDEX validated (validated);
@@ -34041,25 +33919,25 @@ ALTER TABLE cms_calendar_events ADD INDEX validated (validated);
 ALTER TABLE cms_calendar_jobs ADD INDEX applicablejobs (j_time);
 
 
-ALTER TABLE cms_calendar_types ADD FULLTEXT t_title (t_title(250));
+ALTER TABLE cms_calendar_types ADD FULLTEXT t_title (t_title);
 
 
 ALTER TABLE cms_captchas ADD INDEX si_time (si_time);
 
 
-ALTER TABLE cms_catalogues ADD FULLTEXT c_description (c_description(250));
+ALTER TABLE cms_catalogues ADD FULLTEXT c_description (c_description);
 
 
-ALTER TABLE cms_catalogues ADD FULLTEXT c_title (c_title(250));
+ALTER TABLE cms_catalogues ADD FULLTEXT c_title (c_title);
 
 
-ALTER TABLE cms_catalogue_categories ADD FULLTEXT cat_cat_search__combined (cc_title(250),cc_description(250));
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cat_cat_search__combined (cc_title,cc_description);
 
 
-ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_description (cc_description(250));
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_description (cc_description);
 
 
-ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_title (cc_title(250));
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_title (cc_title);
 
 
 ALTER TABLE cms_catalogue_categories ADD INDEX cataloguefind (c_name);
@@ -34074,10 +33952,10 @@ ALTER TABLE cms_catalogue_categories ADD INDEX cc_order (cc_order);
 ALTER TABLE cms_catalogue_categories ADD INDEX cc_parent_id (cc_parent_id);
 
 
-ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_ccdescrip (cc_description(250));
+ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_ccdescrip (cc_description);
 
 
-ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_cctitle (cc_title(250));
+ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_cctitle (cc_title);
 
 
 ALTER TABLE cms_catalogue_cat_treecache ADD INDEX cc_ancestor_id (cc_ancestor_id);
@@ -34107,7 +33985,7 @@ ALTER TABLE cms_catalogue_efv_integer ADD INDEX icf_id (cf_id);
 ALTER TABLE cms_catalogue_efv_integer ADD INDEX itv_value (cv_value);
 
 
-ALTER TABLE cms_catalogue_efv_long ADD FULLTEXT lcv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_long ADD FULLTEXT lcv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_efv_long ADD INDEX cefv_l_combo (ce_id,cf_id);
@@ -34119,7 +33997,7 @@ ALTER TABLE cms_catalogue_efv_long ADD INDEX lce_id (ce_id);
 ALTER TABLE cms_catalogue_efv_long ADD INDEX lcf_id (cf_id);
 
 
-ALTER TABLE cms_catalogue_efv_long_trans ADD FULLTEXT cv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_long_trans ADD FULLTEXT cv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX cefv_lt_combo (ce_id,cf_id);
@@ -34131,16 +34009,16 @@ ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltce_id (ce_id);
 ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltcf_id (cf_id);
 
 
-ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltcv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltcv_value (cv_value);
 
 
-ALTER TABLE cms_catalogue_efv_short ADD FULLTEXT scv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short ADD FULLTEXT scv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_efv_short ADD INDEX cefv_s_combo (ce_id,cf_id);
 
 
-ALTER TABLE cms_catalogue_efv_short ADD INDEX iscv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short ADD INDEX iscv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_efv_short ADD INDEX sce_id (ce_id);
@@ -34149,7 +34027,7 @@ ALTER TABLE cms_catalogue_efv_short ADD INDEX sce_id (ce_id);
 ALTER TABLE cms_catalogue_efv_short ADD INDEX scf_id (cf_id);
 
 
-ALTER TABLE cms_catalogue_efv_short_trans ADD FULLTEXT cv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short_trans ADD FULLTEXT cv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX cefv_st_combo (ce_id,cf_id);
@@ -34161,7 +34039,7 @@ ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stce_id (ce_id);
 ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stcf_id (cf_id);
 
 
-ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stcv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stcv_value (cv_value);
 
 
 ALTER TABLE cms_catalogue_entries ADD INDEX ces (ce_submitter);
@@ -34185,13 +34063,13 @@ ALTER TABLE cms_catalogue_entries ADD INDEX ce_views (ce_views);
 ALTER TABLE cms_catalogue_entry_linkage ADD INDEX custom_fields (content_type,content_id);
 
 
-ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_description (cf_description(250));
+ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_description (cf_description);
 
 
-ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_name (cf_name(250));
+ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_name (cf_name);
 
 
-ALTER TABLE cms_chargelog ADD FULLTEXT reason (reason(250));
+ALTER TABLE cms_chargelog ADD FULLTEXT reason (reason);
 
 
 ALTER TABLE cms_chat_active ADD INDEX active_ordering (date_and_time);
@@ -34206,7 +34084,7 @@ ALTER TABLE cms_chat_active ADD INDEX room_select (room_id);
 ALTER TABLE cms_chat_events ADD INDEX event_ordering (e_date_and_time);
 
 
-ALTER TABLE cms_chat_messages ADD FULLTEXT the_message (the_message(250));
+ALTER TABLE cms_chat_messages ADD FULLTEXT the_message (the_message);
 
 
 ALTER TABLE cms_chat_messages ADD INDEX ordering (date_and_time);
@@ -34215,7 +34093,7 @@ ALTER TABLE cms_chat_messages ADD INDEX ordering (date_and_time);
 ALTER TABLE cms_chat_messages ADD INDEX room_id (room_id);
 
 
-ALTER TABLE cms_chat_rooms ADD FULLTEXT c_welcome (c_welcome(250));
+ALTER TABLE cms_chat_rooms ADD FULLTEXT c_welcome (c_welcome);
 
 
 ALTER TABLE cms_chat_rooms ADD INDEX allow_list (allow_list(30));
@@ -34227,7 +34105,7 @@ ALTER TABLE cms_chat_rooms ADD INDEX first_public (is_im,id);
 ALTER TABLE cms_chat_rooms ADD INDEX is_im (is_im);
 
 
-ALTER TABLE cms_chat_rooms ADD INDEX room_name (room_name(250));
+ALTER TABLE cms_chat_rooms ADD INDEX room_name (room_name);
 
 
 ALTER TABLE cms_comcode_pages ADD INDEX p_add_date (p_add_date);
@@ -34242,7 +34120,7 @@ ALTER TABLE cms_comcode_pages ADD INDEX p_submitter (p_submitter);
 ALTER TABLE cms_comcode_pages ADD INDEX p_validated (p_validated);
 
 
-ALTER TABLE cms_config ADD FULLTEXT c_value_trans (c_value_trans(250));
+ALTER TABLE cms_config ADD FULLTEXT c_value_trans (c_value_trans);
 
 
 ALTER TABLE cms_content_privacy ADD INDEX friend_view (friend_view);
@@ -34269,13 +34147,13 @@ ALTER TABLE cms_cron_caching_requests ADD INDEX c_is_bot (c_is_bot);
 ALTER TABLE cms_cron_caching_requests ADD INDEX c_store_as_tempcode (c_store_as_tempcode);
 
 
-ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_description (tag_description(250));
+ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_description (tag_description);
 
 
-ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_title (tag_title(250));
+ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_title (tag_title);
 
 
-ALTER TABLE cms_digestives_tin ADD FULLTEXT d_message (d_message(250));
+ALTER TABLE cms_digestives_tin ADD FULLTEXT d_message (d_message);
 
 
 ALTER TABLE cms_digestives_tin ADD INDEX d_date_and_time (d_date_and_time);
@@ -34293,40 +34171,40 @@ ALTER TABLE cms_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
 ALTER TABLE cms_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
 
 
-ALTER TABLE cms_download_categories ADD FULLTEXT category (category(250));
+ALTER TABLE cms_download_categories ADD FULLTEXT category (category);
 
 
-ALTER TABLE cms_download_categories ADD FULLTEXT description (description(250));
+ALTER TABLE cms_download_categories ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_download_categories ADD FULLTEXT dl_cat_search__combined (category(250),description(250));
+ALTER TABLE cms_download_categories ADD FULLTEXT dl_cat_search__combined (category,description);
 
 
 ALTER TABLE cms_download_categories ADD INDEX child_find (parent_id);
 
 
-ALTER TABLE cms_download_categories ADD INDEX ftjoin_dccat (category(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dccat (category);
 
 
-ALTER TABLE cms_download_categories ADD INDEX ftjoin_dcdescrip (description(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dcdescrip (description);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT additional_details (additional_details(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT additional_details (additional_details);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT description (description(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT dl_search__combined (original_filename(250),download_data_mash(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT dl_search__combined (original_filename,download_data_mash);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT download_data_mash (download_data_mash(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT download_data_mash (download_data_mash);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT name (name(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT name (name);
 
 
-ALTER TABLE cms_download_downloads ADD FULLTEXT original_filename (original_filename(250));
+ALTER TABLE cms_download_downloads ADD FULLTEXT original_filename (original_filename);
 
 
 ALTER TABLE cms_download_downloads ADD INDEX category_list (category_id);
@@ -34347,13 +34225,13 @@ ALTER TABLE cms_download_downloads ADD INDEX download_views (download_views);
 ALTER TABLE cms_download_downloads ADD INDEX dvalidated (validated);
 
 
-ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dadditional (additional_details(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dadditional (additional_details);
 
 
-ALTER TABLE cms_download_downloads ADD INDEX ftjoin_ddescrip (description(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_ddescrip (description);
 
 
-ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dname (name(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dname (name);
 
 
 ALTER TABLE cms_download_downloads ADD INDEX recent_downloads (add_date);
@@ -34368,7 +34246,7 @@ ALTER TABLE cms_download_logging ADD INDEX calculate_bandwidth (date_and_time);
 ALTER TABLE cms_edit_pings ADD INDEX edit_pings_on (the_page,the_type,the_id);
 
 
-ALTER TABLE cms_email_bounces ADD INDEX b_email_address (b_email_address(250));
+ALTER TABLE cms_email_bounces ADD INDEX b_email_address (b_email_address);
 
 
 ALTER TABLE cms_email_bounces ADD INDEX b_time (b_time);
@@ -34377,13 +34255,13 @@ ALTER TABLE cms_email_bounces ADD INDEX b_time (b_time);
 ALTER TABLE cms_failedlogins ADD INDEX failedlogins_by_ip (ip);
 
 
-ALTER TABLE cms_filedump ADD FULLTEXT description (description(250));
+ALTER TABLE cms_filedump ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_description (cf_description(250));
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_description (cf_description);
 
 
-ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_name (cf_name(250));
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_name (cf_name);
 
 
 ALTER TABLE cms_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
@@ -34392,16 +34270,16 @@ ALTER TABLE cms_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
 ALTER TABLE cms_f_emoticons ADD INDEX topicemos (e_use_topics);
 
 
-ALTER TABLE cms_f_forums ADD FULLTEXT f_description (f_description(250));
+ALTER TABLE cms_f_forums ADD FULLTEXT f_description (f_description);
 
 
-ALTER TABLE cms_f_forums ADD FULLTEXT f_intro_question (f_intro_question(250));
+ALTER TABLE cms_f_forums ADD FULLTEXT f_intro_question (f_intro_question);
 
 
 ALTER TABLE cms_f_forums ADD INDEX cache_num_posts (f_cache_num_posts);
 
 
-ALTER TABLE cms_f_forums ADD INDEX findnamedforum (f_name(250));
+ALTER TABLE cms_f_forums ADD INDEX findnamedforum (f_name);
 
 
 ALTER TABLE cms_f_forums ADD INDEX f_position (f_position);
@@ -34410,19 +34288,19 @@ ALTER TABLE cms_f_forums ADD INDEX f_position (f_position);
 ALTER TABLE cms_f_forums ADD INDEX subforum_parenting (f_parent_forum);
 
 
-ALTER TABLE cms_f_groups ADD FULLTEXT groups_search__combined (g_name(250),g_title(250));
+ALTER TABLE cms_f_groups ADD FULLTEXT groups_search__combined (g_name,g_title);
 
 
-ALTER TABLE cms_f_groups ADD FULLTEXT g_name (g_name(250));
+ALTER TABLE cms_f_groups ADD FULLTEXT g_name (g_name);
 
 
-ALTER TABLE cms_f_groups ADD FULLTEXT g_title (g_title(250));
+ALTER TABLE cms_f_groups ADD FULLTEXT g_title (g_title);
 
 
-ALTER TABLE cms_f_groups ADD INDEX ftjoin_gname (g_name(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gname (g_name);
 
 
-ALTER TABLE cms_f_groups ADD INDEX ftjoin_gtitle (g_title(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gtitle (g_title);
 
 
 ALTER TABLE cms_f_groups ADD INDEX gorder (g_order,id);
@@ -34464,31 +34342,31 @@ ALTER TABLE cms_f_group_members ADD INDEX gm_member_id (gm_member_id);
 ALTER TABLE cms_f_group_members ADD INDEX gm_validated (gm_validated);
 
 
-ALTER TABLE cms_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text(250));
+ALTER TABLE cms_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
 
 
-ALTER TABLE cms_f_members ADD FULLTEXT m_signature (m_signature(250));
+ALTER TABLE cms_f_members ADD FULLTEXT m_signature (m_signature);
 
 
 ALTER TABLE cms_f_members ADD FULLTEXT search_user (m_username);
 
 
-ALTER TABLE cms_f_members ADD INDEX avatar_url (m_avatar_url(250));
+ALTER TABLE cms_f_members ADD INDEX avatar_url (m_avatar_url);
 
 
 ALTER TABLE cms_f_members ADD INDEX birthdays (m_dob_day,m_dob_month);
 
 
-ALTER TABLE cms_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted(250));
+ALTER TABLE cms_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted);
 
 
-ALTER TABLE cms_f_members ADD INDEX ftjoin_msig (m_signature(250));
+ALTER TABLE cms_f_members ADD INDEX ftjoin_msig (m_signature);
 
 
 ALTER TABLE cms_f_members ADD INDEX last_visit_time (m_dob_month,m_dob_day,m_last_visit_time);
 
 
-ALTER TABLE cms_f_members ADD INDEX menail (m_email_address(250));
+ALTER TABLE cms_f_members ADD INDEX menail (m_email_address);
 
 
 ALTER TABLE cms_f_members ADD INDEX m_join_time (m_join_time);
@@ -34506,85 +34384,85 @@ ALTER TABLE cms_f_members ADD INDEX user_list (m_username);
 ALTER TABLE cms_f_members ADD INDEX whos_validated (m_validated);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_1 (field_1(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf1 (field_1);
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf10 (field_10);
@@ -34608,88 +34486,88 @@ ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf15 (field_15);
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf16 (field_16);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf18 (field_18(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf18 (field_18);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2);
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf21 (field_21(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf21 (field_21);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf22 (field_22(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf22 (field_22);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf23 (field_23(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf23 (field_23);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf24 (field_24(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf24 (field_24);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26);
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf27 (field_27);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf5 (field_5);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf6 (field_6);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf7 (field_7(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf7 (field_7);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf8 (field_8(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf8 (field_8);
 
 
-ALTER TABLE cms_f_multi_moderations ADD FULLTEXT mm_name (mm_name(250));
+ALTER TABLE cms_f_multi_moderations ADD FULLTEXT mm_name (mm_name);
 
 
 ALTER TABLE cms_f_password_history ADD INDEX p_member_id (p_member_id);
 
 
-ALTER TABLE cms_f_posts ADD FULLTEXT posts_search__combined (p_post(250),p_title(250));
+ALTER TABLE cms_f_posts ADD FULLTEXT posts_search__combined (p_post,p_title);
 
 
-ALTER TABLE cms_f_posts ADD FULLTEXT p_post (p_post(250));
+ALTER TABLE cms_f_posts ADD FULLTEXT p_post (p_post);
 
 
-ALTER TABLE cms_f_posts ADD FULLTEXT p_title (p_title(250));
+ALTER TABLE cms_f_posts ADD FULLTEXT p_title (p_title);
 
 
 ALTER TABLE cms_f_posts ADD INDEX deletebyip (p_ip_address);
@@ -34728,22 +34606,22 @@ ALTER TABLE cms_f_posts ADD INDEX p_last_edit_time (p_last_edit_time);
 ALTER TABLE cms_f_posts ADD INDEX p_validated (p_validated);
 
 
-ALTER TABLE cms_f_posts ADD INDEX search_join (p_post(250));
+ALTER TABLE cms_f_posts ADD INDEX search_join (p_post);
 
 
 ALTER TABLE cms_f_read_logs ADD INDEX erase_old_read_logs (l_time);
 
 
-ALTER TABLE cms_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post(250));
+ALTER TABLE cms_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post);
 
 
-ALTER TABLE cms_f_topics ADD FULLTEXT t_description (t_description(250));
+ALTER TABLE cms_f_topics ADD FULLTEXT t_description (t_description);
 
 
-ALTER TABLE cms_f_topics ADD INDEX descriptionsearch (t_description(250));
+ALTER TABLE cms_f_topics ADD INDEX descriptionsearch (t_description);
 
 
-ALTER TABLE cms_f_topics ADD INDEX forumlayer (t_cache_first_title(250));
+ALTER TABLE cms_f_topics ADD INDEX forumlayer (t_cache_first_title);
 
 
 ALTER TABLE cms_f_topics ADD INDEX in_forum (t_forum_id);
@@ -34806,49 +34684,49 @@ ALTER TABLE cms_f_topics ADD INDEX t_validated (t_validated);
 ALTER TABLE cms_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
 
 
-ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_description (s_description(250));
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_description (s_description);
 
 
-ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end(250));
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end);
 
 
-ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start(250));
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start);
 
 
-ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh(250));
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh);
 
 
-ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_title (s_title(250));
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_title (s_title);
 
 
-ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body(250));
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body);
 
 
-ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject(250));
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject);
 
 
 ALTER TABLE cms_f_warnings ADD INDEX warningsmemberid (w_member_id);
 
 
-ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_subject (w_subject(250));
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_subject (w_subject);
 
 
-ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_text (w_text(250));
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_text (w_text);
 
 
-ALTER TABLE cms_galleries ADD FULLTEXT description (description(250));
+ALTER TABLE cms_galleries ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_galleries ADD FULLTEXT fullname (fullname(250));
+ALTER TABLE cms_galleries ADD FULLTEXT fullname (fullname);
 
 
-ALTER TABLE cms_galleries ADD FULLTEXT gallery_search__combined (fullname(250),description(250));
+ALTER TABLE cms_galleries ADD FULLTEXT gallery_search__combined (fullname,description);
 
 
-ALTER TABLE cms_galleries ADD INDEX ftjoin_gdescrip (description(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gdescrip (description);
 
 
-ALTER TABLE cms_galleries ADD INDEX ftjoin_gfullname (fullname(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gfullname (fullname);
 
 
 ALTER TABLE cms_galleries ADD INDEX gadd_date (add_date);
@@ -34857,19 +34735,19 @@ ALTER TABLE cms_galleries ADD INDEX gadd_date (add_date);
 ALTER TABLE cms_galleries ADD INDEX parent_id (parent_id);
 
 
-ALTER TABLE cms_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left);
 
 
-ALTER TABLE cms_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right);
 
 
-ALTER TABLE cms_galleries ADD INDEX watermark_top_left (watermark_top_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_left (watermark_top_left);
 
 
-ALTER TABLE cms_galleries ADD INDEX watermark_top_right (watermark_top_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_right (watermark_top_right);
 
 
-ALTER TABLE cms_gifts ADD FULLTEXT reason (reason(250));
+ALTER TABLE cms_gifts ADD FULLTEXT reason (reason);
 
 
 ALTER TABLE cms_gifts ADD INDEX giftsgiven (gift_from);
@@ -34893,22 +34771,22 @@ ALTER TABLE cms_hackattack ADD INDEX h_date_and_time (date_and_time);
 ALTER TABLE cms_hackattack ADD INDEX otherhacksby (ip);
 
 
-ALTER TABLE cms_images ADD FULLTEXT description (description(250));
+ALTER TABLE cms_images ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_images ADD FULLTEXT image_search__combined (description(250),title(250));
+ALTER TABLE cms_images ADD FULLTEXT image_search__combined (description,title);
 
 
-ALTER TABLE cms_images ADD FULLTEXT title (title(250));
+ALTER TABLE cms_images ADD FULLTEXT title (title);
 
 
 ALTER TABLE cms_images ADD INDEX category_list (cat);
 
 
-ALTER TABLE cms_images ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_dtitle (title);
 
 
-ALTER TABLE cms_images ADD INDEX ftjoin_idescription (description(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_idescription (description);
 
 
 ALTER TABLE cms_images ADD INDEX iadd_date (add_date);
@@ -34923,7 +34801,7 @@ ALTER TABLE cms_images ADD INDEX i_validated (validated);
 ALTER TABLE cms_images ADD INDEX xis (submitter);
 
 
-ALTER TABLE cms_link_tracker ADD INDEX c_url (c_url(250));
+ALTER TABLE cms_link_tracker ADD INDEX c_url (c_url);
 
 
 ALTER TABLE cms_logged_mail_messages ADD INDEX queued (m_queued);
@@ -34932,7 +34810,7 @@ ALTER TABLE cms_logged_mail_messages ADD INDEX queued (m_queued);
 ALTER TABLE cms_logged_mail_messages ADD INDEX recentmessages (m_date_and_time);
 
 
-ALTER TABLE cms_match_key_messages ADD FULLTEXT k_message (k_message(250));
+ALTER TABLE cms_match_key_messages ADD FULLTEXT k_message (k_message);
 
 
 ALTER TABLE cms_member_category_access ADD INDEX mcamember_id (member_id);
@@ -34968,10 +34846,10 @@ ALTER TABLE cms_member_zone_access ADD INDEX mzamember_id (member_id);
 ALTER TABLE cms_member_zone_access ADD INDEX mzazone_name (zone_name);
 
 
-ALTER TABLE cms_menu_items ADD FULLTEXT i_caption (i_caption(250));
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption (i_caption);
 
 
-ALTER TABLE cms_menu_items ADD FULLTEXT i_caption_long (i_caption_long(250));
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption_long (i_caption_long);
 
 
 ALTER TABLE cms_menu_items ADD INDEX menu_extraction (i_menu);
@@ -34980,28 +34858,28 @@ ALTER TABLE cms_menu_items ADD INDEX menu_extraction (i_menu);
 ALTER TABLE cms_messages_to_render ADD INDEX forsession (r_session_id);
 
 
-ALTER TABLE cms_news ADD FULLTEXT news (news(250));
+ALTER TABLE cms_news ADD FULLTEXT news (news);
 
 
-ALTER TABLE cms_news ADD FULLTEXT news_article (news_article(250));
+ALTER TABLE cms_news ADD FULLTEXT news_article (news_article);
 
 
-ALTER TABLE cms_news ADD FULLTEXT news_search__combined (title(250),news(250),news_article(250));
+ALTER TABLE cms_news ADD FULLTEXT news_search__combined (title,news,news_article);
 
 
-ALTER TABLE cms_news ADD FULLTEXT title (title(250));
+ALTER TABLE cms_news ADD FULLTEXT title (title);
 
 
 ALTER TABLE cms_news ADD INDEX findnewscat (news_category);
 
 
-ALTER TABLE cms_news ADD INDEX ftjoin_ititle (title(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_ititle (title);
 
 
-ALTER TABLE cms_news ADD INDEX ftjoin_nnews (news(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnews (news);
 
 
-ALTER TABLE cms_news ADD INDEX ftjoin_nnewsa (news_article(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnewsa (news_article);
 
 
 ALTER TABLE cms_news ADD INDEX headlines (date_and_time,id);
@@ -35019,19 +34897,19 @@ ALTER TABLE cms_news ADD INDEX news_views (news_views);
 ALTER TABLE cms_news ADD INDEX nvalidated (validated);
 
 
-ALTER TABLE cms_newsletters ADD FULLTEXT description (description(250));
+ALTER TABLE cms_newsletters ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_newsletters ADD FULLTEXT title (title(250));
+ALTER TABLE cms_newsletters ADD FULLTEXT title (title);
 
 
-ALTER TABLE cms_newsletter_drip_send ADD FULLTEXT d_message (d_message(250));
+ALTER TABLE cms_newsletter_drip_send ADD FULLTEXT d_message (d_message);
 
 
 ALTER TABLE cms_newsletter_drip_send ADD INDEX d_inject_time (d_inject_time);
 
 
-ALTER TABLE cms_newsletter_drip_send ADD INDEX d_to_email (d_to_email(250));
+ALTER TABLE cms_newsletter_drip_send ADD INDEX d_to_email (d_to_email);
 
 
 ALTER TABLE cms_newsletter_subscribe ADD INDEX peopletosendto (the_level);
@@ -35043,7 +34921,7 @@ ALTER TABLE cms_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
 ALTER TABLE cms_newsletter_subscribers ADD INDEX welcomemails (join_time);
 
 
-ALTER TABLE cms_news_categories ADD FULLTEXT nc_title (nc_title(250));
+ALTER TABLE cms_news_categories ADD FULLTEXT nc_title (nc_title);
 
 
 ALTER TABLE cms_news_categories ADD INDEX ncs (nc_owner);
@@ -35052,67 +34930,67 @@ ALTER TABLE cms_news_categories ADD INDEX ncs (nc_owner);
 ALTER TABLE cms_news_category_entries ADD INDEX news_entry_category (news_entry_category);
 
 
-ALTER TABLE cms_notifications_enabled ADD INDEX l_code_category (l_code_category(250));
+ALTER TABLE cms_notifications_enabled ADD INDEX l_code_category (l_code_category);
 
 
 ALTER TABLE cms_notifications_enabled ADD INDEX l_member_id (l_member_id,l_notification_code);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option1 (option1(250));
+ALTER TABLE cms_poll ADD FULLTEXT option1 (option1);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option10 (option10(250));
+ALTER TABLE cms_poll ADD FULLTEXT option10 (option10);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option2 (option2(250));
+ALTER TABLE cms_poll ADD FULLTEXT option2 (option2);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option3 (option3(250));
+ALTER TABLE cms_poll ADD FULLTEXT option3 (option3);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option4 (option4(250));
+ALTER TABLE cms_poll ADD FULLTEXT option4 (option4);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option5 (option5(250));
+ALTER TABLE cms_poll ADD FULLTEXT option5 (option5);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option6 (option6(250));
+ALTER TABLE cms_poll ADD FULLTEXT option6 (option6);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option7 (option7(250));
+ALTER TABLE cms_poll ADD FULLTEXT option7 (option7);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option8 (option8(250));
+ALTER TABLE cms_poll ADD FULLTEXT option8 (option8);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT option9 (option9(250));
+ALTER TABLE cms_poll ADD FULLTEXT option9 (option9);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT poll_search__combined (question(250),option1(250),option2(250),option3(250),option4(250),option5(250));
+ALTER TABLE cms_poll ADD FULLTEXT poll_search__combined (question,option1,option2,option3,option4,option5);
 
 
-ALTER TABLE cms_poll ADD FULLTEXT question (question(250));
+ALTER TABLE cms_poll ADD FULLTEXT question (question);
 
 
 ALTER TABLE cms_poll ADD INDEX date_and_time (date_and_time);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_po1 (option1(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po1 (option1);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_po2 (option2(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po2 (option2);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_po3 (option3(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po3 (option3);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_po4 (option4(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po4 (option4);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_po5 (option5(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po5 (option5);
 
 
-ALTER TABLE cms_poll ADD INDEX ftjoin_pq (question(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_pq (question);
 
 
 ALTER TABLE cms_poll ADD INDEX get_current (is_current);
@@ -35136,61 +35014,61 @@ ALTER TABLE cms_poll_votes ADD INDEX v_voter_ip (v_voter_ip);
 ALTER TABLE cms_poll_votes ADD INDEX v_vote_for (v_vote_for);
 
 
-ALTER TABLE cms_pstore_customs ADD FULLTEXT c_description (c_description(250));
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_description (c_description);
 
 
-ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_body (c_mail_body(250));
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_body (c_mail_body);
 
 
-ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_subject (c_mail_subject(250));
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_subject (c_mail_subject);
 
 
-ALTER TABLE cms_pstore_customs ADD FULLTEXT c_title (c_title(250));
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_title (c_title);
 
 
-ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_description (p_description(250));
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_description (p_description);
 
 
-ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_body (p_mail_body(250));
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_body (p_mail_body);
 
 
-ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_subject (p_mail_subject(250));
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_subject (p_mail_subject);
 
 
-ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_title (p_title(250));
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_title (p_title);
 
 
-ALTER TABLE cms_quizzes ADD FULLTEXT quiz_search__combined (q_start_text(250),q_name(250));
+ALTER TABLE cms_quizzes ADD FULLTEXT quiz_search__combined (q_start_text,q_name);
 
 
-ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text (q_end_text(250));
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text (q_end_text);
 
 
-ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail(250));
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail);
 
 
-ALTER TABLE cms_quizzes ADD FULLTEXT q_name (q_name(250));
+ALTER TABLE cms_quizzes ADD FULLTEXT q_name (q_name);
 
 
-ALTER TABLE cms_quizzes ADD FULLTEXT q_start_text (q_start_text(250));
+ALTER TABLE cms_quizzes ADD FULLTEXT q_start_text (q_start_text);
 
 
-ALTER TABLE cms_quizzes ADD INDEX ftjoin_qstarttext (q_start_text(250));
+ALTER TABLE cms_quizzes ADD INDEX ftjoin_qstarttext (q_start_text);
 
 
 ALTER TABLE cms_quizzes ADD INDEX q_validated (q_validated);
 
 
-ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text(250));
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text);
 
 
-ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_text (q_question_text(250));
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_text (q_question_text);
 
 
-ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text(250));
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text);
 
 
-ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation(250));
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation);
 
 
 ALTER TABLE cms_rating ADD INDEX alt_key (rating_for_type,rating_for_id);
@@ -35214,25 +35092,25 @@ ALTER TABLE cms_revisions ADD INDEX lookup_by_id (r_resource_type,r_resource_id)
 ALTER TABLE cms_revisions ADD INDEX moderatorlog_link (r_moderatorlog_id);
 
 
-ALTER TABLE cms_searches_logged ADD FULLTEXT past_search_ft (s_primary(250));
+ALTER TABLE cms_searches_logged ADD FULLTEXT past_search_ft (s_primary);
 
 
-ALTER TABLE cms_searches_logged ADD INDEX past_search (s_primary(250));
+ALTER TABLE cms_searches_logged ADD INDEX past_search (s_primary);
 
 
-ALTER TABLE cms_seo_meta ADD FULLTEXT meta_description (meta_description(250));
+ALTER TABLE cms_seo_meta ADD FULLTEXT meta_description (meta_description);
 
 
 ALTER TABLE cms_seo_meta ADD INDEX alt_key (meta_for_type,meta_for_id);
 
 
-ALTER TABLE cms_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description(250));
+ALTER TABLE cms_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description);
 
 
-ALTER TABLE cms_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword(250));
+ALTER TABLE cms_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword);
 
 
-ALTER TABLE cms_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword(250));
+ALTER TABLE cms_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword);
 
 
 ALTER TABLE cms_seo_meta_keywords ADD INDEX keywords_alt_key (meta_for_type,meta_for_id);
@@ -35295,7 +35173,7 @@ ALTER TABLE cms_sms_log ADD INDEX sms_log_for (s_member_id,s_time);
 ALTER TABLE cms_sms_log ADD INDEX sms_trigger_ip (s_trigger_ip);
 
 
-ALTER TABLE cms_stats ADD INDEX browser (browser(250));
+ALTER TABLE cms_stats ADD INDEX browser (browser);
 
 
 ALTER TABLE cms_stats ADD INDEX date_and_time (date_and_time);
@@ -35316,19 +35194,19 @@ ALTER TABLE cms_stats ADD INDEX member_track_4 (session_id);
 ALTER TABLE cms_stats ADD INDEX milliseconds (milliseconds);
 
 
-ALTER TABLE cms_stats ADD INDEX operating_system (operating_system(250));
+ALTER TABLE cms_stats ADD INDEX operating_system (operating_system);
 
 
-ALTER TABLE cms_stats ADD INDEX pages (the_page(250));
+ALTER TABLE cms_stats ADD INDEX pages (the_page);
 
 
-ALTER TABLE cms_stats ADD INDEX referer (referer(250));
+ALTER TABLE cms_stats ADD INDEX referer (referer);
 
 
 ALTER TABLE cms_theme_images ADD INDEX theme (theme,lang);
 
 
-ALTER TABLE cms_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name(250));
+ALTER TABLE cms_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name);
 
 
 ALTER TABLE cms_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
@@ -35340,7 +35218,7 @@ ALTER TABLE cms_trackbacks ADD INDEX trackback_for_type (trackback_for_type);
 ALTER TABLE cms_trackbacks ADD INDEX trackback_time (trackback_time);
 
 
-ALTER TABLE cms_translate ADD FULLTEXT tsearch (text_original(250));
+ALTER TABLE cms_translate ADD FULLTEXT tsearch (text_original);
 
 
 ALTER TABLE cms_translate ADD INDEX decache (text_parsed(2));
@@ -35355,16 +35233,16 @@ ALTER TABLE cms_translate ADD INDEX importance_level (importance_level);
 ALTER TABLE cms_urls_checked ADD INDEX url (url(200));
 
 
-ALTER TABLE cms_url_id_monikers ADD INDEX uim_moniker (m_moniker(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_moniker (m_moniker);
 
 
-ALTER TABLE cms_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed);
 
 
 ALTER TABLE cms_url_id_monikers ADD INDEX uim_page_link (m_resource_page,m_resource_type,m_resource_id);
 
 
-ALTER TABLE cms_url_title_cache ADD INDEX t_url (t_url(250));
+ALTER TABLE cms_url_title_cache ADD INDEX t_url (t_url);
 
 
 ALTER TABLE cms_usersonline_track ADD INDEX peak_track (peak);
@@ -35373,22 +35251,22 @@ ALTER TABLE cms_usersonline_track ADD INDEX peak_track (peak);
 ALTER TABLE cms_values ADD INDEX date_and_time (date_and_time);
 
 
-ALTER TABLE cms_videos ADD FULLTEXT description (description(250));
+ALTER TABLE cms_videos ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_videos ADD FULLTEXT title (title(250));
+ALTER TABLE cms_videos ADD FULLTEXT title (title);
 
 
-ALTER TABLE cms_videos ADD FULLTEXT video_search__combined (description(250),title(250));
+ALTER TABLE cms_videos ADD FULLTEXT video_search__combined (description,title);
 
 
 ALTER TABLE cms_videos ADD INDEX category_list (cat);
 
 
-ALTER TABLE cms_videos ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_dtitle (title);
 
 
-ALTER TABLE cms_videos ADD INDEX ftjoin_vdescription (description(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_vdescription (description);
 
 
 ALTER TABLE cms_videos ADD INDEX vadd_date (add_date);
@@ -35406,19 +35284,19 @@ ALTER TABLE cms_videos ADD INDEX v_validated (validated);
 ALTER TABLE cms_video_transcoding ADD INDEX t_local_id (t_local_id);
 
 
-ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description(250));
+ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description);
 
 
-ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title(250));
+ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title);
 
 
-ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title(250),description(250));
+ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
 
 
-ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description);
 
 
-ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title);
 
 
 ALTER TABLE cms_wiki_pages ADD INDEX sadd_date (add_date);
@@ -35430,13 +35308,13 @@ ALTER TABLE cms_wiki_pages ADD INDEX sps (submitter);
 ALTER TABLE cms_wiki_pages ADD INDEX wiki_views (wiki_views);
 
 
-ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message(250));
+ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message);
 
 
 ALTER TABLE cms_wiki_posts ADD INDEX cdate_and_time (date_and_time);
 
 
-ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
+ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message);
 
 
 ALTER TABLE cms_wiki_posts ADD INDEX posts_on_page (page_id);
@@ -35451,9 +35329,9 @@ ALTER TABLE cms_wiki_posts ADD INDEX svalidated (validated);
 ALTER TABLE cms_wiki_posts ADD INDEX wiki_views (wiki_views);
 
 
-ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text(250));
+ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text);
 
 
-ALTER TABLE cms_zones ADD FULLTEXT zone_title (zone_title(250));
+ALTER TABLE cms_zones ADD FULLTEXT zone_title (zone_title);
 
 

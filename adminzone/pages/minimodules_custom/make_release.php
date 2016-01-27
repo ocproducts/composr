@@ -176,6 +176,8 @@ function phase_1_pre()
 // Build release files
 function phase_1()
 {
+    require_code('version2');
+
     $version_dotted = post_param_string('version');
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);
     $is_old_tree = (post_param_integer('old_tree', 0) == 1);

@@ -112,7 +112,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
             if (!array_key_exists($lang, $LANG_LOADED_LANG)) {
                 $LANG_LOADED_LANG[$lang] = array();
             }
-            $LANG_LOADED_LANG[$lang][$codename] = 1;
+            $LANG_LOADED_LANG[$lang][$codename] = true;
 
             return $bad;
         }

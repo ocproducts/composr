@@ -19134,12 +19134,8 @@ CREATE TABLE cms_authors (
      author varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      member_id integer NULL,
-     description longtext NOT NULL,
-     skills longtext NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     skills__text_parsed longtext NOT NULL,
-     skills__source_user integer DEFAULT 1 NOT NULL,
+     description integer unsigned NOT NULL,
+     skills integer unsigned NOT NULL,
 
     PRIMARY KEY (author)
 ) engine=MyISAM;
@@ -19180,14 +19176,12 @@ DROP TABLE IF EXISTS cms_award_types;
 
 CREATE TABLE cms_award_types (
      id integer unsigned auto_increment NOT NULL,
-     a_title longtext NOT NULL,
-     a_description longtext NOT NULL,
+     a_title integer unsigned NOT NULL,
+     a_description integer unsigned NOT NULL,
      a_points integer NOT NULL,
      a_content_type varchar(80) NOT NULL,
      a_hide_awardee tinyint(1) NOT NULL,
      a_update_time_hours integer NOT NULL,
-     a_description__text_parsed longtext NOT NULL,
-     a_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19256,7 +19250,7 @@ CREATE TABLE cms_banners (
      img_url varchar(255) NOT NULL,
      the_type tinyint NOT NULL,
      b_title_text varchar(255) NOT NULL,
-     caption longtext NOT NULL,
+     caption integer unsigned NOT NULL,
      b_direct_code longtext NOT NULL,
      campaign_remaining integer NOT NULL,
      site_url varchar(255) NOT NULL,
@@ -19270,8 +19264,6 @@ CREATE TABLE cms_banners (
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      b_type varchar(80) NOT NULL,
-     caption__text_parsed longtext NOT NULL,
-     caption__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (name)
 ) engine=MyISAM;
@@ -19595,11 +19587,9 @@ DROP TABLE IF EXISTS cms_cached_comcode_pages;
 CREATE TABLE cms_cached_comcode_pages (
      the_zone varchar(80) NOT NULL,
      the_page varchar(80) NOT NULL,
-     string_index longtext NOT NULL,
+     string_index integer unsigned NOT NULL,
      the_theme varchar(80) NOT NULL,
-     cc_page_title longtext NOT NULL,
-     string_index__text_parsed longtext NOT NULL,
-     string_index__source_user integer DEFAULT 1 NOT NULL,
+     cc_page_title integer unsigned NULL,
 
     PRIMARY KEY (the_zone, the_page, the_theme)
 ) engine=MyISAM;
@@ -19614,8 +19604,8 @@ CREATE TABLE cms_calendar_events (
      e_submitter integer NOT NULL,
      e_member_calendar integer NULL,
      e_views integer NOT NULL,
-     e_title longtext NOT NULL,
-     e_content longtext NOT NULL,
+     e_title integer unsigned NOT NULL,
+     e_content integer unsigned NOT NULL,
      e_add_date integer unsigned NOT NULL,
      e_edit_date integer unsigned NULL,
      e_recurrence varchar(80) NOT NULL,
@@ -19642,10 +19632,6 @@ CREATE TABLE cms_calendar_events (
      notes longtext NOT NULL,
      e_type integer NOT NULL,
      validated tinyint(1) NOT NULL,
-     e_title__text_parsed longtext NOT NULL,
-     e_title__source_user integer DEFAULT 1 NOT NULL,
-     e_content__text_parsed longtext NOT NULL,
-     e_content__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19698,11 +19684,9 @@ DROP TABLE IF EXISTS cms_calendar_types;
 
 CREATE TABLE cms_calendar_types (
      id integer unsigned auto_increment NOT NULL,
-     t_title longtext NOT NULL,
+     t_title integer unsigned NOT NULL,
      t_logo varchar(255) NOT NULL,
      t_external_feed varchar(255) NOT NULL,
-     t_title__text_parsed longtext NOT NULL,
-     t_title__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19764,8 +19748,8 @@ DROP TABLE IF EXISTS cms_catalogue_categories;
 CREATE TABLE cms_catalogue_categories (
      id integer unsigned auto_increment NOT NULL,
      c_name varchar(80) NOT NULL,
-     cc_title longtext NOT NULL,
-     cc_description longtext NOT NULL,
+     cc_title integer unsigned NOT NULL,
+     cc_description integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
      cc_notes longtext NOT NULL,
      cc_add_date integer unsigned NOT NULL,
@@ -19774,8 +19758,6 @@ CREATE TABLE cms_catalogue_categories (
      cc_move_days_lower integer NOT NULL,
      cc_move_days_higher integer NOT NULL,
      cc_order integer NOT NULL,
-     cc_description__text_parsed longtext NOT NULL,
-     cc_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19859,9 +19841,7 @@ CREATE TABLE cms_catalogue_efv_long_trans (
      id integer unsigned auto_increment NOT NULL,
      cf_id integer NOT NULL,
      ce_id integer NOT NULL,
-     cv_value longtext NOT NULL,
-     cv_value__text_parsed longtext NOT NULL,
-     cv_value__source_user integer DEFAULT 1 NOT NULL,
+     cv_value integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19889,9 +19869,7 @@ CREATE TABLE cms_catalogue_efv_short_trans (
      id integer unsigned auto_increment NOT NULL,
      cf_id integer NOT NULL,
      ce_id integer NOT NULL,
-     cv_value longtext NOT NULL,
-     cv_value__text_parsed longtext NOT NULL,
-     cv_value__source_user integer DEFAULT 1 NOT NULL,
+     cv_value integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -19941,8 +19919,8 @@ DROP TABLE IF EXISTS cms_catalogue_fields;
 CREATE TABLE cms_catalogue_fields (
      id integer unsigned auto_increment NOT NULL,
      c_name varchar(80) NOT NULL,
-     cf_name longtext NOT NULL,
-     cf_description longtext NOT NULL,
+     cf_name integer unsigned NOT NULL,
+     cf_description integer unsigned NOT NULL,
      cf_type varchar(80) NOT NULL,
      cf_order integer NOT NULL,
      cf_defines_order tinyint NOT NULL,
@@ -20060,8 +20038,8 @@ DROP TABLE IF EXISTS cms_catalogues;
 
 CREATE TABLE cms_catalogues (
      c_name varchar(80) NOT NULL,
-     c_title longtext NOT NULL,
-     c_description longtext NOT NULL,
+     c_title integer unsigned NOT NULL,
+     c_description integer unsigned NOT NULL,
      c_display_type tinyint NOT NULL,
      c_is_tree tinyint(1) NOT NULL,
      c_notes longtext NOT NULL,
@@ -20070,8 +20048,6 @@ CREATE TABLE cms_catalogues (
      c_ecommerce tinyint(1) NOT NULL,
      c_default_review_freq integer NULL,
      c_send_view_reports varchar(80) NOT NULL,
-     c_description__text_parsed longtext NOT NULL,
-     c_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (c_name)
 ) engine=MyISAM;
@@ -20100,10 +20076,8 @@ CREATE TABLE cms_chargelog (
      id integer unsigned auto_increment NOT NULL,
      member_id integer NOT NULL,
      amount integer NOT NULL,
-     reason longtext NOT NULL,
+     reason integer unsigned NOT NULL,
      date_and_time integer unsigned NOT NULL,
-     reason__text_parsed longtext NOT NULL,
-     reason__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -20175,11 +20149,9 @@ CREATE TABLE cms_chat_messages (
      room_id integer NOT NULL,
      member_id integer NOT NULL,
      date_and_time integer unsigned NOT NULL,
-     the_message longtext NOT NULL,
+     the_message integer unsigned NOT NULL,
      text_colour varchar(255) NOT NULL,
      font_name varchar(255) NOT NULL,
-     the_message__text_parsed longtext NOT NULL,
-     the_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -20198,7 +20170,7 @@ CREATE TABLE cms_chat_rooms (
      disallow_list longtext NOT NULL,
      disallow_list_groups longtext NOT NULL,
      room_language varchar(5) NOT NULL,
-     c_welcome longtext NOT NULL,
+     c_welcome integer unsigned NOT NULL,
      is_im tinyint(1) NOT NULL,
 
     PRIMARY KEY (id)
@@ -20278,7 +20250,7 @@ CREATE TABLE cms_config (
      c_name varchar(80) NOT NULL,
      c_set tinyint(1) NOT NULL,
      c_value longtext NOT NULL,
-     c_value_trans longtext NOT NULL,
+     c_value_trans integer unsigned NULL,
      c_needs_dereference tinyint(1) NOT NULL,
 
     PRIMARY KEY (c_name)
@@ -20374,8 +20346,8 @@ DROP TABLE IF EXISTS cms_custom_comcode;
 
 CREATE TABLE cms_custom_comcode (
      tag_tag varchar(80) NOT NULL,
-     tag_title longtext NOT NULL,
-     tag_description longtext NOT NULL,
+     tag_title integer unsigned NOT NULL,
+     tag_description integer unsigned NOT NULL,
      tag_replace longtext NOT NULL,
      tag_example longtext NOT NULL,
      tag_parameters varchar(255) NOT NULL,

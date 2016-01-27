@@ -811,7 +811,7 @@ function can_submit_to_gallery($name)
         if ($name == 'root') {
             return (-2);
         }
-        $parent_id = $GLOBALS['SITE_DB']->query_select_value('galleries', 'parent_id', array('name' => $name));
+        $parent_id = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => $name));
         if (is_null($parent_id)) {
             return false; // No, does not even exist (probably a block was given a bad parameter)
         }

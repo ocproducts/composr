@@ -1045,7 +1045,7 @@ class Module_galleries
         if (get_option('galleries_subcat_narrowin') == '1') {
             $cat_select = $cat . '*';
         } else {
-            $cat_select = $cat . '>';
+            $cat_select = $cat . '#';
         }
         $days = get_param_string('days', '');
         $image_select = get_param_string('select', '*');

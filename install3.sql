@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS cms_f_posts;
 CREATE TABLE cms_f_posts (
      id integer unsigned auto_increment NOT NULL,
      p_title varchar(255) NOT NULL,
-     p_post longtext NOT NULL,
+     p_post integer unsigned NOT NULL,
      p_ip_address varchar(40) NOT NULL,
      p_time integer unsigned NOT NULL,
      p_poster integer NOT NULL,
@@ -61,8 +61,6 @@ CREATE TABLE cms_f_posts (
      p_is_emphasised tinyint(1) NOT NULL,
      p_skip_sig tinyint(1) NOT NULL,
      p_parent_id integer NULL,
-     p_post__text_parsed longtext NOT NULL,
-     p_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -133,7 +131,7 @@ CREATE TABLE cms_f_topics (
      t_cache_first_post_id integer NULL,
      t_cache_first_time integer unsigned NULL,
      t_cache_first_title varchar(255) NOT NULL,
-     t_cache_first_post longtext NOT NULL,
+     t_cache_first_post integer unsigned NULL,
      t_cache_first_username varchar(80) NOT NULL,
      t_cache_first_member_id integer NULL,
      t_cache_last_post_id integer NULL,
@@ -142,8 +140,6 @@ CREATE TABLE cms_f_topics (
      t_cache_last_username varchar(80) NOT NULL,
      t_cache_last_member_id integer NULL,
      t_cache_num_posts integer NOT NULL,
-     t_cache_first_post__text_parsed longtext NOT NULL,
-     t_cache_first_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -161,8 +157,8 @@ CREATE TABLE cms_f_usergroup_sub_mails (
      m_usergroup_sub_id integer NOT NULL,
      m_ref_point varchar(80) NOT NULL,
      m_ref_point_offset integer NOT NULL,
-     m_subject longtext NOT NULL,
-     m_body longtext NOT NULL,
+     m_subject integer unsigned NOT NULL,
+     m_body integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -174,20 +170,18 @@ DROP TABLE IF EXISTS cms_f_usergroup_subs;
 
 CREATE TABLE cms_f_usergroup_subs (
      id integer unsigned auto_increment NOT NULL,
-     s_title longtext NOT NULL,
-     s_description longtext NOT NULL,
+     s_title integer unsigned NOT NULL,
+     s_description integer unsigned NOT NULL,
      s_cost varchar(255) NOT NULL,
      s_length integer NOT NULL,
      s_length_units varchar(255) NOT NULL,
      s_auto_recur tinyint(1) NOT NULL,
      s_group_id integer NOT NULL,
      s_enabled tinyint(1) NOT NULL,
-     s_mail_start longtext NOT NULL,
-     s_mail_end longtext NOT NULL,
-     s_mail_uhoh longtext NOT NULL,
+     s_mail_start integer unsigned NOT NULL,
+     s_mail_end integer unsigned NOT NULL,
+     s_mail_uhoh integer unsigned NOT NULL,
      s_uses_primary tinyint(1) NOT NULL,
-     s_description__text_parsed longtext NOT NULL,
-     s_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -223,8 +217,8 @@ DROP TABLE IF EXISTS cms_f_welcome_emails;
 CREATE TABLE cms_f_welcome_emails (
      id integer unsigned auto_increment NOT NULL,
      w_name varchar(255) NOT NULL,
-     w_subject longtext NOT NULL,
-     w_text longtext NOT NULL,
+     w_subject integer unsigned NOT NULL,
+     w_text integer unsigned NOT NULL,
      w_send_time integer NOT NULL,
      w_newsletter integer NULL,
      w_usergroup integer NULL,
@@ -271,7 +265,7 @@ CREATE TABLE cms_filedump (
      id integer unsigned auto_increment NOT NULL,
      name varchar(80) NOT NULL,
      path varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      the_member integer NOT NULL,
 
     PRIMARY KEY (id)
@@ -284,8 +278,8 @@ DROP TABLE IF EXISTS cms_galleries;
 
 CREATE TABLE cms_galleries (
      name varchar(80) NOT NULL,
-     description longtext NOT NULL,
-     fullname longtext NOT NULL,
+     description integer unsigned NOT NULL,
+     fullname integer unsigned NOT NULL,
      add_date integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
      parent_id varchar(80) NOT NULL,
@@ -302,10 +296,6 @@ CREATE TABLE cms_galleries (
      flow_mode_interface tinyint(1) NOT NULL,
      gallery_views integer NOT NULL,
      g_owner integer NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     fullname__text_parsed longtext NOT NULL,
-     fullname__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (name)
 ) engine=MyISAM;
@@ -324,10 +314,8 @@ CREATE TABLE cms_gifts (
      amount integer NOT NULL,
      gift_from integer NOT NULL,
      gift_to integer NOT NULL,
-     reason longtext NOT NULL,
+     reason integer unsigned NOT NULL,
      anonymous tinyint(1) NOT NULL,
-     reason__text_parsed longtext NOT NULL,
-     reason__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -3600,7 +3588,7 @@ CREATE TABLE cms_images (
      cat varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      thumb_url varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      allow_rating tinyint(1) NOT NULL,
      allow_comments tinyint NOT NULL,
      allow_trackbacks tinyint(1) NOT NULL,
@@ -3610,9 +3598,7 @@ CREATE TABLE cms_images (
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      image_views integer NOT NULL,
-     title longtext NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
+     title integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -3775,10 +3761,8 @@ DROP TABLE IF EXISTS cms_match_key_messages;
 
 CREATE TABLE cms_match_key_messages (
      id integer unsigned auto_increment NOT NULL,
-     k_message longtext NOT NULL,
+     k_message integer unsigned NOT NULL,
      k_match_key varchar(255) NOT NULL,
-     k_message__text_parsed longtext NOT NULL,
-     k_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;

@@ -760,7 +760,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $value = strval($value);
             }
             if (strpos($storage_type, '_trans') !== false) {
-                $value = ((is_null($value)) || ($value === '0')) ? '' : get_translated_text($value, $GLOBALS['FORUM_DB']);
+                $value = ((is_null($value)) || ($value === '0')) ? '' : get_translated_text(intval($value), $GLOBALS['FORUM_DB']);
             }
             if (($custom_field['cf_encrypted'] == 1) && (is_encryption_enabled())) {
                 $value = remove_magic_encryption_marker($value);

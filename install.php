@@ -569,7 +569,7 @@ function step_3()
             if ($class == 'general') {
                 $version = $forum;
             } else {
-                $version = array_key_exists($forum . '_version', $forum_info) ? do_lang('VERSION_NUM', $forum_info[$forum . '_version']) : do_lang('NA');
+                $version = array_key_exists($forum . '_version', $forum_info) ? do_lang('VERSION_NUM', $forum_info[$forum . '_version']) : do_lang('VERSION_NUM', do_lang('NA'));
             }
             $extra2 = '';//(($first && !$rec) || $rec)?'checked="checked"':'';
             $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version, 'EXTRA' => $extra2)));

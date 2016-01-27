@@ -6080,7 +6080,7 @@ DROP TABLE IF EXISTS cms_digestives_tin;
 CREATE TABLE cms_digestives_tin (
      id integer unsigned auto_increment NOT NULL,
      d_subject longtext NOT NULL,
-     d_message longtext NOT NULL,
+     d_message integer unsigned NOT NULL,
      d_from_member_id integer NULL,
      d_to_member_id integer NOT NULL,
      d_priority tinyint NOT NULL,
@@ -6090,8 +6090,6 @@ CREATE TABLE cms_digestives_tin (
      d_code_category varchar(255) NOT NULL,
      d_frequency integer NOT NULL,
      d_read tinyint(1) NOT NULL,
-     d_message__text_parsed longtext NOT NULL,
-     d_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -6103,14 +6101,12 @@ DROP TABLE IF EXISTS cms_download_categories;
 
 CREATE TABLE cms_download_categories (
      id integer unsigned auto_increment NOT NULL,
-     category longtext NOT NULL,
+     category integer unsigned NOT NULL,
      parent_id integer NULL,
      add_date integer unsigned NOT NULL,
      notes longtext NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -6126,11 +6122,11 @@ DROP TABLE IF EXISTS cms_download_downloads;
 CREATE TABLE cms_download_downloads (
      id integer unsigned auto_increment NOT NULL,
      category_id integer NOT NULL,
-     name longtext NOT NULL,
+     name integer unsigned NOT NULL,
      url varchar(255) NOT NULL,
-     description longtext NOT NULL,
+     description integer unsigned NOT NULL,
      author varchar(80) NOT NULL,
-     additional_details longtext NOT NULL,
+     additional_details integer unsigned NOT NULL,
      num_downloads integer NOT NULL,
      out_mode_id integer NULL,
      add_date integer unsigned NOT NULL,
@@ -6151,10 +6147,6 @@ CREATE TABLE cms_download_downloads (
      download_licence integer NULL,
      download_data_mash longtext NOT NULL,
      url_redirect varchar(255) NOT NULL,
-     description__text_parsed longtext NOT NULL,
-     description__source_user integer DEFAULT 1 NOT NULL,
-     additional_details__text_parsed longtext NOT NULL,
-     additional_details__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -6225,8 +6217,8 @@ DROP TABLE IF EXISTS cms_f_custom_fields;
 CREATE TABLE cms_f_custom_fields (
      id integer unsigned auto_increment NOT NULL,
      cf_locked tinyint(1) NOT NULL,
-     cf_name longtext NOT NULL,
-     cf_description longtext NOT NULL,
+     cf_name integer unsigned NOT NULL,
+     cf_description integer unsigned NOT NULL,
      cf_default longtext NOT NULL,
      cf_public_view tinyint(1) NOT NULL,
      cf_owner_view tinyint(1) NOT NULL,
@@ -6584,13 +6576,13 @@ DROP TABLE IF EXISTS cms_f_forums;
 CREATE TABLE cms_f_forums (
      id integer unsigned auto_increment NOT NULL,
      f_name varchar(255) NOT NULL,
-     f_description longtext NOT NULL,
+     f_description integer unsigned NOT NULL,
      f_forum_grouping_id integer NULL,
      f_parent_forum integer NULL,
      f_position integer NOT NULL,
      f_order_sub_alpha tinyint(1) NOT NULL,
      f_post_count_increment tinyint(1) NOT NULL,
-     f_intro_question longtext NOT NULL,
+     f_intro_question integer unsigned NOT NULL,
      f_intro_answer varchar(255) NOT NULL,
      f_cache_num_topics integer NOT NULL,
      f_cache_num_posts integer NOT NULL,
@@ -6604,10 +6596,6 @@ CREATE TABLE cms_f_forums (
      f_order varchar(80) NOT NULL,
      f_is_threaded tinyint(1) NOT NULL,
      f_allows_anonymous_posts tinyint(1) NOT NULL,
-     f_description__text_parsed longtext NOT NULL,
-     f_description__source_user integer DEFAULT 1 NOT NULL,
-     f_intro_question__text_parsed longtext NOT NULL,
-     f_intro_question__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -6683,13 +6671,13 @@ DROP TABLE IF EXISTS cms_f_groups;
 
 CREATE TABLE cms_f_groups (
      id integer unsigned auto_increment NOT NULL,
-     g_name longtext NOT NULL,
+     g_name integer unsigned NOT NULL,
      g_is_default tinyint(1) NOT NULL,
      g_is_presented_at_install tinyint(1) NOT NULL,
      g_is_super_admin tinyint(1) NOT NULL,
      g_is_super_moderator tinyint(1) NOT NULL,
      g_group_leader integer NULL,
-     g_title longtext NOT NULL,
+     g_title integer unsigned NOT NULL,
      g_promotion_target integer NULL,
      g_promotion_threshold integer NULL,
      g_flood_control_submit_secs integer NOT NULL,
@@ -6781,10 +6769,10 @@ DROP TABLE IF EXISTS cms_f_member_custom_fields;
 
 CREATE TABLE cms_f_member_custom_fields (
      mf_member_id integer NOT NULL,
-     field_1 longtext NOT NULL,
-     field_2 longtext NOT NULL,
+     field_1 integer unsigned NOT NULL,
+     field_2 integer unsigned NOT NULL,
      field_3 varchar(255) NOT NULL,
-     field_4 longtext NOT NULL,
+     field_4 integer unsigned NOT NULL,
      field_5 varchar(255) NOT NULL,
      field_6 varchar(255) NOT NULL,
      field_7 varchar(255) NOT NULL,
@@ -6817,24 +6805,18 @@ CREATE TABLE cms_f_member_custom_fields (
      field_14 integer NULL,
      field_15 integer NULL,
      field_9 integer NULL,
-     field_1__text_parsed longtext NOT NULL,
-     field_1__source_user integer DEFAULT 1 NOT NULL,
-     field_2__text_parsed longtext NOT NULL,
-     field_2__source_user integer DEFAULT 1 NOT NULL,
-     field_4__text_parsed longtext NOT NULL,
-     field_4__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (mf_member_id)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (1, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (1, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (2, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (2, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (3, '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_2, field_3, field_4, field_5, field_6, field_7, field_8, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_32, field_31, field_33, field_29, field_28, field_34, field_35, field_30, field_36, field_10, field_11, field_12, field_13, field_14, field_15, field_9, field_1__text_parsed, field_1__source_user, field_2__text_parsed, field_2__source_user, field_4__text_parsed, field_4__source_user) VALUES (3, '', '', '', '', '', '', '', '', NULL, '', '', '', NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc04a5d49.66493973_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc04a5d49.66493973_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_member_known_login_ips;
@@ -6870,7 +6852,7 @@ CREATE TABLE cms_f_members (
      m_primary_group integer NOT NULL,
      m_last_visit_time integer unsigned NOT NULL,
      m_last_submit_time integer unsigned NOT NULL,
-     m_signature longtext NOT NULL,
+     m_signature integer unsigned NOT NULL,
      m_is_perm_banned tinyint(1) NOT NULL,
      m_preview_posts tinyint(1) NOT NULL,
      m_dob_day tinyint NULL,
@@ -6889,7 +6871,7 @@ CREATE TABLE cms_f_members (
      m_allow_emails_from_staff tinyint(1) NOT NULL,
      m_highlighted_name tinyint(1) NOT NULL,
      m_pt_allow varchar(255) NOT NULL,
-     m_pt_rules_text longtext NOT NULL,
+     m_pt_rules_text integer unsigned NOT NULL,
      m_max_email_attach_size_mb integer NOT NULL,
      m_password_change_code varchar(255) NOT NULL,
      m_password_compat_scheme varchar(80) NOT NULL,
@@ -6897,10 +6879,6 @@ CREATE TABLE cms_f_members (
      m_profile_views integer unsigned NOT NULL,
      m_total_sessions integer unsigned NOT NULL,
      m_auto_mark_read tinyint(1) NOT NULL,
-     m_signature__text_parsed longtext NOT NULL,
-     m_signature__source_user integer DEFAULT 1 NOT NULL,
-     m_pt_rules_text__text_parsed longtext NOT NULL,
-     m_pt_rules_text__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -6938,7 +6916,7 @@ DROP TABLE IF EXISTS cms_f_multi_moderations;
 
 CREATE TABLE cms_f_multi_moderations (
      id integer unsigned auto_increment NOT NULL,
-     mm_name longtext NOT NULL,
+     mm_name integer unsigned NOT NULL,
      mm_post_text longtext NOT NULL,
      mm_move_to integer NULL,
      mm_pin_state tinyint(1) NULL,

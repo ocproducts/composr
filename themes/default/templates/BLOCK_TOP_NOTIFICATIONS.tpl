@@ -13,7 +13,7 @@
 
 		<ul class="associated_links_block_group horizontal_links">
 			<li><a href="{$PAGE_LINK*,_SEARCH:notifications:browse}">{!VIEW_ARCHIVE}</a></li>
-			<li><a title="{!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
+			<li><a onmouseup="toggle_web_notifications(event); find_url_tab();" title="{!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
 			<li><a href="#" onclick="return notifications_mark_all_read(event);">{!NOTIFICATIONS_MARK_READ}</a></li>
 		</ul>
 	</div></div>
@@ -33,7 +33,7 @@
 			</div>
 
 			<ul class="associated_links_block_group horizontal_links">
-				<li><a href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
+				<li><a onmouseup="toggle_pts(event); find_url_tab();" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
 				<li><a href="{$PAGE_LINK*,_SEARCH:topics:new_pt}">{!cns:NEW_PRIVATE_TOPIC}</a></li>
 			</ul>
 		</div></div>

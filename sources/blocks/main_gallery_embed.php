@@ -83,6 +83,7 @@ class Block_main_gallery_embed
 
         require_code('selectcode');
         $cat = array_key_exists('param', $map) ? $map['param'] : 'root';
+        $cat_raw = trim($cat, '>*');
         $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
 
         $title = array_key_exists('title', $map) ? $map['title'] : '';
@@ -249,7 +250,7 @@ class Block_main_gallery_embed
                             'SUBMITTER' => strval($row_image['submitter']),
                             'FULL_URL' => $full_url,
                             'THUMB_URL' => $thumb_url,
-                            'CAT' => $cat,
+                            'CAT' => $row_image['cat'],
                             'THUMB' => $thumb,
                             'VIEW_URL' => $view_url,
                             'VIEWS' => strval($row_image['image_views']),
@@ -302,7 +303,7 @@ class Block_main_gallery_embed
                             'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'description'),
                             'ID' => strval($row_video['id']),
                             'MEDIA_TYPE' => 'video',
-                            'CAT' => $cat,
+                            'CAT' => $row_video['cat'],
                             'THUMB' => $thumb,
                             'VIEW_URL' => $view_url,
                             'SUBMITTER' => strval($row_video['submitter']),
@@ -331,17 +332,23 @@ class Block_main_gallery_embed
         // Empty? Bomb out somehow
         if ($entries->is_empty()) {
             if ((!isset($map['render_if_empty'])) || ($map['render_if_empty'] == '0')) {
-                if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat))) && (can_submit_to_gallery($cat))) {
-                    $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
-                } else {
-                    $submit_url = new Tempcode();
+                $submit_url = new Tempcode();
+                $add_name = mixed();
+                if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat_raw))) && (can_submit_to_gallery($cat_raw))) {
+                    if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_images', array('name' => $cat_raw)) !== null) {
+                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
+                        $add_name = do_lang_tempcode('ADD_IMAGE');
+                    } elseif ($GLOBALS['SITE_DB']->query_select_value_null_ok('galleries', 'accept_videos', array('name' => $cat_raw)) !== null) {
+                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_other', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
+                        $add_name = do_lang_tempcode('ADD_VIDEO');
+                    }
                 }
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
                     'HIGH' => false,
                     'TITLE' => do_lang_tempcode('GALLERY'),
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
-                    'ADD_NAME' => do_lang_tempcode('ADD_IMAGE'),
+                    'ADD_NAME' => $add_name,
                     'SUBMIT_URL' => $submit_url,
                 ));
             }
@@ -365,7 +372,7 @@ class Block_main_gallery_embed
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'PAGINATION' => $pagination,
             'TITLE' => $title,
-            'CAT' => $cat,
+            'CAT' => $cat_raw,
             'ENTRIES' => $entries,
             'TOTAL_VIDEOS' => strval($total_videos),
             'TOTAL_IMAGES' => strval($total_images),

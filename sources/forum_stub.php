@@ -483,8 +483,10 @@ class Forum_driver_base
                 } else {
                     $theme = $USER_THEME_CACHE;
                     $USER_THEME_CACHE = 'default';
-                    require_code('site');
-                    attach_message(do_lang_tempcode('NO_THEME_PERMISSION', escape_html($theme)), 'warn');
+                    if (running_script('index')) {
+                        require_code('site');
+                        attach_message(do_lang_tempcode('NO_THEME_PERMISSION', escape_html($theme)), 'warn');
+                    }
                     $USER_THEME_CACHE = null;
                 }
             }

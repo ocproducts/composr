@@ -247,7 +247,7 @@ function upgrade_script()
                     }
                     if (substr(strtolower($temp_path), -4) == '.zip') {
                         require_code('tar2');
-                        $temp_path_new = convert_zip_to_tar($temp_path, true);
+                        $temp_path_new = convert_zip_to_tar($temp_path);
                         @unlink($temp_path);
                         rename($temp_path_new, $temp_path);
                         fix_permissions($temp_path);
@@ -283,6 +283,9 @@ function upgrade_script()
                             continue;
                         }
                         if ($upgrade_file['path'] == '_config.php.template') {
+                            continue;
+                        }
+                        if ($upgrade_file['path'] == 'data/upgrader2.php') {
                             continue;
                         }
 

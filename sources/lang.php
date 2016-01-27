@@ -402,7 +402,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
 {
     // So we can keep track of what code loads what langs
     global $LANGS_REQUESTED, $LANG_REQUESTED_LANG, $REQUIRE_LANG_LOOP, $PAGE_CACHE_LAZY_LOAD, $PAGE_CACHE_LANGS_REQUESTED, $LANG_LOADED_LANG, $LANGUAGE_STRINGS_CACHE;
-    $LANGS_REQUESTED[$codename] = 1;
+    $LANGS_REQUESTED[$codename] = true;
 
     if ($lang === null) {
         $lang = user_lang();
@@ -411,7 +411,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     if ((isset($LANG_REQUESTED_LANG[$lang])) && (isset($LANG_REQUESTED_LANG[$lang][$codename]))) {
         return;
     }
-    $LANG_REQUESTED_LANG[$lang][$codename] = 1;
+    $LANG_REQUESTED_LANG[$lang][$codename] = true;
 
     $cfb = get_custom_file_base();
     $fb = get_file_base();
@@ -523,7 +523,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
             require_code('caches3');
             global $ERASED_TEMPLATES_ONCE;
             if (!$ERASED_TEMPLATES_ONCE) {
-                erase_cached_templates();
+                erase_cached_templates(true);
             }
         }
     }
@@ -534,7 +534,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     if (!isset($LANG_LOADED_LANG[$lang])) {
         $LANG_LOADED_LANG[$lang] = array();
     }
-    $LANG_LOADED_LANG[$lang][$codename] = 1;
+    $LANG_LOADED_LANG[$lang][$codename] = true;
 
     $REQUIRE_LANG_LOOP--;
 }
@@ -684,7 +684,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
 
         if ($RECORD_LANG_STRINGS) {
             global $RECORDED_LANG_STRINGS;
-            $RECORDED_LANG_STRINGS[$codename] = 1;
+            $RECORDED_LANG_STRINGS[$codename] = true;
         }
 
         if ((!$there) && ((!isset($LANGUAGE_STRINGS_CACHE[$lang])) || (!array_key_exists($codename, $LANGUAGE_STRINGS_CACHE[$lang])))) {
