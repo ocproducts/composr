@@ -846,7 +846,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         $base_dir = get_file_base() . '/themes/';
     }
 
-    global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE;
+    global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE, $SITE_INFO;
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
         fill_template_preview_op_cache();
     }
@@ -880,9 +880,39 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         }
         file_put_contents($final_css_path, 'GENERATING');*/
 
-        if (file_exists(get_file_base() . '/sources_custom/less_proxy.php')) {
-            require_code('less_proxy');
-            $template_contents = less_proxy_compile($_path);
+        if (!empty($SITE_INFO['nodejs_binary_path'])) {
+            $less_path = get_custom_file_base().'/node_modules/less/bin/lessc';
+
+            if (!file_exists($less_path)) {
+                fatal_exit('Unable to find the less npm module. Please `cd` to your ocPortal directory and run `npm install less` to install it.');
+            }
+
+            $cmd = sprintf('%s %s --no-color %s', $SITE_INFO['nodejs_binary_path'], escapeshellarg($less_path), escapeshellarg($_path));
+            $descriptorspec = array(
+                0 => array('pipe', 'r'), // stdin
+                1 => array('pipe', 'w'), // stdout
+                2 => array('pipe', 'w'), // stderr
+            );
+            $pipes = array();
+            $process = proc_open($cmd, $descriptorspec, $pipes);
+
+            if ($process === false) {
+                fatal_exit('Unable to execute the Node.js binary, please make sure it exists and proper permissions are set.');
+            }
+
+            $stdout = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+
+            $return_code = proc_close($process);
+
+            if ($return_code !== 0) {
+                fatal_exit('.less problem: ' . $stderr);
+            }
+
+            $template_contents = $stdout;
         } else {
             // Heavy-weight, newer (iLess)
             require_code('ILess/Autoloader');
