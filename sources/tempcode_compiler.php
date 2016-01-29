@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem|less_proxy_compile*/
+/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem|less_proxy_compile|proc_**/
 
 /**
  * Standard code module initialisation function.
@@ -884,7 +884,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
             $less_path = get_custom_file_base().'/node_modules/less/bin/lessc';
 
             if (!file_exists($less_path)) {
-                fatal_exit('Unable to find the less npm module. Please `cd` to your Composr directory and run `npm install less` to install it.');
+                fatal_exit('Unable to find the less NPM module. Please `cd` to your Composr directory and run `npm install less` to install it.');
             }
 
             $cmd = sprintf('%s %s --no-color %s', $SITE_INFO['nodejs_binary_path'], escapeshellarg($less_path), escapeshellarg($_path));
