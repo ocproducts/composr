@@ -1526,8 +1526,7 @@ function version_specific()
             }
             persistent_cache_delete('MODULES');
 
-            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_type' => 'browse'), array('m_type' => 'misc'), '', 1);
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'activities SET a_language_string_code=REPLACE(a_language_string_code,\'ocf:\',\'cns:\') WHERE a_language_string_code LIKE \'ocf:%\'');
+            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_type' => 'browse'), array('m_resource_type' => 'misc'), '', 1);
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', 'ID_TEXT', 'privilege');
@@ -1573,8 +1572,10 @@ function version_specific()
             delete_value('oracle_index_cleanup_last_time');
             delete_value('last_sitemap_time_calc');
             delete_value('last_ticket_lead_time_calc');
-            set_value('last_welcome_mail_time', get_value('last_welcome_mail_time'), true);
-            delete_value('last_welcome_mail_time');
+            if (!is_null(get_value('last_welcome_mail_time'))) {
+                $GLOBALS['SITE_DB']->query_insert('long_values', array('date_and_time' => time(), 'the_value' => get_value('last_welcome_mail_time'), 'the_name' => 'last_welcome_mail_time'));
+                delete_value('last_welcome_mail_time');
+            }
 
             foreach (array('INTEGER', 'REAL') as $bad_type) {
                 $bad_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name'), array('m_type' => $bad_type, 'm_table' => 'f_member_custom_fields'));

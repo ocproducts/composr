@@ -713,13 +713,14 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forf');
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forg');
             $GLOBALS['SITE_DB']->alter_table_field('cache', 'langs_required', 'LONG_TEXT', 'dependencies');
-            $GLOBALS['SITE_DB']->add_table_field('cache', 'id', 'AUTO');
+            $GLOBALS['SITE_DB']->add_table_field('cache', 'id', 'INTEGER');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'the_member', '?MEMBER');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'groups', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_bot', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'timezone', 'MINIID_TEXT');
             $GLOBALS['SITE_DB']->change_primary_key('cache', array('id'));
+            $GLOBALS['SITE_DB']->alter_table_field('cache', 'id', '*AUTO');
 
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_member', '?MEMBER');
@@ -766,7 +767,6 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->rename_table('sitewatchlist', 'staff_website_monitoring');
             $GLOBALS['SITE_DB']->alter_table_field('staff_website_monitoring', 'siteurl', 'URLPATH', 'site_url');
             $GLOBALS['SITE_DB']->rename_table('stafflinks', 'staff_links');
-            $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
             $GLOBALS['SITE_DB']->rename_table('customtasks', 'staff_checklist_cus_tasks');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'tasktitle', 'SHORT_TEXT', 'task_title');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'datetimeadded', 'TIME', 'add_date');

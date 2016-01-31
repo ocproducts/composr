@@ -62,7 +62,7 @@ class Module_admin_wordfilter
                 'id' => '*AUTO',
                 'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
-                'w_substr' => '*BINARY'
+                'w_substr' => 'BINARY'
             ));
 
             $naughties = array(
@@ -78,7 +78,9 @@ class Module_admin_wordfilter
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
-            $GLOBALS['SITE_DB']->add_table_field('wordfilter', 'id', '*AUTO');
+            $GLOBALS['SITE_DB']->add_table_field('wordfilter', 'id', 'INTEGER');
+            $GLOBALS['SITE_DB']->change_primary_key('wordfilter', array('id'));
+            $GLOBALS['SITE_DB']->alter_table_field('wordfilter', 'id', '*AUTO');
         }
     }
 

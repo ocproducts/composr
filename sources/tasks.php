@@ -155,7 +155,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
     if (
         (get_param_integer('keep_debug_tasks', 0) == 1) ||
         (get_option('tasks_background') == '0') ||
-        ((is_guest()) && ($send_notification))
+        ((is_guest()) && ($send_notification)) ||
+        (!$GLOBALS['SITE_DB']->table_exists('task_queue')/*LEGACY*/)
     ) {
         $force_immediate = true;
     }

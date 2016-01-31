@@ -292,8 +292,8 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         }
         $_fields .= $field;
 
-        if ((!multi_lang_content()) && (substr($index_name, 0, 1) != '#') && (strpos($field, '(') === false)) {
-            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
+        $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
+        if (((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false)) && (substr($index_name, 0, 1) != '#') && (strpos($field, '(') === false)) {
             if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                 $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
             }
@@ -559,9 +559,6 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' ADD ' . $name . ' ' . $type_remap[$type] . ' ' . $extra . ' ' . $tag;
-    if (substr($_type, 0, 1) == '*') {
-        $query .= ', ADD PRIMARY KEY (' . $name . ')';
-    }
 
     return array($query, $default_st);
 }
@@ -653,9 +650,6 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
         $query .= $name;
     }
     $query .= ' ' . $extra . ' ' . $type_remap[$type] . $tag;
-    if (substr($_type, 0, 1) == '*') {
-        $query .= ', ADD PRIMARY KEY (' . ((!is_null($new_name)) ? $new_name : $name) . ')';
-    }
 
     return $query;
 }
@@ -675,6 +669,12 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }
+
+    $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name));
+    foreach ($new_key as $_new_key) {
+        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
+    }
+
     $this_ref->static_ob->db_change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
 }
 
