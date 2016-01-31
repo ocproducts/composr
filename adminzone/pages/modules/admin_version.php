@@ -37,7 +37,7 @@ class Module_admin_version
         $info['hack_version'] = null;
         $info['version'] = 17;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

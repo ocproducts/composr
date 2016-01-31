@@ -35,7 +35,7 @@ class Module_admin_staff
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['version'] = 3;
         $info['locked'] = true;
         return $info;

@@ -37,7 +37,7 @@ class Module_wiki
         $info['hack_version'] = null;
         $info['version'] = 10;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

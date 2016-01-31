@@ -31,7 +31,7 @@ class Module_classifieds
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 2;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }

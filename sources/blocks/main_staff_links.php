@@ -38,7 +38,7 @@ class Block_main_staff_links
         $info['version'] = 3;
         $info['locked'] = false;
         $info['parameters'] = array();
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

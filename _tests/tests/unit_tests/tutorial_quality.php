@@ -78,7 +78,7 @@ class tutorial_quality_test_set extends cms_test_case
 
                 $c = file_get_contents($path . '/' . $f);
 
-                $has_image = (strpos($c, '[media') !== false) || (strpos($c, '[media') !== false) || (strpos($c, '[img') !== false) || (strpos($c, '[code') !== false);
+                $has_image = (strpos($c, '[media') !== false) || (strpos($c, '[img') !== false) || (strpos($c, '[code') !== false);
 
                 $this->assertTrue($has_image, $f . ' has no images or code samples');
             }
@@ -99,7 +99,7 @@ class tutorial_quality_test_set extends cms_test_case
 
                 $c = file_get_contents($path . '/' . $f);
 
-                $image_count = (substr_count($c, '[media')) + (substr_count($c, '[media')) + (substr_count($c, '[img')) + (substr_count($c, '[code')) + (substr_count($c, '[box')) + (substr_count($c, '{|')) + (substr_count($c, '<table'));
+                $image_count = (substr_count($c, '[media')) + (substr_count($c, '[img')) + (substr_count($c, '[concepts')) + (substr_count($c, '[code')) + (substr_count($c, '[box')) + (substr_count($c, '{|')) + (substr_count($c, '<table'));
                 $size = strlen($c);
 
                 $data[] = array(
@@ -119,7 +119,7 @@ class tutorial_quality_test_set extends cms_test_case
                 continue;
             }
 
-            $this->assertTrue($d['ratio'] > 0.021 || $d['image_count'] >= 4, $f . ': media to byte ratio too low, not good for visual-orientated readers');
+            $this->assertTrue($d['ratio'] > 0.014 || $d['image_count'] >= 4, $f . ': media to byte ratio too low, not good for visual-orientated readers');
         }
 
         /*sort_maps_by($data, 'ratio');

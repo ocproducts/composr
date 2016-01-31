@@ -36,7 +36,7 @@ class Module_admin_permissions
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 8;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }

@@ -36,7 +36,7 @@ class Module_cms_comcode_pages
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }

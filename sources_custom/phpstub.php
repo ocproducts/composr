@@ -5722,6 +5722,7 @@ magic_quotes_runtime
 strchr
 pos
 sizeof
+die
 
 Disabled due to very commonly being disabled on hosts...
 

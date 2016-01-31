@@ -39,7 +39,7 @@ class Module_cms_wiki
         $info['hack_version'] = null;
         $info['version'] = 4;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

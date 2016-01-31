@@ -38,7 +38,6 @@ class Module_admin_workflow extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 0;
         $info['version'] = 1;
         $info['locked'] = false;
         return $info;

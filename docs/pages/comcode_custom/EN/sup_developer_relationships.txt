@@ -1,11 +1,17 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: Maintaining a good agency relationship[/title]
 
-[media description="" width="350" float="right" framed="0"]data_custom/images/docs/sup_developer_relationships/image.jpg[/media]
+[media description="" width="450" float="right" framed="0"]data_custom/images/docs/sup_developer_relationships/crazy_day.png[/media]
 Any good relationship is a two-way thing, [page="_SEARCH:sup_choosing_a_developer"]you should hold your web developer to high standards[/page], but treating them with some reasonable respect is also vital to maintaining a good agency relationship.
 
-Sometimes it might seem like web designer companies are pricey or that they generate too many bugs, but it's a really hard industry to work in and extremely fast-paced and competitive. There are many levels of painstaking work that go into making a modern website, involving a wide set of technical and design skills in an environment that requires sophisticated project management techniques to bring a project to completion on time and on budget. Often clients don't realise this and think that our tools are as simple as using something like Microsoft Publisher, but unfortunately given the amount of interactivity, the level of fidelity, and the requirement for a lot of flexibility, typically every tiny visual detail ends up having to be hand written in various programming languages from scratch.
+Sometimes it might seem like web designer companies are pricey or that they generate too many bugs, but it's a really hard industry to work in and extremely fast-paced and competitive.
+
+There are many levels of painstaking work that go into making a modern website, involving a wide set of technical and design skills in an environment that requires sophisticated project management techniques to bring a project to completion on time and on budget.
+
+Often clients don't realise this and think that our tools are as simple as using something like Microsoft Publisher, but unfortunately given the amount of interactivity, the level of fidelity, and the requirement for a lot of flexibility, typically every tiny visual detail ends up having to be hand written in various programming languages from scratch.
 
 This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i] to drive your web agency completely insane!
+
+[title="2"]13 techniques from [b]hell[/b][/title]
 
 [list="1"]
 [*] Send a 'Request for proposal' document to the agency that will take two working days for the agency to write a proposal for, but don't tell them that actually you have a number of pre-decided and inflexible assessment criteria that they will never be able to pass on (such as a particular company location, or very high historical revenues on their company accounts).[/*]
@@ -37,6 +43,7 @@ This tutorial contains our top 13 techniques that you hopefully [i]won't use[/i]
 
 [title="2"]Spotted a trend?[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_developer_relationships/image.jpg[/media]
 You may have noticed a trend kept coming up in the first few, and that is not to mess web design companies around at the quotation stage.
 
 It takes a lot of time to work out an accurate quote. The agency will need to:

@@ -37,7 +37,7 @@
 
 				{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 
-				{+START,IF_NON_PASSED,CLICK_URL}<p class="associated_details">({!CLICK_TO_ENLARGE})</p>{+END}
+				{+START,IF_NON_PASSED,CLICK_URL}<p class="associated_details">({!comcode:CLICK_TO_ENLARGE})</p>{+END}
 			</div>
 		</div>
 	</figure>

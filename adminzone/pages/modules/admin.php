@@ -259,6 +259,7 @@ class Module_admin
             array('subscribe', 'track', 'notification', 'alert', 'monitor', 'watch', 'follow'),
             array('bbcode', 'wikicode', 'comcode', 'shortcode'),
             array('html', 'xhtml'),
+            array('knowledgebase', 'wiki'),
             array('wysiwyg', 'rte'),
             array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system', 'package', 'install'),
             array('name', 'title', 'label', ''/*May be a stop word*/),

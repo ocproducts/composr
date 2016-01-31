@@ -32,6 +32,7 @@ class Module_admin_cmsusers
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = true;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -52,21 +53,27 @@ class Module_admin_cmsusers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('may_feature', array(
-            'id' => '*AUTO',
-            'url' => 'URLPATH'
-        ));
+        if (is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->create_table('may_feature', array(
+                'id' => '*AUTO',
+                'url' => 'URLPATH'
+            ));
 
-        $GLOBALS['SITE_DB']->create_table('logged', array(
-            'id' => '*AUTO',
-            'website_url' => 'URLPATH',
-            'website_name' => 'SHORT_TEXT',
-            'is_registered' => 'BINARY',    // NOT CURRENTLY USED
-            'log_key' => 'INTEGER',    // NOT CURRENTLY USED
-            'expire' => 'INTEGER', // 0 means never   // NOT CURRENTLY USED
-            'l_version' => 'ID_TEXT',
-            'hittime' => 'TIME'
-        ));
+            $GLOBALS['SITE_DB']->create_table('logged', array(
+                'id' => '*AUTO',
+                'website_url' => 'URLPATH',
+                'website_name' => 'SHORT_TEXT',
+                'is_registered' => 'BINARY',    // NOT CURRENTLY USED
+                'log_key' => 'INTEGER',    // NOT CURRENTLY USED
+                'expire' => 'INTEGER', // 0 means never   // NOT CURRENTLY USED
+                'l_version' => 'ID_TEXT',
+                'hittime' => 'TIME'
+            ));
+        }
+
+        if (!is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
+        }
     }
 
     /**

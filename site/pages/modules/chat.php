@@ -37,7 +37,7 @@ class Module_chat
         $info['hack_version'] = null;
         $info['version'] = 12;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

@@ -28,6 +28,7 @@ Here are just a few examples of how control of a project could be lost:
 [*] It is very common to make a website based on an existing platform, such as Composr or [url="http://www.magentocommerce.com/"]Magento[/url]. This saves a huge amount of money, but the client may think that they can request any aspect to be customised. In the case of Composr we regularly deploy sites with dozens of screens of functionality on a budget of perhaps $8,000 instead of $80,000 for a from-scratch system, but it does mean that not everything is going to be custom. For example, a client might assume they are going to get design control over the signup form, which can present a problem if it was not costed for customisation.[/*]
 [/list]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_project_management/image2.jpg[/media]
 So how to solve all this? Here are a few pointers on how to manage a project:
 [list]
 [*] There needs to be a proper specification of what is covered. This doesn't need to be very detailed, but it needs to touch on the important points. You might call this a "scope agreement" rather than a specification if it is not very detailed.[/*]

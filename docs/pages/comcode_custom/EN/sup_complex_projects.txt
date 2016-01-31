@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: How to approach complex projects[/title]
 
-[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_complex_projects/image.jpg[/media]
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_complex_projects/good_approach.png[/media]
 Composr is designed as a tool to lower the investment (be it time or money) needed for making advanced websites. Typically it might reduce that investment by around 50%, but it varies greatly from one project to another.
 
 [title="2"]Complex projects[/title]
@@ -58,6 +58,9 @@ Further on in this tutorial we will provide some guidelines for you to identify 
 
 [title="2"]Pricing[/title]
 
+[surround="right"]
+[media width="60" thumb="0" framed="0"]themes/default/images/icons/48x48/tiers/bronze.png[/media][media width="60" thumb="0" framed="0"]themes/default/images/icons/48x48/tiers/silver.png[/media][media width="60" thumb="0" framed="0"]themes/default/images/icons/48x48/tiers/gold.png[/media]
+[/surround]
 Pricing is mainly covered in the [page="_SEARCH:sup_pricing"]Project pricing tutorial[/page], but we will touch on it here also from a more philosophical point of view.
 
 Often people who are in communities aren't accustomed to the kind of figures that companies have to pay for things, and expect services to be cheaper, more like the price you see for things in shops, or pay for a software license. There's a big gap between 'free'/$100 and 'tens of thousands of pounds/dollars/euros'. The reality though is most websites for businesses cost this much, or often a lot more because they are developed by a permanent staff. There are ways to get savings -- you can outsource it all to developing countries, but unless properly managed there is almost always a big quality gap -- and often it will still cost a lot.

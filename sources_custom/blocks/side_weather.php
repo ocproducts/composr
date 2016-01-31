@@ -31,7 +31,7 @@ class Block_side_weather
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 6;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array('param', 'unit', 'max_days');
         return $info;

@@ -31,7 +31,7 @@ class Block_main_activities_state
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 1;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array('param');
         return $info;

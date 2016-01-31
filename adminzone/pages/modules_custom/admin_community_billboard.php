@@ -41,7 +41,7 @@ class Module_admin_community_billboard extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['version'] = 4;
         $info['locked'] = false;
         return $info;

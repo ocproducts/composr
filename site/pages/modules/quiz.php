@@ -36,7 +36,7 @@ class Module_quiz
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 6;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }

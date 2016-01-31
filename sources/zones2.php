@@ -296,9 +296,9 @@ function upgrade_module($zone, $module)
     }
 
     $ret = 0;
-    if ((!is_null($functions[1])) && (array_key_exists('update_require_upgrade', $info))) {
-        if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info)))
-            || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))
+    if ((!is_null($functions[1])) && (!empty($info['update_require_upgrade']))) {
+        if ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade'])))
+            || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade'])))
         ) {
             require_code('database_action');
             require_code('config2');
