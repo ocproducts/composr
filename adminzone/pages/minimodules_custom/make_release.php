@@ -139,7 +139,8 @@ function phase_1_pre()
         <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
         <li>Test with the none forum driver (no forums and members)</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
-        <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes).</li>
+        <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
+        <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
         <li>Make sure <kbd>curl-ca-bundle.crt</kbd> is reasonably up-to-date.</li>
     </ul>
     <p>Ideally do these at least on some major versions:</p>
