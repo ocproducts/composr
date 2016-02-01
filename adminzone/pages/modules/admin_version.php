@@ -713,14 +713,12 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forf');
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forg');
             $GLOBALS['SITE_DB']->alter_table_field('cache', 'langs_required', 'LONG_TEXT', 'dependencies');
-            $GLOBALS['SITE_DB']->add_table_field('cache', 'id', 'INTEGER');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'the_member', '?MEMBER');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'groups', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_bot', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'timezone', 'MINIID_TEXT');
-            $GLOBALS['SITE_DB']->change_primary_key('cache', array('id'));
-            $GLOBALS['SITE_DB']->alter_table_field('cache', 'id', '*AUTO');
+            $GLOBALS['SITE_DB']->add_auto_key('cache');
 
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_member', '?MEMBER');
@@ -773,6 +771,11 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurinterval', 'INTEGER', 'recur_interval');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurevery', 'ID_TEXT', 'recur_every');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'taskisdone', '?TIME', 'task_is_done');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('member_privileges', 'mspname');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('sessions', 'the_user');
+            $GLOBALS['SITE_DB']->create_index('sessions', 'member_id', array('member_id'));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
@@ -894,6 +897,8 @@ class Module_admin_version
                 'ip' => '*IP',
                 'note' => 'SHORT_TEXT',
             ));
+
+            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
         }
     }
 

@@ -81,7 +81,12 @@ class Hook_sitemap_privilege_category extends Hook_sitemap_base
 
         $_sections = list_to_map('p_section', $GLOBALS['SITE_DB']->query_select('privilege_list', array('DISTINCT p_section')));
         foreach ($_sections as $i => $s) {
-            $_sections[$s['p_section']] = do_lang($s['p_section']);
+            $test = do_lang($i, null, null, null, null, false);
+            if (!is_null($test)) {
+                $_sections[$i] = $test;
+            } else {
+                unset($_sections[$i]);
+            }
         }
         uasort($_sections, 'strnatcasecmp');
 

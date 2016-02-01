@@ -60,13 +60,11 @@ class Module_admin_import
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
-            $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', '*ID_TEXT');
 
-            $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', '*ID_TEXT');
 
-            $GLOBALS['SITE_DB']->add_table_field('import_parts_done', 'id', 'INTEGER');
-            $GLOBALS['SITE_DB']->change_primary_key('import_parts_done', array('id'));
-            $GLOBALS['SITE_DB']->alter_table_field('import_parts_done', 'id', '*AUTO');
+            $GLOBALS['SITE_DB']->add_auto_key('import_parts_done');
             $GLOBALS['SITE_DB']->alter_table_field('import_parts_done', 'imp_session', 'ID_TEXT');
         }
 

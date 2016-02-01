@@ -35,7 +35,7 @@ class Module_wiki
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 10;
+        $info['version'] = 9;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -96,7 +96,6 @@ class Module_wiki
                 'submitter' => 'MEMBER'
             ));
 
-            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'wiki_views', array('wiki_views'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'sps', array('submitter'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'sadd_date', array('add_date'));
 
@@ -127,8 +126,6 @@ class Module_wiki
                 'edit_date' => '?TIME'
             ));
 
-            $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
-            $GLOBALS['SITE_DB']->create_index('wiki_posts', 'spos', array('member_id'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'posts_on_page', array('page_id'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'cdate_and_time', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'svalidated', array('validated'));
@@ -140,12 +137,15 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('description'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 10)) {
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->rename_table('seedy_children', 'wiki_children');
             $GLOBALS['SITE_DB']->rename_table('seedy_pages', 'wiki_pages');
             $GLOBALS['SITE_DB']->rename_table('seedy_posts', 'wiki_posts');
 
+            $GLOBALS['SITE_DB']->alter_table_field('wiki_pages', 'seedy_views', 'INTEGER', 'wiki_views');
+
             $GLOBALS['SITE_DB']->alter_table_field('wiki_posts', 'seedy_views', 'INTEGER', 'wiki_views');
+            $GLOBALS['SITE_DB']->alter_table_field('wiki_posts', 'the_user', 'MEMBER', 'member_id');
 
             $GLOBALS['SITE_DB']->add_table_field('wiki_pages', 'edit_date', '?TIME');
 
@@ -164,7 +164,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->query_update('group_page_access', array('page_name' => 'wiki'), array('page_name' => 'cedi'));
             $GLOBALS['SITE_DB']->query_update('group_page_access', array('page_name' => 'cms_wiki'), array('page_name' => 'cms_cedi'));
 
-            $GLOBALS['SITE_DB']->query_update('notifications', array('l_notification_code' => 'wiki'), array('l_notification_code' => 'cedi'));
+            $GLOBALS['SITE_DB']->query_update('notifications_enabled', array('l_notification_code' => 'wiki'), array('l_notification_code' => 'cedi'));
 
             $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_type' => 'wiki_post'), array('r_referer_type' => 'cedi_post'));
             $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_type' => 'wiki_page'), array('r_referer_type' => 'cedi_page'));
@@ -178,10 +178,20 @@ class Module_wiki
             }
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('seedy_changes');
+
+            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'WIKI'), array('p_section' => 'SEEDY'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('wiki_posts', 'seedy_views');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('wiki_pages', 'seedy_views');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('wiki_posts', 'spos');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 10)) {
+        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', 'description'));
+
+            $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
+            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'wiki_views', array('wiki_views'));
+            $GLOBALS['SITE_DB']->create_index('wiki_posts', 'spos', array('member_id'));
         }
     }
 

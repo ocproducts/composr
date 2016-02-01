@@ -123,6 +123,7 @@ class Module_admin_stats
         if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->add_table_field('stats', 'session_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'member_track_1'), '', 1);
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {

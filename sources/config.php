@@ -252,7 +252,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : get_translated_text($option['c_value_trans']);
+    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
     $option['c_value_translated'] = $value;
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {

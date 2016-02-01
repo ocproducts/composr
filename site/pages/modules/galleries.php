@@ -136,7 +136,6 @@ class Module_galleries
             $GLOBALS['SITE_DB']->create_index('images', 'i_validated', array('validated'));
             $GLOBALS['SITE_DB']->create_index('images', 'xis', array('submitter'));
             $GLOBALS['SITE_DB']->create_index('images', 'iadd_date', array('add_date'));
-            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array('description'));
             $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_dtitle', array('title'));
 
             $GLOBALS['SITE_DB']->create_table('videos', array(
@@ -164,7 +163,6 @@ class Module_galleries
             $GLOBALS['SITE_DB']->create_index('videos', 'v_validated', array('validated'));
             $GLOBALS['SITE_DB']->create_index('videos', 'category_list', array('cat'));
             $GLOBALS['SITE_DB']->create_index('videos', 'vadd_date', array('add_date'));
-            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array('description'));
             $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_dtitle', array('title'));
 
             add_privilege('GALLERIES', 'may_download_gallery', false);
@@ -213,6 +211,9 @@ class Module_galleries
         if ((!is_null($upgrade_from)) && ($upgrade_from < 10)) {
             $GLOBALS['SITE_DB']->add_table_field('video_transcoding', 't_local_id', '?AUTO_LINK', null);
             $GLOBALS['SITE_DB']->add_table_field('video_transcoding', 't_local_id_field', 'ID_TEXT', '');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('images', 'ftjoin_icomments');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('videos', 'ftjoin_vcomments');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 10)) {
@@ -228,6 +229,9 @@ class Module_galleries
             add_privilege('SEARCH', 'autocomplete_title_image', false);
             add_privilege('SEARCH', 'autocomplete_keyword_videos', false);
             add_privilege('SEARCH', 'autocomplete_title_videos', false);
+
+            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array('description'));
+            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array('description'));
         }
     }
 

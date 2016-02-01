@@ -134,7 +134,9 @@ class Module_polls
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_voter_id', array('v_voter_id'));
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_voter_ip', array('v_voter_ip'));
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_vote_for', array('v_vote_for'));
+        }
 
+        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
             add_privilege('SEARCH', 'autocomplete_keyword_poll', false);
             add_privilege('SEARCH', 'autocomplete_title_poll', false);
         }
@@ -157,6 +159,9 @@ class Module_polls
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_index('poll', '#poll_search__combined', array('question', 'option1', 'option2', 'option3', 'option4', 'option5'));
+
+            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option6', '?SHORT_TRANS__COMCODE');
+            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option7', '?SHORT_TRANS__COMCODE');
         }
     }
 

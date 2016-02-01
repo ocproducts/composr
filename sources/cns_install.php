@@ -223,15 +223,14 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_total_sessions', 'UINTEGER');
 
         if (strpos(get_db_type(), 'mysql') !== false) {
-            $GLOBALS['FORUM_DB']->query('ALTER TABLE ' . get_table_prefix() . 'f_poll_votes ADD COLUMN id int NOT NULL AUTO_INCREMENT, DROP PRIMARY KEY, ADD PRIMARY KEY (id)');
+            $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
             $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'AUTO_LINK'), array('m_table' => 'f_poll_votes', 'm_type' => '*AUTO_LINK'));
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*USER'));
-            $GLOBALS['FORUM_DB']->query_insert('db_meta', array('m_table' => 'f_poll_votes', 'm_name' => 'id', 'm_type' => '*AUTO'));
+            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*MEMBER'));
         }
         $GLOBALS['FORUM_DB']->add_table_field('f_poll_votes', 'pv_ip', 'IP');
 
         $GLOBALS['FORUM_DB']->rename_table('f_categories', 'f_forum_groupings');
-        $GLOBALS['FORUM_DB']->alter_table_field('f_forums', 'f_category_id', 'AUTO_LINK', 'f_forum_grouping_id');
+        $GLOBALS['FORUM_DB']->alter_table_field('f_forums', 'f_category_id', '?AUTO_LINK', 'f_forum_grouping_id');
         $privileges = array('moderate_private_topic' => 'moderate_private_topic', 'edit_private_topic_posts' => 'edit_private_topic_posts', 'delete_private_topic_posts' => 'delete_private_topic_posts');
         foreach ($privileges as $old => $new) {
             rename_privilege($old, $new);
@@ -281,6 +280,8 @@ function install_cns($upgrade_from = null)
         rename_config_option('post_history_days', 'post_read_history_days');
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'');
+
+        $GLOBALS['FORUM_DB']->change_primary_key('f_multi_moderations', array('id'));
     }
 
     // If we have the forum installed to this db already, leave
