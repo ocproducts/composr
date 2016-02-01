@@ -196,9 +196,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->rename_table('chat_buddies', 'chat_friends');
 
             $GLOBALS['SITE_DB']->alter_table_field('chat_messages', 'user_id', 'MEMBER', 'member_id');
-        }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
 
             $GLOBALS['SITE_DB']->delete_index_if_exists('chat_rooms', 'is_im');
