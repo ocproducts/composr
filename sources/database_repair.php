@@ -738,7 +738,7 @@ class DatabaseRepair
         $table_name = $index['table'];
         $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
         $_fields = implode(',', $index['fields']);
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql($table_name, $_index_name, $_fields);
+        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
         if (!is_null($query)) {
             $this->add_fixup_query($query);
         }

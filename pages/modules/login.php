@@ -35,7 +35,8 @@ class Module_login
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -56,13 +57,18 @@ class Module_login
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('failedlogins', array(
-            'id' => '*AUTO',
-            'failed_account' => 'ID_TEXT',
-            'date_and_time' => 'TIME',
-            'ip' => 'IP'
-        ));
-        $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        if (is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->create_table('failedlogins', array(
+                'id' => '*AUTO',
+                'failed_account' => 'ID_TEXT',
+                'date_and_time' => 'TIME',
+                'ip' => 'IP'
+            ));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        }
     }
 
     /**

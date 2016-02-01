@@ -155,6 +155,8 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'session_id', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->change_primary_key('shopping_cart', array('id'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_order', 'recent_shopped');
         }
     }
 

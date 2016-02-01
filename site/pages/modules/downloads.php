@@ -167,10 +167,6 @@ class Module_downloads
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
-            add_privilege('_SECTION_DOWNLOADS', 'download', true);
-        }
-
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->add_table_field('download_downloads', 'url_redirect', 'URLPATH');
 
@@ -186,6 +182,8 @@ class Module_downloads
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
+
+            add_privilege('_SECTION_DOWNLOADS', 'download', true);
 
             add_privilege('SEARCH', 'autocomplete_keyword_download_category', false);
             add_privilege('SEARCH', 'autocomplete_title_download_category', false);

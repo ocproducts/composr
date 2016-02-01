@@ -201,7 +201,7 @@ class Module_calendar
             add_privilege('CALENDAR', 'set_reminders', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             add_privilege('CALENDAR', 'calendar_add_to_others', true);
 
             $GLOBALS['SITE_DB']->create_index('calendar_events', '#event_search__combined', array('e_title', 'e_content'));
@@ -225,6 +225,8 @@ class Module_calendar
                 }
             }
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_is_public');
+
+            delete_privilege('view_personal_events');
         }
     }
 
