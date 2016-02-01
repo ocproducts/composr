@@ -212,7 +212,6 @@ class Module_admin_version
                 'the_value' => 'BINARY',
                 'active_until' => '?TIME',
             ), false, false, true);
-            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
 
             $GLOBALS['SITE_DB']->create_table('member_zone_access', array(
                 'zone_name' => '*ID_TEXT',
@@ -493,21 +492,6 @@ class Module_admin_version
                 'c_frequency' => '*INTEGER', // e.g. A_DAILY_EMAIL_DIGEST
                 'c_time' => 'TIME',
             ));
-
-            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
-            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
-
-            $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_page_link', array('m_resource_page', 'm_resource_type', 'm_resource_id'));
-
-            $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_time', array('mt_time'));
-
-            $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
-
-            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
-
-            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
-
-            $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 16)) {
@@ -928,6 +912,19 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
+            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
+
+            $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_page_link', array('m_resource_page', 'm_resource_type', 'm_resource_id'));
+
+            $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_time', array('mt_time'));
+
+            $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
+
+            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
+
+            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
+
+            $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
         }
     }
 

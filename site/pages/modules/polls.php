@@ -136,11 +136,6 @@ class Module_polls
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_vote_for', array('v_vote_for'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
-            add_privilege('SEARCH', 'autocomplete_keyword_poll', false);
-            add_privilege('SEARCH', 'autocomplete_title_poll', false);
-        }
-
         if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
             $polls = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'ip'));
             foreach ($polls as $poll) {
@@ -157,11 +152,16 @@ class Module_polls
             $GLOBALS['SITE_DB']->delete_table_field('poll', 'ip');
         }
 
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option6', '?SHORT_TRANS__COMCODE');
+            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option7', '?SHORT_TRANS__COMCODE');
+        }
+
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_index('poll', '#poll_search__combined', array('question', 'option1', 'option2', 'option3', 'option4', 'option5'));
 
-            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option6', '?SHORT_TRANS__COMCODE');
-            $GLOBALS['SITE_DB']->alter_table_field('poll', 'option7', '?SHORT_TRANS__COMCODE');
+            add_privilege('SEARCH', 'autocomplete_keyword_poll', false);
+            add_privilege('SEARCH', 'autocomplete_title_poll', false);
         }
     }
 

@@ -293,8 +293,8 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         $_fields .= $field;
 
         if (strpos($field, '(') === false) {
-            $db_type = $this_ref->query_select_value('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
-            if (((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false)) && (substr($index_name, 0, 1) != '#')) {
+            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
+            if ((substr($index_name, 0, 1) != '#') && (!is_null($db_type)) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                     $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
                 }
