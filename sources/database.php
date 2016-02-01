@@ -1553,7 +1553,7 @@ class DatabaseConnector
      *
      * @ignore
      */
-    function add_auto_key($table_name, $field_name = 'id')
+    public function add_auto_key($table_name, $field_name = 'id')
     {
         require_code('database_helper');
         _helper_add_auto_key($this, $table_name, $field_name);
