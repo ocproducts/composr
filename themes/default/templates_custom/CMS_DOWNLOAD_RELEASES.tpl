@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="dlBody">
-			<p>This is a zip containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some chmodding is required.</p>
+			<p>This is a ZIP containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some chmodding is required.</p>
 
 			<p><strong>Do not use this for upgrading.</strong></p>
 

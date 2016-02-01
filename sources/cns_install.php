@@ -287,6 +287,12 @@ function install_cns($upgrade_from = null)
         $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 1), array('the_name' => 'delete_account'));
 
         add_privilege('FORUMS_AND_MEMBERS', 'delete_private_topic_posts', false, false);
+
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'unread_forums');
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 'unread_forums', array('t_forum_id', 't_cache_last_time'));
+
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_since');
+        $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_since', array('p_time', 'p_cache_forum_id')); // p_cache_forum_id is used to not count PT posts
     }
 
     // If we have the forum installed to this db already, leave

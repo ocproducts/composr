@@ -279,13 +279,7 @@ function upgrade_script()
                         if ($upgrade_file['path'] == 'install.php') {
                             continue;
                         }
-                        if ($upgrade_file['path'] == 'install.sql') {
-                            continue;
-                        }
-                        if ($upgrade_file['path'] == '_config.php.template') {
-                            continue;
-                        }
-                        if ($upgrade_file['path'] == 'data/upgrader2.php') {
+                        if ($upgrade_file['path'] == 'install.sql' || $upgrade_file['path'] == '_config.php.template') {
                             continue;
                         }
 
@@ -317,9 +311,8 @@ function upgrade_script()
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 foreach ($addon_contents as $addon_name => $addon_data) {
                                     // See if this is the addon for the file
-                                    $shortened_path = $upgrade_file['path'];
-                                    $shortened_path = preg_replace('#^themes/default/(templates|css)/#', '', $shortened_path);
-                                    if (strpos($addon_data, '\'' . addslashes($shortened_path) . '\'') !== false) {
+                                    $addon_file_path = $upgrade_file['path'];
+                                    if (strpos($addon_data, '\'' . addslashes($addon_file_path) . '\'') !== false) {
                                         $found = $addon_name;
                                         break;
                                     }
@@ -328,9 +321,9 @@ function upgrade_script()
 
                             // Install if either of the following is true:
                             //  - it's some file not in an addon (shouldn't actually happen)
-                            //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported mod file, and not showing up as uninstalled in log)
+                            //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported addon file, and not showing up as uninstalled in log)
                             //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if ((is_null($found)) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     afm_make_directory($upgrade_file['path'], false, true);
                                 } else {
@@ -804,7 +797,7 @@ function check_perms()
             }
         }
         /*
-        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files
+        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files      DISABLED (too noisy)
             foreach (array_keys($themes) as $theme) {
                 $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
                 if (!file_exists(get_file_base() . '/' . $_chmod)) {

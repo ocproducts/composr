@@ -19,7 +19,7 @@
  */
 
 /**
- * Find file meta information for adding to a zip file
+ * Find file meta information for adding to a ZIP file
  *
  * @param  PATH $path The full path to the folder to add
  * @param  PATH $subpath The subpath relative to the path (should be left as the default '', as this is used for the recursion to distinguish the adding base path from where it's currently looking)
@@ -90,13 +90,13 @@ function crc32_file($filename)
 }
 
 /**
- * Create a zip file.
+ * Create a ZIP file.
  *
- * @param  array $file_array A list of maps (time,data/full_path,name) covering everything to zip up
+ * @param  array $file_array A list of maps (time,data/full_path,name) covering everything to ZIP up
  * @param  boolean $stream Whether to stream the output direct to the browser
  * @param  boolean $get_offsets Whether to return the tuple
  * @param  ?PATH $outfile_path File to spool into (null: none). $stream will be forced to false
- * @return mixed The data for the zip file OR a tuple: data, offsets, sizes; will be blank if $stream is true or $outfile_path is not null
+ * @return mixed The data for the ZIP file OR a tuple: data, offsets, sizes; will be blank if $stream is true or $outfile_path is not null
  */
 function create_zip_file($file_array, $stream = false, $get_offsets = false, $outfile_path = null)
 {

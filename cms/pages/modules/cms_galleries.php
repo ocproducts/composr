@@ -316,7 +316,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('form_templates');
         require_lang('trackbacks');
 
-        // To choose to batch import from an attached tar or zip file (zip file only supported if zip module running on php install)
+        // To choose to batch import from an attached TAR or ZIP file (ZIP file only supported if ZIP module running on php install)
         $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => get_param_string('redirect', null)), '_SELF');
         $fields = new Tempcode();
         $supported = 'tar';

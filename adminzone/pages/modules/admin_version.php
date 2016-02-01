@@ -789,6 +789,9 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
 
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forf');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('url_title_cache', 't_url');
+            $GLOBALS['SITE_DB']->create_index('url_title_cache', 't_url', array('t_url'));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {

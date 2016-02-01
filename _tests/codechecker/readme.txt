@@ -87,7 +87,7 @@ The spellchecker requires that ASpell is installed. If it is not, spell checking
 
 To install on Windows...
 
-At the time of writing the ASpell distribution had a corrupt file, but the following alternative zip version worked:
+At the time of writing the ASpell distribution had a corrupt file, but the following alternative ZIP version worked:
 http://ftp.gnu.org/gnu/aspell/w32/aspell-w32-0.50.3.zip
 http://ftp.gnu.org/gnu/aspell/w32/aspell-en-0.50-2.zip (the English dictionary)
 

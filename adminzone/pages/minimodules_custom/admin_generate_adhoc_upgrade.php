@@ -32,7 +32,7 @@ if ($type != 'go') {
     $title->evaluate_echo();
 
     echo '
-        <p>This system will generate a TAR archive to upgrade a site to the files in this Composr installation. You choose which addons to include (both bundled and non-bundled are supported), and the date to get changed files from (both may be auto-detected from the install location).</p>
+        <p>This system will generate a package to upgrade a site to the files in this Composr installation. You choose which addons to include (both bundled and non-bundled are supported), and the date to get changed files from (both may be auto-detected from the install location).</p>
     ';
 }
 
@@ -272,7 +272,7 @@ echo '
     <form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'type' => 'auto_probe'), '_SELF'))) . '" method="post">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 
-        <h2>Auto-probe upgrade TAR settings, and give specialised advice</h2>
+        <h2>Auto-probe upgrade settings, and give specialised advice</h2>
 
         <p>
             <label for="probe_dir">
@@ -295,7 +295,7 @@ echo '
     <form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'type' => 'go'), '_SELF'))) . '" method="post">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 
-        <h2>Manually customise upgrade TAR settings</h2>
+        <h2>Manually customise upgrade settings</h2>
 
         <p>
             <label for="cutoff_days">

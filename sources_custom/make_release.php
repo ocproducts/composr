@@ -85,6 +85,7 @@ function make_installers($skip_file_grab = false)
     $manual_zip = $builds_path . '/builds/' . $version_dotted . '/composr_manualextraction_installer-' . $version_dotted . '.zip';
     $mszip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '-webpi.zip'; // Aka msappgallery, related to webmatrix
     $aps_zip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '.app.zip'; // APS package
+    $uni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
 
     // Flags
     $make_quick = (get_param_integer('skip_quick', 0) == 0);
@@ -92,6 +93,7 @@ function make_installers($skip_file_grab = false)
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
     $make_aps = (get_param_integer('skip_aps', 0) == 0);
+    $make_uni_upgrader = (post_param_integer('make_uni_upgrader', 0) == 1);
 
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(0);
@@ -200,7 +202,7 @@ function make_installers($skip_file_grab = false)
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('readme.txt');
         $output2 .= $cmd . ':' . "\n" . shell_exec($cmd);
-        $out .= do_build_zip_output($quick_zip, $output2);
+        $out .= do_build_archive_output($quick_zip, $output2);
 
         chdir(get_file_base());
     }
@@ -217,7 +219,7 @@ function make_installers($skip_file_grab = false)
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . escapeshellarg($manual_zip) . ' *';
         $output2 = shell_exec($cmd);
-        $out .= do_build_zip_output($manual_zip, $output2);
+        $out .= do_build_archive_output($manual_zip, $output2);
 
         chdir(get_file_base());
     }
@@ -247,12 +249,12 @@ function make_installers($skip_file_grab = false)
         if ($cmd_result !== null) {
             $output2 .= $cmd_result;
         }
-        //$out .= do_build_zip_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
+        //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
         shell_exec($cmd);
         @unlink($bundled);
-        $out .= do_build_zip_output($bundled . '.gz', $output2);
+        $out .= do_build_archive_output($bundled . '.gz', $output2);
 
         // Remove those files we copied
         unlink($builds_path . '/builds/build/' . $version_branch . '/install.sql');
@@ -297,7 +299,7 @@ function make_installers($skip_file_grab = false)
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
         $output2 = shell_exec($cmd);
-        $out .= do_build_zip_output($mszip, $output2);
+        $out .= do_build_archive_output($mszip, $output2);
 
         // Undo temporary renaming
         rename($builds_path . '/builds/build/composr', $builds_path . '/builds/build/' . $version_branch);
@@ -386,7 +388,7 @@ function make_installers($skip_file_grab = false)
         chdir($builds_path . '/builds/aps');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
         $output2 = shell_exec($cmd);
-        $out .= do_build_zip_output($aps_zip, $output2);
+        $out .= do_build_archive_output($aps_zip, $output2);
 
         // Undo temporary renaming
         rename($builds_path . '/builds/aps/htdocs/', $builds_path . '/builds/build/' . $version_branch . '/');
@@ -394,6 +396,23 @@ function make_installers($skip_file_grab = false)
         // Delete the copied files
         deldir_contents($builds_path . '/builds/aps/');
         rmdir($builds_path . '/builds/aps/');
+
+        chdir(get_file_base());
+    }
+
+    // Build uni-upgrader
+    if ($make_uni_upgrader) {
+        @unlink($uni_upgrader);
+
+        // Do the main work
+        chdir($builds_path . '/builds/build/' . $version_branch);
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' * --mode=a+X';
+        $output2 = '';
+        $cmd_result = shell_exec($cmd);
+        if ($cmd_result !== null) {
+            $output2 .= $cmd_result;
+        }
+        $out .= do_build_archive_output($uni_upgrader, $output2);
 
         chdir(get_file_base());
     }
@@ -416,6 +435,9 @@ function make_installers($skip_file_grab = false)
     }
     if ($make_aps) {
         $details .= '<li>' . $aps_zip . ' file size: ' . clean_file_size(filesize($aps_zip)) . '</li>';
+    }
+    if ($make_uni_upgrader) {
+        $details .= '<li>' . $uni_upgrader . ' file size: ' . clean_file_size(filesize($uni_upgrader)) . '</li>';
     }
 
     $out .= '
@@ -530,14 +552,14 @@ function do_build_directory_output($path)
     return '<li>Directory "' . escape_html($path) . '" traversed.</li>';
 }
 
-function do_build_zip_output($file, $new_output)
+function do_build_archive_output($file, $new_output)
 {
     $version_dotted = get_version_dotted();
 
     $builds_path = get_builds_path();
     return '
         <div class="zip_surround">
-        <h2>Compiling ZIP file "<a href="' . escape_html($file) . '" title="Download the file.">' . escape_html($builds_path . $version_dotted . '/' . $file) . '</a>"</h2>
+        <h2>Compiling archive file "<a href="' . escape_html($file) . '" title="Download the file.">' . escape_html($builds_path . $version_dotted . '/' . $file) . '</a>"</h2>
         <p>' . nl2br(trim(escape_html($new_output))) . '</p>
         </div>';
 }

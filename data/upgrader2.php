@@ -18,7 +18,7 @@
  * @package    core_upgrader
  */
 
-/* Standalone script to extract a tar file */
+/* Standalone script to extract a TAR file */
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
@@ -106,20 +106,22 @@ asort($data);
 // Work out what we're doing
 $todo = $data['todo'];
 
+$per_cycle = 100;
+
 // Do the extraction
 foreach ($todo as $i => $_target_file) {
     list($target_file, , $offset, $length,) = $_target_file;
 
-    if ($i < $file_offset) {
-        continue;
-    }
-    if ($i > $file_offset + 20) {
-        break;
-    }
-
-    if ($_target_file == 'data/upgrader2.php') {
-        if ($file_offset + 20 < count($todo)) {
+    if ($target_file == 'data/upgrader2.php') {
+        if ($file_offset + $per_cycle < count($todo)) {
             continue; // Only extract on last step, to avoid possible transitionary bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
+        }
+    } else {
+        if ($i < $file_offset) {
+            continue;
+        }
+        if ($i > $file_offset + $per_cycle) {
+            break;
         }
     }
 
@@ -146,7 +148,7 @@ fclose($myfile);
 
 // Show HTML
 $next_offset_url = '';
-if ($file_offset + 20 < count($todo)) {
+if ($file_offset + $per_cycle < count($todo)) {
     $next_offset_url = 'upgrader2.php?';
     foreach ($_GET as $key => $val) {
         if (get_magic_quotes_gpc()) {
@@ -157,7 +159,7 @@ if ($file_offset + 20 < count($todo)) {
             $next_offset_url .= urlencode($key) . '=' . urlencode($val) . '&';
         }
     }
-    $next_offset_url .= 'file_offset=' . urlencode(strval($file_offset + 20));
+    $next_offset_url .= 'file_offset=' . urlencode(strval($file_offset + $per_cycle));
     $next_offset_url .= '#progress';
 }
 up2_do_header($next_offset_url);
@@ -171,7 +173,7 @@ if ($next_offset_url == '') {
 echo '<ol>';
 foreach ($todo as $i => $target_file) {
     echo '<li>';
-    echo '<input id="file_' . strval($i) . '" name="file_' . strval($i) . '" type="checkbox" value="1" disabled="disabled"' . (($i < $file_offset + 20) ? ' checked="checked"' : '') . ' /> <label for="file_' . strval($i) . '">' . htmlentities($target_file[0]) . '</label>';
+    echo '<input id="file_' . strval($i) . '" name="file_' . strval($i) . '" type="checkbox" value="1" disabled="disabled"' . (($i < $file_offset + $per_cycle) ? ' checked="checked"' : '') . ' /> <label for="file_' . strval($i) . '">' . htmlentities($target_file[0]) . '</label>';
     if ($i == $file_offset) {
         echo '<a id="progress"></a>';
     }
@@ -179,7 +181,9 @@ foreach ($todo as $i => $target_file) {
 }
 echo '</ol>';
 echo '<script>// <![CDATA[
-    window.scrollTo(0,document.getElementById("file_' . strval($file_offset) . '").offsetTop-100);
+    window.setTimeout(function() {
+        window.scrollTo(0,document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop-50);
+    },200);
 //]]></script>';
 if ($next_offset_url == '') {
     echo '<p><strong>' . htmlentities($_GET['done']) . '!</strong></p>';

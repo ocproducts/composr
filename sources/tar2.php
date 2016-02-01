@@ -19,11 +19,11 @@
  */
 
 /**
- * Convert a zip file to a tar file.
+ * Convert a ZIP file to a TAR file.
  *
- * @param  PATH $in_path The path of the tar file to convert
- * @param  ?PATH $out_path The path of the zip file to save to (null: make up a temporary path)
- * @return PATH The tar path. A temp file that must be deleted
+ * @param  PATH $in_path The path of the TAR file to convert
+ * @param  ?PATH $out_path The path of the ZIP file to save to (null: make up a temporary path)
+ * @return PATH The TAR path. A temp file that must be deleted
  */
 function convert_zip_to_tar($in_path, $out_path = null)
 {
