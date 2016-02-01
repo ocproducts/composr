@@ -144,6 +144,10 @@ class Module_admin_permissions
             add_privilege('SUBMISSION', 'unfiltered_input', false);
 
             $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
+
+            if (!privilege_exists('perform_keyword_check')) {
+                add_privilege('SUBMISSION', 'perform_keyword_check', false);
+            }
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
