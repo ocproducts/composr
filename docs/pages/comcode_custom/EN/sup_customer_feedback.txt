@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: Feedback methods that don't lead you down the garden path[/title]
 
-[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_customer_feedback/image.jpg[/media]
+[media description="" width="250" float="right" framed="0"]data_custom/images/docs/sup_customer_feedback/image.png[/media]
 One hard lesson I've learnt while working on Composr is to never [i]rely[/i] on unsolicited user feedback to gauge and drive product development. This tutorial will explain the issues as they relate to my own experience with Composr development, and detail better feedback methods that hopefully are applicable to the wider world.
 
 Here are a few hard realities that need to be examined:
@@ -13,9 +13,11 @@ Here are a few hard realities that need to be examined:
 [*] If you only listen to existing users you are ignoring the potentials you never managed to convince, and what stopped them adopting. Geoffrey Moore talks about the problems of moving beyond early adopters in his famous book, [url="http://en.wikipedia.org/wiki/Crossing_the_Chasm"]Crossing the Chasm[/url].[/*]
 [*] Even if you use surveying as your feedback method, you will either only get feedback from the most engaged users, or you will get lazy feedback from very selfish users (if you awarded a prize).[/*]
 [/list]
+
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_customer_feedback/image.jpg[/media]
 So you need to throw away any idea of deciding your priorities through only unsolicited feedback from existing users. Always look at the feedback and give it very serious consideration, but never use it to decide your roadmap.
 
-So what is a better feedback method?
+[title="2"]So what is a better feedback method?[/title]
 
 You need to look at what your model of your target customer is, and then seek out these kinds of people for usability testing. You'll be amazed what very different feedback you find from them if you work from this fresh external perspective. Watch them using the product, give them tasks to perform and see how they do. You will see them get stuck on things you never imagined.
 
