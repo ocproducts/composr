@@ -35,7 +35,7 @@ class Module_admin_permissions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
+        $info['version'] = 9;
         $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
@@ -143,14 +143,16 @@ class Module_admin_permissions
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             add_privilege('SUBMISSION', 'unfiltered_input', false);
 
-            $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
-
             if (!privilege_exists('perform_keyword_check')) {
                 add_privilege('SUBMISSION', 'perform_keyword_check', false);
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+            $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
             rename_privilege('bypass_word_filter', 'bypass_wordfilter');
 
             delete_privilege('view_revision_history');
