@@ -344,7 +344,13 @@ function _build_stored_menu_branch($item, $items)
                         break;
 
                     case INCLUDE_SITEMAP_UNDER:
-                        $branch['children'] = $extra_branch['children'];
+                        $known_existing_page_links = array();
+                        _find_child_page_links($branch['children'], $known_existing_page_links);
+                        foreach ($extra_branch['children'] as $child) {
+                            if (!isset($known_existing_page_links[$child['page_link']])) {
+                                $branch['children'][] = $child;
+                            }
+                        }
                         break;
                 }
             }
@@ -352,6 +358,22 @@ function _build_stored_menu_branch($item, $items)
     }
 
     return $branches;
+}
+
+/**
+ * Find all page-links under a list of children, recursively.
+ *
+ * @param  array $branches Branches
+ * @param  array $page_links Page-links found
+ *
+ * @ignore
+ */
+function _find_child_page_links($branches, &$page_links)
+{
+    foreach ($branches as $branch) {
+        $page_links[$branch['page_link']] = true;
+        _find_child_page_links($branch['children'], $page_links);
+    }
 }
 
 /**
