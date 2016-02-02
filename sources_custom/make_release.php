@@ -198,11 +198,12 @@ function make_installers($skip_file_grab = false)
         chdir($builds_path . '/builds/' . $version_dotted);
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('data.cms') . ' ' . escapeshellarg('install.php');
         $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $out .= do_build_archive_output($quick_zip, $output2);
 
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('readme.txt');
-        $output2 .= $cmd . ':' . "\n" . shell_exec($cmd);
-        $out .= do_build_archive_output($quick_zip, $output2);
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        //$out .= do_build_archive_output($quick_zip, $output2);    Don't care
 
         chdir(get_file_base());
     }
@@ -218,7 +219,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . escapeshellarg($manual_zip) . ' *';
-        $output2 = shell_exec($cmd);
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         $out .= do_build_archive_output($manual_zip, $output2);
 
         chdir(get_file_base());
@@ -235,24 +236,21 @@ function make_installers($skip_file_grab = false)
         copy(get_file_base() . '/_config.php.template', $builds_path . '/builds/build/' . $version_branch . '/_config.php.template');
         fix_permissions($builds_path . '/builds/build/' . $version_branch . '/_config.php.template');
 
-        // Do the main work
+        // Do the main work...
+
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' * --mode=a+X';
-        $output2 = '';
-        $cmd_result = shell_exec($cmd);
-        if ($cmd_result !== null) {
-            $output2 .= $cmd_result;
-        }
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
+
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt --mode=a+X';
-        $cmd_result = shell_exec($cmd);
-        if ($cmd_result !== null) {
-            $output2 .= $cmd_result;
-        }
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
+
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
-        shell_exec($cmd);
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         @unlink($bundled);
         $out .= do_build_archive_output($bundled . '.gz', $output2);
 
@@ -298,7 +296,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
-        $output2 = shell_exec($cmd);
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         $out .= do_build_archive_output($mszip, $output2);
 
         // Undo temporary renaming
@@ -387,7 +385,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/aps');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
-        $output2 = shell_exec($cmd);
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         $out .= do_build_archive_output($aps_zip, $output2);
 
         // Undo temporary renaming
@@ -407,11 +405,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' * --mode=a+X';
-        $output2 = '';
-        $cmd_result = shell_exec($cmd);
-        if ($cmd_result !== null) {
-            $output2 .= $cmd_result;
-        }
+        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
         $out .= do_build_archive_output($uni_upgrader, $output2);
 
         chdir(get_file_base());

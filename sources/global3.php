@@ -621,7 +621,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             closedir($dh);
         }
     } else {
-        $place = array('default', '/' . $directory . '/');
+        $place = array('default', '/' . $directory . '/', $suffix);
     }
 
     $tp_cache[$sz] = $place;

@@ -1420,32 +1420,32 @@ function step_5_ftp()
                         if (($lang == fallback_lang()) || (strpos($lang, '.') !== false)) {
                             continue;
                         }
-                    }
 
-                    if (is_suexec_like()) {
-                        $myfile = fopen(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 'wb');
-                        fwrite($myfile, $contents);
-                        fclose($myfile);
-                        fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 0666);
-                    } else {
-                        @ftp_delete($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
-                        $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
-                        fwrite($tmp, $contents);
-                        fclose($tmp);
-                        ftp_put($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY);
-                        $mask = 0;
-                        if (get_file_extension($filename) == 'php') {
-                            if (($php_perms & 0100) == 0100) { // If PHP files need to be marked user executable
-                                $mask = $mask | 0100;
+                        if (is_suexec_like()) {
+                            $myfile = fopen(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 'wb');
+                            fwrite($myfile, $contents);
+                            fclose($myfile);
+                            fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 0666);
+                        } else {
+                            @ftp_delete($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
+                            $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
+                            fwrite($tmp, $contents);
+                            fclose($tmp);
+                            ftp_put($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY);
+                            $mask = 0;
+                            if (get_file_extension($filename) == 'php') {
+                                if (($php_perms & 0100) == 0100) { // If PHP files need to be marked user executable
+                                    $mask = $mask | 0100;
+                                }
+                                if (($php_perms & 0010) == 0010) { // If PHP files need to be marked group executable
+                                    $mask = $mask | 0010;
+                                }
+                                if (($php_perms & 0001) == 0001) { // If PHP files need to be marked other executable
+                                    $mask = $mask | 0001;
+                                }
                             }
-                            if (($php_perms & 0010) == 0010) { // If PHP files need to be marked group executable
-                                $mask = $mask | 0010;
-                            }
-                            if (($php_perms & 0001) == 0001) { // If PHP files need to be marked other executable
-                                $mask = $mask | 0001;
-                            }
+                            @ftp_site($conn, 'CHMOD 0' . decoct(0644 | $mask) . ' ' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
                         }
-                        @ftp_site($conn, 'CHMOD 0' . decoct(0644 | $mask) . ' ' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
                     }
                 }
             }
@@ -2396,7 +2396,7 @@ function require_code($codename)
         $path = $FILE_BASE . ((strpos($codename, '.php') === false) ? ('/sources_custom/' . $codename . '.php') : ('/' . $codename));
     }
 
-    $REQUIRED_BEFORE[$codename] = 1;
+    $REQUIRED_BEFORE[$codename] = true;
     if ((@is_array($FILE_ARRAY)) && ((!isset($_GET['keep_quick_hybrid'])) || (!file_exists($path)))) {
         $file = file_array_get('sources/' . $codename . '.php');
         $file = str_replace('<' . '?php', '', $file);

@@ -174,7 +174,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
  * Get an array of all the INI entries in the specified language for a particular section.
  *
  * @param  LANGUAGE_NAME $lang The language
- * @param  ?ID_TEXT $file The language file (null: all non-custom language files)
+ * @param  ?ID_TEXT $file The language file (null: all language files)
  * @param  string $section The section
  * @return array The INI entries
  */
@@ -183,10 +183,15 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
     $entries = array();
 
     if (is_null($file)) {
-        $dh = opendir(get_file_base() . '/lang/' . $lang);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.ini') {
-                $entries = array_merge($entries, get_lang_file_section($lang, basename($f, '.ini'), $section));
+        foreach (array('lang', 'lang_custom') as $dir) {
+            $dh = @opendir(get_file_base() . '/' . $dir . '/' . $lang);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if (substr($f, -4) == '.ini') {
+                        $entries = array_merge($entries, get_lang_file_section($lang, basename($f, '.ini'), $section));
+                    }
+                }
+                closedir($dh);
             }
         }
         return $entries;
