@@ -153,7 +153,7 @@ class Module_admin_debrand
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
-        $submit_name = do_lang_tempcode('SUPER_DEBRAND');
+        $submit_name = do_lang_tempcode('PROCEED');
 
         return do_template('FORM_SCREEN', array('_GUID' => 'fd47f191ac51f7754eb17e3233f53bcc', 'HIDDEN' => '', 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('WARNING_SUPER_DEBRAND_MAJOR_CHANGES'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
     }
@@ -178,7 +178,6 @@ class Module_admin_debrand
         set_option('show_docs', post_param_string('show_docs', '0'));
 
         require_code('database_action');
-        //set_option('allow_member_integration', 'off');
 
         foreach (array(get_file_base() . '/pages/comcode_custom/' . get_site_default_lang(), get_file_base() . '/adminzone/pages/comcode_custom/' . get_site_default_lang()) as $dir) {
             if (!file_exists($dir)) {
@@ -247,7 +246,7 @@ class Module_admin_debrand
             afm_make_file($critical_errors_path, $critical_errors, false);
         }
 
-        $save_header_path = get_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
+        $save_header_path = get_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
         if (!file_exists(dirname($save_header_path))) {
             require_code('files2');
             make_missing_directory(dirname($save_header_path));
@@ -289,17 +288,26 @@ class Module_admin_debrand
 
         // Clean up the theme images
         //  background-image
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+        $theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
         find_theme_image('background_image');
         //  logo/*
         if (addon_installed('zone_logos')) {
-            find_theme_image('logo/adminzone-logo');
-            find_theme_image('logo/cms-logo');
-            find_theme_image('logo/collaboration-logo');
             $main_logo_url = find_theme_image('logo/-logo', false, true);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
+
+            $test = find_theme_image('logo/adminzone-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
+            }
+
+            $test = find_theme_image('logo/cms-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
+            }
+
+            $test = find_theme_image('logo/collaboration-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
+            }
         }
 
         // Various other icons

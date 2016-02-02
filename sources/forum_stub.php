@@ -435,70 +435,55 @@ class Forum_driver_base
      */
     public function get_theme($zone_for = null)
     {
-        global $SITE_INFO;
+        global $SITE_INFO, $ZONE, $USER_THEME_CACHE;
 
-        if ($zone_for !== null) {
-            $zone_theme = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => $zone_for));
-            if ($zone_theme != '-1') {
-                if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-                    if (!is_dir(get_custom_file_base() . '/themes/' . $zone_theme)) {
-                        return $this->get_theme();
-                    }
-                }
-
-                return $zone_theme;
+        if ($zone_for === null) {
+            if ($USER_THEME_CACHE !== null) {
+                return $USER_THEME_CACHE;
             }
-            return $this->get_theme();
-        }
 
-        global $USER_THEME_CACHE;
-        if ($USER_THEME_CACHE !== null) {
-            return $USER_THEME_CACHE;
+            $zone_for = get_zone_name();
+            $specific_zone_requested = false;
+        } else {
+            $specific_zone_requested = true;
         }
 
         global $IN_MINIKERNEL_VERSION;
         if (($IN_MINIKERNEL_VERSION) || (in_safe_mode())) {
-            if ($zone_for === null) {
-                $zone_for = get_zone_name();
-            }
             return ($zone_for === 'adminzone' || $zone_for === 'cms') ? 'admin' : 'default';
         }
 
         // Try hardcoded in URL
-        $USER_THEME_CACHE = filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
-        if ($USER_THEME_CACHE != '-1') {
-            if ((!is_dir(get_file_base() . '/themes/' . $USER_THEME_CACHE)) && (!is_dir(get_custom_file_base() . '/themes/' . $USER_THEME_CACHE))) {
-                $theme = $USER_THEME_CACHE;
-                $USER_THEME_CACHE = 'default';
+        $theme = filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
+        if ($theme != '-1') {
+            if ((!is_dir(get_file_base() . '/themes/' . $theme)) && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) {
                 require_code('site');
                 attach_message(do_lang_tempcode('NO_SUCH_THEME', escape_html($theme)), 'warn');
-                $USER_THEME_CACHE = null;
             } else {
-                global $ZONE;
-                $zone_theme = ($ZONE === null) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => get_zone_name())) : $ZONE['zone_theme'];
+                $zone_theme = ($ZONE === null || $specific_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
 
                 require_code('permissions');
-                if (($USER_THEME_CACHE == 'default') || ($USER_THEME_CACHE == $zone_theme) || (has_category_access(get_member(), 'theme', $USER_THEME_CACHE))) {
-                    return $USER_THEME_CACHE;
+                if (($theme == 'default') || ($theme == $zone_theme) || (has_category_access(get_member(), 'theme', $theme))) {
+                    if (!$specific_zone_requested) {
+                        $USER_THEME_CACHE = $theme;
+                    }
+                    return $theme;
                 } else {
-                    $theme = $USER_THEME_CACHE;
-                    $USER_THEME_CACHE = 'default';
                     if (running_script('index')) {
                         require_code('site');
                         attach_message(do_lang_tempcode('NO_THEME_PERMISSION', escape_html($theme)), 'warn');
                     }
-                    $USER_THEME_CACHE = null;
                 }
             }
-        } else {
-            $USER_THEME_CACHE = null;
         }
 
         // Try hardcoded in Composr
-        global $ZONE;
-        $zone_theme = ($ZONE === null) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => get_zone_name())) : $ZONE['zone_theme'];
-        $default_theme = ((get_page_name() == 'login') && (get_option('root_zone_login_theme') == '1')) ? $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => '')) : $zone_theme;
-        if (($default_theme !== null) && ($default_theme != '-1')) {
+        $zone_theme = ($ZONE === null || $specific_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
+        $default_theme = ((get_page_name() == 'login') && (get_option('root_zone_login_theme') == '1') && ($zone_for != '')) ? $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => '')) : $zone_theme;
+        if (empty($default_theme)) { // Cleanup bad data
+            $default_theme = '-1';
+        }
+        if ($default_theme != '-1') { // Sanity check
             if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
                 if (!is_dir(get_custom_file_base() . '/themes/' . $default_theme)) {
                     $default_theme = '-1';
@@ -506,34 +491,31 @@ class Forum_driver_base
             }
         }
         if ($default_theme != '-1') {
-            $USER_THEME_CACHE = $default_theme;
-            if ($USER_THEME_CACHE == '') {
-                $USER_THEME_CACHE = 'default';
+            $theme = $default_theme;
+            if (!$specific_zone_requested) {
+                $USER_THEME_CACHE = $theme;
             }
-            return $USER_THEME_CACHE;
-        }
-        if ($default_theme == '-1') {
-            $default_theme = 'default';
+            return $theme;
         }
 
-        // Get from forums
-        $USER_THEME_CACHE = filter_naughty($this->_get_theme());
-        if (($USER_THEME_CACHE == '') || (($USER_THEME_CACHE != 'default') && (!is_dir(get_custom_file_base() . '/themes/' . $USER_THEME_CACHE)))) {
-            $USER_THEME_CACHE = 'default';
-        }
-        if ($USER_THEME_CACHE == '-1') {
-            $USER_THEME_CACHE = 'default';
-        }
+        // Get from member setting
         require_code('permissions');
-        if (($USER_THEME_CACHE != 'default') && (!has_category_access(get_member(), 'theme', $USER_THEME_CACHE))) {
-            $USER_THEME_CACHE = 'default';
+        $theme = filter_naughty($this->_get_theme());
+        if (empty($theme)) { // Cleanup bad data
+            $theme = '-1';
+        }
+        if (
+            ($theme == '-1') ||
+            (($theme != 'default') && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) ||
+            (!has_category_access(get_member(), 'theme', $theme))
+        ) {
+            $theme = 'default';
         }
 
-        if ($USER_THEME_CACHE == '') {
-            $USER_THEME_CACHE = 'default';
+        if (!$specific_zone_requested) {
+            $USER_THEME_CACHE = $theme;
         }
-
-        return $USER_THEME_CACHE;
+        return $theme;
     }
 
     /**

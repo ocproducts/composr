@@ -68,10 +68,11 @@ function init__comcode()
     define('WYSIWYG_COMCODE__BUTTON', 1);
     define('WYSIWYG_COMCODE__XML_BLOCK', 2);
     define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', 3);
-    define('WYSIWYG_COMCODE__XML_INLINE', 4);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', 5);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', 6);
-    define('WYSIWYG_COMCODE__HTML', 7);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', 4);
+    define('WYSIWYG_COMCODE__XML_INLINE', 5);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', 6);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', 7);
+    define('WYSIWYG_COMCODE__HTML', 8);
 }
 
 /**

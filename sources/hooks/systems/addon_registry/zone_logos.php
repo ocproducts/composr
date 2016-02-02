@@ -51,7 +51,7 @@ class Hook_addon_registry_zone_logos
      */
     public function get_description()
     {
-        return 'Different logos for individual zones.';
+        return 'Support for having different logos for individual zones.';
     }
 
     /**
