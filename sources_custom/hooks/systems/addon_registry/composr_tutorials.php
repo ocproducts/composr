@@ -245,6 +245,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/sup_pricing/compare.png',
             'data_custom/images/docs/sup_project_management/image.jpg',
             'data_custom/images/docs/sup_project_management/image2.jpg',
+            'data_custom/images/docs/sup_project_management/roles.png',
             'data_custom/images/docs/tut_email/image.jpg',
             'data_custom/images/docs/tut_how_internet_works/globe.jpg',
             'data_custom/images/docs/tut_how_internet_works/wiring.jpg',
