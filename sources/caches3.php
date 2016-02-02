@@ -341,6 +341,17 @@ function erase_cached_templates($preserve_some = false, $only_templates = null)
     }
 
     cms_profile_end_for('erase_cached_templates');
+
+    // Rebuild ones needed for this session
+    if (!$preserve_some) {
+        global $JAVASCRIPTS, $CSSS;
+        foreach (array_keys($JAVASCRIPTS) as $j) {
+            javascript_enforce($j);
+        }
+        foreach (array_keys($CSSS) as $c) {
+            css_enforce($c);
+        }
+    }
 }
 
 /**
