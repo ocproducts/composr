@@ -1220,6 +1220,10 @@ function find_id_moniker($url_parts, $zone)
                 $or_list = '';
                 foreach ($LOADED_MONIKERS_CACHE as $type => $pages) {
                     foreach ($pages as $page => $ids) {
+                        if (!is_string($page)) {
+                            $page = strval($page);
+                        }
+
                         foreach ($ids as $id => $status) {
                             if ($status !== true) {
                                 continue;
