@@ -216,6 +216,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/faq/balanced_approach.png',
             'data_custom/images/docs/dont.png',
             'data_custom/images/docs/remember.png',
+            'data_custom/images/docs/sup_irrational_behaviour/image.png',
             'data_custom/images/docs/sup_forum_separation/1.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image2.jpg',
