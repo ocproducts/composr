@@ -343,13 +343,17 @@ function erase_cached_templates($preserve_some = false, $only_templates = null)
     cms_profile_end_for('erase_cached_templates');
 
     // Rebuild ones needed for this session
-    if (!$preserve_some) {
+    if (!$preserve_some && !$GLOBALS['IN_MINIKERNEL_VERSION']) {
         global $JAVASCRIPTS, $CSSS;
-        foreach (array_keys($JAVASCRIPTS) as $j) {
-            javascript_enforce($j);
+        if (is_array($JAVASCRIPTS)) {
+            foreach (array_keys($JAVASCRIPTS) as $j) {
+                javascript_enforce($j);
+            }
         }
-        foreach (array_keys($CSSS) as $c) {
-            css_enforce($c);
+        if (is_array($CSSS)) {
+            foreach (array_keys($CSSS) as $c) {
+                css_enforce($c);
+            }
         }
     }
 }
