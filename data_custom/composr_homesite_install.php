@@ -123,7 +123,6 @@ function composr_homesite_install()
     set_option('pd_email', 'info@compo.sr');
     set_option('ipn', 'info@compo.sr');
     set_option('ipn_test', 'info@compo.sr');
-    set_option('allowed_post_submitters', "compo.sr\nocproducts.com");
     set_option('encryption_key', '{file_base}/uploads/website_specific/ocportal.com/public.pem');
     set_option('decryption_key', '{file_base}/uploads/website_specific/ocportal.com/private.pem');
     set_option('site_scope', 'Composr CMS');
@@ -142,6 +141,8 @@ function composr_homesite_install()
     set_option('email_confirm_join', '0');
     set_option('remember_me_by_default','1');
     set_option('leader_board_size', '8');
+    set_option('allowed_post_submitters', "compo.sr\nocproducts.com\nlocalhost\n127.0.0.1\n192.168.1.100");
+    set_option('security_token_exceptions', '_make_release');
 
     // Downloads structure
     // -------------------
