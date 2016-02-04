@@ -285,7 +285,7 @@ function new_html__initialise(element)
 
 			// Convert a/img title attributes into Composr tooltips
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-				convert_tooltip(element);
+				if (element.className.indexOf('activate_rich_semantic_tooltip')==-1) convert_tooltip(element);
 			/*{+END}*/
 
 			break;
