@@ -53,6 +53,8 @@ if (!$cli) {
     exit('Must run this script on command line, for security reasons');
 }
 
+echo "Suggested commands to run follow...\n";
+
 require_code('files');
 require_code('files2');
 
@@ -120,15 +122,26 @@ foreach (array_keys($GFILE_ARRAY) as $file) {
         echo 'rm -f ' . escapeshellarg($file) . "\n";
     }
 }
+if (is_file(get_file_base() . '/install.php')) {
+    echo 'rm -f ' . escapeshellarg('install.php') . "\n";
+}
 
 // Empty dirs
 $directories = get_directory_contents(get_file_base(), get_file_base(), true, true, false);
+$cnt = 0;
 foreach ($directories as $directory) {
     $_files = get_directory_contents($directory, '', true, false, true);
     $_directories = get_directory_contents($directory, '', true, false, false);
     if ((count($_files) == 0) && (count($_directories) == 0)) {
         echo 'rmdir ' . escapeshellarg($directory) . "\n";
+        $cnt++;
     }
+}
+
+echo "DONE\n";
+
+if ($cnt > 0) {
+    echo "Re-run delete_alien_files.php after running the commands, as the deletions may have led to other empty directories to remove\n";
 }
 
 function force_keep($file, $files_to_always_keep)
