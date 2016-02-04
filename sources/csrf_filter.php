@@ -25,6 +25,10 @@
  */
 function csrf_filter_active()
 {
+    if (get_page_name() == 'login') {
+        return false;
+    }
+
     $security_token_exceptions = get_option('security_token_exceptions');
     $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
     return !in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name(), $_security_token_exceptions);
