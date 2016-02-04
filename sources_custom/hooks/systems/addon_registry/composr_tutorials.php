@@ -235,6 +235,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/sup_developer_relationships/crazy_day.png',
             'data_custom/images/docs/sup_marketing/image.jpg',
             'data_custom/images/docs/sup_marketing/image2.jpg',
+            'data_custom/images/docs/sup_marketing/kinds.png',
             'data_custom/images/docs/sup_minimum_viable_products/image.jpg',
             'data_custom/images/docs/sup_minimum_viable_products/image2.jpg',
             'data_custom/images/docs/sup_minimum_viable_products/illustration.png',
