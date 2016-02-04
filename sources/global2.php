@@ -465,15 +465,8 @@ function init__global2()
 
         // Check security token, if necessary
         if ($CSRF_TOKENS) {
-            $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin\njoin";
-            $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
-            if (!in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name() . ':', $_security_token_exceptions)) {
-                if (post_param_string('session_id', null) === null) {
-                    warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_2_HACK'));
-                } elseif (post_param_string('session_id') != get_session_id()) {
-                    warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_3_HACK'));
-                }
-            }
+            require_code('csrf_filter');
+            check_csrf_token(post_param_string('csrf_token', null));
         }
     }
 

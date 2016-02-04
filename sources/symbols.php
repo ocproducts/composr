@@ -4211,10 +4211,9 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
             $done_once = true;
         }
 
-        $security_token_exceptions = get_option('security_token_exceptions');
-        $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
-        if (!in_array(get_page_name(), $_security_token_exceptions)) {
-            $value .= '<input type="hidden" name="session_id" value="' . get_session_id() . '" />';
+        require_code('csrf_filter');
+        if (csrf_filter_active()) {
+            $value .= '<input type="hidden" name="csrf_token" value="' . escape_html(generate_csrf_token()) . '" />';
         }
     }
 

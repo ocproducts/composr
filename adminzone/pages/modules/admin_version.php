@@ -87,6 +87,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('sitemap_cache');
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);
@@ -928,6 +929,16 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
 
             $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
+
+            $GLOBALS['SITE_DB']->create_table('post_tokens', array(
+                'token' => '*ID_TEXT',
+                'generation_time' => 'TIME',
+                'member_id' => 'MEMBER',
+                'session_id' => 'ID_TEXT',
+                'ip_address' => 'IP',
+                'usage_tally' => 'INTEGER',
+            ));
+            $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
     }
 

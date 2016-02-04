@@ -1162,6 +1162,7 @@ class Hook_addon_registry_core
             'sources/database_relations.php',
             'sources/wordfilter.php',
             'sources/input_filter.php',
+            'sources/csrf_filter.php',
             'sources/input_filter_2.php',
             'sources/hooks/systems/checks/.htaccess',
             'sources_custom/hooks/systems/checks/.htaccess',
