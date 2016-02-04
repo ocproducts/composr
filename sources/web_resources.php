@@ -30,6 +30,33 @@ function init__web_resources()
 }
 
 /**
+ * Make sure that the given javascript file is loaded up.
+ *
+ * @sets_output_state
+ *
+ * @param  ID_TEXT $javascript The javascript file required
+ */
+function require_javascript($javascript)
+{
+    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
+
+    if (array_key_exists($javascript, $JS_OUTPUT_STARTED_LIST)) {
+        return;
+    }
+
+    $JAVASCRIPTS[$javascript] = true;
+    $JS_OUTPUT_STARTED_LIST[$javascript] = true;
+
+    if (strpos($javascript, 'merged__') === false) {
+        $SMART_CACHE->append('JAVASCRIPTS', $javascript);
+    }
+
+    if ($GLOBALS['JS_OUTPUT_STARTED']) {
+        $JAVASCRIPT_BOTTOM[$javascript] = true;
+    }
+}
+
+/**
  * Force a JavaScript file to be cached (ordinarily we can rely on this to be automated by require_javascript/javascript_tempcode).
  *
  * @param  string $j The javascript file required
@@ -103,7 +130,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
         js_compile($j, $js_cache_path, $minify);
     }
 
-    //if (@filesize($js_cache_path)==0/*Race condition?*/) return '';      Optimisation isn't useful now
+    //if (@filesize($js_cache_path)==0/*@ for race condition*/) return '';      Optimisation isn't useful now
 
     return $js_cache_path;
 }
@@ -219,29 +246,32 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
 }
 
 /**
- * Make sure that the given javascript file is loaded up.
+ * Make sure that the given CSS file is loaded up.
  *
  * @sets_output_state
  *
- * @param  ID_TEXT $javascript The javascript file required
+ * @param  ID_TEXT $css The CSS file required
  */
-function require_javascript($javascript)
+function require_css($css)
 {
-    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
+    global $CSSS, $SMART_CACHE, $CSS_OUTPUT_STARTED_LIST, $CSS_OUTPUT_STARTED;
 
-    if (array_key_exists($javascript, $JS_OUTPUT_STARTED_LIST)) {
+    if (array_key_exists($css, $CSS_OUTPUT_STARTED_LIST)) {
         return;
     }
 
-    $JAVASCRIPTS[$javascript] = true;
-    $JS_OUTPUT_STARTED_LIST[$javascript] = true;
+    $CSSS[$css] = true;
+    $CSS_OUTPUT_STARTED_LIST[$css] = true;
 
-    if (strpos($javascript, 'merged__') === false) {
-        $SMART_CACHE->append('JAVASCRIPTS', $javascript);
+    if (strpos($css, 'merged__') === false) {
+        $SMART_CACHE->append('CSSS', $css);
     }
 
-    if ($GLOBALS['JS_OUTPUT_STARTED']) {
-        $JAVASCRIPT_BOTTOM[$javascript] = true;
+    // Has to move into footer
+    if ($CSS_OUTPUT_STARTED) {
+        $value = new Tempcode();
+        _css_tempcode($css, $value, $value);
+        attach_to_screen_footer($value);
     }
 }
 
@@ -324,7 +354,7 @@ function css_enforce($c, $theme = null, $minify = null)
         css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 
-    if (@filesize($css_cache_path) == 0/*Race condition?*/) {
+    if (@filesize($css_cache_path) == 0/*@ for race condition*/) {
         return '';
     }
 
@@ -446,36 +476,6 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 }
 
 /**
- * Make sure that the given CSS file is loaded up.
- *
- * @sets_output_state
- *
- * @param  ID_TEXT $css The CSS file required
- */
-function require_css($css)
-{
-    global $CSSS, $SMART_CACHE, $CSS_OUTPUT_STARTED_LIST, $CSS_OUTPUT_STARTED;
-
-    if (array_key_exists($css, $CSS_OUTPUT_STARTED_LIST)) {
-        return;
-    }
-
-    $CSSS[$css] = true;
-    $CSS_OUTPUT_STARTED_LIST[$css] = true;
-
-    if (strpos($css, 'merged__') === false) {
-        $SMART_CACHE->append('CSSS', $css);
-    }
-
-    // Has to move into footer
-    if ($CSS_OUTPUT_STARTED) {
-        $value = new Tempcode();
-        _css_tempcode($css, $value, $value);
-        attach_to_screen_footer($value);
-    }
-}
-
-/**
  * Get the environment needed for web resources.
  *
  * @param  ?ID_TEXT $_seed The seed colour (null: previous cached) (blank: none) (null: from what is cached)
@@ -563,6 +563,8 @@ function _get_web_resource_grouping_codename($zone_name = null, $is_admin = null
  */
 function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 {
+    return null; // We find all kinds of complex conditions happen, leading to difficult bugs. Better to just not have this, and HTTP/2 improves things anyway.
+    /*
     if (!$minify || !running_script('index')) {
         return null; // Optimisation disabled if no minification. Turn off minificiation when debugging JavaScript/CSS, as smart caching won't work with the merge system.
     }
@@ -710,6 +712,6 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         }
     }
 
-    return null;
+    return null;*/
 }
 

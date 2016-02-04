@@ -37,7 +37,7 @@ class Module_admin_stats
         $info['hack_version'] = null;
         $info['version'] = 9;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -77,9 +77,7 @@ class Module_admin_stats
             ));
 
             // Note: We have chosen not to create many indices because we want insertion to be very fast
-            $GLOBALS['SITE_DB']->create_index('stats', 'member_track_1', array('member_id'));
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_2', array('ip'));
-            $GLOBALS['SITE_DB']->create_index('stats', 'member_track_3', array('member_id', 'date_and_time'));
             $GLOBALS['SITE_DB']->create_index('stats', 'pages', array('the_page'));
             $GLOBALS['SITE_DB']->create_index('stats', 'date_and_time', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('stats', 'milliseconds', array('milliseconds'));
@@ -123,10 +121,16 @@ class Module_admin_stats
         if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->add_table_field('stats', 'session_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'member_track_1'), '', 1);
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('stats', 'member_track_1');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('stats', 'member_track_3');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_4', array('session_id'));
+            $GLOBALS['SITE_DB']->create_index('stats', 'member_track_1', array('member_id'));
+            $GLOBALS['SITE_DB']->create_index('stats', 'member_track_3', array('member_id', 'date_and_time'));
         }
     }
 

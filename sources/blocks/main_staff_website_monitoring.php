@@ -40,7 +40,7 @@ class Block_main_staff_website_monitoring
         $info['version'] = 3;
         $info['locked'] = false;
         $info['parameters'] = array();
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

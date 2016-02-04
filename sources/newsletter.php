@@ -640,7 +640,7 @@ function delete_periodic_newsletter($id)
  */
 function add_newsletter_subscriber($email, $join_time, $code_confirm, $password, $salt, $language, $forename, $surname)
 {
-    $id = $GLOBALS['SITE_DB']->query_delete('newsletter_subscribers', array(
+    $GLOBALS['SITE_DB']->query_delete('newsletter_subscribers', array(
         'email' => $email,
     ));
     $id = $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(

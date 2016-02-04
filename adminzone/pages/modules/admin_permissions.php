@@ -35,8 +35,8 @@ class Module_admin_permissions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
-        $info['update_require_upgrade'] = 1;
+        $info['version'] = 9;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -123,7 +123,6 @@ class Module_admin_permissions
                 $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'admin_addons', 'zone_name' => 'adminzone', 'group_id' => $id)); // We don't want people installing new code
                 $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'admin_email_log', 'zone_name' => 'adminzone', 'group_id' => $id)); // We don't want people snooping on admin emails (e.g. password reset)
             }
-            $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
 
             // False privileges
             $false_permissions = get_false_permissions();
@@ -146,12 +145,28 @@ class Module_admin_permissions
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+            if (!privilege_exists('perform_keyword_check')) {
+                add_privilege('SUBMISSION', 'perform_keyword_check', false);
+            }
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+            $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
             rename_privilege('bypass_word_filter', 'bypass_wordfilter');
 
             delete_privilege('view_revision_history');
             delete_privilege('view_content_history');
             delete_privilege('restore_content_history');
             delete_privilege('delete_content_history');
+
+            delete_privilege('avoid_simplified_adminzone_look');
+
+            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'GENERAL_SETTINGS'), array('the_name' => 'may_enable_staff_notifications'), '', 1);
+            $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 0), array('the_name' => 'have_personal_category'), '', 1);
+            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'VOTE'), array('the_name' => 'vote_in_polls'), '', 1);
         }
     }
 

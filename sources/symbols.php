@@ -236,8 +236,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ((has_actual_page_access(get_member(), $attributes['page'], $zone)) && (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))) {
                         $keep = symbol_tempcode('KEEP');
                         $url = find_script('fractional_edit') . '?edit_param_name=' . urlencode($edit_param_name) . '&supports_comcode=' . ($supports_comcode ? '1' : '0') . '&zone=' . urlencode($zone) . $keep->evaluate();
-                        foreach ($attributes as $key => $val) {
-                            $url .= '&' . $key . '=' . urlencode($val);
+                        if (count($attributes) > 0) {
+                            $url .= '&' . http_build_query($attributes);
                         }
 
                         $_value = $param[count($param) - 1];
@@ -726,7 +726,7 @@ function ecv_TERNARY($lang, $escaped, $param)
     }
 
     if (isset($param[1])) {
-        $value = (($param[0] == '1') || ($param[0] == '1')) ? $param[1] : (isset($param[2]) ? $param[2] : $value);
+        $value = ($param[0] == '1') ? $param[1] : (isset($param[2]) ? $param[2] : $value);
     }
 
     if ($escaped != array()) {
@@ -1152,7 +1152,7 @@ function ecv_REQUIRE_JAVASCRIPT($lang, $escaped, $param)
             }
 
             require_javascript($param[0]);
-            /*// Has to do this inline, as you're not allowed to reference scripts outside head
+            /*// Has to do this inline, as you're "hidden" id="include_sitemap allowed to reference scripts outside head
             if (!array_key_exists($param[0], $GLOBALS['JAVASCRIPTS'])) {
                     $GLOBALS['JAVASCRIPTS'][$param[0]] = true;
                     $file = javascript_enforce($param[0]);
@@ -4042,7 +4042,7 @@ function ecv_NOT($lang, $escaped, $param)
     $value = '1';
 
     if (isset($param[0])) {
-        $value = (($param[0] == '1') || ($param[0] == '1')) ? '0' : '1';
+        $value = ($param[0] == '0' || $param[0] == '') ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -4067,7 +4067,7 @@ function ecv_OR($lang, $escaped, $param)
 
     $count = 0;
     foreach ($param as $test) {
-        if (($test == '1') || ($test == '1')) {
+        if ($test == '1') {
             $count++;
         }
     }
@@ -4094,7 +4094,7 @@ function ecv_AND($lang, $escaped, $param)
     $count = 0;
     $total = 0;
     foreach ($param as $test) {
-        if (($test == '1') || ($test == '1')) {
+        if ($test == '1') {
             $count++;
         }
         $total++;
@@ -4121,7 +4121,7 @@ function ecv_NOR($lang, $escaped, $param)
 {
     $count = 0;
     foreach ($param as $test) {
-        if (($test == '1') || ($test == '1')) {
+        if ($test == '1') {
             $count++;
         }
     }
@@ -4147,7 +4147,7 @@ function ecv_NAND($lang, $escaped, $param)
 {
     $count = 0;
     foreach ($param as $test) {
-        if (($test == '1') || ($test == '1')) {
+        if ($test == '1') {
             $count++;
         }
     }
@@ -4211,10 +4211,9 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
             $done_once = true;
         }
 
-        $security_token_exceptions = get_option('security_token_exceptions');
-        $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
-        if (!in_array(get_page_name(), $_security_token_exceptions)) {
-            $value .= '<input type="hidden" name="session_id" value="' . get_session_id() . '" />';
+        require_code('csrf_filter');
+        if (csrf_filter_active()) {
+            $value .= '<input type="hidden" name="csrf_token" value="' . escape_html(generate_csrf_token()) . '" />';
         }
     }
 

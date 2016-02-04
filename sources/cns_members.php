@@ -243,7 +243,12 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     $editable_without_comcode = array('list' => 1, 'short_text' => 1, 'codename' => 1, 'url' => 1, 'integer' => 1, 'float' => 1, 'email' => 1);
 
     foreach ($fields_to_show as $i => $field_to_show) {
-        $member_value = $member_mappings['field_' . strval($field_to_show['id'])];
+        $key = 'field_' . strval($field_to_show['id']);
+        if (!isset($member_mappings[$key]))
+        {
+            continue;
+        }
+        $member_value = $member_mappings[$key];
         if (!is_string($member_value)) {
             if (is_float($member_value)) {
                 $member_value = float_to_raw_string($member_value);

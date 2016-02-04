@@ -122,6 +122,7 @@ function phase_0()
             <input type="checkbox" name="skip" id="skip" value="1" ' . $skip_check . ' /><label for="skip">Installer already compiled</label>
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
+            <input type="checkbox" name="make_uni_upgrader" id="make_uni_upgrader" value="1" /><label for="make_uni_upgrader">Make uni-upgrader archive (for easy upgrader testing)</label>
             <p><input type="submit" class="buttons__proceed button_screen" value="Shake it baby" /></p>
         </fieldset>
     </form>
@@ -135,11 +136,11 @@ function phase_1_pre()
     <ul>
         <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
-        <li>Run the <a href="' . escape_html(get_base_url() . '/_test') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
         <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
         <li>Test with the none forum driver (no forums and members)</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
-        <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes).</li>
+        <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
+        <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
         <li>Make sure <kbd>curl-ca-bundle.crt</kbd> is reasonably up-to-date.</li>
     </ul>
     <p>Ideally do these at least on some major versions:</p>
@@ -176,6 +177,8 @@ function phase_1_pre()
 // Build release files
 function phase_1()
 {
+    require_code('version2');
+
     $version_dotted = post_param_string('version');
     $is_bleeding_edge = (post_param_integer('bleeding_edge', 0) == 1);
     $is_old_tree = (post_param_integer('old_tree', 0) == 1);
@@ -185,6 +188,13 @@ function phase_1()
         phase_1_pre();
         return;
     }
+
+    echo '
+    <p>Here are some things you should do if you have not alreadt:</p>
+    <ul>
+        <li>Go through the auto-reported error emails, to make sure they are handled (for each: fix if relevant, delete if not).</li>
+        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
+    </ul>';
 
     require_code('make_release');
 

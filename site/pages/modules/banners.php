@@ -37,7 +37,7 @@ class Module_banners
         $info['hack_version'] = null;
         $info['version'] = 7;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -192,7 +192,6 @@ class Module_banners
                 'c_banner_id' => 'ID_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'clicker_ip', array('c_ip_address'));
-            $GLOBALS['SITE_DB']->create_index('banner_clicks', 'c_banner_id', array('c_banner_id'));
 
             add_privilege('BANNERS', 'banner_free', false);
         }
@@ -214,6 +213,8 @@ class Module_banners
                 'name' => '*ID_TEXT',
                 'b_type' => '*ID_TEXT',
             ));
+
+            $GLOBALS['SITE_DB']->create_index('banner_clicks', 'c_banner_id', array('c_banner_id'));
         }
     }
 

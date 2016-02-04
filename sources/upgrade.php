@@ -247,7 +247,7 @@ function upgrade_script()
                     }
                     if (substr(strtolower($temp_path), -4) == '.zip') {
                         require_code('tar2');
-                        $temp_path_new = convert_zip_to_tar($temp_path, true);
+                        $temp_path_new = convert_zip_to_tar($temp_path);
                         @unlink($temp_path);
                         rename($temp_path_new, $temp_path);
                         fix_permissions($temp_path);
@@ -279,10 +279,7 @@ function upgrade_script()
                         if ($upgrade_file['path'] == 'install.php') {
                             continue;
                         }
-                        if ($upgrade_file['path'] == 'install.sql') {
-                            continue;
-                        }
-                        if ($upgrade_file['path'] == '_config.php.template') {
+                        if ($upgrade_file['path'] == 'install.sql' || $upgrade_file['path'] == '_config.php.template') {
                             continue;
                         }
 
@@ -314,9 +311,8 @@ function upgrade_script()
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 foreach ($addon_contents as $addon_name => $addon_data) {
                                     // See if this is the addon for the file
-                                    $shortened_path = $upgrade_file['path'];
-                                    $shortened_path = preg_replace('#^themes/default/(templates|css)/#', '', $shortened_path);
-                                    if (strpos($addon_data, '\'' . addslashes($shortened_path) . '\'') !== false) {
+                                    $addon_file_path = $upgrade_file['path'];
+                                    if (strpos($addon_data, '\'' . addslashes($addon_file_path) . '\'') !== false) {
                                         $found = $addon_name;
                                         break;
                                     }
@@ -325,9 +321,9 @@ function upgrade_script()
 
                             // Install if either of the following is true:
                             //  - it's some file not in an addon (shouldn't actually happen)
-                            //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported mod file, and not showing up as uninstalled in log)
+                            //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported addon file, and not showing up as uninstalled in log)
                             //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if ((is_null($found)) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     afm_make_directory($upgrade_file['path'], false, true);
                                 } else {
@@ -435,10 +431,13 @@ function upgrade_script()
 
                     $version_files = cms_version_number();
                     $_version_database = get_value('cns_version');
-                    $version_database = floatval($_version_database);
-                    if (is_null($_version_database)) {
-                        $version_database = 2.1; // Either 2.0 or 2.1, and they are equivalent in terms of what we need to do
+                    if (is_null($_version_database)) { // LEGACY
+                        $_version_database = get_value('ocf_version');
                     }
+                    if (is_null($_version_database)) {
+                        $_version_database = '2.1';
+                    }
+                    $version_database = floatval($_version_database);
                     if ($version_database < $version_files) {
                         echo do_lang('FU_MUST_UPGRADE_CNS', fu_link('upgrader.php?type=cns', do_lang('FU_UPGRADE_CNS')));
                     }
@@ -798,7 +797,7 @@ function check_perms()
             }
         }
         /*
-        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files
+        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files      DISABLED (too noisy)
             foreach (array_keys($themes) as $theme) {
                 $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
                 if (!file_exists(get_file_base() . '/' . $_chmod)) {
@@ -1517,23 +1516,41 @@ function version_specific()
             $modules_renamed = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
+                'admin_occle' => 'admin_commandr',
+                'admin_flagrant' => 'admin_community_billboard', // Not actually bundled, but can take over existing tables now if installed again
+                'onlinemembers' => 'usersonline',
+                'leaderboard' => 'leader_board',
+                'admin_ocf_categories' => 'admin_cns_categories',
+                'admin_ocf_customprofilefields' => 'admin_cns_customprofilefields',
+                'admin_ocf_emoticons' => 'admin_cns_emoticons',
+                'admin_ocf_forums' => 'admin_cns_forums',
+                'admin_ocf_groups' => 'admin_cns_groups',
+                'admin_ocf_history' => 'admin_cns_history',
+                'admin_ocf_join' => 'admin_cns_members',
+                'admin_ocf_ldap' => 'admin_cns_ldap',
+                'admin_ocf_merge_members' => 'admin_cns_merge_members',
+                'admin_ocf_multimoderations' => 'admin_cns_multimoderations',
+                'admin_ocf_post_templates' => 'admin_cns_post_templates',
+                'admin_ocf_welcome_emails' => 'admin_cns_welcome_emails',
+                'cms_cedi' => 'cms_wiki',
+                'cms_ocf_groups' => 'cms_cns_groups',
             );
             foreach ($modules_renamed as $from => $to) {
                 $GLOBALS['SITE_DB']->query_update('modules', array('module_the_name' => $to), array('module_the_name' => $from), '', 1);
             }
             persistent_cache_delete('MODULES');
 
-            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_type' => 'browse'), array('m_type' => 'misc'), '', 1);
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'activities SET a_language_string_code=REPLACE(a_language_string_code,\'ocf:\',\'cns:\') WHERE a_language_string_code LIKE \'ocf:%\'');
+            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_type' => 'browse'), array('m_resource_type' => 'misc'), '', 1);
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp_%\'');
-            $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', 'ID_TEXT', 'privilege');
-            $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', 'ID_TEXT', 'privilege');
+            $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
+            $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
             $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');
             $GLOBALS['SITE_DB']->rename_table('gsp', 'group_privileges');
             $GLOBALS['SITE_DB']->rename_table('sp_list', 'privilege_list');
             $GLOBALS['SITE_DB']->rename_table('usersubmitban_ip', 'banned_ip');
+            $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'xas'), '', 1);
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_type' => 'USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '?MEMBER'), array('m_type' => '?USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*MEMBER'), array('m_type' => '*USER'));
@@ -1541,6 +1558,8 @@ function version_specific()
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_session', '*ID_TEXT');
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'FORUMS_AND_MEMBERS'), array('p_section' => 'SECTION_FORUMS'));
+            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'BANNERS'), array('p_section' => '_BANNERS'));
+            $GLOBALS['SITE_DB']->query_delete('config', array('c_set' => 0)); // Defaults not saved in in same way in v10
             $GLOBALS['SITE_DB']->delete_table_field('config', 'human_name');
             $GLOBALS['SITE_DB']->delete_table_field('config', 'the_type');
             $GLOBALS['SITE_DB']->delete_table_field('config', 'eval');
@@ -1549,7 +1568,7 @@ function version_specific()
             $GLOBALS['SITE_DB']->delete_table_field('config', 'explanation');
             $GLOBALS['SITE_DB']->delete_table_field('config', 'shared_hosting_restricted');
             $GLOBALS['SITE_DB']->delete_table_field('config', 'c_data');
-            $GLOBALS['SITE_DB']->alter_table_field('config', 'the_name', 'ID_TEXT', 'c_name');
+            $GLOBALS['SITE_DB']->alter_table_field('config', 'the_name', '*ID_TEXT', 'c_name');
             $GLOBALS['SITE_DB']->alter_table_field('config', 'config_value', 'LONG_TEXT', 'c_value');
             $GLOBALS['SITE_DB']->add_table_field('config', 'c_needs_dereference', 'BINARY', 0);
             $hooks = find_all_hooks('systems', 'config');
@@ -1562,6 +1581,8 @@ function version_specific()
             }
             $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'adminzone'), '', 1);
             $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'cms'), '', 1);
+            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'SHORT_TEXT'), array('m_type' => 'MD5'));
+            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*SHORT_TEXT'), array('m_type' => '*MD5'));
 
             set_value('version', float_to_raw_string($version_files, 10, true));
             delete_value('last_implicit_sync');
@@ -1570,8 +1591,10 @@ function version_specific()
             delete_value('oracle_index_cleanup_last_time');
             delete_value('last_sitemap_time_calc');
             delete_value('last_ticket_lead_time_calc');
-            set_value('last_welcome_mail_time', get_value('last_welcome_mail_time'), true);
-            delete_value('last_welcome_mail_time');
+            if (!is_null(get_value('last_welcome_mail_time'))) {
+                $GLOBALS['SITE_DB']->query_insert('long_values', array('date_and_time' => time(), 'the_value' => get_value('last_welcome_mail_time'), 'the_name' => 'last_welcome_mail_time'));
+                delete_value('last_welcome_mail_time');
+            }
 
             foreach (array('INTEGER', 'REAL') as $bad_type) {
                 $bad_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name'), array('m_type' => $bad_type, 'm_table' => 'f_member_custom_fields'));
@@ -1799,10 +1822,15 @@ function upgrade_modules()
 function cns_upgrade()
 {
     $version_files = cms_version_number();
-    $version_database = floatval(get_value('cns_version'));
-    if (is_null($version_database)) {
-        $version_database = 2.1;
+    $_version_database = get_value('cns_version');
+    if (is_null($_version_database)) { // LEGACY
+        $_version_database = get_value('ocf_version');
+        delete_value('ocf_version');
     }
+    if (is_null($_version_database)) {
+        $_version_database = '2.1';
+    }
+    $version_database = floatval($_version_database);
 
     if ($version_files != $version_database) {
         global $SITE_INFO;

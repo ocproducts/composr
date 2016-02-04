@@ -313,10 +313,12 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
             }
             $_fields .= $field;
 
-            if ((!multi_lang_content()) && (substr($index_name, 0, 1) != '#') && (strpos($field, '(') === false)) {
+            if (strpos($field, '(') === false) {
                 $db_type = $conn->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $index['i_table'], 'm_name' => $field));
-                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+                if (((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false)) && (substr($index_name, 0, 1) != '#')) {
+                    if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                        $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+                    }
                 }
             }
 

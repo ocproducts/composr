@@ -243,7 +243,7 @@ function get_true_permissions()
  * @param  ID_TEXT $name The name of the option
  * @return boolean Whether it exists
  */
-function permission_exists($name)
+function privilege_exists($name)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('privilege_list', 'the_name', array('the_name' => $name));
     return !is_null($test);

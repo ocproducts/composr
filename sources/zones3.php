@@ -453,7 +453,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
 
     // Check page name
     require_code('type_sanitisation');
-    if (!is_alphanumeric($new_file)) {
+    if ((!is_alphanumeric($new_file, true)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
     require_code('zones2');

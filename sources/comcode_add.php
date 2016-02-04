@@ -87,7 +87,6 @@ function _get_details_comcode_tags()
         'carousel' => array('param'),
         'hide' => array('param'),
         'tooltip' => array('param'),
-        'currency' => array('param', 'bracket'),
         'if_in_group' => array('param', 'type'),
         'flash' => array('param'),
         'media' => array('description', 'thumb_url', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
@@ -104,6 +103,11 @@ function _get_details_comcode_tags()
         'attachment' => array('description', 'thumb_url', 'width', 'height', 'framed', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
         //'attachment_safe' => array('description', 'filename', 'type', 'width', 'height', 'float', 'thumb_url'),   Merged into attachment in UI
     );
+
+    if (addon_installed('ecommerce')) {
+        $tag_list['currency'] = array('param', 'bracket');
+    }
+
     ksort($tag_list);
 
     /* // Helps find missing tags

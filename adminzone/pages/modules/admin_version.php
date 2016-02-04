@@ -37,7 +37,7 @@ class Module_admin_version
         $info['hack_version'] = null;
         $info['version'] = 17;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -87,6 +87,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('sitemap_cache');
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);
@@ -170,7 +171,6 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_page', array('mt_page'));
             $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_id', array('mt_page', 'mt_id', 'mt_type'));
-            $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_time', array('mt_time'));
 
             $GLOBALS['SITE_DB']->create_table('cache_on', array(
                 'cached_for' => '*ID_TEXT',
@@ -191,7 +191,6 @@ class Module_admin_version
                 'the_time' => 'TIME',
                 'the_member' => 'MEMBER'
             ));
-            $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
 
             $GLOBALS['SITE_DB']->create_table('values_elective', array(
                 'the_name' => '*ID_TEXT',
@@ -214,8 +213,6 @@ class Module_admin_version
                 'the_value' => 'BINARY',
                 'active_until' => '?TIME',
             ), false, false, true);
-            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
-            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
 
             $GLOBALS['SITE_DB']->create_table('member_zone_access', array(
                 'zone_name' => '*ID_TEXT',
@@ -302,7 +299,6 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_submitter', array('p_submitter'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_add_date', array('p_add_date'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_validated', array('p_validated'));
-            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
 
             $GLOBALS['SITE_DB']->create_table('cached_comcode_pages', array(
                 'the_zone' => '*ID_TEXT',
@@ -330,7 +326,6 @@ class Module_admin_version
                 'm_deprecated' => 'BINARY',
                 'm_manually_chosen' => 'BINARY',
             ));
-            $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_page_link', array('m_resource_page', 'm_resource_type', 'm_resource_id'));
             $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_moniker', array('m_moniker'));
             $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_monrev', array('m_moniker_reversed'));
 
@@ -377,7 +372,6 @@ class Module_admin_version
                 'c_ip_address' => 'IP',
                 'c_url' => 'URLPATH',
             ));
-            $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
 
             $GLOBALS['SITE_DB']->create_table('incoming_uploads', array(
                 'id' => '*AUTO',
@@ -411,7 +405,6 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('cache', 'cached_ford', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('cache', 'cached_fore', array('cached_for'));
-            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
             $GLOBALS['SITE_DB']->create_index('cache', 'cached_forh', array('the_theme'));
         }
 
@@ -502,9 +495,14 @@ class Module_admin_version
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from == 15)) {
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 16)) {
+            $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_in_panel');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_interlock');
             $GLOBALS['SITE_DB']->delete_table_field('cron_caching_requests', 'c_interlock');
             $GLOBALS['SITE_DB']->delete_table_field('cron_caching_requests', 'c_in_panel');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('rating', 'rating_for_id');
+            $GLOBALS['SITE_DB']->create_index('rating', 'rating_for_id', array('rating_for_id'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 17)) {
@@ -713,13 +711,12 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forf');
             $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forg');
             $GLOBALS['SITE_DB']->alter_table_field('cache', 'langs_required', 'LONG_TEXT', 'dependencies');
-            $GLOBALS['SITE_DB']->add_table_field('cache', 'id', 'AUTO');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'the_member', '?MEMBER');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'groups', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_bot', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'timezone', 'MINIID_TEXT');
-            $GLOBALS['SITE_DB']->change_primary_key('cache', array('id'));
+            $GLOBALS['SITE_DB']->add_auto_key('cache');
 
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_member', '?MEMBER');
@@ -766,13 +763,36 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->rename_table('sitewatchlist', 'staff_website_monitoring');
             $GLOBALS['SITE_DB']->alter_table_field('staff_website_monitoring', 'siteurl', 'URLPATH', 'site_url');
             $GLOBALS['SITE_DB']->rename_table('stafflinks', 'staff_links');
-            $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
             $GLOBALS['SITE_DB']->rename_table('customtasks', 'staff_checklist_cus_tasks');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'tasktitle', 'SHORT_TEXT', 'task_title');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'datetimeadded', 'TIME', 'add_date');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurinterval', 'INTEGER', 'recur_interval');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'recurevery', 'ID_TEXT', 'recur_every');
             $GLOBALS['SITE_DB']->alter_table_field('staff_checklist_cus_tasks', 'taskisdone', '?TIME', 'task_is_done');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('member_privileges', 'mspname');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('member_privileges', 'mspmember_id');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('sessions', 'the_user');
+            $GLOBALS['SITE_DB']->create_index('sessions', 'member_id', array('member_id'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('url_id_monikers', 'uim_pagelink');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('translate', '#search');
+            $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('sessions', 'userat');
+            $GLOBALS['SITE_DB']->create_index('sessions', 'userat', array('the_zone', 'the_page', 'the_id'));
+
+            $GLOBALS['SITE_DB']->create_index('seo_meta_keywords', 'keywords_alt_key', array('meta_for_type', 'meta_for_id'));
+            $GLOBALS['SITE_DB']->create_index('seo_meta_keywords', 'ftjoin_dmeta_keywords', array('meta_keyword'));
+
+            $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('cache', 'cached_forf');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('url_title_cache', 't_url');
+            $GLOBALS['SITE_DB']->create_index('url_title_cache', 't_url', array('t_url'));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
@@ -894,6 +914,31 @@ class Module_admin_version
                 'ip' => '*IP',
                 'note' => 'SHORT_TEXT',
             ));
+
+            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
+            $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
+
+            $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_page_link', array('m_resource_page', 'm_resource_type', 'm_resource_id'));
+
+            $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_time', array('mt_time'));
+
+            $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
+
+            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
+
+            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
+
+            $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
+
+            $GLOBALS['SITE_DB']->create_table('post_tokens', array(
+                'token' => '*ID_TEXT',
+                'generation_time' => 'TIME',
+                'member_id' => 'MEMBER',
+                'session_id' => 'ID_TEXT',
+                'ip_address' => 'IP',
+                'usage_tally' => 'INTEGER',
+            ));
+            $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
     }
 

@@ -36,7 +36,7 @@ class Module_search
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 5;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -84,7 +84,9 @@ class Module_search
             $GLOBALS['SITE_DB']->create_index('searches_logged', 'past_search', array('s_primary'));
 
             $GLOBALS['SITE_DB']->create_index('searches_logged', '#past_search_ft', array('s_primary'));
+        }
 
+        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
             add_privilege('SEARCH', 'autocomplete_past_search', false);
             add_privilege('SEARCH', 'autocomplete_keyword_comcode_page', false);
             add_privilege('SEARCH', 'autocomplete_title_comcode_page', false);

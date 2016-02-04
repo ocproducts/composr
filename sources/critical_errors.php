@@ -82,7 +82,7 @@ if (!function_exists('critical_error')) {
 
         switch ($code) {
             case 'MISSING_SOURCE':
-                $error = 'A source-code (' . $relay . ') file is missing.';
+                $error = 'A source-code (' . $relay . ') file is missing/corrupt/incompatible.';
                 break;
             case 'PASSON':
                 $error = $relay;

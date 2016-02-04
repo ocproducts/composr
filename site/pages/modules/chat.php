@@ -37,7 +37,7 @@ class Module_chat
         $info['hack_version'] = null;
         $info['version'] = 12;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -100,7 +100,6 @@ class Module_chat
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'room_name', array('room_name'));
-            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im'/*, 'room_name' makes key too long*/));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'first_public', array('is_im', 'id'));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'allow_list', array('allow_list(30)'));
 
@@ -197,6 +196,10 @@ class Module_chat
             $GLOBALS['SITE_DB']->rename_table('chat_buddies', 'chat_friends');
 
             $GLOBALS['SITE_DB']->alter_table_field('chat_messages', 'user_id', 'MEMBER', 'member_id');
+
+            $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('chat_rooms', 'is_im');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 12)) {
@@ -226,10 +229,8 @@ class Module_chat
                 'p_show_as_edit' => 0,
                 'p_order' => 0,
             ));
-        }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
-            $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
+            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im'/*, 'room_name' makes key too long*/));
         }
     }
 

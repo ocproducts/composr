@@ -47,7 +47,7 @@ class Module_admin_awards extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['version'] = 4;
         $info['locked'] = true;
         return $info;

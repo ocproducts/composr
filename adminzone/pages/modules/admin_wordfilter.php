@@ -37,7 +37,7 @@ class Module_admin_wordfilter
         $info['hack_version'] = null;
         $info['version'] = 4;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -62,7 +62,7 @@ class Module_admin_wordfilter
                 'id' => '*AUTO',
                 'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
-                'w_substr' => '*BINARY'
+                'w_substr' => 'BINARY'
             ));
 
             $naughties = array(
@@ -78,7 +78,7 @@ class Module_admin_wordfilter
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
-            $GLOBALS['SITE_DB']->add_table_field('wordfilter', 'id', '*AUTO');
+            $GLOBALS['SITE_DB']->add_auto_key('wordfilter');
         }
     }
 

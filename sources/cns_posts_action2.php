@@ -148,6 +148,7 @@ function cns_member_handle_promotion($member_id = null)
     }
 
     if (count($promotes_today) != 0) {
+		require_lang('cns');
         $name = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
         log_it('MEMBER_PROMOTED_AUTOMATICALLY', strval($member_id), $name);
     }

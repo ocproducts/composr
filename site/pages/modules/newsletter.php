@@ -36,7 +36,7 @@ class Module_newsletter
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 11;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -155,7 +155,11 @@ class Module_newsletter
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
+
             $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', '#d_message');
+            $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', '#d_message', array('d_message'));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 11)) {

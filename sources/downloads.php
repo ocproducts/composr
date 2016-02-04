@@ -285,7 +285,7 @@ function create_selection_list_downloads_tree($it = null, $submitter = null, $sh
  * @param  ?AUTO_LINK $levels Download we do not want to show (null: none to not show)
  * @param  boolean $use_compound_list Whether to get a list of child categories (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @param  boolean $tar_filter Whether to only show entries that are tar files (addons)
+ * @param  boolean $tar_filter Whether to only show entries that are TAR files (addons)
  * @return array A list of maps for all categories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (to the category, including the categories own title), and more. Or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches
  */
 function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs = null, $title = null, $shun = null, $levels = null, $use_compound_list = false, $editable_filter = false, $tar_filter = false)

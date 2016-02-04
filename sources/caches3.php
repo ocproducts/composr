@@ -242,8 +242,9 @@ function erase_cached_language()
  * Erase all template caches (caches in all themes).
  *
  * @param  boolean $preserve_some Whether to preserve CSS and JS files that might be linked to between requests
+ * @param  ?array $only_templates Only erase specific templates with the following filename, exclusing suffix(es) (null: erase all)
  */
-function erase_cached_templates($preserve_some = false)
+function erase_cached_templates($preserve_some = false, $only_templates = null)
 {
     cms_profile_start_for('erase_cached_templates');
 
@@ -266,6 +267,10 @@ function erase_cached_templates($preserve_some = false)
                 make_missing_directory($path);
             } else {
                 while (false !== ($file = readdir($_dir))) {
+                    if (($only_templates !== null) && (!in_array(preg_replace('#\..*$#', '', $file), $only_templates))) {
+                        continue;
+                    }
+
                     if (
                         ((substr($file, -4) == '.tcd') && ((!$using_less) || (($file != 'global.less.tcd'))))
                         ||
@@ -336,6 +341,21 @@ function erase_cached_templates($preserve_some = false)
     }
 
     cms_profile_end_for('erase_cached_templates');
+
+    // Rebuild ones needed for this session
+    if (!$preserve_some && !$GLOBALS['IN_MINIKERNEL_VERSION']) {
+        global $JAVASCRIPTS, $CSSS;
+        if (is_array($JAVASCRIPTS)) {
+            foreach (array_keys($JAVASCRIPTS) as $j) {
+                javascript_enforce($j);
+            }
+        }
+        if (is_array($CSSS)) {
+            foreach (array_keys($CSSS) as $c) {
+                css_enforce($c);
+            }
+        }
+    }
 }
 
 /**

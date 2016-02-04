@@ -1546,6 +1546,20 @@ class DatabaseConnector
     }
 
     /**
+     * Use an *AUTO key for a table that had some other key before.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @param  ID_TEXT $field_name Field name for new key
+     *
+     * @ignore
+     */
+    public function add_auto_key($table_name, $field_name = 'id')
+    {
+        require_code('database_helper');
+        _helper_add_auto_key($this, $table_name, $field_name);
+    }
+
+    /**
      * If a text field has picked up Comcode support, we will need to run this.
      *
      * @param  ID_TEXT $table_name The table name

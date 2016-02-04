@@ -37,7 +37,7 @@ class Module_subscriptions
         $info['hack_version'] = null;
         $info['version'] = 5;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 

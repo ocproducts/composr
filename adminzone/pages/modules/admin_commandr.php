@@ -35,8 +35,8 @@ class Module_admin_commandr
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
-        $info['update_require_upgrade'] = 1;
+        $info['version'] = 3;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -78,6 +78,10 @@ class Module_admin_commandr
                 'c_incoming' => 'BINARY',
                 'c_timestamp' => 'TIME'
             ));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->rename_table('occlechat', 'commandrchat');
         }
     }
 

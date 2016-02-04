@@ -453,7 +453,7 @@ function breadcrumbs($show_self = true)
     // Substitutions
     if ((addon_installed('breadcrumbs')) && (function_exists('xml_parser_create'))) {
         require_code('breadcrumbs');
-        $BREADCRUMB_SET_PARENTS[] = array(url_to_page_link(get_self_url(true)), 'TERM');
+        $BREADCRUMB_SET_PARENTS[] = array(null, $GLOBALS['BREADCRUMB_SET_SELF']);
         $BREADCRUMB_SET_PARENTS = load_breadcrumb_substitutions($BREADCRUMB_SET_PARENTS);
         array_pop($BREADCRUMB_SET_PARENTS);
     }
@@ -1759,8 +1759,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_js()) && (has_actual_page_access(get_member(), 'admin_zones'))) {
             $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => $redirect), get_module_zone('admin_zones'));
         } else {
-            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */
-                                        'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
+            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
         }
     } else {
         $edit_url = new Tempcode();

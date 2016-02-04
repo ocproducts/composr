@@ -36,7 +36,7 @@ class Module_downloads
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 8;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -146,7 +146,6 @@ class Module_downloads
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dname', array('name'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_ddescrip', array('description'));
-            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dadditional', array('additional_details'));
             $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dccat', array('category'));
             $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dcdescrip', array('description'));
 
@@ -168,20 +167,6 @@ class Module_downloads
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
-            add_privilege('_SECTION_DOWNLOADS', 'download', true);
-        }
-
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
-            $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
-
-            add_privilege('SEARCH', 'autocomplete_keyword_download_category', false);
-            add_privilege('SEARCH', 'autocomplete_title_download_category', false);
-            add_privilege('SEARCH', 'autocomplete_keyword_download', false);
-            add_privilege('SEARCH', 'autocomplete_title_download', false);
-        }
-
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->add_table_field('download_downloads', 'url_redirect', 'URLPATH');
 
@@ -190,6 +175,22 @@ class Module_downloads
             $GLOBALS['SITE_DB']->alter_table_field('download_logging', 'the_user', '*MEMBER', 'member_id');
 
             delete_config_option('show_dload_trees');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('download_downloads', 'ftjoin_dcomments');
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
+            $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
+
+            add_privilege('_SECTION_DOWNLOADS', 'download', true);
+
+            add_privilege('SEARCH', 'autocomplete_keyword_download_category', false);
+            add_privilege('SEARCH', 'autocomplete_title_download_category', false);
+            add_privilege('SEARCH', 'autocomplete_keyword_download', false);
+            add_privilege('SEARCH', 'autocomplete_title_download', false);
+
+            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dadditional', array('additional_details'));
         }
     }
 
@@ -505,7 +506,7 @@ class Module_downloads
 
         // Get category contents
         //  Subcategories:
-        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
+        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '#', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
         //  Downloads:
         if (get_option('downloads_subcat_narrowin') == '1') {
             $select = strval($category_id) . '*';

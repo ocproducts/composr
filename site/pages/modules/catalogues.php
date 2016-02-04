@@ -36,7 +36,7 @@ class Module_catalogues
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 8;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -407,7 +407,6 @@ class Module_catalogues
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', '#cat_cat_search__combined', array('cc_title', 'cc_description'));
-            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_catalogue_category', false);
             add_privilege('SEARCH', 'autocomplete_title_catalogue_category', false);
@@ -431,6 +430,10 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
         }
     }
 
@@ -1034,7 +1037,7 @@ class Module_catalogues
         } else {
             $cc_sort = 'title';
         }
-        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
+        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '#', 'efficient' => '0', 'zone' => '_SELF', 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
         if (get_option('catalogues_subcat_narrowin') == '1') {
             $cat_select = strval($id) . '*';
         } else {

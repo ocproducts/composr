@@ -317,9 +317,11 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Usi', '\2 (\1)', $message_plain);
     }
 
-    if (!in_array('currency', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
-        $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+    if (addon_installed('ecommerce')) {
+        if (!in_array('currency', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
+            $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+        }
     }
 
     if (!in_array('hide', $tags_to_preserve)) {
@@ -1507,7 +1509,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
  * Append a value to a text e-mail.
  *
  * @param  string $message_raw Text-email (altered by reference).
- * @param  string $is_tick Whether it is a tick field.
+ * @param  boolean $is_tick Whether it is a tick field.
  * @param  string $field_title Field title.
  * @param  string $field_val Field value.
  *

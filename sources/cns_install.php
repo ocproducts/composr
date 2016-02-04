@@ -223,16 +223,15 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_total_sessions', 'UINTEGER');
 
         if (strpos(get_db_type(), 'mysql') !== false) {
-            $GLOBALS['FORUM_DB']->query('ALTER TABLE ' . get_table_prefix() . 'f_poll_votes ADD COLUMN id int NOT NULL AUTO_INCREMENT, DROP PRIMARY KEY, ADD PRIMARY KEY (id)');
+            $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
             $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'AUTO_LINK'), array('m_table' => 'f_poll_votes', 'm_type' => '*AUTO_LINK'));
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*USER'));
-            $GLOBALS['FORUM_DB']->query_insert('db_meta', array('m_table' => 'f_poll_votes', 'm_name' => 'id', 'm_type' => '*AUTO'));
+            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*MEMBER'));
         }
         $GLOBALS['FORUM_DB']->add_table_field('f_poll_votes', 'pv_ip', 'IP');
 
         $GLOBALS['FORUM_DB']->rename_table('f_categories', 'f_forum_groupings');
-        $GLOBALS['FORUM_DB']->alter_table_field('f_forums', 'f_category_id', 'AUTO_LINK', 'f_forum_grouping_id');
-        $privileges = array('moderate_private_topic' => 'moderate_private_topic', 'edit_private_topic_posts' => 'edit_private_topic_posts', 'delete_private_topic_posts' => 'delete_private_topic_posts');
+        $GLOBALS['FORUM_DB']->alter_table_field('f_forums', 'f_category_id', '?AUTO_LINK', 'f_forum_grouping_id');
+        $privileges = array('moderate_personal_topic' => 'moderate_private_topic', 'edit_personal_topic_posts' => 'edit_private_topic_posts');
         foreach ($privileges as $old => $new) {
             rename_privilege($old, $new);
         }
@@ -281,6 +280,19 @@ function install_cns($upgrade_from = null)
         rename_config_option('post_history_days', 'post_read_history_days');
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'');
+
+        $GLOBALS['FORUM_DB']->change_primary_key('f_multi_moderations', array('id'));
+
+        $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 1), array('the_name' => 'double_post'));
+        $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 1), array('the_name' => 'delete_account'));
+
+        add_privilege('FORUMS_AND_MEMBERS', 'delete_private_topic_posts', false, false);
+
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'unread_forums');
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 'unread_forums', array('t_forum_id', 't_cache_last_time'));
+
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_since');
+        $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_since', array('p_time', 'p_cache_forum_id')); // p_cache_forum_id is used to not count PT posts
     }
 
     // If we have the forum installed to this db already, leave
@@ -647,10 +659,6 @@ function install_cns($upgrade_from = null)
             't_cache_last_member_id' => '?MEMBER',
             't_cache_num_posts' => 'INTEGER',
         ));
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_first_member_id', array('t_cache_first_member_id'));
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_member_id', array('t_cache_last_member_id'));
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_first_post_id', array('t_cache_first_post_id'));
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_post_id', array('t_cache_last_post_id'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_num_views', array('t_num_views'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_pt_to', array('t_pt_to'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_pt_from', array('t_pt_from'));
@@ -842,18 +850,21 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_4', array('t_forum_id', 't_cache_last_time')); // Total index for simple forum topic listing
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_num_posts', array('t_cache_num_posts'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'in_topic_change_order', array('p_topic_id', 'p_last_edit_time', 'p_time', 'id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_member_id', array('t_cache_last_member_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_first_post_id', array('t_cache_first_post_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_post_id', array('t_cache_last_post_id'));
 
         $GLOBALS['FORUM_DB']->create_index('f_groups', '#groups_search__combined', array('g_name', 'g_title'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', '#posts_search__combined', array('p_post', 'p_title'));
 
         // Has to be done after f_groups is added
-        add_privilege('SECTION_FORUMS', 'exceed_post_edit_time_limit', false);
-        add_privilege('SECTION_FORUMS', 'exceed_post_delete_time_limit', false);
-        add_privilege('SECTION_FORUMS', 'bypass_required_cpfs');
-        add_privilege('SECTION_FORUMS', 'bypass_required_cpfs_if_already_empty');
-        add_privilege('SECTION_FORUMS', 'bypass_email_address');
-        add_privilege('SECTION_FORUMS', 'bypass_email_address_if_already_empty');
-        add_privilege('SECTION_FORUMS', 'bypass_dob');
-        add_privilege('SECTION_FORUMS', 'bypass_dob_if_already_empty');
+        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_edit_time_limit', false);
+        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_delete_time_limit', false);
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_required_cpfs');
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_required_cpfs_if_already_empty');
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_email_address');
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_email_address_if_already_empty');
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_dob');
+        add_privilege('FORUMS_AND_MEMBERS', 'bypass_dob_if_already_empty');
     }
 }

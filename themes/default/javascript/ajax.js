@@ -517,8 +517,8 @@ function do_ajax_request(url,callback__method,post) // Note: 'post' is not an ar
 	if (!synchronous) window.AJAX_REQUESTS[index].onreadystatechange=process_request_changes;
 	if (typeof post!='undefined' && post!==null)
 	{
-		if (post.indexOf('&session_id')==-1)
-			post+='&session_id='+window.encodeURIComponent(get_session_id()); // For CSRF prevention
+		if (post.indexOf('&csrf_token')==-1)
+			post+='&csrf_token='+window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
 		window.AJAX_REQUESTS[index].open('POST',url,!synchronous);
 		window.AJAX_REQUESTS[index].setRequestHeader('Content-Type','application/x-www-form-urlencoded');

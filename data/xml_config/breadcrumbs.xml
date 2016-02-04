@@ -70,6 +70,11 @@
 	<!--<substitution label="Our page" match_key="site:page_for_distorted_gallery">
 		<link label="Home">:start</link>
 	</substitution>-->
+
+	<!-- Changing just the label of a node, preserving the rest of the chain -->
+	<!--<substitution match_key="site:news:view:1" label="foo">
+		<link />
+	</substitution>-->
 </breadcrumbs>
 
 <!-- Note PHP regular expressions are not allowed but _WILD is for any component -->

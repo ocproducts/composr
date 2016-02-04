@@ -29,7 +29,7 @@ You may also hear terms like "web designer". A designer typically is closer to t
 
 [title="2"]How to evaluate a software company[/title]
 
-[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image2.jpg[/media]
+[media description="" width="400" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/criteria.png[/media]
 At ocProducts we often find that prospective clients don't know how to evaluate a software company. It's understandable: a lot of web businesses are first-time-businesses, and they are often started by people who are expert in the subject matter, but not web technology. People can't know everything.
 
 It becomes a problem in two particular scenarios:
@@ -72,12 +72,6 @@ Don't let a developer get away with this kind of sneakiness.
 
 You should ask to see examples of specific new functionality the developer has implemented themselves for their chosen CMS.
 
-[title="3"]Evaluating Past Programming Experience[/title]
-
-You should not expect the company to be able to show another project they have done which is very similar to your own, as this is unreasonable. However, you should look to see projects of a similar kind of complexity and seek to ensure they understand the general traits of your website. For example, expect to see experience writing social websites if you need social functionality, or at least get them to show they have attained insight via other means.
-
-And, of course, you should ask for the credentials of who is doing the programming. At least find out how many years of experience they have and whether they have an engineering degree &ndash; or whether they have a really strong portfolio you can't argue with.
-
 [title="3"]Evaluating Security[/title]
 
 [media description="" width="200" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image3.jpg[/media]
@@ -86,6 +80,12 @@ Ask what particular process is used to ensure new code is secure. Ask them on th
 CSRF stands for "cross site request forgery" and is a vulnerability where a hacker creates an 'evil' third party website and persuades an administrator to go to it, and that 'evil' website redirects a request over to the administrators website to instruct it to do something on it like delete something. If they cannot explain this clearly, you should be extremely concerned that the programmer is not experienced (there are a lot of programmers who have a very focused/limited knowledge of things). Don't let them come crawling back later about how they have "learnt new things", because this will just be illustrative of hundreds of critical holes in their knowledge and a lack of competency and professional integrity: CSRF is just one of dozens of areas of important security consideration a developer should know of.
 
 Ask them to describe the process for how a second senior developer reviews code security. They may say that the primary developer is very senior, which is okay if that really is true.
+
+[title="3"]Evaluating Past Programming Experience[/title]
+
+You should not expect the company to be able to show another project they have done which is very similar to your own, as this is unreasonable. However, you should look to see projects of a similar kind of complexity and seek to ensure they understand the general traits of your website. For example, expect to see experience writing social websites if you need social functionality, or at least get them to show they have attained insight via other means.
+
+And, of course, you should ask for the credentials of who is doing the programming. At least find out how many years of experience they have and whether they have an engineering degree &ndash; or whether they have a really strong portfolio you can't argue with.
 
 [title="3"]Evaluating eCommerce[/title]
 
@@ -101,6 +101,7 @@ If this has not all been thought through then you really have to question the ex
 
 [title="3"]Evaluating the Maintenance Contract[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image2.jpg[/media]
 You should expect an ongoing relationship with the web developer, as you can't realistically launch a website and not have any updates made to it. The web is constantly advancing, and new web browsers come out all the time which should be compatibility-tested.
 
 You should explain you require ongoing service from your web developer, and ask them to propose how they will charge for testing of new browsers. Mention you need to ensure that the site stays secure and ask them what they suggest -- they really should mention to you a way of them rolling out security updates to you if vulnerabilities are found in the software. Expect to pay for it, but expect it to be offered too!

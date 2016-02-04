@@ -19,14 +19,13 @@
  */
 
 /**
- * Convert a zip file to a tar file.
+ * Convert a ZIP file to a TAR file.
  *
- * @param  PATH $in_path The path of the tar file to convert
- * @param  boolean $skip_ignore Whether to skip files we think we ignore, including volatile Composr files
- * @param  ?PATH $out_path The path of the zip file to save to (null: make up a temporary path)
- * @return PATH The tar path. A temp file that must be deleted
+ * @param  PATH $in_path The path of the TAR file to convert
+ * @param  ?PATH $out_path The path of the ZIP file to save to (null: make up a temporary path)
+ * @return PATH The TAR path. A temp file that must be deleted
  */
-function convert_zip_to_tar($in_path, $skip_ignore = false, $out_path = null)
+function convert_zip_to_tar($in_path, $out_path = null)
 {
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(200);
@@ -61,12 +60,6 @@ function convert_zip_to_tar($in_path, $skip_ignore = false, $out_path = null)
         zip_entry_open($in_file, $entry);
 
         $_file = zip_entry_name($entry);
-
-        if ($skip_ignore) {
-            if (should_ignore_file($_file, IGNORE_BUNDLED_VOLATILE)) {
-                continue;
-            }
-        }
 
         $temp_path = cms_tempnam();
         $temp_file = @fopen($temp_path, 'wb') or intelligent_write_error($temp_path);

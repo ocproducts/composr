@@ -90,7 +90,8 @@ function _find_all_langs($even_empty_langs = false)
 
     // NB: This code is heavily optimised
 
-    $_langs = array();
+    $_langs = array(fallback_lang() => 'lang');
+
     if (!in_safe_mode()) {
         $test = persistent_cache_get('LANGS_LIST');
         if ($test !== null) {
@@ -127,14 +128,16 @@ function _find_all_langs($even_empty_langs = false)
             if ($_dir !== false) {
                 while (false !== ($file = readdir($_dir))) {
                     if ((!isset($file[5])) && ($file[0] != '.') && (($file == 'EN') || (!should_ignore_file('lang_custom/' . $file, IGNORE_ACCESS_CONTROLLERS)))) {
-                        if ($even_empty_langs) {
-                            $_langs[$file] = 'lang_custom';
-                        } else {
-                            $_dir2 = opendir(get_file_base() . '/lang_custom/' . $file);
-                            while (false !== ($file2 = readdir($_dir2))) {
-                                if (substr($file2, -4) == '.ini') {
-                                    $_langs[$file] = 'lang_custom';
-                                    break;
+                        if (is_dir(get_file_base() . '/lang_custom/' . $file)) {
+                            if ($even_empty_langs) {
+                                $_langs[$file] = 'lang_custom';
+                            } else {
+                                $_dir2 = opendir(get_file_base() . '/lang_custom/' . $file);
+                                while (false !== ($file2 = readdir($_dir2))) {
+                                    if (substr($file2, -4) == '.ini') {
+                                        $_langs[$file] = 'lang_custom';
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -144,7 +147,7 @@ function _find_all_langs($even_empty_langs = false)
             }
         }
     }
-    $_dir = opendir(get_file_base() . '/lang/');
+    $_dir = @opendir(get_file_base() . '/lang/');
     if ($_dir !== false) {
         while (false !== ($file = readdir($_dir))) {
             if ((!isset($_langs[$file])) && ($file[0] != '.') && (!isset($file[5])) && (($file == 'EN') || (!should_ignore_file('lang/' . $file, IGNORE_ACCESS_CONTROLLERS)))) {

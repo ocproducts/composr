@@ -226,7 +226,7 @@ The module class must include a function named [tt]info[/tt], which returns a ma
  - [tt]hacked_by[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it would be the name of the person altering the module (the new author)
  - [tt]hack_version[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it should start as the integer '1' and then be incremented for each new version of the module (see explanation of [tt]version[/tt])
  - [tt]version[/tt] -- this is the version number for the module. The version can start at any integer, but '1' is usual. This number should be incremented whenever a compatibility-breaking change is implemented.
- - [tt]update_require_upgrade[/tt] -- this should be either 0 or 1 (it defaults to 0 if it is left out). If it is 1 then the [tt]install[/tt] function will be called when Composr detects that the module's version has increased since it was originally installed. It should only be set to 1 if the [tt]install[/tt] function is written to be able to perform upgrades (this requires extra effort).
+ - [tt]update_require_upgrade[/tt] -- this should be either true or false (it defaults to false if it is left out). If it is true then the [tt]install[/tt] function will be called when Composr detects that the module's version has increased since it was originally installed. It should only be set to true if the [tt]install[/tt] function is written to be able to perform upgrades (this requires extra effort).
  - [tt]locked[/tt] -- this prevents administrators from uninstalling this module. This should be set to false unless the module is a core module that should never be uninstalled.
 
 [title="5"]The [tt]run[/tt] function[/title]
@@ -381,7 +381,7 @@ function info()
 	$info['version'] = 2;
 	// Setting 'update_require_upgrade' makes Composr realise it can do an upgrade
 	//  At run-time it will compare the version in the database, to the version above and auto-upgrade if required
-	$info['update_require_upgrade'] = 1;
+	$info['update_require_upgrade'] = true;
 	...
 	return $info;
 }

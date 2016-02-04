@@ -127,7 +127,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     }
     $tracker_comment_message .= 'A hotfix (a TAR of files to upload) have been uploaded to this issue. These files are made to the latest intra-version state (i.e. may roll in earlier fixes too if made to the same files) - so only upload files newer than what you have already. Always take backups of files you are replacing or keep a copy of the manual installer for your version, and only apply fixes you need. These hotfixes are not necessarily reliable or well supported. Not sure how to extract TAR files to your Windows computer? Try 7-zip (http://www.7-zip.org/).';
     create_tracker_post($tracker_id, $tracker_comment_message);
-    // A tar of fixed files is uploaded to the tracker issue (correct relative file paths intact)
+    // A TAR of fixed files is uploaded to the tracker issue (correct relative file paths intact)
     upload_to_tracker_issue($tracker_id, create_hotfix_tar($tracker_id, $fixed_files));
     // The tracker issue gets closed
     close_tracker_issue($tracker_id);

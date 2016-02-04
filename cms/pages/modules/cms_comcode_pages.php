@@ -36,7 +36,7 @@ class Module_cms_comcode_pages
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -637,7 +637,7 @@ class Module_cms_comcode_pages
 
             if ($new) {
                 if (strpos($contents, '[title') === false) {
-                    $contents = '[title]' . $file . '[/title]' . "\n\n" . $contents;
+                    $contents = '[title]' . titleify($file) . '[/title]' . "\n\n" . $contents;
                 }
 
                 if ((get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous'))) {

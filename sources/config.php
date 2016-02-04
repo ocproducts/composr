@@ -252,7 +252,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : get_translated_text($option['c_value_trans']);
+    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
     $option['c_value_translated'] = $value;
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
@@ -362,7 +362,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
     if ($elective_or_lengthy) {
         $GLOBALS['SITE_DB']->query_delete('values_elective', array('the_name' => $name), '', 1);
         if ($value !== null) {
-            $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name));
+            $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name), false, true); // Allow failure, if there is a race condition
         }
         return $value;
     }

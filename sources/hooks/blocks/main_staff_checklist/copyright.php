@@ -45,7 +45,7 @@ class Hook_checklist_copyright
         }
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
-        $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), 'adminzone');
+        $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'));
 
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c65f89a7af3ce753fc7eada742891400', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_COPYRIGHT_DATE', $url->evaluate())));
 

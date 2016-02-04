@@ -35,7 +35,8 @@ class Module_login
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -56,13 +57,18 @@ class Module_login
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('failedlogins', array(
-            'id' => '*AUTO',
-            'failed_account' => 'ID_TEXT',
-            'date_and_time' => 'TIME',
-            'ip' => 'IP'
-        ));
-        $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        if (is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->create_table('failedlogins', array(
+                'id' => '*AUTO',
+                'failed_account' => 'ID_TEXT',
+                'date_and_time' => 'TIME',
+                'ip' => 'IP'
+            ));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        }
     }
 
     /**
@@ -226,9 +232,6 @@ class Module_login
             if (!is_null($redirect_passon)) {
                 $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
             }
-            if (post_param_string('session_id', '') != '') {
-                $passion->attach(form_input_hidden('session_id', $GLOBALS['DID_CHANGE_SESSION_ID'] ? get_session_id() : post_param_string('session_id')));
-            }
         }
 
         // Lost password link
@@ -279,9 +282,6 @@ class Module_login
                 $redirect_passon = post_param_string('redirect_passon', null); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
                 if (!is_null($redirect_passon)) {
                     $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
-                }
-                if (post_param_string('session_id', '') != '') {
-                    $post->attach(form_input_hidden('session_id', $GLOBALS['DID_CHANGE_SESSION_ID'] ? get_session_id() : post_param_string('session_id')));
                 }
                 $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
             }

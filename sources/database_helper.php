@@ -292,10 +292,12 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         }
         $_fields .= $field;
 
-        if ((!multi_lang_content()) && (substr($index_name, 0, 1) != '#') && (strpos($field, '(') === false)) {
+        if (strpos($field, '(') === false) {
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
-            if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+            if ((substr($index_name, 0, 1) != '#') && (!is_null($db_type)) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+                }
             }
         }
     }
@@ -555,13 +557,10 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     $type = str_replace(array('*', '?'), array('', ''), $final_type);
     $extra = '';
     if (($final_type != 'LONG_TEXT') || (get_db_type() == 'postgresql')) {
-        $extra = is_null($default) ? 'DEFAULT NULL' : (' DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
+        $extra = is_null($default) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' ADD ' . $name . ' ' . $type_remap[$type] . ' ' . $extra . ' ' . $tag;
-    if (substr($_type, 0, 1) == '*') {
-        $query .= ', ADD PRIMARY KEY (' . $name . ')';
-    }
 
     return array($query, $default_st);
 }
@@ -653,9 +652,6 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
         $query .= $name;
     }
     $query .= ' ' . $extra . ' ' . $type_remap[$type] . $tag;
-    if (substr($_type, 0, 1) == '*') {
-        $query .= ', ADD PRIMARY KEY (' . ((!is_null($new_name)) ? $new_name : $name) . ')';
-    }
 
     return $query;
 }
@@ -675,7 +671,49 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }
+
+    $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name));
+    foreach ($new_key as $_new_key) {
+        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
+    }
+
     $this_ref->static_ob->db_change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
+}
+
+/**
+ * Use an *AUTO key for a table that had some other key before.
+ *
+ * @param  object $this_ref Link to the real database object
+ * @param  ID_TEXT $table_name Table name
+ * @param  ID_TEXT $field_name Field name for new key
+ *
+ * @ignore
+ */
+function _helper_add_auto_key($this_ref, $table_name, $field_name)
+{
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    // Add integer field, as it is a safe op (auto_increment can only be active key, and we already have a key)
+    $this_ref->add_table_field($table_name, $field_name, 'INTEGER');
+
+    // But it does need to be unique
+    $start = 0;
+    $i = db_get_first_id();
+    do {
+        $rows = $this_ref->query_select($table_name, array('*'), null, '', 100, $start);
+        foreach ($rows as $row) {
+            $this_ref->query_update($table_name, array($field_name => $i) + $row, $row, '', 1);
+            $i++;
+        }
+        $start += 100;
+    }
+    while (count($rows) > 0);
+
+    // Set the new key
+    $this_ref->change_primary_key($table_name, array($field_name));
+
+    // Switch to auto_increment in DB, and update meta DB
+    $this_ref->alter_table_field($table_name, $field_name, '*AUTO');
 }
 
 /**

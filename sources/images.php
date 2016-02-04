@@ -325,6 +325,8 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $js_tooltip = true;
     }
 
+    $url = preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $url);
+
     $box_size = (($width === null) && ($height === null));
 
     if ($width === null) {
@@ -353,7 +355,7 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
 
         if (!file_exists($file_thumb)) {
             convert_image($url, $file_thumb, $box_size ? -1 : $width, $box_size ? -1 : $height, $box_size ? $width : -1, false, null, false, $only_make_smaller);
-            if (!file_exists($file_thumb)) {
+            if (!file_exists($file_thumb) && file_exists($file_thumb . '.png')/*convert_image maybe had to change the extension*/) {
                 $new_name .= '.png';
             }
         }
@@ -453,7 +455,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
         create_video_thumb($full_url, $thumb_path);
     } else {
         convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
-        if (!file_exists($thumb_path)) {
+        if (!file_exists($thumb_path) && file_exists($thumb_path . '.png'/*convert_image maybe had to change the extension*/)) {
             $thumb_url .= '.png';
         }
     }
@@ -661,6 +663,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         }
         return false;
     }
+
     $source = @imagecreatefromstring($from_file);
     if ($source === false) {
         if ($exit_on_error) {

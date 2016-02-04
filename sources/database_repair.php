@@ -156,13 +156,13 @@ class DatabaseRepair
         }
 
         $needs_changes = false;
-        $needs_changes = $needs_changes || $this->search_for_meta_table_issues($existent_tables, $meta_tables, $expected_tables);
-        $needs_changes = $needs_changes || $this->search_for_meta_index_issues($existent_indices, $meta_indices);
+        $needs_changes = $this->search_for_meta_table_issues($existent_tables, $meta_tables, $expected_tables) || $needs_changes;
+        $needs_changes = $this->search_for_meta_index_issues($existent_indices, $meta_indices) || $needs_changes;
         $phase = $needs_changes ? 1 : 2;
         if (!$needs_changes) {
-            $needs_changes = $needs_changes || $this->search_for_table_issues($existent_tables, $expected_tables, $meta_indices);
-            $needs_changes = $needs_changes || $this->search_for_index_issues($existent_indices, $expected_indices, $meta_indices, $meta_tables);
-            $needs_changes = $needs_changes || $this->search_for_privilege_issues($existent_privileges, $expected_privileges);
+            $needs_changes = $this->search_for_table_issues($existent_tables, $expected_tables, $meta_indices) || $needs_changes;
+            $needs_changes = $this->search_for_index_issues($existent_indices, $expected_indices, $meta_indices, $meta_tables) || $needs_changes;
+            $needs_changes = $this->search_for_privilege_issues($existent_privileges, $expected_privileges) || $needs_changes;
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
@@ -363,7 +363,6 @@ class DatabaseRepair
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
                         if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
-                            @var_dump($expected_null_ok);@exit($field_name);
                             $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, isset($meta_tables[$table_name][$field_name]));
                             $needs_changes = true;
                         }
@@ -703,7 +702,7 @@ class DatabaseRepair
      */
     private function fix_index_inconsistent_in_meta($index_name, $index)
     {
-        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=\'' . db_escape_string(implode(',', $index['fields'])) . '\' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
+        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=\'' . db_escape_string(implode(',', $index['fields'])) . '\',i_name=\'' . db_escape_string($index['name']) . '\' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
         $this->add_fixup_query($query);
     }
 
@@ -739,7 +738,7 @@ class DatabaseRepair
         $table_name = $index['table'];
         $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
         $_fields = implode(',', $index['fields']);
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql($table_name, $_index_name, $_fields);
+        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
         if (!is_null($query)) {
             $this->add_fixup_query($query);
         }

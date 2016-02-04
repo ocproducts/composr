@@ -621,7 +621,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             closedir($dh);
         }
     } else {
-        $place = array('default', '/' . $directory . '/');
+        $place = array('default', '/' . $directory . '/', $suffix);
     }
 
     $tp_cache[$sz] = $place;
@@ -1249,7 +1249,7 @@ function cns_require_all_forum_stuff()
 function cms_tempnam($prefix = 'cms')
 {
     require_code('files2');
-    return _cms_tempnam($prefix = '');
+    return _cms_tempnam($prefix);
 }
 
 /**

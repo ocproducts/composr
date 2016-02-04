@@ -102,7 +102,7 @@ CREATE TABLE cms_modules (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_permissions', 'Chris Graham', 'ocProducts', '', NULL, 8);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_permissions', 'Chris Graham', 'ocProducts', '', NULL, 9);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_version', 'Chris Graham', 'ocProducts', '', NULL, 17);
@@ -168,7 +168,7 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_cns_welcome_emails', 'Chris Graham', 'ocProducts', '', NULL, 4);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_commandr', 'Philip Withnall', 'ocProducts', '', NULL, 2);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_commandr', 'Philip Withnall', 'ocProducts', '', NULL, 3);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_config', 'Chris Graham', 'ocProducts', '', NULL, 15);
@@ -339,7 +339,7 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 7);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
@@ -375,7 +375,7 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('warnings', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 10);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 9);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forumview', 'Chris Graham', 'ocProducts', '', NULL, 2);
@@ -444,7 +444,7 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('join', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 2);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 3);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('lost_password', 'Chris Graham', 'ocProducts', '', NULL, 2);
@@ -1044,28 +1044,28 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUM
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'delete_private_topic_posts', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'exceed_post_edit_time_limit', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'exceed_post_edit_time_limit', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'exceed_post_delete_time_limit', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'exceed_post_delete_time_limit', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_required_cpfs', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_required_cpfs', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_required_cpfs_if_already_empty', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_required_cpfs_if_already_empty', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_email_address', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_email_address', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_email_address_if_already_empty', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_email_address_if_already_empty', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_dob', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_dob', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SECTION_FORUMS', 'bypass_dob_if_already_empty', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FORUMS_AND_MEMBERS', 'bypass_dob_if_already_empty', 0);
 
 
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUBMISSION', 'edit_meta_fields', 0);
@@ -1177,6 +1177,15 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('CALEN
 
 
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('CALENDAR', 'view_event_subscriptions', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('CALENDAR', 'calendar_add_to_others', 1);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_keyword_event', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_title_event', 0);
 
 
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('CATALOGUES', 'high_catalogue_entry_timeout', 0);
@@ -1328,14 +1337,14 @@ DROP TABLE IF EXISTS cms_pstore_customs;
 
 
 CREATE TABLE cms_pstore_customs (
-     c_mail_body longtext NOT NULL,
-     c_enabled tinyint(1) NOT NULL,
-     c_cost integer NOT NULL,
-     c_one_per_member tinyint(1) NOT NULL,
      id integer unsigned auto_increment NOT NULL,
      c_title longtext NOT NULL,
      c_description longtext NOT NULL,
      c_mail_subject longtext NOT NULL,
+     c_mail_body longtext NOT NULL,
+     c_enabled tinyint(1) NOT NULL,
+     c_cost integer NOT NULL,
+     c_one_per_member tinyint(1) NOT NULL,
      c_description__text_parsed longtext NOT NULL,
      c_description__source_user integer DEFAULT 1 NOT NULL,
 
@@ -1857,54 +1866,54 @@ DROP TABLE IF EXISTS cms_staff_checklist_cus_tasks;
 
 
 CREATE TABLE cms_staff_checklist_cus_tasks (
-     recur_interval integer NOT NULL,
-     recur_every varchar(80) NOT NULL,
-     task_is_done integer unsigned NULL,
      id integer unsigned auto_increment NOT NULL,
      task_title longtext NOT NULL,
      add_date integer unsigned NOT NULL,
+     recur_interval integer NOT NULL,
+     recur_every varchar(80) NOT NULL,
+     task_is_done integer unsigned NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make \'favicon\' theme image', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make \'favicon\' theme image', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, 'Make \'webclipicon\' theme image', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, 'Make \'webclipicon\' theme image', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, 'Make/install custom theme', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, 'Make/install custom theme', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to Google\"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to Google\"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Submit to Bing\"]http://www.bing.com/toolbox/submit-site-url[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Submit to Bing\"]http://www.bing.com/toolbox/submit-site-url[/url]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (12, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (12, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1454377591, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (13, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/helping-out.htm[/url]', 1453620686, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (13, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/helping-out.htm[/url]', 1454377591, 0, '', NULL);
 
 
 DROP TABLE IF EXISTS cms_staff_links;
@@ -2081,7 +2090,7 @@ CREATE TABLE cms_task_queue (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '4671b7a32e9d9', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '81e9b8f6e38e5', 0, 0);
 
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
@@ -2323,10 +2332,10 @@ DROP TABLE IF EXISTS cms_urls_checked;
 
 
 CREATE TABLE cms_urls_checked (
-     url_exists tinyint(1) NOT NULL,
-     url_check_time integer unsigned NOT NULL,
      id integer unsigned auto_increment NOT NULL,
      url longtext NOT NULL,
+     url_exists tinyint(1) NOT NULL,
+     url_check_time integer unsigned NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -2368,10 +2377,19 @@ CREATE TABLE cms_values (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1453620673);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1454377577);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1453620673);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1454377577);
+
+
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1454377577);
+
+
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1454377577);
+
+
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1454377577);
 
 
 DROP TABLE IF EXISTS cms_values_elective;
@@ -2387,7 +2405,7 @@ CREATE TABLE cms_values_elective (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1453620674);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1454377577);
 
 
 DROP TABLE IF EXISTS cms_video_transcoding;
@@ -2487,7 +2505,7 @@ CREATE TABLE cms_wiki_pages (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1453620686, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56a47dc6d7ac47.94287241_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56a47dc6d7ac47.94287241_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56a47dc6d7ac47.94287241_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1454377590, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_56b00a6ea36a67.68334031_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_56b00a6ea36a67.68334031_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_56b00a6ea36a67.68334031_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_wiki_posts;
@@ -2520,7 +2538,7 @@ CREATE TABLE cms_wordfilter (
      w_replacement varchar(255) NOT NULL,
      w_substr tinyint(1) NOT NULL,
 
-    PRIMARY KEY (id, w_substr)
+    PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
@@ -2681,7 +2699,7 @@ INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_tex
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('cms', 'Content Management', 'cms', 'Content Management', 'admin', 1);
 
 
-INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('docs', '', 'tutorials', '', '-1', 0);
+INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('docs', 'Tutorials', 'tutorials', '', '-1', 0);
 
 
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('forum', 'Forums', 'forumview', 'Forum', '-1', 0);
@@ -2802,6 +2820,9 @@ ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccpt (cc_page_title(250));
 
 
 ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccsi (string_index(250));
+
+
+ALTER TABLE cms_calendar_events ADD FULLTEXT event_search__combined (e_title(250),e_content(250));
 
 
 ALTER TABLE cms_calendar_events ADD FULLTEXT e_content (e_content(250));
@@ -3564,9 +3585,6 @@ ALTER TABLE cms_f_topics ADD INDEX topic_order_time (t_cache_last_time);
 
 
 ALTER TABLE cms_f_topics ADD INDEX topic_order_time_2 (t_cache_first_time);
-
-
-ALTER TABLE cms_f_topics ADD INDEX t_cache_first_member_id (t_cache_first_member_id);
 
 
 ALTER TABLE cms_f_topics ADD INDEX t_cache_first_post_id (t_cache_first_post_id);

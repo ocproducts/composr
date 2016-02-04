@@ -1,6 +1,9 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: Guide to running a web agency[/title]
 
-The Composr community (including my sponsoring company, ocProducts) [page="site:partners"]welcomes other companies[/page] to provide professional services based around Composr CMS. To that end this tutorial has been created to provide an outline of how to set up and run an agency, based on the experiences I've had building up ocProducts Ltd. I aim to provide you enough information to learn the important skeleton of running a stable development business -- so that you can then work to flesh out things in your own particular way, appropriate to how you want to run your own business.
+[media description="Tongue-in-cheek guide to starting a creative agency (copyright Ben Horsley)" width="350" float="right" framed="1"]data_custom/images/docs/sup_running_agency/funny.jpg[/media]
+The Composr community (including my sponsoring company, ocProducts) [page="site:partners"]welcomes other companies[/page] to provide professional services based around Composr CMS. To that end this tutorial has been created to provide an outline of how to set up and run an agency, based on the experiences I've had building up ocProducts Ltd.
+
+I aim to provide you enough information to learn the important skeleton of running a stable development business -- so that you can then work to flesh out things in your own particular way, appropriate to how you want to run your own business.
 
 The processes are a bit biased towards fixed-quote projects rather than projects with an agile budget. However this is a good thing because agile projects are the simpler case -- there is much less risk, need for upfront planning, and costings work -- because things are done in smaller independent iterations with an ongoing commitment to keeping the project (and budget) going.
 
@@ -297,46 +300,46 @@ These steps should all be completed before costings are made, with the results t
 [title="2"]Overall project checklist[/title]
 
 Here is a sample checklist for managing an overall project:
- &#10003; Project is added to CRM
- &#10003; Strong client relationship established
- &#10003; Confirm the client agreeing to things and the name on the invoice are one and the same, and we know their name and address
- &#10003; Client deeply quizzed on their requirements, understood intimately -- "hidden" requirements identified
- &#10003; Proposal written
- &#10003; Assured that our proposal is in line with the client's business model for success
- &#10003; Client briefed on our terms and conditions
- &#10003; Tried to catch client out on them forgetting to tell things and then explain their need for contingency directly within their own projects context
- &#10003; Up-selling of possible additional services
- &#10003; Price agreed, in writing (based on real developer discussions and multiplier)
- &#10003; Price not agreed against any outstanding designs the client may be making
- &#10003; VAT situation agreed, in writing
- &#10003; Scope agreed, in writing and client agrees proposal is inclusive of all requirements
- &#10003; Deadline agreed, in writing, with multiplier
- &#10003; Terms and conditions signed on Echosign; or, contract
- &#10003; Work all covered by Bitbucket issues
- &#10003; Deposit invoiced/paid
- &#10003; Calendar events for key dates
- &#10003; All project details in Dropbox not personal e-mail (e.g. passwords)
- &#10003; Design under way, using an existing unused stock one as a base if possible
- &#10003; Design meets our quality standards
- &#10003; Design done and developer says is buildable
- &#10003; Design finalised with client, “sign off”
- &#10003; Design invoiced/paid (if applicable)
- &#10003; Developer properly briefed and booked in
- &#10003; Work getting done in git
- &#10003; Work regularly updated to staging server, if appropriate
- &#10003; Change management process used correctly: changes must mean scheduled changes. Any freebies or infractions should be recorded in a spreadsheet
- &#10003; Developer progress to schedule
- &#10003; Development checklist completed
- &#10003; Risk assessment done, if appropriate
- &#10003; Deployment plan done and checked by senior developer, if appropriate
- &#10003; Work thoroughly checked, ad hoc ; also, peer developer review if appropriate
- &#10003; Work thoroughly checked, formal test set
- &#10003; Final work demoed
- &#10003; Final work deployed to deployment plan
- &#10003; Deployment invoiced/paid
- &#10003; Testimonial gathered
- &#10003; Any maintenance or security agreements or training is scheduled/documented
- &#10003; 30-day invoiced/paid (or as applicable)
+ [color="green"]&#10003;[/color] Project is added to CRM
+ [color="green"]&#10003;[/color] Strong client relationship established
+ [color="green"]&#10003;[/color] Confirm the client agreeing to things and the name on the invoice are one and the same, and we know their name and address
+ [color="green"]&#10003;[/color] Client deeply quizzed on their requirements, understood intimately -- "hidden" requirements identified
+ [color="green"]&#10003;[/color] Proposal written
+ [color="green"]&#10003;[/color] Assured that our proposal is in line with the client's business model for success
+ [color="green"]&#10003;[/color] Client briefed on our terms and conditions
+ [color="green"]&#10003;[/color] Tried to catch client out on them forgetting to tell things and then explain their need for contingency directly within their own projects context
+ [color="green"]&#10003;[/color] Up-selling of possible additional services
+ [color="green"]&#10003;[/color] Price agreed, in writing (based on real developer discussions and multiplier)
+ [color="green"]&#10003;[/color] Price not agreed against any outstanding designs the client may be making
+ [color="green"]&#10003;[/color] VAT situation agreed, in writing
+ [color="green"]&#10003;[/color] Scope agreed, in writing and client agrees proposal is inclusive of all requirements
+ [color="green"]&#10003;[/color] Deadline agreed, in writing, with multiplier
+ [color="green"]&#10003;[/color] Terms and conditions signed on Echosign; or, contract
+ [color="green"]&#10003;[/color] Work all covered by Bitbucket issues
+ [color="green"]&#10003;[/color] Deposit invoiced/paid
+ [color="green"]&#10003;[/color] Calendar events for key dates
+ [color="green"]&#10003;[/color] All project details in Dropbox not personal e-mail (e.g. passwords)
+ [color="green"]&#10003;[/color] Design under way, using an existing unused stock one as a base if possible
+ [color="green"]&#10003;[/color] Design meets our quality standards
+ [color="green"]&#10003;[/color] Design done and developer says is buildable
+ [color="green"]&#10003;[/color] Design finalised with client, “sign off”
+ [color="green"]&#10003;[/color] Design invoiced/paid (if applicable)
+ [color="green"]&#10003;[/color] Developer properly briefed and booked in
+ [color="green"]&#10003;[/color] Work getting done in git
+ [color="green"]&#10003;[/color] Work regularly updated to staging server, if appropriate
+ [color="green"]&#10003;[/color] Change management process used correctly: changes must mean scheduled changes. Any freebies or infractions should be recorded in a spreadsheet
+ [color="green"]&#10003;[/color] Developer progress to schedule
+ [color="green"]&#10003;[/color] Development checklist completed
+ [color="green"]&#10003;[/color] Risk assessment done, if appropriate
+ [color="green"]&#10003;[/color] Deployment plan done and checked by senior developer, if appropriate
+ [color="green"]&#10003;[/color] Work thoroughly checked, ad hoc ; also, peer developer review if appropriate
+ [color="green"]&#10003;[/color] Work thoroughly checked, formal test set
+ [color="green"]&#10003;[/color] Final work demoed
+ [color="green"]&#10003;[/color] Final work deployed to deployment plan
+ [color="green"]&#10003;[/color] Deployment invoiced/paid
+ [color="green"]&#10003;[/color] Testimonial gathered
+ [color="green"]&#10003;[/color] Any maintenance or security agreements or training is scheduled/documented
+ [color="green"]&#10003;[/color] 30-day invoiced/paid (or as applicable)
 
 [title="2"]On costings[/title]
 

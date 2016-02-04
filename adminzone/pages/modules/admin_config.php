@@ -37,7 +37,7 @@ class Module_admin_config
         $info['hack_version'] = null;
         $info['version'] = 15;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -107,6 +107,12 @@ class Module_admin_config
             /*Actually let's save the space  set_helper_panel_tutorial('tut_adv_configuration');*/
 
             $category = get_param_string('id');
+
+            $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
+            if (is_null($test)) {
+                warn_exit(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'));
+            }
+
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CONFIGURATION'))));
             breadcrumb_set_self(do_lang_tempcode('CONFIG_CATEGORY_' . $category));
 

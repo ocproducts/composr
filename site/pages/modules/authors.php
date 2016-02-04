@@ -36,6 +36,7 @@ class Module_authors
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -64,8 +65,6 @@ class Module_authors
                 'description' => 'LONG_TRANS__COMCODE',
                 'skills' => 'LONG_TRANS__COMCODE',
             ));
-
-            $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
@@ -74,6 +73,12 @@ class Module_authors
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'forum_handle', '?MEMBER', 'member_id');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('authors', 'findmemberlink');
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
     }
 

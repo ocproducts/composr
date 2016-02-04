@@ -203,7 +203,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
                     'm_manually_chosen' => 1,
                     'm_resource_page' => ($content_type == 'comcode_page') ? $_content_id : $attributes['page'],
                     'm_resource_type' => ($content_type == 'comcode_page') ? '' : (isset($attributes['type']) ? $attributes['type'] : ''),
-                    'm_resource_id' => ($content_type == 'comcode_page') ? '' : $_content_id
+                    'm_resource_id' => ($content_type == 'comcode_page') ? $zone : $_content_id
                 );
                 $manually_chosen = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', $moniker_where));
             } else {
@@ -220,9 +220,11 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
 
     if ((!$fields->is_empty()) && ($show_header != METADATA_HEADER_NO)) {
         $_fields = new Tempcode();
-        $_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'adf2a2cda231619243763ddbd0cc9d4e', 'SECTION_HIDDEN' => true,
-                                                                       'TITLE' => do_lang_tempcode('METADATA'),
-                                                                       'HELP' => do_lang_tempcode('DESCRIPTION_METADATA', is_null($content_id) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
+        $_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
+            '_GUID' => 'adf2a2cda231619243763ddbd0cc9d4e',
+            'SECTION_HIDDEN' => true,
+            'TITLE' => do_lang_tempcode('METADATA'),
+            'HELP' => do_lang_tempcode('DESCRIPTION_METADATA', is_null($content_id) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
         )));
         $_fields->attach($fields);
         return $_fields;

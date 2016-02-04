@@ -483,7 +483,7 @@ class Module_cms_quiz extends Standard_crud_module
         $name = post_param_string('name', STRING_MAGIC_NULL);
         $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('quizzes', 'q_validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('quizzes', 'q_submitter', array('id' => $id));
 
             if (has_actual_page_access(get_modal_user(), 'quiz')) {

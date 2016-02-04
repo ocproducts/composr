@@ -146,9 +146,13 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
         return WYSIWYG_COMCODE__BUTTON;
     }
 
-    if (isset($CODE_TAGS[$tag]) && $tag != 'staff_note') {
+    if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
-            return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
+            if ($tag != 'staff_note') {
+                return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
+            } else {
+                return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
+            }
         }
     }
 
@@ -227,6 +231,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
         case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+        case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
             $params_html = '';
             foreach ($attributes as $key => $val) {
                 if (is_integer($key)) {
@@ -243,10 +248,16 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $out .= '&#8203;';
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
-            if ($method == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED) {
-                $out .= escape_html($embed->evaluate());
-            } else {
-                $out .= $embed->evaluate();
+            switch ($method) {
+                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                    $out .= escape_html($embed->evaluate());
+                    break;
+                case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
+                    $out .= html_entity_decode($embed->evaluate(), ENT_QUOTES, get_charset());
+                    break;
+                default:
+                    $out .= $embed->evaluate();
+                    break;
             }
             $out .= '</comcode-' . escape_html($tag) . '>';
             if ($method == WYSIWYG_COMCODE__XML_INLINE) {
@@ -917,7 +928,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 require_code('xhtml');
                                                 if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) == preg_replace('#\s#', '', $p_portion)) {
                                                     $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
-                                                    $ret->attach($p_portion);
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                    $ret->attach($p_portion_comcode);
                                                     $ret->attach('</tempcode>');
 
                                                     $pos = $p_end + 6;
@@ -1219,7 +1231,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             foreach ($rows as $h => $row) {
-                                                $cells = preg_split('/(\n\! | \!\! |\n\| | \|\| )/', $row, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                $cells = preg_split('/(\n\!| \!\!|\n\|| \|\|)/', $row, -1, PREG_SPLIT_DELIM_CAPTURE);
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
                                                 // Find which to float
@@ -1329,7 +1341,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             )));
                                             $finished_thead = false;
                                             foreach ($rows as $table_row) {
-                                                $cells = preg_split('/(\n\! | \!\! |\n\| | \|\| )/', $table_row, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                $cells = preg_split('/(\n\!| \!\!|\n\|| \|\|)/', $table_row, -1, PREG_SPLIT_DELIM_CAPTURE);
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
                                                 $c_type = '';

@@ -346,7 +346,7 @@ function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avo
         if ($zone_name == '_SEARCH') {
             $zone_name = get_page_zone($vars['page']);
         }
-        if (($hash != '') && (substr($hash, 0, 1) != '#')) {
+        if (($hash != '') && ($hash[0] != '#')) {
             $hash = '#' . $hash;
         }
         return make_string_tempcode(_build_url($vars, $zone_name, $skip, $keep_all, $avoid_remap, true, $hash));
@@ -434,7 +434,7 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
         }
     }
 
-    if (($hash != '') && (substr($hash, 0, 1) != '#')) {
+    if (($hash != '') && ($hash[0] != '#')) {
         $hash = '#' . $hash;
     }
 
@@ -472,7 +472,7 @@ function url_monikers_enabled()
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
  * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
- * @param  string $hash Hash portion of the URL (blank: none).
+ * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return string The URL in string format.
  *
  * @ignore
@@ -482,6 +482,10 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     global $HAS_KEEP_IN_URL_CACHE, $USE_REWRITE_PARAMS_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX;
 
     $has_page = isset($vars['page']);
+
+    if (($hash != '') && ($hash[0] != '#')) {
+        $hash = '#' . $hash;
+    }
 
     // Build up our URL base
     $stub = get_base_url(is_page_https($zone_name, $has_page ? $vars['page'] : ''), $zone_name);
@@ -1216,6 +1220,10 @@ function find_id_moniker($url_parts, $zone)
                 $or_list = '';
                 foreach ($LOADED_MONIKERS_CACHE as $type => $pages) {
                     foreach ($pages as $page => $ids) {
+                        if (!is_string($page)) {
+                            $page = strval($page);
+                        }
+
                         foreach ($ids as $id => $status) {
                             if ($status !== true) {
                                 continue;

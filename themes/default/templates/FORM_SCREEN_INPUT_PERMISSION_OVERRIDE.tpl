@@ -23,7 +23,9 @@
 	</select>
 
 	<script>// <![CDATA[
-		setup_privilege_override_selector('access_{GROUP_ID%}',{DEFAULT_ACCESS%},'{PRIVILEGE%}','{TITLE;/}',{$?,{ALL_GLOBAL},true,false});
+		add_event_listener_abstract(window,'load',function() {
+			setup_privilege_override_selector('access_{GROUP_ID%}',{DEFAULT_ACCESS%},'{PRIVILEGE%}','{TITLE;/}',{$?,{ALL_GLOBAL},true,false});
+		});
 	//]]></script>
 
 	{+START,IF,{$NOT,{ALL_GLOBAL}}}

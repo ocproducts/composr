@@ -144,7 +144,7 @@ class Hook_addon_registry_composr_release_build
             'sources_custom/hooks/systems/page_groupings/make_release.php',
             'adminzone/pages/minimodules_custom/push_bugfix.php',
             'adminzone/pages/minimodules_custom/plug_guid.php',
-            'data_custom/make_db_meta_file.php',
+            'data_custom/build_db_meta_file.php',
             'exports/builds/index.html',
             'data_custom/builds/index.html',
             'data_custom/builds/readme.txt',

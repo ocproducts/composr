@@ -151,7 +151,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
     foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
     }
 
     if (!$quick) {

@@ -959,13 +959,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $_postdetails_params = $post_params[0];
         } else {
             $_postdetails_params = '';//$url_parts['scheme'].'://'.$url_parts['host'].$url2.'?';
-            $first = true;
             if (array_keys($post_params) == array('_')) {
                 $_postdetails_params = $post_params['_'];
             } else {
-                foreach ($post_params as $param_key => $param_value) {
-                    $_postdetails_params .= (!$first) ? ('&' . $param_key . '=' . rawurlencode($param_value)) : ($param_key . '=' . rawurlencode($param_value));
-                    $first = false;
+                if (count($post_params) > 0) {
+                    $_postdetails_params .= '&' . http_build_query($post_params);
                 }
             }
         }
@@ -1357,7 +1355,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
             }
         } elseif (php_function_allowed('gethostbyname')) {
-            $connect_to = gethostbyname($connect_to); // for DNS caching
+            $connect_to = @gethostbyname($connect_to); // for DNS caching
         }
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {

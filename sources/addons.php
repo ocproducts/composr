@@ -205,7 +205,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
  *
  * @param  ID_TEXT $addon_name Addon name
  * @param  boolean $pick_default Whether to use a default icon if not found
- * @param  ?PATH $tar_path Path to tar file (null: don't look inside a TAR / it's installed already)
+ * @param  ?PATH $tar_path Path to TAR file (null: don't look inside a TAR / it's installed already)
  * @return ?string Theme image URL (may be a "data:" URL rather than a normal URLPATH) (null: not found)
  */
 function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
