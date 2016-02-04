@@ -45,11 +45,8 @@ function init__minikernel()
     }
     if ((!array_key_exists('REQUEST_URI', $_SERVER)) && (!array_key_exists('REQUEST_URI', $_ENV))) { // May be missing on IIS
         $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        $first = true;
-        foreach ($_GET as $key => $val) {
-            $_SERVER['REQUEST_URI'] .= $first ? '?' : '&';
-            $_SERVER['REQUEST_URI'] .= urlencode($key) . '=' . urlencode($val);
-            $first = false;
+        if (count($_GET) > 0) {
+            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
         }
     }
 

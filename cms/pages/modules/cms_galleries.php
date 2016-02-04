@@ -1379,7 +1379,7 @@ class Module_cms_galleries extends Standard_crud_module
             save_privacy_form_fields('image', strval($id), $privacy_level, $additional_access);
         }
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('images', 'validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('images', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('images', 'submitter', array('id' => $id));
 
             require_code('users2');
@@ -2002,7 +2002,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             save_privacy_form_fields('video', strval($id), $privacy_level, $additional_access);
         }
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('videos', 'validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('videos', 'submitter', array('id' => $id));
 
             require_code('users2');

@@ -37,11 +37,8 @@ function init__global2()
     }
     if ((!isset($_SERVER['REQUEST_URI'])) && (!isset($_ENV['REQUEST_URI']))) { // May be missing on IIS
         $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        $first = true;
-        foreach ($_GET as $key => $val) {
-            $_SERVER['REQUEST_URI'] .= $first ? '?' : '&';
-            $_SERVER['REQUEST_URI'] .= urlencode($key) . '=' . urlencode($val);
-            $first = false;
+        if (count($_GET) > 0) {
+            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
         }
     }
 

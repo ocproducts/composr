@@ -1154,7 +1154,7 @@ class Module_cms_calendar extends Standard_crud_module
             save_privacy_form_fields('event', strval($id), $privacy_level, $additional_access);
         }
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             if ((has_actual_page_access(get_modal_user(), 'calendar')) && (has_category_access(get_modal_user(), 'calendar', strval($type)))) {
                 $privacy_ok = true;
                 if (addon_installed('content_privacy')) {

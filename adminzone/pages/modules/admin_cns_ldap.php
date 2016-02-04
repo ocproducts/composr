@@ -199,6 +199,7 @@ class Module_admin_cns_ldap
         $all_ldap_members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array('m_password_compat_scheme' => 'ldap'));
         require_code('cns_groups_action');
         require_code('cns_groups_action2');
+        require_code('cns_members_action2');
         foreach ($all_ldap_members as $row) {
             $id = $row['id'];
 

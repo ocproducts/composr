@@ -3293,9 +3293,11 @@ function substr($string, $start, $length = null)
  *
  * @param  string $haystack The subject.
  * @param  string $needle The substring to search for in the subject.
+ * @param  integer $offset Offset.
+ * @param  ?integer $maxlen Maximum length (null: no limit).
  * @return integer The number of times substring occurs in the subject.
  */
-function substr_count($haystack, $needle)
+function substr_count($haystack, $needle, $offset = 0, $maxlen = null)
 {
     return 0;
 }
@@ -4886,9 +4888,10 @@ function getlastmod()
 /**
  * Get current time.
  *
+ * @param boolean $return_float Return as float.
  * @return array Map of time details.
  */
-function gettimeofday()
+function gettimeofday($return_float = false)
 {
     return array();
 }
@@ -5082,9 +5085,11 @@ function ignore_user_abort($setting)
  * @param  SHORT_TEXT $filename The file name.
  * @param  boolean $use_include_path Whether to search within the include path.
  * @param  ?resource $context A stream context to attach to (null: no special context).
+ * @param  integer $offset Offset.
+ * @param  ?integer $maxlen Maximum length (null: no limit).
  * @return ~LONG_TEXT The file contents (false: error).
  */
-function file_get_contents($filename, $use_include_path = false, $context = null)
+function file_get_contents($filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null)
 {
     return '';
 }
@@ -5095,9 +5100,10 @@ function file_get_contents($filename, $use_include_path = false, $context = null
  * @param  string $input String to count words in.
  * @param  integer $format The format.
  * @set    0 1 2
+ * @param  string $chars A list of additional characters which will be considered as 'word'.
  * @return mixed Typically a list - the words of the input string.
  */
-function str_word_count($input, $format = 0)
+function str_word_count($input, $format = 0, $chars = '')
 {
     return array();
 }

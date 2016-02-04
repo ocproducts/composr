@@ -390,6 +390,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/index.html',
             '_tests/tests/unit_tests/iotd.php',
             '_tests/tests/unit_tests/lang.php',
+            '_tests/tests/unit_tests/cqc_explicit_fail.php',
             '_tests/tests/unit_tests/menu.php',
             '_tests/tests/unit_tests/themeini_images.php',
             '_tests/tests/unit_tests/addon_screenshots.php',

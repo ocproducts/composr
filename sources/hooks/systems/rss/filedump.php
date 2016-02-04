@@ -45,7 +45,7 @@ class Hook_rss_filedump
         }
 
         if (!file_exists(get_custom_file_base() . '/uploads/filedump/')) {
-            return array();
+            return null;
         }
 
         $filters = explode(',', $_filters);

@@ -151,7 +151,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
                 break;
 
             case 'title':
-                $remapped_orderer = 'b_cv_value';
+                $remapped_orderer = 'c_cv_value'; // short table
                 break;
 
             case 'add_date':
@@ -221,14 +221,12 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             if (multi_lang_content() && $GLOBALS['SITE_DB']->query_select_value('translate', 'COUNT(*)') > 10000) { // Big sites can't do indescriminate catalogue translatable searches for performance reasons
                 $trans_fields = array();
                 $join = ' JOIN ' . get_table_prefix() . 'catalogue_efv_short c ON (r.id=c.ce_id AND f.id=c.cf_id)';
-                $_remapped_orderer = str_replace('b_cv_value', 'c.cv_value', $remapped_orderer);
                 $extra_select = '';
                 $non_trans_fields = array('c.cv_value');
             } else {
                 $join = ' LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_short_trans a ON (r.id=a.ce_id AND f.id=a.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_long_trans b ON (r.id=b.ce_id AND f.id=b.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_long d ON (r.id=d.ce_id AND f.id=d.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_short c ON (r.id=c.ce_id AND f.id=c.cf_id)';
                 //' LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_float g ON (r.id=g.ce_id AND f.id=g.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_integer h ON (r.id=h.ce_id AND f.id=h.cf_id)';       No search is done on these unless it's an advanced search
                 $trans_fields = array('a.cv_value' => 'LONG_TRANS__COMCODE', 'b.cv_value' => 'LONG_TRANS__COMCODE');
-                $_remapped_orderer = str_replace('b_cv_value', 'b.cv_value', $remapped_orderer);
                 $extra_select = ',b.cv_value AS b_cv_value';
                 $non_trans_fields = array('c.cv_value', 'd.cv_value'/*, 'g.cv_value', 'h.cv_value'*/);
             }
@@ -239,9 +237,9 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             $join .= $privacy_join;
 
             if ($g_or == '') {
-                $rows = get_search_rows('catalogue_entry', 'id', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'catalogue_fields f LEFT JOIN ' . get_table_prefix() . 'catalogue_entries r ON (r.c_name=f.c_name)' . $join, $trans_fields, $where_clause, $content_where, $_remapped_orderer, 'r.*,r.id AS id,r.cc_id AS r_cc_id' . $extra_select, $non_trans_fields);
+                $rows = get_search_rows('catalogue_entry', 'id', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'catalogue_fields f LEFT JOIN ' . get_table_prefix() . 'catalogue_entries r ON (r.c_name=f.c_name)' . $join, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*,r.id AS id,r.cc_id AS r_cc_id' . $extra_select, $non_trans_fields);
             } else {
-                $rows = get_search_rows('catalogue_entry', 'id', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'catalogue_fields f LEFT JOIN ' . get_table_prefix() . 'catalogue_entries r ON (r.c_name=f.c_name)' . $join . ((get_value('disable_cat_cat_perms') === '1') ? '' : (' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', 'catalogues_category') . ' AND z.category_name=r.cc_id AND ' . str_replace('group_id', 'z.group_id', $g_or) . ')')) . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access p ON (' . db_string_equal_to('p.module_the_name', 'catalogues_catalogue') . ' AND p.category_name=r.c_name AND ' . str_replace('group_id', 'p.group_id', $g_or) . ')', $trans_fields, $where_clause, $content_where, $_remapped_orderer, 'r.*,r.id AS id,r.cc_id AS r_cc_id' . $extra_select, $non_trans_fields);
+                $rows = get_search_rows('catalogue_entry', 'id', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'catalogue_fields f LEFT JOIN ' . get_table_prefix() . 'catalogue_entries r ON (r.c_name=f.c_name)' . $join . ((get_value('disable_cat_cat_perms') === '1') ? '' : (' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', 'catalogues_category') . ' AND z.category_name=r.cc_id AND ' . str_replace('group_id', 'z.group_id', $g_or) . ')')) . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access p ON (' . db_string_equal_to('p.module_the_name', 'catalogues_catalogue') . ' AND p.category_name=r.c_name AND ' . str_replace('group_id', 'p.group_id', $g_or) . ')', $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*,r.id AS id,r.cc_id AS r_cc_id' . $extra_select, $non_trans_fields);
             }
         }
 

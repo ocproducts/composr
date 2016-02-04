@@ -136,7 +136,6 @@ function phase_1_pre()
     <ul>
         <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
-        <li>Run the <a href="' . escape_html(get_base_url() . '/_test') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
         <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
         <li>Test with the none forum driver (no forums and members)</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
@@ -189,6 +188,13 @@ function phase_1()
         phase_1_pre();
         return;
     }
+
+    echo '
+    <p>Here are some things you should do if you have not alreadt:</p>
+    <ul>
+        <li>Go through the auto-reported error emails, to make sure they are handled (for each: fix if relevant, delete if not).</li>
+        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
+    </ul>';
 
     require_code('make_release');
 

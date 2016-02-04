@@ -438,7 +438,7 @@ function lex($text = null)
                         }
                     }
 
-                    if (($i_current > 0) && ($TEXT[$i_current - 1] == ' ') && ($TEXT[$i_current - 2] != ' ') && (in_array($token_found, array('OBJECT_OPERATOR')))) {
+                    if (($i_current > 0) && (isset($TEXT[$i_current - 2])) && ($TEXT[$i_current - 1] == ' ') && ($TEXT[$i_current - 2] != ' ') && (in_array($token_found, array('OBJECT_OPERATOR')))) {
                         log_warning('Superfluous spacing (for ' . $token_found . ') against coding standards', $i, true);
                     }
                     if (($i_current > 0) && (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != ')') && ($TEXT[$i] != "/") && ($TEXT[$i] != "\r")) && (in_array($token_found, array('COMMA', 'COMMAND_TERMINATE')))) {

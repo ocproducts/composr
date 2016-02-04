@@ -452,13 +452,8 @@ class Hook_video_syndication_youtube
             }
         }
 
-        if ($params !== null) {
-            $_params = '';
-            foreach ($params as $key => $val) {
-                $_params .= '&' . $key . '=' . urlencode($val);
-            }
-
-            $full_url = $url . '?strict=1&v=2.1' . $_params;
+        if (!empty($params)) {
+            $full_url = $url . '?strict=1&v=2.1&' . http_build_query($params);
         } else {
             $full_url = $url;
         }

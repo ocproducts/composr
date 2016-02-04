@@ -1086,12 +1086,12 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'File(/tmp/) is not within the allowed path') === false)
     ) {
         require_code('mail');
-        mail_wrap(do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()) . ' ' . cms_version_pretty(), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
     }
     if (($ocproducts) && (!is_null(get_value('agency_email_address')))) {
         require_code('mail');
         $agency_email_address = get_value('agency_email_address');
-        mail_wrap(do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()) . ' ' . cms_version_pretty(), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
     }
 }
 

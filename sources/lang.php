@@ -1191,6 +1191,7 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
     }
 
     if ($entry == 0) {
+        require_code('site');
         attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
         return '';
     }

@@ -692,7 +692,7 @@ class Module_cms_downloads extends Standard_crud_module
             save_privacy_form_fields('download', strval($id), $privacy_level, $additional_access);
         }
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('download_downloads', 'validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'submitter', array('id' => $id));
 
             if ((has_actual_page_access(get_modal_user(), 'downloads')) && (has_category_access(get_modal_user(), 'downloads', strval($category_id)))) {

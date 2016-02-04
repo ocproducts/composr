@@ -564,7 +564,7 @@ function _get_web_resource_grouping_codename($zone_name = null, $is_admin = null
 function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 {
     return null; // We find all kinds of complex conditions happen, leading to difficult bugs. Better to just not have this, and HTTP/2 improves things anyway.
-
+    /*
     if (!$minify || !running_script('index')) {
         return null; // Optimisation disabled if no minification. Turn off minificiation when debugging JavaScript/CSS, as smart caching won't work with the merge system.
     }
@@ -712,6 +712,6 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         }
     }
 
-    return null;
+    return null;*/
 }
 

@@ -236,8 +236,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ((has_actual_page_access(get_member(), $attributes['page'], $zone)) && (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))) {
                         $keep = symbol_tempcode('KEEP');
                         $url = find_script('fractional_edit') . '?edit_param_name=' . urlencode($edit_param_name) . '&supports_comcode=' . ($supports_comcode ? '1' : '0') . '&zone=' . urlencode($zone) . $keep->evaluate();
-                        foreach ($attributes as $key => $val) {
-                            $url .= '&' . $key . '=' . urlencode($val);
+                        if (count($attributes) > 0) {
+                            $url .= '&' . http_build_query($attributes);
                         }
 
                         $_value = $param[count($param) - 1];

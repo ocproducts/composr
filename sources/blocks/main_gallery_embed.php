@@ -338,7 +338,7 @@ class Block_main_gallery_embed
                     if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_images', array('name' => $cat_raw)) !== null) {
                         $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
                         $add_name = do_lang_tempcode('ADD_IMAGE');
-                    } elseif ($GLOBALS['SITE_DB']->query_select_value_null_ok('galleries', 'accept_videos', array('name' => $cat_raw)) !== null) {
+                    } elseif ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_videos', array('name' => $cat_raw)) !== null) {
                         $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_other', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
                         $add_name = do_lang_tempcode('ADD_VIDEO');
                     }

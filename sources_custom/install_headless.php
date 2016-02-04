@@ -143,8 +143,8 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
     foreach ($stages as $stage) {
         list($get, $post) = $stage;
         $url = get_base_url() . '/install.php?keep_safe_mode=' . ($safe_mode ? '1' : '0');
-        foreach ($get as $key => $val) {
-            $url .= '&' . urlencode($key) . '=' . urlencode($val);
+        if (count($get) > 0) {
+            $url .= '&' . http_build_query($get);
         }
         $data = http_download_file($url, null, true, false, 'Composr', $post);
 

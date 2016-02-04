@@ -20,11 +20,7 @@ require_lang('customers');
 
 // Defer to inner frame
 if (!running_script('tracker') && get_param_integer('keep_no_frames', 0) == 0) {
-    $params = '';
-    foreach ($map as $key => $val) {
-        $params .= ($params == '') ? '?' : '&';
-        $params .= $key . '=' . urlencode($val);
-    }
+    $params = '?' . http_build_query($map);
     $params .= static_evaluate_tempcode(symbol_tempcode('KEEP'));
 
     $frame_name = 'frame_' . uniqid('', true);

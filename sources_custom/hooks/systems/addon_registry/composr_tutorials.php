@@ -225,6 +225,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/sup_choosing_a_developer/image5.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image6.jpg',
             'data_custom/images/docs/sup_choosing_a_developer/image7.jpg',
+            'data_custom/images/docs/sup_choosing_a_developer/criteria.png',
             'data_custom/images/docs/sup_complex_projects/image2.jpg',
             'data_custom/images/docs/sup_complex_projects/image3.jpg',
             'data_custom/images/docs/sup_complex_projects/good_approach.png',
