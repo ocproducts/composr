@@ -983,9 +983,10 @@ function _fatal_exit($text, $return = false)
     $echo->evaluate_echo(null, true);
 
     if (get_param_integer('keep_fatalistic', 0) == 0) {
-        $trace = get_html_trace();
-        $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '1cb286dd9fc75950c2cd41ca9607e0cf', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace));
-        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $error_tpl->evaluate() . '[/html]');
+        if (!may_see_stack_dumps()) {
+            $trace = get_html_trace();
+        }
+        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $trace->evaluate() . '[/html]');
     }
 
     if (!$return) {
@@ -1024,7 +1025,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     require_code('notifications');
     require_code('comcode');
-    $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), str_replace(array('[html', '[/html'), array('&#91;html', '&#91;/html'), $text), $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
+    $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
     dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), $ocproducts ? '?' : get_ip_address(), null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
     if (
         ($ocproducts) &&
