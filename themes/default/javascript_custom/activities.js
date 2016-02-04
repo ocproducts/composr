@@ -35,7 +35,7 @@ function s_update_get_data()
 					if ((window.activities_member_ids!==null) && (window.activities_member_ids!==''))
 						post_val=post_val+'&member_ids='+window.activities_member_ids;
 
-					post_val+='&session_id='+window.encodeURIComponent(get_session_id()); // For CSRF prevention
+					post_val+='&csrf_token='+window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
 					jQuery.ajax({
 						url: url.replace(/^https?:/,window.location.protocol),
@@ -131,7 +131,7 @@ function s_update_remove(event,id)
 				var url='{$BASE_URL;,0}/data_custom/activities_removal.php'+keep_stub(true);
 
 				var post_val='removal_id='+id;
-				post_val+='&session_id='+window.encodeURIComponent(get_session_id()); // For CSRF prevention
+				post_val+='&csrf_token='+window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
 				jQuery.ajax({
 					url: url.replace(/^https?:/,window.location.protocol),

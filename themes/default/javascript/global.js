@@ -2546,6 +2546,11 @@ function keep_stub(starting_query_string,skip_session,context) // starting_query
 	return to_add;
 }
 
+function get_csrf_token()
+{
+	return read_cookie('{$SESSION_COOKIE_NAME;}'); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+}
+
 function get_session_id()
 {
 	return read_cookie('{$SESSION_COOKIE_NAME;}');
