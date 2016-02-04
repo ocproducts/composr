@@ -142,7 +142,9 @@ class Module_admin_permissions
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             add_privilege('SUBMISSION', 'unfiltered_input', false);
+        }
 
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
             if (!privilege_exists('perform_keyword_check')) {
                 add_privilege('SUBMISSION', 'perform_keyword_check', false);
             }
