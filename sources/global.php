@@ -587,6 +587,11 @@ if (count($SITE_INFO) == 0) {
     // LEGACY
     if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
         @rename($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
+        if (is_file($FILE_BASE . '/_config.php')) {
+            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')));
+        } else {
+            exit('Error, cannot rename info.php to _config.php: check the Composr upgrade instructions');
+        }
         @include($FILE_BASE . '/_config.php');
     }
 }

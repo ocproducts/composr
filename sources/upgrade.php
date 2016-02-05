@@ -1513,6 +1513,9 @@ function version_specific()
 
             $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
 
+            @rename(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+            @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+
             $modules_renamed = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
@@ -1537,6 +1540,7 @@ function version_specific()
             );
             foreach ($modules_renamed as $from => $to) {
                 $GLOBALS['SITE_DB']->query_update('modules', array('module_the_name' => $to), array('module_the_name' => $from), '', 1);
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'' . $from . '\',\'' . $to . '\')');
             }
             persistent_cache_delete('MODULES');
 
@@ -1629,10 +1633,13 @@ function version_specific()
                 '#ocf_#' => 'cns_',
                 '# filter="#' => ' select="',
                 '# select="#' => ' filter="',
+                '# ocselect="#' => ' filter="',
                 '#main_feedback#' => 'main_contact_us',
                 '#side_ocf_personal_topics#' => 'side_cns_private_topics',
                 '#side_stored_menu#' => 'menu',
                 '#topsites#' => 'top_sites',
+                '#internal_box#' => 'box',
+                '#external_box#' => 'box',
                 '#side_root_galleries#' => 'side_galleries',
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
                 '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
