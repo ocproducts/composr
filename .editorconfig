@@ -52,13 +52,15 @@ tab_width = 3
 #  sources/stemmer_EN.php sources_custom/GTranslate.php sources_custom/Swift-4.1.1 sources_custom/facebook sources_custom/geshi.php sources_custom/geshi sources_custom/getid3 \
 #  sources_custom/openid.php sources_custom/photobucket sources_custom/php-crossword sources_custom/programe sources_custom/sabredav sources_custom/vimeo.php \
 #  sources_custom/Cloudinary sources_custom/ILess sources_custom/openid.php sources_custom/spout sources_custom/twitter.php data/ckeditor data_custom/ckeditor data/editarea \
-#  themes/default/javascript/widget_color.js themes/default/javascript/widget_date.js themes/default/javascript/more.js themes/default/javascript/jwplayer.js themes/default/javascript/sound.js \
+#  themes/default/javascript/widget_color.js themes/default/javascript/widget_date.js themes/default/javascript/more.js themes/default/javascript/jwplayer.js \
+#  themes/default/javascript_custom/mediaelement-and-player.min.js themes/default/css_custom/mediaelementplayer.css themes/default/javascript/sound.js \
 #  themes/default/javascript_custom/xmpp_dom-all.js themes/default/javascript/modernizr.js themes/default/javascript_custom/xmpp_xmpp4js.js themes/default/javascript/select2.js \
 #  themes/default/javascript/plupload.js themes/default/javascript/xsl_mopup.js themes/default/javascript_custom/jquery.js themes/default/javascript_custom/xmpp_prototype.js \
 #  themes/default/javascript_custom/jquery_effects_core.js themes/default/javascript_custom/columns.js themes/default/javascript_custom/xmpp_crypto.js \
 #  themes/default/javascript_custom/jquery_flip.js themes/default/javascript_custom/tag_cloud.js themes/default/javascript/jquery_ui_core.js themes/default/javascript_custom/openid.js \
 #  themes/default/javascript_custom/base64.js mobiquo/smartbanner mobiquo/lib sources_custom/composr_mobile_sdk/ios/ApnsPHP
 # (ends)
+# if updating above, update line_count.sh too
 
 # PHPStorm settings (.idea/codeStyleSettings.xml)...
 
