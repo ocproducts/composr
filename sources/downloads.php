@@ -587,6 +587,7 @@ function count_download_category_children($category_id)
     $out['num_downloads'] = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('category_id' => $category_id, 'validated' => 1));
 
     if ($category_id == db_get_first_id()) {
+        $out['num_children_children'] = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'COUNT(*)') - 1;
         $out['num_downloads_children'] = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('validated' => 1));
     } else {
         $out['num_children_children'] = $out['num_children'];

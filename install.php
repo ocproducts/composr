@@ -1164,8 +1164,7 @@ function step_5()
         unset($tmp);
         if (!is_null($test)) {
             global $INSTALL_LANG;
-            $sections = build_keep_post_fields(array('forum_type', 'db_type', 'board_path', 'default_lang'));
-            $sections->attach(form_input_hidden('confirm', '1'));
+            $sections = new Tempcode();
 
             $url = 'install.php?step=5';
             if (in_safe_mode()) {
@@ -1173,6 +1172,8 @@ function step_5()
             }
 
             $hidden = build_keep_post_fields();
+            $hidden->attach(form_input_hidden('confirm', '1'));
+
             return do_template('INSTALLER_STEP_4', array(
                 '_GUID' => 'aaf0386966dd4b75c8027a6b1f7454c6',
                 'URL' => $url,

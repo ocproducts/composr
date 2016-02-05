@@ -236,7 +236,7 @@ function get_attachments($posting_field_name)
 
     require_code('files2');
     $max_attach_size = get_max_file_size(is_null($syndication_json) ? get_member() : null, $GLOBALS['SITE_DB']);
-    $no_quota = (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0);
+    $no_quota = ((get_forum_type() == 'cns') && (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0));
     if ($no_quota) {
         if (is_null($syndication_json)) {
             return array(new Tempcode(), new Tempcode());

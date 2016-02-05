@@ -203,7 +203,7 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
     if ($remove_locally_if_no_quota || $force_remove_locally) {
         require_code('files2');
         $max_attach_size = get_max_file_size(get_member(), $GLOBALS['SITE_DB']);
-        $no_quota = (($max_attach_size == 0) && (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0));
+        $no_quota = (($max_attach_size == 0) && (get_forum_type() == 'cns') && (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0));
         if ($no_quota || $force_remove_locally) {
             if (url_is_local($new_url)) {
                 @unlink(get_custom_file_base() . '/' . rawurldecode($new_url));

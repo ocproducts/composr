@@ -13,18 +13,61 @@
  * @package    meta_toolkit
  */
 
-function do_install_to($database, $username, $password, $table_prefix, $safe_mode)
+function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $board_prefix = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null)
 {
     rename(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
 
-    $settings = array(
+    _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $board_prefix, $database_forums, $username_forums, $password_forums, $extra_settings);
+    $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+
+    if ($success) {
+        $url = get_base_url() . '/index.php';
+        $data = http_download_file($url);
+        $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+    }
+
+    @unlink(get_file_base() . '/_config.php');
+    @rename(get_file_base() . '/_config.php.bak', get_file_base() . '/_config.php');
+
+    return $success;
+}
+
+function _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $board_prefix, $database_forums, $username_forums, $password_forums, $extra_settings)
+{
+    if (is_null($board_path)) {
+        $board_path = get_file_base() . '/forums';
+    }
+    if (is_null($database_forums)) {
+        $database_forums = $database;
+    }
+    if (is_null($username_forums)) {
+        $username_forums = $username;
+    }
+    if (is_null($password_forums)) {
+        $password_forums = $password;
+    }
+    if (is_null($extra_settings)) {
+        $extra_settings = array(
+        );
+    }
+
+    $settings = $extra_settings + array(
+        'max' => '1000',
+        'default_lang' => fallback_lang(),
+        'email' => 'E-mail address',
+        'interest_level' => '3',
+        'advertise_on' => '0',
+        'use_multi_db' => '0',
+        'use_msn' => '0',
         'default_lang' => fallback_lang(),
         'db_type' => get_db_type(),
-        'forum_type' => 'cns',
-        'board_path' => get_file_base() . '/forums',
+        'forum_type' => $forum_driver,
+        'board_path' => $board_path,
+        'board_prefix' => $board_prefix,
         'domain' => get_domain(),
         'base_url' => get_base_url(),
         'table_prefix' => $table_prefix,
+        'cns_table_prefix' => $table_prefix,
         'admin_password' => '',
         'admin_password_confirm' => '',
         'send_error_emails_ocproducts' => '1',
@@ -41,11 +84,12 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         'cookie_domain' => '',
         'cookie_path' => '/',
         'cookie_days' => '120',
-        'db_forums' => $database,
+        'db_forums' => $database_forums,
         'db_forums_host' => get_db_site_host(),
-        'db_forums_user' => $username,
-        'db_forums_password' => $password,
-        'cns_table_prefix' => $table_prefix,
+        'db_forums_user' => $username_forums,
+        'db_forums_password' => $password_forums,
+        'multi_lang_content' => '0',
+        'self_learning_cache' => '0',
         'confirm' => '1',
     );
 
@@ -59,42 +103,21 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
             array(
                 'step' => '2',
             ),
-            array(
-                'max' => '1000',
-                'default_lang' => fallback_lang(),
-            ),
+            $settings,
         ),
 
         array(
             array(
                 'step' => '3',
             ),
-            array(
-                'max' => '1000',
-                'default_lang' => fallback_lang(),
-                'email' => 'E-mail address',
-                'interest_level' => '3',
-                'advertise_on' => '0',
-            ),
+            $settings,
         ),
 
         array(
             array(
                 'step' => '4',
             ),
-            array(
-                'max' => '1000',
-                'default_lang' => fallback_lang(),
-                'email' => 'E-mail address',
-                'interest_level' => '3',
-                'advertise_on' => '0',
-                'forum' => 'cns',
-                'forum_type' => 'cns',
-                'board_path' => get_file_base() . '/forums',
-                'use_multi_db' => '0',
-                'use_msn' => '0',
-                'db_type' => get_db_type(),
-            ),
+            $settings,
         ),
 
         array(
@@ -147,14 +170,12 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
             $url .= '&' . http_build_query($get);
         }
         $data = http_download_file($url, null, true, false, 'Composr', $post);
-
+        if (strpos(strip_tags($data), 'An error has occurred') !== false) {
+            echo escape_html($url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data)));
+            $GLOBALS['HTTP_MESSAGE'] = '500';
+        }
         if ($GLOBALS['HTTP_MESSAGE'] != '200') {
             break; // Don't keep installing if there's an error
         }
     }
-
-    unlink(get_file_base() . '/_config.php');
-    rename(get_file_base() . '/_config.php.bak', get_file_base() . '/_config.php');
-
-    return $GLOBALS['HTTP_MESSAGE'] == '200';
 }

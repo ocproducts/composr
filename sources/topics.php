@@ -337,7 +337,7 @@ class CMS_Topic
     public function load_from_topic($topic_id, $num_to_show_limit, $start = 0, $reverse = null, $posts = null, $load_spacer_posts_too = false)
     {
         $this->topic_id = $topic_id;
-        $this->topic_last_read = is_guest() ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $this->topic_id));
+        $this->topic_last_read = (is_guest() || get_forum_type() != 'cns') ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $this->topic_id));
         $this->reverse = $reverse;
 
         if (get_param_integer('threaded', null) === 1) {
@@ -368,7 +368,7 @@ class CMS_Topic
             $this->total_posts,
             $this->is_threaded ? 5000 : $num_to_show_limit,
             $this->is_threaded ? 0 : $start,
-            $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1, // $mark_read,
+            get_forum_type() == 'cns' && $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1, // $mark_read,
             $reverse,
             true,
             $posts,
