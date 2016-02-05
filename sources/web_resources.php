@@ -40,11 +40,12 @@ function require_javascript($javascript)
 {
     global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
 
+    $JAVASCRIPTS[$javascript] = true;
+
     if (array_key_exists($javascript, $JS_OUTPUT_STARTED_LIST)) {
         return;
     }
 
-    $JAVASCRIPTS[$javascript] = true;
     $JS_OUTPUT_STARTED_LIST[$javascript] = true;
 
     if (strpos($javascript, 'merged__') === false) {
@@ -256,11 +257,12 @@ function require_css($css)
 {
     global $CSSS, $SMART_CACHE, $CSS_OUTPUT_STARTED_LIST, $CSS_OUTPUT_STARTED;
 
+    $CSSS[$css] = true;
+
     if (array_key_exists($css, $CSS_OUTPUT_STARTED_LIST)) {
         return;
     }
 
-    $CSSS[$css] = true;
     $CSS_OUTPUT_STARTED_LIST[$css] = true;
 
     if (strpos($css, 'merged__') === false) {

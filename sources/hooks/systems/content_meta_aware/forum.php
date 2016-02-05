@@ -35,6 +35,13 @@ class Hook_content_meta_aware_forum
             return null;
         }
 
+        if (is_null($zone)) {
+            $zone = get_module_zone('forumview');
+            if (is_null($zone)) {
+                return null;
+            }
+        }
+
         return array(
             'support_custom_fields' => true,
 
@@ -65,7 +72,7 @@ class Hook_content_meta_aware_forum
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forums:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'add_url' => '',
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('forumview')) . ':forumview',
+            'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => true,
 

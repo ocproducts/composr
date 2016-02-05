@@ -88,7 +88,7 @@ class Block_main_staff_checklist
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/toolbox/submit-site-url[/url]',
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
-                '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'helping_out'), 'site') . '[/url]',
+                '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'contributions'), 'site') . '[/url]',
             );
             foreach ($tasks as $task) {
                 $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(

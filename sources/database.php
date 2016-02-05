@@ -472,6 +472,10 @@ function get_db_forums_password()
  */
 function is_on_multi_site_network($db = null)
 {
+    if (get_forum_type() == 'none') {
+        return false;
+    }
+
     if ($db !== null) {
         return !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
     }
@@ -491,7 +495,7 @@ function is_forum_db($db)
         return false;
     }
 
-    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write));
+    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($db->connection_write != $GLOBALS['SITE_DB']->connection_write));
 }
 
 /**

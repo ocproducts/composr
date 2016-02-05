@@ -364,7 +364,7 @@ For completeness, this is what the [tt]login[/tt] page [i]does[/i] do:
  - Handles Conceded mode
  - Handles "Become invisible" toggle
 
-If coding a system to create an Composr login automatically (i.e. without needing to direct the user to a POST request) you'd need to set the session cookie to a random number, and then insert a row into the Composr [tt]sessions[/tt] table to match against it.
+If coding a system to create a Composr login automatically (i.e. without needing to direct the user to a POST request) you'd need to set the session cookie to a random number, and then insert a row into the Composr [tt]sessions[/tt] table to match against it.
 
 [title="2"]Creating new forms in HTML but not PHP[/title]
 

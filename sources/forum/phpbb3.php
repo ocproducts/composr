@@ -750,6 +750,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         } else {
             $forum_id = $this->forum_id_from_name($forum);
         }
+        if (is_null($forum_id)) {
+            return null;
+        }
         return $this->connection->query_value_if_there('SELECT topic_id FROM ' . $this->connection->get_table_prefix() . 'topics WHERE forum_id=' . strval($forum_id) . ' AND (' . db_string_equal_to('topic_title', $topic_identifier) . ' OR topic_title LIKE \'%: #' . db_encode_like($topic_identifier) . '\')');
     }
 

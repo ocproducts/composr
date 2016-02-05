@@ -1,5 +1,5 @@
 Message,Summary,How did this happen?,How do I fix it?
-Table 'xxx' is marked as crashed and should be repaired,MySQL could not serve an Composr database request because it used invalid characters for the database tables it holds.,"Either invalid data is being entered, or you are using a non-default character set in your language pack.
+Table 'xxx' is marked as crashed and should be repaired,MySQL could not serve a Composr database request because it used invalid characters for the database tables it holds.,"Either invalid data is being entered, or you are using a non-default character set in your language pack.
 
 This will only happen with some languages, on some versions/configurations of MySQL.","[b]This is a particularly technical problem. You may prefer to seek help to resolve it.[/b]
 
@@ -10,24 +10,24 @@ Your webhost will almost certainly provide a hosting control panel with a tool c
 3) Go through each table linked in the left frame. For each table...
 4) Click 'Operations'.
 5) Change the 'Charset' to whatever most closely matches your own language. You may wish to test your change on the table referenced in the error message first."
-MySQL client ran out of memory,MySQL could not serve an Composr database request because it ran out of memory.,"Either
+MySQL client ran out of memory,MySQL could not serve a Composr database request because it ran out of memory.,"Either
  - A database table contains a very large amount of data
  - The server is configured to have a very low limit
  - Your server is overloaded
 ",Contact your webhost.
-The SELECT would examine more than MAX_JOIN_SIZE rows,MySQL could not serve an Composr database request because a configured limit was exceeded.,"Either
+The SELECT would examine more than MAX_JOIN_SIZE rows,MySQL could not serve a Composr database request because a configured limit was exceeded.,"Either
  - A database table contains a very large amount of data
  - The server is configured to have a very low limit","There is currently no straight-forward fix to this problem. It may be a bug, or it may be a server configuration problem. Make a judgement call whether to contact your webhost or whether to post on the Composr forum. If you can afford to pay ocProducts can look into the problem under a commercial support arrangement (in which case, open a support ticket)."
 Can't open file: 'xxx.MYI',A MySQL data file has corrupted or gone missing on your server.,"Something outside the control of Composr caused this error, such as a hard disk fault, a power surge, a power cut, a forced computer reset, or a system administration mistake.",Contact your webhost. Anticipate that you may need to restore a backed up database.
-Lost connection to MySQL server,MySQL was not able to serve an Composr database request.,"There are three likely possible causes:
+Lost connection to MySQL server,MySQL was not able to serve a Composr database request.,"There are three likely possible causes:
 1) The MySQL server is overloaded
 2) The web server is overloaded
 3) You have a particularly large amount of data (less likely)",Contact your webhost.
-MySQL server has gone away,MySQL was not able to serve an Composr database request.,"There are three likely possible causes:
+MySQL server has gone away,MySQL was not able to serve a Composr database request.,"There are three likely possible causes:
 1) The MySQL server is overloaded
 2) The web server is overloaded
 3) You have a particularly large amount of data (less likely)",Contact your webhost.
-Got packet bigger than 'max_allowed_packet' bytes,MySQL was not able to serve a particularly large Composr database request.,It is likely you're trying to insert a very large amount of data into an Composr entry.,Consider breaking your data over a number of separate entries.
+Got packet bigger than 'max_allowed_packet' bytes,MySQL was not able to serve a particularly large Composr database request.,It is likely you're trying to insert a very large amount of data into a Composr entry.,Consider breaking your data over a number of separate entries.
 Can't connect to local MySQL server through socket,Composr cannot connect to the MySQL database.,"It is likely that either:
 1) MySQL is no longer running on the server.
 2) The MySQL server is (no longer) running on the same physical server as your web server (""""localhost"""").","If you have just moved/installed your website then you likely entered the wrong database hostname. Your webhost, or webhosting control panel, likely provides documentation indicating what the correct setting is.
