@@ -244,7 +244,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
 
     foreach ($fields_to_show as $i => $field_to_show) {
         $key = 'field_' . strval($field_to_show['id']);
-        if (!isset($member_mappings[$key]))
+        if (!array_key_exists($key, $member_mappings))
         {
             continue;
         }
