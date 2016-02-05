@@ -332,6 +332,6 @@ To add to the download system, head over to Content Management > Downloads. The 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_information"]Choosing how to publish[/page]
- - [page="_SEARCH:tut_do"]Dos and Do-nots of an (Composr) website[/page]
+ - [page="_SEARCH:tut_do"]Dos and Do-nots of a (Composr) website[/page]
 
 {$SET,tutorial_tags,setupwizard,core,Advice & Guidance,Introduction,novice,pinned}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The thought processes required to successfully design a complex and personalised website using Composr, and an overview of what features are available.}[block]main_tutorial_rating[/block]

@@ -252,7 +252,7 @@ When a user logs in using Facebook, Composr never is given the Facebook username
 
 Facebook login is achieved via JavaScript and Facebook cookies, which is the standard integration Facebook provide. There are alternate mechanisms available in Facebook's API (server-side driven authentication) but we don't implement them at this time (see "Ongoing work").
 
-Because the login happens in JavaScript rather than using Composr login cookies, if there is no active Composr session anymore, the page will be served as Guest until Facebook's JavaScript code sets a new Facebook session. When that happens we immediately/automatically refresh, so Composr can use the Facebook session to start an Composr session (i.e. the refreshed page will then be logged in).
+Because the login happens in JavaScript rather than using Composr login cookies, if there is no active Composr session anymore, the page will be served as Guest until Facebook's JavaScript code sets a new Facebook session. When that happens we immediately/automatically refresh, so Composr can use the Facebook session to start a Composr session (i.e. the refreshed page will then be logged in).
 
 You could increase the Composr session length to prevent these regular refreshes, but it's not really advisable, as it lowers security (longer sessions = greater risk of attack by someone trying to steal session IDs). A lot of popular non-Composr sites do do that, so take that as you will.
 

@@ -47,7 +47,7 @@ When [tt]init__global2()[/tt] is finished, control pops back into the original [
 We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the URL Schemes described above.
 
 [box="Note"]
-The above descriptions are for standard page views. We have similar process for many other "entry-point scripts", but they don't do the stuff inside [tt]site.php[/tt], essentially. For example, [tt]site/dload.php[/tt] handles download requests, so streams files out, it doesn't do an Composr page load.
+The above descriptions are for standard page views. We have similar process for many other "entry-point scripts", but they don't do the stuff inside [tt]site.php[/tt], essentially. For example, [tt]site/dload.php[/tt] handles download requests, so streams files out, it doesn't do a Composr page load.
 [/box]
 
 [title="4"]Philosophical points[/title]

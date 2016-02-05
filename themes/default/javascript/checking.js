@@ -1123,7 +1123,7 @@ function disable_preview_scripts(under)
 		{
 			try
 			{
-				if ((!elements[i].href) || (elements[i].href.toLowerCase().indexOf('javascript:')!=0)) // guard due to weird Firefox bug, JS actions still opening new window
+				if (((!elements[i].href) || (elements[i].href.toLowerCase().indexOf('javascript:')!=0)) && (elements[i].target!=='_self') && (elements[i].target!=='_blank')) // guard due to weird Firefox bug, JS actions still opening new window
 				{
 					elements[i].target='false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
 				}

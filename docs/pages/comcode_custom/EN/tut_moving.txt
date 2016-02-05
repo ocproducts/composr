@@ -13,7 +13,7 @@ This tutorial is written around moving servers. If you are moving hosting accoun
 
 [title="2"]Introduction[/title]
 
-There are two fundamental parts to an Composr site:
+There are two fundamental parts to a Composr site:
 1) The files
 2) The database
 
