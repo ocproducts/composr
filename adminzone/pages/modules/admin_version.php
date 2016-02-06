@@ -513,6 +513,9 @@ class Module_admin_version
                 'text' => array(
                     'the_message',
                 ),
+                'community_billboard' => array(
+                    'the_message',
+                ),
                 'match_key_messages' => array(
                     'k_message',
                 ),
@@ -555,18 +558,26 @@ class Module_admin_version
                 'wiki_pages' => array(
                     'description',
                 ),
+                'cedi_posts' => array(
+                    'the_message',
+                ),
+                'cedi_pages' => array(
+                    'description',
+                ),
                 'chat_messages' => array(
                     'the_message',
                 ),
                 'download_downloads' => array(
                     'description',
                     'comments',
+                    'additional_details',
                 ),
                 'download_categories' => array(
                     'description',
                 ),
                 'videos' => array(
                     'comments',
+                    'description',
                 ),
                 'galleries' => array(
                     'description',
@@ -575,6 +586,7 @@ class Module_admin_version
                 ),
                 'images' => array(
                     'comments',
+                    'description',
                 ),
                 'iotd' => array(
                     'i_title',
@@ -629,6 +641,9 @@ class Module_admin_version
                 'f_posts' => array(
                     'p_post',
                 ),
+                'f_topics' => array(
+                    't_cache_first_post',
+                ),
                 'f_members' => array(
                     'm_signature',
                     'm_pt_rules_text',
@@ -642,6 +657,11 @@ class Module_admin_version
                 ),
             );
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            $custom_fields = $GLOBALS['SITE_DB']->query_select('f_custom_fields', array('id'), null, 'WHERE cf_type IN (\'short_trans\',\'long_trans\')');
+            $comcode_lang_fields['f_member_custom_fields'] = array();
+            foreach ($custom_fields as $custom_field) {
+                $comcode_lang_fields['f_member_custom_fields'][] = 'field_' . strval($custom_field['id']);
+            }
             foreach ($comcode_lang_fields as $table => $fields) {
                 foreach ($fields as $field) {
                     $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=CONCAT(m_type,\'__COMCODE\') WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));

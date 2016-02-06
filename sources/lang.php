@@ -127,6 +127,7 @@ function lang_load_runtime_processing()
             require_code('lang_compile');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
             @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));
+            fix_permissions($path);
         }
     }
 }
@@ -1061,9 +1062,10 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
+ * @param  boolean $ignore_browser_decaching If we have just re-populated so will not decache
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
-function get_translated_tempcode($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false)
+function get_translated_tempcode($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false, $ignore_browser_decaching = false)
 {
     if ($connection === null) {
         $connection = $GLOBALS['SITE_DB'];
@@ -1108,7 +1110,6 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         }
 
         global $SEARCH__CONTENT_BITS;
-
         if ($SEARCH__CONTENT_BITS !== null) { // Doing a search so we need to reparse, with highlighting on
             $_result = $connection->query_select('translate', array('text_original', 'source_user'), array('id' => $entry, 'language' => $lang), '', 1);
             if (array_key_exists(0, $_result)) {
@@ -1155,7 +1156,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $result = $row[$field_name . '__text_parsed'];
     }
 
-    if (($result === null) || ($result == '') || (is_browser_decaching())) { // Not cached
+    if (($result === null) || ($result == '') || (!$ignore_browser_decaching && is_browser_decaching())) { // Not cached
         require_code('lang3');
         return parse_translated_text($table, $row, $field_name, $connection, $lang, $force, $as_admin);
     }

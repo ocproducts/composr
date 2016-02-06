@@ -59,7 +59,7 @@ require_code('files');
 require_code('files2');
 
 $files_to_always_keep = array(
-    'delete_addons.php',
+    'delete_alien_files.php',
     'themes/default/templates_custom/MAIL.tpl',
 );
 $addons_definitely_not_wanted = array();

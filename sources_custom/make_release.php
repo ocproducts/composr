@@ -197,12 +197,20 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/' . $version_dotted);
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('data.cms') . ' ' . escapeshellarg('install.php');
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         $out .= do_build_archive_output($quick_zip, $output2);
 
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('readme.txt');
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         //$out .= do_build_archive_output($quick_zip, $output2);    Don't care
 
         chdir(get_file_base());
@@ -219,7 +227,11 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . escapeshellarg($manual_zip) . ' *';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         $out .= do_build_archive_output($manual_zip, $output2);
 
         chdir(get_file_base());
@@ -239,18 +251,34 @@ function make_installers($skip_file_grab = false)
         // Do the main work...
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' * --mode=a+X';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' *';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt --mode=a+X';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            if (is_file($bundled . '.gz')) {
+                $cmd_result = '(no output)'; // gzip produces no output normally anyway, which means shell_exec returns null
+            } else {
+                fatal_exit('Failed to run: ' . $cmd);
+            }
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         @unlink($bundled);
         $out .= do_build_archive_output($bundled . '.gz', $output2);
 
@@ -296,7 +324,11 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         $out .= do_build_archive_output($mszip, $output2);
 
         // Undo temporary renaming
@@ -385,7 +417,11 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/aps');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         $out .= do_build_archive_output($aps_zip, $output2);
 
         // Undo temporary renaming
@@ -404,8 +440,12 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' * --mode=a+X';
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' *';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         $out .= do_build_archive_output($uni_upgrader, $output2);
 
         chdir(get_file_base());
@@ -860,7 +900,7 @@ function make_install_sql()
 
     // Build database
     require_code('install_headless');
-    $test = do_install_to($database, $username, $password, $table_prefix, true);
+    $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
     if (!$test) {
         warn_exit('Failed to execute installer, while building install.sql');
     }

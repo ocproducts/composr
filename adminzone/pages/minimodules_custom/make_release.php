@@ -83,8 +83,13 @@ function phase_0()
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
     echo '
-    <p>Have you run a code quality check on the non-module files (at the very least?). I am assuming that any non-trivial fixes have been tested.</p>
+    <p>Here are some things you should do if you have not already:</p>
+    <ul>
+        <li>Go through the auto-reported error emails, to make sure they are handled (for each: fix if relevant, delete if not).</li>
+        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
+    </ul>';
 
+    echo '
     <form method="post" action="' . escape_html($post_url) . '">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 
@@ -188,13 +193,6 @@ function phase_1()
         phase_1_pre();
         return;
     }
-
-    echo '
-    <p>Here are some things you should do if you have not alreadt:</p>
-    <ul>
-        <li>Go through the auto-reported error emails, to make sure they are handled (for each: fix if relevant, delete if not).</li>
-        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
-    </ul>';
 
     require_code('make_release');
 

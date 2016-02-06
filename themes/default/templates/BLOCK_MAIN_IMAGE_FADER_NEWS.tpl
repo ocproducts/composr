@@ -136,8 +136,7 @@
 			if (window.main_image_fader_news_cycle_timer_{$GET,RAND})
 				window.clearTimeout(window.main_image_fader_news_cycle_timer_{$GET,RAND});
 			document.getElementById('pause_button_{$GET,RAND}').className='light';
-			window.main_image_fader_news_cycle_timer_{$GET,RAND}=window.setTimeout(function()
-			{
+			window.main_image_fader_news_cycle_timer_{$GET,RAND}=window.setTimeout(function() {
 				window.main_image_fader_news_cycle_{$GET,RAND}(1);
 			},{MILL%});
 

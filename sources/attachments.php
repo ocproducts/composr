@@ -64,8 +64,11 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     }
 
     // Work out URL, going through the attachment frontend script
+    $url_safe = $attachment_row['a_url'];
+    if (url_is_local($url_safe)) {
+        $url_safe = get_custom_base_url() . '/' . $url_safe;
+    }
     $url = mixed();
-    $url_safe = mixed();
     if ($tag == 'attachment') {
         $url = new Tempcode();
 
@@ -76,8 +79,6 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         } else {
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '0'));
         }
-        $url_safe = new Tempcode();
-        $url_safe->attach($url);
         $keep = symbol_tempcode('KEEP');
         $url->attach($keep);
         if (get_option('anti_leech') == '1') {
@@ -91,11 +92,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
             $attributes['thumb_url']->attach('&thumb=1&no_count=1');
         }
     } else { // attachment_safe
-        $url = $attachment_row['a_url'];
-        if (url_is_local($url)) {
-            $url = get_custom_base_url() . '/' . $url;
-        }
-        $url_safe = $url;
+        $url = $url_safe;
 
         if ((!array_key_exists('thumb_url', $attributes)) || ($attributes['thumb_url'] == '')) {
             $attributes['thumb_url'] = $attachment_row['a_thumb_url'];

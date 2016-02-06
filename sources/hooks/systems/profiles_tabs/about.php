@@ -286,7 +286,9 @@ class Hook_profiles_tabs_about
         $primary_group_id = cns_get_member_primary_group($member_id_of);
         $primary_group = cns_get_group_link($primary_group_id, $member_id_of != $member_id_viewing);
 
-        $signature = get_translated_tempcode('f_members', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of), 'm_signature', $GLOBALS['FORUM_DB']);
+        $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of);
+        $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+        $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
 
         $last_visit_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_last_visit_time');
         require_code('users2');

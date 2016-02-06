@@ -276,7 +276,7 @@ function get_option($name, $missing_ok = false)
 function get_value($name, $default = null, $elective_or_lengthy = false, $env_also = false)
 {
     if ($elective_or_lengthy) {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install'));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install') || running_script('upgrader'));
     }
 
     global $IN_MINIKERNEL_VERSION, $VALUE_OPTIONS_CACHE, $SMART_CACHE;
