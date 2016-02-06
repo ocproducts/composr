@@ -1,5 +1,0 @@
-<FilesMatch !"\.(htm|html)$">
-order deny,allow
-deny from all
-</FilesMatch>
-

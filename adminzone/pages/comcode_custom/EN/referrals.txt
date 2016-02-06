@@ -1,7 +1,0 @@
-[title]Edit referral settings[/title]
-
-Define whatever "level_X" settings you want, to define your prize scheme.
-
-Change other settings to 0 or 1 depending on your requirements.
-
-[block="referrals" lang_none="1" title="Referral settings" scrolls="1"]main_notes[/block]
