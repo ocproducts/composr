@@ -62,12 +62,26 @@ $files_to_always_keep = array(
     'delete_alien_files.php',
     'themes/default/templates_custom/MAIL.tpl',
 );
-$addons_definitely_not_wanted = array();
+
+// **********
+$addons_definitely_not_wanted = array(
+    // CUSTOMISE THIS TO REMOVE ADDON FILES
+    //  IT ONLY WORKS WHILE HOOK FILES ARE STILL IN PLACE
+    //  AFTER WHICH ANY ALIEN FILES WILL FLAG TO DELETE IF THEY ARE NOT POSSIBLE USER CUSTOMISED FILES
+);
+// ^^^^^^^^^^
+
 $extra_files_to_delete = array();
 
 if (git_repos() != 'master') {
     $addons_definitely_not_wanted[] = 'installer';
     $extra_files_to_delete[] = 'install_ok';
+    $extra_files_to_delete[] = 'install.php';
+    $extra_files_to_delete[] = 'install.sql';
+    $extra_files_to_delete[] = 'install1.sql';
+    $extra_files_to_delete[] = 'install2.sql';
+    $extra_files_to_delete[] = 'install3.sql';
+    $extra_files_to_delete[] = 'install4.sql';
     if (git_repos() != 'composr_homesite') {
         $extra_files_to_delete[] = 'data_custom/images/addon_screenshots';
     }
@@ -121,9 +135,6 @@ foreach (array_keys($GFILE_ARRAY) as $file) {
     if (!force_keep($file, $files_to_always_keep)) {
         echo 'rm -f ' . escapeshellarg($file) . "\n";
     }
-}
-if (is_file(get_file_base() . '/install.php')) {
-    echo 'rm -f ' . escapeshellarg('install.php') . "\n";
 }
 
 // Empty dirs
