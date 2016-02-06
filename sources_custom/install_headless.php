@@ -13,16 +13,15 @@
  * @package    meta_toolkit
  */
 
-function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $board_prefix = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null)
+function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $board_prefix = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null, $do_index_test = true)
 {
     rename(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
 
-    _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $board_prefix, $database_forums, $username_forums, $password_forums, $extra_settings);
-    $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+    $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $board_prefix, $database_forums, $username_forums, $password_forums, $extra_settings);
 
-    if ($success) {
+    if ($success && $do_index_test) {
         $url = get_base_url() . '/index.php';
-        $data = http_download_file($url);
+        $data = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
     }
 
@@ -171,11 +170,16 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         }
         $data = http_download_file($url, null, true, false, 'Composr', $post);
         if (strpos(strip_tags($data), 'An error has occurred') !== false) {
-            echo escape_html($url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data)));
             $GLOBALS['HTTP_MESSAGE'] = '500';
         }
-        if ($GLOBALS['HTTP_MESSAGE'] != '200') {
-            break; // Don't keep installing if there's an error
+        $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+        if (!$success) {
+            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
+            @print(escape_html($error));
+            @ob_end_flush();
+            return false; // Don't keep installing if there's an error
         }
     }
+
+    return true;
 }

@@ -356,6 +356,7 @@ Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this i
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
  - Do whatever you would normally do to backup your database; that will usually mean keeping a copy of the above file (but ensure it is complete before relying on it, sometimes SQL dumps don't download correctly)
  - Use a text editor to replace all instances of [tt]latin1[/tt] with [tt]utf8mb4[/tt] in the file (note that it is [tt]utf8mb4[/tt] [i]not[/i] [tt]utf-8[/tt] -- MySQL doesn't want hyphens in its codenames, and we have to use the mb4 variant for full unicode support)
+ - Specifically for the creation SQL for the [tt]addons[/tt]/[tt]f_emoticons[/tt]/[tt]f_saved_warnings[/tt]/[tt]group_privileges[/tt]/[tt]member_privileges[/tt]/[tt]newsletter_subscribe[/tt]/[tt]theme_images[/tt]/[tt]tickets[/tt]/[tt]url_id_monikers[/tt]/[tt]url_title_cache[/tt] tables, replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]
  - Save the edited file
  - Use phpMyAdmin to drop all tables in your database
  - Use phpMyAdmin to import the edited file

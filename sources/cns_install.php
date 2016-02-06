@@ -281,6 +281,12 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'');
 
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf_%\'');
+
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups SET g_rank_image=REPLACE(g_rank_image,\'ocf_\',\'cns_\') WHERE g_rank_image LIKE \'%ocf_%\'');
+
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_emoticon=REPLACE(t_emoticon,\'ocf_\',\'cns_\') WHERE t_emoticon LIKE \'%ocf_%\'');
+
         $GLOBALS['FORUM_DB']->change_primary_key('f_multi_moderations', array('id'));
 
         $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 1), array('the_name' => 'double_post'));

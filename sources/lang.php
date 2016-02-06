@@ -127,6 +127,7 @@ function lang_load_runtime_processing()
             require_code('lang_compile');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
             @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));
+            fix_permissions($path);
         }
     }
 }

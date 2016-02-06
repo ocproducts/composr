@@ -89,7 +89,7 @@ class Module_quiz
 
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_type', 'ID_TEXT', 'MULTIPLECHOICE');
             $GLOBALS['SITE_DB']->query_update('quiz_questions', array('q_type' => 'LONG'), array('q_long_input_field' => 1));
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'quiz_questions SET q_type=\'MULTIMULTI\' WHERE q_num_choosable_answers>0');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'quiz_questions SET q_type=\'MULTIMULTIPLE\' WHERE q_num_choosable_answers>0');
             $GLOBALS['SITE_DB']->delete_table_field('quiz_questions', 'q_long_input_field');
             $GLOBALS['SITE_DB']->delete_table_field('quiz_questions', 'q_num_choosable_answers');
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_question_extra_text', 'LONG_TRANS');
