@@ -1,6 +1,7 @@
 {+START,SET,media}
 	{$SET,player_id,player_{$RAND}}
 
+	{$REQUIRE_JAVASCRIPT,jquery}
 	{$REQUIRE_JAVASCRIPT,mediaelement-and-player}
 	{$REQUIRE_CSS,mediaelementplayer}
 
