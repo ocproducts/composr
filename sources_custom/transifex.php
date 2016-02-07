@@ -454,10 +454,10 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     $username = get_value('transifex_username', null, true);
     $password = get_value('transifex_password', null, true);
     if (empty($username)) {
-        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\');', true);
+        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);
     }
     if (empty($password)) {
-        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\');', true);
+        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true);', true);
     }
 
     if (substr($call, 0, 1) != '/') {
@@ -480,5 +480,11 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     $auth = array($username, $password);
     global $HTTP_MESSAGE;
     $result = http_download_file($url, null, $trigger_error, false, 'Composr', ($http_verb == 'GET') ? null : $params, null, null, null, null, null, null, $auth, 30.0, $raw_post, null, null, $http_verb, $raw_content_type);
+
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if ($cli) {
+        @print('Done call to ' . $url . ' [' . $HTTP_MESSAGE . ']' . "\n");
+    }
+
     return array($result, $HTTP_MESSAGE);
 }
