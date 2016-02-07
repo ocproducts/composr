@@ -40,7 +40,8 @@ function init__failure()
      * @global boolean $WANT_TEXT_ERRORS
      */
     global $WANT_TEXT_ERRORS;
-    $WANT_TEXT_ERRORS = false;
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    $WANT_TEXT_ERRORS = $cli;
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
@@ -370,7 +371,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
-        exit(is_object($text) ? strip_html($text->evaluate()) : $text);
+        exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
     if ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr'))) {
