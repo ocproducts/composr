@@ -4212,9 +4212,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
         }
 
         require_code('csrf_filter');
-        if (csrf_filter_active()) {
-            $value .= '<input type="hidden" name="csrf_token" value="' . escape_html(generate_csrf_token()) . '" />';
-        }
+        $value .= '<input type="hidden" name="csrf_token" value="' . escape_html(generate_csrf_token()) . '" />';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
