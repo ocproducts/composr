@@ -112,7 +112,7 @@ img, img a { border:none; outline:none; }
 	.navRight { float:left; width:32px; height:64px; background-image:url('{$IMG;,composr_homesite/nav-edge-bg}'); background-repeat:no-repeat; background-position:right top; }
 
 	.dropMenu { float:left; background-image:url('{$IMG;,composr_homesite/top-nav-bg}'); background-position:0px 0px; background-repeat:repeat-x; background-color:#000; padding:0; margin:0; list-style-type:none; width:846px; height:64px; padding-left:50px; }
-	.dropMenu ul { position:absolute; left:-9999px; top:-9999px; list-style-type:none; z-index:99; }
+	.dropMenu ul { position:absolute; left:-9999px; top:-9999px; list-style-type:none; z-index:9999; }
 	.dropMenu li { float:left; background-image:url('{$IMG;,composr_homesite/top-nav-seperator}'); background-position:top right; background-repeat:no-repeat; }
 	.dropMenu li:last-child { background-image:none; }
 	.dropMenu li a { padding:0px 21px; line-height:64px; display:block; color:#fff; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; }

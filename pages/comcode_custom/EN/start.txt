@@ -97,7 +97,7 @@
 		</div>
 
 		<div class="cntCol2">
-			<a href="{$PAGE_LINK*,site:download}" title="Click here to download Composr CMS">DOWNLOAD Composr CMS</a>
+			<a style="height:100%" href="{$PAGE_LINK*,site:download}" title="Click here to download Composr CMS">DOWNLOAD Composr CMS</a>
 		</div>
 
 		<div class="cntCol3">
