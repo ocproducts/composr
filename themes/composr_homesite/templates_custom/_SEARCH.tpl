@@ -3,7 +3,7 @@
 		<img aria-busy="true" alt="Loading" class="vertical_alignment" src="{$IMG*,loading}" />
 	</div>
 
-	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
 
 	<script type="text/javascript">// <![CDATA[
 		google.load('search','1',{language:'en'});
