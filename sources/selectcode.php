@@ -26,7 +26,7 @@ A match specifier may be:
  - an avoiding-literal (e.g. '!1')
  - a bounded acceptable-range (e.g. '1-3')
  - a non-bounded acceptable-range (e.g. '3+')
- - an acceptable category (e.g. '3#')
+ - an acceptable category (e.g. '3#') [for entry record-sets]
  - an acceptable subtree (e.g. '3*')
  - an acceptable set of direct descendents (e.g. '3>')
  - an avoiding subtree (e.g. '3~')
