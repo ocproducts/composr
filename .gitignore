@@ -130,4 +130,5 @@ pages/html_custom/*/*.htm
 /data_custom/execute_temp.php
 /cms.sql
 /tracker/uploads/
+/stats
 

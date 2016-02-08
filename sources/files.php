@@ -230,6 +230,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '.ftaccess' => '',
                                              '.ftpquota' => '',
                                              'cgi-bin' => '',
+                                             'stats' => '', // ISPConfig
 
                                              // Stuff from composr_homesite deployment
                                              'upgrades' => '',
