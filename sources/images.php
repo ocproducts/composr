@@ -634,7 +634,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             } else {
                 if (!file_exists(dirname($to))) {
                     if (@mkdir(dirname($to), 0777)) {
-                        fix_permissions(dirname($to), 0777);
+                        fix_permissions(dirname($to));
                         sync_file(dirname($to));
                     } else {
                         intelligent_write_error(dirname($to));

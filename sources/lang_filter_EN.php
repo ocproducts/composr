@@ -216,11 +216,15 @@ class LangFilter_EN extends LangFilter
 
             $value = str_replace('sation', 'zation', $value);
             $value = str_replace('converzation', 'conversation', $value); // Exception, put this back
+            $value = str_replace('Converzation', 'Conversation', $value); // Exception, put this back
 
             $value = str_replace('sable', 'zable', $value);
             $value = str_replace('dizable', 'disable', $value); // Exception, put this back
+            $value = str_replace('Dizable', 'Disable', $value); // Exception, put this back
             $value = str_replace('advizable', 'advisable', $value); // Exception, put this back
+            $value = str_replace('Advizable', 'Advisable', $value); // Exception, put this back
             $value = str_replace('purchazable', 'purchasable', $value); // Exception, put this back
+            $value = str_replace('Purchazable', 'Purchasable', $value); // Exception, put this back
             $value = str_replace('uzable', 'usable', $value); // Exception, put this back
 
             $value = str_replace('sational', 'zational', $value);

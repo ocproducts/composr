@@ -341,7 +341,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
             if (substr($file['path'], -1) == '/') {
                 if (!$use_afm) {
                     @mkdir(get_custom_file_base() . '/' . $path . $file['path'], 0777, true);
-                    fix_permissions(get_custom_file_base() . '/' . $path . $file['path'], 0777);
+                    fix_permissions(get_custom_file_base() . '/' . $path . $file['path']);
                     sync_file(get_custom_file_base() . '/' . $path . $file['path']);
                 } else {
                     afm_make_directory($path . $file['path'], true);
@@ -360,7 +360,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                         if (!$use_afm) {
                             if (!file_exists(get_custom_file_base() . '/' . $path . $buildup)) {
                                 @mkdir(get_custom_file_base() . '/' . $path . $buildup, 0777, true);
-                                fix_permissions(get_custom_file_base() . '/' . $path . $buildup, 0777);
+                                fix_permissions(get_custom_file_base() . '/' . $path . $buildup);
                                 sync_file(get_custom_file_base() . '/' . $path . $buildup);
                             }
                         } else {

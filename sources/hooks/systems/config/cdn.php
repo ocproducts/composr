@@ -50,6 +50,6 @@ class Hook_config_cdn
      */
     public function get_default()
     {
-        return '<autodetect>';
+        return ''; // <autodetect> no good for SSL, we we can't really use this now
     }
 }

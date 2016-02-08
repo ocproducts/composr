@@ -284,7 +284,7 @@ class Module_filedump
         if (!file_exists(get_custom_file_base() . '/uploads/filedump' . $place)) {
             if (has_privilege(get_member(), 'upload_filedump')) {
                 @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($full_path), escape_html(dirname($full_path))));
-                fix_permissions($full_path, 0777);
+                fix_permissions($full_path);
                 sync_file($full_path);
             }
         }
@@ -1200,7 +1200,7 @@ class Module_filedump
 
         $path = get_custom_file_base() . '/uploads/filedump' . $place . $name;
         @mkdir($path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($place), escape_html(dirname($place))));
-        fix_permissions($path, 0777);
+        fix_permissions($path);
         sync_file($path);
 
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'place' => $place), '_SELF');
