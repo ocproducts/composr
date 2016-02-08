@@ -53,7 +53,7 @@ $g_db_password   = $SITE_INFO['db_site_password'];
 $g_database_name = $SITE_INFO['db_site'];
 $g_db_type       = $SITE_INFO['db_type'];
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
-$cms_sc_session_cookie_name = 'cms_session';
+$cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
 
 # --- Anonymous Access / Signup ---
 $g_allow_signup				= ON;
