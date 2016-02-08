@@ -75,6 +75,8 @@ function calculate_latest_leader_board($retrieve = true)
 
     arsort($points);
 
+    $rows = array();
+
     $i = 0;
     $time = time();
     foreach ($points as $id => $num_points) {
@@ -87,7 +89,8 @@ function calculate_latest_leader_board($retrieve = true)
             break;
         }
 
-        $GLOBALS['SITE_DB']->query_insert('leader_board', array('lb_member' => $id, 'lb_points' => $num_points, 'date_and_time' => $time), false, true); // Allow failure due to race conditions
+        $row = array('lb_member' => $id, 'lb_points' => $num_points, 'date_and_time' => $time);
+        $GLOBALS['SITE_DB']->query_insert('leader_board', $row, false, true); // Allow failure due to race conditions
 
         $i++;
     }
@@ -96,5 +99,5 @@ function calculate_latest_leader_board($retrieve = true)
         return null;
     }
 
-    return $points;
+    return $rows;
 }
