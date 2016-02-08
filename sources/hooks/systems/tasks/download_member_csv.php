@@ -209,7 +209,7 @@ class Hook_task_download_member_csv
      * @param  array $subscription_types List of subscription types
      * @return array The row
      */
-    protected function _get_csv_member_record($m, $groups, $headings, $cpfs, $member_groups, $subscription_types)
+    public function _get_csv_member_record($m, $groups, $headings, $cpfs, $member_groups, $subscription_types)
     {
         // Usergroup subscription details
         if (addon_installed('ecommerce')) {

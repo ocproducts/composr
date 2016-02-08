@@ -181,10 +181,14 @@ function is_suexec_like()
  * Ensure that the specified file/folder is writeable for the FTP user (so that it can be deleted by the system), and should be called whenever a file is uploaded/created, or a folder is made. We call this function assuming we are giving world permissions.
  *
  * @param  PATH $path The full pathname to the file/directory
- * @param  integer $perms The permissions to make (not the permissions are reduced if the function finds that the file is owned by the web user [doesn't need world permissions then])
+ * @param  ?integer $perms The permissions to make (not the permissions are reduced if the function finds that the file is owned by the web user [doesn't need world permissions then]) (null: default for file/dir)
  */
-function fix_permissions($path, $perms = 0666)
+function fix_permissions($path, $perms = null)
 {
+    if (is_null($perms)) {
+        $perms = is_dir($path) ? 0777 : 0666;
+    }
+
     // If the file user is different to the FTP user, we need to make it world writeable
     if ((!is_suexec_like()) || (cms_srv('REQUEST_METHOD') == '')) {
         @chmod($path, $perms);
@@ -2160,7 +2164,7 @@ function escape_html($string)
 
     $ret = htmlspecialchars($string, ENT_QUOTES, get_charset());
 
-    if (!$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+    if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
     }
 

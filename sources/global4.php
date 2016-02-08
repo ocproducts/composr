@@ -111,7 +111,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
         $myfile = @fopen($write_path, 'wb') or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
         fwrite($myfile, $data);
         fclose($myfile);
-        fix_permissions($write_path, 0777);
+        fix_permissions($write_path);
         sync_file($write_path);
 
         require_code('css_and_js');

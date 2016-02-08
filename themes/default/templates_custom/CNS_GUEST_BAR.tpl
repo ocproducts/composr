@@ -22,9 +22,9 @@
 						<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />
 
 						{+START,IF_EMPTY,{$FB_CONNECT_UID}}
-							{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+							{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 								<div class="fb-login-button" data-scope="email,user_birthday,user_about_me,user_hometown,user_location,user_website{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
-							{+END}
+							{+END}{+END}
 						{+END}
 						<ul class="horizontal_links associated_links_block_group horiz_field_sep">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>

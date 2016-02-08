@@ -36,6 +36,9 @@ class Hook_task_import_member_csv
         require_lang('cns');
         require_code('cns_members_action');
 
+        require_code('hooks/systems/tasks/download_member_csv');
+        $download_ob = new Hook_task_download_member_csv();
+
         log_it('IMPORT_MEMBER_CSV');
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
@@ -192,7 +195,7 @@ class Hook_task_import_member_csv
             if (!$new_member) {
                 $member_groups = $GLOBALS['FORUM_DB']->query_select('f_group_members', array('gm_member_id', 'gm_group_id'), array('gm_validated' => 1, 'gm_member_id' => $linked_id));
                 $member_cpfs = list_to_map('mf_member_id', $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $linked_id), '', 1));
-                $this_record = $this->_get_csv_member_record($member_cpfs, $GLOBALS['FORUM_DRIVER']->get_member_row($linked_id), $_all_groups, $headings, $all_cpfs, $member_groups); // Remember "+" in PHP won't overwrite existing keys
+                $this_record = $download_ob->_get_csv_member_record($member_cpfs + $GLOBALS['FORUM_DRIVER']->get_member_row($linked_id), $_all_groups, $headings, $all_cpfs, $member_groups, array()); // Remember "+" in PHP won't overwrite existing keys
                 if (!array_key_exists($email_address_key, $line)) {
                     unset($this_record['E-mail address']);
                 }

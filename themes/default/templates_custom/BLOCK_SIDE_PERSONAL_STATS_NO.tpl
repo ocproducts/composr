@@ -39,10 +39,10 @@
 			<li><a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 		</ul>
 
-		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 			{+START,IF_EMPTY,{$FB_CONNECT_UID}}
 				<div style="margin-top: 0.4em; text-align: center"><div class="fb-login-button" data-scope="email,user_birthday,user_about_me,user_hometown,user_location,user_website{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div></div>
 			{+END}
-		{+END}
+		{+END}{+END}
 	</div></section>
 {+END}

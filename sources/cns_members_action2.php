@@ -329,7 +329,7 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
     foreach ($custom_fields as $custom_field) {
         $ob = get_fields_hook($custom_field['cf_type']);
 
-        $old_value = is_null($member_id) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_member_custom_fields', 'field_' . strval($custom_field['id']), array('mf_member_id' => $member_id));
+        $old_value = is_null($member_id) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', 'field_' . strval($custom_field['id']), array('mf_member_id' => $member_id));
 
         // Field not required if not yet filled in but member already registered, if PRIVILEGE ON for that. Prevents annoyance for new required CPFs added later.
         if (!member_field_is_required($member_id, 'required_cpfs', $old_value)) {
@@ -1038,7 +1038,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     $old_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
-    if ((!is_null($username)) && ($username != $old_username) && (($skip_checks) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self')))) { // Username change
+    if ((!is_null($username)) && (!is_null($old_username)) && ($username != $old_username) && (($skip_checks) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self')))) { // Username change
         $update['m_username'] = $username;
 
         // Reassign personal galleries
@@ -1077,13 +1077,14 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         if (!$skip_checks) {
             if (($member_id == get_member()) || (get_value('disable_password_change_notifications_for_staff') !== '1')) {
                 if (get_page_name() != 'admin_cns_members') {
+                    require_code('notifications');
+
                     $part_b = '';
                     if (!has_actual_page_access(get_member(), 'admin_cns_members')) {
                         $part_b = do_lang('PASSWORD_CHANGED_MAIL_BODY_2', get_ip_address());
                     }
                     $mail = do_notification_lang('PASSWORD_CHANGED_MAIL_BODY', get_site_name(), $part_b, null, get_lang($member_id));
 
-                    require_code('notifications');
                     dispatch_notification('cns_password_changed', null, do_lang('PASSWORD_CHANGED_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($member_id), null, 2);
                 }
             }
@@ -1460,7 +1461,10 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
         $encrypted = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_encrypted', array('id' => $field));
         if ($encrypted) {
             require_code('encryption');
-            $current = $GLOBALS['FORUM_DB']->query_select_value('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
+            $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
+            if ($current == null) {
+                return null;
+            }
             if ((remove_magic_encryption_marker($value) == remove_magic_encryption_marker($current)) && (is_data_encrypted($current))) {
                 return null;
             }
@@ -1481,7 +1485,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
 
         $map = array();
 
-        $current = $GLOBALS['FORUM_DB']->query_select_value('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
+        $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
         if (is_null($current)) {
             if ($type == 'posting_field') {
                 require_code('attachments2');

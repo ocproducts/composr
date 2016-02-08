@@ -48,7 +48,7 @@ function make_installers($skip_file_grab = false)
     $builds_path = get_builds_path();
     if (!file_exists($builds_path . '/builds/build/')) {
         @mkdir($builds_path . '/builds/build/', 0777) or warn_exit('Could not make temporary build folder');
-        fix_permissions($builds_path . '/builds/build/', 0777);
+        fix_permissions($builds_path . '/builds/build/');
     }
 
     if (!$skip_file_grab) {
@@ -56,11 +56,11 @@ function make_installers($skip_file_grab = false)
     }
     if (!file_exists($builds_path . '/builds/build/' . $version_branch . '/')) {
         mkdir($builds_path . '/builds/build/' . $version_branch . '/', 0777) or warn_exit('Could not make branch build folder');
-        fix_permissions($builds_path . '/builds/build/' . $version_branch . '/', 0777);
+        fix_permissions($builds_path . '/builds/build/' . $version_branch . '/');
     }
     if (!file_exists($builds_path . '/builds/' . $version_dotted . '/')) {
         mkdir($builds_path . '/builds/' . $version_dotted . '/', 0777) or warn_exit('Could not make version build folder');
-        fix_permissions($builds_path . '/builds/' . $version_dotted . '/', 0777);
+        fix_permissions($builds_path . '/builds/' . $version_dotted . '/');
     }
 
     if (!$skip_file_grab) {
@@ -354,9 +354,9 @@ function make_installers($skip_file_grab = false)
 
         // Copy the files we need
         copy_r(get_file_base() . '/aps', $builds_path . '/builds/aps');
-        fix_permissions($builds_path . '/builds/aps', 0777);
+        fix_permissions($builds_path . '/builds/aps');
         copy(get_file_base() . '/install.sql', $builds_path . '/builds/aps/scripts/install.sql');
-        fix_permissions($builds_path . '/builds/aps/scripts/install.sql', 0777);
+        fix_permissions($builds_path . '/builds/aps/scripts/install.sql');
 
         // Temporary renaming
         rename($builds_path . '/builds/build/' . $version_branch . '/', $builds_path . '/builds/aps/htdocs/');
@@ -539,7 +539,7 @@ function get_builds_path()
     $builds_path = get_file_base() . '/exports';
     if (!file_exists($builds_path . '/builds')) {
         mkdir($builds_path . '/builds', 0777) or warn_exit('Could not make master build folder');
-        fix_permissions($builds_path . '/builds', 0777);
+        fix_permissions($builds_path . '/builds');
     }
     return $builds_path;
 }
@@ -548,7 +548,7 @@ function copy_r($path, $dest)
 {
     if (is_dir($path)) {
         @mkdir($dest, 0777);
-        fix_permissions($dest, 0777);
+        fix_permissions($dest);
         $objects = scandir($path);
         if (count($objects) > 0) {
             foreach ($objects as $file) {
@@ -634,7 +634,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             $num_files = count($MAKE_INSTALLERS__FILE_ARRAY);
             $MAKE_INSTALLERS__DIR_ARRAY[] = $pretend_dir . $file;
             @mkdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
-            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
+            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
             $_out = populate_build_files_list($dir . $file . '/', $pretend_dir . $file . '/');
             if ($num_files == count($MAKE_INSTALLERS__FILE_ARRAY)) { // Empty, effectively (maybe was from a non-bundled addon) - don't use it
                 array_pop($MAKE_INSTALLERS__DIR_ARRAY);

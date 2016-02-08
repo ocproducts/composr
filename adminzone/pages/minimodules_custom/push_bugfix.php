@@ -372,7 +372,7 @@ function create_hotfix_tar($tracker_id, $files)
     $builds_path = get_builds_path();
     if (!file_exists($builds_path . '/builds/hotfixes')) {
         mkdir($builds_path . '/builds/hotfixes', 0777);
-        fix_permissions($builds_path . '/builds/hotfixes', 0777);
+        fix_permissions($builds_path . '/builds/hotfixes');
     }
     chdir($builds_path . '/builds/hotfixes');
     $tar = ((DIRECTORY_SEPARATOR == '\\') ? ('tar') : 'COPYFILE_DISABLE=1 tar');

@@ -221,6 +221,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'git-hooks' => '',
                                              '.gitattributes' => '',
                                              '.gitignore' => '',
+                                             '.gitconfig' => '',
                                              'phpdoc.dist.xml' => '',
 
                                              // Web server extensions / leave-behinds
