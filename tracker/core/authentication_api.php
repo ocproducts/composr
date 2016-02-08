@@ -541,7 +541,7 @@ function auth_get_current_user_cookie( $p_login_anonymous=true ) {
 					if (isset($_COOKIE[$cms_sc_session_cookie_name]))
 					{
 						$query = 'SELECT the_user
-									  FROM '.$cms_sc_db_prefix.'sessions WHERE the_session=' . strval(intval($_COOKIE[$cms_sc_session_cookie_name]));
+									  FROM '.$cms_sc_db_prefix.'sessions WHERE the_session=\'' . addslashes($_COOKIE[$cms_sc_session_cookie_name]) . '\'';
 						$result = db_query( $query );
 
 						if( 1 == db_num_rows( $result ) ) {
