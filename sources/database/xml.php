@@ -278,7 +278,7 @@ class Database_Static_xml
 
         @mkdir($path, 0777);
         require_code('files');
-        fix_permissions($path, 0777);
+        fix_permissions($path);
         sync_file($path);
     }
 
@@ -395,7 +395,7 @@ class Database_Static_xml
         if (!file_exists($db_name)) { // Will create on first usage
             mkdir($db_name, 0777);
             require_code('files');
-            fix_permissions($db_name, 0777);
+            fix_permissions($db_name);
             sync_file($db_name);
         }
 
@@ -970,7 +970,7 @@ class Database_Static_xml
             if (!file_exists($db[0] . '/' . $table_name)) {
                 mkdir($db[0] . '/' . $table_name, 0777);
                 require_code('files');
-                fix_permissions($db[0] . '/' . $table_name, 0777);
+                fix_permissions($db[0] . '/' . $table_name);
                 sync_file($db[0] . '/' . $table_name);
             }
             @chdir($db[0] . '/' . $table_name);
@@ -1270,7 +1270,7 @@ class Database_Static_xml
         if (!file_exists($db[0] . '/' . $table_name)) {
             mkdir($db[0] . '/' . $table_name, 0777);
             require_code('files');
-            fix_permissions($db[0] . '/' . $table_name, 0777);
+            fix_permissions($db[0] . '/' . $table_name);
             sync_file($db[0] . '/' . $table_name);
         }
 
@@ -1316,7 +1316,7 @@ class Database_Static_xml
         @flock($myfile, LOCK_UN);
         fclose($myfile);
         require_code('files');
-        fix_permissions($path, 0666);
+        fix_permissions($path);
         sync_file($path);
 
         /* If we want them in subversion as binary, but we probably don't as merging can often work
@@ -1325,7 +1325,7 @@ class Database_Static_xml
                 $myfile = fopen($tpath, 'wb');
                 fwrite($myfile, 'K 13\nsvn:mime-type\nV 24\napplication/octet-stream\nEND');
                 fclose($myfile);
-                fix_permissions($tpath, 0666);
+                fix_permissions($tpath);
                 sync_file($tpath);
             }
         */
@@ -1364,7 +1364,7 @@ class Database_Static_xml
             fwrite($command_file, $svn_command . "\n");
             fclose($command_file);
             require_code('files');
-            fix_permissions($db[0] . '/deletions.sh', 0777);
+            fix_permissions($db[0] . '/deletions.sh');
             sync_file($db[0] . '/deletions.sh');
         }
         */

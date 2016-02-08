@@ -392,7 +392,7 @@ function get_db_site_user()
 {
     global $SITE_INFO;
     if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
-        return substr(md5($SITE_INFO['db_forums_user'] . '_' . $GLOBALS['CURRENT_SHARE_USER']), 0, 16);
+        return substr(md5($SITE_INFO['db_site_user'] . '_' . $GLOBALS['CURRENT_SHARE_USER']), 0, 16);
     }
     return ((array_key_exists('db_site_user', $SITE_INFO)) && ($SITE_INFO['db_site_user'] !== null)) ? $SITE_INFO['db_site_user'] : 'root';
 }

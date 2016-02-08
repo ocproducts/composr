@@ -70,7 +70,7 @@ function run()
         $movedir = dirname(str_replace('/uploads/' . $type . '/', '/uploads/' . $type . '_archive_addon/', str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url'])));
         @mkdir($movedir, 0777);
         require_code('files');
-        fix_permissions($movedir, 0777);
+        fix_permissions($movedir);
         rename(str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url']), str_replace('/uploads/' . $type . '/', '/uploads/' . $type . '_archive_addon/', str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url'])));
     }
 

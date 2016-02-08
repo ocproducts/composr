@@ -70,6 +70,9 @@ default/images/*/*__*.jpeg
 /data_custom/failover_rewritemap__mobile.txt
 
 ; The matched files should be blocked for the main Composr dev repository but not for Composr projects
+/uploads/website_specific/compo.sr/demonstratr/servers/
+/themes/_unnamed_/
+/.gitconfig
 /.htaccess
 .idea
 /data_custom/modules/google_appengine/*
@@ -126,5 +129,6 @@ pages/html_custom/*/*.htm
 *.tempfile
 /data_custom/modules/user_export/out.csv
 /data_custom/execute_temp.php
-cms.sql
+/cms.sql
+/tracker/uploads/
 

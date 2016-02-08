@@ -67,10 +67,16 @@ function check_input_field_string($name, &$val, $posted = false)
             $_val = str_replace('https://', 'http://', $val);
             if (looks_like_url($_val)) {
                 $bus = array(
-                    get_base_url(false),
-                    get_forum_base_url(),
+                    get_base_url(false) . '/',
+                    get_base_url(true) . '/',
+                    get_forum_base_url() . '/',
                     'http://ocportal.com/',
                 );
+                $allowed_partners = get_allowed_partner_sites();
+                foreach ($allowed_partners as $allowed) {
+                    $bus[] = 'http://' . $allowed . '/';
+                    $bus[] = 'https://' . $allowed . '/';
+                }
                 $ok = false;
                 foreach ($bus as $bu) {
                     if (substr($_val, 0, strlen($bu)) == $bu) {

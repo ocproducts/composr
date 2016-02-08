@@ -144,7 +144,12 @@ class Self_learning_cache
     public function __construct($bucket_name)
     {
         $this->bucket_name = $bucket_name;
-        $this->path = get_custom_file_base() . '/caches/self_learning/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
+        $dir = get_custom_file_base() . '/caches/self_learning';
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777);
+            fix_permissions($dir);
+        }
+        $this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
         $this->load();
     }
 

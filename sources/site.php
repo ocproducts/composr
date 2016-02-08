@@ -1050,7 +1050,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
 {
     if (!is_dir(get_custom_file_base() . '/caches/guest_pages/')) {
         if (@mkdir(get_custom_file_base() . '/caches/guest_pages/', 0777)) {
-            fix_permissions(get_custom_file_base() . '/caches/guest_pages/', 0777);
+            fix_permissions(get_custom_file_base() . '/caches/guest_pages/');
             sync_file(get_custom_file_base() . '/caches/guest_pages/');
         } else {
             intelligent_write_error($fast_cache_path);

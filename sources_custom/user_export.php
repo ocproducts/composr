@@ -45,7 +45,7 @@ function do_user_export($to_file = true)
     if ($to_file) {
         $outdir = get_custom_file_base() . '/' . dirname(USER_EXPORT_PATH);
         @mkdir($outdir, 0777);
-        fix_permissions($outdir, 0777);
+        fix_permissions($outdir);
         $tmp_path = $outdir . '/_temp.csv';
         $outfile = fopen($tmp_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
         @flock($outfile, LOCK_EX);
@@ -102,7 +102,7 @@ function do_user_export($to_file = true)
     fclose($outfile);
     if ($to_file) {
         @mkdir($outdir, 0777);
-        fix_permissions($outdir, 0777);
+        fix_permissions($outdir);
         rename($tmp_path, $outdir . '/' . basename(USER_EXPORT_PATH));
         sync_file($tmp_path);
         sync_file($outdir . '/' . basename(USER_EXPORT_PATH));

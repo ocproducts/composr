@@ -50,9 +50,7 @@ function init__tempcode_compiler()
         'CONFIG_OPTION',
         'VALUE_OPTION',
         'COPYRIGHT',
-        'BASE_URL',
         'BASE_URL_NOHTTP',
-        'CUSTOM_BASE_URL',
         'CUSTOM_BASE_URL_NOHTTP',
         'BRAND_NAME',
         'BRAND_BASE_URL',
@@ -74,9 +72,6 @@ function init__tempcode_compiler()
         'SSW',
         'MAILTO',
     );
-    if (function_exists('get_option') && get_option('enable_https', true) != '1') {
-        $_compilable_symbols[] = 'BASE_URL';
-    }
     global $SITE_INFO;
     if ((isset($SITE_INFO['no_keep_params'])) && ($SITE_INFO['no_keep_params'] == '1')) {
         $_compilable_symbols[] = 'KEEP';
@@ -85,6 +80,8 @@ function init__tempcode_compiler()
     }
     if (!addon_installed('ssl')) {
         $_compilable_symbols[] = 'IMG';
+        $_compilable_symbols[] = 'BASE_URL';
+        $_compilable_symbols[] = 'CUSTOM_BASE_URL';
     }
     if ((function_exists('get_option')) && (get_option('detect_javascript') == '0')) {
         $_compilable_symbols[] = 'JS_ON';

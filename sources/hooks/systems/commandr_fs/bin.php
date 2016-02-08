@@ -76,7 +76,7 @@ class Hook_commandr_fs_bin
 
         if ((is_dir($path)) && (!file_exists($path . '/' . $new_dir_name))) {
             $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
-            fix_permissions($path . '/' . $new_dir_name, 0777);
+            fix_permissions($path . '/' . $new_dir_name);
             sync_file($path . '/' . $new_dir_name);
             return $ret;
         } else {

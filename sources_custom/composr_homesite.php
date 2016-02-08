@@ -205,10 +205,10 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
         require_code('files');
         deldir_contents($path);
     } else {
-        @mkdir(dirname($path), 0775);
-        mkdir($path, 0775);
+        @mkdir(dirname($path), 0777);
+        mkdir($path, 0777);
     }
-    @chmod($path, 0775);
+    @chmod($path, 0777);
     require_code('tar');
     $tar = tar_open(special_demonstratr_dir() . '/template.tar', 'rb');
     $path_short = substr($path, strlen(get_custom_file_base() . '/'));
@@ -217,11 +217,15 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     require_code('files2');
     $contents = get_directory_contents($path, $path, true, true, true);
     foreach ($contents as $c) {
-        @chmod($c, 0664);
+        if (is_file($c)) {
+            @chmod($c, 0666);
+        }
     }
     $contents = get_directory_contents($path, $path, true, true, false);
     foreach ($contents as $c) {
-        @chmod($c, 0775);
+        if (is_dir($c)) {
+            @chmod($c, 0777);
+        }
     }
 }
 
@@ -232,7 +236,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
  */
 function special_demonstratr_dir()
 {
-    return 'uploads/website_specific/compo.sr/demonstratr';
+    return get_custom_file_base() . '/uploads/website_specific/compo.sr/demonstratr';
 }
 
 /**
@@ -315,43 +319,61 @@ function reset_base_config_file($server)
         ftruncate($myfile, 0);
     }
     $contents = "<" . "?php
-if (!isset(\$_SERVER['HTTP_HOST']))
-{
-    exit('Must be run from a web-request, for us to be able to identify the correct site.');
+global \$SITE_INFO;
+
+
+if (!function_exists('git_repos')) {
+    /**
+     * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
+     *
+     * @return ?ID_TEXT Branch name (null: not in git)
+     */
+    function git_repos()
+    {
+     	\$path = dirname(__FILE__).'/.git/HEAD';
+        if (!is_file(\$path)) return '';
+        \$lines = file(\$path);
+        \$parts = explode('/', \$lines[0]);
+        return trim(end(\$parts));
+    }
 }
 
-global \$SITE_INFO;
-\$SITE_INFO['default_lang']='EN';
-\$SITE_INFO['db_type']='mysql';
-\$SITE_INFO['forum_type']='cns';
-\$SITE_INFO['domain']=\$_SERVER['HTTP_HOST'];
-\$SITE_INFO['base_url']='http://'.\$_SERVER['HTTP_HOST'];
-\$SITE_INFO['table_prefix']='cms_';
-\$SITE_INFO['use_msn']='1';
-\$SITE_INFO['db_forums']='demonstratr_site';
-\$SITE_INFO['db_forums_host']='localhost';
-\$SITE_INFO['db_forums_user']='demonstratr_site';
-\$SITE_INFO['db_forums_password']='" . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . "';
-\$SITE_INFO['cns_table_prefix']='cms_';
-\$SITE_INFO['db_site']='demonstratr_site';
-\$SITE_INFO['db_site_host']='localhost';
-\$SITE_INFO['db_site_user']='demonstratr_site';
-\$SITE_INFO['db_site_password']='" . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . "';
-\$SITE_INFO['user_cookie']='demonstratr_member_id';
-\$SITE_INFO['pass_cookie']='demonstratr_member_hash';
-\$SITE_INFO['cookie_domain']='';
-\$SITE_INFO['cookie_path']='/';
-\$SITE_INFO['cookie_days']='120';
+\$SITE_INFO['multi_lang_content'] = '0';
+\$SITE_INFO['default_lang'] = 'EN';
+\$SITE_INFO['forum_type'] = 'cns';
+\$SITE_INFO['db_type'] = 'mysql';
+\$SITE_INFO['db_site_host'] = '127.0.0.1';
+\$SITE_INFO['user_cookie'] = 'cms_member_id';
+\$SITE_INFO['pass_cookie'] = 'cms_member_hash';
+\$SITE_INFO['cookie_domain'] = '';
+\$SITE_INFO['cookie_path'] = '/';
+\$SITE_INFO['cookie_days'] = '120';
+\$SITE_INFO['session_cookie'] = 'cms_session__567206a440a52943735248';
+\$SITE_INFO['self_learning_cache'] = '1';
 
-\$SITE_INFO['throttle_space_complementary']=100;
-\$SITE_INFO['throttle_space_views_per_meg']=10;
-\$SITE_INFO['throttle_bandwidth_complementary']=500;
-\$SITE_INFO['throttle_bandwidth_views_per_meg']=1;
+\$SITE_INFO['db_site_user'] = 'demonstratr_site';
+\$SITE_INFO['db_site_password'] = '" . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . "';
+\$SITE_INFO['db_site'] = 'demonstratr_site';
+\$SITE_INFO['table_prefix'] = 'cms_';
 
-\$SITE_INFO['custom_base_url_stub']='http://'.\$_SERVER['HTTP_HOST'].'/sites';
-\$SITE_INFO['custom_file_base_stub']='/home/cms/public_html/servers/composr.info/sites';
-\$SITE_INFO['custom_share_domain']='composr.info';
-\$SITE_INFO['custom_share_path']='sites';
+\$SITE_INFO['dev_mode'] = '0';
+
+\$SITE_INFO['throttle_space_complementary'] = 100;
+\$SITE_INFO['throttle_space_views_per_meg'] = 10;
+\$SITE_INFO['throttle_bandwidth_complementary'] = 500;
+\$SITE_INFO['throttle_bandwidth_views_per_meg'] = 1;
+
+\$SITE_INFO['domain'] = \$_SERVER['HTTP_HOST'];
+\$SITE_INFO['base_url'] = 'http://'.\$_SERVER['HTTP_HOST'];
+
+\$SITE_INFO['custom_base_url_stub'] = 'http://'.\$_SERVER['HTTP_HOST'].'/sites';
+\$SITE_INFO['custom_file_base_stub'] = dirname(__FILE__) . '/sites';
+\$SITE_INFO['custom_share_domain'] = 'composr.info';
+\$SITE_INFO['custom_share_path'] = 'sites';
+
+if (\$_SERVER['HTTP_HOST'] == 'composr.info') {
+        exit('Must run an individual demo site');
+}
 ";
     $rows = $GLOBALS['SITE_DB']->query_select('sites', array('s_codename', 's_domain_name'), array('s_server' => $server));
     foreach ($rows as $row) {
@@ -361,10 +383,9 @@ global \$SITE_INFO;
 ";
         }
         $contents .= "
-\$SITE_INFO['custom_user_" . db_escape_string($row['s_codename']) . "']=1;
+\$SITE_INFO['custom_user_" . db_escape_string($row['s_codename']) . "'] = true;
 ";
     }
-    $contents .= "?" . ">";
     fwrite($myfile, $contents);
     @flock($myfile, LOCK_UN);
     fclose($myfile);

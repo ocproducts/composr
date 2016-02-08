@@ -329,7 +329,7 @@ if (get_param_integer('dir', 0) == 0) {
 $myfile = tar_open($tar_path, 'rb');
 if (!file_exists(get_custom_file_base() . '/exports/static')) {
     mkdir(get_custom_file_base() . '/exports/static', 0777);
-    fix_permissions(get_custom_file_base() . '/exports/static', 0777);
+    fix_permissions(get_custom_file_base() . '/exports/static');
     sync_file(get_custom_file_base() . '/exports/static');
 }
 tar_extract_to_folder($myfile, 'exports/static');

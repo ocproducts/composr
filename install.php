@@ -1374,7 +1374,7 @@ function step_5_ftp()
 
                 if (is_suexec_like()) {
                     @mkdir(get_file_base() . '/' . str_replace('/' . fallback_lang(), '/' . $lang, $dir), 0777);
-                    fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang(), '/' . $lang, $dir), 0777);
+                    fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang(), '/' . $lang, $dir));
                 } else {
                     @ftp_mkdir($conn, str_replace('/' . fallback_lang(), '/' . $lang, $dir));
                     @ftp_site($conn, 'CHMOD 755 ' . str_replace('/' . fallback_lang(), '/' . $lang, $dir));
@@ -1383,7 +1383,7 @@ function step_5_ftp()
         }
         if (is_suexec_like()) {
             @mkdir(get_file_base() . '/' . $dir, 0777);
-            fix_permissions(get_file_base() . '/' . $dir, 0777);
+            fix_permissions(get_file_base() . '/' . $dir);
         } else {
             @ftp_mkdir($conn, $dir);
             if (($dir == 'exports/addons') && (!is_suexec_like())) {
@@ -1426,7 +1426,7 @@ function step_5_ftp()
                             $myfile = fopen(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 'wb');
                             fwrite($myfile, $contents);
                             fclose($myfile);
-                            fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 0666);
+                            fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
                         } else {
                             @ftp_delete($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
                             $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
@@ -1465,7 +1465,7 @@ function step_5_ftp()
                     }
                 }
                 fclose($myfile);
-                fix_permissions(get_file_base() . '/' . $filename, 0666);
+                fix_permissions(get_file_base() . '/' . $filename);
             } else {
                 @ftp_delete($conn, $filename);
                 $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
