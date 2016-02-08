@@ -1,4 +1,4 @@
-<script src="http://www.google.com/jsapi"></script>
+<script src="https://www.google.com/jsapi"></script>
 <script>// <![CDATA[
 	var marker,map,last_point;
 	function google_map_users_initialize()
