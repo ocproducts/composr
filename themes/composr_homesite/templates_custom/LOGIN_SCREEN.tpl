@@ -3,7 +3,7 @@
 {$SET,login_screen,1}
 
 <div class="login_page">
-	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 		{+START,IF_EMPTY,{$FB_CONNECT_UID}}
 			<h2>{!facebook:LOGIN_FACEBOOK_HEADER}</h2>
 
@@ -13,7 +13,7 @@
 		{+END}
 
 		<h2>{!facebook:LOGIN_NATIVE_HEADER,{$SITE_NAME*}}</h2>
-	{+END}
+	{+END}{+END}
 
 	<div class="box box___login_screen"><div class="box_inner">
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
@@ -92,6 +92,11 @@
 		<p class="login_note">
 			{EXTRA}
 		</p>
+	{+END}
+
+	{+START,BOX,ocPortal migrations}
+		<!-- LEGACY -->
+		If you have an ocPortal.com account, you can log in with that. However, if it is connected via Facebook you will need to do a password reset first to disconnect it from our old Facebook app.
 	{+END}
 </div>
 

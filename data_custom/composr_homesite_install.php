@@ -111,6 +111,7 @@ function composr_homesite_install()
     // Config
     // ------
 
+    set_option('yeehaw', '0');
     set_option('collapse_user_zones', '1');
     set_option('is_on_block_cache', '0'); // Change when live
     set_option('url_scheme', 'HTM');
