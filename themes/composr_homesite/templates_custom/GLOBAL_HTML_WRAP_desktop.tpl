@@ -90,27 +90,31 @@
 
 			<div class="screenInner">
 				{+START,IF,{$IN_STR,{$ZONE},docs}}
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<ins class="adsbygoogle"
-					     style="display:inline-block;width:728px;height:90px"
-					     data-ad-client="ca-pub-2141214087424513"
-					     data-ad-slot="6452571186"></ins>
-					<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
+					<div style="text-align: center; margin-bottom: 5px;">
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<ins class="adsbygoogle"
+						     style="display:inline-block;width:728px;height:90px"
+						     data-ad-client="ca-pub-2141214087424513"
+						     data-ad-slot="6452571186"></ins>
+						<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
 				{+END}
 
 				{MIDDLE}
 
 				{+START,IF,{$IN_STR,{$ZONE},docs}}
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<ins class="adsbygoogle"
-					     style="display:inline-block;width:728px;height:90px"
-					     data-ad-client="ca-pub-2141214087424513"
-					     data-ad-slot="6452571186"></ins>
-					<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
+					<div style="text-align: center; margin-top: 5px;">
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<ins class="adsbygoogle"
+						     style="display:inline-block;width:728px;height:90px"
+						     data-ad-client="ca-pub-2141214087424513"
+						     data-ad-slot="6452571186"></ins>
+						<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
 				{+END}
 			</div>
 
