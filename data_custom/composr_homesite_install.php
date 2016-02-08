@@ -308,6 +308,7 @@ function composr_homesite_install()
         ':members',
         ':purchase',
         ':shopping',
+        ':points',
     );
     $GLOBALS['SITE_DB']->query_delete('https_pages');
     foreach ($https_pages as $https_page) {
