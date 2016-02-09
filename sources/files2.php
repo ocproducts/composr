@@ -1883,6 +1883,10 @@ function get_webpage_meta_details($url)
         't_xml_discovery' => '',
     );
 
+    if (url_is_local($url)) {
+        $url = get_custom_base_url() . '/' . $url;
+    }
+
     if (!looks_like_url($url)) {
         return $meta_details;
     }
@@ -1969,6 +1973,8 @@ function get_webpage_meta_details($url)
         }
 
         $GLOBALS['SITE_DB']->query_insert('url_title_cache', $meta_details, false, true); // 'true' to stop race conditions
+    } else {
+        $meta_details['t_mime_type'] = $result[1];
     }
 
     $cache[$url] = $meta_details;
