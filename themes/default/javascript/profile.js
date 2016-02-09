@@ -40,11 +40,11 @@ function decrypt_data(encrypted_data)
 	form.appendChild(space);
 
 	var token=document.createElement('input');
-	input.type='hidden';
-	input.name='csrf_token';
-	input.id='csrf_token';
-	input.value=get_csrf_token();
-	form.appendChild(input);
+	token.type='hidden';
+	token.name='csrf_token';
+	token.id='csrf_token';
+	token.value=get_csrf_token();
+	form.appendChild(token);
 
 	var input=document.createElement('input');
 	input.type='password';
