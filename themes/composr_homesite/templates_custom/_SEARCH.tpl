@@ -1,4 +1,4 @@
-{+START,IF,{$EQ,{$ZONE},docs}}
+{+START,IF,{$OR,{$IN_STR,{$BASE_URL},https://},{$EQ,{$ZONE},docs}}}
 	<div id="cse-search-form" class="srhHold">
 		<img aria-busy="true" alt="Loading" class="vertical_alignment" src="{$IMG*,loading}" />
 	</div>
@@ -37,7 +37,7 @@
 	//]]></script>
 {+END}
 
-{+START,IF,{$NEQ,{$ZONE},docs}}
+{+START,IF,{$NOR,{$IN_STR,{$BASE_URL},https://},{$EQ,{$ZONE},docs}}}
 	<form method="get" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,site:search}}" class="srhHold">
 		{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,site:search}}
 

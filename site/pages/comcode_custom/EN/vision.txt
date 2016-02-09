@@ -213,7 +213,7 @@
 			<div class="vhis-box-row">
 				<div class="vhis-box-date">
 					v9<br />
-					<span>March 2004</span>
+					<span>August 2012</span>
 				</div>
 
 				<div class="vhis-box-txt">

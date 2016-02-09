@@ -75,13 +75,13 @@
 				<h3><a href="#">Full of options you will never use</a></h3>
 
 				<div>
-					<p class="lonely_label">It is important that Composr is flexible, but if we did it by adding 1000s of options for controlling every part of it, it could never work:</p>
+					<p>It is important that Composr is flexible, but if we did it by adding 1000s of options for controlling every part of it, it could never work:</p>
 					<ol>
 						<li>We'd be second-guessing users, so would always be missing things, however many options we added.</li>
 						<li>The administration would be so complex that it would be unusable.</li>
 					</ol>
 
-					<p class="lonely_label">We solve this problem in three ways:</p>
+					<p>We solve this problem in three ways:</p>
 					<ol>
 						<li>We remove any unneeded complexity. We pick one good way of doing things that works for most users rather than giving choices that very few would care about.</li>
 						<li>We allow for enormous flexibility by implementing everything on top of a highly customisable framework. For example, you can override any template to change layout, using our Tempcode language to great effect.</li>
@@ -179,7 +179,7 @@
 				<div>
 					<p>Composr is a modular CMS. We have modules for news, galleries, polls, and so on. Some other systems take a mixed content-tree approach &ndash; a single shared tree/node structure with different types of content bolted on. Both approaches have positives and negatives.</p>
 
-					<p class="lonely_label">The advantages to our approach:</p>
+					<p>The advantages to our approach:</p>
 					<ul>
 						<li>[b]Simplicity for webmasters[/b]. You can just go to the Content Management zone and choose the icon for the content you are interested in. You will not be distracted with anything related to different content types or your site structure as a whole &ndash; just what exists for the particular content type you are working with.</li>
 						<li>[b]Cleaner feature coding[/b]. When programmers try and squeeze everything through shared subsystems it can become hard to customise things for different cases. For example, imagine you are customising the Composr code so that the submitter of a video gets a community point every time someone views their video. If videos are implemented as a node in a shared tree, then you have to squeeze your extra code into what is already a complicated and abstract mess &ndash; it can become unsustainable and unmaintainable, and require exceptionally smart programmers. With a modular system the programmer simply targets the code of the galleries module.</li>
@@ -282,7 +282,7 @@
 		</div>
 	</div>
 
-	<p>We include more information on where Composr sits in our [page="tut_webapp"]Web-applications, Composr, and PHP tutorial[/page].</p>
+	<p>We include more information on where Composr sits in our [page="docs:tut_webapp"]Web-applications, Composr, and PHP tutorial[/page].</p>
 </div>
 
 <script>//<![CDATA[

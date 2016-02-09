@@ -20,6 +20,17 @@
 }
 .antf-row .txt { width:765px; float:left; margin-top:15px; }
 
+.ui-accordion .ui-accordion-content p + ol, .ui-accordion .ui-accordion-content p + ul {
+	margin-top: -15px;
+}
+
+.ui-accordion .ui-accordion-content li {
+	font-size: 14px;
+	line-height: 22px;
+	color: #666666;
+	text-align: justify;
+}
+
 .antf-row1, .antf-row2, .antf-row3, .antf-row4 {
 	overflow:hidden;
 	margin-top:20px;

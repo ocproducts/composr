@@ -7,8 +7,8 @@
 	<li>Every little bit of HTML and CSS can be customised in Composr without having to ever touch PHP</li>
 	<li>Our powerful templating language allows you to do common things like zebra stripes easily</li>
 	<li>Composr lets you make the system completely White Label with just a few clicks, for free</li>
-	<li>Your clients likely ask for lots of features: compare us on <a href="http://www.cmsmatrix.org/matrix/cms-matrix/ocportal" target="_blank">CMSMatrix</a>, we dare you!</li>
-	<li>We obsess about W3C compliance: see our <a href="vision.html" target="_blank">vision page</a> to see how far we go</li>
+	<li>Your clients likely ask for lots of features: compare us on <a href="http://www.cmsmatrix.org/matrix/cms-matrix/ocportal" target="_blank">CMS Matrix</a>, we dare you!<!--TODO: fix link when possible--></li>
+	<li>We obsess about W3C compliance: see our <a href="{$PAGE_LINK*,site:vision}" target="_blank">vision page</a> to see how far we go</li>
 	<li>We care about clean design: see how we cut out the noise on our website compared to other CMSs</li>
 	<li>A single Composr site can have multiple designs &ndash; e.g. different branding on different sections</li>
 	<li>Composr is built for full design flexibility, we hate assumptions; use features like Lego™ blocks</li>
