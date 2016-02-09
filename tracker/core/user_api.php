@@ -95,7 +95,7 @@ function user_cache_row( $p_user_id, $p_trigger_errors = true ) {
 		if ($access_level_2 > $access_level) $access_level = $access_level_2;
 	}
 
-	$row= Array (
+	$row = array (
 		'id'=>$p_user_id,
 		'username'=>$cms_row['m_username'],
 		'email'=>$cms_row['m_email_address'],
@@ -105,7 +105,7 @@ function user_cache_row( $p_user_id, $p_trigger_errors = true ) {
 		'enabled'=>$cms_row['m_validated'],
 		'access_level'=>$access_level,
 		'login_count'=>0,
-		'cookie_string'=>$cms_row['m_pass_hash_salted'],
+		'cookie_string'=>empty($cms_row['m_pass_hash_salted']) ? 'erjg9843h9grefjlg' : $cms_row['m_pass_hash_salted'],
 		'realname'=>'',
 		'protected'=>0,
 		'lost_password_request_count'=>0,

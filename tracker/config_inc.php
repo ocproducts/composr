@@ -78,7 +78,7 @@ $g_smtp_username		= '';					# used with PHPMAILER_METHOD_SMTP
 $g_smtp_password		= '';					# used with PHPMAILER_METHOD_SMTP
 $g_administrator_email  = 'info@compo.sr'; // TODO: Customise
 $g_webmaster_email      = $g_administrator_email;
-$g_from_name			= $g_window_title;
+$g_from_name			= 'Composr CMS feature tracker'; // TODO: Customise
 $g_from_email           = $g_administrator_email;	# the "From: " field in emails
 $g_return_path_email    = $g_administrator_email;	# the return address for bounced mail
 $g_email_receive_own	= OFF;
@@ -143,3 +143,4 @@ $g_logo_image			= '../themes/default/images/EN/logo/standalone_logo.png'; // TOD
 $g_favicon_image		= $cms_sc_site_url.'/themes/default/images/favicon.ico';
 
 
+$g_database_version = 182;
