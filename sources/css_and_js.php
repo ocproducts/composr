@@ -66,20 +66,22 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     $sheet = file_get_contents($full_path);
 
     // Re-seed
-    if (!is_null($seed)) {
-        // Not actually needed
-        $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},seed,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',seed,100% ' . $seed . '}', $sheet);
-        $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},WB,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',WB,100% ' . ($dark ? '000000' : 'FFFFFF') . '}', $sheet);
-        $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},BW,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',BW,100% ' . ($dark ? 'FFFFFF' : '000000') . '}', $sheet);
+    if (addon_installed('themewizard')) {
+        if (!is_null($seed)) {
+            // Not actually needed
+            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},seed,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',seed,100% ' . $seed . '}', $sheet);
+            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},WB,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',WB,100% ' . ($dark ? '000000' : 'FFFFFF') . '}', $sheet);
+            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},BW,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',BW,100% ' . ($dark ? 'FFFFFF' : '000000') . '}', $sheet);
 
-        require_code('themewizard');
-        list($colours, $landscape) = calculate_theme($seed, $theme, $algorithm, 'colours', $dark);
+            require_code('themewizard');
+            list($colours, $landscape) = calculate_theme($seed, $theme, $algorithm, 'colours', $dark);
 
-        // The main thing (THEME_WIZARD_COLOR is not executed in full by Tempcode, so we need to sub it according to our theme wizard landscape)
-        foreach ($landscape as $peak) {
-            $from = $peak[2];
-            $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
-            $sheet = str_replace($from, $to, $sheet);
+            // The main thing (THEME_WIZARD_COLOR is not executed in full by Tempcode, so we need to sub it according to our theme wizard landscape)
+            foreach ($landscape as $peak) {
+                $from = $peak[2];
+                $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
+                $sheet = str_replace($from, $to, $sheet);
+            }
         }
     }
 

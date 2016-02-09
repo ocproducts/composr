@@ -1189,6 +1189,8 @@ class Virtual_shell
 
         // NOTE: Variables throughout this function use the $commandr_ prefix to avoid conflicts with any created through executing PHP commands from the CL
         if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+            // Reload settings...
+
             if (array_key_exists('commandr_state', $_COOKIE)) {
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state'] = stripslashes($_COOKIE['commandr_state']);
@@ -1215,6 +1217,11 @@ class Virtual_shell
                 }
             } else {
                 $commandr_state_lang_diff = array();
+            }
+            foreach ($commandr_state_lang_diff as $commandr_lang) {
+                if ((file_exists(get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $commandr_lang . '.ini')) || (file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $commandr_lang . '.ini'))) {
+                    require_lang($commandr_lang, null, null, true);
+                }
             }
 
             if (array_key_exists('commandr_state_code', $_COOKIE)) {
@@ -1248,18 +1255,14 @@ class Virtual_shell
                     eval('$' . $commandr_key . '=' . strval($commandr_val) . ';');
                 }
             }
-
-            foreach ($commandr_state_lang_diff as $commandr_lang) {
-                if ((file_exists(get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $commandr_lang . '.ini')) || (file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $commandr_lang . '.ini'))) {
-                    require_lang($commandr_lang, null, null, true);
-                }
-            }
-
             foreach ($commandr_state_code_diff as $commandr_code) {
                 if ((file_exists(get_file_base() . '/sources_custom/' . $commandr_code . '.php')) && (!in_safe_mode()) || (file_exists(get_file_base() . '/sources/' . $commandr_code . '.php'))) {
                     require_code($commandr_code);
                 }
             }
+
+            // Run command...
+
             require_code('database_action');
             require_code('config2');
 
@@ -1276,30 +1279,39 @@ class Virtual_shell
             }
             ob_end_clean();
 
-            $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
-            $commandr_env_after = get_defined_vars();
-            $commandr_env_changes = array_diff(array_keys($commandr_env_after), $commandr_env_neglect);
-            $commandr_state_diff = array();
-            foreach ($commandr_env_changes as $commandr_change) {
-                if ((substr($commandr_change, 0, 6) != 'commandr_') && (is_scalar($commandr_env_after[$commandr_change]))) {
-                    $commandr_state_diff[$commandr_change] = $commandr_env_after[$commandr_change];
-                }
-            }
+            // Save settings...
 
             $cookie_size = strlen(serialize($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
+                // Variables
+                $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
+                $commandr_env_after = get_defined_vars();
+                $commandr_env_changes = array_diff(array_keys($commandr_env_after), $commandr_env_neglect);
+                $commandr_state_diff = array();
+                foreach ($commandr_env_changes as $commandr_change) {
+                    if ((substr($commandr_change, 0, 6) != 'commandr_') && (is_scalar($commandr_env_after[$commandr_change]))) {
+                        $commandr_state_diff[$commandr_change] = $commandr_env_after[$commandr_change];
+                    }
+                }
                 $data = base64_encode(serialize($commandr_state_diff));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state', $data);
                 }
-                $data = base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE'])));
+
+                // Code includes
+                $newly_required = array_diff(array_keys($GLOBALS['REQUIRED_CODE']), $already_required);
+                $data = base64_encode(serialize($newly_required));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state_code', $data);
                 }
+
+                // Lang file includes
                 $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state_lang', $data);
                 }
+
+
                 // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
             } else {
                 cms_eatcookie('commandr_state');
@@ -1310,6 +1322,8 @@ class Virtual_shell
             $commandr_eval_output = true;
             $commandr_output = '';
         }
+
+        // Put out output...
 
         $this->output[STREAM_STDCOMMAND] = '';
         $this->output[STREAM_STDHTML] = '';

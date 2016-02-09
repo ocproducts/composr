@@ -538,7 +538,7 @@ if (function_exists('set_magic_quotes_runtime')) {
     @set_magic_quotes_runtime(0); // @'d because it's deprecated and PHP 5.3 may give an error
 }
 safe_ini_set('html_errors', '1');
-safe_ini_set('docref_root', 'http://www.php.net/manual/en/');
+safe_ini_set('docref_root', 'http://php.net/manual/en/');
 safe_ini_set('docref_ext', '.php');
 
 // Get ready for some global variables

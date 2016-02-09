@@ -178,22 +178,15 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 $query .= ' AND the_level>=' . strval($this_level);
             }
             $query .= ' ORDER BY n.id';
+
             $sql = 'SELECT n.id,n.email,the_password,n_forename,n_surname' . $query;
             $temp = $GLOBALS['SITE_DB']->query($sql, $max, $start);
+
             if ($start == 0) {
-                $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE newsletter_id=' . strval($newsletter['id']);
-                if ($strict_level) {
-                    $query .= ' AND the_level=' . strval($this_level);
-                } else {
-                    $query .= ' AND the_level>=' . strval($this_level);
-                }
-                $test = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-                if ($test > 10000) { // Inaccurace, for performance reasons
-                    $total[strval($newsletter['id'])] = $test;
-                } else {
-                    $total[strval($newsletter['id'])] = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*)' . $query);
-                }
+                $sql = 'SELECT COUNT(*)' . $query;
+                $total[strval($newsletter['id'])] = $GLOBALS['SITE_DB']->query_value_if_there($sql);
             }
+
             foreach ($temp as $_temp) {
                 if (!in_array($_temp['email'], $emails)) { // If not already added
                     if (!$get_raw_rows) {

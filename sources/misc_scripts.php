@@ -122,8 +122,21 @@ function gd_text_script()
     imagealphablending($img, false);
     $fg_color = array_key_exists('fg_color', $_GET) ? $_GET['fg_color'] : '000000';
     if (substr($fg_color, 0, 5) == 'seed-') {
-        require_code('themewizard');
-        $fg_color = find_theme_seed(substr($fg_color, 5));
+        $theme = substr($fg_color, 5);
+
+        if (addon_installed('themewizard')) {
+            require_code('themewizard');
+            $fg_color = find_theme_seed($theme);
+        } else {
+            $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+            if (is_file($ini_path)) {
+                require_code('files');
+                $map = better_parse_ini_file($ini_path);
+            } else {
+                $map = array();
+            }
+            $fg_color = isset($map['seed']) ? $map['seed'] : '000000';
+        }
     }
     $color = imagecolorallocate($img, hexdec(substr($fg_color, 0, 2)), hexdec(substr($fg_color, 2, 2)), hexdec(substr($fg_color, 4, 2)));
     if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false) || (strlen($text) == 0)) {
@@ -436,12 +449,12 @@ function emoticons_script()
     require_javascript('editing');
 
     $extra = has_privilege(get_member(), 'use_special_emoticons') ? '' : ' AND e_is_special=0';
-    $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<3' . $extra);
+    $_rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<3' . $extra);
 
     // Work out what grid spacing to use
     $max_emoticon_width = 0;
     require_code('images');
-    foreach ($rows as $myrow) {
+    foreach ($_rows as $myrow) {
         list($_width,) = _symbol_image_dims(array(find_theme_image($myrow['e_theme_img_code'], true)));
         $max_emoticon_width = max($max_emoticon_width, intval($_width));
     }
@@ -458,7 +471,7 @@ function emoticons_script()
     // Render UI
     $rows = array();
     $cells = array();
-    foreach ($rows as $i => $myrow) {
+    foreach ($_rows as $i => $myrow) {
         if (($i % $cols == 0) && ($i != 0)) {
             $rows[] = array('CELLS' => $cells);
             $cells = array();
