@@ -130,6 +130,9 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                     // Work out where the subforum URL is
                     if (($subforum['redirection'] != '') && (!is_numeric($subforum['redirection']))) {
                         $subforum_url = $subforum['redirection'];
+                        if (url_is_local($subforum_url)) {
+                            $subforum_url = get_base_url() . '/' . $subforum_url;
+                        }
 
                         $subforum_num_posts = do_lang_tempcode('NA_EM');
                         $subforum_num_topics = do_lang_tempcode('NA_EM');

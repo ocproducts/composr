@@ -1117,7 +1117,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         if (!function_exists('imagetypes')) {
             $thumb_width = get_option('thumb_width');
-            $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'thumbnail', null, true, $thumb_url));
+            $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'image__thumb', null, true, $thumb_url));
         }
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION_ACCESSIBILITY'), 'description', $description, false));
         if ($validated == 0) {
@@ -1718,7 +1718,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         }
 
         $thumbnail_required = false;//(!$no_thumb_needed) && (get_option('allow_audio_videos')=='0') && (find_theme_image('video_thumb',true)==''); Youtube won't require one for example
-        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('_DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'thumbnail', null, $thumbnail_required, $thumb_url));
+        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('_DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'video__thumb', null, $thumbnail_required, $thumb_url));
 
         if (!$no_thumb_needed) {
             $fields->attach($description_field);

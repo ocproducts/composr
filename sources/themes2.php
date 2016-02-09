@@ -362,7 +362,11 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
     }
 
-    $thumb_specify_name = $name . '__url__thumb';
+    $thumb_specify_name = $name . '__thumb__url';
+    $test = post_param_string($thumb_specify_name, '');
+    if ($test == '') {
+        $thumb_specify_name = $name . '__thumb__filedump';
+    }
 
     // Upload
     // ------
@@ -379,7 +383,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
 
     require_code('uploads');
     $field_file = $name . '__upload';
-    $thumb_attach_name = $name . '__upload__thumb';
+    $thumb_attach_name = $name . '__thumb__upload';
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 

@@ -506,7 +506,7 @@ class Module_downloads
 
         // Get category contents
         //  Subcategories:
-        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '#', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
+        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '*', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
         //  Downloads:
         if (get_option('downloads_subcat_narrowin') == '1') {
             $select = strval($category_id) . '*';
