@@ -16,7 +16,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $_download_page_url = build_url(array('page' => 'download'), 'site');
-$download_page_url = $_sites_url->$_download_page_url();
+$download_page_url = $_download_page_url->evaluate();
 
 $_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
 $importing_tutorial_url = $_importing_tutorial_url->evaluate();
