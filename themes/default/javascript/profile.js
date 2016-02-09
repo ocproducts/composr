@@ -39,6 +39,13 @@ function decrypt_data(encrypted_data)
 	var space=document.createTextNode(' ');
 	form.appendChild(space);
 
+	var token=document.createElement('input');
+	input.type='hidden';
+	input.name='csrf_token';
+	input.id='csrf_token';
+	input.value=get_csrf_token();
+	form.appendChild(input);
+
 	var input=document.createElement('input');
 	input.type='password';
 	input.name='decrypt';
