@@ -2167,6 +2167,8 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $has_categories = false;
         }
 
+        $is_custom_fields = (!is_null($name)) && (substr($name, 0, 1) == '_');
+
         require_code('templates_donext');
         return do_next_manager($title, $description,
             null,
@@ -2178,18 +2180,18 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             null, // View this
             null, // View archive
             null, // Add to category
-            is_null($name) ? null : array('_SELF', array('type' => 'add_category', 'catalogue_name' => $name), '_SELF'), // Add one category
-            (is_null($name) || (!$has_categories)) ? null : array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $name), '_SELF'),// Edit one category
+            (is_null($name) || $is_custom_fields) ? null : array('_SELF', array('type' => 'add_category', 'catalogue_name' => $name), '_SELF'), // Add one category
+            (is_null($name) || (!$has_categories)) ? null : array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $name), '_SELF'), // Edit one category
             null, // Edit this category
             null, // View this category
             /* SPECIALLY TYPED 'LINKS' */
             array(),
             array(),
             array(
-                array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
+                $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
                 is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
-                array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
-                is_null($name) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
+                $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
+                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES')
         );

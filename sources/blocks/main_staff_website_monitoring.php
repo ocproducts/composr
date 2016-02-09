@@ -137,7 +137,7 @@ class Block_main_staff_website_monitoring
             $check *= $magic;
             //If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
             //  the result of converting to integer is undefined
-            //  refer to http://www.php.net/manual/en/language.types.integer.php
+            //  refer to http://php.net/manual/en/language.types.integer.php
             if ((is_integer($check) && floatval($check) >= $int_32_unit) ||
                 (is_float($check) && $check >= $int_32_unit)
             ) {

@@ -795,7 +795,7 @@ What follows is an example XHTML document, utilising all of the above principles
 					<a href="http://example.com/login.html" title="Log in to example.com">Login</a>
 				</li>
 				<li>
-					<a href="http:// example.com/register.html" title="Register an account at example.com">Register</a>
+					<a href="http://example.com/register.html" title="Register an account at example.com">Register</a>
 				</li>
 			</ul>
 		</div>

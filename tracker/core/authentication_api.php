@@ -564,6 +564,9 @@ function auth_get_current_user_cookie( $p_login_anonymous=true ) {
 					if( 1 == db_num_rows( $result ) ) {
 						$row = db_fetch_array( $result );
 						$t_cookie = $row['cookie_string'];
+						if (empty($t_cookie)) {
+							$t_cookie = 'erjg9843h9grefjlg';
+						}
 
 						$g_cache_anonymous_user_cookie_string = $t_cookie;
 						$g_cache_current_user_id = $row['id'];

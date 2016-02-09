@@ -131,7 +131,7 @@ We almost always can (via paid services). Please [page=":contact:paid"]contact u
 
 [title="3"]Is ocProducts available to perform some custom work for me?[/title]
 
-Depending on availability, and budget, yes. [page="site:support"]Contact us[/page] and we will provide guidance, and likely either put you in touch with a local developer, or work towards providing a quote for ocProducts to perform the work.
+Depending on availability, and budget, yes. [page="site:contact:paid"]Contact us[/page] and we will provide guidance, and likely either put you in touch with a local developer, or work towards providing a quote for ocProducts to perform the work.
 
 [title="3"]Why is your spelling so terrible?[/title]
 
@@ -470,7 +470,7 @@ No, there is too much CSS to feasibly make a map as is often used for forum soft
 [title="3"]How can I change how times are displayed?[/title]
 
 To change the settings for the whole of Composr you change some key strings in the [tt]global[/tt] language file. For documentation about the syntax, please see the PHP manual:
-http://uk2.php.net/manual/en/function.strftime.php
+http://php.net/manual/en/function.strftime.php
 
 [title="3"]How do I edit the HTML head and/or the opening and closing HTML body tags?[/title]
 

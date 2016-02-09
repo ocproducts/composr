@@ -55,6 +55,9 @@
 	</div>
 {+END}
 
-<div class="float_surrounder">
-	{PAGINATION*}
-</div>
+{+START,IF_NON_EMPTY,{PAGINATION}}
+	<div class="float_surrounder">
+		<br />
+		{PAGINATION}
+	</div>
+{+END}

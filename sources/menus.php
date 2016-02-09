@@ -219,6 +219,7 @@ function _build_sitemap_menu($menu)
         if ($title !== null) {
             $node['title'] = comcode_to_tempcode($title);
         }
+
         if ($icon !== null) {
             if (find_theme_image('icons/24x24/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
                 $node['extra_meta']['image'] = find_theme_image('icons/32x32/' . $icon);

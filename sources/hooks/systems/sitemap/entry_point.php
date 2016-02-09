@@ -173,11 +173,21 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $_title = $entry_point[0];
         $icon = $entry_point[1];
         if (is_null($_title)) {
-            $title = new Tempcode();
+            if (!is_null($row)) {
+                $title = $row[0];
+            } else {
+                $title = new Tempcode();
+            }
         } elseif (is_object($_title)) {
             $title = $_title;
         } else {
             $title = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
+        }
+
+        if (is_null($icon)) {
+            if (!is_null($row)) {
+                $icon = $row[1];
+            }
         }
 
         $struct = array(

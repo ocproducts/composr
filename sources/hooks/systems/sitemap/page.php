@@ -298,7 +298,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                         }
 
                         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth)) {
-                            foreach (array_keys($entry_points) as $entry_point) {
+                            foreach ($entry_points as $entry_point => $entry_point_details) {
                                 if (strpos($entry_point, ':') === false) {
                                     $child_page_link = $zone . ':' . $page . ':' . $entry_point;
                                 } else {
@@ -309,7 +309,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (strpos($extra, ':catalogue_name=') !== false) {
                                         $child_page_link .= preg_replace('#^:\w+#', '', $extra);
                                     }
-                                    $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                                    $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $entry_point_details);
                                 } else {
                                     $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
                                 }

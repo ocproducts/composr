@@ -15,8 +15,8 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-$_sites_url = build_url(array('page' => 'sites'), 'site');
-$sites_url = $_sites_url->evaluate();
+$_download_page_url = build_url(array('page' => 'download'), 'site');
+$download_page_url = $_sites_url->$_download_page_url();
 
 $_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
 $importing_tutorial_url = $_importing_tutorial_url->evaluate();
@@ -408,7 +408,7 @@ $featuretree = array(
             'Integration and conversion',
             array(
                 array('Convert from other software', 'See our <a href="' . escape_html($importing_tutorial_url) . '">importing tutorial</a> for a list of importers'),
-                array('Use an existing member system', 'See our <a href="' . escape_html($sites_url) . '">download page</a> for a list of forum drivers'),
+                array('Use an existing member system', 'See our <a href="' . escape_html($download_page_url) . '">download page</a> for a list of forum drivers'),
                 array('Convert an <abbr title="HyperText Markup Language">HTML</abbr> site into Composr pages'),
                 array('LDAP support for corporate networks (<abbr title="The Composr forum">Conversr</abbr>) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Help of LDAP usage" href="{$PAGE_LINK*,docs:tut_ldap}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
@@ -649,7 +649,7 @@ $featuretree = array(
         'forumdrivers' => array(
             'Forum integration',
             array(
-                array('Support for popular products', 'See our <a href="' . escape_html($sites_url) . '">download page</a> for a list of supported forums'),
+                array('Support for popular products', 'See our <a href="' . escape_html($download_page_url) . '">download page</a> for a list of supported forums'),
                 array('Share login credentials', 'Login with the same usernames/passwords'),
                 array('Share usergroups', 'Control website access based on someone\'s usergroup'),
                 array('Emoticon support', 'The emoticons on your forum will also be used on your website. Your members will be happy little <a href="http://www.youtube.com/watch?v=XC73PHdQX04" target="_blank" title="(Opens in new window)">hobbits</a>'),
