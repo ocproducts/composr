@@ -1650,6 +1650,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	height: 7px;
 	margin-left: 20.2em;
 	position: absolute;
+	right: 13px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.box.box_arrow>span {
