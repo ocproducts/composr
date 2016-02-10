@@ -9,9 +9,11 @@
 		<h2>{NAME*} by {AUTHOR*}</h2>
 
 		<div class="downloads-block-content">
-			<div class="downloads-block-img">
-				<a href="{URL*}"><img alt="" width="200" height="154" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{FULL_IMG_URL}},{$IMG*,composr_homesite/downloads/no-image},{FULL_IMG_URL}},200x154,,,,pad,both,#FFFFFF}" /></a>
-			</div>
+			{+START,IF,{$OR,{$NOT,{$IN_STR,{BREADCRUMBS},Composr Releases}},{$IS_NON_EMPTY,{FULL_IMG_URL}}}}
+				<div class="downloads-block-img">
+					<a href="{URL*}"><img alt="" width="200" height="154" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{FULL_IMG_URL}},{$IMG*,composr_homesite/downloads/no-image},{FULL_IMG_URL}},200x154,,,,pad,both,#FFFFFF}" /></a>
+				</div>
+			{+END}
 
 			<div class="downloads-block-txt">
 				<div>
