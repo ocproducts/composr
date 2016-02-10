@@ -37,7 +37,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_lang('composrcom');
+require_lang('composr_homesite');
 
 header('Content-type: text/plain; charset=' . get_charset());
 if (get_param_integer('html', 0) == 1) {
@@ -50,7 +50,9 @@ require_code('version2');
 $dotted = get_version_dotted__from_anything(get_param_string('version'));
 list($intended, $qualifier, $qualifier_number, $long_version) = get_version_components__from_dotted($dotted);
 $version_pretty = get_version_pretty__from_dotted($dotted);
-if (!is_null($qualifier)) {
+if (is_null($qualifier)) {
+    $long_version_with_qualifier = $long_version;
+} else {
     $long_version_with_qualifier = $long_version . ' ' . $qualifier . $qualifier_number;
 }
 
@@ -405,7 +407,7 @@ function load_news_rows()
                 array('id' => 7, 'nice_title' => 'Composr 4 released', 'add_date' => time() - 60 * 60 * 1),
             );
         } else {
-            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('n.*', 'date_and_time AS add_date'), array('validated' => 1, 'news_category' => 29), 'ORDER BY add_date');
+            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1, 'news_category' => 29), 'ORDER BY add_date');
             foreach ($NEWS_ROWS as $i => $row) {
                 $NEWS_ROWS[$i]['nice_title'] = get_translated_text($row['title']);
             }

@@ -353,6 +353,12 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
         return true;
     }*/
 
+    static $done_already = array();
+    $sz = serialize(array($name, $value, $session, $http_only, $days));
+    if (isset($done_already[$sz])) {
+        return $done_already[$sz];
+    }
+
     $cookie_domain = get_cookie_domain();
     $path = get_cookie_path();
     if ($path == '') {
@@ -383,6 +389,8 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
     if ($name != 'has_cookies') {
         $_COOKIE[$name] = get_magic_quotes_gpc() ? addslashes($value) : $value;
     }
+
+    $done_already[$sz] = $output;
 
     return $output;
 }

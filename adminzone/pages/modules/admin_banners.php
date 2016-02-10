@@ -68,6 +68,7 @@ class Module_admin_banners
         $type = get_param_string('type', 'browse');
 
         require_lang('banners');
+        require_code('banners');
 
         if ($type == 'browse') {
             $also_url = build_url(array('page' => 'cms_banners'), get_module_zone('cms_banners'));
@@ -86,8 +87,6 @@ class Module_admin_banners
      */
     public function run()
     {
-        require_lang('banners');
-
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
