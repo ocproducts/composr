@@ -276,8 +276,8 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $message_plain));
     }
     if (!in_array('img', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $message_plain);
+        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
     }
     if (!in_array('email', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Usi", '[url="mailto:\1"]\1[/url]', $message_plain);
@@ -364,7 +364,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('surround', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[surround="accessibility_hidden"\].*\[/surround\]#Usi', '', $message_plain);
+        $message_plain = preg_replace('#\[surround="[\w ]+"\].*\[/surround\]#Usi', '', $message_plain);
     }
 
     if (!in_array('if_in_group', $tags_to_preserve)) {

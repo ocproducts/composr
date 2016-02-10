@@ -292,6 +292,12 @@ function phase_2()
         ';
     }
 
+    if ($is_substantial) {
+        echo '
+            <li>Create an errors_final' . strval(intval(cms_version_number())) . '@compo.sr e-mail account and assign someone to handle it.</li>
+        ';
+    }
+
     if ($is_substantial && !$is_bleeding_edge) {
         echo '
             <li><strong>Transifex</strong>: Import language strings into Transifex<ul>
