@@ -26,10 +26,12 @@ function init__composr_homesite()
 function get_latest_version_pretty()
 {
     static $version = null;
-    if ($version !== null) {
+    if ($version === null) {
         $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
         if ($version !== null) {
-            $version = preg_replace('# \(.*#', '', $version);
+            require_code('version2');
+            $_version = preg_replace('# \(.*#', '', $version);
+            list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
         }
     }
     return $version;
