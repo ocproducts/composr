@@ -30,7 +30,7 @@
 					try
 					{
 						navigator.geolocation.getCurrentPosition(function(position) {
-							map.setCenter(google.maps.LatLng(position.coords.latitude,position.coords.longitude));
+							map.setCenter(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
 						});
 					}
 					catch (e) {}
@@ -136,8 +136,6 @@
 			};
 		})(marker,data_point[0])); {$,These are the args passed to the dynamic function above.}
 	}
-
-	google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
 {+START,IF_NON_EMPTY,{TITLE}}
@@ -146,6 +144,13 @@
 {+END}
 
 	<div id="map_canvas" style="width: {WIDTH}; height: {HEIGHT}"></div>
+
+	<script>// <![CDATA[
+		add_event_listener_abstract(window,'load',function() {
+			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+		});
+	//]]></script>
+
 {+START,IF_NON_EMPTY,{TITLE}}
 </div></section>
 {+END}

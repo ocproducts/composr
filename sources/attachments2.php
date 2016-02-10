@@ -123,7 +123,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     $matches = array();
     $num_matches = preg_match_all('#attachment.php\?id=(\d+)#', $comcode, $matches);
     for ($i = 0; $i < $num_matches; $i++) {
-        $COMCODE_ATTACHMENTS[$id][] = $matches[1][$i];
+        $COMCODE_ATTACHMENTS[$id][] = array('tag_type' => null, 'time' => time(), 'type' => 'existing', 'initial_id' => null, 'id' => $matches[1][$i], 'attachmenttype' => '', 'comcode' => null);
     }
 
     // Put in our new attachment IDs (replacing the new_* markers)
@@ -131,19 +131,21 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     for ($i = 0; $i < count($COMCODE_ATTACHMENTS[$id]); $i++) {
         $attachment = $COMCODE_ATTACHMENTS[$id][$i];
 
-        // If it's a new one, we need to change the comcode to reference the ID we made for it
-        if ($attachment['type'] == 'new') {
-            $marker_id = intval(substr($attachment['initial_id'], 4)); // After 'new_'
+        if (!is_null($attachment['initial_id'])) {
+            // If it's a new one, we need to change the comcode to reference the ID we made for it
+            if ($attachment['type'] == 'new') {
+                $marker_id = intval(substr($attachment['initial_id'], 4)); // After 'new_'
 
-            $comcode = preg_replace('#(\[(attachment|attachment_safe)[^\]]*\])new_' . strval($marker_id) . '(\[/)#', '${1}' . strval($attachment['id']) . '${3}', $comcode);
+                $comcode = preg_replace('#(\[(attachment|attachment_safe)[^\]]*\])new_' . strval($marker_id) . '(\[/)#', '${1}' . strval($attachment['id']) . '${3}', $comcode);
 
-            if (!is_null($type)) {
+                if (!is_null($type)) {
+                    $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
+                }
+            } else {
+                // (Re-)Reference it
+                $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']), '', 1);
                 $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
             }
-        } else {
-            // (Re-)Reference it
-            $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']), '', 1);
-            $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
         }
 
         $ids_present[] = $attachment['id'];

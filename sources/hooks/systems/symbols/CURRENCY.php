@@ -36,9 +36,9 @@ class Hook_symbol_CURRENCY
         if (addon_installed('ecommerce')) {
             if (isset($param[0])) {
                 require_code('currency');
-                $value = currency_convert(floatval(str_replace(',', '', $param[0])), ((isset($param[1])) && ($param[1] != '')) ? $param[1] : get_option('currency'), ((isset($param[2])) && ($param[2] != '')) ? $param[2] : null, ((isset($param[3])) && ($param[3] == '1')));
+                $value = null;//currency_convert(floatval(str_replace(',', '', $param[0])), ((isset($param[1])) && ($param[1] != '')) ? $param[1] : get_option('currency'), ((isset($param[2])) && ($param[2] != '')) ? $param[2] : null, ((isset($param[3])) && ($param[3] == '1')));
                 if (is_null($value)) {
-                    $value = do_lang('INTERNAL_ERROR');
+                    $value = '<!--' . do_lang('INTERNAL_ERROR') . '-->';
                 }
             } else {
                 $value = get_option('currency');

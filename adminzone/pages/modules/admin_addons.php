@@ -455,7 +455,7 @@ class Module_admin_addons
 
         $to_import = get_param_string('to_import', null);
 
-        $field_set->attach(form_input_tree_list(do_lang_tempcode('DOWNLOAD'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_COMPOSRCOM', escape_html(get_brand_page_url(array('page' => 'community'), 'site'))), 'url', null, 'choose_composr_homesite_addon', array(), false, $to_import, false, null, true));
+        $field_set->attach(form_input_tree_list(do_lang_tempcode('DOWNLOAD'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE', escape_html(get_brand_page_url(array('page' => 'community'), 'site'))), 'url', null, 'choose_composr_homesite_addon', array(), false, $to_import, false, null, true));
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 

@@ -27,7 +27,7 @@ function get_future_version_information()
 {
     require_lang('version');
 
-    $url = 'http://compo.sr/uploads/website_specific/compo.sr/version.php?version=' . rawurlencode(get_version_dotted()) . '&lang=' . rawurlencode(user_lang());
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode(get_version_dotted()) . '&lang=' . rawurlencode(user_lang());
 
     static $data = null; // Cache
     if (is_null($data)) {

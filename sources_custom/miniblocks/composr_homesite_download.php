@@ -26,7 +26,7 @@ if (($t === null) && ($GLOBALS['DEV_MODE'])) {
 }
 $releases_tpl_map = array();
 if ($t !== null) {
-    $latest = get_translated_text($t);
+    $latest = $t;
     $release_quick = do_release($latest, 'QUICK_');
     if (!is_null($release_quick)) {
         $releases_tpl_map += $release_quick;

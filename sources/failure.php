@@ -963,10 +963,11 @@ function _fatal_exit($text, $return = false)
         }
     }
 
-    if (may_see_stack_dumps()) {
+    $may_see_trace = may_see_stack_dumps();
+    if ($may_see_trace) {
         $trace = get_html_trace();
     } else {
-        $trace = paragraph(do_lang_tempcode('STACK_TRACE_DENIED_ERROR_NOTIFICATION'), 'yrthrty4ttewdf');
+        $trace = new Tempcode();
     }
 
     $title = get_screen_title('ERROR_OCCURRED');
@@ -982,7 +983,7 @@ function _fatal_exit($text, $return = false)
         }
     }
 
-    $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace));
+    $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => $may_see_trace));
     $echo = globalise($error_tpl, null, '', true);
     $echo->evaluate_echo(null, true);
 
@@ -1126,7 +1127,7 @@ function may_see_stack_dumps()
         return true;
     }
 
-    return (get_domain() == 'localhost') || (has_privilege(get_member(), 'see_stack_dump'));
+    return ($GLOBALS['DEV_MODE']) || (has_privilege(get_member(), 'see_stack_dump'));
 }
 
 /**

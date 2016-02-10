@@ -1789,7 +1789,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $read_file = false;
                 }
             }
-            if ((!is_null($byte_limit)) && ($read_file !== false)) {
+            if ((!is_null($byte_limit)) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
                 $read_file = substr($read_file, 0, $byte_limit);
             }
             safe_ini_set('allow_url_fopen', '0');

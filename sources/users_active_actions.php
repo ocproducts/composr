@@ -32,8 +32,10 @@ function restricted_manually_enabled_backdoor()
 
     $ks = get_param_string('keep_su', null);
     if (!is_null($ks)) {
-        $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-        $GLOBALS['SESSION_CONFIRMED'] = 1;
+        if (get_param_integer('keep_su_strict', 0) == 0) {
+            $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
+            $GLOBALS['SESSION_CONFIRMED'] = 1;
+        }
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
 
         if (!is_null($su)) {
