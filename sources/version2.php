@@ -120,7 +120,7 @@ function get_version_dotted__from_anything($any_format)
  * Analyse a dotted version number into components.
  *
  * @param  string $dotted Dotted version number
- * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components
+ * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components, float version number (i.e. no patch release and qualifier information, like cms_version_number)
  */
 function get_version_components__from_dotted($dotted)
 {
@@ -142,7 +142,15 @@ function get_version_components__from_dotted($dotted)
 
     $long_dotted_number = $basis_dotted_number . str_repeat('.0', max(0, 2 - substr_count($basis_dotted_number, '.')));
 
-    return array($basis_dotted_number, $qualifier, $qualifier_number, $long_dotted_number);
+    $version_number = floatval(preg_replace('#\.\d+$#', '', $long_dotted_number));
+
+    return array(
+        $basis_dotted_number,
+        $qualifier,
+        $qualifier_number,
+        $long_dotted_number,
+        $version_number,
+    );
 }
 
 /**
