@@ -213,11 +213,7 @@ function fatal_exit($text)
     // To break any looping of errors
     global $EXITING;
     if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
-        if ((get_domain() == 'localhost') || ((function_exists('get_member')) && (has_privilege(get_member(), 'see_stack_dump')))) {
-            die_html_trace($text);
-        } else {
-            critical_error('RELAY', is_object($text) ? $text->evaluate() : escape_html($text));
-        }
+        die_html_trace($text);
     }
     $EXITING = 1;
 
@@ -225,7 +221,7 @@ function fatal_exit($text)
 
     $trace = get_html_trace();
     $echo = new Tempcode();
-    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'MESSAGE' => $text, 'TRACE' => $trace)));
+    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => true,)));
     $css_url = 'install.php?type=css';
     $css_url_2 = 'install.php?type=css_2';
     $logo_url = 'install.php?type=logo';
@@ -440,11 +436,7 @@ function warn_exit($text)
     // To break any looping of errors
     global $EXITING;
     if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
-        if ((get_domain() == 'localhost') || ((function_exists('get_member')) && (has_privilege(get_member(), 'see_stack_dump')))) {
-            die_html_trace($text);
-        } else {
-            critical_error('RELAY', is_object($text) ? $text->evaluate() : escape_html($text));
-        }
+        die_html_trace($text);
     }
     $EXITING = 1;
 

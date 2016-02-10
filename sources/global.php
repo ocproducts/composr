@@ -527,6 +527,9 @@ if (!GOOGLE_APPENGINE) {
 if (!defined('E_DEPRECATED')) { // LEGACY
     define('E_DEPRECATED', 0);
 }
+if (!defined('ENT_SUBSTITUTE')) { // LEGACY
+    define('ENT_SUBSTITUTE', 0);
+}
 safe_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.disable_eval', '0');

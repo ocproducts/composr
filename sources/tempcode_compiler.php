@@ -478,7 +478,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $s_escaped .= strval($esc);
                                 }
                                 if (($s_escaped == strval(ENTITY_ESCAPED)) && (!$GLOBALS['XSS_DETECT'])) {
-                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES,get_charset()):' . $temp . ')';
+                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
                                 } else {
                                     if ($s_escaped == strval(ENTITY_ESCAPED)) {
                                         $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?apply_tempcode_escaping_inline(array(' . $s_escaped . '),' . $temp . '):' . $temp . ')';

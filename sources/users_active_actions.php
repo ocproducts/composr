@@ -32,8 +32,10 @@ function restricted_manually_enabled_backdoor()
 
     $ks = get_param_string('keep_su', null);
     if (!is_null($ks)) {
-        $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-        $GLOBALS['SESSION_CONFIRMED'] = 1;
+        if (get_param_integer('keep_su_strict', 0) == 0) {
+            $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
+            $GLOBALS['SESSION_CONFIRMED'] = 1;
+        }
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
 
         if (!is_null($su)) {
@@ -353,12 +355,6 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
         return true;
     }*/
 
-    static $done_already = array();
-    $sz = serialize(array($name, $value, $session, $http_only, $days));
-    if (isset($done_already[$sz])) {
-        return $done_already[$sz];
-    }
-
     $cookie_domain = get_cookie_domain();
     $path = get_cookie_path();
     if ($path == '') {
@@ -389,8 +385,6 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
     if ($name != 'has_cookies') {
         $_COOKIE[$name] = get_magic_quotes_gpc() ? addslashes($value) : $value;
     }
-
-    $done_already[$sz] = $output;
 
     return $output;
 }

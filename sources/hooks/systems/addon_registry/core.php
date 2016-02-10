@@ -1711,6 +1711,7 @@ class Hook_addon_registry_core
                 'TITLE' => lorem_title(),
                 'MESSAGE' => lorem_phrase(),
                 'TRACE' => lorem_phrase(),
+                'MAY_SEE_TRACE' => true,
             )), null, '', true)
         );
     }

@@ -500,6 +500,11 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
+    require_code('site');
+    if (_request_page($attributes['page'], $zone) === false) {
+        return '';
+    }
+
     $page = fix_page_name_dashing($zone, $attributes['page']);
 
     // Put it together

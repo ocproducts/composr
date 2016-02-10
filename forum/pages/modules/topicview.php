@@ -749,6 +749,9 @@ class Module_topicview
                 $_postdetails = new Tempcode();
             }
             $first_post = $_postdetails;
+            if (strpos($first_post->evaluate(), '<script') !== false) {
+                $first_post = new Tempcode(); // Rendering twice could cause issues
+            }
             $first_post_url = $GLOBALS['FORUM_DRIVER']->post_url($topic_info['first_post_id'], is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']), true);
             $display = 'block';
             $expand_type = 'contract';

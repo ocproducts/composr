@@ -159,9 +159,6 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
 
     // Run checks
     $spell_link = _spellcheck_initialise($lang);
-    if ($spell_link === null) {
-        return array();
-    }
     if (function_exists('pspell_check')) { // pspell
         foreach ($words as $word) {
             if (!pspell_check($spell_link, $word)) {
@@ -215,7 +212,7 @@ function add_spellchecker_words($words)
  * Initialise the spellcheck engine.
  *
  * @param ?ID_TEXT $lang Language to check in (null: current language)
- * @return mixed Spellchecker
+ * @return ?mixed Spellchecker (null: error)
  *
  * @ignore
  */
@@ -236,25 +233,16 @@ function _spellcheck_initialise($lang = null)
         $charset = str_replace('ISO-', 'iso', str_replace('iso-', 'iso', $charset));
 
         $pspell_config = @pspell_config_create($lang, $spelling, '', $charset);
-        if (($pspell_config === false) && ($lang != 'en')) { // Fallback
-            $pspell_config = @pspell_config_create('en', $spelling, '', $charset);
-            if ($pspell_config === false) {
-                return null;
-            }
+        if ($pspell_config === false) { // Fallback
+            $pspell_config = pspell_config_create('en', $spelling, '', $charset);
         }
         pspell_config_personal($pspell_config, $p_dict_path . '/' . $lang . '.pws');
         $spell_link = @pspell_new_config($pspell_config);
 
         if (($spell_link === false) && ($lang != 'en')) { // Fallback: Might be that we had a late fail on initialising that language
-            $pspell_config = @pspell_config_create('en', $spelling, '', $charset);
-            if ($pspell_config === false) {
-                return null;
-            }
+            $pspell_config = pspell_config_create('en', $spelling, '', $charset);
             pspell_config_personal($pspell_config, $p_dict_path . '/' . $lang . '.pws');
-            $spell_link = @pspell_new_config($pspell_config);
-            if ($spell_link === false) {
-                return null;
-            }
+            $spell_link = pspell_new_config($pspell_config);
         }
     } else { // enchant
         $broker = enchant_broker_init();

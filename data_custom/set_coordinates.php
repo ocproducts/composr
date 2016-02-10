@@ -74,5 +74,8 @@ function set_coordinates()
         return;
     }
 
-    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . $latitude_cpf_id => strval($coords[0]), 'field_' . $longitude_cpf_id => strval($coords[1])), array('mf_member_id' => $member_id));
+    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array(
+        'field_' . strval($latitude_cpf_id) => $coords[0],
+        'field_' . strval($longitude_cpf_id) => $coords[1],
+    ), array('mf_member_id' => $member_id));
 }

@@ -25,8 +25,8 @@ function init__composr_homesite()
 
 function get_latest_version_pretty()
 {
-    static $version = null;
-    if ($version === null) {
+    static $version = false;
+    if ($version === false) {
         $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
         if ($version !== null) {
             require_code('version2');
@@ -34,7 +34,7 @@ function get_latest_version_pretty()
             list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
         }
     }
-    return $version;
+    return is_null($version) ? null : float_format($version, 2, true);
 }
 
 // MAKING RELEASES

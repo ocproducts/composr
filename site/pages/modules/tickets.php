@@ -833,9 +833,6 @@ class Module_tickets
         }
 
         $ticket_type_id = $this->get_ticket_type_id();
-        if (is_null($ticket_type_id)) {
-            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'ticket_type_id'));
-        }
 
         $staff_only = post_param_integer('staff_only', 0) == 1;
 

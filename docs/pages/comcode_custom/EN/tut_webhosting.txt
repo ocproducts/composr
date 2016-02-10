@@ -136,7 +136,7 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 [title="4"]Fedora/RHEL/CentOS[/title]
 
 [code="Bash"]
-yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server
+yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en
 [/code]
 
 You may also want to include [tt]yum-cron[/tt] (or [url="whatever it is now"]https://fedoraproject.org/wiki/AutoUpdates[/url]) in there, for automatic system updates (who has time to stay on top of all server software for urgent security patches?).
