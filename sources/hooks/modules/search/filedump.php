@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_search_filedump
+class Hook_search_filedump extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.

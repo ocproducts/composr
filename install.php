@@ -1545,7 +1545,7 @@ function step_5_ftp()
             ftp_close($conn);
         }
     }
-    $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '1b447cee9e9aa3ad8e24530d4dceb03f', 'SOMETHING' => do_lang_tempcode('FILES_TRANSFERRED', strval($i + 1), strval($count)))));
+    $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '1b447cee9e9aa3ad8e24530d4dceb03f', 'SOMETHING' => do_lang_tempcode('FILES_TRANSFERRED', strval($i + 1 - 1/*+1 is due to counting from zero and -1 is because a for variable ends 1 more than it executed for*/), strval($count)))));
     return array($log, $done_all ? -1 : $i);
 }
 

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_search_catalogue_categories
+class Hook_search_catalogue_categories extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.

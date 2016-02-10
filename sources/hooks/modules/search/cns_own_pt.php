@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_search_cns_own_pt
+class Hook_search_cns_own_pt extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.
