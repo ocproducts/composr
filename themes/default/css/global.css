@@ -1286,6 +1286,7 @@ div.red_alert, p.red_alert {
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
+	color: {$GET,slightly_seeded_text};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	div.red_alert, p.red_alert {
@@ -1593,8 +1594,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
 .box .box .box_inner>h1, .box .box .box_inner>h2, .box .box .box_inner>h3, .box .box .box_inner>h4, .box .box .box_inner>h5, .box .box .box_inner>h6, .box .box .toggleable_tray_title, #standalone_html_wrap .box .box .box .box_inner>h2, #standalone_html_wrap .box .box .box .box_inner>h3 {
-	background: none !important;
-	color: inherit !important;
+	background: none;
+	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone_html_wrap) as those should show verbatim */
@@ -1767,6 +1768,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	height: 7px;
 	margin-left: 20.2em;
 	position: absolute;
+	right: 13px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.box.box_arrow>span {

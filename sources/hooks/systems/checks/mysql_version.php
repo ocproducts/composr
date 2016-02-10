@@ -38,18 +38,19 @@ class Hook_check_mysql_version
         $warning = array();
         if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
             if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
-                $version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
-                if ($version !== false) {
-                    $x = float_to_raw_string(floatval($version) / 10000.0);
-                    if (version_compare($x, $minimum_version, '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version));
+                $__version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
+                if ($__version !== false) {
+                    $_version = strval($__version);
+                    $version = strval(intval(substr($_version, 0, strlen($_version) - 4))) . '.' . strval(intval(substr($_version, -4, 2))) . '.' . strval(intval(substr($_version, -2, 2)));
+                    if (version_compare($version, $minimum_version, '<')) {
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
                     }
                 }
             } elseif (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
                 $version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($version !== false) {
                     if (version_compare($version, $minimum_version, '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version));
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
                     }
                 }
             }

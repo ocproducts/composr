@@ -592,7 +592,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     }
                 }
                 $mail = do_notification_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
-                dispatch_notification('like', null, $subject, $mail, array($submitter));
+                dispatch_notification('like', null, $subject, $mail, array($submitter), A_FROM_SYSTEM_PRIVILEGED);
             }
 
             $privacy_ok = true;

@@ -888,6 +888,26 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $HTTP_MESSAGE = 'malconstructed-URL';
         return null;
     }
+    if (!array_key_exists('host', $url_parts)) {
+        $url_parts['host'] = '127.0.0.1';
+    }
+    $connect_to = $url_parts['host'];
+    $base_url_parsed = parse_url(get_base_url());
+    if (!array_key_exists('host', $base_url_parsed)) {
+        $base_url_parsed['host'] = '127.0.0.1';
+    }
+    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1');
+    if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
+        $connect_to = cms_srv('LOCAL_ADDR');
+        if ($connect_to == '') {
+            $connect_to = cms_srv('SERVER_ADDR');
+        }
+        if ($connect_to == '') {
+            $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
+        }
+    } elseif (php_function_allowed('gethostbyname')) {
+        $connect_to = @gethostbyname($connect_to); // for DNS caching
+    }
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
     }
@@ -945,6 +965,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     $use_curl = (($url_parts['scheme'] != 'http') || ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) && (function_exists('curl_version'));
+    if ((function_exists('get_value')) && (get_value('prefer_curl') === '0')) {
+        $use_curl = false;
+    }
 
     $raw_payload = '';
     $put = mixed();
@@ -1118,7 +1141,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            $ch = curl_init($url);
+                                            if ($do_ip_forwarding) {
+                                                $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
+                                            } else {
+                                                $_url = $url;
+                                            }
+                                            $ch = curl_init($_url);
                                             $curl_headers = array();
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
@@ -1133,6 +1161,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
                                             } else {
                                                 curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                            }
+                                            if ($do_ip_forwarding) {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                             }
                                             //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
@@ -1174,6 +1206,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
                                             }
+                                            $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
                                                     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
@@ -1188,7 +1221,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if (!is_null($referer)) {
                                                 curl_setopt($ch, CURLOPT_REFERER, $referer);
                                             }
-                                            $proxy = get_option('proxy');
+                                            $proxy = function_exists('get_option') ? get_option('proxy') : '';
                                             if (($proxy != '') && ($url_parts['host'] != 'localhost') && ($url_parts['host'] != '127.0.0.1')) {
                                                 $port = get_option('proxy_port');
                                                 curl_setopt($ch, CURLOPT_PROXY, $proxy . ':' . $port);
@@ -1341,22 +1374,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     $errno = 0;
     $errstr = '';
     if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen')) && (php_function_allowed('shell_exec'))) {
-        if (!array_key_exists('host', $url_parts)) {
-            $url_parts['host'] = '127.0.0.1';
-        }
-        $connect_to = $url_parts['host'];
-        $base_url_parsed = parse_url(get_base_url());
-        if (!array_key_exists('host', $base_url_parsed)) {
-            $base_url_parsed['host'] = '127.0.0.1';
-        }
-        if (($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1')) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
-            $connect_to = cms_srv('LOCAL_ADDR');
-            if ($connect_to == '') {
-                $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
-            }
-        } elseif (php_function_allowed('gethostbyname')) {
-            $connect_to = @gethostbyname($connect_to); // for DNS caching
-        }
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {
             $proxy = null;
@@ -1741,7 +1758,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     'ciphers' => 'TLSv1',
                 )
             );
-            $proxy = get_option('proxy');
+            $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
                 $port = get_option('proxy_port');
                 $proxy_user = get_option('proxy_user');
