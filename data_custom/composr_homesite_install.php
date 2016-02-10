@@ -111,6 +111,7 @@ function composr_homesite_install()
     // Config
     // ------
 
+    set_option('output_streaming', '0'); // Complex layout, we don't want things to jump on decache; also, intrusion detector wants to run with consistency
     set_option('yeehaw', '0');
     set_option('collapse_user_zones', '1');
     set_option('is_on_block_cache', '0'); // Change when live
