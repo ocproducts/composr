@@ -4,6 +4,9 @@
 			{+START,IF_PASSED,REP_IMAGE}
 				<a href="{URL*}">{REP_IMAGE}</a>
 			{+END}
+			{+START,IF_NON_PASSED,REP_IMAGE}
+				<a href="{URL*}"><img alt="" class="img_thumb" src="{$IMG*,tutorial_icons/installation}" /></a>
+			{+END}
 		</div>
 
 		<div class="downloads-cat-box-title">

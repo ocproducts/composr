@@ -1,6 +1,6 @@
 .downloads-cat-box { width:435px; background:url('{$IMG;,composr_homesite/downloads/downloads-cat-box-bg}') no-repeat bottom left; border-radius:7px; margin:0 3px 10px 0; float:left; padding:32px 15px 30px 26px; }
 .downloads-cat-box-img { width:98px; height:98px; float:left; margin-right:25px; }
-.downloads-cat-box-img img { width:100%; {$BETA_CSS_PROPERTY,box-sizing: border-box;} opacity: 1.0; padding: 12px; }
+.downloads-cat-box-img img { width:100%; {$BETA_CSS_PROPERTY,box-sizing: border-box;} opacity: 1.0; padding: 6px 9px 9px 9px; }
 .downloads-cat-box-title { width:300px; float:left; font-size:21px; color:#667ea4; padding-top:10px; line-height:18px; font-weight:bold; }
 .downloads-cat-box-title a { color:#667ea4; text-decoration:none; }
 .downloads-cat-box-title a:hover { color:#E5922C; }
