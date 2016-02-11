@@ -327,7 +327,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             }
 
             // Do page-groupings
-            if (count($page_groupings) != 1) {
+            if (count($page_groupings) != 1) { // 0 or more than 1 page groupings
                 $page_grouping_sitemap_xml_ob = $this->_get_sitemap_object('page_grouping');
 
                 foreach ($page_groupings as $page_grouping => $page_grouping_pages) {
@@ -411,7 +411,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         }
                     }
                 }
-            } elseif (count($page_groupings) == 1) {
+            } else { // 1 page group exactly
                 // Show contents of group directly...
 
                 $comcode_page_sitemap_ob = $this->_get_sitemap_object('comcode_page');

@@ -72,11 +72,11 @@
 				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');">
 					<p>
 						{+START,IF,{$EQ,{DISPLAY_MODE},avatars}}
-							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,,pad,both,FFFFFF00}}
+							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,{$IMG,cns_default_avatars/default},pad,both,FFFFFF00}}
 						{+END}
 
 						{+START,IF,{$EQ,{DISPLAY_MODE},photos}}
-							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$PHOTO,{MEMBER_ID}}},{$IMG,no_image},{$PHOTO,{MEMBER_ID}}},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width},,,,pad,both,FFFFFF00}}
+							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$PHOTO,{MEMBER_ID}}},{$IMG,no_image},{$PHOTO,{MEMBER_ID}}},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width},,,{$IMG,no_image},pad,both,FFFFFF00}}
 						{+END}
 
 						<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" src="{$ENSURE_PROTOCOL_SUITABILITY*,{$GET,image}}" /></a>

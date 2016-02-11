@@ -67,8 +67,10 @@ class Hook_sitemap_gallery extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $parent = (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) ? 'root' : '';
+
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)', array('parent_id' => ''));
+            $count = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)', array('parent_id' => $parent));
             if ($count > $child_cutoff) {
                 return $nodes;
             }
@@ -76,7 +78,7 @@ class Hook_sitemap_gallery extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('parent_id' => ''), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('parent_id' => $parent), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . $row['name'];
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);

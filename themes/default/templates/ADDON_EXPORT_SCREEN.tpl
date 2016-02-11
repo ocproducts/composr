@@ -22,6 +22,8 @@
 
 {+START,IF_NON_EMPTY,{FILES}}
 	<form title="{!EXPORT_ADDON}" action="{URL*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<div>
 			{FILES}
 		</div>

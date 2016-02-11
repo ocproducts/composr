@@ -212,7 +212,7 @@ function add_spellchecker_words($words)
  * Initialise the spellcheck engine.
  *
  * @param ?ID_TEXT $lang Language to check in (null: current language)
- * @return mixed Spellchecker
+ * @return ?mixed Spellchecker (null: error)
  *
  * @ignore
  */

@@ -237,6 +237,7 @@ class LangFilter_EN extends LangFilter
 
         // Put in correct brand name
         $remapping['the software'] = brand_name();
+        $remapping['the website software'] = brand_name();
 
         // Fix bad contextualisation
         $remapping['on Yesterday'] = 'Yesterday';
@@ -255,7 +256,7 @@ class LangFilter_EN extends LangFilter
             );
         }
 
-        if (!is_null($key)) {
+        if (!is_null($key) && $is_american) {
             // Day comes after month
             switch ($key . '=' . $value) {
                 case 'calendar_date=Y-m-d': // ISO (International) style
@@ -276,6 +277,18 @@ class LangFilter_EN extends LangFilter
 
                 case 'date_verbose_date=%a %e%k %B %Y':
                     $value = '%a %B %e%k %Y';
+                    break;
+
+                case 'locale=en-GB':
+                    $value = 'en-US';
+                    break;
+
+                case 'dictionary=en_GB':
+                    $value = 'en_US';
+                    break;
+
+                case 'dictionary_variant=british':
+                    $value = 'american';
                     break;
             }
         }

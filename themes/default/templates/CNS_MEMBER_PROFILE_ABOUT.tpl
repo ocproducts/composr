@@ -104,64 +104,70 @@
 			</p>
 		{+END}
 
-		<div class="wide_table_wrap">
-			<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<colgroup>
-						<col class="cns_profile_about_field_name_column" />
-						<col class="cns_profile_about_field_value_column" />
-					</colgroup>
-				{+END}
+		{+START,IF,{$OR,{VIEW_PROFILES},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
+			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}{+START,IF_NON_EMPTY,{CUSTOM_FIELDS_SECTIONS}}
+				<h2>{!ABOUT}</h2>
+			{+END}{+END}
 
-				<tbody>
-					{+START,IF,{VIEW_PROFILES}}
-						{+START,LOOP,CUSTOM_FIELDS}
-							{$SET,is_point_field,{$EQ,{NAME},{!SPECIAL_CPF__cms_points_used},{!SPECIAL_CPF__cms_gift_points_used},{!SPECIAL_CPF__cms_points_gained_chat},{!SPECIAL_CPF__cms_points_gained_given},{!SPECIAL_CPF__cms_points_gained_visiting},{!SPECIAL_CPF__cms_points_gained_rating},{!SPECIAL_CPF__cms_points_gained_voting},{!SPECIAL_CPF__cms_points_gained_wiki}}}
-							{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
+			<div class="wide_table_wrap">
+				<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
+					{+START,IF,{$NOT,{$MOBILE}}}
+						<colgroup>
+							<col class="cns_profile_about_field_name_column" />
+							<col class="cns_profile_about_field_value_column" />
+						</colgroup>
+					{+END}
 
-							{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
-								<tr id="cpf_{NAME|*}" class="cpf_{FIELD_ID|*}">
-									<th class="de_th">
-										{NAME*}:
-									</th>
+					<tbody>
+						{+START,IF,{VIEW_PROFILES}}
+							{+START,LOOP,CUSTOM_FIELDS}
+								{$SET,is_point_field,{$EQ,{NAME},{!SPECIAL_CPF__cms_points_used},{!SPECIAL_CPF__cms_gift_points_used},{!SPECIAL_CPF__cms_points_gained_chat},{!SPECIAL_CPF__cms_points_gained_given},{!SPECIAL_CPF__cms_points_gained_visiting},{!SPECIAL_CPF__cms_points_gained_rating},{!SPECIAL_CPF__cms_points_gained_voting},{!SPECIAL_CPF__cms_points_gained_wiki}}}
+								{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
 
-									<td>
-										<span>
-											{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
-												{+START,IF_PASSED,EDITABILITY}
-													{$SET,edit_type,{EDIT_TYPE}}
-													{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
+									<tr id="cpf_{NAME|*}" class="cpf_{FIELD_ID|*}">
+										<th class="de_th">
+											{NAME*}:
+										</th>
+
+										<td>
+											<span>
+												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF_PASSED,EDITABILITY}
+														{$SET,edit_type,{EDIT_TYPE}}
+														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+													{+END}
+													{+START,IF_NON_PASSED,EDITABILITY}
+														{VALUE}
+													{+END}
 												{+END}
-												{+START,IF_NON_PASSED,EDITABILITY}
-													{VALUE}
+												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
 												{+END}
-											{+END}
-											{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-												{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
-												{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
-											{+END}
-											<!-- {$,Break out of non-terminated comments in CPF} -->
-										</span>
-									</td>
-								</tr>
+												<!-- {$,Break out of non-terminated comments in CPF} -->
+											</span>
+										</td>
+									</tr>
+								{+END}
 							{+END}
 						{+END}
-					{+END}
 
-					{+START,IF_NON_EMPTY,{$TRIM,{SIGNATURE}}}
-						<tr>
-							<th class="de_th">
-								{!SIGNATURE}:
-							</th>
+						{+START,IF,{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}
+							<tr>
+								<th class="de_th">
+									{!SIGNATURE}:
+								</th>
 
-							<td>
-								{SIGNATURE}
-							</td>
-						</tr>
-					{+END}
-				</tbody>
-			</table>
-		</div>
+								<td>
+									{SIGNATURE}
+								</td>
+							</tr>
+						{+END}
+					</tbody>
+				</table>
+			</div>
+		{+END}
 
 		{+START,IF,{VIEW_PROFILES}}
 			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}

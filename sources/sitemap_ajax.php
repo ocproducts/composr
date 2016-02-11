@@ -190,14 +190,16 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
             $overridable_privileges = _get_overridable_privileges_for_privilege_page($node['privilege_page']);
             if ($type != 'page') {
                 $_overridable_privileges = array();
-                foreach ($overridable_privileges as $override => $cat_support) {
-                    if (is_array($cat_support)) {
-                        $cat_support = $cat_support[0];
+                foreach ($overridable_privileges as $override => $_cat_support) {
+                    if (is_array($_cat_support)) {
+                        $cat_support = $_cat_support[0];
+                    } else {
+                        $cat_support = $_cat_support;
                     }
                     if ($cat_support == 0) {
                         continue;
                     }
-                    $_overridable_privileges[$override] = $cat_support;
+                    $_overridable_privileges[$override] = $_cat_support;
                 }
                 $overridable_privileges = $_overridable_privileges;
             }
@@ -301,8 +303,8 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
             break;
 
         default:
-            if (isset($node['permissions'][1]['page_name'])) {
-                $access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $node['permissions'][1]['page_name'], 'category_name' => $id));
+            if (isset($node['permissions'][2]['permission_module'])) {
+                $access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $node['permissions'][2]['permission_module'], 'category_name' => $id));
                 $access = array_flip(collapse_1d_complexity('group_id', $access));
             }
             break;

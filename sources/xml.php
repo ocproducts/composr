@@ -70,12 +70,18 @@ function get_xml_entities()
  * XML escape the input string.
  *
  * @param  string $string Input string
- * @param  integer $quote_style Quote style
+ * @param  ?string $charset Charset (null: current)
  * @return string Escaped version of input string
  */
-function xmlentities($string, $quote_style = ENT_COMPAT)
+function xmlentities($string, $charset = null)
 {
-    $ret = str_replace('>', '&gt;', str_replace('<', '&lt;', str_replace('"', '&quot;', str_replace('&', '&amp;', $string))));
+    if (is_null($charset)) {
+        $charset = get_charset();
+    }
+    if (ENT_SUBSTITUTE == 0 && strtolower($charset) == 'utf-8') {
+        $string = fix_bad_unicode($string);
+    }
+    $ret = htmlspecialchars($string, ENT_COMPAT | ENT_SUBSTITUTE, $charset); // htmlspecialchars is appropriate, htmlentities uses entities XML does not have
     if (function_exists('ocp_mark_as_escaped')) {
         ocp_mark_as_escaped($ret);
     }

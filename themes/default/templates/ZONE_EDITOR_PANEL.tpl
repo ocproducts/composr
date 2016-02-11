@@ -34,6 +34,8 @@
 {+START,IF_PASSED,COMCODE}
 	<div id="edit_{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit_tab_{ID*}" role="tabpanel">
 		<form title="{ID*}: {!COMCODE}" action="index.php" method="post">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<p>
 				<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 				{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
@@ -90,6 +92,8 @@
 	{+START,IF_PASSED,ZONES}
 		{+START,IF,{$ADDON_INSTALLED,redirects_editor}}
 			<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post">
+				{$INSERT_SPAMMER_BLACKHOLE}
+
 				<p class="lonely_label">
 					<label for="redirect_{ID*}" class="field_name">{!DRAWS_FROM}:</label>
 				</p>
@@ -110,6 +114,8 @@
 {+START,IF_PASSED,SETTINGS}
 	<div id="settings_{ID*}" style="display: none" aria-labeledby="settings_tab_{ID*}" role="tabpanel">
 		<form title="{ID*}: {!SETTINGS}" id="middle_fields" action="index.php">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<colgroup>

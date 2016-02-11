@@ -283,8 +283,10 @@ function try_su_login($member)
                 critical_error('YOU_ARE_BANNED');
             }
         }
-        $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-        $GLOBALS['IS_ACTUALLY'] = $member;
+        if (get_param_integer('keep_su_strict', 0) == 0) {
+            $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
+            $GLOBALS['IS_ACTUALLY'] = $member;
+        }
 
         if ((get_forum_type() == 'cns') && (get_param_integer('keep_su_online', 0) == 1)) {
             require_code('crypt');

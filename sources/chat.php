@@ -388,7 +388,7 @@ function chat_room_prune($room_id)
  */
 function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = null, $event_id = null, $events_output = '')
 {
-    if ($event_id == -1) {
+    if ($event_id == -1 && $room_id > -1/*if we're not checking IMs we don't need historic events*/) {
         $event_id = null;
     }
 

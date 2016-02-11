@@ -376,7 +376,6 @@ class Module_admin_setupwizard
             'errorlog',
             'help_page',
             'import',
-            'jwplayer',
             'language_block',
             'commandr',
             'cns_cpfs',
@@ -404,7 +403,6 @@ class Module_admin_setupwizard
             'users_online_block',
             'news_shared',
             'filedump',
-            'plupload', // this will be downloaded as it is not bundled, for licencing reasons
             'getid3', // this will be downloaded as it is not bundled, for licencing reasons
         ));
         // ... unless the install profile really is shunning them
@@ -449,7 +447,7 @@ class Module_admin_setupwizard
                     $id = $remote_addons[$_mentioned_addon];
                     require_code('uploads');
                     $_POST['url'] = 'http://compo.sr/site/dload.php?id=' . strval($id);
-                    get_url('url', 'file', 'imports/addons', 0, ADDON_NOT_TAR, false, '', '', true); // Download it
+                    get_url('url', 'file', 'imports/addons', 0, CMS_UPLOAD_ANYTHING, false, '', '', true); // Download it
                 }
             }
         }

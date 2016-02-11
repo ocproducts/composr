@@ -192,7 +192,11 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
             }
         }
         if (!$got_title) {
-            $page_contents = file_get_contents(get_file_base() . '/' . $path);
+            $full_path = get_custom_file_base() . '/' . $path;
+            if (!is_file($full_path)) {
+                $full_path = get_file_base() . '/' . $path;
+            }
+            $page_contents = file_get_contents($full_path);
             $matches = array();
             if (preg_match('#\[title[^\]]*\]#', $page_contents, $matches) != 0) {
                 $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);

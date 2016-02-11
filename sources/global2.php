@@ -454,7 +454,7 @@ function init__global2()
         register_shutdown_function('memory_tracking');
     }
 
-    if (count($_POST) != 0) {
+    if (count(array_diff(array_keys($_POST), array('x', 'y'))) != 0) {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
             $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');
