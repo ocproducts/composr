@@ -258,9 +258,10 @@ function find_installed_addons($just_non_bundled = false)
 {
     $addons_installed = array();
 
+    $hooks = find_all_hooks('systems', 'addon_registry');
+
     if (!$just_non_bundled) {
         // Find installed addons- file system method (for coded addons). Coded addons don't need to be in the DB, although they will be if they are (re)installed after the original Composr installation finished.
-        $hooks = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($hooks) as $addon) {
             if (substr($addon, 0, 4) != 'core') {
                 $addons_installed[$addon] = read_addon_info($addon);
@@ -272,6 +273,10 @@ function find_installed_addons($just_non_bundled = false)
     $_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'));
     foreach ($_rows as $row) {
         $addon = $row['addon_name'];
+
+        if (($just_non_bundled) && (isset($hooks[$addon])) && ($hooks[$addon] == 'sources')) {
+            continue;
+        }
 
         if (!isset($addons_installed[$addon])) {
             $addons_installed[$addon] = read_addon_info($addon);

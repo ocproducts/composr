@@ -87,7 +87,7 @@ class Hook_rss_cns_private_topics
             $view_url .= '#' . strval($row['p_id']);
 
             if ($prefix == 'RSS_') {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '448f736ecf0154960177c131dde76125', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_id'])));
+                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '448f736ecf0154960177c131dde76125', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_id'])), null, false, null, '.xml', 'xml');
             } else {
                 $if_comments = new Tempcode();
             }

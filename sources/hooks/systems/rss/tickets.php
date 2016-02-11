@@ -98,7 +98,7 @@ class Hook_rss_tickets
             $view_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), get_module_zone('tickets'), null, false, false, true);
 
             if (($prefix == 'RSS_') && (get_option('is_on_comments') == '1')) {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '32c536b95de70994d0a13cfed18aa6ec', 'COMMENT_URL' => $view_url, 'ID' => strval($ticket_id)));
+                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '32c536b95de70994d0a13cfed18aa6ec', 'COMMENT_URL' => $view_url, 'ID' => strval($ticket_id)), null, false, null, '.xml', 'xml');
             } else {
                 $if_comments = new Tempcode();
             }
