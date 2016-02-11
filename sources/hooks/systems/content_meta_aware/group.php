@@ -31,7 +31,7 @@ class Hook_content_meta_aware_group
      */
     public function info($zone = null)
     {
-        if (get_forum_type() != 'cns') {
+        if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }
 
