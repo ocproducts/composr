@@ -2360,33 +2360,43 @@ div.wysiwyg_toolbar_color_finder {
 	text-align: center;
 }
 
-.RATING_INLINE_DYNAMIC, .RATING_INLINE_STATIC, .RATING_INLINE_DYNAMIC div, .RATING_INLINE_STATIC div, .RATING_INLINE_DYNAMIC form, .RATING_INLINE_STATIC form {
+.RATING_INLINE, .RATING_INLINE div, .RATING_INLINE form {
 	display: inline;
 }
-.RATING_INLINE_DYNAMIC .rating_outer, .RATING_INLINE_STATIC .rating_outer {
+.RATING_INLINE .rating_outer {
 	padding-left: 2em;
 }
-.RATING_INLINE_DYNAMIC .rating_outer:first-child, .RATING_INLINE_STATIC .rating_outer:first-child {
+.RATING_INLINE .rating_outer:first-child {
 	padding-left: 0;
 }
 
-.post_action_link .RATING_INLINE_DYNAMIC {
-	padding-left: 20px;
+.RATING_INLINE .ajax_loading {
+	padding: 0;
 }
 
-.rating_inner img {
-	cursor: pointer;
+.post_action_link .RATING_INLINE_DYNAMIC {
+	padding-left: 2em;
 }
 
 .rating_error {
 	text-align: center;
 }
 
+.rating_stars {
+	min-width: 55px;
+	display: inline-block;
+}
+
 .rating_star {
 	{$BETA_CSS_PROPERTY,opacity: 0.2;} display: inline-block;/*Needed for IE8*/
+	padding-right: 3px;
 }
 .rating_star_highlight {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+}
+
+.rating_likers a+a {
+	padding-left: 2px;
 }
 
 .trackbacks {

@@ -1,7 +1,7 @@
 {+START,IF_NON_EMPTY,{RATINGS}}
 	{+START,LOOP,RATINGS}
 		<div class="vertical_alignment">
-			<span class="vertical_alignment" style="min-width: 55px; display: inline-block">
+			<span class="vertical_alignment rating_stars">
 				{$,Visually show}
 				{$SET,rating_loop,0}
 				{+START,SET,rating_stars}{$ROUND,{$DIV_FLOAT,{RATING},2}}{+END}
