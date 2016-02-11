@@ -16,7 +16,7 @@
 			{+END}
 
 			<div class="downloads-block-txt">
-				<div>
+				<div class="p_like">
 					{$PARAGRAPH,{$TRUNCATE_LEFT,{DESCRIPTION},400,0,1}}
 				</div>
 
