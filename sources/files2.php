@@ -291,13 +291,13 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
                 if (!$just_files) {
                     $test = @rmdir($dir . '/' . $entryname);
                     if (($test === false) && (!$just_files/*tolerate weird locked dirs if we only need to delete files anyways*/)) {
-                        warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)));
+                        attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                     }
                 }
             } elseif (($entryname != '.') && ($entryname != '..')) {
                 $test = @unlink($dir . '/' . $entryname);
                 if ($test === false) {
-                    intelligent_write_error($dir . '/' . $entryname);
+                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                 }
             }
             sync_file($dir . '/' . $entryname);
