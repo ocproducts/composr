@@ -67,8 +67,10 @@ class Module_galleries
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'galleries'));
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/galleries', true, true);
-        deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/galleries', true, true);
+            deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true);
+        }
     }
 
     /**

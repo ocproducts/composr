@@ -69,8 +69,10 @@ class Module_admin_addons
         $GLOBALS['SITE_DB']->drop_table_if_exists('addons_files');
         $GLOBALS['SITE_DB']->drop_table_if_exists('addons_dependencies');
 
-        require_code('files');
-        deldir_contents(get_custom_file_base() . '/exports/addons', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            require_code('files');
+            deldir_contents(get_custom_file_base() . '/exports/addons', true);
+        }
     }
 
     /**

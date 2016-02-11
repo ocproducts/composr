@@ -53,7 +53,9 @@ class Module_buildr
         $GLOBALS['SITE_DB']->drop_table_if_exists('w_travelhistory');
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/buildr_addon', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/buildr_addon', true);
+        }
 
         require_code('buildr');
 

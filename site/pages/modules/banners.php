@@ -60,7 +60,9 @@ class Module_banners
         delete_privilege('use_php_banner');
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/banners', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/banners', true);
+        }
     }
 
     /**

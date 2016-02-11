@@ -68,7 +68,9 @@ class Module_downloads
         delete_value('num_downloads_downloaded');
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/downloads', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/downloads', true);
+        }
     }
 
     /**

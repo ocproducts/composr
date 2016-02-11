@@ -106,12 +106,14 @@ function uninstall_cns()
     delete_value('cns_post_count');
 
     require_code('files');
-    deldir_contents(get_custom_file_base() . '/uploads/cns_avatars', true);
-    deldir_contents(get_custom_file_base() . '/uploads/cns_photos', true);
-    deldir_contents(get_custom_file_base() . '/uploads/cns_photos_thumbs', true);
-    deldir_contents(get_custom_file_base() . '/uploads/avatars', true);
-    deldir_contents(get_custom_file_base() . '/uploads/photos', true);
-    deldir_contents(get_custom_file_base() . '/uploads/photos_thumbs', true);
+    if (!$GLOBALS['DEV_MODE']) {
+        deldir_contents(get_custom_file_base() . '/uploads/cns_avatars', true);
+        deldir_contents(get_custom_file_base() . '/uploads/cns_photos', true);
+        deldir_contents(get_custom_file_base() . '/uploads/cns_photos_thumbs', true);
+        deldir_contents(get_custom_file_base() . '/uploads/avatars', true);
+        deldir_contents(get_custom_file_base() . '/uploads/photos', true);
+        deldir_contents(get_custom_file_base() . '/uploads/photos_thumbs', true);
+    }
 
     delete_attachments('cns_post');
     delete_attachments('cns_signature');

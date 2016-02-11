@@ -66,7 +66,9 @@ class Module_catalogues
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'catalogues'));
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/catalogues', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/catalogues', true);
+        }
 
         delete_privilege('high_catalogue_entry_timeout');
 
