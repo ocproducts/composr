@@ -126,7 +126,7 @@
 			{
 				{$,Dynamically load a specific members details only when their marker is clicked.}
 				do_ajax_request('{$BASE_URL;/}/data_custom/get_member_tooltip.php?member='+arg_member+keep_stub(),function(reply) {
-					var content=reply.responseXML.documentElement.getElementsByTagName('result')[0].firstChild.nodeValue;
+					var content=reply.getElementsByTagName('result')[0].firstChild.nodeValue;
 					if (content!='')
 					{
 						info_window.setContent('<div class="global_middle_faux float_surrounder">'+content+'<\/div>');

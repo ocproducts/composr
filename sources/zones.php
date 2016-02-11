@@ -196,10 +196,12 @@ function _solemnly_leave(&$out = null)
 
     if ((!has_solemnly_declared(I_UNDERSTAND_XSS)) && ($out !== null)) {
         foreach (array_merge(array_values($_POST), array_values($_GET)) as $before) {
-            $after = $before;
-            kid_gloves_html_escaping_singular($after);
-            if ($after !== $before) {
-                $out = str_replace($before, $after, $out);
+            if (is_string($before)) {
+                $after = $before;
+                kid_gloves_html_escaping_singular($after);
+                if ($after !== $before) {
+                    $out = str_replace($before, $after, $out);
+                }
             }
         }
     }

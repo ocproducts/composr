@@ -392,7 +392,7 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
         generate_resource_fs_moniker('chat', strval($id));
     }
 
-    require_code('xml_sitemap');
+    require_code('sitemap_xml');
     notify_sitemap_node_edit('SEARCH:chat:room:' . strval($id), ($allow2 == '') && ($allow2_groups == ''));
 }
 
@@ -429,7 +429,7 @@ function delete_chatroom($id)
         expunge_resource_fs_moniker('chat', strval($id));
     }
 
-    require_code('xml_sitemap');
+    require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:chat:room:' . strval($id));
 }
 

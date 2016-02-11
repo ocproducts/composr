@@ -311,12 +311,13 @@ function chat_check(backlog,message_id,event_id)
 		{
 			window.message_checking=the_date.getTime();
 			var url;
+			var _room_id = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
 			if (backlog)
 			{
-				url='{$FIND_SCRIPT;,messages}?action=all&room_id='+window.encodeURIComponent(window.load_from_room_id);
+				url='{$FIND_SCRIPT;,messages}?action=all&room_id='+window.encodeURIComponent(_room_id);
 			} else
 			{
-				url='{$FIND_SCRIPT;,messages}?action=new&room_id='+window.encodeURIComponent(window.load_from_room_id)+'&message_id='+window.encodeURIComponent(message_id?message_id:-1)+'&event_id='+window.encodeURIComponent(event_id);
+				url='{$FIND_SCRIPT;,messages}?action=new&room_id='+window.encodeURIComponent(_room_id)+'&message_id='+window.encodeURIComponent(message_id?message_id:-1)+'&event_id='+window.encodeURIComponent(event_id);
 			}
 			if (window.location.href.indexOf('no_reenter_message=1')!=-1) url=url+'&no_reenter_message=1';
 			do_ajax_request(maintain_theme_in_link(url+keep_stub(false)),function(ajax_result_frame,ajax_result) { chat_check_response(ajax_result_frame,ajax_result,backlog/*backlog = skip_incoming_sound*/); });
@@ -892,7 +893,7 @@ function _start_im(people,may_recycle)
 	div.className='loading_overlay';
 	set_inner_html(div,'{!LOADING;^}');
 	document.body.appendChild(div);
-	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false),function(result) {
+	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
 		var responses=result.getElementsByTagName('result');
 		if (responses[0])
 		{
@@ -901,7 +902,7 @@ function _start_im(people,may_recycle)
 			window.instant_go=false;
 		}
 		document.body.removeChild(div);
-	},'people='+people));
+	},'people='+people);
 }
 
 function invite_im(people)
@@ -1048,6 +1049,8 @@ function deinvolve_im(room_id,logs,is_popup) // is_popup means that we show a pr
 
 function detected_conversation(room_id,room_name,participants) // Assumes conversation is new: something must check that before calling here
 {
+	window.top_window.last_event_id=-1; // So that invite events re-run
+
 	var areas=document.getElementById('chat_lobby_convos_areas');
 	var tabs=document.getElementById('chat_lobby_convos_tabs');
 	var lobby;
@@ -1095,7 +1098,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 		chat_select_tab(new_div);
 
 		// Tell server we've joined
-		do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },function() {},post);
+		do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },post);
 	} else
 	{
 		// Open popup
@@ -1141,7 +1144,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 					catch (e) {}
 
 					// Tell server we have joined
-					do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },function() {},post);
+					do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },post);
 
 					// Set title
 					var dom_title=new_window.document.getElementsByTagName('title')[0];
