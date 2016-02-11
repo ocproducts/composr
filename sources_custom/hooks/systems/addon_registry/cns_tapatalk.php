@@ -323,7 +323,6 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
             'mobiquo/include/permission_functions.php',
             'mobiquo/include/pm_functions.php',
             'mobiquo/include/mobiquo_functions.php',
-            'mobiquo/include/request_helper.dat',
             'mobiquo/include/server_define.php',
             'mobiquo/include/test_functions.php',
             'mobiquo/mbqClass/acl/member_acl.php',
