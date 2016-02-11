@@ -1680,7 +1680,7 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
 
     if (!$no_link_for_me_sir) {
         $title = get_translated_text($PT_PAIR_CACHE[$category_id]['cc_title']);
-        $segments[] = array($page_link, $title);
+        $segments[] = array($page_link, escape_html($title));
     }
 
     return array_merge($below, $segments);

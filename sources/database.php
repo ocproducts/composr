@@ -473,7 +473,9 @@ function get_db_forums_password()
 function is_on_multi_site_network($db = null)
 {
     static $cache = null;
-    if (isset($cache)) return $cache;
+    if (isset($cache)) {
+        return $cache;
+    }
 
     if (get_forum_type() == 'none') {
         $cache = false;

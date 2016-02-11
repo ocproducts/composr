@@ -40,7 +40,10 @@ function init__failure()
      * @global boolean $WANT_TEXT_ERRORS
      */
     global $WANT_TEXT_ERRORS;
-    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    $cli = false;
+    if (function_exists('php_sapi_name')) {
+        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    }
     $WANT_TEXT_ERRORS = $cli;
 
     global $RUNNING_TASK;

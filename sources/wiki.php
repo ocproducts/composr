@@ -676,9 +676,9 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
                 $current_title = is_null($_current_title) ? do_lang('MISSING_RESOURCE', 'wiki_page') : get_translated_text($_current_title);
             }
             if ($final_link) {
-                $segments[] = array($page_link, $current_title);
+                $segments[] = array($page_link, escape_html($current_title));
             } else {
-                $segments [] = array('', $current_title);
+                $segments[] = array('', escape_html($current_title));
             }
         }
 

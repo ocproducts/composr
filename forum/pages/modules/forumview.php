@@ -139,15 +139,15 @@ class Module_forumview
 
             set_short_title($forum_name);
 
+            $this->id = $id;
+            $this->forum_info = $forum_info;
+
             set_feed_url('?mode=cns_forumview&select=' . strval($id));
 
             require_code('cns_forums');
             $breadcrumbs = cns_forum_breadcrumbs($id, $forum_name, $forum_info['f_parent_forum']);
             breadcrumb_set_parents($breadcrumbs);
             $this->breadcrumbs = breadcrumb_segments_to_tempcode($breadcrumbs);
-
-            $this->id = $id;
-            $this->forum_info = $forum_info;
         }
 
         if ($type == 'pt') {

@@ -1366,15 +1366,21 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
     $is_html = ((isset($param[3])) && ($param[3] == '1'));
 
     if (strlen($param[0]) < $amount) {
-        return $is_html ? $param[0] : escape_html($param[0]);
+        if ($is_html) {
+            if ($GLOBALS['XSS_DETECT']) {
+                if ($is_escaped) {
+                    ocp_mark_as_escaped($param[0]);
+                }
+            }
+            return $param[0];
+        } else {
+            return escape_html($param[0]);
+        }
     }
 
     if ($is_html) {
         $not_html = strip_html($param[0]); // In case it contains HTML. This is imperfect, but having to cut something up is imperfect from the offset.
         $html = $param[0];
-        if ($GLOBALS['XSS_DETECT']) {
-            ocp_mark_as_escaped($html);
-        }
         if (($html == $not_html) && (strpos($html, '&') === false) && (strpos($html, '<') === false)) {
             $is_html = false; // Conserve memory
         }

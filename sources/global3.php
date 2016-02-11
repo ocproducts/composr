@@ -1088,7 +1088,7 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
     if ($preserve_order_if_possible) {
         merge_sort($rows, '_multi_sort');
     } else {
-        usort($rows, '_multi_sort');
+        uasort($rows, '_multi_sort');
     }
 }
 

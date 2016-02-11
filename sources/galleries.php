@@ -878,7 +878,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
 
     $title = get_translated_text($PT_PAIR_CACHE_G[$gallery]['fullname']);
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, $title);
+        $segments[] = array($page_link, escape_html($title));
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
