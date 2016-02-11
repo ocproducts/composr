@@ -205,7 +205,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($codename);
     if (file_exists($path)) {
         require_code('files');
-        deldir_contents($path);
+        @deldir_contents($path);
     } else {
         @mkdir(dirname($path), 0777);
         mkdir($path, 0777);
