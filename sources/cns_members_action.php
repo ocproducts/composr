@@ -323,22 +323,17 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
         $row['field_' . strval($field_num)] = $value;
     }
-    require_code('locations_cpfs');
-    autofill_geo_cpfs();
 
     // Set custom field row
-    $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default'));
+    $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default', 'cf_required'));
     foreach ($all_fields_regardless as $field) {
         $ob = get_fields_hook($field['cf_type']);
-        list(, , $storage_type) = $ob->get_field_value_row_bits($field);
+        list(, $default, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, $field['cf_default'], $GLOBALS['FORUM_DB']);
 
         if (array_key_exists('field_' . strval($field['id']), $row)) {
             $value = $row['field_' . strval($field['id'])];
         } else {
-            $value = $field['cf_default'];
-            if (strpos($value, '|') !== false) {
-                $value = preg_replace('#\|.*$#', '', $value);
-            }
+            $value = $default;
         }
 
         $row['field_' . strval($field['id'])] = $value;
@@ -358,6 +353,9 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         }
     }
     $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
+
+    require_code('locations_cpfs');
+    autofill_geo_cpfs($member_id);
 
     // Any secondary work...
 

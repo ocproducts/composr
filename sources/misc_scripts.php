@@ -519,9 +519,6 @@ function thumb_script()
     if (!is_saveable_image($new_name)) {
         $new_name .= '.png';
     }
-    if (is_null($new_name)) {
-        warn_exit(do_lang_tempcode('URL_THUMB_TOO_LONG'));
-    }
     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
     if (!file_exists($file_thumb)) {
         convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);

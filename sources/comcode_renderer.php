@@ -1773,10 +1773,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (!is_saveable_image($new_name)) {
                         $new_name .= '.png';
                     }
-                    if (is_null($new_name)) {
-                        $temp_tpl = do_template('WARNING_BOX', array('_GUID' => 'cd326d51c536bd0ae235eb002afab192', 'WARNING' => do_lang_tempcode('URL_THUMB_TOO_LONG')));
-                        break;
-                    }
                     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
                     if ((!file_exists($file_thumb)) && (strpos($file_thumb, '{$') === false)) {
                         convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);

@@ -134,6 +134,8 @@ function _symbol_thumbnail($param)
             $algorithm = trim($param[5]);
         }
 
+        $fallback = (trim(isset($param[4]) ? $param[4] : '') == '') ? $orig_url : $param[4];
+
         if (isset($param[2]) && $param[2] != '') { // Where we are saving to
             $thumb_save_dir = $param[2];
             if (strpos($thumb_save_dir, '/') === false) {
@@ -175,7 +177,7 @@ function _symbol_thumbnail($param)
         // made one with these options
         if ((!is_file($save_path)) && (!is_file($save_path . '.png'))) {
             if (!function_exists('imagepng')) {
-                return $param[0];
+                return $fallback;
             }
 
             // Branch based on the type of thumbnail we're making
@@ -194,13 +196,13 @@ function _symbol_thumbnail($param)
                 if (!is_null($converted_to_path)) {
                     $sizes = @getimagesize($converted_to_path);
                     if ($sizes === false) {
-                        return '';
+                        return $fallback;
                     }
                     list($source_x, $source_y) = $sizes;
                 } else {
                     $source = @imagecreatefromstring(http_download_file($orig_url, null, false));
                     if ($source === false) {
-                        return '';
+                        return $fallback;
                     }
                     $source_x = imagesx($source);
                     $source_y = imagesy($source);
@@ -256,17 +258,17 @@ function _symbol_thumbnail($param)
 
                 // Now do the cropping, padding and scaling
                 if ($modify_image) {
-                    $result = convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => (isset($param[7]) ? trim($param[7]) : null), 'where' => (isset($param[6]) ? trim($param[6]) : 'both'), 'scale' => $scale));
+                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => (isset($param[7]) ? trim($param[7]) : null), 'where' => (isset($param[6]) ? trim($param[6]) : 'both'), 'scale' => $scale));
                 } else {
                     // Just resize
-                    $result = convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
+                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
                 }
             }
 
             // If the conversion failed then give back the fallback,
             // or if it's empty then give back the original image
             if (!$result) {
-                $value = (trim(isset($param[4]) ? $param[4] : '') == '') ? $orig_url : $param[4];
+                $value = $fallback;
             }
         }
 
@@ -655,11 +657,11 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
     if ($from_file === false) {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('UPLOAD_PERMISSION_ERROR', escape_html($from)));
+            warn_exit(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)));
         }
         require_code('site');
-        if (!file_exists(get_custom_file_base() . '/uploads/missing_ok')) {
-            attach_message(do_lang_tempcode('UPLOAD_PERMISSION_ERROR', escape_html($from)), 'warn');
+        if (get_value('no_cannot_access_url_messages') !== '1') {
+            attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn');
         }
         return false;
     }

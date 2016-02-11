@@ -314,9 +314,9 @@ class Hook_task_import_member_csv
             $custom_fields = array();
             foreach ($all_cpfs as $cpf) {
                 $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['cf_default'];
-                if ((!array_key_exists($cpf['_cf_name'], $line)) && ($cpf['cf_type'] == 'list')) {
-                    $parts = explode($custom_fields[$cpf['id']], '|');
-                    $custom_fields[$cpf['id']] = $parts[0];
+                if ((!array_key_exists($cpf['_cf_name'], $line)) && ($cpf['cf_type'] == 'list' || $cpf['cf_type'] == 'list_multi')) {
+                    $custom_fields[$cpf['id']] = preg_replace('#\|.*$#', '', $custom_fields[$cpf['id']]);
+                    $custom_fields[$cpf['id']] = preg_replace('#=.*$#', '', $custom_fields[$cpf['id']]);
                 }
                 if ($cpf['cf_type'] == 'integer') {
                     $custom_fields[$cpf['id']] = intval($custom_fields[$cpf['id']]);
