@@ -94,7 +94,7 @@ function messages_script()
 
     if ($action == 'all') {
         // Getting all messages (i.e. up to five minutes ago)
-        _chat_messages_script_ajax(either_param_integer('room_id'), true, null, -1);
+        _chat_messages_script_ajax(either_param_integer('room_id'), true);
     } elseif ($action == 'post') {
         // Posting a message
         $message = post_param_string('message');
