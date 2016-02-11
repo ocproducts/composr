@@ -46,7 +46,7 @@ do {
     if (is_null($_id)) {
         $id_float -= 0.1;
     }
-} while ((is_null($_id)) && ($id_float != 0.0));
+} while ((is_null($_id)) && ($id_float >= 0.0));
 
 if (is_null($_id)) {
     header('Content-type: text/plain; charset=' . get_charset());
@@ -57,12 +57,13 @@ require_code('selectcode');
 
 $addon_times = array();
 
+$filter_sql = selectcode_to_sqlfragment(strval($_id) . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
+
 foreach (array_keys($_GET) as $x) {
     if (substr($x, 0, 6) == 'addon_') {
-        $filter_sql = selectcode_to_sqlfragment(strval($_id) . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
-
         $addon_name = get_param_string($x);
-        $result = $GLOBALS['SITE_DB']->query('SELECT d.id,url,name FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . db_string_equal_to($GLOBALS['SITE_DB']->translate_field_ref('name'), $addon_name) . ' AND (' . $filter_sql . ')', null, null, false, true, array('name' => 'SHORT_TRANS'));
+        $query = 'SELECT d.id,url,name FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . db_string_equal_to($GLOBALS['SITE_DB']->translate_field_ref('name'), $addon_name) . ' AND (' . $filter_sql . ')';
+        $result = $GLOBALS['SITE_DB']->query($query, null, null, false, true, array('name' => 'SHORT_TRANS'));
 
         $addon_times[intval(substr($x, 6))] = array(null, null, null, $addon_name);
 

@@ -91,7 +91,7 @@ class Hook_rss_cns_unread_topics
                 $view_url = build_url(array('page' => 'topicview', 'id' => $row['t_id']), get_module_zone('topicview'));
 
                 if ($prefix == 'RSS_') {
-                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => strval($row['t_id'])));
+                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => strval($row['t_id'])), null, false, null, '.xml', 'xml');
                 } else {
                     $if_comments = new Tempcode();
                 }
