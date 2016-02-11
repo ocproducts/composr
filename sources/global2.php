@@ -801,6 +801,7 @@ function is_browser_decaching()
             file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file_orig, LOCK_EX);
             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
         }
+        fix_permissions(get_file_base() . '/_config.php');
         return true;
     }
 

@@ -898,6 +898,7 @@ function do_site()
         if ($out_evaluated !== null) {
             echo $out_evaluated;
         } else {
+            $middle->handle_symbol_preprocessing();
             $GLOBALS['FINISHING_OUTPUT'] = true;
             /*if (get_option('gzip_output')=='1')  Does not work well
                     ob_start('_compress_html_output');*/
