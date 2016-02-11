@@ -77,7 +77,8 @@ class Hook_fields_list_multi
     {
         if ($required !== null) {
             if (($required) && ($default == '')) {
-                $default = preg_replace('#\|.*#', '', $default);
+                $default = preg_replace('#\|.*$#', '', $default);
+                $default = preg_replace('#=.*$#', '', $default);
             }
         }
         return array('long_unescaped', $default, 'long');

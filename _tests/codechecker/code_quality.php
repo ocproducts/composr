@@ -1385,6 +1385,11 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'query_update') && (!array_key_exists(3, $c[2]))) {
         log_warning('Check that non-singular modification is wanted for this query', $c_pos);
     }
+    if (($function == 'implode' || $function == 'explode')) {
+        if ($c[2][0][0] != 'LITERAL' && $c[2][1][0] == 'LITERAL') {
+            log_warning('You have almost certainly got the ' . $function . ' parameters the wrong way around', $c_pos);
+        }
+    }
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'unlink')) {
         log_warning('Be very careful that shared URLs cannot be deleted (check upload dir, and staff access)', $c_pos);
     }
