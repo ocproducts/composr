@@ -7,7 +7,7 @@
 		var participants='';
 
 		add_event_listener_abstract(window,'real_load',function () {
-			if ((typeof window.im_area_template=='undefined') && (!window.load_from_room_id)) // Only if not in chat lobby or chatroom, so as to avoid conflicts
+			if (!window.load_from_room_id) // Only if not in chat lobby or chatroom, so as to avoid conflicts
 			{
 				function begin_im_chatting()
 				{

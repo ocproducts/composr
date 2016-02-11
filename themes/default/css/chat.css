@@ -247,7 +247,7 @@
 .chat_lobby_convos {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		float: {!en_left};
-		width: 24em;
+		width: 27em;
 		margin-{!en_right}: 1em;
 		border-{!en_right}: 1px solid {$GET,pale_border};
 		min-height: 29.5em;

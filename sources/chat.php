@@ -94,7 +94,7 @@ function messages_script()
 
     if ($action == 'all') {
         // Getting all messages (i.e. up to five minutes ago)
-        _chat_messages_script_ajax(either_param_integer('room_id'), true);
+        _chat_messages_script_ajax(either_param_integer('room_id'), true, null, -1);
     } elseif ($action == 'post') {
         // Posting a message
         $message = post_param_string('message');
@@ -388,7 +388,7 @@ function chat_room_prune($room_id)
  */
 function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = null, $event_id = null, $events_output = '')
 {
-    if ($event_id == -1) {
+    if ($event_id == -1 && $room_id > -1/*if we're not checking IMs we don't need historic events*/) {
         $event_id = null;
     }
 
