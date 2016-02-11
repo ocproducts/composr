@@ -3402,6 +3402,9 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__clear {
 	background-image: url('{$IMG,icons/24x24/buttons/clear}') !important;
 }
+.buttons__ignore {
+	background-image: url('{$IMG,icons/24x24/buttons/ignore}') !important;
+}
 .buttons__closed {
 	background-image: url('{$IMG,icons/24x24/buttons/closed}') !important;
 }
@@ -3586,6 +3589,9 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	}
 	.buttons__clear {
 		background-image: url('{$IMG,icons/48x48/buttons/clear}') !important;
+	}
+	.buttons__ignore {
+		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
 	}
 	.buttons__closed {
 		background-image: url('{$IMG,icons/48x48/buttons/closed}') !important;

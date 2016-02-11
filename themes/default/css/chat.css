@@ -475,9 +475,6 @@
 =========================
 */
 
-.buttons__ignore {
-	background-image: url('{$IMG,icons/24x24/buttons/ignore}') !important;
-}
 .menu__social__chat__chat {
 	background-image: url('{$IMG,icons/24x24/menu/social/chat/chat}') !important;
 }
@@ -486,9 +483,6 @@
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-	.buttons__ignore {
-		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
-	}
 	.menu__social__chat__chat {
 		background-image: url('{$IMG,icons/48x48/menu/social/chat/chat}') !important;
 	}

@@ -1144,7 +1144,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 					catch (e) {}
 
 					// Tell server we have joined
-					do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },function() {},post);
+					do_ajax_request(url,function(ajax_result_frame,ajax_result) { process_chat_xml_messages(ajax_result,true); },post);
 
 					// Set title
 					var dom_title=new_window.document.getElementsByTagName('title')[0];
