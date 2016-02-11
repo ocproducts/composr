@@ -1971,7 +1971,12 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 continue;
             }
 
-            $test = @getimagesize($url);
+            $file_path = convert_url_to_path($url);
+            if (!is_null($file_path)) {
+                $test = @getimagesize($file_path);
+            } else {
+                $test = @getimagesize($url);
+            }
             if ($test !== false) {
                 list($width, $height) = $test;
             } else {
