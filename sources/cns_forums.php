@@ -347,9 +347,9 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
             $map['keep_forum_root'] = $end_point_forum;
         }
         $page_link = build_page_link($map, get_module_zone('forumview'));
-        $segments[] = array($page_link, $this_name, $start ? do_lang_tempcode('VIRTUAL_ROOT') : new Tempcode());
+        $segments[] = array($page_link, escape_html($this_name), $start ? do_lang_tempcode('VIRTUAL_ROOT') : new Tempcode());
     } else {
-        $segments[] = array('', $this_name);
+        $segments[] = array('', escape_html($this_name));
     }
 
     if ($end_point_forum !== $root) {

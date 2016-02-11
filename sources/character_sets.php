@@ -143,7 +143,7 @@ function _convert_data_encodings($known_utf8 = false)
         }
 
         $done_something = true;
-    } elseif (($known_utf8) && (strtolower($charset) != 'utf-8') && (strtolower($charset) != 'utf8')) { // This is super-easy, but it's imperfect as it assumes ISO-8859-1 -- hence our worst option
+    } elseif (($known_utf8) && ($charset != 'utf-8')) { // This is super-easy, but it's imperfect as it assumes ISO-8859-1 -- hence our worst option
         do_simple_environment_utf8_conversion();
 
         $done_something = true;

@@ -78,7 +78,7 @@ function xmlentities($string, $charset = null)
     if (is_null($charset)) {
         $charset = get_charset();
     }
-    if (ENT_SUBSTITUTE == 0 && strtolower($charset) == 'utf-8') {
+    if (ENT_SUBSTITUTE == 0 && $charset == 'utf-8') {
         $string = fix_bad_unicode($string);
     }
     $ret = htmlspecialchars($string, ENT_COMPAT | ENT_SUBSTITUTE, $charset); // htmlspecialchars is appropriate, htmlentities uses entities XML does not have

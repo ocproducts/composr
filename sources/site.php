@@ -898,6 +898,7 @@ function do_site()
         if ($out_evaluated !== null) {
             echo $out_evaluated;
         } else {
+            $middle->handle_symbol_preprocessing();
             $GLOBALS['FINISHING_OUTPUT'] = true;
             /*if (get_option('gzip_output')=='1')  Does not work well
                     ob_start('_compress_html_output');*/
@@ -1488,6 +1489,11 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {
+    static $internal_cache = array();
+    if (isset($internal_cache[$codename][$zone][$wildcard_mode])) {
+        return $internal_cache[$codename][$zone][$wildcard_mode];
+    }
+
     global $REDIRECT_CACHE;
     if ($REDIRECT_CACHE === null) {
         load_redirect_cache();
@@ -1509,9 +1515,14 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
         $query .= ' ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this
         $redirect = $GLOBALS['SITE_DB']->query($query, 1, null, false, true);
     }
+
     if (isset($redirect[0])) {
-        return array('REDIRECT', $redirect[0]);
+        $ret = array('REDIRECT', $redirect[0]);
+        $internal_cache[$codename][$zone][$wildcard_mode] = $ret;
+        return $ret;
     }
+
+    $internal_cache[$codename][$zone][$wildcard_mode] = false;
     return false;
 }
 

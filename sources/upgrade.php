@@ -1868,7 +1868,7 @@ function fix_mysql_database_charset()
 {
     global $SITE_INFO;
     if (!array_key_exists('database_charset', $SITE_INFO)) {
-        $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8' : 'latin1';
+        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1';
     }
     change_mysql_database_charset($SITE_INFO['database_charset'], $GLOBALS['SITE_DB']);
 }

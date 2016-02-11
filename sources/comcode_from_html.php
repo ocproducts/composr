@@ -344,7 +344,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     // Our invisible characters isolating the cms Keep markers from style run-off
     $semihtml = str_replace('&#8203;', '', $semihtml);
     $array_html_preg_replace = array();
-    if (strtolower(get_charset()) == 'utf-8') {
+    if (get_charset() == 'utf-8') {
         $semihtml = str_replace(chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('8b')), '', $semihtml);
     }
 

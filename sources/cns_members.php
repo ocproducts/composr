@@ -350,9 +350,9 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
             }
 
             $edit_type = 'line';
-            if (in_array($field_to_show['cf_type'], array('list'))) {
+            if ($field_to_show['cf_type']  == 'list') {
                 $edit_type = $field_to_show['cf_default'];
-            } elseif (in_array($field_to_show['cf_type'], array('long_text', 'long_trans'))) {
+            } elseif (($field_to_show['cf_type'] == 'long_text') || ($field_to_show['cf_type'] == 'long_trans')) {
                 $edit_type = 'textarea';
             }
 

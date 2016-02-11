@@ -360,12 +360,19 @@ function object_factory($class, $failure_ok = false)
  */
 function php_function_allowed($function)
 {
+    static $cache = array();
+    if (isset($cache[$function])) {
+        return $cache[$function];
+    }
+
     if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
         if (!function_exists($function)) {
+            $cache[$function] = false;
             return false;
         }
     }
-    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    $cache[$function] = (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    return $cache[$function];
 }
 
 /**

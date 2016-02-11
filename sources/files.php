@@ -282,6 +282,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'text/if_hosted_service.txt' => '',
                                              'sites' => '',
 
+                                             // Tapatalk
+                                             'request_helper.dat' => 'mobiquo/include',
+
                                              // API docs
                                              'api' => 'docs',
                                              'composr-api-template' => 'docs',
