@@ -1420,7 +1420,7 @@ class Hook_addon_registry_core_rich_media
                 'CONTENT' => lorem_phrase(),
                 'BY' => lorem_phrase(),
                 'CITE' => lorem_word(),
-                'SAIDLESS' => placeholder_id(),
+                'SAIDLESS' => false,
             )), null, '', true)
         );
     }

@@ -4063,7 +4063,7 @@ function ecv_NOT($lang, $escaped, $param)
     $value = '1';
 
     if (isset($param[0])) {
-        $value = ($param[0] == '0' || $param[0] == '') ? '1' : '0';
+        $value = ($param[0] == '1') ? '0' : '1';
     }
 
     if ($GLOBALS['XSS_DETECT']) {

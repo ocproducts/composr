@@ -20,7 +20,7 @@
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
 			<param name="flashvars" value="controls=true&amp;file={URL&*}" />
 
-			<img src="{THUMB_URL*}" width="{WIDTH*}" height="{HEIGHT*}" title="No video playback capabilities" />
+			<img src="{THUMB_URL*}" width="{WIDTH*}" height="{HEIGHT*}" alt="No video playback capabilities" title="No video playback capabilities" />
 		</object>
 	</video>
 
