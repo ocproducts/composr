@@ -838,6 +838,9 @@ function url_is_local($url)
     if (substr($url, 0, 7) == 'themes/' || substr($url, 0, 8) == 'uploads/') {
         return true;
     }
+    if (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://') {
+        return false;
+    }
 
     if ($url == '') {
         return true;
@@ -1220,13 +1223,19 @@ function find_id_moniker($url_parts, $zone)
                 $or_list = '';
                 foreach ($LOADED_MONIKERS_CACHE as $type => $pages) {
                     foreach ($pages as $page => $ids) {
-                        if (!is_string($page)) {
-                            $page = strval($page);
-                        }
+                        $first_it = true;
 
                         foreach ($ids as $id => $status) {
                             if ($status !== true) {
                                 continue;
+                            }
+
+                            if ($first_it) {
+                                if (!is_string($page)) {
+                                    $page = strval($page);
+                                }
+
+                                $first_it = false;
                             }
 
                             if (is_integer($id)) {

@@ -730,7 +730,7 @@ function init__webstandards2()
         'video.height' => $enforce_length,
         'video.loop' => '(loop)',
         'video.poster' => '.*',
-        'video.preload' => '(preload)',
+        'video.preload' => '(auto|metadata|none)',
         'video.src' => '.*',
         'video.width' => $enforce_length,
         'time.datetime' => '.*',

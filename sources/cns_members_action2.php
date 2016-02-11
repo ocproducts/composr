@@ -1462,7 +1462,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
         if ($encrypted) {
             require_code('encryption');
             $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
-            if ($current == null) {
+            if ($current === null) {
                 return null;
             }
             if ((remove_magic_encryption_marker($value) == remove_magic_encryption_marker($current)) && (is_data_encrypted($current))) {

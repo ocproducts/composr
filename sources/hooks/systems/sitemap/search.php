@@ -197,7 +197,13 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
+        if (is_null($ob)) {
+            return null;
+        }
         $info = $ob->info(false);
+        if (is_null($info)) {
+            return null;
+        }
 
         $struct = array(
             'title' => $info['lang'],

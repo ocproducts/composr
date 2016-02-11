@@ -393,7 +393,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
                 $merge_array = (($merge_current) && (is_array($val)) && (array_key_exists($var, $mergeable_arrays)));
                 $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (array_key_exists($var, $mergeable_tempcode)));
                 $mergeable = $merge_array || $merge_tempcode;
-                if ((!in_array($var, $keep)) || ($mergeable)) {
+                if (($keep === array()) || (!in_array($var, $keep)) || ($mergeable)) {
                     if ($merge_array) {
                         if ($GLOBALS[$var] === null) {
                             $GLOBALS[$var] = array();
@@ -719,7 +719,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
  */
 function cms_mb_strlen($in, $force = false)
 {
-    if (!$force && strtolower(get_charset()) != 'utf-8') {
+    if (!$force && get_charset() != 'utf-8') {
         return strlen($in);
     }
     if (function_exists('mb_strlen')) {
@@ -746,7 +746,7 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
         $amount = cms_mb_strlen($in, $force) - $from;
     }
 
-    if ((!$force) && (strtolower(get_charset()) != 'utf-8')) {
+    if ((!$force) && (get_charset() != 'utf-8')) {
         return substr($in, $from, $amount);
     }
 
@@ -779,7 +779,7 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function cms_mb_ucwords($in)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return ucwords($in);
     }
 
@@ -798,7 +798,7 @@ function cms_mb_ucwords($in)
  */
 function cms_mb_strtolower($in)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtolower($in);
     }
 
@@ -1079,12 +1079,17 @@ function _strlen_sort($a, $b)
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it).
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
  */
-function sort_maps_by(&$rows, $sort_keys)
+function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
 {
     global $M_SORT_KEY;
     $M_SORT_KEY = $sort_keys;
-    merge_sort($rows, '_multi_sort');
+    if ($preserve_order_if_possible) {
+        merge_sort($rows, '_multi_sort');
+    } else {
+        uasort($rows, '_multi_sort');
+    }
 }
 
 /**
