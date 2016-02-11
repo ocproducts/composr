@@ -751,6 +751,7 @@ class Hook_addon_registry_core
             'sources_custom/hooks/systems/addon_registry/.htaccess',
             'sources/activities.php',
             'sources/crypt.php',
+            'data_custom/sitemaps/index.html',
             'themes/default/templates/JS_BLOCK.tpl',
             'themes/default/javascript/modernizr.js',
             'themes/default/javascript/jquery.js',
