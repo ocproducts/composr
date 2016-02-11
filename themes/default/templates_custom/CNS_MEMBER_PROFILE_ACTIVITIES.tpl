@@ -19,6 +19,8 @@
 	<p>{!CREATE_SYNDICATION_LINK}</p>
 
 	<form action="{$SELF_URL*}#tab__activities" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<p>
 			{+START,LOOP,SYNDICATIONS}
 				{+START,IF,{SYNDICATION_IS_SET}}

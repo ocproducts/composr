@@ -28,6 +28,8 @@
 		</div>
 
 		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<div class="right">
 				<label class="accessibility_hidden" for="recur_interval">{!TASK_LENGTH}</label>
 				<label class="accessibility_hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>

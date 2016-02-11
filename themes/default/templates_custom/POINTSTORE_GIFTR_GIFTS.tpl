@@ -53,6 +53,8 @@
 
 	<div class="float_surrounder">
 		<form style="float: left; margin-top: 3px" title="{!SORT_BY}" action="{$SELF_URL*,,,,category=<null>,start=0}" method="post">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<p>
 				<label for="category">{!CATEGORY}</label>
 				<select id="category" name="category">

@@ -10,6 +10,8 @@
 {+END}
 
 <form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF:uploading=1}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	 <div class="wide_table_wrap"><table class="map_table autosized_table results_table wide_table"><tbody>
 		  <tr>
 				<th>{!NAME}</th>

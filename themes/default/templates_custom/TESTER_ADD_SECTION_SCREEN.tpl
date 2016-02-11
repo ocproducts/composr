@@ -1,6 +1,8 @@
 {TITLE}
 
 <form title="{!PRIMARY_PAGE_FORM}" onkeypress="if (enter_pressed(event)) { add_test(); return false; }" method="post" onsubmit="return check_form(this);" action="{URL*}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div>
 		<h2>{!SETTINGS}</h2>
 

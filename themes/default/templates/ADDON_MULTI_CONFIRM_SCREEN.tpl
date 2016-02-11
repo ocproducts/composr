@@ -21,6 +21,8 @@
 
 <div class="float_surrounder">
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		{HIDDEN}
 
 		<p class="proceed_button">

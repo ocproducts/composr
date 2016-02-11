@@ -5,6 +5,8 @@
 </p>
 
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" id="test_form">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div class="testing_sections">
 		{SECTIONS}
 	</div>

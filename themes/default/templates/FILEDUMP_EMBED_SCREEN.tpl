@@ -13,7 +13,7 @@
 
 		<div class="filedump_generated_comcode">
 			<label for="generated_comcode" class="lonely_label">{!_COMCODE}:</label>
-			<form action="#">
+			<form action="#" method="post">
 				<div>
 					<textarea id="generated_comcode" name="generated_comcode" cols="50" rows="10">{GENERATED*}</textarea>
 				</div>

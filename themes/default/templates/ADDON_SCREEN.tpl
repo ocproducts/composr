@@ -23,6 +23,8 @@
 	{+END}
 
 	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<div class="not_too_tall_addons">
 			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table">
 				<thead>

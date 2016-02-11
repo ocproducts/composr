@@ -19,6 +19,8 @@
 				</ol>
 			{+END}
 			<form id="staff_links_list{$GET,RAND}_form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" {+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END}>
+				{$INSERT_SPAMMER_BLACKHOLE}
+
 				<div class="constrain_field"><label for="staff_links_edit" class="accessibility_hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide_field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
 
 				<div class="buttons_group">

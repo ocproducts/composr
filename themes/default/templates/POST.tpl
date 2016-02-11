@@ -64,6 +64,8 @@
 						{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
 							<div id="cell_mark_{ID*}" class="cns_off post_action_link inline_block">
 								<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+									{$INSERT_SPAMMER_BLACKHOLE}
+
 									<div>
 										{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 										<input{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />

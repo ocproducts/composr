@@ -347,6 +347,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/wiki.php',
             '_tests/tests/unit_tests/cma_hooks.php',
             '_tests/tests/unit_tests/database_integrity.php',
+            '_tests/tests/unit_tests/csrf_tags.php',
             '_tests/tests/unit_tests/chatroom.php',
             '_tests/tests/unit_tests/comcode.php',
             '_tests/tests/unit_tests/comcode_to_text.php',

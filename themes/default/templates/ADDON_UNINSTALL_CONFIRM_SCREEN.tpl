@@ -11,6 +11,8 @@
 
 <div class="right">
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<input type="hidden" name="name" value="{NAME*}" />
 
 		<p>
