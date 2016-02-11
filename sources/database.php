@@ -472,14 +472,20 @@ function get_db_forums_password()
  */
 function is_on_multi_site_network($db = null)
 {
+    static $cache = null;
+    if (isset($cache)) return $cache;
+
     if (get_forum_type() == 'none') {
+        $cache = false;
         return false;
     }
 
     if ($db !== null) {
-        return !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
+        $cache = !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
+        return $cache;
     }
-    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+    $cache = ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+    return $cache;
 }
 
 /**

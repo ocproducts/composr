@@ -1364,6 +1364,11 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
 
     $amount = intval(isset($param[1]) ? $param[1] : '60');
     $is_html = ((isset($param[3])) && ($param[3] == '1'));
+
+    if (strlen($param[0]) < $amount) {
+        return $is_html ? $param[0] : escape_html($param[0]);
+    }
+
     if ($is_html) {
         $not_html = strip_html($param[0]); // In case it contains HTML. This is imperfect, but having to cut something up is imperfect from the offset.
         $html = $param[0];
@@ -2116,7 +2121,7 @@ function ecv_TRIM($lang, $escaped, $param)
  */
 function cms_trim($text, $try_hard = true)
 {
-    if (memory_get_usage() > 1024 * 1024 * 40) {
+    if ((preg_match('#[<&]#', $text) == 0) && (memory_get_usage() > 1024 * 1024 * 40)) {
         return trim($text);
     } // Don't have enough memory
 
@@ -2128,33 +2133,43 @@ function cms_trim($text, $try_hard = true)
 
     do {
         $before = $text;
-        if (strtolower(substr($text, 0, 6)) == '<br />') {
-            $text = substr($text, 6);
+        $c = substr($text, 0, 1);
+        if ($c == '<') {
+            if (strtolower(substr($text, 0, 6)) == '<br />') {
+                $text = substr($text, 6);
+            }
+            if (strtolower(substr($text, 0, 5)) == '<br/>') {
+                $text = substr($text, 5);
+            }
+            if (strtolower(substr($text, 0, 4)) == '<br>') {
+                $text = substr($text, 4);
+            }
         }
-        if (strtolower(substr($text, 0, 5)) == '<br/>') {
-            $text = substr($text, 5);
-        }
-        if (strtolower(substr($text, 0, 4)) == '<br>') {
-            $text = substr($text, 4);
-        }
-        if (strtolower(substr($text, 0, 6)) == '&nbsp;') {
-            $text = substr($text, 6);
+        elseif ($c == '&') {
+            if (strtolower(substr($text, 0, 6)) == '&nbsp;') {
+                $text = substr($text, 6);
+            }
         }
         $text = ltrim($text);
     } while (($try_hard) && ($before != $text));
     do {
         $before = $text;
-        if (strtolower(substr($text, -6)) == '<br />') {
-            $text = substr($text, 0, -6);
+        $c = substr($text, -1, 1);
+        if ($c == '>') {
+            if (strtolower(substr($text, -6)) == '<br />') {
+                $text = substr($text, 0, -6);
+            }
+            if (strtolower(substr($text, -5)) == '<br/>') {
+                $text = substr($text, 0, -5);
+            }
+            if (strtolower(substr($text, -4)) == '<br>') {
+                $text = substr($text, 0, -4);
+            }
         }
-        if (strtolower(substr($text, -5)) == '<br/>') {
-            $text = substr($text, 0, -5);
-        }
-        if (strtolower(substr($text, -4)) == '<br>') {
-            $text = substr($text, 0, -4);
-        }
-        if (strtolower(substr($text, -6)) == '&nbsp;') {
-            $text = substr($text, 0, -6);
+        elseif ($c == ';') {
+            if (strtolower(substr($text, -6)) == '&nbsp;') {
+                $text = substr($text, 0, -6);
+            }
         }
         $text = rtrim($text);
     } while (($try_hard) && ($before != $text));
