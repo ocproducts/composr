@@ -193,11 +193,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
-        if ($locked == 0) {
-            $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_DEFAULT_VALUE_CPF'), 'default', $default, false, null, 10000));
-        } else {
-            $hidden->attach(form_input_hidden('default', $default));
-        }
+        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_DEFAULT_VALUE_CPF'), 'default', $default, false, null, 10000));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_VIEW'), do_lang_tempcode('DESCRIPTION_OWNER_VIEW'), 'owner_view', $owner_view == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_SET'), do_lang_tempcode('DESCRIPTION_OWNER_SET'), 'owner_set', $owner_set == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('PUBLIC_VIEW'), do_lang_tempcode('DESCRIPTION_PUBLIC_VIEW'), 'public_view', $public_view == 1));
@@ -215,7 +211,11 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
+        if ($locked == 0) {
+            $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
+        } else {
+            $hidden->attach(form_input_hidden('required', strval($required)));
+        }
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_ON_JOIN_FORM'), do_lang_tempcode('DESCRIPTION_SHOW_ON_JOIN_FORM'), 'show_on_join_form', $show_on_join_form == 1));
 

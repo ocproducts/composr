@@ -281,7 +281,7 @@ class Module_admin_backup
             $rows = new Tempcode();
             foreach ($entries as $entry) {
                 $delete_url = build_url(array('page' => '_SELF', 'type' => 'confirm_delete', 'file' => $entry['file']), '_SELF');
-                $link = get_custom_base_url() . '/exports/backups/' . $entry['file'];
+                $url = get_custom_base_url() . '/exports/backups/' . $entry['file'];
 
                 $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042', 'NAME' => $entry['file'], 'URL' => $delete_url));
 
@@ -301,7 +301,7 @@ class Module_admin_backup
                         break;
                 }
 
-                $rows->attach(columned_table_row(array(hyperlink($link, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date($entry['mtime'])), $actions), true));
+                $rows->attach(columned_table_row(array(hyperlink($url, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date($entry['mtime'])), $actions), true));
             }
 
             $files = do_template('COLUMNED_TABLE', array('_GUID' => '726070efa71843236e975d87d4a17dae', 'HEADER_ROW' => $header_row, 'ROWS' => $rows));
