@@ -403,7 +403,7 @@ function wysiwyg_editor_init_for(element,id)
 	window.lang_NO_IMAGE_PASTE_SAFARI='{!javascript:NO_IMAGE_PASTE_SAFARI;}';
 
 	// Mainly used by autosaving
-	editor.on('key', function (event) {
+	editor.on('key',function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();

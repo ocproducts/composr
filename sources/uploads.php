@@ -501,6 +501,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     $out[0] = $url[0];
     $out[1] = '';
     $out[2] = $url[1];
+    $out[3] = '';
 
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
