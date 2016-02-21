@@ -1075,7 +1075,7 @@ function _strlen_sort($a, $b)
 }
 
 /**
- * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices.
+ * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices, but does preserve associative key indices.
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it).
@@ -1083,12 +1083,21 @@ function _strlen_sort($a, $b)
  */
 function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
 {
+    if ($rows == array()) {
+        return;
+    }
+
     global $M_SORT_KEY;
     $M_SORT_KEY = $sort_keys;
     if ($preserve_order_if_possible) {
         merge_sort($rows, '_multi_sort');
     } else {
-        usort($rows, '_multi_sort');
+        $first_key = key($rows);
+        if (is_integer($first_key)) {
+            usort($rows, '_multi_sort');
+        } else {
+            uasort($rows, '_multi_sort');
+        }
     }
 }
 
