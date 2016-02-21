@@ -2970,7 +2970,7 @@ function set_inner_html(element,target_html,append,force_dom)
 					} else
 					{
 						var r=document.getElementById(r_id);
-						r.parentNode.removeChild(r);
+						if (r && r.parentNode) r.parentNode.removeChild(r);
 					}
 				}, 0); // Delayed so we know DOM has loaded
 			}
