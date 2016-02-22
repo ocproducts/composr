@@ -684,6 +684,13 @@ class Module_cms_calendar extends Standard_crud_module
         if ((!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($type == db_get_first_id())) {
             access_denied('I_ERROR');
         }
+
+        $title = post_param_string('title');
+
+        $content = post_param_string('post', STRING_MAGIC_NULL);
+
+        $priority = post_param_integer('priority', INTEGER_MAGIC_NULL);
+
         $recurrence = post_param_string('recurrence', STRING_MAGIC_NULL);
         if (($recurrence != 'none') && ($recurrence != STRING_MAGIC_NULL)) {
             $recurrence_pattern = post_param_string('recurrence_pattern', '');
@@ -691,13 +698,11 @@ class Module_cms_calendar extends Standard_crud_module
                 $recurrence .= ' ' . $recurrence_pattern;
             }
         }
-        $title = post_param_string('title');
-        $content = post_param_string('post', STRING_MAGIC_NULL);
-        $priority = post_param_integer('priority', INTEGER_MAGIC_NULL);
         $recurrences = post_param_integer('recurrences', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
         if ($recurrences == -1) {
             $recurrences = null;
         }
+
         $timezone = post_param_string('timezone', STRING_MAGIC_NULL);
         $do_timezone_conv = post_param_integer('do_timezone_conv', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
@@ -1364,7 +1369,19 @@ class Module_cms_calendar_cat extends Standard_crud_module
         require_code('themes2');
         $ids = get_all_image_ids_type('calendar');
 
-        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'calendar', true, $logo));
+        $set_name = 'image';
+        $required = true;
+        $set_title = do_lang_tempcode('IMAGE');
+        $field_set = (count($ids) == 0) ? new Tempcode() : alternate_fields_set__start($set_name);
+
+        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'image', $required, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+
+        $image_chooser_field = form_input_theme_image(do_lang_tempcode('STOCK'), '', 'theme_img_code', $ids, null, $logo, null, false);
+        $field_set->attach($image_chooser_field);
+
+        $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
+
+        handle_max_file_size($hidden, 'image');
 
         if (addon_installed('syndication_blocks')) {
             $fields->attach(form_input_line(do_lang_tempcode('EXTERNAL_FEED'), do_lang_tempcode('DESCRIPTION_EXTERNAL_FEED'), 'external_feed', $external_feed, false));
@@ -1462,7 +1479,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
         $metadata = actual_metadata_get_fields('calendar_type', null);
 
         require_code('themes2');
-        $logo = post_param_image('image', null, 'calendar', false);
+        $logo = post_param_theme_img_code('calendar', false, 'image', 'theme_img_code');
 
         $id = add_event_type(post_param_string('title'), $logo, post_param_string('external_feed'));
 
@@ -1492,7 +1509,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
             $logo = STRING_MAGIC_NULL;
         } else {
             require_code('themes2');
-            $logo = post_param_image('image', null, 'calendar', false, true);
+            $logo = post_param_theme_img_code('calendar', false, 'image', 'theme_img_code');
         }
 
         edit_event_type(intval($id), post_param_string('title'), $logo, post_param_string('external_feed', STRING_MAGIC_NULL));
