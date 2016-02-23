@@ -24,6 +24,7 @@ class posts_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_topics');
         require_code('cns_posts');
         require_code('cns_forums');

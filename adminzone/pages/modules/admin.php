@@ -193,6 +193,7 @@ class Module_admin
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
+            array('lost password', 'forgot password', 'forgotten password', 'reset password'),
             array('pm', 'pt', 'dm', 'private message', 'private topic', 'whisper'),
             array('filedump', 'library', 'file manager', 'asset'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),

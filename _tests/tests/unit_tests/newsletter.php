@@ -23,6 +23,7 @@ class newsletter_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('newsletter');
 
         $this->news_id = add_newsletter('New Offer', 'The new offer of the week.');
@@ -40,6 +41,7 @@ class newsletter_test_set extends cms_test_case
     public function tearDown()
     {
         delete_newsletter($this->news_id);
+
         parent::tearDown();
     }
 }

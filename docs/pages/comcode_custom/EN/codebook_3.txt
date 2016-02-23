@@ -590,7 +590,7 @@ The 'keep' parameters available are:
  - [tt]keep_show_query[/tt] -- set to '1' if you want the SQL query used by a search to be echoed out
  - [tt]keep_just_show_query[/tt] -- set to '1' if you want Composr to echo out the query as above, but then to exit before running it
  - [tt]keep_currency[/tt] -- set to an ISO currency code to tell Composr which currency you use
- - [tt]keep_country[/tt] -- set to an ISO country code to tell Composr which currency you're in
+ - [tt]keep_country[/tt] -- set to an ISO country code to tell Composr which country you're in
  - [tt]keep_region[/tt] -- similar to above, but supports whatever regions are configured on the website
  - [tt]keep_cat_display_type[/tt] -- set to a number representing the catalogue category display-type to try out (0=entry-tables, 1=lists, 2=matrix)
  - [tt]keep_id_order[/tt] -- use this in conjunction with the [tt]admin_cns_groups[/tt] module to force a usergroup reordering based on the named DB field of your choice
@@ -989,7 +989,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | Command-line via Bash
 |-
 | [tt]line_count.sh[/tt]
-| Count the numer of lines of code, exclusing third-party code.
+| Count the number of lines of code, exclusing third-party code.
 | [tt]meta_toolkit[/tt]
 | Command-line via Bash
 |-

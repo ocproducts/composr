@@ -67,33 +67,33 @@
 	</div>
 
 	<div class="cns_topic_post_area cns_post_main_column">
-		{+START,IF_NON_EMPTY,{POST_TITLE}}{+START,IF,{$NEQ,{TOPIC_FIRST_POST_ID},{ID}}}
-			<h3>
-				{POST_TITLE*}
-			</h3>
-		{+END}{+END}
-
-		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			<h3>
-				{DESCRIPTION*}
-			</h3>
-		{+END}{+END}
-
 		<div class="float_surrounder">
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker">
-						<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<div>
-								{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
+								{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!FORUM_POST} {!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
+								<input{+START,IF,{$NOT,{$IS_GUEST}}} title="{!FORUM_POST} {!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
 							</div>
 						</form>
 					</div>
 				{+END}{+END}{+END}
 			{+END}
+
+    		{+START,IF_NON_EMPTY,{POST_TITLE}}{+START,IF,{$NEQ,{TOPIC_FIRST_POST_ID},{ID}}}
+    			<h3>
+    				{POST_TITLE*}
+    			</h3>
+    		{+END}{+END}
+
+    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
+    			<h3>
+    				{DESCRIPTION*}
+    			</h3>
+    		{+END}{+END}
 
 			{POST}
 		</div>

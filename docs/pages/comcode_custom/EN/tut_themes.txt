@@ -48,8 +48,8 @@ When making a new theme, it is wise to put good design tactics to use before beg
  - Maintaining a consistent look across your pages
  - Avoid "busy", cramped looking pages -- allow room for your viewer to 'breath'. Padding is an excellent way to accomplish this
  - Visual flow: make certain your use of headings and other large/small sections are appropriate to help direct the viewer's eye to the most important information
- - Color schemes: Pick a color scheme, and try to stick with it. Don't use different colors for every class in the CSS file -- your colors will only end up conflicting and looking ugly
- - On the other hand, colors that contrast in a good way are encouraged. If you are able to pick multiple colors (usually not more than two) that compliment each other, it is wise to use these. This will allow you to separate important content through use of a color variation
+ - Colour schemes: Pick a colour scheme, and try to stick with it. Don't use different colours for every class in the CSS file -- your colours will only end up conflicting and looking ugly
+ - On the other hand, colours that contrast in a good way are encouraged. If you are able to pick multiple colours (usually not more than two) that compliment each other, it is wise to use these. This will allow you to separate important content through use of a colour variation
 There are more design tips like this in books and across the Internet, if you are further interested.
 
 [title="3"]Technical aspect[/title]
@@ -91,7 +91,7 @@ body {
 [*] click "Edit CSS" to save
 [/list]
 [staff_note]Don't like this option, so don't promote it
-At the bottom, there is also an "Switch to Advanced CSS" link. Clicking this will generate individual color pickers for each different color in your CSS file. Then you can go through and change the colors this way, then click the "Edit CSS" button at the bottom.
+At the bottom, there is also an "Switch to Advanced CSS" link. Clicking this will generate individual colour pickers for each different colour in your CSS file. Then you can go through and change the colours this way, then click the "Edit CSS" button at the bottom.
 [/staff_note]
 You should be able to see your changes right away.
 
@@ -246,7 +246,7 @@ You can delete a theme from the bottom of its edit form.
 [title="2"]Tips[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
-1) Do not use a custom theme on the Admin Zone or CMS zone. It's not necessarily and would make you have to consider all kinds of extra details
+1) Do not use a custom theme on the Admin Zone or CMS zone. It's not necessary and would make you have to consider all kinds of extra details
 2) Uninstall any non-required addons, so you don't have to test your new theme on so many screens. It is a huge decrease in the burden of themeing
 3) The Firefox Firebug addon (or developer tools in Internet Explorer, Microsoft Edge, Safari, Google Chrome, or Opera) is incredibly handy in analysing how the Composr CSS interacts with the HTML. You can use it to run all kinds of tests, and quickly get a handle on how things are built. The Firefox Firediff extension is also great as it helps you keep track of your changes so you can easily put them back into Composr's stored CSS.
 4) Read up on CSS and HTML generally. If you are going beyond simple themeing you'll need to understand the complex aspects of these technologies, and they aren't always simple. Composr is entirely built on web standards, and thus can be reformulated using them. The web standards are supplemented with Tempcode and glued together with the structure Composr provides (see below)

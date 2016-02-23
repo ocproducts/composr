@@ -15,7 +15,7 @@ There are two types of places you might want to use the [tt]if_in_group tag[/tt]
 
 In this example you can see there would be two different messages displayed to 2 different sets of usergroups. You could add as many different as you like. If you only want a message for guests you would just use group 1. If you want to show another message to everyone else, rather than add each number in turn (2,3,4,5,6, ...) you can use [tt]2+[/tt] and this will display to every group numbering 2 and higher.
 
-There are quite a few different syntax you can use to customise which groups will see your messages; there is a [page="_SEARCH:tut_filter"]full list of the syntax here[/page].
+There are quite a few different syntax you can use to customise which groups will see your messages; there is a [page="_SEARCH:tut_selectcode"]full list of the syntax here[/page].
 
 [title="2"]Using an equivalent to [tt]if_in_group[/tt] in templates[/title]
 

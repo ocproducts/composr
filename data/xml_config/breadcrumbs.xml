@@ -10,11 +10,11 @@
 	<substitution match_key=":_WILD_NOT_START">
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="site:_WILD_NOT_START:browse">
+	<substitution match_key="site:_WILD_NOT_START:browse" skip_if_single_public_zone="true">
 		<link label="{!HOME}">:</link>
 		<link label="{!SITE}">site:</link>
 	</substitution>
-	<substitution match_key="site:_WILD_NOT_START">
+	<substitution match_key="site:_WILD_NOT_START" skip_if_single_public_zone="true">
 		<link label="{!HOME}">:</link>
 		<link label="{!SITE}">site:</link>
 	</substitution>

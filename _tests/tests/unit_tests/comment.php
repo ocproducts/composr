@@ -23,11 +23,13 @@ class comment_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('calendar2');
         require_code('feedback');
         require_code('cns_posts_action');
         require_code('cns_forum_driver_helper');
         require_lang('lang');
+
         $this->event_id = add_calendar_event(8, '1', null, 0, 'test_event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
         if ('test_event' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id)))) {
             $map = array(
@@ -66,6 +68,7 @@ class comment_test_set extends cms_test_case
     {
         delete_calendar_event($this->event_id);
         $GLOBALS['FORUM_DB']->query_delete('f_posts', array('id' => $this->post_id));
+
         parent::tearDown();
     }
 }

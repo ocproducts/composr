@@ -23,6 +23,7 @@ class warning_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_moderation');
         require_code('cns_moderation_action');
         require_code('cns_moderation_action2');
@@ -44,6 +45,7 @@ class warning_test_set extends cms_test_case
     public function tearDown()
     {
         cns_delete_warning($this->warn_id);
+
         parent::tearDown();
     }
 }

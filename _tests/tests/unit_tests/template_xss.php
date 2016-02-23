@@ -18,11 +18,6 @@
  */
 class template_xss_test_set extends cms_test_case
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testHTMLCDataBreakout() // See http://css.dzone.com/articles/xss-still-tricky
     {
         $templates = array();

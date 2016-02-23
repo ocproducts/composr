@@ -23,6 +23,7 @@ class ticket_type_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('tickets2');
         $this->ticket_type_id = add_ticket_type('platinum', 0, 0);
         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value('ticket_types', 'ticket_type_name', array('id' => $this->ticket_type_id));
@@ -39,6 +40,7 @@ class ticket_type_test_set extends cms_test_case
     public function tearDown()
     {
         delete_ticket_type($this->ticket_type_id);
+
         parent::tearDown();
     }
 }

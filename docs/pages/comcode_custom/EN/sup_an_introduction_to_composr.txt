@@ -38,7 +38,7 @@ There are lots of bundled features in Composr, and additionally there is another
 
 When you install Composr all of the standard features are available to you. This includes if you install using a system like Softaculous on [url="http://www.arvixe.com/5256-223-3-122.html"]Arvixe hosting[/url]. Of course you may decide that you do not need all of the features for your website and many of the standard features can be removed with just three clicks from the Admin Zone homepage.
 
-In the [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone_part_1"]next tutorial[/page] I will be giving a brief tour of all the Admin Zone sections but here is a quick guide of how to remove an addon.
+In the [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone"]next tutorial[/page] I will be giving a brief tour of all the Admin Zone sections but here is a quick guide of how to remove an addon.
 
 [media width="150" description="Removing addons from Composr" float="right"]data_custom/images/docs/sup_an_introduction_to_composr/049698f7423d7d50c27c0db33631755f.png[/media]
 Go to Admin Zone > Structure > Addons. From there you can remove your chosen addon. This will then take you to a confirmation page. You can also delete several addons at a time through this screen too. Please be careful to only remove addons you are sure are not needed by you or by other installed features.
@@ -60,7 +60,7 @@ It has been said that the feature set for Composr can be a little overwhelming f
 [*] If in doubt, ask for help!
 [/list]
 
-The [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone_part_1"]next tutorial[/page] will be a tour of the Composr Admin Zone in detail to help you to find your way around the key elements when setting up a new website.
+The [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone"]next tutorial[/page] will be a tour of the Composr Admin Zone in detail to help you to find your way around the key elements when setting up a new website.
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
 

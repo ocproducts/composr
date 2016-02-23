@@ -21,6 +21,7 @@ class points_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_once(get_file_base() . "/_tests/simpletest/browser.php");
     }
 

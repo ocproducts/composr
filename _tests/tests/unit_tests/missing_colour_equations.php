@@ -18,11 +18,6 @@
  */
 class missing_colour_equations_test_set extends cms_test_case
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testMissingColourEquations()
     {
         $dont_check = array(

@@ -42,7 +42,7 @@ On the Admin Zone front page is a checklist of tasks to be performed. This combi
 
 You can also share links and notes on the Admin Zone front page.
 
-More can be read on the Admin Zone in the [page="_SEARCH:tut_admin"]Admin Zone overview tutorial[/page].
+More can be read on the Admin Zone in the [page="_SEARCH:tut_adminzone"]Admin Zone overview tutorial[/page].
 
 [title="3"]Staff notifications, and the messaging system[/title]
 
@@ -116,7 +116,7 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_admin"]Admin Zone overview[/page]
+ - [page="_SEARCH:tut_adminzone"]Admin Zone overview[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]

@@ -1361,9 +1361,9 @@ where:
   - [tt]both[/tt] (assuming bottom-to-top and right-to-left)
   - If the [tt]where[/tt] option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
  - For [tt]pad[/tt] types the background is used to pad the image:
-  - a hex code for a specific color (with alpha)
+  - a hex code for a specific colour (with alpha)
   - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them).
-  - or, if the option is omitted for padded thumbnails then the average color of the image is used.
+  - or, if the option is omitted for padded thumbnails then the average colour of the image is used.
  - [tt]only_make_smaller[/tt] can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
 
 [title="3"]Logic[/title]
