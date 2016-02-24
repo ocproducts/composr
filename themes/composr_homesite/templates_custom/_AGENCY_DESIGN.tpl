@@ -2,7 +2,7 @@
 
 <ul>
 	<li>
-		We won't just use template, you'll have a real designer working for you, someone with experience.<br />
+		We won't just use a template, you'll have a real designer working for you, someone with experience.<br />
 		<span>(if you're a design agency, we can build your design instead)</span>
 	</li>
 
