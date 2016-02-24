@@ -50,6 +50,10 @@ class Hook_config_cpf_enable_county
      */
     public function get_default()
     {
-        return '0';
+        require_code('locations');
+        if (geolocate_ip() == 'US') {
+            return '0';
+        }
+        return '1';
     }
 }

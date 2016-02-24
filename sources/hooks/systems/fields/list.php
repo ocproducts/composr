@@ -138,12 +138,12 @@ class Hook_fields_list
             } else {
                 if (substr_count($default, '|') + 1 == substr_count($default, '=')) {
                     foreach (explode('|', $default) as $l) {
-                        list($l, $written) = explode('=', $l);
+                        list($l, $written) = explode('=', $l, 2);
                         $list[$l] = $written;
                     }
                 } else {
                     foreach (explode('|', $default) as $l) {
-                        $list[$l] = $l;
+                        $list[preg_replace('#=.*$#', '', $l)] = preg_replace('#^.*=#', '', $l);
                     }
                 }
             }
