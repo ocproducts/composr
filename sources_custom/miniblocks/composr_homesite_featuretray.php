@@ -397,7 +397,7 @@ $featuretree = array(
                 array('Versatile', 'You can strip down to a core system, or build up with 3rd-party addons <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Addons" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_addons&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Full <abbr title="Application Programming Interface">API</abbr> documentation <a target="_blank" class="link_exempt no_print" title="(Opens in new window) API documentation" href="{$BRAND_BASE_URL}/docs/api/"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('High coding standards', 'No PHP notices. Type-strict codebase. We use <abbr title="Model View Controller">MVC</abbr>'),
-                array('Free online developers guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:cookbook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Free online developers guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:codebook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
                 array('Custom field filters', 'For example, restrict news posts to a minimum length'),
                 array('Stack dumps for easy debugging'),
@@ -741,7 +741,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                     echo '<li>';
                     echo '<span class="itemTitle">' . $item[0] . '</span>';
                     if (array_key_exists(1, $item)) {
-                        if ((substr($item[1], -1) != '!') && (substr($item[1], -1) != '?') && (substr($item[1], -1) != '.')) {
+                        if ((strpos($item[1], 'help_small') === false) && (substr($item[1], -1) != '!') && (substr($item[1], -1) != '?') && (substr($item[1], -1) != '.')) {
                             $item[1] .= '.';
                         }
                         echo '<span class="itemDescription">' . $item[1] . '</span>';

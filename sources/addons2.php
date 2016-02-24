@@ -1049,7 +1049,7 @@ function has_feature($dependency)
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
-    if (($dependency == 'cns') && (get_forum_type() == 'cns')) {
+    if ((($dependency == 'cns') || ($dependency == 'Conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagepng'))) {

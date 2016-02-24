@@ -98,8 +98,6 @@ $out = '
         <tr>
             <th>Addon</th>
             <th>Description</th>
-            <!--<th>Core (compulsary)</th>-->
-            <th>Dependencies</th>
             <th>Tutorials</th>
             <th>Synonyms</th>
             <th>Feature suggestions</th>
@@ -126,10 +124,12 @@ foreach ($addons as $addon => $addon_details) {
 
     $out .= '
         <tr>
-            <td>' . $icon . escape_html($addon_details['pretty']) . '<br />(<kbd>' . escape_html($addon) . '</kbd>)</td>
+            <td>
+                ' . $icon . escape_html($addon_details['pretty']) . '<br />(<kbd>' . escape_html($addon) . '</kbd>)<br /><br />
+                <strong>Core</strong>: ' . escape_html($addon_details['core'] ? 'Yes' : 'No') . '<br /><br />
+                <strong>Dependencies</strong>: ' . (($addon_details['dependencies'] == array()) ? '<em>None</em>' : '<kbd>' . implode('</kbd>, <kbd>', array_map('escape_html', $addon_details['dependencies'])) . '</kbd>') . '
+            </td>
             <td>' . escape_html($addon_details['description']) . '</td>
-            <!--<td>' . escape_html($addon_details['core'] ? 'Yes' : 'No') . '</td>-->
-            <td><kbd>' . implode('<br /><br />', array_map('escape_html', $addon_details['dependencies'])) . '</kbd></td>
             <td>' . $tutorials . '</td>
             <td>' . implode('<br /><br />', array_map('escape_html', $addon_details['synonyms'])) . '</td>
             <td><a href="' . escape_html($addon_details['tracker_url']) . '">Link</a></td>

@@ -297,7 +297,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'CSS3: The Missing Manual',
-                'url' => 'http://www.amazon.co.uk/gp/product/1449325947/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449325947&linkCode=as2&tag=ocportal-21&linkId=3BBUGWGWSOYDIJRH',
+                'url' => 'http://www.amazon.co.uk/gp/product/1491918055/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1491918055&linkCode=as2&tag=ocportal-21',
                 'author' => 'David Sawyer McFarland',
                 'difficulty_level' => 'regular',
                 'summary' => 'CSS3 lets you create professional-looking websites, but learning its finer points can be tricky—even for seasoned web developers. This Missing Manual shows you how to take your HTML and CSS skills to the next level, with valuable tips, tricks, and step-by-step instructions.',
@@ -584,6 +584,8 @@ class Module_tutorials
      */
     public function run()
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         require_code('tutorials');
 
         $title = get_screen_title('Tutorials &ndash; Learning Composr', false);

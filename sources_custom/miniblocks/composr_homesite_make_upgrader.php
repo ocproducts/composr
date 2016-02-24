@@ -28,22 +28,22 @@ if (!function_exists('mu_ui')) {
     {$spammer_blackhole}
 
     <p style="margin: 4px 0">
-        <label style="width: 170px; float: left" for="from_version_a">Major version (e.g. <kbd>4</kbd>)</label>
-        <input size="1" maxlength="1" type="text" name="from_version_a" id="from_version_a" value="" />
+        <label style="width: 170px; float: left" for="from_version_a">Major version (e.g. <kbd>10</kbd>)</label>
+        <input size="2" maxlength="2" type="text" name="from_version_a" id="from_version_a" value="" />
     </p>
     <p style="margin: 4px 0">
-        <label style="width: 170px; float: left" for="from_version_b">Minor version (e.g. <kbd>3</kbd>)</label>
+        <label style="width: 170px; float: left" for="from_version_b">Minor version (e.g. <kbd>0</kbd>)</label>
         <input size="1" maxlength="1" type="text" name="from_version_b" id="from_version_b" value="" />
     </p>
     <p style="margin: 4px 0">
-        <label style="width: 170px; float: left" for="from_version_c">Patch version (e.g. <kbd>2</kbd>)</label>
+        <label style="width: 170px; float: left" for="from_version_c">Patch version (e.g. <kbd>0</kbd>)</label>
         <input size="2" maxlength="2" type="text" name="from_version_c" id="from_version_c" value="" />
     </p>
     <p style="margin: 4px 0; font-size: 0.8em">
         <label style="width: 170px; float: left" for="from_version_d">Pre-release version (e.g. beta1)</label>
         <input size="6" type="text" name="from_version_d" id="from_version_d" value="" /> (usually blank)
     </p>
-    <p>(example above is for upgrading from 4.3.2 beta1)</p>
+    <p>(example above is for upgrading from 10.0.0 beta1)</p>
     <p>
         <input class="buttons__proceed button_screen_item" id="make_upgrader_button" type="submit" value="Generate" />
     </p>
@@ -72,11 +72,9 @@ if (!function_exists('mu_result')) {
 $to_version = $map['param'];
 
 echo <<<END
-    <div class="medborder">
-        <div>
-            <h4 class="standardbox_title_med">Your upgrade to version {$to_version}</h4>
-            <div class="medborder_box">
-                    <div class="standardbox_main_classic"><div class="float_surrounder">
+    <div class="box">
+        <div class="box_inner">
+            <h4>Your upgrade to version {$to_version}</h4>
 END;
 
 $from_version = get_param_string('from_version', null);
@@ -88,8 +86,6 @@ if (is_null($from_version)) {
     if ((is_null($a)) || (is_null($b)) || (is_null($c))) {
         mu_ui();
         echo <<<END
-                    </div></div>
-            </div>
         </div>
     </div>
 END;

@@ -187,6 +187,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/index.html',
 
             'data_custom/images/docs/advantage.png',
+            'data_custom/images/docs/codebook/phpstorm.png',
             'data_custom/images/docs/codebook/mvc_admin.png',
             'data_custom/images/docs/codebook/mvc_site.png',
             'data_custom/images/docs/codebook/1.jpg',

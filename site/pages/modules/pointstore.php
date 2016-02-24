@@ -157,6 +157,8 @@ class Module_pointstore
 
         $this->title = get_screen_title('POINTSTORE');
 
+        $GLOBALS['OUTPUT_STREAMING'] = false;
+
         return null;
     }
 

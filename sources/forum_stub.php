@@ -83,7 +83,7 @@ class Forum_driver_base
     {
         $url = mixed();
 
-        if ((!$definitely_profile) && (get_option('username_click_im') == '1') && ($id != $this->get_guest_id()) && (addon_installed('chat')) && (has_privilege(get_member(), 'start_im'))) {
+        if ((!$definitely_profile) && (get_option('username_click_im', true) === '1') && ($id != $this->get_guest_id()) && (addon_installed('chat')) && (has_privilege(get_member(), 'start_im'))) {
             $url = build_url(array('page' => 'chat', 'type' => 'browse', 'enter_im' => $id), get_module_zone('chat'));
             if (!$tempcode_okay) {
                 $url = $url->evaluate();

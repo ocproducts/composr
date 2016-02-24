@@ -416,7 +416,7 @@ class Block_main_members
             if (get_option('use_joindate') == '1') {
                 $_fields_title[] = do_lang_tempcode('JOIN_DATE');
             }
-            $fields_title = results_field_title($_fields_title, $sortables, 'md_sort', $sortable . ' ' . $sort_order);
+            $fields_title = results_field_title($_fields_title, $sortables, $block_id . '_sort', $sortable . ' ' . $sort_order);
             require_code('cns_members2');
             foreach ($rows as $row) {
                 $_entry = array();

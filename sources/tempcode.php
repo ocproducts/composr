@@ -827,7 +827,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             $__data->attach('<!-- END-TEMPLATE=' . escape_html($codename) . ' -->');
             $ret = $__data;
         }
-        if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO')) {
+        if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO') && ($codename != 'TEMPLATE_EDIT_LINK') && ($codename != 'GLOBAL_HTML_WRAP'/*For some obscure reason letting this go through causes content to disappear, maybe because it has already started output streaming*/)) {
             $edit_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $codename), 'adminzone');
 
             $parameters2 = array();
@@ -845,9 +845,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             }
             $param_info = do_template('PARAM_INFO', array('_GUID' => '0070acad5e82e0877ad49e25283d342e', 'MAP' => $parameters2));
 
-            $SHOW_EDIT_LINKS = false;
             $ret = do_template('TEMPLATE_EDIT_LINK', array('_GUID' => '511ae911d31a5b237a4371ff22fc78fd', 'PARAM_INFO' => $param_info, 'CONTENTS' => $ret, 'CODENAME' => $codename, 'EDIT_URL' => $edit_url));
-            $SHOW_EDIT_LINKS = true;
         }
     }
 

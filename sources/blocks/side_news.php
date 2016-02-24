@@ -68,10 +68,10 @@ class Block_side_news
     {
         require_lang('news');
         require_css('news');
+        require_code('news');
 
         $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
-        require_lang('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
         $historic = array_key_exists('historic', $map) ? $map['historic'] : '';
         $select_and = array_key_exists('select_and', $map) ? $map['select_and'] : '';

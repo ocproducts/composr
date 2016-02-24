@@ -442,7 +442,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             '_GUID' => 'e4fe3bc16cec070e06532fedc598d075',
             'DIVIDER' => $divider,
             'FIELD_NAME' => $field_name,
-            'TITLE' => ($button == 'thumb' && browser_matches('simplified_attachments_ui')) ? do_lang_tempcode('INPUT_COMCODE_attachment') : do_lang_tempcode('INPUT_COMCODE_' . $button),
+            'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button),
             'B' => $button,
         )));
     }

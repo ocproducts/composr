@@ -357,7 +357,14 @@
 							{+START,IF_NON_EMPTY,{IP_ADDRESS}}
 								<tr>
 									<th class="de_th">{!IP_ADDRESS}:</th>
-									<td><a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a></td>
+									<td>
+										{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
+											<a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a>
+										{+END}
+										{+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}}
+											{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}
+										{+END}
+									</td>
 								</tr>
 							{+END}
 						{+END}
