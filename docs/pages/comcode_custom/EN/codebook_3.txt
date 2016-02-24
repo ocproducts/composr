@@ -989,7 +989,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | Command-line via Bash
 |-
 | [tt]line_count.sh[/tt]
-| Count the number of lines of code, exclusing third-party code.
+| Count the number of lines of code, excluding third-party code.
 | [tt]meta_toolkit[/tt]
 | Command-line via Bash
 |-

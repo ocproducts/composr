@@ -117,6 +117,9 @@ class lang_test_set extends cms_test_case
         if (stripos($string, 'comma separated') !== false) {
             $this->assertTrue(false, 'The phrase \'comma separated\' was used in ' . $file . '. This should be changed to \'comma-separated\'.');
         }
+        if (preg_match('#([^\[\]<>\|"\'/\_])popup#', $string, $matches) !=0) {
+            $this->assertTrue(false, 'The phrase \'popup\' was used in ' . $file . '. This should be changed to \'pop-up\'.');
+        }
         if ((preg_match('#[^e]built in[^t]#', $string) != 0) && (strpos($string, 'in a ') === false)) {
             $this->assertTrue(false, 'The phrase \'built in\' was used in ' . $file . '. This should be changed to \'built-in\'.');
         }

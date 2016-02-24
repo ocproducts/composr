@@ -138,7 +138,7 @@ You can simply modify the template here, and then click the "Edit Template" link
 
 There is also a section at the bottom allowing you to restore a previous version, if you have any.
 
-If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]&keep_markers=1[/tt]/[tt]&keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
+If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]&keep_markers=1[/tt]/[tt]?keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
 
 [code="HTML"]
 <!-- START-TEMPLATE=MENU_BRANCH_popup -->

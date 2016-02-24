@@ -109,7 +109,7 @@ The default Comcode pages are...
 		<tr>
 			<td>Site</td>
 			<td><kbd>popup_blockers</kbd></td>
-			<td>Information about how to disable popup blockers. Only installed if the <kbd>chat</kbd> addon is installed.</td>
+			<td>Information about how to disable pop-up blockers. Only installed if the <kbd>chat</kbd> addon is installed.</td>
 			<td>5%</td>
 		</tr>
 		<tr>
