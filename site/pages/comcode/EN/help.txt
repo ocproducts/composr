@@ -1,14 +1,14 @@
 [title="1" sub="{$SITE_NAME} help"]Help[/title]
 
-[title="2"]Logging-in[/title]
+[title="2"]{$?,{$IS_GUEST},Logging-in,Your login}[/title]
 
-You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
+{$?,{$IS_GUEST},You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to,With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
 
 {+START,IF,{$ADDON_INSTALLED,points}}[title="2"]Points[/title]
 
 Every logged-in member can gain points as they contribute to our community, in ways like...
  - Posting on the forums
- - Contributing content to {$SITE_NAME}, such as images of the day
+ - Contributing content to {$SITE_NAME}, such as gallery images
 
 As you gain points, you can spend them on various fun or useful things, such as buying your own e-mail account.
 

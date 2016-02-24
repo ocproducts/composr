@@ -22,6 +22,8 @@
 	{!ACCESS_BANNER_INFO,{STATS_URL*}}
 </p>
 
-<h2>{!do_next:WHAT_NEXT}</h2>
+{+START,IF_NON_EMPTY,{DO_NEXT}}
+	<h2>{!do_next:WHAT_NEXT}</h2>
 
-{DO_NEXT}
+	{DO_NEXT}
+{+END}
