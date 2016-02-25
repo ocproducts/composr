@@ -327,6 +327,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 'dat' => 'safe_mode_temp',
                                 'bak' => '.*',
                                 'old' => '.*',
+                                'cms' => '.*', // Installers and upgraders
 
                                 // HHVM Hack converted files (built on-the-fly)
                                 'hh' => '.*',
