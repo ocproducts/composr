@@ -173,7 +173,7 @@ function set_option($name, $value, $will_be_formally_set = 1)
     }
 
     // For use by get_option during same script execution
-    $CONFIG_OPTIONS_CACHE[$name]['c_value_trans'] = $value;
+    $CONFIG_OPTIONS_CACHE[$name]['_cached_string_value'] = $value;
     $CONFIG_OPTIONS_CACHE[$name]['c_set'] = $will_be_formally_set;
 
     // Log it

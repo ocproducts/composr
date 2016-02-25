@@ -1975,15 +1975,6 @@ function ini_get($varname)
 }
 
 /**
- * Restores the value of a configuration option.
- *
- * @param  string $varname Config option.
- */
-function ini_restore($varname)
-{
-}
-
-/**
  * Sets the value of a configuration option.
  *
  * @param  string $var Config option.
@@ -5757,6 +5748,7 @@ disk_free_space
 disk_total_space
 error_log
 php_uname
+ini_restore
 
 Disabled due to often being ill-configured or disabled on hosts...
 

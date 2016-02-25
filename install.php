@@ -1907,7 +1907,7 @@ function step_5_core()
         'c_name' => '*ID_TEXT',
         'c_set' => 'BINARY',
         'c_value' => 'LONG_TEXT',
-        'c_value_trans' => '?LONG_TRANS',
+        'c_value_trans' => '?LONG_TRANS', // If it's a translatable/Comcode one, we store the language ID in here (or just a string if we don't have multi-lang-content enabled)
         'c_needs_dereference' => 'BINARY'
     ));
 

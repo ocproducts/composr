@@ -40,7 +40,7 @@ class Hook_paypal
      */
     protected function _get_remote_form_url()
     {
-        return 'https://secure.worldpay.com/wcc/purchase';
+        return ecommerce_test_mode() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
     }
 
     /**
