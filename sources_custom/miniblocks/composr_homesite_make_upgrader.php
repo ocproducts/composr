@@ -21,9 +21,11 @@ if (!function_exists('mu_ui')) {
         $spammer_blackhole = static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
 
         echo <<<END
-<div>You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone front page then we'll automatically know what version you're running.
-<br />If you'd prefer though you can enter in your version number right here:</div>
-<br />
+<p>
+    You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone front page then we'll automatically know what version you're running.
+    <br />
+    If you'd prefer though you can enter in your version number right here:
+</p>
 <form onsubmit="this.elements['make_upgrader_button'].disabled=true;" action="#" method="post">
     {$spammer_blackhole}
 
@@ -55,9 +57,14 @@ END;
 if (!function_exists('mu_result')) {
     function mu_result($path)
     {
+        // Shorten path to be more readable
         $normal_bore = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/';
+        $shortened = get_file_base() . '/upgrades/';
+        if (!file_exists($shortened)) {
+            link($normal_bore, $shortened);
+        }
         if (substr($path, 0, strlen($normal_bore)) == $normal_bore) {
-            $path = get_file_base() . '/upgrades/' . substr($path, strlen($normal_bore));
+            $path = $shortened . substr($path, strlen($normal_bore));
         }
 
         $base_url = get_base_url();
@@ -123,8 +130,6 @@ if (!is_null($ret[0])) {
 }
 
 echo <<<END
-                    </div></div>
-            </div>
         </div>
     </div>
 END;

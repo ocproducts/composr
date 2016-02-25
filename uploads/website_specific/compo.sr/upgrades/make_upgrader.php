@@ -62,9 +62,9 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
         $err = escape_html('Version ' . $from_version_pretty . ' is not recognised');
         return array(null, $err);
     }
-    $new_download_row = find_download($to_version_dotted);
+    $new_download_row = find_download($to_version_pretty);
     if (is_null($new_download_row)) {
-        return array(null, escape_html('Could not find version ' . $to_version_dotted . ' in the download database'));
+        return array(null, escape_html('Could not find version ' . $to_version_pretty . ' in the download database'));
     }
     $mtime = $new_download_row['add_date'];
     if (!is_null($new_download_row['edit_date'])) {
