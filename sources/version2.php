@@ -18,6 +18,24 @@
  * @package    core
  */
 
+/*
+We have many standardised ways of writing version numbers for different situations. For example...
+
+Dotted: 10.3.beta4        (processable cleanly)
+Pretty: 10.3 beta4        (human-readable)
+Basis dotted: 10.3        (same as dotted or pretty, except for the end bit)
+Long dotted 10.3.0.beta4  (precision/specificity)
+General: 10.3             (simple float)
+Branch: 10.x              (when talking about development paths)
+Break downs:              (if long dotted was exploded)
+ Major: 10
+ Minor: 3
+ Patch: 0
+ Qualifier: beta
+ Qualifier number: 4
+PHP: 10.3.0.beta4         (only used when interfacing with PHP, not our standard)
+*/
+
 /**
  * Get information about new versions of Composr (or more accurately, what's wrong with this version).
  *
@@ -111,7 +129,7 @@ function get_version_dotted__from_anything($any_format)
     }
 
     // Canonical to not have extra .0's on end. Don't really care about what Composr stores as we clean this up in our server's version.php - it is crucial that news post and download names are canonical though so version.php works. NB: Latest recommended versions are done via download name and description labelling.
-    $dotted = preg_replace('#(\.0)+($|\.alpha|\.beta|\.RC)#', '', $dotted);
+    $dotted = preg_replace('#(\.0)+($|\.alpha|\.beta|\.RC)#', '$2', $dotted);
 
     return $dotted;
 }
@@ -120,7 +138,7 @@ function get_version_dotted__from_anything($any_format)
  * Analyse a dotted version number into components.
  *
  * @param  string $dotted Dotted version number
- * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components, float version number (i.e. no patch release and qualifier information, like cms_version_number)
+ * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components, general version number (i.e. float, no patch release and qualifier information, like cms_version_number)
  */
 function get_version_components__from_dotted($dotted)
 {
@@ -142,14 +160,14 @@ function get_version_components__from_dotted($dotted)
 
     $long_dotted_number = $basis_dotted_number . str_repeat('.0', max(0, 2 - substr_count($basis_dotted_number, '.')));
 
-    $version_number = floatval(preg_replace('#\.\d+$#', '', $long_dotted_number));
+    $general_number = floatval(preg_replace('#\.\d+$#', '', $long_dotted_number)); // No third dot component
 
     return array(
         $basis_dotted_number,
         $qualifier,
         $qualifier_number,
         $long_dotted_number,
-        $version_number,
+        $general_number,
     );
 }
 
