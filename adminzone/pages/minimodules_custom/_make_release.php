@@ -224,7 +224,7 @@ $article = "Version {$version_pretty} has now been released. {$descrip}. Upgradi
 To upgrade follow the steps in your website's [tt]http://mybaseurl/upgrader.php[/tt] script. You will need to copy the URL of the attached file (created via the form below) during step 3.
 {$major_release_1}
 
-[block=\"{$version_pretty}\"]composr_homesite_make_upgrader[/block]
+[block=\"{$version_dotted}\"]composr_homesite_make_upgrader[/block]
 
 {$changes}";
 
