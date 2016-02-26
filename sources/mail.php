@@ -553,7 +553,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
-            'm_subject' => substr($subject_line, 0, 255),
+            'm_subject' => cms_mb_substr($subject_line, 0, 255),
             'm_message' => $message_raw,
             'm_to_email' => serialize($to_email),
             'm_to_name' => serialize($to_name),

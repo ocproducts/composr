@@ -1968,9 +1968,9 @@ function log_stats($string, $pg_time)
     $session_id = get_session_id();
     $member = get_member();
     $time = time();
-    $referer = substr(cms_srv('HTTP_REFERER'), 0, 255);
-    $browser = substr(get_browser_string(), 0, 255);
-    $os = substr(get_os_string(), 0, 255);
+    $referer = cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255);
+    $browser = cms_mb_substr(get_browser_string(), 0, 255);
+    $os = cms_mb_substr(get_os_string(), 0, 255);
     if ($os === null) {
         $os = '';
     }
