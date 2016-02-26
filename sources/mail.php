@@ -1417,6 +1417,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'redirect',
             'http_referer',
             'session_id',
+            'csrf_token',
             md5(get_site_name() . ': antispam'),
         );
         if (!is_null($extra_boring_fields)) {
