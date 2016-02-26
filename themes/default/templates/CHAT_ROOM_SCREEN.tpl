@@ -23,7 +23,7 @@
 		</div>
 		<div class="left">
 			<form autocomplete="off" title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" style="display: inline;">
-				<input type="button" class="buttons__send button_micro" name="post_now" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
+				<input type="button" class="buttons__send button_micro" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
 			</form>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{MICRO_BUTTONS}
