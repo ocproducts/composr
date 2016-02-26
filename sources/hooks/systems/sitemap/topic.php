@@ -39,7 +39,7 @@ class Hook_sitemap_topic extends Hook_sitemap_content
      */
     public function get_privilege_page($page_link)
     {
-        return 'topics';
+        return null;
     }
 
     /**
