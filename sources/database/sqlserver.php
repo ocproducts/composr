@@ -370,6 +370,8 @@ class Database_Static_sqlserver
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         return str_replace("'", "''", $string);
     }
 

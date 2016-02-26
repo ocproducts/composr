@@ -140,6 +140,8 @@ class Database_Static_mysql_dbx extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         if (is_null($this->last_select_db)) {
             return addslashes($string);
         }

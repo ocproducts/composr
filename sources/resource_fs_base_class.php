@@ -832,7 +832,7 @@ abstract class Resource_fs_base
      */
     public function convert_label_to_filename($label, $subpath, $resource_type, $must_already_exist = false, $use_guid_for_new = null)
     {
-        $label = substr($label, 0, 255);
+        $label = cms_mb_substr($label, 0, 255);
         $resource_id = $this->convert_label_to_id($label, $subpath, $resource_type, $must_already_exist, $use_guid_for_new);
         if (is_null($resource_id)) {
             return null;
@@ -852,7 +852,7 @@ abstract class Resource_fs_base
      */
     public function convert_label_to_id($_label, $subpath, $resource_type, $must_already_exist = false, $use_guid_for_new = null)
     {
-        $label = substr($_label, 0, 255);
+        $label = cms_mb_substr($_label, 0, 255);
 
         $resource_id = find_id_via_label($resource_type, $label, $subpath);
         if (is_null($resource_id)) {

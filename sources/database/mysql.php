@@ -167,6 +167,8 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         static $mres = null;
         if ($mres === null) {
             $mres = function_exists('mysql_real_escape_string');

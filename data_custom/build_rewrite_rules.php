@@ -48,7 +48,7 @@ $rewrite_rules = array(
     array(
         'Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.',
         array(
-            array('^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$', '$1index.php\?page=$3', array('L', 'QSA', 'R'), true),
+            array('^([^=]*)pages/(modules|modules_custom)/([^/]*)\.php$', '$1index.php\?page=$3', array('L', 'QSA', 'R'), true),
         ),
     ),
 
