@@ -23,6 +23,7 @@ class news_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('news2');
 
         $this->news_id = add_news('Today', 'hiiiiiiiiiii', 'rolly', 1, 1, 1, 1, '', 'test article', 2, null, 1262671781, null, 0, null, null, '');
@@ -39,6 +40,7 @@ class news_test_set extends cms_test_case
     public function tearDown()
     {
         delete_news($this->news_id);
+
         parent::tearDown();
     }
 }

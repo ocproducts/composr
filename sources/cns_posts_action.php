@@ -248,11 +248,11 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         $validated = 1;
     }
     $map = array(
-        'p_title' => substr($title, 0, 255),
+        'p_title' => cms_mb_substr($title, 0, 255),
         'p_ip_address' => $ip_address,
         'p_time' => $time,
         'p_poster' => $anonymous ? db_get_first_id() : $poster,
-        'p_poster_name_if_guest' => substr($poster_name_if_guest, 0, 80),
+        'p_poster_name_if_guest' => cms_mb_substr($poster_name_if_guest, 0, 80),
         'p_validated' => $validated,
         'p_topic_id' => $topic_id,
         'p_is_emphasised' => $is_emphasised,

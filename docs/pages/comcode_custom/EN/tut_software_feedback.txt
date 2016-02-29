@@ -298,7 +298,7 @@ There are many reasons, but here are a few:
 3) We may feel a feature would cause performance problems;
 4) We may feel a feature would introduce security risks;
 5) We may feel a feature directly conflicts with other plans;
-6) We may feel a feature would make Composr [page=":antifeatures"]bloatware[/page];
+6) We may feel a feature would make Composr [page="_SEARCH:antifeatures"]bloatware[/page];
 7) We may feel a feature breaks important engineering principles such as [url="separation of concerns"]http://en.wikipedia.org/wiki/Separation_of_concerns[/url];
 8) We may feel a feature is somehow incoherent with Composr's under-the-hood architecture, so would need many subtle and complex changes to numerous interconnected subsystems, and introduce risks of new bugs or confusion about redefined Composr concepts;
 9) A feature could also be very time consuming or costly, or require skills or experience that no available developer has -- and contrary to often widely-held perceptions, the developers aren't sitting on a big pile of cash, everything is very hard-earned ;);
@@ -421,7 +421,7 @@ This is best shown by example. Recently (at the time of writing) we got some ver
  - http://compo.sr/tracker/view.php?id=1173
  - http://compo.sr/tracker/view.php?id=1175
 
-This is exactly what we would like people to directly. Isolate specific issues, then report them to us. We can then expedite the fixing of such issues very easily.
+This is exactly what we would like people to do directly. Isolate specific issues, then report them to us. We can then expedite the fixing of such issues very easily.
 
 [title="3"]Beyond bug fixing[/title]
 
@@ -506,7 +506,7 @@ Please be aware also that ocProducts doesn't take payment-in-kind, such as payme
 [title="3"]Don't start over over-optimistic, then end up leaning on the developers[/title]
 
 [media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/start.png[/media]
-Despite [page="_SEARCH:tut_antifeatures"]attempts to accurately describe[/page] what Composr can do, many people see Composr as a way of achieving the equivalent to what high-funded Silicon Valley companies achieve, but for free. Whenever there are roadblocks to that, people often end up trying to lean on the developers to get closer to it.
+Despite [page="_SEARCH:antifeatures"]attempts to accurately describe[/page] what Composr can do, many people see Composr as a way of achieving the equivalent to what high-funded Silicon Valley companies achieve, but for free. Whenever there are roadblocks to that, people often end up trying to lean on the developers to get closer to it.
 
 This can be very frustrating for the developers, who are probably as squeezed for time as anyone around (often already working 15 hour days, 7 days a week). Building and maintaining Composr is a huge effort, and if individual users take more resources from the project than they provide financially, it makes it unsustainable.
 
@@ -516,7 +516,7 @@ So, please aim to:
 1) properly plan out your project (written business plan, discussions and arrangements with investors if appropriate, SWOT analysis, written and costed specification);
 2) think of Composr saving you a certain percent (say, 30%, compared to the effective budget of other successful live websites), [page="_SEARCH:sup_pricing"]not eliminating the need for a budget[/page];
 3) start reasonably simple (perhaps a [page="_SEARCH:sup_minimum_viable_products"]minimum viable product[/page], and agile development plan to iterate to/from that);
-4) follow the [page="_SEARCH:tut_antifeatures"]advice given[/page].
+4) follow the [page="_SEARCH:antifeatures"]advice given[/page].
 
 If you do then find it a big challenge to achieve your desired goals, don't approach the developers asking for free support or for new features to be implemented for free. Please do fully interact with other users in the community though, of course.
 

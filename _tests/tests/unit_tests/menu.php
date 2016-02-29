@@ -23,6 +23,7 @@ class menu_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('menus2');
 
         $this->menu_id = add_menu_item('Test', 1, null, 'testing menu', 'http://www.example.com', 1, 'downloads', 0, 1, 'testing');
@@ -40,6 +41,7 @@ class menu_test_set extends cms_test_case
     public function tearDown()
     {
         delete_menu_item($this->menu_id);
+
         parent::tearDown();
     }
 }

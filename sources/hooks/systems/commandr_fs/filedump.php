@@ -140,10 +140,10 @@ class Hook_commandr_fs_filedump
             sync_file($path . '/' . $dir_name);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
             if (!is_null($test)) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
             }
 
             return true;
@@ -174,10 +174,10 @@ class Hook_commandr_fs_filedump
             $place = dirname($place);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
             if (!is_null($test)) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
             }
 
             return true;
@@ -188,10 +188,10 @@ class Hook_commandr_fs_filedump
             sync_file($path . '/' . $file_name);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
             if (!is_null($test)) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
             }
 
             return $ret;
@@ -221,7 +221,7 @@ class Hook_commandr_fs_filedump
             $dir_name = basename($place);
             $place = dirname($place);
 
-            $rows = table_to_portable_rows('filedump', array('id'), array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
             if (array_key_exists(0, $rows)) {
                 $output = $rows[0];
             } else {
@@ -235,7 +235,7 @@ class Hook_commandr_fs_filedump
             $data = file_get_contents($path . '/' . $file_name);
 
             $output = array('data' => base64_encode($data));
-            $rows = table_to_portable_rows('filedump', array('id'), array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)));
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
             if (array_key_exists(0, $rows)) {
                 $output += $rows[0];
             } else {
@@ -273,7 +273,7 @@ class Hook_commandr_fs_filedump
             $input = json_decode($contents, true);
 
             if (count($input) != 0) {
-                table_from_portable_rows('filedump', array($input), array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             }
 
             return true;
@@ -298,7 +298,7 @@ class Hook_commandr_fs_filedump
             sync_file($path . '/' . $file_name);
 
             if (count($input) != 0) {
-                table_from_portable_rows('filedump', array($input), array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             }
 
             return true;

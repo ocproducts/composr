@@ -1053,18 +1053,23 @@ function initialise_input_theme_image_entry(name,code)
 	}
 }
 
-function choose_picture(id,ob,name,event)
+function choose_picture(j_id,img_ob,name,event)
 {
-	if (!ob) return;
+	var j=document.getElementById(j_id);
+	if (!j) return;
 
-	var r=document.getElementById(id);
-	if (!r) return;
-	var e=r.form.elements[name];
+	if (!img_ob)
+	{
+		img_ob=document.getElementById('w_'+j_id.substring(2,j_id.length)).getElementsByTagName('img')[0];
+		if (typeof img_ob=='undefined') return;
+	}
+
+	var e=j.form.elements[name];
 	for (var i=0;i<e.length;i++)
 	{
 		if (e[i].disabled) continue;
 		var img=e[i].parentNode.parentNode.getElementsByTagName('img')[0];
-		if ((img) && (img!=ob))
+		if ((img) && (img!=img_ob))
 		{
 			if (img.parentNode.className.indexOf(' selected')!=-1)
 			{
@@ -1075,12 +1080,12 @@ function choose_picture(id,ob,name,event)
 		}
 	}
 
-	if (r.disabled) return;
-	r.checked=true;
-	//if (r.onclick) r.onclick(); causes loop
-	if (typeof r.fakeonchange!='undefined' && r.fakeonchange) r.fakeonchange(event);
-	ob.parentNode.className+=' selected';
-	ob.style.outline='1px dotted';
+	if (j.disabled) return;
+	j.checked=true;
+	//if (j.onclick) j.onclick(); causes loop
+	if (typeof j.fakeonchange!='undefined' && j.fakeonchange) j.fakeonchange(event);
+	img_ob.parentNode.className+=' selected';
+	img_ob.style.outline='1px dotted';
 }
 
 function preview_mobile_button(ob)

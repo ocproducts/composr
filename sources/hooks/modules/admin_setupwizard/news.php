@@ -84,6 +84,8 @@ class Hook_sw_news
             return;
         }
 
+        require_code('news');
+
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
         $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
         $GLOBALS['SITE_DB']->query_delete('group_privileges', array('privilege' => 'have_personal_category', 'the_page' => 'cms_news'));

@@ -85,6 +85,10 @@ function cache_and_carry($func, $args)
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0777);
+        fix_permissions(dirname($path));
+    }
     if (is_file($path)) {
         $ret = @unserialize(file_get_contents($path));
     } else {
@@ -161,6 +165,10 @@ function _intelligent_write_error_inline($path)
 function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
+    if (!file_exists($local_path)) {
+        mkdir($local_path, 0777);
+        fix_permissions($local_path);
+    }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
     } else {

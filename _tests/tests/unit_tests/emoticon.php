@@ -21,6 +21,7 @@ class emoticon_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_general_action');
         require_code('cns_general_action2');
 
@@ -39,6 +40,7 @@ class emoticon_test_set extends cms_test_case
     public function tearDown()
     {
         cns_delete_emoticon('Z:D');
+
         parent::tearDown();
     }
 }

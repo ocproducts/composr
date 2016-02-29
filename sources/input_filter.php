@@ -100,7 +100,7 @@ function check_input_field_string($name, &$val, $posted = false)
 
         // Additional checks for non-privileged users
         if ((function_exists('has_privilege') || !$posted) && $name != 'page'/*Too early in boot if 'page'*/) {
-            if (!has_privilege(get_member(), 'unfiltered_input') || $GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/) {
+            if ($GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/ || !has_privilege(get_member(), 'unfiltered_input')) {
                 hard_filter_input_data__html($val);
                 hard_filter_input_data__filesystem($val);
             }

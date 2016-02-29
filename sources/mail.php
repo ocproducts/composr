@@ -553,7 +553,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
-            'm_subject' => substr($subject_line, 0, 255),
+            'm_subject' => cms_mb_substr($subject_line, 0, 255),
             'm_message' => $message_raw,
             'm_to_email' => serialize($to_email),
             'm_to_name' => serialize($to_name),
@@ -891,7 +891,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
     if (get_option('allow_ext_images') != '1') {
+        $cid_before = array_keys($CID_IMG_ATTACHMENT);
         $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
@@ -902,6 +904,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
                 }
             }
+        }
+
+        // This is a hack to stop the images used by CSS showing as attachments in some mail clients
+        $cid_just_css = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_just_html);
+        foreach ($cid_just_css as $cid) {
+            $html_evaluated .= '<img width="0" height="0" src="cid:' . $cid . '" />';
         }
     }
 
@@ -1409,6 +1417,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'redirect',
             'http_referer',
             'session_id',
+            'csrf_token',
             md5(get_site_name() . ': antispam'),
         );
         if (!is_null($extra_boring_fields)) {

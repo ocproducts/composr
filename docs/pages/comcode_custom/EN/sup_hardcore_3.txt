@@ -203,8 +203,8 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                 'PRIVATE_TOPIC_URL' => $private_topic_url,
                 'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
                 'UNREAD_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unread'), get_module_zone('vforums')),
-                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
-                'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved_topics'), get_module_zone('vforums')),
+                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered'), get_module_zone('vforums')),
+                'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved'), get_module_zone('vforums')),
                 'PT_EXTRA' => $pt_extra,
                 'NEW_TOPICS' => number_format($new_topics),
                 'NEW_POSTS' => number_format($new_posts)

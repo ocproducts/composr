@@ -246,7 +246,7 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
     public function get_dependencies()
     {
         return array(
-            'requires' => array('ocf'),
+            'requires' => array('Conversr'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

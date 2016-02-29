@@ -1907,7 +1907,7 @@ function step_5_core()
         'c_name' => '*ID_TEXT',
         'c_set' => 'BINARY',
         'c_value' => 'LONG_TEXT',
-        'c_value_trans' => '?LONG_TRANS',
+        'c_value_trans' => '?LONG_TRANS', // If it's a translatable/Comcode one, we store the language ID in here (or just a string if we don't have multi-lang-content enabled)
         'c_needs_dereference' => 'BINARY'
     ));
 
@@ -2955,7 +2955,7 @@ RewriteCond %{DOCUMENT_ROOT}/$1 -d
 RewriteRule (.*) - [L]
 
 # Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.
-RewriteRule ^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$ $1index.php\?page=$3 [L,QSA,R]
+RewriteRule ^([^=]*)pages/(modules|modules_custom)/([^/]*)\.php$ $1index.php\?page=$3 [L,QSA,R]
 
 # PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
 RewriteRule ^([^=]*)pg/s/([^\&\?]*)/index\.php$ $1index.php\?page=wiki&id=$2 [L,QSA]

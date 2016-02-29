@@ -140,11 +140,11 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
                 );
             } else {
                 $change_map += array(
-                    'the_title' => is_null($user_online_title) ? substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
+                    'the_title' => is_null($user_online_title) ? cms_mb_substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
                     'the_zone' => get_zone_name(),
-                    'the_page' => substr(get_page_name(), 0, 80),
-                    'the_type' => substr(get_param_string('type', '', true), 0, 80),
-                    'the_id' => substr(get_param_string('id', '', true), 0, 80),
+                    'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+                    'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+                    'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
                 );
             }
             $session_id = get_session_id();

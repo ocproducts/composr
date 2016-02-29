@@ -89,7 +89,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
     $_title = $row['name'];
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER'), $_title) : $_title;
 
-    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['the_type'], $row['submitter']);
+    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
 
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'aaea5f7f64297ab46aa3b3182fb57c37',

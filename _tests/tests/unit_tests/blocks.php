@@ -18,11 +18,6 @@
  */
 class blocks_test_set extends cms_test_case
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testBlocksRender()
     {
         require_code('zones2');

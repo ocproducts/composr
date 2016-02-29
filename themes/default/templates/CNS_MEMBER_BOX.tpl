@@ -15,7 +15,7 @@
 			{+END}
 		{+END}
 
-		<table class="map_table tooltip_fields autosized_table">
+		<div>{$,div will be set as inline block}<table class="map_table tooltip_fields autosized_table">
 			<tbody>
 				<tr><th class="de_th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a></td></tr>
 				<tr><th class="de_th">{!cns:SPECIFIC_FORUM_POSTS}:</th><td>{POSTS*}</td></tr>
@@ -44,7 +44,7 @@
 				<tr><th class="de_th">{!ONLINE_NOW}:</th><td>{$?*,{ONLINE},{!YES},{!NO}}</td></tr>
 				{CUSTOM_FIELDS}
 			</tbody>
-		</table>
+		</table></div>
 	</div>
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
 </div>

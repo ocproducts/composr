@@ -454,7 +454,7 @@ function init__global2()
         register_shutdown_function('memory_tracking');
     }
 
-    if (count(array_diff(array_keys($_POST), array('x', 'y'))) != 0) {
+    if (count(array_diff(array_keys($_POST), array('x', 'y', 'http_referer'/*added by our JS*/))) != 0) {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
             $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');
@@ -938,7 +938,8 @@ function cms_version()
 function cms_version_pretty()
 {
     $minor = cms_version_minor();
-    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', strval(cms_version()) . (($minor == '') ? '' : '.' . $minor));
+    $dotted = strval(cms_version()) . (($minor == '') ? '' : '.' . $minor);
+    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
 }
 
 /**

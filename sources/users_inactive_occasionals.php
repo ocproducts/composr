@@ -114,9 +114,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'cache_username' => $username,
             'the_title' => '',
             'the_zone' => get_zone_name(),
-            'the_page' => substr(get_page_name(), 0, 80),
-            'the_type' => substr(get_param_string('type', '', true), 0, 80),
-            'the_id' => substr(get_param_string('id', ''), 0, 80),
+            'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+            'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+            'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
         );
         if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) { // Better to have no session than a 5+ second loading page
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
@@ -135,8 +135,8 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'the_title' => '',
             'the_zone' => get_zone_name(),
             'the_page' => get_page_name(),
-            'the_type' => substr(get_param_string('type', ''), 0, 80),
-            'the_id' => substr(get_param_string('id', ''), 0, 80),
+            'the_type' => cms_mb_substr(get_param_string('type', ''), 0, 80),
+            'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
             'last_activity' => time(),
             'ip' => get_ip_address(3),
             'session_confirmed' => $session_confirmed,
@@ -300,9 +300,9 @@ function try_su_login($member)
                 'cache_username' => $GLOBALS['FORUM_DRIVER']->get_username($member),
                 'the_title' => '',
                 'the_zone' => get_zone_name(),
-                'the_page' => substr(get_page_name(), 0, 80),
-                'the_type' => substr(get_param_string('type', '', true), 0, 80),
-                'the_id' => substr(get_param_string('id', ''), 0, 80),
+                'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+                'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+                'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
             );
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row);
             global $FLOOD_CONTROL_ONCE;

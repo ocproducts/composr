@@ -74,7 +74,7 @@ Note that "reducing cost" should not be considered a primary benefit of Open Sou
 
 [title="3"]How does it create value when software is given away for free, specifically?[/title]
 
-The developers feel it is important that all organisations are able to benefit from our technology, including organisations such as small social enterprises that may not be able to pay, or web service providers who may build innovative services on top of our infrastructure. Innovation often happens on the fringes, where companies don't necessarily have any budgets, and we consider it the ethical thing to promote this, and allow people to stand on the shoulders of giants (who we have done ourselves, via use of PHP, and Linux).
+The developers feel it is important that all organisations are able to benefit from our technology, including organisations such as small social enterprises that may not be able to pay, or web service providers who may build innovative services on top of our infrastructure. Innovation often happens on the fringes, where companies don't necessarily have any budgets, and we consider it the ethical thing to promote this, and allow people to stand on the shoulders of giants (which we have done ourselves, via use of PHP, and Linux).
 
 Things like Cloud Computing could not exist without the Open Source foundations that allow software to be leveraged without constant onerous contractual negotiations and unfeasibly high costs.
 
@@ -200,7 +200,7 @@ PHP defines its own upload limits, which Composr can not exceed. Try renaming th
 
 By the way, make sure you define MB units like '50M', not '50MB'. 'MB' is not a recognised unit by PHP.
 
-Please note that it is not advisable to try and upload more than around 200MB, regard of server limits. HTTP uploads (uploads from web forms) are very unreliable -- the smallest connection problem results in the entire download failing, as there is no error correction or resume support.
+Please note that it is not advisable to try and upload more than around 200MB, regardless of server limits. HTTP uploads (uploads from web forms) are very unreliable -- the smallest connection problem results in the entire download failing, as there is no error correction or resume support.
 Composr provides ways to reference files uploaded via other means (e.g. [abbr="File Transfer Protocol"]FTP[/abbr]):
  - the Comcode [tt]media[/tt] tag can reference files by URL
  - the downloads addon supports referencing existing URLs, copying of existing remote URLs, and even batch importing from FTP directories
@@ -268,7 +268,7 @@ Read the next question's answer also.
 
 [title="3"]Why does [tt]recommended.htaccess[/tt] not work?[/title]
 
-If you are getting "Internal Server Error"'s or '500' errors first read the answer above, to narrow down to the problem.
+If you are getting "Internal Server Error" errors or '500' errors first read the answer above, to narrow down to the problem.
 If you're not getting actual errors but things just aren't applying, it's probably because either:
 [list="a"]
 [*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your webhost)
@@ -358,7 +358,7 @@ This can be very difficult to debug, but is unlikely to be the fault of Composr.
 
 [title="3"]What are catalogues?[/title]
 
-Catalogues holds structured records of data. The system is extremely powerful, as the staff can create new catalogues with any structure of their choosing. The default FAQ page on a Composr install is a catalogue.
+Catalogues hold structured records of data. The system is extremely powerful, as the staff can create new catalogues with any structure of their choosing. The default FAQ page on a Composr install is a catalogue.
 
 [title="3"]How do I prevent users from modifying CMS content?[/title]
 
@@ -394,7 +394,7 @@ Permissions are usually the tool to use to customise things for different users,
 
 [title="3"]I turned off WYSIWYG for a page, and now I can't get it back on, how do I?[/title]
 
-In order to stop other potentially authors accidentally corrupting the hand-crafted page while using WYSIWYG, WYSIWYG will have been locked off for the page when you originally disabled it.
+In order to stop other potential authors accidentally corrupting the hand-crafted page while using WYSIWYG, WYSIWYG will have been locked off for the page when you originally disabled it.
 Simply remove [tt]{$,page hint: no_wysiwyg}[/tt] from the bottom of the page's Comcode (it will have been added there automatically), re-save, then go back in to edit.
 
 [title="3"]Various blocks require ID codes for what content to include. Where do I find these?[/title]

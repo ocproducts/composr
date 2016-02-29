@@ -615,7 +615,7 @@ function install_addon($file, $files = null)
             }
 
             if ((is_null($files)) || (in_array($addon_file, $files))) {
-                if (preg_match('#^' . $prefix . 'pages/(modules|modules\_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
+                if (preg_match('#^' . $prefix . 'pages/(modules|modules_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
                     if (!module_installed($matches[2])) {
                         reinstall_module($zone, $matches[2]);
                     } else {
@@ -1049,7 +1049,7 @@ function has_feature($dependency)
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
-    if (($dependency == 'cns') && (get_forum_type() == 'cns')) {
+    if ((($dependency == 'cns') || ($dependency == 'Conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagepng'))) {

@@ -601,15 +601,19 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     } else {
         $use_rewrite_params = $USE_REWRITE_PARAMS_CACHE;
     }
+    $_what_is_running = $WHAT_IS_RUNNING_CACHE;
+    if ($_what_is_running != 'iframe' && $has_page) {
+        $_what_is_running = 'index';
+    }
     $test_rewrite = null;
     $self_page = ((!$has_page) || ((function_exists('get_zone_name')) && (get_zone_name() == $zone_name) && (($vars['page'] == '_SELF') || ($vars['page'] == get_page_name())))) && ((!isset($vars['type'])) || ($vars['type'] == get_param_string('type', 'browse'))) && ($hash != '#_top') && (!$KNOWN_AJAX);
     if ($use_rewrite_params) {
-        if ((!$self_page) || ($WHAT_IS_RUNNING_CACHE === 'index')) {
+        if ((!$self_page) || ($_what_is_running === 'index')) {
             $test_rewrite = _url_rewrite_params($zone_name, $vars, count($keep_actual) > 0);
         }
     }
     if ($test_rewrite === null) {
-        $url = (($self_page) && ($WHAT_IS_RUNNING_CACHE !== 'index')) ? find_script($WHAT_IS_RUNNING_CACHE) : ($stub . 'index.php');
+        $url = (($self_page) && ($_what_is_running !== 'index')) ? find_script($_what_is_running) : ($stub . 'index.php');
 
         // Fix sort order
         if (isset($vars['id'])) {

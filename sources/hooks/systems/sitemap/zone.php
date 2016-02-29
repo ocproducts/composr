@@ -213,8 +213,12 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 }
                 $struct['permissions'] = array_merge($struct['permissions'], $child_node['permissions']);
 
-                if ($child_node['children'] !== null) {
-                    $children = array_merge($children, $child_node['children']);
+                if (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) {
+                    if ($child_node['children'] !== null) {
+                        $children = array_merge($children, $child_node['children']);
+                    }
+                } else {
+                    $children[] = $child_node;
                 }
             }
         }

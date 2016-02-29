@@ -34,7 +34,7 @@ function init__google_appengine()
     $matches = array();
 
     // RULES START
-    if (preg_match('#^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$#', $uri, $matches) != 0) {
+    if (preg_match('#^([^=]*)pages/(modules|modules_custom)/([^/]*)\.php$#', $uri, $matches) != 0) {
         _roll_gae_redirect($matches, '$1index.php\?page=$3');
         return null;
     }

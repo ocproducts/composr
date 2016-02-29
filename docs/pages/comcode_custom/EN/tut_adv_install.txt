@@ -57,9 +57,6 @@ If you have to use the manual installer and are not on a suEXEC-style system the
 [box="Note for Linux-server users" width="25em" float="right"]
 If you are on a suEXEC-system (where the PHP script is run as your own user), the default 744 and 644 permissions should be suitable (with _config.php being 600 for additional security). The installer will tell you if you are on a suEXEC-system, otherwise assume you are not and you still will need to set the permissions.
 [/box]
-[box="Note for Windows-server users" width="25em" float="right"]
-Permission setting can be complex and is discussed in depth in the [page="_SEARCH:tut_adv_install"]advanced installation[/page] tutorial. You may be able to avoid setting any permissions at all though.
-[/box]
 If you chose the manual installer, you now need to set the appropriate permissions for your files and folders (read on). You usually do not need to set any permissions if you chose the quick installer.
 
 If you have "shell access" (ask your webhost if you don't know), then you can automatically set these permissions by logging into your server with a program like [url="PuTTY"]http://www.putty.nl[/url], and executing the file [tt]fixperms.sh[/tt].

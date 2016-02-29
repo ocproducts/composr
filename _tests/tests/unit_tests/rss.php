@@ -23,6 +23,7 @@ class rss_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('rss');
         $rssfeed = get_file_base() . "/_tests/tests/testrss.cms";
         $atomfeed = get_file_base() . "/_tests/tests/testatom.cms";

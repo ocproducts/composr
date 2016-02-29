@@ -20,11 +20,6 @@ class config_lang_strings_test_set extends cms_test_case
 {
     public $id;
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testStrings()
     {
         $hooks = find_all_hooks('systems', 'config');
