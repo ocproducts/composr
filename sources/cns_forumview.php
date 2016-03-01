@@ -108,7 +108,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                             $poster = do_lang_tempcode('NA_EM');
                         }
 
-                        $topic_url = build_url(array('page' => 'topicview', 'id' => $subforum['last_topic_id'], 'type' => 'first_unread'), get_module_zone('topicview'));
+                        $topic_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $subforum['last_topic_id']), get_module_zone('topicview'));
                         $topic_url->attach('#first_unread');
 
                         $latest = do_template('CNS_FORUM_LATEST', array(
@@ -525,7 +525,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
     if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id']))) {
-        $last_post_url = build_url(array('page' => 'topicview', 'id' => $topic['last_post_id'], 'type' => 'findpost'), get_module_zone('topicview'));
+        $last_post_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['last_post_id']), get_module_zone('topicview'));
         $last_post_url->attach('#post_' . strval($topic['last_post_id']));
         if (!is_null($topic['last_member_id'])) {
             if ($topic['last_member_id'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) {
@@ -556,7 +556,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     $topic_row_links = array();
     $modifiers = $topic['modifiers'];
     if (in_array('unread', $modifiers)) {
-        $first_unread_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'first_unread'), get_module_zone('topicview'));
+        $first_unread_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'));
         $first_unread_url->attach('#first_unread');
         $topic_row_links[] = array('URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'));
     }

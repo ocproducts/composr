@@ -30,7 +30,7 @@ class Hook_cron_git_autopull
      */
     public function run()
     {
-        if (get_value('git_autopull') == '0') {
+        if (get_value('git_autopull') !== '1') {
             return;
         }
 

@@ -2413,7 +2413,7 @@ END;
                     regenerate_event_reminder_jobs($event_id);
 
                     $text = do_lang_tempcode('SUCCESS');
-                    $map = array('page' => 'topicview', 'id' => $topic_id, 'type' => 'first_unread');
+                    $map = array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic_id);
                     $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
                     if (($test != -1) && ($test != 0)) {
                         $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
@@ -2487,7 +2487,7 @@ END;
                 require_code('cns_topicview');
                 $url = find_post_id_url($post_id);
             } else {
-                $map = array('page' => 'topicview', 'id' => $post_id, 'type' => 'findpost');
+                $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id);
                 $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
                 if (($test != -1) && ($test != 0)) {
                     $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;

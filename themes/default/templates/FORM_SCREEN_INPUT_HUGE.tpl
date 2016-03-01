@@ -4,9 +4,9 @@
 	<th id="form_table_field_name__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_description_above_cell{+START,IF,{REQUIRED}} required{+END}">
 		<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 
-		<span class="field_name">
-			<label for="{NAME*}">{PRETTY_NAME*}</label>
-		</span>
+		<p class="field_name lonely_label">
+			<label for="{NAME*}">{PRETTY_NAME*}:</label>
+		</p>
 
 		<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
 

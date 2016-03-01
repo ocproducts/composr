@@ -1047,7 +1047,7 @@ class Module_admin_themes
             return $this->choose_theme($this->title);
         }
 
-        $url = build_url(array('page' => '_SELF', 'file' => $file, 'type' => '_edit_css'), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => '_edit_css', 'file' => $file), '_SELF');
 
         $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
         if (!file_exists($path)) {

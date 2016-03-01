@@ -408,7 +408,7 @@ class Module_cms_wiki
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, true)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
-        $edit_url = build_url(array('page' => '_SELF', 'redirect' => $redir_url, 'id' => get_param_string('id', false, true), 'type' => '_edit_page'), '_SELF');
+        $edit_url = build_url(array('page' => '_SELF', 'redirect' => $redir_url, 'type' => '_edit_page', 'id' => get_param_string('id', false, true)), '_SELF');
 
         list($fields, $fields2, $hidden) = $this->get_page_fields($id, $page_title, $page['notes'], $page['hide_posts'], $id);
         require_code('seo2');
@@ -543,7 +543,7 @@ class Module_cms_wiki
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, true)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
-        $post_url = build_url(array('page' => '_SELF', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url, 'type' => '_edit_tree'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_tree', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF');
 
         $wiki_tree = create_selection_list_wiki_page_tree($id, null, '', true, false, true);
 
