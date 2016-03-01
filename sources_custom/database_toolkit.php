@@ -23,7 +23,7 @@ function xml_dump_script()
         warn_exit('It makes no sense to run this script if you are not running the XML database driver.');
     }
     global $SITE_INFO;
-    if (array_key_exists('db_chain_type', $SITE_INFO)) {
+    if (!empty($SITE_INFO['db_chain_type'])) {
         require_code('database/' . $SITE_INFO['db_chain_type']);
         $chain_db = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
     } else {

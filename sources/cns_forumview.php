@@ -416,13 +416,6 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
         $topic['first_post'] = new Tempcode();
     }
 
-    // Pre-load it, so metadata isn't altered later
-    $bak = $GLOBALS['METADATA'];
-    $topic_row_tedit = array('id' => $topic_row['id'], 't_cache_first_post' => $topic_row['t_cache_first_post'], 't_cache_first_post__text_parsed' => multi_lang_content() ? null : $topic_row['t_cache_first_post__text_parsed'], 't_cache_first_post__source_user' => multi_lang_content() ? null : $topic_row['t_cache_first_post__source_user']);
-    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row_tedit, 't_cache_first_post', $GLOBALS['FORUM_DB']);
-    $topic['first_post']->evaluate();
-    $GLOBALS['METADATA'] = $bak;
-
     $topic['id'] = $topic_row['id'];
     $topic['num_views'] = $topic_row['t_num_views'];
     $topic['num_posts'] = $topic_row['t_cache_num_posts'];

@@ -1877,10 +1877,10 @@ function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
     if (!(strlen($urls[0]) > 1)) {
         $urls[1] = '';
     }
-    if (((get_base_url() != get_forum_base_url()) || ((array_key_exists('on_msn', $GLOBALS['SITE_INFO'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[0] != '') && (url_is_local($urls[0]))) {
+    if (((get_base_url() != get_forum_base_url()) || ((!empty($GLOBALS['SITE_INFO']['on_msn'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[0] != '') && (url_is_local($urls[0]))) {
         $urls[0] = get_base_url() . '/' . $urls[0];
     }
-    if (((get_base_url() != get_forum_base_url()) || ((array_key_exists('on_msn', $GLOBALS['SITE_INFO'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[1] != '') && (url_is_local($urls[1]))) {
+    if (((get_base_url() != get_forum_base_url()) || ((!empty($GLOBALS['SITE_INFO']['on_msn'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[1] != '') && (url_is_local($urls[1]))) {
         $urls[1] = get_base_url() . '/' . $urls[1];
     }
 

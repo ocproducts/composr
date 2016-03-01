@@ -1693,7 +1693,7 @@ function get_ip_address($amount = 4, $ip = null)
     }
 
     global $SITE_INFO;
-    if (($amount == 3) && (array_key_exists('full_ips', $SITE_INFO)) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
+    if (($amount == 3) && (!empty($SITE_INFO['full_ips'])) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
         $amount = 4;
     }
 

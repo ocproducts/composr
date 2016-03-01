@@ -300,7 +300,7 @@ function can_try_mod_rewrite($avoid_remap = false)
         return false;
     }
     $url_scheme = get_option('url_scheme');
-    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_url_scheme', 0) == 0) && ((!array_key_exists('block_mod_rewrite', $GLOBALS['SITE_INFO'])) || ($GLOBALS['SITE_INFO']['block_mod_rewrite'] == '0')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
+    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_url_scheme', 0) == 0) && ((empty($GLOBALS['SITE_INFO']['block_mod_rewrite'])) || ($GLOBALS['SITE_INFO']['block_mod_rewrite'] != '1')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
 }
 
 /**

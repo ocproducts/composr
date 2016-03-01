@@ -39,7 +39,7 @@ imagedestroy($img);
 function get_session_cookie()
 {
     global $SITE_INFO;
-    if (!array_key_exists('session_cookie', $SITE_INFO)) {
+    if (empty($SITE_INFO['session_cookie'])) {
         $SITE_INFO['session_cookie'] = 'cms_session';
     }
     return $SITE_INFO['session_cookie'];

@@ -264,7 +264,7 @@ function cron_bridge_script($caller)
 
     // For multi-site installs, run for each install
     global $CURRENT_SHARE_USER, $SITE_INFO;
-    if ((is_null($CURRENT_SHARE_USER)) && (array_key_exists('custom_share_domain', $SITE_INFO))) {
+    if ((is_null($CURRENT_SHARE_USER)) && (!empty($SITE_INFO['custom_share_domain']))) {
         require_code('files');
 
         foreach ($SITE_INFO as $key => $val) {

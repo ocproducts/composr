@@ -635,6 +635,8 @@ function kid_gloves_html_escaping(&$parameters)
  */
 function kid_gloves_html_escaping_singular(&$param)
 {
+    global $KNOWN_TRUE_HTML;
+
     if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
         if (!isset($KNOWN_TRUE_HTML[$param])) {
             $param = escape_html($param);

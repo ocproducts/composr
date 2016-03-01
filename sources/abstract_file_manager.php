@@ -136,7 +136,7 @@ function get_afm_form_fields()
 
     // Domain
     if (is_null($ftp_domain)) {
-        if (array_key_exists('ftp_domain', $GLOBALS['SITE_INFO'])) {
+        if (!empty($GLOBALS['SITE_INFO']['ftp_domain'])) {
             $ftp_domain = $GLOBALS['SITE_INFO']['ftp_domain'];
         } else {
             $ftp_domain = get_domain();
@@ -145,7 +145,7 @@ function get_afm_form_fields()
 
     // Username
     if (is_null($ftp_username)) {
-        if (array_key_exists('ftp_username', $GLOBALS['SITE_INFO'])) {
+        if (!empty($GLOBALS['SITE_INFO']['ftp_username'])) {
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
             if (php_function_allowed('posix_getpwuid')) {
@@ -166,7 +166,7 @@ function get_afm_form_fields()
 
     // Directory
     if (is_null($ftp_directory)) {
-        if (array_key_exists('ftp_directory', $GLOBALS['SITE_INFO'])) {
+        if (!empty($GLOBALS['SITE_INFO']['ftp_directory'])) {
             $ftp_directory = $GLOBALS['SITE_INFO']['ftp_directory'];
         } else {
             $pos = strpos(cms_srv('SCRIPT_NAME'), 'adminzone/index.php');

@@ -2265,7 +2265,7 @@ function ecv_BANNER($lang, $escaped, $param)
     if (addon_installed('banners')) {
         global $SITE_INFO;
         $is_on_banners = ((isset($param[1])) && ($param[1] == '1')) || (((!has_privilege(get_member(), 'banner_free')) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_option('admin_banners') == '1')) || (!is_null($GLOBALS['CURRENT_SHARE_USER']))));
-        if (array_key_exists('throttle_bandwidth_registered', $SITE_INFO)) {
+        if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
             $views_till_now = intval(get_value('page_views'));
             $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
             $total_bandwidth = intval(get_value('download_bandwidth'));

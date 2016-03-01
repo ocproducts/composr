@@ -94,7 +94,7 @@ class Database_Static_mysqli extends Database_super_mysql
         $this->cache_db[$x] = $db;
 
         global $SITE_INFO;
-        if (!array_key_exists('database_charset', $SITE_INFO)) {
+        if (empty($SITE_INFO['database_charset'])) {
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysqli_set_charset')) {
