@@ -145,6 +145,14 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
         return;
     }
 
+    $filter = get_param_string('filter', '');
+    if ($filter != '') {
+        list($zone_name, $attributes) = page_link_decode($node['page_link']);
+        if (!match_key_match($filter, false, $attributes, $zone_name, $attributes['page'])) {
+            return;
+        }
+    }
+
     $default = get_param_string('default', null, true);
 
     if (isset($node['children'])) {
@@ -397,7 +405,7 @@ function _organise_loaded_privileges($admin_groups, $groups, $_privilege_access)
  */
 function _get_overridable_privileges_for_privilege_page($privilege_page)
 {
-    if (is_null($privilege_page)) {
+    if (is_null($privilege_page)) { // For root
         return array(
             'submit_cat_highrange_content' => 0,
             'edit_cat_highrange_content' => 0,

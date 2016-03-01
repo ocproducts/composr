@@ -85,7 +85,23 @@ class Module_cms_galleries extends Standard_crud_module
     public function get_privilege_overrides()
     {
         require_lang('galleries');
-        return array('view_private_content' => 0, 'mass_import' => 0, 'have_personal_category' => 0, 'submit_cat_midrange_content' => array(0, 'ADD_GALLERY'), 'edit_own_cat_midrange_content' => array(0, 'EDIT_OWN_GALLERY'), 'edit_cat_midrange_content' => array(0, 'EDIT_GALLERY'), 'delete_own_cat_midrange_content' => array(0, 'DELETE_OWN_GALLERY'), 'delete_cat_midrange_content' => array(0, 'DELETE_GALLERY'), 'may_download_gallery' => 1, 'submit_midrange_content' => array(1, 'ADD_MEDIA'), 'bypass_validation_midrange_content' => array(1, 'BYPASS_VALIDATION_MEDIA'), 'edit_own_midrange_content' => array(1, 'EDIT_OWN_MEDIA'), 'edit_midrange_content' => array(1, 'EDIT_MEDIA'), 'delete_own_midrange_content' => array(1, 'DELETE_OWN_MEDIA'), 'delete_midrange_content' => array(1, 'DELETE_MEDIA'));
+        return array(
+            'view_private_content' => 0,
+            'mass_import' => 0,
+            'have_personal_category' => array(0, 'HAVE_PERSONAL_GALLERIES'),
+            'submit_cat_midrange_content' => array(0, 'ADD_GALLERY'),
+            'edit_own_cat_midrange_content' => array(0, 'EDIT_OWN_GALLERY'),
+            'edit_cat_midrange_content' => array(0, 'EDIT_GALLERY'),
+            'delete_own_cat_midrange_content' => array(0, 'DELETE_OWN_GALLERY'),
+            'delete_cat_midrange_content' => array(0, 'DELETE_GALLERY'),
+            'may_download_gallery' => 1,
+            'submit_midrange_content' => array(1, 'ADD_MEDIA'),
+            'bypass_validation_midrange_content' => array(1, 'BYPASS_VALIDATION_MEDIA'),
+            'edit_own_midrange_content' => array(1, 'EDIT_OWN_MEDIA'),
+            'edit_midrange_content' => array(1, 'EDIT_MEDIA'),
+            'delete_own_midrange_content' => array(1, 'DELETE_OWN_MEDIA'),
+            'delete_midrange_content' => array(1, 'DELETE_MEDIA'),
+        );
     }
 
     public $title;
