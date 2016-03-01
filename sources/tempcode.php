@@ -612,11 +612,15 @@ function do_lang_tempcode($lang_string, $token1 = null, $token2 = null, $token3 
  */
 function kid_gloves_html_escaping(&$parameters)
 {
+    global $KNOWN_TRUE_HTML;
+
     $param = mixed();
     foreach ($parameters as &$param) {
         if (is_string($param)) {
             if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
-                $param = escape_html($param);
+                if (!isset($KNOWN_TRUE_HTML[$param])) {
+                    $param = escape_html($param);
+                }
             }
         } elseif (is_array($param)) {
             kid_gloves_html_escaping($param);
@@ -632,7 +636,9 @@ function kid_gloves_html_escaping(&$parameters)
 function kid_gloves_html_escaping_singular(&$param)
 {
     if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
-        $param = escape_html($param);
+        if (!isset($KNOWN_TRUE_HTML[$param])) {
+            $param = escape_html($param);
+        }
     }
 }
 
@@ -1827,6 +1833,11 @@ class Tempcode
         $tmp = ob_get_clean();
         if ((!$MEMORY_OVER_SPEED) && (!$NO_EVAL_CACHE) && (!$GLOBALS['STUCK_ABORT_SIGNAL'])) {
             $this->cached_output = $tmp; // Optimisation to store it in here. We don't do the same for evaluate_echo as that's a final use case and hence it would be unnecessarily inefficient to store the result
+
+            global $DECLARATIONS_STATE, $KNOWN_TRUE_HTML;
+            if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+                $KNOWN_TRUE_HTML[$tmp] = true;
+            }
         }
         if (!$no_eval_cache_before) {
             $NO_EVAL_CACHE = $no_eval_cache_before;
@@ -1865,7 +1876,7 @@ class Tempcode
             return '';
         }
 
-        global $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $USER_LANG_CACHED, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE, $DEV_MODE;
+        global $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $USER_LANG_CACHED, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE, $DEV_MODE, $KNOWN_TRUE_HTML, $DECLARATIONS_STATE;
 
         ob_start();
 
@@ -1927,6 +1938,10 @@ class Tempcode
 
         if (!$no_eval_cache_before) {
             $NO_EVAL_CACHE = $no_eval_cache_before;
+        }
+
+        if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+            $KNOWN_TRUE_HTML[$ret] = true;
         }
 
         return $ret;

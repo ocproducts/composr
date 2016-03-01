@@ -135,8 +135,9 @@ function init__global3()
     define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
     define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
 
-    global $ESCAPE_HTML_OUTPUT; // Used to track what is already escaped in kid-gloves modes
+    global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
+    $KNOWN_TRUE_HTML = array();
 }
 
 /**
