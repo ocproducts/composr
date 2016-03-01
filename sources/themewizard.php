@@ -82,6 +82,13 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     $autodetect_background_images = $guess_images_if_needed && (!isset($map['theme_wizard_images']));
     $map += better_parse_ini_file($ini_path); // NB: Does not take precedence
 
+    if (!isset($map['theme_wizard_images'])) {
+        $map['theme_wizard_images'] = '';
+    }
+    if (!isset($map['theme_wizard_images_no_wild'])) {
+        $map['theme_wizard_images_no_wild'] = '';
+    }
+
     if ($autodetect_background_images) {
         $dh = opendir(get_file_base() . '/themes/' . filter_naughty($theme) . (($theme == 'default') ? '/css/' : '/css_custom/'));
         while (($sheet = readdir($dh)) !== false) {

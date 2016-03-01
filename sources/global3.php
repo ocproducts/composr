@@ -1431,6 +1431,19 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
 }
 
 /**
+ * Get the name of the page in the URL or active script.
+ *
+ * @return ID_TEXT The current page/script name
+ */
+function get_page_or_script_name()
+{
+    if (running_script('index') || running_script('iframe')) {
+        return get_page_name();
+    }
+    return current_script();
+}
+
+/**
  * Get the name of the page in the URL (by convention: the current page).
  * This works on the basis of the 'page' parameter and does not require index.php be the active script.
  * It will do dash to underscore substitution as required.

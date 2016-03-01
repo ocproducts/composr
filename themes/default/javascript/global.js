@@ -1078,7 +1078,7 @@ function confirm_session(callback)
 	var url='{$FIND_SCRIPT_NOHTTP;,confirm_session}'+keep_stub(true);
 
 	// First see if session already established
-	require_javascript('javascript_ajax');
+	require_javascript('ajax');
 	if (typeof window.do_ajax_request=='undefined') return;
 	var ret=do_ajax_request(url+keep_stub(true),function(ret) {
 		if (!ret) return;

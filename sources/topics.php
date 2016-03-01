@@ -852,7 +852,9 @@ class CMS_Topic
                     if (array_key_exists($post['member'], $SIGNATURES_CACHE)) {
                         $sig = $SIGNATURES_CACHE[$post['member']];
                     } else {
-                        $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($post['member']), 'm_signature', $GLOBALS['FORUM_DB']);
+                        $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($post['member']);
+                        $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+                        $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
                         $SIGNATURES_CACHE[$post['member']] = $sig;
                     }
                 }

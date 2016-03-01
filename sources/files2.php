@@ -1814,7 +1814,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
-        $errstr = $php_errormsg;
+        $errstr = @strval($php_errormsg);
         if ($trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);

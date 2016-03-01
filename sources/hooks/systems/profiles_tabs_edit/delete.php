@@ -56,8 +56,8 @@ class Hook_profiles_tabs_edit_delete
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 
-            require_code('ocf_members_action');
-            require_code('ocf_members_action2');
+            require_code('cns_members_action');
+            require_code('cns_members_action2');
 
             cns_delete_member($member_id_of);
 

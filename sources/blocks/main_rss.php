@@ -63,6 +63,10 @@ class Block_main_rss
      */
     public function run($map)
     {
+        if (!addon_installed('news')) {
+            return new Tempcode();
+        }
+
         require_lang('news');
         require_css('news');
         require_code('obfuscate');

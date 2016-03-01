@@ -192,7 +192,9 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
             } else {
-                $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']), 'm_signature', $GLOBALS['FORUM_DB']);
+                $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']);
+                $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+                $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
                 $SIGNATURES_CACHE[$_postdetails['p_poster']] = $sig;
             }
             $post['signature'] = $sig;

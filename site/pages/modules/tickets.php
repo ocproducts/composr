@@ -702,7 +702,7 @@ class Module_tickets
 
             // Post templates
             $post_templates = new Tempcode();
-            if ($has_staff_only) {
+            if (($has_staff_only) && (addon_installed('cns_post_templates'))) {
                 require_code('cns_posts_action');
                 require_lang('cns_post_templates');
 
