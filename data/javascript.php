@@ -52,10 +52,6 @@ require($FILE_BASE . '/sources/global.php');
 prepare_for_known_ajax_response();
 
 header('Content-type: text/javascript; charset=' . get_charset());
-$lang = get_param_string('lang', '');
-if ($lang != '') {
-    require_lang($lang);
-}
 $script = get_param_string('script');
 safe_ini_set('ocproducts.xss_detect', '0');
 if ($script != '') {

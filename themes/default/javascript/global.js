@@ -1078,7 +1078,7 @@ function confirm_session(callback)
 	var url='{$FIND_SCRIPT_NOHTTP;,confirm_session}'+keep_stub(true);
 
 	// First see if session already established
-	require_javascript('ajax');
+	require_javascript('ajax',window.do_ajax_request);
 	if (typeof window.do_ajax_request=='undefined') return;
 	var ret=do_ajax_request(url+keep_stub(true),function(ret) {
 		if (!ret) return;
@@ -1163,14 +1163,19 @@ function require_css(sheet)
 	link.setAttribute('href','{$FIND_SCRIPT_NOHTTP;,sheet}?sheet='+sheet+keep_stub());
 	document.getElementsByTagName('head')[0].appendChild(link);
 }
-function require_javascript(script,lang)
+function require_javascript(script,detector)
 {
+	// Check it is not already loading
 	if (document.getElementById('loading_js_'+script)) return;
+
+	// Check it is already loaded
+	if (typeof detector!='undefined') return; // Some object reference into the file passed in was defined, so the file must have been loaded already
+
+	// Load it
 	var link=document.createElement('script');
 	link.setAttribute('id','loading_js_'+script);
 	link.setAttribute('type','text/javascript');
 	var url='{$FIND_SCRIPT_NOHTTP;,javascript}?script='+script+keep_stub();
-	if (lang) url=url+'&lang='+lang;
 	link.setAttribute('src',url);
 	document.getElementsByTagName('head')[0].appendChild(link);
 }

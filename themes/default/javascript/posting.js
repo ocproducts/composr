@@ -2,7 +2,7 @@
 
 /* Form editing code (mostly stuff only used on posting forms) */
 
-require_javascript('ajax');
+require_javascript('ajax',window.do_ajax_request);
 
 // ===========
 // ATTACHMENTS

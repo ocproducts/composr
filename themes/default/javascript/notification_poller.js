@@ -15,7 +15,7 @@ if (typeof window.notifications_time_barrier=='undefined')
 
 function notification_poller_init(time_barrier)
 {
-	require_javascript('sound');
+	require_javascript('sound',window.SoundManager);
 
 	window.notifications_time_barrier=time_barrier;
 
@@ -133,13 +133,13 @@ function display_alert(notification)
 			var go_func=function() {
 				var sound_url='data/sounds/message_received.mp3';
 				var base_url=((sound_url.indexOf('data_custom')==-1)&&(sound_url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
-				window.soundManager.createSound('notification_ping',base_url+'/'+sound_url);
-				window.soundManager.play('notification_ping');
+				var sound_object=window.soundManager.createSound({url: base_url+'/'+sound_url});
+				sound_object.play();
 			};
 
 			if (!window.soundManager.setupOptions.url)
 			{
-				window.soundManager.setup({onready: go_func, url: get_base_url()+'/data', debugMode: false});
+				window.soundManager.setup({onready: go_func, url: get_base_url()+'/data/soundmanager', debugMode: false});
 			} else
 			{
 				go_func();

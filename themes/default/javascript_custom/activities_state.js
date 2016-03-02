@@ -5,7 +5,7 @@
 /*
 This provides the JavaScript necessary for the "status" part of activities
 
-You can make use of it via require_javascript('activities_state')
+You can make use of it via require_javascript('activities_state',window.s_update_submit)
 */
 
 function s_update_focus(event)
