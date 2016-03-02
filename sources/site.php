@@ -57,6 +57,7 @@ function init__site()
             }
             set_http_status_code('301');
             header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            require_code('urls');
             header('Location: ' . get_self_url(true, false, $non_canonical));
             exit();
         }
@@ -1899,6 +1900,9 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             $_title = get_translated_text($PT_PAIR_CACHE_CP[$the_page]['cc_page_title'], null, null, true);
             if ($_title === null) {
                 $_title = $the_page;
+            }
+            if ($GLOBALS['XSS_DETECT']) {
+                ocp_mark_as_escaped($_title);
             }
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }

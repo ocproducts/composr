@@ -1563,8 +1563,7 @@ class Tempcode
             $this->children = array();
         }
 
-        $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/
-            eval($raw_data);
+        $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/@eval($raw_data);
         if ($result === false) {
             if ($allow_failure) {
                 return false;

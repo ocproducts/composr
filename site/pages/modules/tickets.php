@@ -525,7 +525,7 @@ class Module_tickets
                 }
 
                 $this->title = get_screen_title('_VIEW_SUPPORT_TICKET', true, array(escape_html($ticket_title), escape_html($ticket_type_name)));
-                breadcrumb_set_self($ticket_title);
+                breadcrumb_set_self(escape_html($ticket_title));
             }
 
             // Help text

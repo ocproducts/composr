@@ -175,7 +175,7 @@ class Module_admin
 
             array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
             array('delineate', 'delimit', 'delimitate', 'demarcate'),
-            array('order', 'sort', 'position'),
+            array('order', 'sort', 'position', 'direction'),
             array('sudo', 'masquerade', 'su'),
             array('multi-moderation', 'multimoderation'),
             array('invitation', 'invite'),

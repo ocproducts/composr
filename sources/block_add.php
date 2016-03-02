@@ -361,7 +361,7 @@ function block_helper_script()
                     if (!addon_installed('cns_forum')) {
                         warn_exit(do_lang_tempcode('NO_FORUM_INSTALLED'));
                     }
-                    $list = create_selection_list_forum_tree(null, null, explode(',', $default));
+                    $list = create_selection_list_forum_tree(null, null, array_map('intval', explode(',', $default)));
                     $fields->attach(form_input_multi_list($parameter_title, escape_html($description), $parameter, $list));
                 } elseif ($parameter == 'font') { // font choice
                     $fonts = array();

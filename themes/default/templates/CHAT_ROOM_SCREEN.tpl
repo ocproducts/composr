@@ -1,5 +1,6 @@
 {TITLE}
 
+{$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,widget_color}
 {$REQUIRE_CSS,widget_color}
 
