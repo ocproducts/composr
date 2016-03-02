@@ -144,7 +144,7 @@ function composr_homesite_install()
     set_option('remember_me_by_default','1');
     set_option('leader_board_size', '8');
     set_option('allowed_post_submitters', "compo.sr\nocproducts.com\nlocalhost\n127.0.0.1\n192.168.1.100");
-    set_option('security_token_exceptions', '_make_release');
+    set_option('security_token_exceptions', "_make_release\npurchase\nsubscriptions\ninvoices");
 
     // Downloads structure
     // -------------------
