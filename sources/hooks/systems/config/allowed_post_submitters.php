@@ -51,6 +51,6 @@ class Hook_config_allowed_post_submitters
      */
     public function get_default()
     {
-        return 'translate.googleusercontent.com';
+        return "translate.googleusercontent.com\npaypal.com\nsandbox.paypal.com\nselect.worldpay.com\nselect-test.worldpay.com";
     }
 }
