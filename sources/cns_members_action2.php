@@ -1509,7 +1509,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
     } else {
         $change = array();
 
-        if (is_string($value)) { // Should not normally be needed, but add some safety in our API
+        if (is_string($value)) {
             switch ($storage_type) {
                 case 'short_trans':
                 case 'long_trans':
@@ -1525,6 +1525,8 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
                     $change[$db_fieldname] = $value;
                     break;
             }
+        } else {
+            $change[$db_fieldname] = $value;
         }
 
         if (!$defer) {
