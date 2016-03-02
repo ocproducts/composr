@@ -28,7 +28,7 @@ function s_update_get_data()
 
 					// Now grab whatever updates are available
 					var url='{$BASE_URL;,0}/data_custom/activities_updater.php'+keep_stub(true);
-					var list_elements=jQuery('li','#activities_feed');
+					var list_elements=$('li','#activities_feed');
 					var last_id=((typeof list_elements.attr('id')=='undefined')?'-1':list_elements.attr('id').replace(/^activity_/,''));
 					var post_val='last_id='+last_id+'&mode='+window.activities_mode;
 
@@ -70,10 +70,10 @@ function s_update_show(data,stat)
 		var succeeded=false;
 		if (stat=='success')
 		{
-			if (jQuery('success',data).text()=='1')
+			if ($('success',data).text()=='1')
 			{
-				var list_elements=jQuery('li','#activities_feed'); // Querying from current browser DOM
-				var list_items=jQuery('listitem',data); // Querying from XML definition o new data
+				var list_elements=$('li','#activities_feed'); // Querying from current browser DOM
+				var list_items=$('listitem',data); // Querying from XML definition o new data
 
 				list_elements.removeAttr('toFade');
 
@@ -81,16 +81,17 @@ function s_update_show(data,stat)
 				var top_of_list=document.getElementById('activities_holder').firstChild;
 				jQuery.each(list_items,function() {
 					var this_li=document.createElement('li');
-					this_li.id='activity_'+jQuery(this).attr('id');
+					this_li.id='activity_'+$(this).attr('id');
 					this_li.className='activities_box box';
 					this_li.setAttribute('toFade','yes');
 					top_of_list.parentNode.insertBefore(this_li,top_of_list);
-					set_inner_html(this_li,Base64.decode(jQuery(this).text()));
+					set_inner_html(this_li,Base64.decode($(this).text()));
 				});
 
-				document.getElementById('activity_-1').style.display='none';
+				var no_messages=document.getElementById('activity_-1');
+				if (no_messages) no_messages.style.display='none';
 
-				list_elements=jQuery('li','#activities_feed'); // Refresh, so as to include the new activity nodes
+				list_elements=$('li','#activities_feed'); // Refresh, so as to include the new activity nodes
 
 				if ((!window.activities_feed_grow) && (list_elements.length>window.activities_feed_max)) // Remove anything passed the grow length
 				{
@@ -100,21 +101,21 @@ function s_update_show(data,stat)
 					}
 				}
 
-				jQuery('#activities_general_notify').text('');
-				jQuery('li[toFade="yes"]','#activities_feed').hide().fadeIn(1200);
+				$('#activities_general_notify').text('');
+				$('li[toFade="yes"]','#activities_feed').hide().fadeIn(1200);
 				succeeded=true;
 			} else
 			{
-				if (jQuery('success',data).text()=='2')
+				if ($('success',data).text()=='2')
 				{
-					jQuery('#activities_general_notify').text('');
+					$('#activities_general_notify').text('');
 					succeeded=true;
 				}
 			}
 		}
 		if (!succeeded)
 		{
-			jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;}');
+			$('#activities_general_notify').text('{!INTERNAL_ERROR;}');
 		}
 		window.s_ajax_update_locking=0;
 	}
@@ -157,24 +158,24 @@ function s_update_remove_show(data,stat)
 
 	if (stat=='success')
 	{
-		if (jQuery('success',data).text()=='1')
+		if ($('success',data).text()=='1')
 		{
-			status_id='#activity_'+jQuery('status_id',data).text();
-			jQuery('.activities_content',status_id,'#activities_feed').text(jQuery('feedback',data).text()).addClass('activities_content__remove_success').hide().fadeIn(animation_speed,function() {
-				jQuery(status_id,'#activities_feed').fadeOut(animation_speed,function() {
-					jQuery(status_id,'#activities_feed').remove();
+			status_id='#activity_'+$('status_id',data).text();
+			$('.activities_content',status_id,'#activities_feed').text($('feedback',data).text()).addClass('activities_content__remove_success').hide().fadeIn(animation_speed,function() {
+				$(status_id,'#activities_feed').fadeOut(animation_speed,function() {
+					$(status_id,'#activities_feed').remove();
 				});
 			});
 		} else
 		{
-			switch (jQuery('err',data).text())
+			switch ($('err',data).text())
 			{
 				case 'perms':
-					status_id='#activity_'+jQuery('status_id',data).text();
-					var backup_up_text=jQuery('activities_content',status_id,'#activities_feed').text();
-					jQuery('.activities_content',status_id,'#activities_feed').text(jQuery('feedback',data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animation_speed,function() {
-						jQuery('.activities_content',status_id,'#activities_feed').fadeOut( animation_speed,function() {
-							jQuery('.activities_content',status_id,'#activities_feed').text(backup_up_text).removeClass('activities_content__remove_failure').fadeIn(animation_speed);
+					status_id='#activity_'+$('status_id',data).text();
+					var backup_up_text=$('activities_content',status_id,'#activities_feed').text();
+					$('.activities_content',status_id,'#activities_feed').text($('feedback',data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animation_speed,function() {
+						$('.activities_content',status_id,'#activities_feed').fadeOut( animation_speed,function() {
+							$('.activities_content',status_id,'#activities_feed').text(backup_up_text).removeClass('activities_content__remove_failure').fadeIn(animation_speed);
 						});
 					});
 					break;

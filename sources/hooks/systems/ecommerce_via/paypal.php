@@ -331,16 +331,13 @@ class Hook_paypal
         }
 
         // SECURITY: Check it came into our own account
-        $primary_paypal_email = get_option('primary_paypal_email');
         $receiver_email = post_param_string('receiver_email');
-        if ($primary_paypal_email != '') {
-            if ($receiver_email != $primary_paypal_email) {
-                fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR'));
-            }
-        } else {
-            if ($receiver_email != $this->_get_payment_address()) {
-                fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR'));
-            }
+        $primary_paypal_email = get_option('primary_paypal_email');
+        if ($primary_paypal_email == '') {
+            $primary_paypal_email = $this->_get_payment_address();
+        }
+        if ($receiver_email != $primary_paypal_email && $receiver_email != $this->_get_payment_address()) {
+            fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 
         // Shopping cart

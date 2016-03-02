@@ -35,11 +35,13 @@
 </div>
 
 <script>//<![CDATA[
-	if (jQuery('#fp_status_form').length!=0) {
-		jQuery('textarea','#fp_status_form').bind('focus',s_update_focus);
-		jQuery('textarea','#fp_status_form').bind('blur',s_update_blur);
-		jQuery('#fp_status_form').submit(s_update_submit);
-		jQuery('textarea','#fp_status_form').keyup(s_maintain_char_count);
-		jQuery('textarea','#fp_status_form').keypress(s_maintain_char_count);
-	}
+	add_event_listener_abstract(window,'load',function() {
+		if ($('#fp_status_form').length!=0) {
+			$('textarea','#fp_status_form').bind('focus',s_update_focus);
+			$('textarea','#fp_status_form').bind('blur',s_update_blur);
+			$('#fp_status_form').submit(s_update_submit);
+			$('textarea','#fp_status_form').keyup(s_maintain_char_count);
+			$('textarea','#fp_status_form').keypress(s_maintain_char_count);
+		}
+	});
 //]]></script>
