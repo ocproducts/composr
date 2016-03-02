@@ -154,11 +154,11 @@ class Block_main_google_map_users
         $member_data_js .= "];";
 
         // See if we need to detect the current user's long/lat
-        $member_longitude = get_cms_cpf('longitude', get_member());
-        $member_latitude = get_cms_cpf('latitude', get_member());
-        $update_url = get_base_url() . '/data_custom/set_coordinates.php?mid=' . strval(get_member()) . '&coord=';
+        $member_longitude = @floatval(get_cms_cpf('longitude', get_member()));
+        $member_latitude = @floatval(get_cms_cpf('latitude', get_member()));
+        $set_coord_url = get_base_url() . '/data_custom/set_coordinates.php?mid=' . strval(get_member()) . '&coord=';
         if ((!empty($member_longitude) && !empty($member_latitude)) || (is_guest())) {
-            $update_url = '';
+            $set_coord_url = '';
         }
 
         return do_template('BLOCK_MAIN_GOOGLE_MAP_USERS', array(
@@ -166,7 +166,7 @@ class Block_main_google_map_users
             'TITLE' => $map['title'],
             'GEOLOCATE_USER' => $geolocate_user,
             'CLUSTER' => $cluster,
-            'SET_COORD_URL' => $update_url,
+            'SET_COORD_URL' => $set_coord_url,
             'REGION' => $map['region'],
             'DATA' => $member_data_js,
             'USERNAME_PREFIX' => $map['username_prefix'],

@@ -112,7 +112,6 @@ a.top_left_toggleicon:hover {
 
 .staff_new_versions .version_number {
 	font-weight: bold;
-	float: right;
 	color: {$GET,area_text};
 	font-size: 1.2em;
 }

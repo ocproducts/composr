@@ -236,8 +236,10 @@ class LangFilter_EN extends LangFilter
         }
 
         // Put in correct brand name
-        $remapping['the software'] = brand_name();
-        $remapping['the website software'] = brand_name();
+        if (!is_null($key)) {
+            $remapping['the software'] = brand_name();
+            $remapping['the website software'] = brand_name();
+        }
 
         // Fix bad contextualisation
         $remapping['on Yesterday'] = 'Yesterday';

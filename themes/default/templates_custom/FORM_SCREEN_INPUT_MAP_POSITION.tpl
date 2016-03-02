@@ -57,6 +57,7 @@
 	{
 		var latLng=new google.maps.LatLng(latitude,longitude);
 		marker.setPosition(latLng);
+		map.setCenter(latLng);
 		map.setZoom(12);
 	}
 
@@ -67,10 +68,6 @@
 			try
 			{
 				navigator.geolocation.getCurrentPosition(function(position) {
-					var initial_location=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-
-					map.setCenter(initial_location);
-
 					place_marker(position.coords.latitude,position.coords.longitude)
 
 					document.getElementById('{NAME;/}_latitude').value=position.coords.latitude;

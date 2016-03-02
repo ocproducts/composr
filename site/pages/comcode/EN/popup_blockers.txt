@@ -1,11 +1,11 @@
-[title]Enabling popups[/title]
+[title]Enabling pop-ups[/title]
 
-Some of our systems rely on your web browser allowing {$SITE_NAME} to allow popup windows.
+Some of our systems rely on your web browser allowing {$SITE_NAME} to allow pop-up windows.
 {+START,IF,{$EQ,{$_GET,failure},1}}
-[b]You have been brought here as we detected a failure to open a popup window.[/b]{+END}
+[b]You have been brought here as we detected a failure to open a pop-up window.[/b]{+END}
 [title="2"]Web browsers[/title]
 
-Often web browsers come built-in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
+Often web browsers come built-in with pop-up blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
 
 [title="3"]Microsoft Edge / Microsoft Internet Explorer[/title]
 
@@ -69,7 +69,7 @@ Safari has no per-website control over blocking pop-ups windows. Pop-ups are eit
  - Click [b]Security[/b].
  - Make sure [b]Block pop-up windows[/b] is unchecked.
 
-You should go back and check [b]Block pop-up windows[/b] when you are done using the site for the day, to avoid inconvenience if other websites abuse popup windows.
+You should go back and check [b]Block pop-up windows[/b] when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
 You may wish to install a more featured web browser, such as Google Chrome for greater convenience.
 
@@ -83,8 +83,8 @@ Opera has no per-website control over blocking pop-ups windows. Pop-ups are eith
  - Make sure you are looking at the [b]General[/b] tab.
  - Make sure [b]Pop-ups[/b] is set to "Open all pop-ups".
 
-You should go back and change [b]Pop-ups[/b] to "Block unwanted pop-ups" when you are done using the site for the day, to avoid inconvenience if other websites abuse popup windows.
+You should go back and change [b]Pop-ups[/b] to "Block unwanted pop-ups" when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
 [title="2"]Browser extensions / addons[/title]
 
-It is also possible you have installed your own popup blocker into your web browser. If this is the case then you'll need to configure that to allow popups from [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml].
+It is also possible you have installed your own pop-up blocker into your web browser. If this is the case then you'll need to configure that to allow pop-ups from [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml].

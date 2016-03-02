@@ -171,7 +171,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         $this_level = array_key_exists(strval($newsletter['id']), $send_details) ? $send_details[strval($newsletter['id'])] : 0;
         if ($this_level != 0) {
             $where_lang = multi_lang() ? (db_string_equal_to('language', $language) . ' AND ') : '';
-            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']);
+            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter_subscribers n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']);
             if ($strict_level) {
                 $query .= ' AND the_level=' . strval($this_level);
             } else {

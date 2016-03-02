@@ -1,3 +1,9 @@
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
 User-Agent: *
 
 Disallow: /ClientFiles/
@@ -35,6 +41,6 @@ Disallow: *act_start*
 # Weird baidu
 Disallow: /chat/buddy_add.htm
 
-Crawl-Delay: 5
+Crawl-Delay: 10
 
-Sitemap: http://ocportal.com/ocp_sitemap.xml
+Sitemap: http://compo.sr/data_custom/sitemaps/index.xml

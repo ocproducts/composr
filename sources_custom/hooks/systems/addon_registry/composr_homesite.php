@@ -159,6 +159,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'sources_custom/hooks/systems/cron/site_cleanup.php',
             'uploads/website_specific/compo.sr/demonstratr/template.sql',
             'uploads/website_specific/compo.sr/demonstratr/template.tar',
+            'uploads/website_specific/compo.sr/upgrades/tars/index.html',
             'data_custom/demonstratr_upgrade.php',
             'sources_custom/cns_forumview.php',
             'sources_custom/errorservice.php',

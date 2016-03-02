@@ -370,6 +370,8 @@ class Database_Static_oracle
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         $string = str_replace("'", "''", $string);
         return str_replace('&', '\&', $string);
     }

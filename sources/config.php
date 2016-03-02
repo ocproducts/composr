@@ -39,7 +39,7 @@ function init__config()
                 $_cache = $SMART_CACHE->get('CONFIG_OPTIONS');
                 if ($_cache !== null) {
                     foreach ($_cache as $c_key => $c_value) {
-                        $CONFIG_OPTIONS_CACHE[$c_key] = array('c_value_translated' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => 0);
+                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => 0);
                     }
                 }
             }
@@ -225,8 +225,8 @@ function get_option($name, $missing_ok = false)
     $option = &$CONFIG_OPTIONS_CACHE[$name];
 
     // The master of redundant quick exit points
-    if (isset($option['c_value_translated'])) {
-        $value = $option['c_value_translated'];
+    if (isset($option['_cached_string_value'])) {
+        $value = $option['_cached_string_value'];
 
         if ($CONFIG_OPTIONS_FULLY_LOADED) {
             if ($SMART_CACHE !== null) {
@@ -240,7 +240,7 @@ function get_option($name, $missing_ok = false)
     // Non-translated
     if ($option['c_needs_dereference'] == 0) {
         $value = $option['c_value'];
-        $option['c_value_translated'] = $value; // Allows slightly better code path next time
+        $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
         if ($CONFIG_OPTIONS_FULLY_LOADED) {
             if ($SMART_CACHE !== null) {
@@ -253,7 +253,7 @@ function get_option($name, $missing_ok = false)
 
     // Translated...
     $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
-    $option['c_value_translated'] = $value;
+    $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
         if ($SMART_CACHE !== null) {

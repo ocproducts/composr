@@ -68,8 +68,12 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
             warn_exit(do_lang_tempcode('NO_CATEGORIES'));
         }
         $fields->attach(form_input_list(do_lang_tempcode('BANNER_TYPE'), do_lang_tempcode('_DESCRIPTION_BANNER_TYPE'), 'b_type', $types, null, false, false));
+
+        $image_banner = false; // Not known
     } else {
         $fields->attach(form_input_hidden('b_type', $b_type));
+
+        $image_banner = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 't_is_textual', array('id' => $b_type)) === 0;
     }
 
     if (get_option('enable_staff_notes') == '1') {
@@ -99,7 +103,9 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $field_set->attach(form_input_line(do_lang_tempcode('IMAGE_URL'), do_lang_tempcode('DESCRIPTION_URL_BANNER'), 'image_url', $image_url, false));
 
-    $field_set->attach(form_input_line_comcode(do_lang_tempcode('BANNER_TITLE_TEXT'), do_lang_tempcode('DESCRIPTION_BANNER_TITLE_TEXT'), 'title_text', $title_text, false));
+    if (!$image_banner) {
+        $field_set->attach(form_input_line_comcode(do_lang_tempcode('BANNER_TITLE_TEXT'), do_lang_tempcode('DESCRIPTION_BANNER_TITLE_TEXT'), 'title_text', $title_text, false));
+    }
 
     if (has_privilege(get_member(), 'use_html_banner')) {
         $field_set->attach(form_input_text(do_lang_tempcode('BANNER_DIRECT_CODE'), do_lang_tempcode('DESCRIPTION_BANNER_DIRECT_CODE'), 'direct_code', $direct_code, false));
@@ -107,33 +113,35 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 
-    $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_BANNER_DESCRIPTION'), 'caption', $caption, false));
+    $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode($image_banner ? 'DESCRIPTION_BANNER_DESCRIPTION_SIMPLE' : 'DESCRIPTION_BANNER_DESCRIPTION'), 'caption', $caption, false));
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1184532268cd8a58adea01c3637dc4c5', 'TITLE' => do_lang_tempcode('DEPLOYMENT_DETERMINATION'))));
+    if (!$simplified) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1184532268cd8a58adea01c3637dc4c5', 'TITLE' => do_lang_tempcode('DEPLOYMENT_DETERMINATION'))));
 
-    if (has_privilege(get_member(), 'full_banner_setup')) {
-        $radios = new Tempcode();
-        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
-        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_CAMPAIGN), ($the_type == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
-        $radios->attach(form_input_radio_entry('the_type', strval(BANNER_FALLBACK), ($the_type == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
-        $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'the_type', $radios));
-        $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaignremaining', $campaignremaining, false));
-        $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
-        if (is_null($total_importance)) {
-            $total_importance = 0;
+        if (has_privilege(get_member(), 'full_banner_setup')) {
+            $radios = new Tempcode();
+            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_PERMANENT), ($the_type == BANNER_PERMANENT), do_lang_tempcode('BANNER_PERMANENT')));
+            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_CAMPAIGN), ($the_type == BANNER_CAMPAIGN), do_lang_tempcode('BANNER_CAMPAIGN')));
+            $radios->attach(form_input_radio_entry('the_type', strval(BANNER_FALLBACK), ($the_type == BANNER_FALLBACK), do_lang_tempcode('BANNER_FALLBACK')));
+            $fields->attach(form_input_radio(do_lang_tempcode('DEPLOYMENT_AGREEMENT'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE'), 'the_type', $radios));
+            $fields->attach(form_input_integer(do_lang_tempcode('HITS_ALLOCATED'), do_lang_tempcode('DESCRIPTION_HITS_ALLOCATED'), 'campaignremaining', $campaignremaining, false));
+            $total_importance = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_not_equal_to('name', $name));
+            if (is_null($total_importance)) {
+                $total_importance = 0;
+            }
+            $fields->attach(form_input_integer(do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('DESCRIPTION_IMPORTANCE_MODULUS', strval($total_importance), strval($importancemodulus)), 'importancemodulus', $importancemodulus, true));
         }
-        $fields->attach(form_input_integer(do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('DESCRIPTION_IMPORTANCE_MODULUS', strval($total_importance), strval($importancemodulus)), 'importancemodulus', $importancemodulus, true));
-    }
 
-    $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
+        $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6df9d181757c40237d9459b06075de97', 'TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6df9d181757c40237d9459b06075de97', 'TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
 
-    $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
+        $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
 
-    if (get_option('filter_regions') == '1') {
-        require_code('locations');
-        $fields->attach(form_input_regions($regions));
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields->attach(form_input_regions($regions));
+        }
     }
 
     $javascript = '

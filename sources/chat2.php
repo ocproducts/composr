@@ -334,7 +334,9 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
     $map += insert_lang('c_welcome', $welcome, 2);
     $id = $GLOBALS['SITE_DB']->query_insert('chat_rooms', $map, true);
 
-    log_it('ADD_CHATROOM', strval($id), $room_name);
+    if ($is_im == 0) {
+        log_it('ADD_CHATROOM', strval($id), $room_name);
+    }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

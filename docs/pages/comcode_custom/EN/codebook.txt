@@ -1,13 +1,13 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, contents and introduction[/title]
 
-[box float="right" width="250px"]
+[box float="right" width="160px"]
 Our official [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym] is PhpStorm:
-[url="https://www.jetbrains.com/phpstorm/"][img]https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png[/img][/url]
+[url="https://www.jetbrains.com/phpstorm/"][img]data_custom/images/docs/codebook/phpstorm.png[/img][/url]
 Major core contributors to Composr can get a free license to aid development.
 [/box]
 The Code Book contains documentation to teach experienced developers how to program for Composr. This page of the Codebook is mostly for sign-posting to the deeper pages of the book.
 
-This guide is not a substitute for learning PHP, HTML, CSS, or other languages. Some introductory material for learning web development is available in our [page="docs:"]main set of tutorials[/page]. There is an excellent PHP book available for free online.
+This guide is not a substitute for learning PHP, HTML, CSS, or other languages. Some introductory material for learning web development is available in our [page="docs:"]main set of tutorials[/page]. There is an [url="excellent PHP book"]http://www.hackingwithphp.com/[/url] available for free online.
 
 To learn Composr's API, see the phpdoc comments in the source files. The source files are logically named, so it should be relatively easy to get a handle on it all. Alternatively, view the [url="auto-generated documentation"]{$BRAND_BASE_URL}/docs/api/[/url].
 

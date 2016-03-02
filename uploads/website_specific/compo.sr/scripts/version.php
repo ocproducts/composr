@@ -153,21 +153,24 @@ $higher_versions = array(null, null, null);
 global $DOWNLOAD_ROWS;
 for ($i = 0; $i < 3; $i++) { // Loop over each release level
     $found = null;
-    $looking_for = 'Composr Version ' . $stub; // Starts with blank stub, which will match highest version. Subsequent iterations bind to the version numbers and find boundewd maximum highest version under that version prefix.
+    $_stub = preg_replace('#(\.0)+$#', '', $stub);
+    $looking_for = 'Composr Version ' . $_stub; // Starts with blank stub, which will match highest version. Subsequent iterations bind to the version numbers and find boundewd maximum highest version under that version prefix.
 
     foreach (array_reverse($DOWNLOAD_ROWS) as $row) { // Iterate, newest to oldest
         // If it's on the release level being inspected, and we're either on a qualifier (alpha/beta/RC) already, or this isn't having a qualifier (i.e. we don't want to suggest someone go to a bleeding-edge version)
         if ((substr($row['nice_title'], 0, strlen($looking_for)) == $looking_for) && ((!is_null($qualifier)) || ((strpos($row['nice_title'], 'RC') === false) && (strpos($row['nice_title'], 'beta') === false) && (strpos($row['nice_title'], 'alpha') === false)))) {
             // $this_version will hold the version we're currently looking at, comparing to the version the user has
             // Lots of work to split up version numbering
-            $this_version = preg_replace('# \(.*#', '', substr($row['nice_title'], strlen($looking_for) - strlen($stub)));
+            $this_version = preg_replace('# \(.*#', '', substr($row['nice_title'], strlen($looking_for) - strlen($_stub)));
             $this_bits = explode('.', preg_replace('# .*$#', '', $this_version));
             $this_qualifier = (strpos($this_version, ' ') === false) ? mixed() : preg_replace('#^.* #', '', $this_version); // Extract qualifier from $this_version, which btw is a "pretty version" format version number
             $different = false; // Used to ensure the version really is different to the one we're on
-            for ($j = 0; $j <= $i; $j++) {
+            for ($j = 0; $j < 3; $j++) {
                 if (!array_key_exists($j, $this_bits)) {
                     $this_bits[$j] = '0';
                 }
+            }
+            for ($j = 0; $j <= $i; $j++) {
                 if (!is_numeric($this_bits[$j])) {
                     break;
                 }
@@ -175,24 +178,19 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                     $different = true;
                 }
             }
-            for (; $j < 3; $j++) {
-                if (!array_key_exists($j, $this_bits)) {
-                    $this_bits[$j] = '0';
-                }
-            }
             if (!is_null($this_qualifier)) {
-                if ($this_qualifier !== ($qualifier . strval($qualifier_number))) {
+                if ($this_qualifier !== ($qualifier . strval($qualifier_number)) && $i == 2) {
                     $different = true;
                 }
             } elseif (!is_null($qualifier)) {
                 $different = true;
             }
 
-            $news_row = find_version($this_version);
+            $news_row = find_version(preg_replace('#(\.0)+$#', '', $this_version));
 
             // If different and better version
-            $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . $this_qualifier));
-            $assembled = implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . $qualifier_number));
+            $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . preg_replace('#(\d+)#', '.$1', $this_qualifier)));
+            $assembled = implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . '.' . $qualifier_number));
             if ((version_compare($this_assembled, $assembled) >= 0) && ($different) && (!is_null($news_row))) {
                 if (get_param_integer('test', 0) == 1) {
                     @var_dump(implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . $this_qualifier)));
@@ -282,7 +280,7 @@ if ($has_jump) {
     $upgrade_type = array('major upgrade, may break compatibility of customisations', 'feature upgrade', 'easy patch upgrade');
     for ($i = 0; $i <= 2; $i++) {
         if (!is_null($higher_versions[$i])) {
-            $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2');
+            $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
             $note = '';
             foreach ($discontinued as $d) {
                 if ((strlen($d) == 1) && ($higher_versions[$i]['version'] != $d)) {
@@ -360,16 +358,10 @@ function find_version($version_pretty)
     load_news_rows();
 
     foreach ($NEWS_ROWS as $news_row) {
-        if ($news_row['nice_title'] == $version_pretty . ' released') {
-            return $news_row;
-        }
         if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released') {
             return $news_row;
         }
-        if ($news_row['nice_title'] == $version_pretty . ' released!') {
-            return $news_row;
-        }
-        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') {
+        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') { // Major releases have exclamation marks
             return $news_row;
         }
     }
@@ -407,7 +399,7 @@ function load_news_rows()
                 array('id' => 7, 'nice_title' => 'Composr 4 released', 'add_date' => time() - 60 * 60 * 1),
             );
         } else {
-            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1, 'news_category' => 29), 'ORDER BY add_date');
+            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1), 'ORDER BY add_date');
             foreach ($NEWS_ROWS as $i => $row) {
                 $NEWS_ROWS[$i]['nice_title'] = get_translated_text($row['title']);
             }

@@ -443,6 +443,8 @@ class Database_Static_xml
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         return addslashes($string);
     }
 

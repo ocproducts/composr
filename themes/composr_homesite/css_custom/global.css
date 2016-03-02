@@ -98,6 +98,7 @@ img, img a { border:none; outline:none; }
 	.srhBtn { height:28px; }/*On wrapper of input*/
 	input.gsc-search-button { height:30px; }/*On actual input*/
 	#cse-search-form { text-align:center; }
+	.cse input.gsc-input, input.gsc-input { background-image:none !important; }
 	table.gsc-search-box { width:100px !important;/*less than real size, will grow up*/ }
 	table.gsc-search-box td { padding:0 !important; }
 	.gsc-input { width:145px !important; }

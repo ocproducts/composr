@@ -269,7 +269,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Overlay</td>
-			<td>A modern replacement for a 'popup window'. Overlays show on top of normal web page contents and are often used for adverts or to display content that doesn't need its own full page but should not be embedded directly either.</td>
+			<td>A modern replacement for a 'pop-up window'. Overlays show on top of normal web page contents and are often used for adverts or to display content that doesn't need its own full page but should not be embedded directly either.</td>
 		</tr>
 		<tr>
 			<td>PageRank</td>

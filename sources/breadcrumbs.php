@@ -227,6 +227,10 @@ class Breadcrumb_substitution_loader
 
         switch ($tag) {
             case 'substitution':
+                if (isset($tag_attributes['skip_if_single_public_zone']) && $tag_attributes['skip_if_single_public_zone'] == 'true' && get_option('collapse_user_zones') == '1') {
+                    break;
+                }
+
                 $this->substitutions[] = array(
                     $this->substitution_current_match_key,
                     $this->substitution_current_label,

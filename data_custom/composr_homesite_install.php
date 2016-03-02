@@ -278,7 +278,7 @@ function composr_homesite_install()
     $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'id', array('f_name' => 'Introduce yourself'));
     $title = 'Post your location';
     $description = 'Where are you in the world? See where others are.';
-    $post = "Show where you are on our map :)! Find other Composr users who might be near you.\n\n[block]main_google_map_users[/block]";
+    $post = "Show where you are on our map :)! Find other Composr users who might be near you.\n\n[block]main_google_map_users[/block]\n\nTo add your position, either:\n - Grant your web browser permission to know your location\n - Set your location in your profile\n";
     $topic_id = cns_make_topic($forum_id, $description, '', 1, 1, 1/*pinned*/);
     cns_make_post($topic_id, $title, $post, 0, true, 1, 1, null, null, null, $admin_member_id);
 

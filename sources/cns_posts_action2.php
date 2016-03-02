@@ -293,7 +293,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             't_cache_last_post_id=' . (is_null($last_post_id) ? 'NULL' : strval($last_post_id)) . ',
         t_cache_last_title=\'' . db_escape_string($last_title) . '\',
         t_cache_last_time=' . (is_null($last_time) ? 'NULL' : strval($last_time)) . ',
-        t_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
+        t_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
         t_cache_last_member_id=' . (is_null($last_member_id) ? 'NULL' : strval($last_member_id)) . ',';
     }
 
@@ -379,7 +379,7 @@ function cns_force_update_forum_caching($forum_id, $num_topics_increment = null,
                                 'f_cache_last_topic_id=' . (!is_null($last_topic_id) ? strval($last_topic_id) : 'NULL') . ',
         f_cache_last_title=\'' . db_escape_string($last_title) . '\',
         f_cache_last_time=' . (!is_null($last_time) ? strval($last_time) : 'NULL') . ',
-        f_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
+        f_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
         f_cache_last_member_id=' . (!is_null($last_member_id) ? strval($last_member_id) : 'NULL') . ',
         f_cache_last_forum_id=' . (!is_null($last_forum_id) ? strval($last_forum_id) : 'NULL') . '
             WHERE id=' . strval($forum_id), 1, null, false, true);
