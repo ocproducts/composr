@@ -419,13 +419,13 @@ function do_set()
         if (is_array($val)) {
             foreach ($val as $val2) {
                 $_val = str_replace('\\', '\\\\', $val2);
-                if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'][]=\'' . $_val . "';\n") === false) {
+                if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'][] = \'' . $_val . "';\n") === false) {
                     echo '<strong>Could not save to file. Out of disk space?<strong>';
                 }
             }
         } else {
             $_val = str_replace('\\', '\\\\', $val);
-            if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n") === false) {
+            if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n") === false) {
                 echo '<strong>Could not save to file. Out of disk space?<strong>';
             }
         }

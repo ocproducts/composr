@@ -242,7 +242,7 @@ function erase_cached_language()
  * Erase all template caches (caches in all themes).
  *
  * @param  boolean $preserve_some Whether to preserve CSS and JS files that might be linked to between requests
- * @param  ?array $only_templates Only erase specific templates with the following filename, exclusing suffix(es) (null: erase all)
+ * @param  ?array $only_templates Only erase specific templates with the following filename, excluding suffix(es) (null: erase all)
  */
 function erase_cached_templates($preserve_some = false, $only_templates = null)
 {
