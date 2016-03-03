@@ -56,7 +56,7 @@ function _imap_server_spec($server, $port, $type = null)
             $ssl = ($type == 'imaps');
         }
         $server_special_details = $ssl ? '/ssl/novalidate-cert' : '/novalidate-cert';
-        $server_spec = '{' . $server . ':' . strval($port) . '/imap/readonly' . $server_special_details . '}';
+        $server_spec = '{' . $server . ':' . strval($port) . '/imap' . $server_special_details . '}';
     }
     return $server_spec;
 }

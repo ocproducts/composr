@@ -33,14 +33,27 @@ Editing the [tt]favicon[/tt] theme image:
 4) You are now lead to a screen "Edit theme image" and in that we can see the current image and the options for uploading new image. Click the "Upload" radio button then the Browse button, then attach your new icon file.
 5) Click "Save".
 
-[title="3"]Apple web clip icons[/title]
+[title="3"]Apple webclip icons[/title]
 
-These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the [tt]webclipicon[/tt] theme image.
+These icons (aka apple touch icons) show on the iOS home screens, if you choose to bookmark a site there. They can be set by editing the [tt]webclipicon[/tt] theme image.
 
 The default icon actually contains multiple sizes:
- - 120&times;120 &ndash; iPhone retina touch iOS7
- - 144&times;144 &ndash; Microsoft Metro tile for pinned site
+ - 120&times;120 &ndash; iPhone/iPod retina touch iOS7
  - 152&times;152 &ndash; iPad retina touch iOS7
+
+Systems will typically get the icon most closely matching their required display size. It is pointless trying to have every possible size of icon, as there are too many variations between software, version, and dpi, to get everything.
+
+iOS automatically adds the curved border and shadow effect for you, unless you alter [tt]HTML_HEAD.tpl[/tt] and change [tt]apple-touch-icon[/tt] to [tt]apple-touch-icon-precomposed[/tt].
+
+To add to the home screen on an iOS device:
+1) open a fresh load of your website in mobile Safari
+2) open the page actions (in the bottom bar it is the box with the upward arrow)
+3) select "Add to home screen"
+4) fill in the details
+5) tap Add
+6) check back on the home screen
+
+Unfortunately iOS has deep caching for the webclip icons, which you cannot clear. Fortunately the default [tt]HTML_HEAD.tpl[/tt] adds a cache-busting parameter which is the file modification time of the image. You still need to remove then re-add the home icon for your site though.
 
 [title="2"]Web fonts[/title]
 

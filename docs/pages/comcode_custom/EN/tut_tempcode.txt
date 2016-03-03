@@ -910,6 +910,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Find a named theme image code's URL (takes the theme image code). Note that this gets the image URL, it does not write the HTML out for an image element based upon it (you need to do that yourself).</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$IMG_MTIME,bottom}</td>
+			<td>Find the last-modification unix timestamp for a theme image. This is useful for adding a cache-busting parameter after an image URL and ?, e.g. <kbd>&lt;img src="{$IMG*,bottom}?{$IMG_MTIME%,bottom}" /&gt;</kbd>.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>{$IMG_INLINE,bottom}</td>
 			<td>Find a named theme image code's data URL. It works the same as <kbd>{$IMG,...}</kbd> except the image data gets embedded directly. If there's more than 32kb of data, the normal URL will be used instead.</td>
 		</tr>

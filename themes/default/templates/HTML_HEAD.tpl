@@ -104,7 +104,7 @@
 
 {$,Favicon and app icon for site, managed as theme images}
 <link rel="icon" href="{$IMG*,favicon}" type="image/x-icon" sizes="16x16 24x24 32x32 48x48" />
-<link rel="apple-touch-icon" href="{$IMG*,webclipicon}" sizes="120x120 144x144 152x152" /> {$,Used on speed dials and phone home screens and not downloaded automatically}
+<link rel="apple-touch-icon" href="{$IMG*,webclipicon}?v={$IMG_MTIME%,webclipicon}" sizes="120x120 152x152" /> {$,Used on speed dials and phone home screens and not downloaded automatically}
 
 {$,Inclusion of search semantic data, so smart browsers can automatically allow native-browser searching of the site}
 {+START,COMMENT,Commented out by default to save bandwidth}{+START,IF,{$ADDON_INSTALLED,search}}

@@ -239,6 +239,7 @@ class LangFilter_EN extends LangFilter
         if (!is_null($key)) {
             $remapping['the software'] = brand_name();
             $remapping['the website software'] = brand_name();
+            $remapping['other webmasters'] = 'other ' . brand_name() . ' users';
         }
 
         // Fix bad contextualisation
