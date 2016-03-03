@@ -524,7 +524,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
             require_code('caches3');
             global $ERASED_TEMPLATES_ONCE;
             if (!$ERASED_TEMPLATES_ONCE) {
-                erase_cached_templates(true);
+                erase_cached_templates(true, null, TEMPLATE_DECACHE_WITH_LANG);
             }
         }
     }

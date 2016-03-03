@@ -159,7 +159,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
 
         if (addon_installed('!ssl')) {
             require_code('caches3');
-            erase_cached_templates(); // Paths may have been cached
+            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
         }
 
         log_it('EDIT_THEME_IMAGE', $id, $theme);
@@ -279,7 +279,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     if (addon_installed('!ssl')) {
         require_code('caches3');
-        erase_cached_templates(); // Paths may have been cached
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }
 }
 

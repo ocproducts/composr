@@ -344,13 +344,12 @@ function delete_menu($menu_id)
         $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => 'header_menu_call_string'), '', 1);
 
         // Clear caches
+        require_code('caches3');
         if (function_exists('persistent_cache_delete')) {
             persistent_cache_delete('OPTIONS');
         }
         Self_learning_cache::erase_smart_cache();
-        // Config option saves into templates
-        require_code('caches3');
-        erase_cached_templates();
+        erase_cached_templates(false, array('GLOBAL_HTML_WRAP')); // Config option saves into templates
     }
 
     decache('menu');

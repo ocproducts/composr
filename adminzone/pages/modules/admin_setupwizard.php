@@ -1153,7 +1153,7 @@ class Module_admin_setupwizard
         erase_block_cache();
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING);
     }
 
     /**
