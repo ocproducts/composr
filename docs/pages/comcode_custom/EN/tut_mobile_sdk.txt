@@ -226,7 +226,7 @@ Take a list of maps, and make one of the values of each array the index of a map
 [/code]
 
 [i]Example:[/i]
-Below example code will restructure the given list of maps into a map of maps.
+The below example code will restructure the given list of maps into a map of maps.
 [code="objc"]
 NSArray *source = @[
 	@{
@@ -271,7 +271,7 @@ Calling [tt][CMS_Arrays list_to_map:keyA1 :source];[/tt] will return:
 [/code]
 
 [i]Example:[/i]
-Below example code will return only keys from the map if the value is set to YES, otherwise will return only values from a map that contains many keys and values.
+The below example code will return only keys from the map if the value is set to YES, otherwise will return only values from a map that contains many keys and values.
 [code="objc"]
 NSDictionary *source = @{
 	@"key1":@"val1",
@@ -285,6 +285,243 @@ Calling [tt][CMS_Arrays array_values:YES :source];[/tt] will return:
 Calling [tt][CMS_Arrays array_values:NO :source];[/tt] will return:
 [code="objc"]
 @[@"val1",@"val2"]
+[/code]
+
+[title="4"]array_merge[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)array_merge:(NSArray *)array1 :(NSArray *)array2;
+[/code]
+
+[i]Description:[/i]
+[tt]array_merge[/tt] will return an array containing all values from array1 and array2.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays array_merge:<array 1> :<array 2>];
+[/code]
+
+[i]Example:[/i]
+The below example code will return merged array from the given two input arrays.
+[code="objc"]
+NSArray *inputArray1 = @[@1, @2, @"3", @"test", @5.3];
+NSArray *inputArray2 = @[@6, @2, @"fdfd"];
+[/code]
+Calling [tt][CMS_Arrays array_merge:inputArray1 :inputArray2];[/tt] will return:
+[code="objc"]
+@[@1, @2, @"3", @"test", @5.3, @6, @2, @"fdfd"]
+[/code]
+
+[title="4"]sort[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)sort:(NSArray *)array;
+[/code]
+
+[i]Description:[/i]
+[tt]sort[/tt] will sort an an array of strings or numbers. It works by reference: the passed array reference will get modified directly.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays sort:<array reference>];
+[/code]
+
+[i]Example:[/i]
+The below example code will sort the given array.
+[code="objc"]
+NSArray *array = @[@4, @"-1", @"1", @0];
+[/code]
+Calling [tt][CMS_Arrays sort:&array];[/tt] will sort the passed array as:
+[code="objc"]
+@[@"-1", @0, @"1", @4]
+[/code]
+
+[title="4"]array_key_exists[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(BOOL)array_key_exists:(NSString *)key :(NSDictionary *)map;
+[/code]
+
+[i]Description:[/i]
+[tt]array_key_exists[/tt] will check if a map contains the provided key.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays array_key_exists:<key> :<map>];
+[/code]
+
+[i]Example:[/i]
+The below example code will check if the given array contains the specified key.
+[code="objc"]
+NSDictionary *inputMap =  @{
+                                @"key1":@"val1",
+                                @"key2":@"val2",
+                                @"3.6":@"val6"
+                                };
+[/code]
+Calling [tt][CMS_Arrays array_key_exists:@"key1" :inputMap];[/tt] will return true.
+Calling [tt][CMS_Arrays array_key_exists:@"3.6" :inputMap];[/tt] will return true.
+
+[title="4"]array_unique[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSArray *)array_unique:(NSArray *)array;
+[/code]
+
+[i]Description:[/i]
+[tt]array_unique[/tt] will remove all duplicate entries from the array.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays array_unique:<array>];
+[/code]
+
+[i]Example:[/i]
+The below example code will return an array by removing duplicates from the given array.
+[code="objc"]
+NSArray *inputArray = @[@1, @2, @2, @"3", @"test", @5.3, @"test", @3];
+[/code]
+Calling [tt][CMS_Arrays array_unique:inputArray];[/tt] will return:
+[code="objc"]
+@[@1, @2, @"3", @"test", @5.3]
+[/code]
+
+[title="4"]sort_maps_by[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(void)sort_maps_by:(NSString *)key :(NSArray *)array;
+[/code]
+
+[i]Description:[/i]
+[tt]sort_maps_by[/tt] will sort an array of maps with the value for the key provided. It works by reference: the passed array reference will get modified.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays sort_maps_by:<key> :<array of maps>];
+[/code]
+
+[i]Example:[/i]
+The below example code will sort the given array of maps according to the values of the key "id".
+[code="objc"]
+NSArray *inputArray = @[
+                            @{
+                                @"id":@1,
+                                @"val":@"val5"
+                                },
+                            @{
+                                @"id":@3,
+                                @"val":@"val2"
+                                },
+                            @{
+                                @"id":@0,
+                                @"val":@"Val9"
+                                }
+                            ];
+[/code]
+Calling [tt][CMS_Arrays sort_maps_by:&inputArray :@"id"];[/tt] will sort the array of maps as:
+[code="objc"]
+@[
+    @{
+        @"id":@0,
+        @"val":@"Val9"
+        },
+    @{
+        @"id":@1,
+        @"val":@"val5"
+        },
+    @{
+        @"id":@3,
+        @"val":@"val2"
+        }
+]
+[/code]
+
+[title="4"]count[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)count:(id)array;
+[/code]
+
+[i]Description:[/i]
+[tt]count[/tt] will return the number of objects in an array/map.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays count:<array/map>];
+[/code]
+
+[i]Example:[/i]
+The below example code will return the count of values in an array or number of keys in a map.
+[code="objc"]
+NSArray *array = @[@4, @"-1", @"1", @0];
+[/code]
+Calling [tt][CMS_Arrays count:array];[/tt] will return 4.
+[code="objc"]
+NSDictionary *map = @{
+                          @"key1":@"val1",
+                          @"key2":@"val2",
+                          @"key3":@"val3",
+                          @"key4":@"val4",
+                          @"key5":@"val5"
+                          };
+[/code]
+Calling [tt][CMS_Arrays count:map];[/tt] will return 5.
+
+[title="4"]list_to_map[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSDictionary *) list_to_map:(NSString *)key :(NSArray *)list;
+[/code]
+
+[i]Description:[/i]
+[tt]list_to_map[/tt] will return map corresponding to a key from array of maps.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Arrays list_to_map:<key> :<list of maps>];
+[/code]
+
+[i]Example:[/i]
+The below example code will return map with keys as value of the given key from each map in the array.
+[code="objc"]
+NSArray *inputList = @[
+                        @{
+                            @"id" : @"1",
+                            @"val" : @"val1"
+                        },
+                        @{
+                            @"id" : @"2",
+                            @"val" : @"val2"
+                        },
+                        @{
+                            @"id" : @"3",
+                            @"val" : @"val3"
+                        }
+                    ];
+[/code]
+Calling [tt][CMS_Arrays list_to_map:@"id" :inputList];[/tt] will return:
+[code="objc"]
+@{
+	  @"1" : @{
+	           @"id" : @"1",
+	           @"val" : @"val1"
+	          },
+	  @"2" : @{
+	           @"id" : @"2",
+	           @"val" : @"val2"
+	          },
+	  @"3" : @{
+	           @"id" : @"3",
+	           @"val" : @"val3"
+	          }
+};
 [/code]
 
 [title="3"]CMS_Strings[/title]
@@ -448,6 +685,21 @@ Consider that there is a generic string template from a web API saying [tt]@"Hi 
 Calling [tt][CMS_Strings stringWithFormat:@"Hi %@. Welcome to %@" array:@[@"Allen",@"CMS"]];[/tt] will return:
 [code="objc"]
 @"Hi Allen. Welcome to CMS"
+[/code]
+
+[title="4"]strlen[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(int)strlen:(NSString *)str;
+[/code]
+
+[i]Description:[/i]
+To get the length of a string, the [tt]strlen[/tt] function can be used.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Strings strlen:<input_string>]
 [/code]
 
 [title="3"]CMS_Langs[/title]
