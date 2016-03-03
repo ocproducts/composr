@@ -30,6 +30,7 @@ class Hook_content_meta_aware_iotd
             'support_custom_fields' => true,
 
             'content_type_label' => 'iotds:IOTD',
+            'content_type_universal_label' => 'Image of the day',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'iotd',
@@ -52,6 +53,7 @@ class Hook_content_meta_aware_iotd
             'description_field' => 'caption',
             'thumb_field' => 'thumb_url',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:iotds:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_iotds:_edit:_WILD',

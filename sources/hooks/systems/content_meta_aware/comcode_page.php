@@ -35,6 +35,7 @@ class Hook_content_meta_aware_comcode_page
             'support_custom_fields' => true,
 
             'content_type_label' => 'zones:COMCODE_PAGE',
+            'content_type_universal_label' => 'Comcode page',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'comcode_pages',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_comcode_page
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/_generic_spare/page',
 
             'view_page_link_pattern' => '_WILD:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_comcode_pages:_edit:page_link=_WILD',

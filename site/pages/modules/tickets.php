@@ -579,14 +579,10 @@ class Module_tickets
                 set_extra_request_metadata(array(
                     'created' => date('Y-m-d', $_comments[0]['date']),
                     'creator' => $GLOBALS['FORUM_DRIVER']->get_username($_comments[0]['member']),
-                    'publisher' => '', // blank means same as creator
-                    'modified' => '',
                     'type' => 'Support ticket',
                     'title' => $_comments[0]['title'],
                     'identifier' => '_SEARCH:tickets:ticket:' . $id,
-                    'description' => '',
                     'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
-                    //'category' => ???,
                 ));
 
                 // "Staff only reply" tickbox

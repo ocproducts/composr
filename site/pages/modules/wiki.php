@@ -294,18 +294,10 @@ class Module_wiki
             $description_comcode = get_translated_text($page['description']);
 
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $page['add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($page['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Wiki+ Page',
-                'title' => comcode_escape(get_translated_text($page['title'])),
                 'identifier' => '_SEARCH:wiki:browse:' . strval($page['id']),
                 'description' => (strlen($description_comcode) < 200) ? $description_comcode : '',
                 'numposts' => strval($num_posts),
-                'image' => find_theme_image('icons/48x48/menu/rich_content/wiki'),
-                //'category' => ???,
-            ));
+            ), $page, 'wiki_page', strval($id));
 
             breadcrumb_set_parents($breadcrumbs);
 

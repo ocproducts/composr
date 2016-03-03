@@ -334,17 +334,8 @@ class Module_calendar
             seo_meta_load_for('event', strval($id), $title_to_use_2);
 
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $event['e_add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => is_null($event['e_edit_date']) ? '' : date('Y-m-d', $event['e_edit_date']),
-                'type' => 'Calendar event',
-                'title' => comcode_escape(get_translated_text($event['e_title'])),
                 'identifier' => '_SEARCH:calendar:view:' . strval($id),
-                'description' => get_translated_text($event['e_content']),
-                'image' => find_theme_image('icons/48x48/menu/rich_content/calendar'),
-                //'category' => ???,
-            ));
+            ), $event, 'event', strval($id));
 
             set_feed_url(find_script('backend') . '?mode=calendar&select=' . urlencode(implode(',', $this->get_and_filter())));
 
@@ -430,11 +421,11 @@ class Module_calendar
     public function get_filter($only_event_types = false)
     {
         $filter = array();
-        $some_pos = false;
         static $types = null;
         if ($types === null) {
-            $types = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'));
+            $types = list_to_map('id', $GLOBALS['SITE_DB']->query_select('calendar_types', array('*')));
         }
+        $types_has = array();
         foreach ($types as $type) {
             $t = $type['id'];
             $filter['int_' . strval($t)] = get_param_integer('int_' . strval($t), 0);
@@ -443,11 +434,17 @@ class Module_calendar
                 $filter['int_' . strval($t)] = 1;
             }
             if ($filter['int_' . strval($t)] == 1) {
-                $some_pos = true;
+                $types_has[] = $t;
             }
         }
-        if (!$some_pos) {
+        if (count($types_has) == 0) {
             $filter = array();
+        }
+        elseif (count($types_has) == 1) { // Viewing a single calendar type
+            // Metadata
+            set_extra_request_metadata(array(
+                'identifier' => '_SEARCH:calendar:browse:int_' . strval($types_has[0]) . '=1',
+            ), $types[$types_has[0]], 'calendar_type', strval($types_has[0]));
         }
 
         if (!$only_event_types) {

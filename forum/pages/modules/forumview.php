@@ -108,17 +108,8 @@ class Module_forumview
             $description_text = get_translated_text($forum_info['f_description'], $GLOBALS['FORUM_DB']);
 
             set_extra_request_metadata(array(
-                'created' => '',
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Forum',
-                'title' => comcode_escape($forum_info['f_name']),
                 'identifier' => '_SEARCH:forumview:browse:' . strval($id),
-                'description' => $description_text,
-                'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category' => ???,
-            ));
+            ), $forum_info, 'forum', strval($id));
 
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');

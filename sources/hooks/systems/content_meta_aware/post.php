@@ -46,6 +46,7 @@ class Hook_content_meta_aware_post
             'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_POST',
+            'content_type_universal_label' => 'Forum post',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_posts',
@@ -67,6 +68,7 @@ class Hook_content_meta_aware_post
             'description_field' => 'p_post',
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:findpost:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_post:_WILD',

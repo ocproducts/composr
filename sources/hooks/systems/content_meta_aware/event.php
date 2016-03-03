@@ -35,6 +35,7 @@ class Hook_content_meta_aware_event
             'support_custom_fields' => true,
 
             'content_type_label' => 'calendar:EVENT',
+            'content_type_universal_label' => 'Calendar event',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'calendar_events',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_event
             'description_field' => 'e_content',
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/calendar',
 
             'view_page_link_pattern' => '_SEARCH:calendar:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit:_WILD',

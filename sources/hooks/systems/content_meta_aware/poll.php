@@ -35,6 +35,7 @@ class Hook_content_meta_aware_poll
             'support_custom_fields' => true,
 
             'content_type_label' => 'polls:POLL',
+            'content_type_universal_label' => 'Poll',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'poll',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_poll
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/polls',
 
             'view_page_link_pattern' => '_SEARCH:polls:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_polls:_edit:_WILD',

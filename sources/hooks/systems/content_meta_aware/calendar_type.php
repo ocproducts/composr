@@ -35,6 +35,7 @@ class Hook_content_meta_aware_calendar_type
             'support_custom_fields' => false,
 
             'content_type_label' => 'calendar:EVENT_TYPE',
+            'content_type_universal_label' => 'Calendar type',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'calendar_types',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_calendar_type
             'description_field' => null,
             'thumb_field' => 't_logo',
             'thumb_field_is_theme_image' => true,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:calendar:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit_category:_WILD',

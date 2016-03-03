@@ -152,16 +152,8 @@ class Module_iotds
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'Poll',
-                'title' => get_translated_text($myrow['i_title']),
                 'identifier' => '_SEARCH:iotds:view:' . strval($id),
-                'description' => '',
-                'image' => $url,
-            ));
+            ), $myrow, 'iotd', strval($id));
 
             $this->title = get_screen_title('IOTD');
 

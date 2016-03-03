@@ -46,6 +46,7 @@ class Hook_content_meta_aware_topic
             'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_TOPIC',
+            'content_type_universal_label' => 'Forum topic',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_topics',
@@ -71,6 +72,7 @@ class Hook_content_meta_aware_topic
             'description_field' => 't_description',
             'thumb_field' => 't_emoticon',
             'thumb_field_is_theme_image' => true,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_topic:_WILD',

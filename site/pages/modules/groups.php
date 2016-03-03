@@ -102,16 +102,8 @@ class Module_groups
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS'))));
 
             set_extra_request_metadata(array(
-                'created' => '',
-                'creator' => is_null($group['g_group_leader']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader']),
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Usergroup',
-                'title' => comcode_escape($group_name),
                 'identifier' => '_SEARCH:groups:view:' . strval($id),
-                'description' => '',
-                'image' => find_theme_image('icons/48x48/menu/social/groups'),
-            ));
+            ), $group, 'group', strval($id));
 
             $this->title = get_screen_title($club ? 'CLUB' : 'VIEW_USERGROUP', true, array(make_fractionable_editable('group', $id, $group_name)));
 

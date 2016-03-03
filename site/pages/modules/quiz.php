@@ -269,16 +269,9 @@ class Module_quiz
             }
 
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $quiz['q_add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($quiz['q_submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
                 'type' => $type,
-                'title' => get_translated_text($quiz['q_name']),
                 'identifier' => '_SEARCH:quiz:do:' . strval($quiz_id),
-                'description' => get_translated_text($quiz['q_start_text']),
-                'image' => find_theme_image('icons/48x48/menu/rich_content/quiz'),
-            ));
+            ), $quiz, 'quiz', strval($quiz_id));
 
             $this->quiz_id = $quiz_id;
             $this->quiz = $quiz;

@@ -35,6 +35,7 @@ class Hook_content_meta_aware_wiki_page
             'support_custom_fields' => true,
 
             'content_type_label' => 'wiki:_WIKI_PAGE',
+            'content_type_universal_label' => 'Wiki+ Page',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'wiki_pages',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_wiki_page
             'description_field' => 'description',
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/wiki',
 
             'view_page_link_pattern' => '_SEARCH:wiki:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_wiki:edit_page:_WILD',

@@ -35,6 +35,7 @@ class Hook_content_meta_aware_catalogue_category
             'support_custom_fields' => true,
 
             'content_type_label' => 'catalogues:CATALOGUE_CATEGORY',
+            'content_type_universal_label' => 'Catalogue category',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'catalogue_categories',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_catalogue_category
             'description_field' => 'cc_description',
             'thumb_field' => 'rep_image',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:category:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit_category:_WILD',

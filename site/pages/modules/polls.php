@@ -219,16 +219,8 @@ class Module_polls
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_time']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'Poll',
-                'title' => comcode_escape($_title),
                 'identifier' => '_SEARCH:polls:view:' . strval($id),
-                'description' => '',
-                'image' => find_theme_image('icons/48x48/menu/social/polls'),
-            ));
+            ), $myrow, 'poll', strval($id));
 
             $this->title = get_screen_title('POLL');
 

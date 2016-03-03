@@ -132,17 +132,12 @@ class Module_members
 
             $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id_of);
 
+            $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of);
+
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $join_time),
-                'creator' => $username,
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Profile',
-                'title' => '',
                 'identifier' => '_SEARCH:members:view:' . strval($member_id_of),
-                'description' => '',
                 'image' => (($avatar_url == '') && (has_privilege(get_member(), 'view_member_photos'))) ? $photo_url : $avatar_url,
-            ));
+            ), $member_row, 'member', strval($member_id_of));
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . propagate_filtercode_page_link(), do_lang_tempcode('MEMBERS'))));
 

@@ -224,21 +224,32 @@ class Module_news
             $select = get_param_string('id', get_param_string('select', '*'));
             $select_and = get_param_string('select_and', '*');
 
+            $news_cat_id = null;
+            $news_cat_rows = array();
+            if (is_numeric($select)) {
+                $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => intval($select)), '', 1);
+                if (array_key_exists(0, $news_cat_rows)) {
+                    $news_cat_id = intval($select);
+                }
+            }
+
             // Title
             if ($blog === 1) {
                 $this->title = get_screen_title('BLOG_NEWS_ARCHIVE');
             } else {
-                if (is_numeric($select)) {
-                    $news_cat_title = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
-                    if (array_key_exists(0, $news_cat_title)) {
-                        $news_cat_title[0]['_nc_title'] = get_translated_text($news_cat_title[0]['nc_title']);
-                        $this->title = get_screen_title(make_fractionable_editable('news_category', $select, $news_cat_title[0]['_nc_title']), false);
-                    } else {
-                        $this->title = get_screen_title('NEWS_ARCHIVE');
-                    }
+                if ($news_cat_id !== null) {
+                    $news_cat_rows[0]['_nc_title'] = get_translated_text($news_cat_rows[0]['nc_title']);
+                    $this->title = get_screen_title(make_fractionable_editable('news_category', $select, $news_cat_rows[0]['_nc_title']), false);
                 } else {
                     $this->title = get_screen_title('NEWS_ARCHIVE');
                 }
+            }
+
+            // Metadata
+            if ($news_cat_id !== null) {
+                set_extra_request_metadata(array(
+                    'identifier' => '_SEARCH:news:browse:select=:' . strval($news_cat_id),
+                ), $news_cat_rows[0], 'news_category', strval($news_cat_id));
             }
 
             // Breadcrumbs
@@ -288,10 +299,10 @@ class Module_news
                 $parent_title = do_lang_tempcode('BLOG_NEWS_ARCHIVE');
             } else {
                 if (is_numeric($select)) {
-                    $news_cat_title = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
-                    if (array_key_exists(0, $news_cat_title)) {
-                        $news_cat_title[0]['_nc_title'] = get_translated_text($news_cat_title[0]['nc_title']);
-                        $parent_title = make_string_tempcode(escape_html($news_cat_title[0]['_nc_title']));
+                    $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
+                    if (array_key_exists(0, $news_cat_rows)) {
+                        $news_cat_rows[0]['_nc_title'] = get_translated_text($news_cat_rows[0]['nc_title']);
+                        $parent_title = make_string_tempcode(escape_html($news_cat_rows[0]['_nc_title']));
                     } else {
                         $parent_title = do_lang_tempcode('NEWS_ARCHIVE');
                     }
@@ -352,17 +363,10 @@ class Module_news
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['date_and_time']),
-                'creator' => $myrow['author'],
-                'publisher' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'News article',
-                'title' => get_translated_text($myrow['title']),
                 'identifier' => '_SEARCH:news:view:' . strval($id),
                 'image' => $og_img,
-                'description' => strip_comcode(get_translated_text($myrow['news'])),
                 'category' => $category,
-            ));
+            ), $myrow, 'news', strval($id));
 
             $this->id = $id;
             $this->blog = $blog;

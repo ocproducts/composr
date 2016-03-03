@@ -140,6 +140,11 @@ class Module_authors
 
         seo_meta_load_for('authors', $author);
 
+        // Metadata
+        set_extra_request_metadata(array(
+            'identifier' => '_SEARCH:authors:browse:' . $author,
+        ), $myrow, 'author', $author);
+
         $this->author = $author;
 
         return null;

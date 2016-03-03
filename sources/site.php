@@ -1797,16 +1797,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
-            'created' => date('Y-m-d', $comcode_page_row['p_add_date']),
-            'creator' => (is_guest($comcode_page_row['p_submitter'])) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($comcode_page_row['p_submitter']),
-            'publisher' => '', // blank means same as creator
-            'modified' => ($comcode_page_row['p_edit_date'] === null) ? '' : date('Y-m-d', $comcode_page_row['p_edit_date']),
-            'type' => 'Comcode page',
             'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
             'identifier' => $zone . ':' . $codename,
-            'description' => '',
-            //'category' => ???,
-        ));
+        ), $comcode_page_row, 'comcode_page', $zone . ':' . $codename);
     }
 
     if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {

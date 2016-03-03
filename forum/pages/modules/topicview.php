@@ -135,7 +135,7 @@ class Module_topicview
             }
         }
 
-        set_extra_request_metadata($topic_info['metadata']);
+        set_extra_request_metadata($topic_info['metadata'], $topic_info['row'], 'topic', strval($id));
 
         global $SEO_TITLE;
         $SEO_TITLE = do_lang('_VIEW_TOPIC', $topic_info['title']);

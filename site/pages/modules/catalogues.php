@@ -528,16 +528,8 @@ class Module_catalogues
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $catalogue['c_add_date']),
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Catalogue',
-                'title' => comcode_escape(get_translated_text($catalogue['c_title'])),
                 'identifier' => '_SEARCH:catalogues:index:' . $catalogue_name,
-                'description' => $description_2,
-                //'category' => ???,
-            ));
+            ), $catalogue, 'catalogue', $catalogue_name);
 
             $this->catalogue_name = $catalogue_name;
             $this->catalogue = $catalogue;
@@ -625,22 +617,9 @@ class Module_catalogues
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $category['cc_add_date']),
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
                 'type' => get_translated_text($catalogue['c_title']) . ' category',
-                'title' => comcode_escape($_title),
                 'identifier' => '_SEARCH:catalogues:category:' . strval($id),
-                'description' => get_translated_text($category['cc_description']),
-                //'category' => ???,
-            ));
-            $rep_image_str = $category['rep_image'];
-            if ($rep_image_str != '') {
-                set_extra_request_metadata(array(
-                    'image' => (url_is_local($rep_image_str) ? (get_custom_base_url() . '/') : '') . $rep_image_str,
-                ));
-            }
+            ), $category, 'catalogue_category', strval($id));
 
             $this->category = $category;
             $this->catalogue_name = $catalogue_name;
