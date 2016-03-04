@@ -29,9 +29,11 @@ function init__caches3()
     $ERASED_TEMPLATES_ONCE = false;
 
     // Special ways of decaching templates
-    define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET');
-    define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG');
-    define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_WITH_THEME_IMAGE . '|' . TEMPLATE_DECACHE_WITH_LANG);
+    define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
+    // -
+    define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
+    define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG' . '|' . TEMPLATE_DECACHE_BASE);
+    define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_BASE);
     define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
     // -
     define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
@@ -118,14 +120,25 @@ function composr_cleanup($caches = null)
 
 /**
  * Erase the block cache.
+ *
+ * @param  boolean $erase_cache_signatures_too Erase cache signatures too
+ * @param  ?ID_TEXT $theme Only erase caching for this theme (null: all themes)
  */
-function erase_block_cache()
+function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
 {
     cms_profile_start_for('erase_tempcode_cache');
 
-    $GLOBALS['SITE_DB']->query_delete('cache_on', null, '', null, null, true);
-    $GLOBALS['SITE_DB']->query_delete('cache');
-    erase_persistent_cache();
+    if ($erase_cache_signatures_too) {
+        $GLOBALS['SITE_DB']->query_delete('cache_on', null, '', null, null, true);
+    }
+
+    $where_map = mixed();
+    if ($theme !== null) {
+        $where_map = array('the_theme' => $theme);
+    }
+    $GLOBALS['SITE_DB']->query_delete('cache', $where_map);
+
+    erase_persistent_cache(); // Block caching may be directly in here
 
     cms_profile_end_for('erase_tempcode_cache');
 }

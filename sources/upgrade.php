@@ -726,7 +726,7 @@ function clear_caches_2()
 {
     require_code('caches3');
     erase_comcode_cache();
-    erase_block_cache();
+    erase_block_cache(true);
     erase_comcode_page_cache();
     erase_persistent_cache();
 }

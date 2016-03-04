@@ -670,7 +670,7 @@ function install_addon($file, $files = null)
     // Clear some caching
     require_code('caches3');
     erase_comcode_page_cache();
-    erase_block_cache();
+    erase_block_cache(true);
     erase_persistent_cache();
     erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
     $template_files_to_erase = array();
@@ -782,7 +782,7 @@ function uninstall_addon($addon, $clear_caches = true)
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         erase_persistent_cache();
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
         $template_files_to_erase = array();

@@ -132,16 +132,15 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             }
 
             //if ($is_ok) {
-            if ($path != '././@LongLink') {
+            if ($path == '././@LongLink') {
+                $next_name = fread($myfile, $size);
+                fseek($myfile, $block_size - $size, SEEK_CUR);
+            } else {
                 if (substr(basename($path), 0, 2) != '._') {
                     $directory[$offset] = array('path' => $path, 'mode' => $mode, 'size' => $size, 'mtime' => $mtime);
                 }
                 $next_name = null;
                 fseek($myfile, $block_size, SEEK_CUR);
-            } else {
-                fseek($myfile, 512, SEEK_CUR);
-                $next_name = fread($myfile, $size);
-                fseek($myfile, $block_size - 512 - $size, SEEK_CUR);
             }
             //}
 

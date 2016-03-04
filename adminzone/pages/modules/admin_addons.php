@@ -634,7 +634,7 @@ class Module_admin_addons
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
@@ -786,7 +786,7 @@ class Module_admin_addons
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);

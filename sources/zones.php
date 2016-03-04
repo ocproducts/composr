@@ -1216,6 +1216,23 @@ function do_block($codename, $map = null, $ttl = null)
 }
 
 /**
+ * Get Comcode used for a block to submit back to itself via AJAX.
+ *
+ * @param  array $map The parameters
+ * @return string Parameters for a Comcode block tag
+ */
+function get_block_ajax_submit_map($map)
+{
+    $map_comcode = '';
+    foreach ($map as $key => $val) {
+        if ($key != 'defer') {
+            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
+        }
+    }
+    return $map_comcode;
+}
+
+/**
  * Convert a parameter set from a an array (for PHP code) to a string (for templates).
  *
  * @param  array $map The parameters / acceptable parameter pattern

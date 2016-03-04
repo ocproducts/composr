@@ -188,12 +188,13 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 	return false;
 }
 
-function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too)
+function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too,scroll_to_top)
 {
 	if (typeof look_for=='undefined') look_for=[];
 	if (typeof extra_params=='undefined') extra_params=[];
 	if (typeof append=='undefined') append=false;
 	if (typeof forms_too=='undefined') forms_too=false;
+	if (typeof scroll_to_top=='undefined') scroll_to_top=true;
 
 	var _link_wrappers=get_elements_by_class_name(block,'ajax_block_wrapper_links');
 	if (_link_wrappers.length==0) _link_wrappers=[block];
@@ -263,7 +264,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 				}
 
 				// Make AJAX block call
-				return call_block(url_stem+url_stub,'',block,append,function() { window.scrollTo(0,0); },false,post_params);
+				return call_block(url_stem+url_stub,'',block,append,function() { if (scroll_to_top) window.scrollTo(0,0); },false,post_params);
 			};
 			if (links[i].nodeName.toLowerCase()=='a')
 			{
@@ -304,6 +305,7 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 
 	var ajax_url=url;
 	if (new_block_params!='') ajax_url+='&block_map_sup='+window.encodeURIComponent(new_block_params);
+	if (typeof window.cms_theme!='undefined') ajax_url+='&utheme='+window.cms_theme;
 	if (typeof block_data_cache[ajax_url]!='undefined')
 	{
 		// Show results from cache
@@ -426,7 +428,7 @@ function ajax_form_submit__admin__headless(event,form,block_name,map)
 	}
 	for (var i=0;i<form.elements.length;i++)
 	{
-		if (!form.elements[i].disabled)
+		if (!form.elements[i].disabled && typeof form.elements[i].name!='undefined' && form.elements[i].name!=null && form.elements[i].name!='')
 			post+='&'+form.elements[i].name+'='+window.encodeURIComponent(clever_find_value(form,form.elements[i]));
 	}
 	var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}'+keep_stub(true)),null,post);

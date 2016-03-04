@@ -1217,6 +1217,7 @@ class Module_admin_themes
 
         require_code('caches3');
         erase_cached_templates(false, array(preg_replace('#\..*#', '', $file)));
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
 
         log_it('EDIT_CSS', $theme, $file);
 
@@ -1853,8 +1854,8 @@ class Module_admin_themes
         }
 
         // Erase cache
-        $theme = filter_naughty(post_param_string('theme'));
-        erase_block_cache();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
+        erase_block_cache(false, $theme);
 
         if (get_param_integer('save_and_stay', 0) == 1) {
             return inform_screen($this->title, protect_from_escaping('
