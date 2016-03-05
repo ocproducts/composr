@@ -30,6 +30,7 @@ class Hook_content_meta_aware_tester
             'support_custom_fields' => false,
 
             'content_type_label' => 'tester:TEST_SECTION',
+            'content_type_universal_label' => 'Test section',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'tests',
@@ -51,6 +52,7 @@ class Hook_content_meta_aware_tester
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:tester:report:_WILD',
             'edit_page_link_pattern' => '_SEARCH:tester:_edit:_WILD',

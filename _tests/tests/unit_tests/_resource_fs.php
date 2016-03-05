@@ -20,7 +20,7 @@ These tests test all var hooks. Some general Resource-FS tests are in the comman
 /**
  * Composr test case class (unit testing).
  */
-class resource_fs_test_set extends cms_test_case
+class _resource_fs_test_set extends cms_test_case
 {
     public $resource_fs_obs;
     public $paths = null;

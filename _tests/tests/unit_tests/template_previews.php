@@ -199,6 +199,7 @@ class template_previews_test_set extends cms_test_case
             $_out1 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out1); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
             $_out1 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out1);
             $_out1 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out1);
+            $_out1 = preg_replace('#\s#', '', $_out1);
             restore_output_state();
 
             init__lorem();
@@ -211,6 +212,7 @@ class template_previews_test_set extends cms_test_case
             $_out2 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out2); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
             $_out2 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out2);
             $_out2 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out2);
+            $_out2 = preg_replace('#\s#', '', $_out2);
             restore_output_state();
 
             $different = ($_out1 != $_out2);

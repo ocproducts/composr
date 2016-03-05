@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_ticket_type
             'support_custom_fields' => false,
 
             'content_type_label' => 'tickets:TICKET_TYPE',
+            'content_type_universal_label' => 'Ticket type',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'ticket_types',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_ticket_type
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_tickets:_edit:_WILD',
