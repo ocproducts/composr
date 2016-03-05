@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'support_custom_fields' => false,
 
             'content_type_label' => 'aggregate_type_instances:AGGREGATE_TYPE_INSTANCE',
+            'content_type_universal_label' => 'Aggregate type instance',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'aggregate_type_instances',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_aggregate_types:_edit:_WILD',

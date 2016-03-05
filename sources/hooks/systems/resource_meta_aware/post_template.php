@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_post_template
             'support_custom_fields' => false,
 
             'content_type_label' => 'cns_post_templates:POST_TEMPLATE',
+            'content_type_universal_label' => 'Post template',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_post_templates',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_post_template
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_cns_post_templates:_edit:_WILD',

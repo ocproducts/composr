@@ -356,7 +356,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'errorlog.php' => 'data_custom',
             'execute_temp.php' => 'data_custom',
             'upgrader.cms.tmp' => 'data_custom',
-            'unit_test_positive_ignore_sampler.cms' => 'data_custom', // To help us test this function. This file won't ever exist.
+            'unit_test_positive_ignore_sampler.xxx' => 'data_custom', // To help us test this function. This file won't ever exist.
         );
     }
 

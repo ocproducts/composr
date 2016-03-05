@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_welcome_email
             'support_custom_fields' => false,
 
             'content_type_label' => 'cns_welcome_emails:WELCOME_EMAIL',
+            'content_type_universal_label' => 'Welcome e-mail',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_welcome_emails',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_welcome_email
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_cns_welcome_emails:_edit:_WILD',

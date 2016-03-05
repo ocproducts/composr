@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_forum_grouping
             'support_custom_fields' => false,
 
             'content_type_label' => 'cns:FORUM_GROUPING',
+            'content_type_universal_label' => 'Forum grouping',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_forum_groupings',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_forum_grouping
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forum_groupings:_edit:_WILD',
